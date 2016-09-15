@@ -1,7 +1,10 @@
 ---
 author: "Laura Botzet"
 date: "9/15/2016"
-output: html_document
+output: 
+  html_document:
+    self_contained: false
+    lib_dir: library
 ---
 
 # Data import {.tabset}

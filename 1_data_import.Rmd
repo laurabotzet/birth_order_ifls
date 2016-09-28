@@ -13,7 +13,9 @@ output:
 ```{r}
 library(haven)
 library(dplyr)
-b1_ks0 = read_dta("data/hh14_all_dta/b1_ks0.dta")
+
+ek_ek1 = read_dta("data/hh14_all_dta/ek_ek1.dta")
+labelDataset(ek_ek1)
 food = b1_ks0 %>% select(hhid14_9, ks02a, ks03a)
 b1_ksr2 =  read_dta("data/hh14_all_dta/b1_ksr2.dta")
 all_data = food %>% full_join(b1_ksr2)

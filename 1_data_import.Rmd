@@ -16,8 +16,28 @@ library(haven)
 devtools::install_github("hadley/haven")
 library(dplyr)
 
+
+### Individual and household Information
+# Informations about individuals living in the household in 2014/2015
+bk_ar0 = read_dta("data/hh14_all_dta/bk_ar0.dta")
+bk_ar1 = read_dta("data/hh14_all_dta/bk_ar1.dta")
+# Informations about earlier waves
+ptrack = read_dta("data/hh14_all_dta/ptrack.dta")
+
+
+### Cognitive Information
 ek_ek1 = read_dta("data/hh14_all_dta/ek_ek1.dta")
-labelDataset(ek_ek1)
+ek_ek2 = read_dta("data/hh14_all_dta/ek_ek2.dta")
+ek_time1 = read_dta("data/hh14_all_dta/ek_time1.dta")
+ek_time2 = read_dta("data/hh14_all_dta/ek_time2.dta")
+# additional information (counting backwards, adaptive testing) for adults
+b3b_cob = read_dta("data/hh14_all_dta/b3b_cob.dta")
+
+
+### Personality Information (only for adults)
+b3b_psn = read_dta("data/hh14_all_dta/b3b_psn.dta")
+
+
 food = b1_ks0 %>% select(hhid14_9, ks02a, ks03a)
 b1_ksr2 =  read_dta("data/hh14_all_dta/b1_ksr2.dta")
 all_data = food %>% full_join(b1_ksr2)

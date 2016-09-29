@@ -11,7 +11,9 @@ output:
 
 ## Load data
 ```{r}
+library(devtools)
 library(haven)
+devtools::install_github("hadley/haven")
 library(dplyr)
 
 ek_ek1 = read_dta("data/hh14_all_dta/ek_ek1.dta")

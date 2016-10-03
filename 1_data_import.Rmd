@@ -9,21 +9,34 @@ output:
 
 # Data import {.tabset}
 
-## Load data
-```{r}
+## Library
+```{r Library}
 library(devtools)
 library(haven)
 devtools::install_github("hadley/haven")
 library(dplyr)
 
 
-### Individual and household Information
-# Informations about individuals living in the household in 2014/2015
-bk_ar0 = read_dta("data/hh14_all_dta/bk_ar0.dta")
-bk_ar1 = read_dta("data/hh14_all_dta/bk_ar1.dta")
-# Informations about earlier waves
-ptrack = read_dta("data/hh14_all_dta/ptrack.dta")
 
+```
+
+
+## Load data
+```{r Load data}
+### Individual and household Information
+## Informations about individuals living in the household in 2014/2015
+# Individuals absent
+bk_cov = read_dta("data/hh14_all_dta/bk_cov.dta")
+# Individuals living in the household
+bk_ar1 = read_dta("data/hh14_all_dta/bk_ar1.dta")
+
+## Informations about potential siblings that are not living in the same house anymore
+# Parents
+b3b_ba0 = read_dta("data/hh14_all_dta/b3b_ba0.dta")
+# Siblings
+b3b_ba4 = read_dta("data/hh14_all_dta/b3b_ba4.dta")
+## Informations about earlier waves
+ptrack = read_dta("data/hh14_all_dta/ptrack.dta")
 
 ### Cognitive Information
 ek_ek1 = read_dta("data/hh14_all_dta/ek_ek1.dta")
@@ -33,14 +46,16 @@ ek_time2 = read_dta("data/hh14_all_dta/ek_time2.dta")
 # additional information (counting backwards, adaptive testing) for adults
 b3b_cob = read_dta("data/hh14_all_dta/b3b_cob.dta")
 
-
 ### Personality Information (only for adults)
 b3b_psn = read_dta("data/hh14_all_dta/b3b_psn.dta")
 
+```
 
-food = b1_ks0 %>% select(hhid14_9, ks02a, ks03a)
-b1_ksr2 =  read_dta("data/hh14_all_dta/b1_ksr2.dta")
-all_data = food %>% full_join(b1_ksr2)
+## Select data
+```{r select data}
+### Individuals
+individuals = bk_ar1 %>% select(hhid14_9, pidlink, ar02b, ar10, ar11, ar07, ar08day, ar08mth, ar08yr, ar09, ar18h)
+
 ```
 
 ## Glimpse data

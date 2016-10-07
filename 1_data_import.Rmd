@@ -15,6 +15,7 @@ library(devtools)
 library(haven)
 devtools::install_github("hadley/haven")
 library(dplyr)
+library(tidyr)
 
 
 
@@ -52,6 +53,16 @@ b3a_si = read_dta("data/hh14_all_dta/b3a_si.dta")
 ```{r select data}
 ### Individuals
 individuals = bk_ar1 %>% select(hhid14_9, pidlink, ar02b, ar10, ar11, ar07, ar08day, ar08mth, ar08yr, ar09, ar18h)
+##create number that should be identical for all siblings in one family
+individuals <- unite(individuals,
+                  col = "hhid14_9_ar10_ar11",
+                  hhid14_9, ar10, ar11,
+                  sep = "_",
+                  remove = FALSE)
+##calculate sibling size
+individuals <- ddply(individuals,.(hhid14_9_ar10_ar11),transform,siblingcount=length(hhid14_9_ar10_ar11))
+
+##calculate birth order
 
 ### IQ Informations
 ##ek1 (7-14yrs old)
@@ -80,12 +91,13 @@ iq = bind_rows(iq1, iq2)
 str(all_data)
 
 ### how many siblings older than 14 are there?
-##child
-individuals15 = subset(individuals, ar02b==3)
 ##older than 14
-individuals15 = subset(individuals15, ar09>14)
-##exclude only childs
-
+individuals15 = subset(individuals, ar09>14)
+##exclude people whose parents are not known
+individuals15 = subset(individuals15, ar10 <51)
+individuals15 = subset(individuals15, ar11 <51)
+##exclude only childs (watch out: sibling size was conduted WITH all younger siblings!)
+individuals15=subset(individuals15, siblingcount != 1)
 ```
 
 ## Save data

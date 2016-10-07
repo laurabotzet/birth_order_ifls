@@ -25,17 +25,11 @@ library(dplyr)
 ```{r Load data}
 ### Individual and household Information
 ## Informations about individuals living in the household in 2014/2015
-# Individuals absent
-bk_cov = read_dta("data/hh14_all_dta/bk_cov.dta")
 # Individuals living in the household
 bk_ar1 = read_dta("data/hh14_all_dta/bk_ar1.dta")
 
-## Informations about potential siblings that are not living in the same house anymore
-# Parents
-b3b_ba0 = read_dta("data/hh14_all_dta/b3b_ba0.dta")
-# Siblings
-b3b_ba4 = read_dta("data/hh14_all_dta/b3b_ba4.dta")
-## Informations about earlier waves
+
+### Informations about earlier waves
 ptrack = read_dta("data/hh14_all_dta/ptrack.dta")
 
 ### Cognitive Information
@@ -45,9 +39,12 @@ ek_time1 = read_dta("data/hh14_all_dta/ek_time1.dta")
 ek_time2 = read_dta("data/hh14_all_dta/ek_time2.dta")
 # additional information (counting backwards, adaptive testing) for adults
 b3b_cob = read_dta("data/hh14_all_dta/b3b_cob.dta")
-
+b3b_co1 = read_dta("data/hh14_all_dta/b3b_co1.dta")
 ### Personality Information (only for adults)
 b3b_psn = read_dta("data/hh14_all_dta/b3b_psn.dta")
+
+### Risk taking
+b3a_si = read_dta("data/hh14_all_dta/b3a_si.dta")
 
 ```
 
@@ -56,12 +53,39 @@ b3b_psn = read_dta("data/hh14_all_dta/b3b_psn.dta")
 ### Individuals
 individuals = bk_ar1 %>% select(hhid14_9, pidlink, ar02b, ar10, ar11, ar07, ar08day, ar08mth, ar08yr, ar09, ar18h)
 
+### Cognitive Informations
+##ek1 (7-14yrs old)
+cognitive1 = ek_ek1 %>% select(hhid14_9, pidlink, age, sex, ektype, resptype, result, reason, ek1_ans, ek2_ans, ek3_ans, ek4_ans, ek5_ans, ek6_ans, ek7_ans, ek8_ans, ek9_ans, ek10_ans, ek11_ans, ek12_ans, ek13_ans, ek14_ans, ek15_ans, ek16_ans, ek17_ans, ek18_ans, ek19_ans, ek20_ans, ek21_ans, ek22_ans)
+# Participants who took the ek1 in 2007 were given ek2 again - to make sure that the dont appear in both cognitive analyses we have to exclude them
+cognitive1 = subset(cognitive1, age<15)
+
+##ek2 (>15yrs)
+cognitive2.1 = ek_ek2 %>% select(hhid14_9, pidlink, age, sex, ektype, resptype, result, reason, ek1_ans, ek2_ans, ek3_ans, ek4_ans, ek5_ans, ek6_ans, ek7_ans, ek8_ans, ek9_ans, ek10_ans, ek11_ans, ek12_ans, ek13_ans, ek14_ans, ek15_ans, ek16_ans, ek17_ans, ek18_ans, ek19_ans, ek20_ans, ek21_ans, ek22_ans)
+#additional informations for adults: counting backwards
+cognitive2.2 = b3b_co1 %>% select(hhid14_9, pidlink, co04a, co04b, co04c, co04d, co04e, co07count, co10count)
+#additional informations for adults: adaptive number test
+cognitive2.3 = b3b_cob %>% select(hhid14_9, pidlink, cob01_b, cob02_b, cob03_b, cob04_b, cob05_b, cob06_b, cob07_b, cob08_b, cob09_b, cob10_b, cob11_b, cob12_b, cob13_b, cob14_b, cob15_b1, cob15_b2)
+# put all the informations for participants >= 15 together
+cognitive2 = full_join(cognitive2.1, cognitive2.2, by = "pidlink")
+cognitive2 = full_join(cognitive2, cognitive2.3, by = "pidlink")
+
+### Put both cognitive files together
+cognitive = bind_rows(cognitive1, cognitive2)
+
 ```
 
-## Glimpse data
+## Find out if its possible to analyse data for personality (siblings older than 14)
 
 ```{r}
 str(all_data)
+
+### how many siblings older than 14 are there?
+##child
+individuals15 = subset(individuals, ar02b==3)
+##older than 14
+individuals15 = subset(individuals15, ar09>14)
+##exclude only childs
+
 ```
 
 ## Save data

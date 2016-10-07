@@ -32,7 +32,7 @@ bk_ar1 = read_dta("data/hh14_all_dta/bk_ar1.dta")
 ### Informations about earlier waves
 ptrack = read_dta("data/hh14_all_dta/ptrack.dta")
 
-### Cognitive Information
+### IQ Information
 ek_ek1 = read_dta("data/hh14_all_dta/ek_ek1.dta")
 ek_ek2 = read_dta("data/hh14_all_dta/ek_ek2.dta")
 ek_time1 = read_dta("data/hh14_all_dta/ek_time1.dta")
@@ -53,24 +53,24 @@ b3a_si = read_dta("data/hh14_all_dta/b3a_si.dta")
 ### Individuals
 individuals = bk_ar1 %>% select(hhid14_9, pidlink, ar02b, ar10, ar11, ar07, ar08day, ar08mth, ar08yr, ar09, ar18h)
 
-### Cognitive Informations
+### IQ Informations
 ##ek1 (7-14yrs old)
-cognitive1 = ek_ek1 %>% select(hhid14_9, pidlink, age, sex, ektype, resptype, result, reason, ek1_ans, ek2_ans, ek3_ans, ek4_ans, ek5_ans, ek6_ans, ek7_ans, ek8_ans, ek9_ans, ek10_ans, ek11_ans, ek12_ans, ek13_ans, ek14_ans, ek15_ans, ek16_ans, ek17_ans, ek18_ans, ek19_ans, ek20_ans, ek21_ans, ek22_ans)
+iq1 = ek_ek1 %>% select(hhid14_9, pidlink, age, sex, ektype, resptype, result, reason, ek1_ans, ek2_ans, ek3_ans, ek4_ans, ek5_ans, ek6_ans, ek7_ans, ek8_ans, ek9_ans, ek10_ans, ek11_ans, ek12_ans, ek13_ans, ek14_ans, ek15_ans, ek16_ans, ek17_ans, ek18_ans, ek19_ans, ek20_ans, ek21_ans, ek22_ans)
 # Participants who took the ek1 in 2007 were given ek2 again - to make sure that the dont appear in both cognitive analyses we have to exclude them
-cognitive1 = subset(cognitive1, age<15)
+iq1 = subset(iq1, age<15)
 
 ##ek2 (>15yrs)
-cognitive2.1 = ek_ek2 %>% select(hhid14_9, pidlink, age, sex, ektype, resptype, result, reason, ek1_ans, ek2_ans, ek3_ans, ek4_ans, ek5_ans, ek6_ans, ek7_ans, ek8_ans, ek9_ans, ek10_ans, ek11_ans, ek12_ans, ek13_ans, ek14_ans, ek15_ans, ek16_ans, ek17_ans, ek18_ans, ek19_ans, ek20_ans, ek21_ans, ek22_ans)
+iq2.1 = ek_ek2 %>% select(hhid14_9, pidlink, age, sex, ektype, resptype, result, reason, ek1_ans, ek2_ans, ek3_ans, ek4_ans, ek5_ans, ek6_ans, ek7_ans, ek8_ans, ek9_ans, ek10_ans, ek11_ans, ek12_ans, ek13_ans, ek14_ans, ek15_ans, ek16_ans, ek17_ans, ek18_ans, ek19_ans, ek20_ans, ek21_ans, ek22_ans)
 #additional informations for adults: counting backwards
-cognitive2.2 = b3b_co1 %>% select(hhid14_9, pidlink, co04a, co04b, co04c, co04d, co04e, co07count, co10count)
+iq2.2 = b3b_co1 %>% select(hhid14_9, pidlink, co04a, co04b, co04c, co04d, co04e, co07count, co10count)
 #additional informations for adults: adaptive number test
-cognitive2.3 = b3b_cob %>% select(hhid14_9, pidlink, cob01_b, cob02_b, cob03_b, cob04_b, cob05_b, cob06_b, cob07_b, cob08_b, cob09_b, cob10_b, cob11_b, cob12_b, cob13_b, cob14_b, cob15_b1, cob15_b2)
+iq2.3 = b3b_cob %>% select(hhid14_9, pidlink, cob01_b, cob02_b, cob03_b, cob04_b, cob05_b, cob06_b, cob07_b, cob08_b, cob09_b, cob10_b, cob11_b, cob12_b, cob13_b, cob14_b, cob15_b1, cob15_b2)
 # put all the informations for participants >= 15 together
-cognitive2 = full_join(cognitive2.1, cognitive2.2, by = "pidlink")
-cognitive2 = full_join(cognitive2, cognitive2.3, by = "pidlink")
+iq2 = full_join(iq2.1, iq2.2, by = "pidlink")
+iq2 = full_join(iq2, iq2.3, by = "pidlink")
 
-### Put both cognitive files together
-cognitive = bind_rows(cognitive1, cognitive2)
+### Put both iq files together
+iq = bind_rows(iq1, iq2)
 
 ```
 

@@ -123,10 +123,14 @@ $(document).ready(function () {
 
 <div id="data-import" class="section level1 tabset">
 <h1>Data import</h1>
-<div id="load-data" class="section level2">
-<h2>Load data</h2>
-<pre class="r"><code>library(haven)
-library(dplyr)</code></pre>
+<div id="library" class="section level2">
+<h2>Library</h2>
+<pre class="r"><code>library(devtools)
+library(haven)
+devtools::install_github(&quot;hadley/haven&quot;)</code></pre>
+<pre><code>## Skipping install of &#39;haven&#39; from a github remote, the SHA1 (68e0c2d5) has not changed since last install.
+##   Use `force = TRUE` to force installation</code></pre>
+<pre class="r"><code>library(dplyr)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:stats&#39;:
@@ -135,117 +139,115 @@ library(dplyr)</code></pre>
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>b1_ks0 = read_dta(&quot;data/hh14_all_dta/b1_ks0.dta&quot;)
-food = b1_ks0 %&gt;% select(hhid14_9, ks02a, ks03a)
-b1_ksr2 =  read_dta(&quot;data/hh14_all_dta/b1_ksr2.dta&quot;)
-all_data = food %&gt;% full_join(b1_ksr2)</code></pre>
-<pre><code>## Joining, by = &quot;hhid14_9&quot;</code></pre>
+<pre class="r"><code>library(plyr)</code></pre>
+<pre><code>## -------------------------------------------------------------------------</code></pre>
+<pre><code>## You have loaded plyr after dplyr - this is likely to cause problems.
+## If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
+## library(plyr); library(dplyr)</code></pre>
+<pre><code>## -------------------------------------------------------------------------</code></pre>
+<pre><code>## 
+## Attaching package: &#39;plyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     arrange, count, desc, failwith, id, mutate, rename, summarise,
+##     summarize</code></pre>
+<pre class="r"><code>library(tidyr)</code></pre>
 </div>
-<div id="glimpse-data" class="section level2">
-<h2>Glimpse data</h2>
-<pre class="r"><code>str(all_data)</code></pre>
-<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    15144 obs. of  34 variables:
-##  $ hhid14_9 : atomic  001060000 001060004 001080000 001080003 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;2014 Household ID (9-digit)&quot;
-##  $ ks02a    : atomic  15 7.5 7.5 3 22.5 0 15 30 90 30 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;During the past week, what was the total expenditure to purchase [...]?&quot;
-##  $ ks03a    : atomic  0 0 0 0 0 0 0 0 0 0 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;How many kg of rice that were consumed by this household that were self-produced&quot;
-##  $ ksr24a   : atomic  A C C A ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;During the past year, has this household ever bought rice/received money  from [&quot;
-##  $ ksr25b   :Class &#39;labelled&#39;  atomic [1:15144] 4 NA NA 4 1 NA NA NA 3 2 ...
-##   .. ..- attr(*, &quot;label&quot;)= chr &quot;How many times in the past year did the household buy rice/receive money from [.&quot;
-##   .. ..- attr(*, &quot;labels&quot;)= Named int 99
-##   .. .. ..- attr(*, &quot;names&quot;)= chr &quot;99:Missing&quot;
-##  $ ksr26bx  : atomic  A   A ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;What was the total quantity rice bought by this household from the [...] program&quot;
-##  $ ksr26b_kg: atomic  120 NA NA 120 30 NA NA NA 45 48 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;What was the total quantity rice bought by this household from the [...] program&quot;
-##  $ ksr27bx  : atomic  A   Y ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;What was the total quantity rice bought by this household from the [...] program&quot;
-##  $ ksr27b_kg: atomic  0 NA NA NA 0 NA NA NA 0 0 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;What was the total quantity rice bought by this household from the [...] program&quot;
-##  $ ksr28x   :Class &#39;labelled&#39;  atomic [1:15144] 1 NA NA 1 1 NA NA NA 1 1 ...
-##   .. ..- attr(*, &quot;label&quot;)= chr &quot;What was the last time you obtained/bought RASKIN rice (month/year)?&quot;
-##   .. ..- attr(*, &quot;labels&quot;)= Named int [1:3] 1 6 9
-##   .. .. ..- attr(*, &quot;names&quot;)= chr [1:3] &quot;1:Month/Year&quot; &quot;6:Don&#39;t buy Raskin -&gt; KSR34&quot; &quot;9:Missing&quot;
-##  $ ksr28m   :Class &#39;labelled&#39;  atomic [1:15144] 11 NA NA 10 10 NA NA NA 10 8 ...
-##   .. ..- attr(*, &quot;label&quot;)= chr &quot;What was the last time you obtained/bought RASKIN rice (month)?&quot;
-##   .. ..- attr(*, &quot;labels&quot;)= Named int [1:14] 1 2 3 4 5 6 7 8 9 10 ...
-##   .. .. ..- attr(*, &quot;names&quot;)= chr [1:14] &quot;1:January&quot; &quot;2:February&quot; &quot;3:March&quot; &quot;4:April&quot; ...
-##  $ ksr28y   :Class &#39;labelled&#39;  atomic [1:15144] 2014 NA NA 2014 2014 ...
-##   .. ..- attr(*, &quot;label&quot;)= chr &quot;What was the last time you obtained/bought RASKIN rice (year)?&quot;
-##   .. ..- attr(*, &quot;labels&quot;)= Named int [1:2] 9998 9999
-##   .. .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;9998:Don&#39;t know&quot; &quot;9999:Missing&quot;
-##  $ ksr29x   :Class &#39;labelled&#39;  atomic [1:15144] 1 NA NA 1 1 NA NA NA 1 1 ...
-##   .. ..- attr(*, &quot;label&quot;)= chr &quot;The last time you bought rice from the [...] program, what was the quantity of r&quot;
-##   .. ..- attr(*, &quot;labels&quot;)= Named int [1:3] 1 8 9
-##   .. .. ..- attr(*, &quot;names&quot;)= chr [1:3] &quot;1:Yes&quot; &quot;8:Don&#39;t know&quot; &quot;9:Missing&quot;
-##  $ ksr29    : atomic  30 NA NA 15 30 NA NA NA 15 30 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;The last time you bought rice from the [...] program, what was the quantity of r&quot;
-##  $ ksr30x   :Class &#39;labelled&#39;  atomic [1:15144] 1 NA NA 1 1 NA NA NA 1 1 ...
-##   .. ..- attr(*, &quot;label&quot;)= chr &quot;The last time you obtained/bought rice from the [...] program hat was the maximu&quot;
-##   .. ..- attr(*, &quot;labels&quot;)= Named int [1:4] 1 6 8 9
-##   .. .. ..- attr(*, &quot;names&quot;)= chr [1:4] &quot;1:Yes&quot; &quot;6:No maximum&quot; &quot;8:Don&#39;t know&quot; &quot;9:Missing&quot;
-##  $ ksr30    : atomic  30 NA NA 15 30 NA NA NA 15 30 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;The last time you obtained/bought rice from the [...] program hat was the maximu&quot;
-##  $ ksr31x   :Class &#39;labelled&#39;  atomic [1:15144] 1 NA NA 1 1 NA NA NA 1 1 ...
-##   .. ..- attr(*, &quot;label&quot;)= chr &quot;The last time you bought rice from the [...] program, what was the total amount &quot;
-##   .. ..- attr(*, &quot;labels&quot;)= Named int [1:3] 1 8 9
-##   .. .. ..- attr(*, &quot;names&quot;)= chr [1:3] &quot;1:Yes&quot; &quot;8:Don&#39;t know&quot; &quot;9:Missing&quot;
-##  $ ksr32x   :Class &#39;labelled&#39;  atomic [1:15144] 1 NA NA 1 1 NA NA NA 1 1 ...
-##   .. ..- attr(*, &quot;label&quot;)= chr &quot;What would the same amount have cost in regular market at that time?&quot;
-##   .. ..- attr(*, &quot;labels&quot;)= Named int [1:3] 1 8 9
-##   .. .. ..- attr(*, &quot;names&quot;)= chr [1:3] &quot;1:Yes&quot; &quot;8:Don&#39;t know&quot; &quot;9:Missing&quot;
-##  $ ksr29ax  :Class &#39;labelled&#39;  atomic [1:15144] 6 NA NA 6 6 NA NA NA 6 6 ...
-##   .. ..- attr(*, &quot;label&quot;)= chr &quot;The last time you receive money from the [...] program, how much did you receive&quot;
-##   .. ..- attr(*, &quot;labels&quot;)= Named int [1:4] 1 6 8 9
-##   .. .. ..- attr(*, &quot;names&quot;)= chr [1:4] &quot;1:The amount of rupiah&quot; &quot;6:Don&#39;t accept money from raskin -&gt; KSR34&quot; &quot;8:Don&#39;t know&quot; &quot;9:Missing&quot;
-##  $ ksr29bx  :Class &#39;labelled&#39;  atomic [1:15144] NA NA NA NA NA NA NA NA NA NA ...
-##   .. ..- attr(*, &quot;label&quot;)= chr &quot;How much [...] rice were you supposed to receive?&quot;
-##   .. ..- attr(*, &quot;labels&quot;)= Named int [1:3] 1 8 9
-##   .. .. ..- attr(*, &quot;names&quot;)= chr [1:3] &quot;1:The amount of kilograms&quot; &quot;8:Don&#39;t know&quot; &quot;9:Missing&quot;
-##  $ ksr29b   : atomic  NA NA NA NA NA NA NA NA NA NA ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;How much [...] rice were you supposed to receive?&quot;
-##  $ ksr34x   :Class &#39;labelled&#39;  atomic [1:15144] 1 NA NA 1 1 NA NA NA 1 1 ...
-##   .. ..- attr(*, &quot;label&quot;)= chr &quot;What  was price per kg of rice in the regular market at that time?&quot;
-##   .. ..- attr(*, &quot;labels&quot;)= Named int [1:3] 1 8 9
-##   .. .. ..- attr(*, &quot;names&quot;)= chr [1:3] &quot;1:Yes&quot; &quot;8:Don&#39;t know&quot; &quot;9:Missing&quot;
-##  $ ksr35    :Class &#39;labelled&#39;  atomic [1:15144] 2 NA NA 2 2 NA NA NA 2 3 ...
-##   .. ..- attr(*, &quot;label&quot;)= chr &quot;What was the  quality of rice purchased  from the [...] program?&quot;
-##   .. ..- attr(*, &quot;labels&quot;)= Named int [1:5] 1 2 3 6 9
-##   .. .. ..- attr(*, &quot;names&quot;)= chr [1:5] &quot;1:High&quot; &quot;2:Medium&quot; &quot;3:Low&quot; &quot;6:NA/ Don&#39;t buy Raskin&quot; ...
-##  $ ksr36    :Class &#39;labelled&#39;  atomic [1:15144] 3 6 3 3 3 3 6 6 3 3 ...
-##   .. ..- attr(*, &quot;label&quot;)= chr &quot;During the past year, have you ever refused to buy rice from the [...] program e&quot;
-##   .. ..- attr(*, &quot;labels&quot;)= Named int [1:4] 1 3 6 9
-##   .. .. ..- attr(*, &quot;names&quot;)= chr [1:4] &quot;1:Yes&quot; &quot;3:No -&gt;KSR38&quot; &quot;6:NA -&gt; KSR38&quot; &quot;9:Missing&quot;
-##  $ ksr37    :Class &#39;labelled&#39;  atomic [1:15144] NA NA NA NA NA NA NA NA NA NA ...
-##   .. ..- attr(*, &quot;label&quot;)= chr &quot;Why didn�t you buy rice from the [...] program at that time  ?&quot;
-##   .. ..- attr(*, &quot;labels&quot;)= Named int [1:9] 1 2 3 4 5 6 7 8 9
-##   .. .. ..- attr(*, &quot;names&quot;)= chr [1:9] &quot;1:Have no money&quot; &quot;2:The rice&#39;s quality is low&quot; &quot;3:Have no time&quot; &quot;4:Too far&quot; ...
-##  $ hhid14   : atomic  0010600 0010651 0010800 0010851 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;2014 Household ID&quot;
-##  $ ksr26b_rp: atomic  NA NA NA NA NA NA NA NA NA NA ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;What was the total quantity rice bought by this household from the [...] program&quot;
-##  $ ksr27b_rp: atomic  NA NA NA NA NA NA NA NA NA NA ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;What was the total quantity rice bought by this household from the [...] program&quot;
-##  $ ksr29a   : atomic  NA NA NA NA NA NA NA NA NA NA ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;The last time you bought rice from the [...] program, what was the quantity of r&quot;
-##  $ ksr31    : atomic  60000 NA NA 90000 120000 NA NA NA 30000 48000 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;The last time you bought rice from the [...] program, what was the total amount &quot;
-##  $ ksr32    : atomic  270000 NA NA 150000 300000 NA NA NA 135000 250000 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;What would the same amount have cost in regular market at that time?&quot;
-##  $ ksr34    : atomic  15000 NA NA 10000 10000 NA NA NA 13000 8000 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;What  was price per kg of rice in the regular market at that time?&quot;
-##  $ version  : atomic  1.2 1.2 1.2 1.2 1.2 1.2 1.2 1.2 1.2 1.2 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;IFLS 5 release number&quot;
-##  $ module   : atomic  B1_KSR2 B1_KSR2 B1_KSR2 B1_KSR2 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;IFLS survey module&quot;</code></pre>
+<div id="load-data" class="section level2">
+<h2>Load data</h2>
+<pre class="r"><code>### Individual and household Information
+## Informations about individuals living in the household in 2014/2015
+# Individuals living in the household
+bk_ar1 = read_dta(&quot;data/hh14_all_dta/bk_ar1.dta&quot;)
+
+
+### Informations about earlier waves
+ptrack = read_dta(&quot;data/hh14_all_dta/ptrack.dta&quot;)
+
+### IQ Information
+ek_ek1 = read_dta(&quot;data/hh14_all_dta/ek_ek1.dta&quot;)
+ek_ek2 = read_dta(&quot;data/hh14_all_dta/ek_ek2.dta&quot;)
+ek_time1 = read_dta(&quot;data/hh14_all_dta/ek_time1.dta&quot;)
+ek_time2 = read_dta(&quot;data/hh14_all_dta/ek_time2.dta&quot;)
+# additional information (counting backwards, adaptive testing) for adults
+b3b_cob = read_dta(&quot;data/hh14_all_dta/b3b_cob.dta&quot;)
+b3b_co1 = read_dta(&quot;data/hh14_all_dta/b3b_co1.dta&quot;)
+### Personality Information (only for adults)
+b3b_psn = read_dta(&quot;data/hh14_all_dta/b3b_psn.dta&quot;)
+
+### Risk taking
+b3a_si = read_dta(&quot;data/hh14_all_dta/b3a_si.dta&quot;)</code></pre>
+</div>
+<div id="select-data" class="section level2">
+<h2>Select data</h2>
+<pre class="r"><code>### Individuals
+individuals = bk_ar1 %&gt;% select(hhid14_9, pidlink, ar02b, ar10, ar11, ar07, ar08day, ar08mth, ar08yr, ar09, ar18h)
+
+##create number that should be identical for all siblings in one family
+individuals &lt;- unite(individuals,
+                  col = &quot;hhid14_9_ar10_ar11&quot;,
+                  hhid14_9, ar10, ar11,
+                  sep = &quot;_&quot;,
+                  remove = FALSE)
+
+##calculate sibling size
+individuals &lt;- ddply(individuals,.(hhid14_9_ar10_ar11),transform,siblingcount=length(hhid14_9_ar10_ar11))
+##calculate birth order??
+
+
+
+### IQ Informations
+##ek1 (7-14yrs old)
+iq1 = ek_ek1 %&gt;% select(hhid14_9, pidlink, age, sex, ektype, resptype, result, reason, ek1_ans, ek2_ans, ek3_ans, ek4_ans, ek5_ans, ek6_ans, ek7_ans, ek8_ans, ek9_ans, ek10_ans, ek11_ans, ek12_ans, ek13_ans, ek14_ans, ek15_ans, ek16_ans, ek17_ans, ek18_ans, ek19_ans, ek20_ans, ek21_ans, ek22_ans)
+# Participants who took the ek1 in 2007 were given ek2 again - to make sure that the dont appear in both cognitive analyses we have to exclude them
+iq1 = subset(iq1, age&lt;15)
+
+##ek2 (&gt;14yrs)
+iq2.1 = ek_ek2 %&gt;% select(hhid14_9, pidlink, age, sex, ektype, resptype, result, reason, ek1_ans, ek2_ans, ek3_ans, ek4_ans, ek5_ans, ek6_ans, ek7_ans, ek8_ans, ek9_ans, ek10_ans, ek11_ans, ek12_ans, ek13_ans, ek14_ans, ek15_ans, ek16_ans, ek17_ans, ek18_ans, ek19_ans, ek20_ans, ek21_ans, ek22_ans)
+#additional informations for adults: counting backwards
+iq2.2 = b3b_co1 %&gt;% select(hhid14_9, pidlink, co04a, co04b, co04c, co04d, co04e, co07count, co10count)
+#additional informations for adults: adaptive number test
+iq2.3 = b3b_cob %&gt;% select(hhid14_9, pidlink, cob01_b, cob02_b, cob03_b, cob04_b, cob05_b, cob06_b, cob07_b, cob08_b, cob09_b, cob10_b, cob11_b, cob12_b, cob13_b, cob14_b, cob15_b1, cob15_b2)
+# put all the informations for participants &gt;= 15 together
+iq2 = full_join(iq2.1, iq2.2, by = &quot;pidlink&quot;)
+iq2 = full_join(iq2, iq2.3, by = &quot;pidlink&quot;)
+
+### Put both iq files together
+iq = bind_rows(iq1, iq2)
+
+
+### Personality
+##Rearrange personality data so that every individual has only one row
+pers = spread(b3b_psn, psntype, psn01)
+##name columns
+colnames(pers) &lt;- c(&quot;hhid14_9&quot;, &quot;pid14&quot;, &quot;hhid14&quot;, &quot;pidlink&quot;, &quot;version&quot;, &quot;module&quot;, &quot;e1&quot;, &quot;c1&quot;, &quot;o1&quot;, &quot;e2r&quot;, &quot;n1r&quot;, &quot;a1&quot;, &quot;n2r&quot;, &quot;o2&quot;, &quot;c1r&quot;, &quot;o3&quot;, &quot;a2&quot;, &quot;c2&quot;, &quot;e3&quot;, &quot;a3r&quot;, &quot;n3&quot;)
+pers = pers %&gt;% select(hhid14_9, pidlink, e1, c1, o1, e2r, n1r, a1, n2r, o2, c1r, o3, a2, c2, e3, a3r, n3)
+
+
+###Risktaking
+risk = b3a_si %&gt;% select(hhid14_9, pidlink, random_si, si01, si02, si03, si04, si05, si11, si12, si13, si14, si15)</code></pre>
+</div>
+<div id="find-out-if-its-possible-to-analyse-data-for-personality-siblings-older-than-14" class="section level2">
+<h2>Find out if its possible to analyse data for personality (siblings older than 14)</h2>
+<pre class="r"><code>### how many siblings older than 14 are there?
+##older than 14
+individuals15 = subset(individuals, ar09&gt;14)
+##exclude people whose parents are not known
+individuals15 = subset(individuals15, ar10 &lt;51)
+individuals15 = subset(individuals15, ar11 &lt;51)
+##exclude only childs (watch out: sibling size was conduted WITH all younger siblings!)
+individuals15=subset(individuals15, siblingcount != 1)
+hist(individuals15$siblingcount)</code></pre>
+<p><img src="1_data_import_files/figure-html/figuring out data > 14-1.png&quot; width=“672” /&gt;</p>
+<pre class="r"><code>hist(individuals15$ar02b)</code></pre>
+<p><img src="1_data_import_files/figure-html/figuring out data > 14-2.png&quot; width=“672” /&gt;</p>
+<div id="merge-data" class="section level3">
+<h3>Merge data</h3>
+</div>
 </div>
 <div id="save-data" class="section level2">
 <h2>Save data</h2>
 <p>for future analyses</p>
-<pre class="r"><code>saveRDS(all_data, &quot;data/all.rds&quot;)</code></pre>
 </div>
 </div>
 

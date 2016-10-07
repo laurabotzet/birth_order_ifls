@@ -15,6 +15,7 @@ library(devtools)
 library(haven)
 devtools::install_github("hadley/haven")
 library(dplyr)
+library(plyr)
 library(tidyr)
 
 
@@ -53,16 +54,19 @@ b3a_si = read_dta("data/hh14_all_dta/b3a_si.dta")
 ```{r select data}
 ### Individuals
 individuals = bk_ar1 %>% select(hhid14_9, pidlink, ar02b, ar10, ar11, ar07, ar08day, ar08mth, ar08yr, ar09, ar18h)
+
 ##create number that should be identical for all siblings in one family
 individuals <- unite(individuals,
                   col = "hhid14_9_ar10_ar11",
                   hhid14_9, ar10, ar11,
                   sep = "_",
                   remove = FALSE)
+
 ##calculate sibling size
 individuals <- ddply(individuals,.(hhid14_9_ar10_ar11),transform,siblingcount=length(hhid14_9_ar10_ar11))
+##calculate birth order??
 
-##calculate birth order
+
 
 ### IQ Informations
 ##ek1 (7-14yrs old)
@@ -70,7 +74,7 @@ iq1 = ek_ek1 %>% select(hhid14_9, pidlink, age, sex, ektype, resptype, result, r
 # Participants who took the ek1 in 2007 were given ek2 again - to make sure that the dont appear in both cognitive analyses we have to exclude them
 iq1 = subset(iq1, age<15)
 
-##ek2 (>15yrs)
+##ek2 (>14yrs)
 iq2.1 = ek_ek2 %>% select(hhid14_9, pidlink, age, sex, ektype, resptype, result, reason, ek1_ans, ek2_ans, ek3_ans, ek4_ans, ek5_ans, ek6_ans, ek7_ans, ek8_ans, ek9_ans, ek10_ans, ek11_ans, ek12_ans, ek13_ans, ek14_ans, ek15_ans, ek16_ans, ek17_ans, ek18_ans, ek19_ans, ek20_ans, ek21_ans, ek22_ans)
 #additional informations for adults: counting backwards
 iq2.2 = b3b_co1 %>% select(hhid14_9, pidlink, co04a, co04b, co04c, co04d, co04e, co07count, co10count)
@@ -83,13 +87,22 @@ iq2 = full_join(iq2, iq2.3, by = "pidlink")
 ### Put both iq files together
 iq = bind_rows(iq1, iq2)
 
+
+### Personality
+##Rearrange personality data so that every individual has only one row
+pers = spread(b3b_psn, psntype, psn01)
+##name columns
+colnames(pers) <- c("hhid14_9", "pid14", "hhid14", "pidlink", "version", "module", "e1", "c1", "o1", "e2r", "n1r", "a1", "n2r", "o2", "c1r", "o3", "a2", "c2", "e3", "a3r", "n3")
+pers = pers %>% select(hhid14_9, pidlink, e1, c1, o1, e2r, n1r, a1, n2r, o2, c1r, o3, a2, c2, e3, a3r, n3)
+
+
+###Risktaking
+risk = b3a_si %>% select(hhid14_9, pidlink, random_si, si01, si02, si03, si04, si05, si11, si12, si13, si14, si15)
 ```
 
 ## Find out if its possible to analyse data for personality (siblings older than 14)
 
-```{r}
-str(all_data)
-
+```{r figuring out data > 14}
 ### how many siblings older than 14 are there?
 ##older than 14
 individuals15 = subset(individuals, ar09>14)
@@ -102,11 +115,18 @@ hist(individuals15$siblingcount)
 hist(individuals15$ar02b)
 ```
 
+
+### Merge data
+
+```{r merge data}
+
+```
+
 ## Save data
 
 for future analyses
 
 ```{r}
-saveRDS(all_data, "data/all.rds")
+
 ```
 

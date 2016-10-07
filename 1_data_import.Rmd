@@ -98,6 +98,8 @@ individuals15 = subset(individuals15, ar10 <51)
 individuals15 = subset(individuals15, ar11 <51)
 ##exclude only childs (watch out: sibling size was conduted WITH all younger siblings!)
 individuals15=subset(individuals15, siblingcount != 1)
+hist(individuals15$siblingcount)
+hist(individuals15$ar02b)
 ```
 
 ## Save data

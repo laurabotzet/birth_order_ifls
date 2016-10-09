@@ -1,10 +1,11 @@
 ---
 author: "Laura Botzet"
 date: "9/15/2016"
-output: 
+output:
+  pdf_document: default
   html_document:
-    self_contained: false
     lib_dir: library
+    self_contained: no
 ---
 
 # Data import {.tabset}
@@ -62,7 +63,7 @@ individuals <- unite(individuals,
                   sep = "_",
                   remove = FALSE)
 
-##calculate sibling size
+#calculate sibling size
 individuals <- ddply(individuals,.(hhid14_9_ar10_ar11),transform,siblingcount=length(hhid14_9_ar10_ar11))
 ##calculate birth order??
 
@@ -102,7 +103,7 @@ risk = b3a_si %>% select(hhid14_9, pidlink, random_si, si01, si02, si03, si04, s
 
 ## Find out if its possible to analyse data for personality (siblings older than 14)
 
-```{r figuring out data > 14}
+```{r looking at data > 14}
 ### how many siblings older than 14 are there?
 ##older than 14
 individuals15 = subset(individuals, ar09>14)
@@ -119,14 +120,17 @@ hist(individuals15$ar02b)
 ### Merge data
 
 ```{r merge data}
-
+### Merge ALL data (including all participants)
+alldata = full_join(individuals, iq, by="pidlink")
+alldata = full_join(alldata, pers, by="pidlink")
+alldata = full_join(alldata, risk, by="pidlink")
 ```
 
-## Save data
+### Save data
 
 for future analyses
 
 ```{r}
-
+saveRDS(alldata, file = "data/hh14_all_dta/alldata.dta")
 ```
 

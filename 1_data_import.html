@@ -190,7 +190,7 @@ individuals &lt;- unite(individuals,
                   sep = &quot;_&quot;,
                   remove = FALSE)
 
-##calculate sibling size
+#calculate sibling size
 individuals &lt;- ddply(individuals,.(hhid14_9_ar10_ar11),transform,siblingcount=length(hhid14_9_ar10_ar11))
 ##calculate birth order??
 
@@ -238,16 +238,21 @@ individuals15 = subset(individuals15, ar11 &lt;51)
 ##exclude only childs (watch out: sibling size was conduted WITH all younger siblings!)
 individuals15=subset(individuals15, siblingcount != 1)
 hist(individuals15$siblingcount)</code></pre>
-<p><img src="1_data_import_files/figure-html/figuring out data > 14-1.png&quot; width=“672” /&gt;</p>
+<p><img src="1_data_import_files/figure-html/looking at data > 14-1.png&quot; width=“672” /&gt;</p>
 <pre class="r"><code>hist(individuals15$ar02b)</code></pre>
-<p><img src="1_data_import_files/figure-html/figuring out data > 14-2.png&quot; width=“672” /&gt;</p>
+<p><img src="1_data_import_files/figure-html/looking at data > 14-2.png&quot; width=“672” /&gt;</p>
 <div id="merge-data" class="section level3">
 <h3>Merge data</h3>
+<pre class="r"><code>### Merge ALL data (including all participants)
+alldata = full_join(individuals, iq, by=&quot;pidlink&quot;)
+alldata = full_join(alldata, pers, by=&quot;pidlink&quot;)
+alldata = full_join(alldata, risk, by=&quot;pidlink&quot;)</code></pre>
 </div>
-</div>
-<div id="save-data" class="section level2">
-<h2>Save data</h2>
+<div id="save-data" class="section level3">
+<h3>Save data</h3>
 <p>for future analyses</p>
+<pre class="r"><code>saveRDS(alldata, file = &quot;data/hh14_all_dta/alldata.dta&quot;)</code></pre>
+</div>
 </div>
 </div>
 

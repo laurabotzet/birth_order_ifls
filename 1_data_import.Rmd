@@ -2,10 +2,10 @@
 author: "Laura Botzet"
 date: "9/15/2016"
 output:
-  pdf_document: default
   html_document:
     lib_dir: library
     self_contained: no
+  pdf_document: default
 ---
 
 # Data import {.tabset}
@@ -14,7 +14,7 @@ output:
 ```{r Library}
 library(devtools)
 library(haven)
-devtools::install_github("hadley/haven")
+# devtools::install_github("hadley/haven")
 library(dplyr)
 library(plyr)
 library(tidyr)
@@ -36,15 +36,15 @@ bk_ar1 = read_dta("data/hh14_all_dta/bk_ar1.dta")
 ptrack = read_dta("data/hh14_all_dta/ptrack.dta")
 
 ### IQ Information
-ek_ek1 = read_dta("data/hh14_all_dta/ek_ek1.dta")
-ek_ek2 = read_dta("data/hh14_all_dta/ek_ek2.dta")
+ek_ek1 = read_dta("data/hh14_all_dta/ek_ek1.dta") # under 15yo
+ek_ek2 = read_dta("data/hh14_all_dta/ek_ek2.dta") # over 15yo
 ek_time1 = read_dta("data/hh14_all_dta/ek_time1.dta")
 ek_time2 = read_dta("data/hh14_all_dta/ek_time2.dta")
 # additional information (counting backwards, adaptive testing) for adults
-b3b_cob = read_dta("data/hh14_all_dta/b3b_cob.dta")
-b3b_co1 = read_dta("data/hh14_all_dta/b3b_co1.dta")
+b3b_cob = read_dta("data/hh14_all_dta/b3b_cob.dta") # over 15yo
+b3b_co1 = read_dta("data/hh14_all_dta/b3b_co1.dta") # over 15yo
 ### Personality Information (only for adults)
-b3b_psn = read_dta("data/hh14_all_dta/b3b_psn.dta")
+b3b_psn = read_dta("data/hh14_all_dta/b3b_psn.dta") # over 15yo
 
 ### Risk taking
 b3a_si = read_dta("data/hh14_all_dta/b3a_si.dta")
@@ -77,17 +77,72 @@ iq1 = subset(iq1, age<15)
 
 ##ek2 (>14yrs)
 iq2.1 = ek_ek2 %>% select(hhid14_9, pidlink, age, sex, ektype, resptype, result, reason, ek1_ans, ek2_ans, ek3_ans, ek4_ans, ek5_ans, ek6_ans, ek7_ans, ek8_ans, ek9_ans, ek10_ans, ek11_ans, ek12_ans, ek13_ans, ek14_ans, ek15_ans, ek16_ans, ek17_ans, ek18_ans, ek19_ans, ek20_ans, ek21_ans, ek22_ans)
+
+
 #additional informations for adults: counting backwards
 iq2.2 = b3b_co1 %>% select(hhid14_9, pidlink, co04a, co04b, co04c, co04d, co04e, co07count, co10count)
 #additional informations for adults: adaptive number test
-iq2.3 = b3b_cob %>% select(hhid14_9, pidlink, cob01_b, cob02_b, cob03_b, cob04_b, cob05_b, cob06_b, cob07_b, cob08_b, cob09_b, cob10_b, cob11_b, cob12_b, cob13_b, cob14_b, cob15_b1, cob15_b2)
+iq2.3 = b3b_cob %>% select(hhid14_9, pidlink, w_abil, cob18, cob19b)
 # put all the informations for participants >= 15 together
 iq2 = full_join(iq2.1, iq2.2, by = "pidlink")
 iq2 = full_join(iq2, iq2.3, by = "pidlink")
 
 ### Put both iq files together
-iq = bind_rows(iq1, iq2)
+# iq = bind_rows(iq1, iq2)
+iq = iq2
 
+# ek_ek2 %>% select(matches("ek.+?_ans"))
+answered_raven_items = iq %>% select(ek1_ans:ek6_ans, ek11_ans, ek12_ans)
+psych::alpha(data.frame(answered_raven_items))
+iq$raven = rowMeans( answered_raven_items, na.rm = T)
+library(ggplot2)
+qplot(iq$raven)
+
+answered_math_items = iq %>% select(ek18_ans:ek22_ans)
+psych::alpha(data.frame(answered_math_items))
+iq$math = rowMeans( answered_math_items, na.rm = T)
+qplot(iq$math)
+
+
+iq$co04aright = as.numeric(iq$co04a == 93)
+iq$co04bright = as.numeric(iq$co04b == iq$co04a-7)
+iq$co04cright = as.numeric(iq$co04c == iq$co04b-7)
+iq$co04dright = as.numeric(iq$co04d == iq$co04c-7)
+iq$co04eright = as.numeric(iq$co04e == iq$co04d-7)
+
+answered_counting_items = iq %>% select(co04aright:co04eright)
+psych::alpha(data.frame(answered_counting_items))
+iq$count_backwards = rowSums( answered_counting_items, na.rm = T) / 5
+qplot(iq$count_backwards)
+
+iq$words_immediate = iq$co07count
+iq$words_delayed = iq$co10count
+qplot(iq$words_immediate, iq$words_delayed, geom = "jitter")
+answered_word_items = iq %>% select(co07count,co10count)
+psych::alpha(data.frame(answered_word_items))
+iq$words_remembered_avg = rowMeans( answered_word_items, na.rm = T)
+qplot(iq$words_remembered_avg)
+
+iq$adaptive_numbering = iq$w_abil
+formr::missingness_patterns(iq$adaptive_numbering)
+# psych::alpha(data.frame(adaptive_numbering))
+iq$drew_pentagons = as.numeric(iq$cob19b == 1)
+iq$number_of_animals = iq$cob18
+
+round(cor(iq %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, number_of_animals, drew_pentagons), use = "pairwise.complete.obs"), 2)
+table(iq$raven[! iq$result %in% 1:2])
+iq$raven[! iq$result %in% 1:2] = NA
+table(iq$math[! iq$result %in% 1:2])
+iq$math[! iq$result %in% 1:2] = NA
+
+formr::missingness_patterns(iq %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, number_of_animals, drew_pentagons))
+
+iq_responders = filter(iq, result %in% 1:2)
+round(cor(iq_responders %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, number_of_animals, drew_pentagons), use = "pairwise.complete.obs"), 2)
+library(formr)
+crosstabs(~ age + drew_pentagons, data = iq)
+
+cor.test(iq_responders$math, iq_responders$raven)
 
 ### Personality
 ##Rearrange personality data so that every individual has only one row
@@ -96,9 +151,16 @@ pers = spread(b3b_psn, psntype, psn01)
 colnames(pers) <- c("hhid14_9", "pid14", "hhid14", "pidlink", "version", "module", "e1", "c1", "o1", "e2r", "n1r", "a1", "n2r", "o2", "c1r", "o3", "a2", "c2", "e3", "a3r", "n3")
 pers = pers %>% select(hhid14_9, pidlink, e1, c1, o1, e2r, n1r, a1, n2r, o2, c1r, o3, a2, c2, e3, a3r, n3)
 
+extraversion = pers %>% select(e1, e2r, e3)
+psych::alpha(data.frame(extraversion), check.keys = T)
+crosstabs(extraversion$e2r)
+extraversion$e2r = 6 - extraversion$e2r
+pers$big5_ext = rowMeans(extraversion)
+qplot(pers$big5_ext)
 
 ###Risktaking
 risk = b3a_si %>% select(hhid14_9, pidlink, random_si, si01, si02, si03, si04, si05, si11, si12, si13, si14, si15)
+psych::alpha(data.frame(b3a_si %>% select(si01, si02, si03, si04, si11, si12, si13, si14)), check.keys = T)
 ```
 
 ## Find out if its possible to analyse data for personality (siblings older than 14)

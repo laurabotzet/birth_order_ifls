@@ -127,10 +127,8 @@ $(document).ready(function () {
 <h2>Library</h2>
 <pre class="r"><code>library(devtools)
 library(haven)
-devtools::install_github(&quot;hadley/haven&quot;)</code></pre>
-<pre><code>## Skipping install of &#39;haven&#39; from a github remote, the SHA1 (68e0c2d5) has not changed since last install.
-##   Use `force = TRUE` to force installation</code></pre>
-<pre class="r"><code>library(dplyr)</code></pre>
+# devtools::install_github(&quot;hadley/haven&quot;)
+library(dplyr)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:stats&#39;:
@@ -151,7 +149,8 @@ devtools::install_github(&quot;hadley/haven&quot;)</code></pre>
 ## 
 ##     arrange, count, desc, failwith, id, mutate, rename, summarise,
 ##     summarize</code></pre>
-<pre class="r"><code>library(tidyr)</code></pre>
+<pre class="r"><code>library(tidyr)
+library(ggplot2)</code></pre>
 </div>
 <div id="load-data" class="section level2">
 <h2>Load data</h2>
@@ -165,23 +164,25 @@ bk_ar1 = read_dta(&quot;data/hh14_all_dta/bk_ar1.dta&quot;)
 ptrack = read_dta(&quot;data/hh14_all_dta/ptrack.dta&quot;)
 
 ### IQ Information
-ek_ek1 = read_dta(&quot;data/hh14_all_dta/ek_ek1.dta&quot;)
-ek_ek2 = read_dta(&quot;data/hh14_all_dta/ek_ek2.dta&quot;)
-ek_time1 = read_dta(&quot;data/hh14_all_dta/ek_time1.dta&quot;)
+ek_ek2 = read_dta(&quot;data/hh14_all_dta/ek_ek2.dta&quot;) # over 15yo
 ek_time2 = read_dta(&quot;data/hh14_all_dta/ek_time2.dta&quot;)
 # additional information (counting backwards, adaptive testing) for adults
-b3b_cob = read_dta(&quot;data/hh14_all_dta/b3b_cob.dta&quot;)
-b3b_co1 = read_dta(&quot;data/hh14_all_dta/b3b_co1.dta&quot;)
+b3b_cob = read_dta(&quot;data/hh14_all_dta/b3b_cob.dta&quot;) # over 15yo
+b3b_co1 = read_dta(&quot;data/hh14_all_dta/b3b_co1.dta&quot;) # over 15yo
 ### Personality Information (only for adults)
-b3b_psn = read_dta(&quot;data/hh14_all_dta/b3b_psn.dta&quot;)
+b3b_psn = read_dta(&quot;data/hh14_all_dta/b3b_psn.dta&quot;) # over 15yo
 
 ### Risk taking
 b3a_si = read_dta(&quot;data/hh14_all_dta/b3a_si.dta&quot;)</code></pre>
 </div>
-<div id="select-data" class="section level2">
-<h2>Select data</h2>
+<div id="select-individual-data" class="section level2">
+<h2>Select individual data</h2>
 <pre class="r"><code>### Individuals
 individuals = bk_ar1 %&gt;% select(hhid14_9, pidlink, ar02b, ar10, ar11, ar07, ar08day, ar08mth, ar08yr, ar09, ar18h)
+
+## people whose parents can not be identified have to be marked as NA:
+individuals$ar10[ individuals$ar10&gt;50] = NA
+individuals$ar11[ individuals$ar11&gt;50] = NA
 
 ##create number that should be identical for all siblings in one family
 individuals &lt;- unite(individuals,
@@ -190,57 +191,463 @@ individuals &lt;- unite(individuals,
                   sep = &quot;_&quot;,
                   remove = FALSE)
 
-#calculate sibling size
+individuals$hhid14_9_ar10_ar11 = ifelse(is.na(individuals$ar10), NA, individuals$hhid14_9_ar10_ar11)
+individuals$hhid14_9_ar10_ar11 = ifelse(is.na(individuals$ar11), NA, individuals$hhid14_9_ar10_ar11)
+
+##calculate sibling size
 individuals &lt;- ddply(individuals,.(hhid14_9_ar10_ar11),transform,siblingcount=length(hhid14_9_ar10_ar11))
-##calculate birth order??
-
-
-
-### IQ Informations
-##ek1 (7-14yrs old)
-iq1 = ek_ek1 %&gt;% select(hhid14_9, pidlink, age, sex, ektype, resptype, result, reason, ek1_ans, ek2_ans, ek3_ans, ek4_ans, ek5_ans, ek6_ans, ek7_ans, ek8_ans, ek9_ans, ek10_ans, ek11_ans, ek12_ans, ek13_ans, ek14_ans, ek15_ans, ek16_ans, ek17_ans, ek18_ans, ek19_ans, ek20_ans, ek21_ans, ek22_ans)
-# Participants who took the ek1 in 2007 were given ek2 again - to make sure that the dont appear in both cognitive analyses we have to exclude them
-iq1 = subset(iq1, age&lt;15)
-
+individuals$siblingcount = ifelse(is.na(individuals$ar10), NA, individuals$siblingcount)
+individuals$siblingcount = ifelse(is.na(individuals$ar11), NA, individuals$siblingcount)
+qplot(individuals$siblingcount)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 51851 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/select%20individual%20data-1.png" width="672" /></p>
+<pre class="r"><code>##calculate birth order
+# create date of birth
+individuals$ar08day[ individuals$ar08day&gt;31] = NA
+individuals$ar08mth[ individuals$ar08mth&gt;12] = NA
+individuals &lt;- unite(individuals,
+                  col = &quot;birth&quot;,
+                  ar08yr, ar08mth, ar08day,
+                  sep = &quot;-&quot;,
+                  remove = FALSE)
+#individuals$birth = as.Date(individuals$birth)
+individuals &lt;- ddply(individuals, .(hhid14_9_ar10_ar11), mutate, birthorder = seq_along(ar08yr))
+individuals$birthorder = ifelse(is.na(individuals$ar10), NA, individuals$birthorder)
+individuals$birthorder = ifelse(is.na(individuals$ar11), NA, individuals$birthorder)
+qplot(individuals$birthorder)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 51851 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/select%20individual%20data-2.png" width="672" /></p>
+</div>
+<div id="select-iq-data" class="section level2">
+<h2>Select IQ data</h2>
+<pre class="r"><code>### IQ Informations
 ##ek2 (&gt;14yrs)
 iq2.1 = ek_ek2 %&gt;% select(hhid14_9, pidlink, age, sex, ektype, resptype, result, reason, ek1_ans, ek2_ans, ek3_ans, ek4_ans, ek5_ans, ek6_ans, ek7_ans, ek8_ans, ek9_ans, ek10_ans, ek11_ans, ek12_ans, ek13_ans, ek14_ans, ek15_ans, ek16_ans, ek17_ans, ek18_ans, ek19_ans, ek20_ans, ek21_ans, ek22_ans)
-#additional informations for adults: counting backwards
+
+
+##additional informations for adults: counting backwards
 iq2.2 = b3b_co1 %&gt;% select(hhid14_9, pidlink, co04a, co04b, co04c, co04d, co04e, co07count, co10count)
-#additional informations for adults: adaptive number test
-iq2.3 = b3b_cob %&gt;% select(hhid14_9, pidlink, cob01_b, cob02_b, cob03_b, cob04_b, cob05_b, cob06_b, cob07_b, cob08_b, cob09_b, cob10_b, cob11_b, cob12_b, cob13_b, cob14_b, cob15_b1, cob15_b2)
-# put all the informations for participants &gt;= 15 together
+##additional informations for adults: adaptive number test
+iq2.3 = b3b_cob %&gt;% select(hhid14_9, pidlink, w_abil, cob18, cob19b)
+
+## put all the informations for participants &gt;= 15 together
 iq2 = full_join(iq2.1, iq2.2, by = &quot;pidlink&quot;)
 iq2 = full_join(iq2, iq2.3, by = &quot;pidlink&quot;)
+iq = iq2
 
-### Put both iq files together
-iq = bind_rows(iq1, iq2)
+### calculate iq scores
+##Raven Test
+answered_raven_items = iq %&gt;% select(ek1_ans:ek6_ans, ek11_ans, ek12_ans)
+psych::alpha(data.frame(answered_raven_items))</code></pre>
+<pre><code>## 
+## Reliability analysis   
+## Call: psych::alpha(x = data.frame(answered_raven_items))
+## 
+##   raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd
+##       0.85      0.85    0.84      0.41 5.5 0.0012 0.53 0.33
+## 
+##  lower alpha upper     95% confidence boundaries
+## 0.85 0.85 0.85 
+## 
+##  Reliability if an item is dropped:
+##          raw_alpha std.alpha G6(smc) average_r S/N alpha se
+## ek1_ans       0.82      0.82    0.81      0.39 4.5   0.0014
+## ek2_ans       0.81      0.81    0.80      0.38 4.3   0.0015
+## ek3_ans       0.81      0.81    0.80      0.38 4.3   0.0015
+## ek4_ans       0.82      0.81    0.81      0.38 4.4   0.0014
+## ek5_ans       0.83      0.83    0.83      0.41 4.9   0.0013
+## ek6_ans       0.85      0.85    0.84      0.44 5.6   0.0012
+## ek11_ans      0.83      0.82    0.82      0.40 4.6   0.0014
+## ek12_ans      0.86      0.86    0.85      0.46 5.9   0.0011
+## 
+##  Item statistics 
+##              n raw.r std.r r.cor r.drop mean   sd
+## ek1_ans  36380  0.74  0.74  0.71   0.65 0.74 0.44
+## ek2_ans  36380  0.80  0.80  0.79   0.72 0.67 0.47
+## ek3_ans  36380  0.79  0.79  0.77   0.71 0.58 0.49
+## ek4_ans  36380  0.78  0.77  0.74   0.69 0.59 0.49
+## ek5_ans  36380  0.68  0.68  0.60   0.56 0.50 0.50
+## ek6_ans  36380  0.54  0.55  0.44   0.40 0.28 0.45
+## ek11_ans 36380  0.73  0.72  0.67   0.62 0.61 0.49
+## ek12_ans 36380  0.47  0.49  0.36   0.34 0.22 0.42
+## 
+## Non missing response frequency for each item
+##             0    1 miss
+## ek1_ans  0.26 0.74    0
+## ek2_ans  0.33 0.67    0
+## ek3_ans  0.42 0.58    0
+## ek4_ans  0.41 0.59    0
+## ek5_ans  0.50 0.50    0
+## ek6_ans  0.72 0.28    0
+## ek11_ans 0.39 0.61    0
+## ek12_ans 0.78 0.22    0</code></pre>
+<pre class="r"><code>iq$raven = rowMeans( answered_raven_items, na.rm = T)
+iq$raven[! iq$result %in% 1:2] = NA
+qplot(iq$raven)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 5049 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/select%20IQ%20data-1.png" width="672" /></p>
+<pre class="r"><code>##Math Test
+answered_math_items = iq %&gt;% select(ek18_ans:ek22_ans)
+psych::alpha(data.frame(answered_math_items))</code></pre>
+<pre><code>## 
+## Reliability analysis   
+## Call: psych::alpha(x = data.frame(answered_math_items))
+## 
+##   raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd
+##       0.68      0.68    0.64       0.3 2.1 0.0026 0.26 0.29
+## 
+##  lower alpha upper     95% confidence boundaries
+## 0.68 0.68 0.69 
+## 
+##  Reliability if an item is dropped:
+##          raw_alpha std.alpha G6(smc) average_r S/N alpha se
+## ek18_ans      0.68      0.67    0.61      0.34 2.1   0.0027
+## ek19_ans      0.60      0.60    0.54      0.28 1.5   0.0033
+## ek20_ans      0.60      0.60    0.53      0.27 1.5   0.0034
+## ek21_ans      0.66      0.65    0.60      0.32 1.9   0.0029
+## ek22_ans      0.63      0.62    0.56      0.29 1.7   0.0032
+## 
+##  Item statistics 
+##              n raw.r std.r r.cor r.drop mean   sd
+## ek18_ans 36380  0.59  0.59  0.41   0.34 0.25 0.43
+## ek19_ans 36380  0.71  0.71  0.61   0.50 0.28 0.45
+## ek20_ans 36380  0.73  0.72  0.63   0.51 0.34 0.47
+## ek21_ans 36380  0.60  0.63  0.46   0.38 0.18 0.38
+## ek22_ans 36380  0.68  0.68  0.55   0.46 0.28 0.45
+## 
+## Non missing response frequency for each item
+##             0    1 miss
+## ek18_ans 0.75 0.25    0
+## ek19_ans 0.72 0.28    0
+## ek20_ans 0.66 0.34    0
+## ek21_ans 0.82 0.18    0
+## ek22_ans 0.72 0.28    0</code></pre>
+<pre class="r"><code>iq$math = rowMeans( answered_math_items, na.rm = T)
+iq$math[! iq$result %in% 1:2] = NA
+qplot(iq$math)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 5049 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/select%20IQ%20data-2.png" width="672" /></p>
+<pre class="r"><code>##Counting Items
+# Create Right/Wrong Scores for the counting items
+iq$co04aright = as.numeric(iq$co04a == 93)
+iq$co04bright = as.numeric(iq$co04b == iq$co04a-7)
+iq$co04cright = as.numeric(iq$co04c == iq$co04b-7)
+iq$co04dright = as.numeric(iq$co04d == iq$co04c-7)
+iq$co04eright = as.numeric(iq$co04e == iq$co04d-7)
+
+answered_counting_items = iq %&gt;% select(co04aright:co04eright)
+psych::alpha(data.frame(answered_counting_items))</code></pre>
+<pre><code>## 
+## Reliability analysis   
+## Call: psych::alpha(x = data.frame(answered_counting_items))
+## 
+##   raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd
+##       0.69      0.68    0.64      0.29 2.1 0.0024 0.73 0.29
+## 
+##  lower alpha upper     95% confidence boundaries
+## 0.68 0.69 0.69 
+## 
+##  Reliability if an item is dropped:
+##            raw_alpha std.alpha G6(smc) average_r S/N alpha se
+## co04aright      0.71      0.71    0.65      0.38 2.4   0.0025
+## co04bright      0.64      0.62    0.57      0.29 1.6   0.0028
+## co04cright      0.60      0.59    0.54      0.27 1.5   0.0030
+## co04dright      0.61      0.60    0.54      0.27 1.5   0.0030
+## co04eright      0.60      0.59    0.54      0.27 1.5   0.0031
+## 
+##  Item statistics 
+##                n raw.r std.r r.cor r.drop mean   sd
+## co04aright 30452  0.43  0.51  0.27   0.23 0.95 0.22
+## co04bright 29661  0.70  0.67  0.53   0.45 0.63 0.48
+## co04cright 29260  0.73  0.71  0.61   0.52 0.69 0.46
+## co04dright 29078  0.73  0.71  0.61   0.51 0.69 0.46
+## co04eright 28983  0.73  0.71  0.61   0.52 0.70 0.46
+## 
+## Non missing response frequency for each item
+##               0    1 miss
+## co04aright 0.05 0.95 0.16
+## co04bright 0.37 0.63 0.18
+## co04cright 0.31 0.69 0.20
+## co04dright 0.31 0.69 0.20
+## co04eright 0.30 0.70 0.20</code></pre>
+<pre class="r"><code>iq$count_backwards = rowSums( answered_counting_items, na.rm = T) / 5
+qplot(iq$count_backwards)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="1_data_import_files/figure-html/select%20IQ%20data-3.png" width="672" /></p>
+<pre class="r"><code>## Word Memory
+iq$words_immediate = iq$co07count
+iq$words_delayed = iq$co10count
+qplot(iq$words_immediate, iq$words_delayed, geom = &quot;jitter&quot;)</code></pre>
+<pre><code>## Warning: Removed 4917 rows containing missing values (geom_point).</code></pre>
+<p><img src="1_data_import_files/figure-html/select%20IQ%20data-4.png" width="672" /></p>
+<pre class="r"><code>answered_word_items = iq %&gt;% select(co07count,co10count)
+psych::alpha(data.frame(answered_word_items))</code></pre>
+<pre><code>## Warning in matrix(unlist(drop.item), ncol = 8, byrow = TRUE): data length
+## [12] is not a sub-multiple or multiple of the number of columns [8]</code></pre>
+<pre><code>## 
+## Reliability analysis   
+## Call: psych::alpha(x = data.frame(answered_word_items))
+## 
+##   raw_alpha std.alpha G6(smc) average_r S/N    ase mean  sd
+##       0.87      0.87    0.77      0.77 6.8 0.0014  4.6 1.8
+## 
+##  lower alpha upper     95% confidence boundaries
+## 0.87 0.87 0.87 
+## 
+##  Reliability if an item is dropped:
+##           raw_alpha std.alpha G6(smc) average_r  S/N alpha se
+## co07count      0.77      0.77     0.6      0.77   NA       NA
+## co10count      0.60      0.77      NA        NA 0.77   0.0046
+## 
+##  Item statistics 
+##               n raw.r std.r r.cor r.drop mean  sd
+## co07count 31471  0.94  0.94  0.83   0.77  5.1 1.8
+## co10count 31471  0.94  0.94  0.83   0.77  4.2 1.9</code></pre>
+<pre class="r"><code>iq$words_remembered_avg = rowMeans( answered_word_items, na.rm = T)
+qplot(iq$words_remembered_avg)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 4917 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/select%20IQ%20data-5.png" width="672" /></p>
+<pre class="r"><code>##Adaptive Numbering
+iq$adaptive_numbering = iq$w_abil
 
 
-### Personality
+#iq$drew_pentagons = as.numeric(iq$cob19b == 1)
+#iq$number_of_animals = iq$cob18
+
+## Correlation of all Iq-Tests
+round(cor(iq %&gt;% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = &quot;pairwise.complete.obs&quot;), 2)</code></pre>
+<pre><code>##                    raven math count_backwards words_immediate
+## raven               1.00 0.41            0.32            0.38
+## math                0.41 1.00            0.26            0.31
+## count_backwards     0.32 0.26            1.00            0.33
+## words_immediate     0.38 0.31            0.33            1.00
+## words_delayed       0.37 0.31            0.30            0.77
+## adaptive_numbering  0.45 0.35            0.40            0.40
+##                    words_delayed adaptive_numbering
+## raven                       0.37               0.45
+## math                        0.31               0.35
+## count_backwards             0.30               0.40
+## words_immediate             0.77               0.40
+## words_delayed               1.00               0.37
+## adaptive_numbering          0.37               1.00</code></pre>
+<pre class="r"><code>##Missingness_Patterns
+formr::missingness_patterns(iq %&gt;% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering))</code></pre>
+<pre><code>##  index                col missings
+##      1              raven     5049
+##      2               math     5049
+##      3 adaptive_numbering     4979
+##      4    words_immediate     4917
+##      5      words_delayed     4917</code></pre>
+<pre><code>##     Pattern  Freq            Culprit
+## 1 _________ 31000                  _
+## 2 1_2_3_4_5  4593                   
+## 3 1_2______   409                   
+## 4 ____3_4_5   324                   
+## 5 1_2_3____    47                   
+## 6 ____3____    15 adaptive_numbering</code></pre>
+</div>
+<div id="select-personality-data" class="section level2">
+<h2>Select personality data</h2>
+<pre class="r"><code>### Personality
 ##Rearrange personality data so that every individual has only one row
 pers = spread(b3b_psn, psntype, psn01)
 ##name columns
-colnames(pers) &lt;- c(&quot;hhid14_9&quot;, &quot;pid14&quot;, &quot;hhid14&quot;, &quot;pidlink&quot;, &quot;version&quot;, &quot;module&quot;, &quot;e1&quot;, &quot;c1&quot;, &quot;o1&quot;, &quot;e2r&quot;, &quot;n1r&quot;, &quot;a1&quot;, &quot;n2r&quot;, &quot;o2&quot;, &quot;c1r&quot;, &quot;o3&quot;, &quot;a2&quot;, &quot;c2&quot;, &quot;e3&quot;, &quot;a3r&quot;, &quot;n3&quot;)
-pers = pers %&gt;% select(hhid14_9, pidlink, e1, c1, o1, e2r, n1r, a1, n2r, o2, c1r, o3, a2, c2, e3, a3r, n3)
+colnames(pers) &lt;- c(&quot;hhid14_9&quot;, &quot;pid14&quot;, &quot;hhid14&quot;, &quot;pidlink&quot;, &quot;version&quot;, &quot;module&quot;, &quot;e1&quot;, &quot;c1&quot;, &quot;o1&quot;, &quot;e2r&quot;, &quot;n1r&quot;, &quot;a1&quot;, &quot;n2r&quot;, &quot;o2&quot;, &quot;c2r&quot;, &quot;o3&quot;, &quot;a2&quot;, &quot;c3&quot;, &quot;e3&quot;, &quot;a3r&quot;, &quot;n3&quot;)
+pers = pers %&gt;% select(hhid14_9, pidlink, e1, c1, o1, e2r, n1r, a1, n2r, o2, c2r, o3, a2, c3, e3, a3r, n3)
 
-
-###Risktaking
-risk = b3a_si %&gt;% select(hhid14_9, pidlink, random_si, si01, si02, si03, si04, si05, si11, si12, si13, si14, si15)</code></pre>
+##Extraversion
+pers$e2r_reversed = 6 - pers$e2r
+extraversion = pers %&gt;% select(e1, e2r_reversed, e3)
+psych::alpha(data.frame(extraversion), check.keys = T)</code></pre>
+<pre><code>## 
+## Reliability analysis   
+## Call: psych::alpha(x = data.frame(extraversion), check.keys = T)
+## 
+##   raw_alpha std.alpha G6(smc) average_r  S/N    ase mean   sd
+##       0.37      0.35    0.28      0.15 0.54 0.0056  3.4 0.67
+## 
+##  lower alpha upper     95% confidence boundaries
+## 0.36 0.37 0.38 
+## 
+##  Reliability if an item is dropped:
+##              raw_alpha std.alpha G6(smc) average_r   S/N alpha se
+## e1               0.072     0.081   0.042     0.042 0.088   0.0092
+## e2r_reversed     0.218     0.246   0.140     0.140 0.326   0.0077
+## e3               0.429     0.429   0.273     0.273 0.753   0.0064
+## 
+##  Item statistics 
+##                  n raw.r std.r r.cor r.drop mean   sd
+## e1           31446  0.77  0.71  0.48   0.30  3.1 1.14
+## e2r_reversed 31446  0.73  0.67  0.37   0.24  3.0 1.12
+## e3           31446  0.44  0.60  0.19   0.11  4.2 0.67
+## 
+## Non missing response frequency for each item
+##                 1    2    3    4    5 miss
+## e1           0.03 0.39 0.08 0.39 0.11    0
+## e2r_reversed 0.07 0.36 0.09 0.43 0.05    0
+## e3           0.00 0.03 0.05 0.64 0.28    0</code></pre>
+<pre class="r"><code>pers$big5_ext = rowMeans(extraversion)
+qplot(pers$big5_ext)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="1_data_import_files/figure-html/select%20pesonality%20data-1.png" width="672" /></p>
+<pre class="r"><code>##conscientiousness
+pers$c2r_reversed = 6 - pers$c2r
+conscientiousness = pers %&gt;% select(c1, c2r_reversed, c3)
+psych::alpha(data.frame(conscientiousness), check.keys = T)</code></pre>
+<pre><code>## 
+## Reliability analysis   
+## Call: psych::alpha(x = data.frame(conscientiousness), check.keys = T)
+## 
+##   raw_alpha std.alpha G6(smc) average_r  S/N   ase mean   sd
+##       0.29      0.31    0.24      0.13 0.45 0.007  3.8 0.55
+## 
+##  lower alpha upper     95% confidence boundaries
+## 0.27 0.29 0.3 
+## 
+##  Reliability if an item is dropped:
+##              raw_alpha std.alpha G6(smc) average_r  S/N alpha se
+## c1                0.10      0.10   0.054     0.054 0.11   0.0101
+## c2r_reversed      0.35      0.36   0.219     0.219 0.56   0.0071
+## c3                0.20      0.21   0.116     0.116 0.26   0.0087
+## 
+##  Item statistics 
+##                  n raw.r std.r r.cor r.drop mean   sd
+## c1           31446  0.61  0.69  0.42   0.23  4.1 0.71
+## c2r_reversed 31446  0.65  0.60  0.19   0.10  3.6 0.95
+## c3           31446  0.67  0.65  0.34   0.17  3.8 0.90
+## 
+## Non missing response frequency for each item
+##                 1    2    3    4    5 miss
+## c1           0.01 0.04 0.04 0.66 0.25    0
+## c2r_reversed 0.03 0.18 0.07 0.65 0.07    0
+## c3           0.01 0.12 0.08 0.63 0.15    0</code></pre>
+<pre class="r"><code>pers$big5_con = rowMeans(conscientiousness)
+qplot(pers$big5_con)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="1_data_import_files/figure-html/select%20pesonality%20data-2.png" width="672" /></p>
+<pre class="r"><code>##Openness
+openness = pers %&gt;% select(o1, o2, o3)
+psych::alpha(data.frame(openness), check.keys = T)</code></pre>
+<pre><code>## 
+## Reliability analysis   
+## Call: psych::alpha(x = data.frame(openness), check.keys = T)
+## 
+##   raw_alpha std.alpha G6(smc) average_r  S/N    ase mean   sd
+##       0.45      0.45    0.35      0.21 0.81 0.0054  3.7 0.67
+## 
+##  lower alpha upper     95% confidence boundaries
+## 0.43 0.45 0.46 
+## 
+##  Reliability if an item is dropped:
+##    raw_alpha std.alpha G6(smc) average_r  S/N alpha se
+## o1      0.30      0.30    0.18      0.18 0.43   0.0078
+## o2      0.39      0.39    0.25      0.25 0.65   0.0068
+## o3      0.35      0.36    0.22      0.22 0.55   0.0073
+## 
+##  Item statistics 
+##        n raw.r std.r r.cor r.drop mean   sd
+## o1 31446  0.71  0.71  0.45   0.30  3.7 0.98
+## o2 31446  0.70  0.67  0.37   0.25  3.5 1.05
+## o3 31446  0.65  0.69  0.41   0.27  4.0 0.88
+## 
+## Non missing response frequency for each item
+##       1    2    3    4    5 miss
+## o1 0.02 0.18 0.08 0.58 0.14    0
+## o2 0.03 0.22 0.09 0.54 0.12    0
+## o3 0.01 0.10 0.05 0.61 0.23    0</code></pre>
+<pre class="r"><code>pers$big5_open = rowMeans(openness)
+qplot(pers$big5_open)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="1_data_import_files/figure-html/select%20pesonality%20data-3.png" width="672" /></p>
+<pre class="r"><code>## Neuroticism
+pers$n1r_reversed = 6 - pers$n1r
+pers$n2r_reversed = 6 - pers$n2r
+neuroticism = pers %&gt;% select(n1r_reversed, n2r_reversed, n3)
+pers$big5_neu = rowMeans(neuroticism)
+qplot(pers$big5_neu)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="1_data_import_files/figure-html/select%20pesonality%20data-4.png" width="672" /></p>
+<pre class="r"><code>##Agreeableness
+pers$a3r_reversed = 6- pers$a3r
+agreeableness= pers %&gt;% select(a1, a2, a3r_reversed)
+pers$big5_agree = rowMeans(agreeableness)
+qplot(pers$big5_agree)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="1_data_import_files/figure-html/select%20pesonality%20data-5.png" width="672" /></p>
 </div>
-<div id="find-out-if-its-possible-to-analyse-data-for-personality-siblings-older-than-14" class="section level2">
-<h2>Find out if its possible to analyse data for personality (siblings older than 14)</h2>
-<pre class="r"><code>### how many siblings older than 14 are there?
-##older than 14
-individuals15 = subset(individuals, ar09&gt;14)
-##exclude people whose parents are not known
-individuals15 = subset(individuals15, ar10 &lt;51)
-individuals15 = subset(individuals15, ar11 &lt;51)
-##exclude only childs (watch out: sibling size was conduted WITH all younger siblings!)
-individuals15=subset(individuals15, siblingcount != 1)
-hist(individuals15$siblingcount)</code></pre>
-<p><img src="1_data_import_files/figure-html/looking at data > 14-1.png&quot; width=“672” /&gt;</p>
-<pre class="r"><code>hist(individuals15$ar02b)</code></pre>
-<p><img src="1_data_import_files/figure-html/looking at data > 14-2.png&quot; width=“672” /&gt;</p>
+<div id="select-risk-taking-data" class="section level2">
+<h2>Select risk taking data</h2>
+<pre class="r"><code>###Risktaking
+risk = b3a_si %&gt;% select(hhid14_9, pidlink, random_si, si01, si02, si03, si04, si05, si11, si12, si13, si14, si15)
+
+## 8 means they didnt know which answer they would choose
+risk$si01[ risk$si01 == 8] = NA
+risk$si02[ risk$si02 == 8] = NA
+risk$si03[ risk$si03 == 8] = NA
+risk$si04[ risk$si04 == 8] = NA
+risk$si05[ risk$si05 == 8] = NA
+risk$si11[ risk$si11 == 8] = NA
+risk$si12[ risk$si12 == 8] = NA
+risk$si13[ risk$si13 == 8] = NA
+risk$si14[ risk$si14 == 8] = NA
+risk$si15[ risk$si15 == 8] = NA
+
+## calculate a risk score for risk game A 
+# (5 = gamble averse, Ordinalskala : 1 = risk loving, 4 = risk averse)
+risk$riskA = ifelse(risk$si01 == 1 &amp; risk$si02 == 1, 5,
+             ifelse(risk$si01 == 2 &amp; risk$si03 == 1 &amp; risk$si04 == 1, 4,
+             ifelse(risk$si01 == 2 &amp; risk$si03 == 1 &amp; risk$si04 == 2, 3,
+             ifelse(risk$si01 == 2 &amp; risk$si03 == 2 &amp; risk$si05 == 1, 2,
+             ifelse(risk$si01 == 2 &amp; risk$si03 == 2 &amp; risk$si05 == 2, 1,
+             NA)))))
+qplot(risk$riskA[risk$riskA != 5])</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 3882 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/select%20risk%20taking%20data-1.png" width="672" /></p>
+<pre class="r"><code>## calculate a risk score for risk game B 
+# (5 = gamble averse, Ordinalskala : 1 = risk loving, 4 = risk averse)
+risk$riskB = ifelse(risk$si11 == 2 &amp; risk$si12 == 1, 5,
+             ifelse(risk$si11 == 1 &amp; risk$si13 == 1 &amp; risk$si14 == 1, 4,
+             ifelse(risk$si11 == 1 &amp; risk$si13 == 1 &amp; risk$si14 == 2, 3,
+             ifelse(risk$si11 == 1 &amp; risk$si13 == 2 &amp; risk$si15 == 1, 2,
+             ifelse(risk$si11 == 1 &amp; risk$si13 == 2 &amp; risk$si15 == 2, 1,
+             NA)))))
+qplot(risk$riskB[risk$riskB !=5])</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 2084 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/select%20risk%20taking%20data-2.png" width="672" /></p>
+<pre class="r"><code>psych::alpha(data.frame(risk %&gt;% select(riskA, riskB)), check.keys = T)</code></pre>
+<pre><code>## Warning in matrix(unlist(drop.item), ncol = 8, byrow = TRUE): data length
+## [12] is not a sub-multiple or multiple of the number of columns [8]</code></pre>
+<pre><code>## 
+## Reliability analysis   
+## Call: psych::alpha(x = data.frame(risk %&gt;% select(riskA, riskB)), check.keys = T)
+## 
+##   raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd
+##       0.29      0.33     0.2       0.2 0.5 0.0067  3.6 0.96
+## 
+##  lower alpha upper     95% confidence boundaries
+## 0.28 0.29 0.3 
+## 
+##  Reliability if an item is dropped:
+##       raw_alpha std.alpha G6(smc) average_r S/N alpha se
+## riskA      0.20       0.2    0.04       0.2  NA       NA
+## riskB      0.04       0.2      NA        NA 0.2   0.0025
+## 
+##  Item statistics 
+##           n raw.r std.r r.cor r.drop mean   sd
+## riskA 27780  0.90  0.77  0.35    0.2  3.4 1.51
+## riskB 29578  0.64  0.77  0.35    0.2  3.9 0.82
+## 
+## Non missing response frequency for each item
+##          1    2    3    4    5 miss
+## riskA 0.19 0.12 0.11 0.24 0.33 0.12
+## riskB 0.04 0.02 0.11 0.70 0.13 0.07</code></pre>
 <div id="merge-data" class="section level3">
 <h3>Merge data</h3>
 <pre class="r"><code>### Merge ALL data (including all participants)

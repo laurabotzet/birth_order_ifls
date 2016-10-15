@@ -18,6 +18,7 @@ library(haven)
 library(dplyr)
 library(plyr)
 library(tidyr)
+library(ggplot2)
 
 
 
@@ -74,8 +75,20 @@ individuals$siblingcount = ifelse(is.na(individuals$ar10), NA, individuals$sibli
 individuals$siblingcount = ifelse(is.na(individuals$ar11), NA, individuals$siblingcount)
 qplot(individuals$siblingcount)
 
-##calculate birth order??
-
+##calculate birth order
+# create date of birth
+individuals$ar08day[ individuals$ar08day>31] = NA
+individuals$ar08mth[ individuals$ar08mth>12] = NA
+individuals <- unite(individuals,
+                  col = "birth",
+                  ar08yr, ar08mth, ar08day,
+                  sep = "-",
+                  remove = FALSE)
+#individuals$birth = as.Date(individuals$birth)
+individuals <- ddply(individuals, .(hhid14_9_ar10_ar11), mutate, birthorder = seq_along(ar08yr))
+individuals$birthorder = ifelse(is.na(individuals$ar10), NA, individuals$birthorder)
+individuals$birthorder = ifelse(is.na(individuals$ar11), NA, individuals$birthorder)
+qplot(individuals$birthorder)
 ```
 
 
@@ -135,7 +148,6 @@ qplot(iq$words_remembered_avg)
 
 ##Adaptive Numbering
 iq$adaptive_numbering = iq$w_abil
-formr::missingness_patterns(iq$adaptive_numbering)
 
 
 #iq$drew_pentagons = as.numeric(iq$cob19b == 1)
@@ -233,21 +245,6 @@ qplot(risk$riskB[risk$riskB !=5])
 psych::alpha(data.frame(risk %>% select(riskA, riskB)), check.keys = T)
 
 
-```
-
-## Find out if its possible to analyse data for personality (siblings older than 14)
-
-```{r looking at data > 14}
-### how many siblings older than 14 are there?
-##older than 14
-individuals15 = subset(individuals, ar09>14)
-##exclude people whose parents are not known
-individuals15 = subset(individuals15, ar10 <51)
-individuals15 = subset(individuals15, ar11 <51)
-##exclude only childs (watch out: sibling size was conduted WITH all younger siblings!)
-individuals15=subset(individuals15, siblingcount != 1)
-hist(individuals15$siblingcount)
-hist(individuals15$ar02b)
 ```
 
 

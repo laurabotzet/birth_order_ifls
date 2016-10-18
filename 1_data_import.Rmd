@@ -79,16 +79,29 @@ qplot(individuals$siblingcount)
 # create date of birth
 individuals$ar08day[ individuals$ar08day>31] = NA
 individuals$ar08mth[ individuals$ar08mth>12] = NA
+individuals$ar08yr[ individuals$ar08yr>2016] = NA
 individuals <- unite(individuals,
                   col = "birth",
                   ar08yr, ar08mth, ar08day,
                   sep = "-",
                   remove = FALSE)
-#individuals$birth = as.Date(individuals$birth)
-individuals <- ddply(individuals, .(hhid14_9_ar10_ar11), mutate, birthorder = seq_along(ar08yr))
+individuals <- ddply(individuals, .(hhid14_9_ar10_ar11), mutate, birthorder = seq_along(birth))
 individuals$birthorder = ifelse(is.na(individuals$ar10), NA, individuals$birthorder)
 individuals$birthorder = ifelse(is.na(individuals$ar11), NA, individuals$birthorder)
 qplot(individuals$birthorder)
+
+###multiple_birth check
+individuals <- unite(individuals,
+                  col = "family_birth",
+                  hhid14_9_ar10_ar11, birth,
+                  sep = "_",
+                  remove = FALSE)
+individuals$family_birth = ifelse(is.na(individuals$ar10), NA, individuals$family_birth)
+individuals$family_birth = ifelse(is.na(individuals$ar11), NA, individuals$family_birth)
+individuals <- ddply(individuals,.(family_birth),transform,multiple_birth=length(family_birth))
+individuals$multiple_birth = ifelse(is.na(individuals$ar10), NA, individuals$multiple_birth)
+individuals$multiple_birth = ifelse(is.na(individuals$ar11), NA, individuals$multiple_birth)
+count(individuals$multiple_birth)
 ```
 
 
@@ -261,7 +274,36 @@ alldata = full_join(alldata, risk, by="pidlink")
 
 for future analyses
 
-```{r}
+```{r save data}
 saveRDS(alldata, file = "data/hh14_all_dta/alldata.dta")
+
 ```
 
+### Calculate age related t-scores
+
+```{r Calculate age related t-scores}
+
+### Personality
+alldata$big5_ext_t <- 10*ave(alldata$big5_ext, alldata$age, FUN=scale) + 50
+qplot(alldata$big5_ext_t)
+alldata$big5_agree_t <- 10*ave(alldata$big5_agree, alldata$age, FUN=scale) + 50
+qplot(alldata$big5_agree_t)
+alldata$big5_open_t <- 10*ave(alldata$big5_open, alldata$age, FUN=scale) + 50
+qplot(alldata$big5_open_t)
+alldata$big5_con_t <- 10*ave(alldata$big5_con, alldata$age, FUN=scale) + 50
+qplot(alldata$big5_con_t)
+alldata$big5_neu_t <- 10*ave(alldata$big5_neu, alldata$age, FUN=scale) + 50
+qplot(alldata$big5_neu_t)
+```
+
+###Exploring data
+
+``` {r exploring data}
+### Birth order and sibling size
+ggplot(alldata, aes(x=siblingcount, y=birthorder)) + geom_jitter()
+### Birth order and age
+ggplot(alldata, aes(x=birthorder, y=ar09)) + geom_jitter() + coord_cartesian(ylim = c(0, 100))
+
+
+
+```

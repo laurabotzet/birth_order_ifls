@@ -125,32 +125,29 @@ $(document).ready(function () {
 <h1>Data import</h1>
 <div id="library" class="section level2">
 <h2>Library</h2>
-<pre class="r"><code>library(devtools)
+<pre class="r"><code>library(formr)
+library(devtools)
 library(haven)
 # devtools::install_github(&quot;hadley/haven&quot;)
+library(plyr)
+library(tidyr)
+library(ggplot2)
 library(dplyr)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:plyr&#39;:
+## 
+##     arrange, count, desc, failwith, id, mutate, rename, summarise,
+##     summarize</code></pre>
+<pre><code>## The following objects are masked from &#39;package:formr&#39;:
+## 
+##     first, last</code></pre>
 <pre><code>## The following objects are masked from &#39;package:stats&#39;:
 ## 
 ##     filter, lag</code></pre>
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(plyr)</code></pre>
-<pre><code>## -------------------------------------------------------------------------</code></pre>
-<pre><code>## You have loaded plyr after dplyr - this is likely to cause problems.
-## If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
-## library(plyr); library(dplyr)</code></pre>
-<pre><code>## -------------------------------------------------------------------------</code></pre>
-<pre><code>## 
-## Attaching package: &#39;plyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
-## 
-##     arrange, count, desc, failwith, id, mutate, rename, summarise,
-##     summarize</code></pre>
-<pre class="r"><code>library(tidyr)
-library(ggplot2)</code></pre>
 </div>
 <div id="load-data" class="section level2">
 <h2>Load data</h2>
@@ -180,6 +177,7 @@ b3a_si = read_dta(&quot;data/hh14_all_dta/b3a_si.dta&quot;)</code></pre>
 <pre class="r"><code>### Individuals
 individuals = bk_ar1 %&gt;% select(hhid14_9, pidlink, ar02b, ar10, ar11, ar07, ar08day, ar08mth, ar08yr, ar09, ar18h)
 
+
 ## people whose parents can not be identified have to be marked as NA:
 individuals$ar10[ individuals$ar10&gt;50] = NA
 individuals$ar11[ individuals$ar11&gt;50] = NA
@@ -196,6 +194,12 @@ individuals$hhid14_9_ar10_ar11 = ifelse(is.na(individuals$ar11), NA, individuals
 
 ##calculate sibling size
 individuals &lt;- ddply(individuals,.(hhid14_9_ar10_ar11),transform,siblingcount=length(hhid14_9_ar10_ar11))
+
+# alternative methode
+# individuals = individuals %&gt;% 
+  # group_by(hhid14_9_ar10_ar11) %&gt;%
+  # mutate(siblingcount2 = n())
+
 individuals$siblingcount = ifelse(is.na(individuals$ar10), NA, individuals$siblingcount)
 individuals$siblingcount = ifelse(is.na(individuals$ar11), NA, individuals$siblingcount)
 qplot(individuals$siblingcount)</code></pre>
@@ -207,36 +211,46 @@ qplot(individuals$siblingcount)</code></pre>
 individuals$ar08day[ individuals$ar08day&gt;31] = NA
 individuals$ar08mth[ individuals$ar08mth&gt;12] = NA
 individuals$ar08yr[ individuals$ar08yr&gt;2016] = NA
-individuals &lt;- unite(individuals,
-                  col = &quot;birth&quot;,
-                  ar08yr, ar08mth, ar08day,
-                  sep = &quot;-&quot;,
-                  remove = FALSE)
-individuals &lt;- ddply(individuals, .(hhid14_9_ar10_ar11), mutate, birthorder = seq_along(birth))
-individuals$birthorder = ifelse(is.na(individuals$ar10), NA, individuals$birthorder)
-individuals$birthorder = ifelse(is.na(individuals$ar11), NA, individuals$birthorder)
-qplot(individuals$birthorder)</code></pre>
+individuals$ar08day[ is.nan(individuals$ar08day) ] = NA
+individuals$ar08mth[ is.nan(individuals$ar08mth) ] = NA
+individuals$ar08yr[ is.nan(individuals$ar08yr)] = NA
+
+individuals = individuals %&gt;%
+  filter(!is.na(hhid14_9_ar10_ar11)) %&gt;%
+  mutate(birth = 
+           ifelse(is.na(ar08yr), NA,
+           paste0(ar08yr, &quot;-&quot;, ar08mth, &quot;-&quot;, ar08day)
+           )
+  ) %&gt;%
+  group_by(hhid14_9_ar10_ar11) %&gt;%
+  mutate(birthorder = min_rank(birth)) %&gt;%
+  group_by(hhid14_9_ar10_ar11, birth) %&gt;%
+  mutate(multiple_birth = n()) %&gt;%
+  group_by(hhid14_9_ar10_ar11) %&gt;%
+  mutate(any_multiple_birth_in_fam = any(multiple_birth &gt; 1))
+
+crosstabs(individuals$birthorder)</code></pre>
+<pre><code>## individuals$birthorder
+##     1     2     3     4     5     6     7     8     9    10    11  &lt;NA&gt; 
+## 16774 10878  5428  2505  1075   497   210    88    36    12     3    25</code></pre>
+<pre class="r"><code>crosstabs(individuals$multiple_birth)</code></pre>
+<pre><code>## individuals$multiple_birth
+##     1     2     3     4 
+## 37180   338     9     4</code></pre>
+<pre class="r"><code>crosstabs(individuals[!duplicated(individuals$hhid14_9_ar10_ar11), ]$any_multiple_birth_in_fam)</code></pre>
+<pre><code>## individuals[!duplicated(individuals$hhid14_9_ar10_ar11), ]$any_multiple_birth_in_fam
+## FALSE  TRUE 
+## 16547   172</code></pre>
+<pre class="r"><code># only few individuals with missing byears
+crosstabs(~ is.na(ar08yr) + is.na(ar09), data = individuals)</code></pre>
+<pre><code>##              is.na(ar09)
+## is.na(ar08yr) FALSE
+##         FALSE 37506
+##         TRUE     25</code></pre>
+<pre class="r"><code>qplot(individuals$birthorder)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 51851 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 25 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/select%20individual%20data-2.png" width="672" /></p>
-<pre class="r"><code>###multiple_birth check
-individuals &lt;- unite(individuals,
-                  col = &quot;family_birth&quot;,
-                  hhid14_9_ar10_ar11, birth,
-                  sep = &quot;_&quot;,
-                  remove = FALSE)
-individuals$family_birth = ifelse(is.na(individuals$ar10), NA, individuals$family_birth)
-individuals$family_birth = ifelse(is.na(individuals$ar11), NA, individuals$family_birth)
-individuals &lt;- ddply(individuals,.(family_birth),transform,multiple_birth=length(family_birth))
-individuals$multiple_birth = ifelse(is.na(individuals$ar10), NA, individuals$multiple_birth)
-individuals$multiple_birth = ifelse(is.na(individuals$ar11), NA, individuals$multiple_birth)
-count(individuals$multiple_birth)</code></pre>
-<pre><code>##    x  freq
-## 1  1 37180
-## 2  2   338
-## 3  3     9
-## 4  4     4
-## 5 NA 51851</code></pre>
 </div>
 <div id="select-iq-data" class="section level2">
 <h2>Select IQ data</h2>
@@ -673,50 +687,178 @@ alldata = full_join(individuals, iq, by=&quot;pidlink&quot;)
 alldata = full_join(alldata, pers, by=&quot;pidlink&quot;)
 alldata = full_join(alldata, risk, by=&quot;pidlink&quot;)</code></pre>
 </div>
-<div id="save-data" class="section level3">
-<h3>Save data</h3>
-<p>for future analyses</p>
-<pre class="r"><code>saveRDS(alldata, file = &quot;data/hh14_all_dta/alldata.dta&quot;)</code></pre>
-</div>
 <div id="calculate-age-related-t-scores" class="section level3">
 <h3>Calculate age related t-scores</h3>
+<pre class="r"><code>qplot(data = alldata, factor(ar09), raven, geom = &quot;blank&quot;) + stat_summary( fun.data = &quot;mean_sdl&quot;)</code></pre>
+<pre><code>## Warning: Removed 26724 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>## Warning: Removed 7 rows containing missing values (geom_pointrange).</code></pre>
+<p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-1.png" width="672" /></p>
+<pre class="r"><code>### IQ
+alldata$raven_t &lt;- 10*ave(alldata$raven, alldata$ar09, FUN=scale) + 50
+qplot(alldata$raven_t)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 26731 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-2.png" width="672" /></p>
+<pre class="r"><code>alldata$math_t &lt;- 10*ave(alldata$math, alldata$ar09, FUN=scale) + 50
+qplot(alldata$math_t)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 26768 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-3.png" width="672" /></p>
+<pre class="r"><code>alldata$count_backwards_t &lt;- 10*ave(alldata$count_backwards, alldata$ar09, FUN=scale) + 50
+qplot(alldata$count_backwards_t)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 21618 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-4.png" width="672" /></p>
+<pre class="r"><code>alldata$words_immediate_t &lt;- 10*ave(alldata$words_immediate, alldata$ar09, FUN=scale) + 50
+qplot(alldata$words_immediate_t)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 26598 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-5.png" width="672" /></p>
+<pre class="r"><code>alldata$words_delayed_t &lt;- 10*ave(alldata$words_delayed, alldata$ar09, FUN=scale) + 50
+qplot(alldata$words_delayed_t)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 26598 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-6.png" width="672" /></p>
+<pre class="r"><code>alldata$adaptive_numbering_t &lt;- 10*ave(alldata$adaptive_numbering, alldata$ar09, FUN=scale) + 50
+qplot(alldata$adaptive_numbering_t)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 26661 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-7.png" width="672" /></p>
 <pre class="r"><code>### Personality
-alldata$big5_ext_t &lt;- 10*ave(alldata$big5_ext, alldata$age, FUN=scale) + 50
+alldata$big5_ext_t &lt;- 10*ave(alldata$big5_ext, alldata$ar09, FUN=scale) + 50
 qplot(alldata$big5_ext_t)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 47116 rows containing non-finite values (stat_bin).</code></pre>
-<p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-1.png" width="672" /></p>
-<pre class="r"><code>alldata$big5_agree_t &lt;- 10*ave(alldata$big5_agree, alldata$age, FUN=scale) + 50
+<pre><code>## Warning: Removed 26626 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-8.png" width="672" /></p>
+<pre class="r"><code>alldata$big5_agree_t &lt;- 10*ave(alldata$big5_agree, alldata$ar09, FUN=scale) + 50
 qplot(alldata$big5_agree_t)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 47118 rows containing non-finite values (stat_bin).</code></pre>
-<p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-2.png" width="672" /></p>
-<pre class="r"><code>alldata$big5_open_t &lt;- 10*ave(alldata$big5_open, alldata$age, FUN=scale) + 50
+<pre><code>## Warning: Removed 26626 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-9.png" width="672" /></p>
+<pre class="r"><code>alldata$big5_open_t &lt;- 10*ave(alldata$big5_open, alldata$ar09, FUN=scale) + 50
 qplot(alldata$big5_open_t)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 47116 rows containing non-finite values (stat_bin).</code></pre>
-<p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-3.png" width="672" /></p>
-<pre class="r"><code>alldata$big5_con_t &lt;- 10*ave(alldata$big5_con, alldata$age, FUN=scale) + 50
+<pre><code>## Warning: Removed 26626 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-10.png" width="672" /></p>
+<pre class="r"><code>alldata$big5_con_t &lt;- 10*ave(alldata$big5_con, alldata$ar09, FUN=scale) + 50
 qplot(alldata$big5_con_t)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 47118 rows containing non-finite values (stat_bin).</code></pre>
-<p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-4.png" width="672" /></p>
-<pre class="r"><code>alldata$big5_neu_t &lt;- 10*ave(alldata$big5_neu, alldata$age, FUN=scale) + 50
+<pre><code>## Warning: Removed 26626 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-11.png" width="672" /></p>
+<pre class="r"><code>alldata$big5_neu_t &lt;- 10*ave(alldata$big5_neu, alldata$ar09, FUN=scale) + 50
 qplot(alldata$big5_neu_t)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 47116 rows containing non-finite values (stat_bin).</code></pre>
-<p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-5.png" width="672" /></p>
+<pre><code>## Warning: Removed 26626 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-12.png" width="672" /></p>
+<pre class="r"><code>###Risktaking (geht nicht, da es keine intervallskalierte Variable ist (nur 5 level))</code></pre>
 </div>
 <div id="exploring-data" class="section level3">
 <h3>Exploring data</h3>
 <pre class="r"><code>### Birth order and sibling size
 ggplot(alldata, aes(x=siblingcount, y=birthorder)) + geom_jitter()</code></pre>
-<pre><code>## Warning: Removed 51851 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 21199 rows containing missing values (geom_point).</code></pre>
 <p><img src="1_data_import_files/figure-html/exploring%20data-1.png" width="672" /></p>
 <pre class="r"><code>### Birth order and age
 ggplot(alldata, aes(x=birthorder, y=ar09)) + geom_jitter() + coord_cartesian(ylim = c(0, 100))</code></pre>
-<pre><code>## Warning: Removed 51851 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 21199 rows containing missing values (geom_point).</code></pre>
 <p><img src="1_data_import_files/figure-html/exploring%20data-2.png" width="672" /></p>
+<pre class="r"><code>### Personality
+ggplot(alldata, aes(x=big5_agree, y=big5_neu)) + geom_jitter()</code></pre>
+<pre><code>## Warning: Removed 26617 rows containing missing values (geom_point).</code></pre>
+<p><img src="1_data_import_files/figure-html/exploring%20data-3.png" width="672" /></p>
+<pre class="r"><code>###Openness and Intelligence
+round(cor(alldata %&gt;% ungroup %&gt;% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, big5_open), use = &quot;pairwise.complete.obs&quot;), 2)</code></pre>
+<pre><code>##                    raven math count_backwards words_immediate
+## raven               1.00 0.41            0.32            0.38
+## math                0.41 1.00            0.26            0.31
+## count_backwards     0.32 0.26            1.00            0.33
+## words_immediate     0.38 0.31            0.33            1.00
+## words_delayed       0.37 0.31            0.30            0.77
+## adaptive_numbering  0.45 0.35            0.40            0.40
+## big5_open           0.15 0.12            0.12            0.17
+##                    words_delayed adaptive_numbering big5_open
+## raven                       0.37               0.45      0.15
+## math                        0.31               0.35      0.12
+## count_backwards             0.30               0.40      0.12
+## words_immediate             0.77               0.40      0.17
+## words_delayed               1.00               0.37      0.15
+## adaptive_numbering          0.37               1.00      0.16
+## big5_open                   0.15               0.16      1.00</code></pre>
+<pre class="r"><code>###Other personality factors and Intelligence
+round(cor(alldata %&gt;% ungroup %&gt;% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, big5_con), use = &quot;pairwise.complete.obs&quot;), 2)</code></pre>
+<pre><code>##                    raven  math count_backwards words_immediate
+## raven               1.00  0.41            0.32            0.38
+## math                0.41  1.00            0.26            0.31
+## count_backwards     0.32  0.26            1.00            0.33
+## words_immediate     0.38  0.31            0.33            1.00
+## words_delayed       0.37  0.31            0.30            0.77
+## adaptive_numbering  0.45  0.35            0.40            0.40
+## big5_con            0.00 -0.01            0.03            0.03
+##                    words_delayed adaptive_numbering big5_con
+## raven                       0.37               0.45     0.00
+## math                        0.31               0.35    -0.01
+## count_backwards             0.30               0.40     0.03
+## words_immediate             0.77               0.40     0.03
+## words_delayed               1.00               0.37     0.01
+## adaptive_numbering          0.37               1.00     0.02
+## big5_con                    0.01               0.02     1.00</code></pre>
+<pre class="r"><code>round(cor(alldata %&gt;% ungroup %&gt;% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, big5_ext), use = &quot;pairwise.complete.obs&quot;), 2)</code></pre>
+<pre><code>##                    raven math count_backwards words_immediate
+## raven               1.00 0.41            0.32            0.38
+## math                0.41 1.00            0.26            0.31
+## count_backwards     0.32 0.26            1.00            0.33
+## words_immediate     0.38 0.31            0.33            1.00
+## words_delayed       0.37 0.31            0.30            0.77
+## adaptive_numbering  0.45 0.35            0.40            0.40
+## big5_ext            0.07 0.06            0.08            0.09
+##                    words_delayed adaptive_numbering big5_ext
+## raven                       0.37               0.45     0.07
+## math                        0.31               0.35     0.06
+## count_backwards             0.30               0.40     0.08
+## words_immediate             0.77               0.40     0.09
+## words_delayed               1.00               0.37     0.08
+## adaptive_numbering          0.37               1.00     0.08
+## big5_ext                    0.08               0.08     1.00</code></pre>
+<pre class="r"><code>round(cor(alldata %&gt;% ungroup %&gt;% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, big5_agree), use = &quot;pairwise.complete.obs&quot;), 2)</code></pre>
+<pre><code>##                    raven  math count_backwards words_immediate
+## raven               1.00  0.41            0.32            0.38
+## math                0.41  1.00            0.26            0.31
+## count_backwards     0.32  0.26            1.00            0.33
+## words_immediate     0.38  0.31            0.33            1.00
+## words_delayed       0.37  0.31            0.30            0.77
+## adaptive_numbering  0.45  0.35            0.40            0.40
+## big5_agree         -0.03 -0.03            0.01            0.00
+##                    words_delayed adaptive_numbering big5_agree
+## raven                       0.37               0.45      -0.03
+## math                        0.31               0.35      -0.03
+## count_backwards             0.30               0.40       0.01
+## words_immediate             0.77               0.40       0.00
+## words_delayed               1.00               0.37      -0.01
+## adaptive_numbering          0.37               1.00      -0.01
+## big5_agree                 -0.01              -0.01       1.00</code></pre>
+<pre class="r"><code>round(cor(alldata %&gt;% ungroup %&gt;% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, big5_neu), use = &quot;pairwise.complete.obs&quot;), 2)</code></pre>
+<pre><code>##                    raven math count_backwards words_immediate
+## raven               1.00 0.41            0.32            0.38
+## math                0.41 1.00            0.26            0.31
+## count_backwards     0.32 0.26            1.00            0.33
+## words_immediate     0.38 0.31            0.33            1.00
+## words_delayed       0.37 0.31            0.30            0.77
+## adaptive_numbering  0.45 0.35            0.40            0.40
+## big5_neu            0.01 0.03           -0.01           -0.02
+##                    words_delayed adaptive_numbering big5_neu
+## raven                       0.37               0.45     0.01
+## math                        0.31               0.35     0.03
+## count_backwards             0.30               0.40    -0.01
+## words_immediate             0.77               0.40    -0.02
+## words_delayed               1.00               0.37     0.00
+## adaptive_numbering          0.37               1.00     0.01
+## big5_neu                    0.00               0.01     1.00</code></pre>
+<pre class="r"><code># Opennes has the highest values!</code></pre>
+</div>
+<div id="save-data" class="section level3">
+<h3>Save data</h3>
+<p>for future analyses</p>
+<pre class="r"><code>saveRDS(alldata, file = &quot;data/hh14_all_dta/alldata.dta&quot;)</code></pre>
 </div>
 </div>
 </div>

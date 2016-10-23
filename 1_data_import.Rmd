@@ -12,13 +12,14 @@ output:
 
 ## Library
 ```{r Library}
+library(formr)
 library(devtools)
 library(haven)
 # devtools::install_github("hadley/haven")
-library(dplyr)
 library(plyr)
 library(tidyr)
 library(ggplot2)
+library(dplyr)
 
 
 
@@ -31,7 +32,13 @@ library(ggplot2)
 ## Informations about individuals living in the household in 2014/2015
 # Individuals living in the household
 bk_ar1 = read_dta("data/hh14_all_dta/bk_ar1.dta")
+# Additional information from mothers
+b4_ba6 = read_dta("data/hh14_all_dta/b4_ba6.dta")
 
+# compute father pidlink
+bk_ar1 = left_join(bk_ar1, bk_ar1 %>% select(hhid14_9, pid14, pidlink) %>% rename(ar10 = pid14, father_pidlink = pidlink), by = c("hhid14_9", "ar10"))
+# compute mother pidlink
+bk_ar1 = left_join(bk_ar1, bk_ar1 %>% select(hhid14_9, pid14, pidlink) %>% rename(ar11 = pid14, mother_pidlink = pidlink), by = c("hhid14_9", "ar11"))
 
 ### Informations about earlier waves
 ptrack = read_dta("data/hh14_all_dta/ptrack.dta")
@@ -50,30 +57,49 @@ b3a_si = read_dta("data/hh14_all_dta/b3a_si.dta")
 
 ```
 
+```{r compare mother information with our information}
+
+
+```
 ## Select individual data
 ```{r select individual data}
 ### Individuals
-individuals = bk_ar1 %>% select(hhid14_9, pidlink, ar02b, ar10, ar11, ar07, ar08day, ar08mth, ar08yr, ar09, ar18h)
+individuals = bk_ar1 %>% select(hhid14_9, pidlink, father_pidlink, mother_pidlink, ar02b, ar10, ar11, ar07, ar08day, ar08mth, ar08yr, ar09, ar18h)
+#Rename variables to make it easier
+individuals <- plyr::rename(individuals, c("ar02b"="relation_to_HH_head", "ar10"="fatherID", "ar11" = "motherID", "ar07" = "sex", "ar09" = "age", "ar18h" = "alive")) 
+# Remove duplicats:
+table(duplicated(individuals$pidlink))
+individuals <- individuals %>% distinct(pidlink, .keep_all = TRUE)
 
 
 ## people whose parents can not be identified have to be marked as NA:
-individuals$ar10[ individuals$ar10>50] = NA
-individuals$ar11[ individuals$ar11>50] = NA
+individuals$fatherID[ individuals$fatherID>50] = NA
+individuals$motherID[ individuals$motherID>50] = NA
 
 ##create number that should be identical for all siblings in one family
 individuals <- unite(individuals,
-                  col = "hhid14_9_ar10_ar11",
-                  hhid14_9, ar10, ar11,
+                  col = "hhid14_9_fatherID_motherID",
+                  hhid14_9, fatherID, motherID,
                   sep = "_",
                   remove = FALSE)
+individuals$hhid14_9_fatherID_motherID = ifelse(is.na(individuals$fatherID), NA, individuals$hhid14_9_fatherID_motherID)
+individuals$hhid14_9_fatherID_motherID = ifelse(is.na(individuals$motherID), NA, individuals$hhid14_9_fatherID_motherID)
 
-individuals$hhid14_9_ar10_ar11 = ifelse(is.na(individuals$ar10), NA, individuals$hhid14_9_ar10_ar11)
-individuals$hhid14_9_ar10_ar11 = ifelse(is.na(individuals$ar11), NA, individuals$hhid14_9_ar10_ar11)
+individuals = individuals %>% mutate(
+  mother_father_dyad = stringr::str_c(father_pidlink, mother_pidlink)
+)
+
+crosstabs( ~ is.na(mother_father_dyad) + is.na(hhid14_9_fatherID_motherID), data = individuals)
+n_distinct(individuals$mother_father_dyad)
+n_distinct(individuals$hhid14_9_fatherID_motherID)
+
 
 ##calculate sibling size
-individuals <- ddply(individuals,.(hhid14_9_ar10_ar11),transform,siblingcount=length(hhid14_9_ar10_ar11))
-individuals$siblingcount = ifelse(is.na(individuals$ar10), NA, individuals$siblingcount)
-individuals$siblingcount = ifelse(is.na(individuals$ar11), NA, individuals$siblingcount)
+individuals = individuals %>% 
+   group_by(mother_father_dyad) %>%
+   mutate(siblingcount = n())
+individuals$siblingcount = ifelse(is.na(individuals$fatherID), NA, individuals$siblingcount)
+individuals$siblingcount = ifelse(is.na(individuals$motherID), NA, individuals$siblingcount)
 qplot(individuals$siblingcount)
 
 ##calculate birth order
@@ -81,30 +107,73 @@ qplot(individuals$siblingcount)
 individuals$ar08day[ individuals$ar08day>31] = NA
 individuals$ar08mth[ individuals$ar08mth>12] = NA
 individuals$ar08yr[ individuals$ar08yr>2016] = NA
-individuals <- unite(individuals,
-                  col = "birth",
-                  ar08yr, ar08mth, ar08day,
-                  sep = "-",
-                  remove = FALSE)
-individuals <- ddply(individuals, .(hhid14_9_ar10_ar11), mutate, birthorder = seq_along(birth))
-individuals$birthorder = ifelse(is.na(individuals$ar10), NA, individuals$birthorder)
-individuals$birthorder = ifelse(is.na(individuals$ar11), NA, individuals$birthorder)
-qplot(individuals$birthorder)
+individuals$ar08day[ is.nan(individuals$ar08day) ] = NA
+individuals$ar08mth[ is.nan(individuals$ar08mth) ] = NA
+individuals$ar08yr[ is.nan(individuals$ar08yr)] = NA
 
-###multiple_birth check
-individuals <- unite(individuals,
-                  col = "family_birth",
-                  hhid14_9_ar10_ar11, birth,
-                  sep = "_",
-                  remove = FALSE)
-individuals$family_birth = ifelse(is.na(individuals$ar10), NA, individuals$family_birth)
-individuals$family_birth = ifelse(is.na(individuals$ar11), NA, individuals$family_birth)
-individuals <- ddply(individuals,.(family_birth),transform,multiple_birth=length(family_birth))
-individuals$multiple_birth = ifelse(is.na(individuals$ar10), NA, individuals$multiple_birth)
-individuals$multiple_birth = ifelse(is.na(individuals$ar11), NA, individuals$multiple_birth)
-count(individuals$multiple_birth)
+individuals = individuals %>%
+    mutate(birth = 
+           ifelse(is.na(ar08yr), NA,
+           paste0(ar08yr, "-", ar08mth, "-", ar08day)
+           )
+  ) %>%
+  group_by(mother_father_dyad) %>%
+  mutate(birthorder = min_rank(birth)) %>%
+  group_by(mother_father_dyad, birth) %>%
+  mutate(multiple_birth = n()) %>%
+  group_by(mother_father_dyad) %>%
+  mutate(any_multiple_birth_in_fam = any(multiple_birth > 1))
+
+individuals$birthorder = ifelse(is.na(individuals$mother_father_dyad), NA, individuals$birthorder)
+individuals$multiple_birth = ifelse(is.na(individuals$mother_father_dyad), NA, individuals$multiple_birth)
+individuals$any_multiple_birth_in_fam = ifelse(is.na(individuals$mother_father_dyad), NA, individuals$any_multiple_birth_in_fam)
+
+
+crosstabs(individuals$birthorder)
+crosstabs(individuals$multiple_birth)
+crosstabs(individuals[!duplicated(individuals$mother_father_dyad), ]$any_multiple_birth_in_fam)
+
+# only few individuals with missing byears
+crosstabs(~ is.na(ar08yr) + is.na(age), data = individuals)
+
+qplot(individuals$birthorder)
 ```
 
+## Compare with mother information
+```{r compare with mother information}
+motherinformations = b4_ba6 %>% select(hhid14_9, pidlink, ba63cx, ba64, ba64bmt, ba64byr, ba64c, ba65, ba65mt, ba65ayr, ba66, ba63n)
+
+#Rename variables to make it easier
+motherinformations <- plyr::rename(motherinformations, c("ba63cx"="biologicalchild_m", "ba64"="sex_m", "ba64bmt" = "birth_month_m", "ba64byr" = "birth_year_m", "ba64c" = "living_in_HH_m", "ba65" = "alive_m", "ba65mt"= "death_month_m", "ba65ayr" = "death_year_m", "ba66" = "death_age_m", "ba63n" = "total_number_childs_m", "pidlink"="mother_pidlink")) 
+
+
+# only include biological childs
+motherinformations = motherinformations %>%
+  filter(biologicalchild_m==1)
+
+motherinformations = motherinformations %>%
+    mutate(mother_birthdate = 
+           ifelse(is.na(birth_year_m), NA,
+                  ifelse(is.na(mother_pidlink), NA,
+                         paste0(mother_pidlink, "-", birth_year_m))))
+
+individuals = individuals %>%
+    mutate(mother_birthdate = 
+           ifelse(is.na(ar08yr), NA,
+                  ifelse(is.na(mother_pidlink), NA,
+                         paste0(mother_pidlink, "-", ar08yr))))
+
+
+View(subset(individuals, mother_pidlink=="002040002"))
+View(subset(motherinformations, mother_pidlink=="002040002"))
+View(subset(parentscheck, mother_pidlink=="002040002"))
+
+
+parentscheck = bind_rows(individuals, motherinformations)
+##Remove duplicates
+parentscheck =  parentscheck %>% distinct(mother_birthdate, .keep_all = TRUE)
+
+```
 
 ## Select IQ data
 ```{r select IQ data}
@@ -122,6 +191,7 @@ iq2.3 = b3b_cob %>% select(hhid14_9, pidlink, w_abil, cob18, cob19b)
 iq2 = full_join(iq2.1, iq2.2, by = "pidlink")
 iq2 = full_join(iq2, iq2.3, by = "pidlink")
 iq = iq2
+iq <- plyr::rename(iq, c("age"="IQage")) 
 
 ### calculate iq scores
 ##Raven Test
@@ -174,6 +244,25 @@ round(cor(iq %>% select(raven, math, count_backwards, words_immediate, words_del
 formr::missingness_patterns(iq %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering))
 
 ```
+
+### compute g factor
+```{r}
+library(psych)
+fa.parallel(iq %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering) %>% data.frame())
+fa(iq %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering) %>% data.frame())
+omega(iq %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering) %>% data.frame())
+
+library(lavaan)
+iq$adaptive_numbering = iq$adaptive_numbering/100
+"g_factor =~ raven + math + count_backwards +  words_delayed+ adaptive_numbering" %>%
+  cfa(missing = "fiml", data = iq) -> cfa_g
+summary(cfa_g)
+
+iq$g_factor = predict(cfa_g)[,1]
+qplot(iq$g_factor)
+round(cor(iq %>% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+```
+
 
 ## Select personality data
 ```{r select pesonality data}
@@ -271,50 +360,41 @@ alldata = full_join(alldata, pers, by="pidlink")
 alldata = full_join(alldata, risk, by="pidlink")
 ```
 
-### Save data
-
-for future analyses
-
-```{r save data}
-saveRDS(alldata, file = "data/hh14_all_dta/alldata.dta")
-
-```
 
 ### Calculate age related t-scores
 
 ```{r Calculate age related t-scores}
+qplot(data = alldata, factor(age), raven, geom = "blank") + stat_summary( fun.data = "mean_sdl")
 
 ### IQ
-alldata$raven_t <- 10*ave(alldata$raven, alldata$ar09, FUN=scale) + 50
+alldata$raven_t <- 10*ave(alldata$raven, alldata$age, FUN=scale) + 50
 qplot(alldata$raven_t)
-alldata$math_t <- 10*ave(alldata$math, alldata$ar09, FUN=scale) + 50
+alldata$math_t <- 10*ave(alldata$math, alldata$age, FUN=scale) + 50
 qplot(alldata$math_t)
-alldata$count_backwards_t <- 10*ave(alldata$count_backwards, alldata$ar09, FUN=scale) + 50
+alldata$count_backwards_t <- 10*ave(alldata$count_backwards, alldata$age, FUN=scale) + 50
 qplot(alldata$count_backwards_t)
-alldata$words_immediate_t <- 10*ave(alldata$words_immediate, alldata$ar09, FUN=scale) + 50
+alldata$words_immediate_t <- 10*ave(alldata$words_immediate, alldata$age, FUN=scale) + 50
 qplot(alldata$words_immediate_t)
-alldata$words_delayed_t <- 10*ave(alldata$words_delayed, alldata$ar09, FUN=scale) + 50
+alldata$words_delayed_t <- 10*ave(alldata$words_delayed, alldata$age, FUN=scale) + 50
 qplot(alldata$words_delayed_t)
-alldata$adaptive_numbering_t <- 10*ave(alldata$adaptive_numbering, alldata$ar09, FUN=scale) + 50
+alldata$adaptive_numbering_t <- 10*ave(alldata$adaptive_numbering, alldata$age, FUN=scale) + 50
 qplot(alldata$adaptive_numbering_t)
 
 
 ### Personality
-alldata$big5_ext_t <- 10*ave(alldata$big5_ext, alldata$ar09, FUN=scale) + 50
+alldata$big5_ext_t <- 10*ave(alldata$big5_ext, alldata$age, FUN=scale) + 50
 qplot(alldata$big5_ext_t)
-alldata$big5_agree_t <- 10*ave(alldata$big5_agree, alldata$ar09, FUN=scale) + 50
+alldata$big5_agree_t <- 10*ave(alldata$big5_agree, alldata$age, FUN=scale) + 50
 qplot(alldata$big5_agree_t)
-alldata$big5_open_t <- 10*ave(alldata$big5_open, alldata$ar09, FUN=scale) + 50
+alldata$big5_open_t <- 10*ave(alldata$big5_open, alldata$age, FUN=scale) + 50
 qplot(alldata$big5_open_t)
-alldata$big5_con_t <- 10*ave(alldata$big5_con, alldata$ar09, FUN=scale) + 50
+alldata$big5_con_t <- 10*ave(alldata$big5_con, alldata$age, FUN=scale) + 50
 qplot(alldata$big5_con_t)
-alldata$big5_neu_t <- 10*ave(alldata$big5_neu, alldata$ar09, FUN=scale) + 50
+alldata$big5_neu_t <- 10*ave(alldata$big5_neu, alldata$age, FUN=scale) + 50
 qplot(alldata$big5_neu_t)
 
 
 ###Risktaking (geht nicht, da es keine intervallskalierte Variable ist (nur 5 level))
-
-
 ```
 
 ###Exploring data
@@ -323,18 +403,29 @@ qplot(alldata$big5_neu_t)
 ### Birth order and sibling size
 ggplot(alldata, aes(x=siblingcount, y=birthorder)) + geom_jitter()
 ### Birth order and age
-ggplot(alldata, aes(x=birthorder, y=ar09)) + geom_jitter() + coord_cartesian(ylim = c(0, 100))
+ggplot(alldata, aes(x=birthorder, y=age)) + geom_jitter() + coord_cartesian(ylim = c(0, 100))
 
 ### Personality
 ggplot(alldata, aes(x=big5_agree, y=big5_neu)) + geom_jitter()
 
 ###Openness and Intelligence
-round(cor(alldata %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, big5_open), use = "pairwise.complete.obs"), 2)
+round(cor(alldata %>% ungroup %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor, big5_open), use = "pairwise.complete.obs"), 2)
 
 ###Other personality factors and Intelligence
-round(cor(alldata %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, big5_con), use = "pairwise.complete.obs"), 2)
-round(cor(alldata %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, big5_ext), use = "pairwise.complete.obs"), 2)
-round(cor(alldata %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, big5_agree), use = "pairwise.complete.obs"), 2)
-round(cor(alldata %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, big5_neu), use = "pairwise.complete.obs"), 2)
+round(cor(alldata %>% ungroup %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor, big5_con), use = "pairwise.complete.obs"), 2)
+round(cor(alldata %>% ungroup %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor, big5_ext), use = "pairwise.complete.obs"), 2)
+round(cor(alldata %>% ungroup %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor, big5_agree), use = "pairwise.complete.obs"), 2)
+round(cor(alldata %>% ungroup %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor, big5_neu), use = "pairwise.complete.obs"), 2)
 # Opennes has the highest values!
+ggplot(alldata, aes(x=big5_open, y=g_factor)) + geom_jitter() + geom_smooth(method=lm) 
+```
+
+
+### Save data
+
+for future analyses
+
+```{r save data}
+saveRDS(alldata, file = "data/hh14_all_dta/alldata.dta")
+
 ```

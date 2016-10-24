@@ -4,3 +4,6 @@ packrat/lib*/
 *.rds
 *.rda
 figure-html/
+*.png
+*.jpg
+

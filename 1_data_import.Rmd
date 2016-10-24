@@ -155,24 +155,43 @@ motherinformations = motherinformations %>%
     mutate(mother_birthdate = 
            ifelse(is.na(birth_year_m), NA,
                   ifelse(is.na(mother_pidlink), NA,
-                         paste0(mother_pidlink, "-", birth_year_m))))
+                         paste0(mother_pidlink, "-", birth_year_m, "-", birth_month_m))))
 
 individuals = individuals %>%
     mutate(mother_birthdate = 
            ifelse(is.na(ar08yr), NA,
                   ifelse(is.na(mother_pidlink), NA,
-                         paste0(mother_pidlink, "-", ar08yr))))
+                         paste0(mother_pidlink, "-", ar08yr, "-", ar08mth))))
 
 
-View(subset(individuals, mother_pidlink=="002040002"))
-View(subset(motherinformations, mother_pidlink=="002040002"))
-View(subset(parentscheck, mother_pidlink=="002040002"))
 
+parentscheck = full_join(individuals, motherinformations, by = "mother_birthdate")
+parentscheck = parentscheck %>%
+  filter(!is.na(mother_pidlink.y)) %>%
+  filter(!is.na(mother_pidlink.x)) %>%
+  filter(!is.na(mother_birthdate))
 
-parentscheck = bind_rows(individuals, motherinformations)
-##Remove duplicates
-parentscheck =  parentscheck %>% distinct(mother_birthdate, .keep_all = TRUE)
+parentscheck = parentscheck %>%
+    mutate(unique = 
+               paste0(mother_birthdate, "-", pidlink))
 
+parentscheck = subset(parentscheck,!duplicated(parentscheck$unique))
+
+parentscheck = parentscheck %>% 
+   group_by(mother_pidlink.y) %>%
+   mutate(siblingcount2 = n())
+
+ggplot(parentscheck, aes(x=siblingcount2, y=total_number_childs_m)) + geom_jitter()
+
+individuals_parents_checked = subset(parentscheck, parentscheck$age>14)
+
+individuals_parents_checked = individuals_parents_checked %>%
+  group_by(mother_father_dyad) %>%
+  mutate(birthorder = min_rank(birth)) %>%
+  group_by(mother_father_dyad, birth) %>%
+  mutate(multiple_birth = n()) %>%
+  group_by(mother_father_dyad) %>%
+  mutate(any_multiple_birth_in_fam = any(multiple_birth > 1))
 ```
 
 ## Select IQ data
@@ -358,6 +377,13 @@ psych::alpha(data.frame(risk %>% select(riskA, riskB)), check.keys = T)
 alldata = full_join(individuals, iq, by="pidlink")
 alldata = full_join(alldata, pers, by="pidlink")
 alldata = full_join(alldata, risk, by="pidlink")
+
+### Merge PARENTS_CHECKED Data
+alldata_parents_checked = left_join(individuals_parents_checked, iq, by="pidlink")
+alldata_parents_checked = left_join(alldata_parents_checked, pers, by="pidlink")
+alldata_parents_checked = left_join(alldata_parents_checked, risk, by="pidlink")
+
+table(is.na(alldata_parents_checked$big5_ext))
 ```
 
 

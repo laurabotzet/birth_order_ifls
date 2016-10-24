@@ -3,3 +3,4 @@ packrat/lib*/
 *.dta
 *.rds
 *.rda
+figure-html/

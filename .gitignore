@@ -6,4 +6,6 @@ packrat/lib*/
 figure-html/
 *.png
 *.jpg
-
+*.pdf
+*.html
+packrat/src/

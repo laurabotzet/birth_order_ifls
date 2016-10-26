@@ -220,11 +220,15 @@ ggplot(parentscheck_biological, aes(x=siblingcount2, y=birthorder)) + geom_jitte
 parentscheck$alive_m = ifelse(is.na(parentscheck$alive_m), 1, parentscheck$alive_m)
 qplot(parentscheck$alive_m)
 
+parentscheck$death_year_m = ifelse(parentscheck$alive_m==3, ifelse(!is.na(parentscheck$death_year_m), parentscheck$death_year_m, parentscheck$birth_year_m+parentscheck$death_age_m), parentscheck$death_year_m)
+
+table(parentscheck$living_in_HH_m==3)
+
 parentscheck = parentscheck %>% 
    group_by(mother_pidlink) %>%
    mutate(siblingcount_total = n())
 
-parentscheck$death_year_m = ifelse(parentscheck$alive_m==3, ifelse(!is.na(parentscheck$death_year_m), parentscheck$death_year_m, parentscheck$birth_year_m+parentscheck$death_age_m), parentscheck$death_year_m)
+
 
 individuals_parents_checked = subset(parentscheck, parentscheck$age>14)
 
@@ -301,7 +305,7 @@ formr::missingness_patterns(iq %>% select(raven, math, count_backwards, words_im
 
 ```
 
-### compute g factor
+## compute g factor
 ```{r}
 library(psych)
 fa.parallel(iq %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering) %>% data.frame())
@@ -409,7 +413,7 @@ psych::alpha(data.frame(risk %>% select(riskA, riskB)), check.keys = T)
 ```
 
 
-### Merge data
+## Merge data
 
 ```{r merge data}
 ### Merge ALL data (including all participants)
@@ -418,15 +422,15 @@ alldata = full_join(alldata, pers, by="pidlink")
 alldata = full_join(alldata, risk, by="pidlink")
 
 ### Merge PARENTS_CHECKED Data
-alldata_parents_checked = left_join(individuals_parents_checked, iq, by="pidlink")
-alldata_parents_checked = left_join(alldata_parents_checked, pers, by="pidlink")
-alldata_parents_checked = left_join(alldata_parents_checked, risk, by="pidlink")
+#alldata_parents_checked = left_join(individuals_parents_checked, iq, by="pidlink")
+#alldata_parents_checked = left_join(alldata_parents_checked, pers, by="pidlink")
+#alldata_parents_checked = left_join(alldata_parents_checked, risk, by="pidlink")
 
-table(is.na(alldata_parents_checked$big5_ext))
+#table(is.na(alldata_parents_checked$big5_ext))
 ```
 
 
-### Calculate age related t-scores
+## Calculate age related t-scores
 
 ```{r Calculate age related t-scores}
 qplot(data = alldata, factor(age), raven, geom = "blank") + stat_summary( fun.data = "mean_sdl")
@@ -462,7 +466,7 @@ qplot(alldata$big5_neu_t)
 ###Risktaking (geht nicht, da es keine intervallskalierte Variable ist (nur 5 level))
 ```
 
-###Exploring data
+## Exploring data
 
 ``` {r exploring data}
 ### Birth order and sibling size
@@ -486,7 +490,7 @@ ggplot(alldata, aes(x=big5_open, y=g_factor)) + geom_jitter() + geom_smooth(meth
 ```
 
 
-### Save data
+## Save data
 
 for future analyses
 

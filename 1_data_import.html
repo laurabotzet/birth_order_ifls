@@ -285,52 +285,94 @@ crosstabs(~ is.na(ar08yr) + is.na(age), data = individuals)</code></pre>
 #Rename variables to make it easier
 motherinformations &lt;- plyr::rename(motherinformations, c(&quot;ba63cx&quot;=&quot;biologicalchild_m&quot;, &quot;ba64&quot;=&quot;sex_m&quot;, &quot;ba64bmt&quot; = &quot;birth_month_m&quot;, &quot;ba64byr&quot; = &quot;birth_year_m&quot;, &quot;ba64c&quot; = &quot;living_in_HH_m&quot;, &quot;ba65&quot; = &quot;alive_m&quot;, &quot;ba65mt&quot;= &quot;death_month_m&quot;, &quot;ba65ayr&quot; = &quot;death_year_m&quot;, &quot;ba66&quot; = &quot;death_age_m&quot;, &quot;ba63n&quot; = &quot;total_number_childs_m&quot;, &quot;pidlink&quot;=&quot;mother_pidlink&quot;)) 
 
+# Mothercheck
+individuals$check = ifelse(individuals$mother_pidlink %in% motherinformations$mother_pidlink, 1, 0)
 
-# only include biological childs
-motherinformations = motherinformations %&gt;%
-  filter(biologicalchild_m==1)
+motherinformations$birth_year_m = (ifelse(motherinformations$birth_year_m&lt;2016, motherinformations$birth_year_m, NA))
+
+motherinformations$birth_month_m = (ifelse(motherinformations$birth_month_m&lt;13, motherinformations$birth_month_m, NA))
+
+motherinformations$death_year_m = (ifelse(motherinformations$death_year_m&lt;2016, motherinformations$death_year_m, NA))
+
+motherinformations$death_month_m = (ifelse(motherinformations$death_month_m&lt;13, motherinformations$death_month_m, NA))
 
 motherinformations = motherinformations %&gt;%
     mutate(mother_birthdate = 
            ifelse(is.na(birth_year_m), NA,
                   ifelse(is.na(mother_pidlink), NA,
-                         paste0(mother_pidlink, &quot;-&quot;, birth_year_m, &quot;-&quot;, birth_month_m))))
+                         ifelse(is.na(birth_month_m), NA, 
+                         paste0(mother_pidlink, &quot;-&quot;, birth_year_m, &quot;-&quot;, birth_month_m)))))
+
+motherinformations = motherinformations %&gt;%
+  filter(!is.na(mother_birthdate))
 
 individuals = individuals %&gt;%
     mutate(mother_birthdate = 
            ifelse(is.na(ar08yr), NA,
-                  ifelse(is.na(mother_pidlink), NA,
-                         paste0(mother_pidlink, &quot;-&quot;, ar08yr, &quot;-&quot;, ar08mth))))
+                  ifelse(is.na(ar08mth), NA,
+                     ifelse(is.na(mother_pidlink), NA,
+                           paste0(mother_pidlink, &quot;-&quot;, ar08yr, &quot;-&quot;, ar08mth)))))
 
+individuals = individuals %&gt;%
+  filter(!is.na(mother_birthdate)) %&gt;%
+  subset(individuals$check == 1)
 
 
 parentscheck = full_join(individuals, motherinformations, by = &quot;mother_birthdate&quot;)
-parentscheck = parentscheck %&gt;%
-  filter(!is.na(mother_pidlink.y)) %&gt;%
-  filter(!is.na(mother_pidlink.x)) %&gt;%
-  filter(!is.na(mother_birthdate))
+
+parentscheck$mother_pidlink = ifelse(!is.na(parentscheck$mother_pidlink.y), parentscheck$mother_pidlink.y, ifelse(!is.na(parentscheck$mother_pidlink.x), parentscheck$mother_pidlink.x, NA))
 
 parentscheck = parentscheck %&gt;%
-    mutate(unique = 
-               paste0(mother_birthdate, &quot;-&quot;, pidlink))
+  filter(!is.na(mother_birthdate)) %&gt;%
+  filter(!is.na(mother_pidlink))
 
-parentscheck = subset(parentscheck,!duplicated(parentscheck$unique))
+parentscheck = subset(parentscheck,!duplicated(parentscheck$mother_birthdate))
 
-parentscheck = parentscheck %&gt;% 
-   group_by(mother_pidlink.y) %&gt;%
+
+### Biological Birthorder: Order in Uterus
+# only include biological childs
+parentscheck_biological = parentscheck
+parentscheck_biological$biologicalchild_m = ifelse(is.na(parentscheck_biological$biologicalchild_m), 1, parentscheck_biological$biologicalchild_m)
+parentscheck_biological = parentscheck_biological %&gt;%
+  filter(biologicalchild_m==1)
+
+parentscheck_biological = parentscheck_biological %&gt;% 
+   group_by(mother_pidlink) %&gt;%
    mutate(siblingcount2 = n())
 
-ggplot(parentscheck, aes(x=siblingcount2, y=total_number_childs_m)) + geom_jitter()</code></pre>
-<p><img src="1_data_import_files/figure-html/compare%20with%20mother%20information-1.png" width="672" /></p>
-<pre class="r"><code>individuals_parents_checked = subset(parentscheck, parentscheck$age&gt;14)
+parentscheck_biological = parentscheck_biological %&gt;%
+    mutate(birth = 
+           ifelse(!is.na(ar08yr), paste0(ar08yr, &quot;-&quot;, ar08mth),
+                  ifelse(!is.na(birth_year_m), paste0(birth_year_m, &quot;-&quot;, birth_month_m), NA)))
 
-individuals_parents_checked = individuals_parents_checked %&gt;%
-  group_by(mother_father_dyad) %&gt;%
+parentscheck_biological = parentscheck_biological %&gt;%
+  group_by(mother_pidlink) %&gt;%
   mutate(birthorder = min_rank(birth)) %&gt;%
-  group_by(mother_father_dyad, birth) %&gt;%
+  group_by(mother_pidlink, birth) %&gt;%
   mutate(multiple_birth = n()) %&gt;%
-  group_by(mother_father_dyad) %&gt;%
-  mutate(any_multiple_birth_in_fam = any(multiple_birth &gt; 1))</code></pre>
+  group_by(mother_pidlink) %&gt;%
+  mutate(any_multiple_birth_in_fam = any(multiple_birth &gt; 1))
+
+ggplot(parentscheck_biological, aes(x=siblingcount2, y=birthorder)) + geom_jitter()</code></pre>
+<p><img src="1_data_import_files/figure-html/compare%20with%20mother%20information-1.png" width="672" /></p>
+<pre class="r"><code>### Social Birthorder - siblings by the time of birth
+parentscheck$alive_m = ifelse(is.na(parentscheck$alive_m), 1, parentscheck$alive_m)
+qplot(parentscheck$alive_m)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="1_data_import_files/figure-html/compare%20with%20mother%20information-2.png" width="672" /></p>
+<pre class="r"><code>parentscheck$death_year_m = ifelse(parentscheck$alive_m==3, ifelse(!is.na(parentscheck$death_year_m), parentscheck$death_year_m, parentscheck$birth_year_m+parentscheck$death_age_m), parentscheck$death_year_m)
+
+table(parentscheck$living_in_HH_m==3)</code></pre>
+<pre><code>## 
+## FALSE  TRUE 
+## 10255  5510</code></pre>
+<pre class="r"><code>parentscheck = parentscheck %&gt;% 
+   group_by(mother_pidlink) %&gt;%
+   mutate(siblingcount_total = n())
+
+
+
+individuals_parents_checked = subset(parentscheck, parentscheck$age&gt;14)</code></pre>
 </div>
 <div id="select-iq-data" class="section level2">
 <h2>Select IQ data</h2>
@@ -737,6 +779,21 @@ qplot(iq$g_factor)</code></pre>
 ## words_immediate             0.77               0.40
 ## words_delayed               1.00               0.37
 ## adaptive_numbering          0.37               1.00</code></pre>
+<pre class="r"><code>formr::missingness_patterns(iq %&gt;% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor)) ## oops, lavaan only predicts the g factor for complete cases</code></pre>
+<pre><code>##  index                col missings
+##      1           g_factor     5388
+##      2              raven     5049
+##      3               math     5049
+##      4 adaptive_numbering     4979
+##      5    words_immediate     4917
+##      6      words_delayed     4917</code></pre>
+<pre><code>##       Pattern  Freq Culprit
+## 1 ___________ 31000       _
+## 2 1_2_3_4_5_6  4593        
+## 3 1_2_3______   409        
+## 4 1_____4_5_6   324        
+## 5 1_2_3_4____    47        
+## 6 1_____4____    15</code></pre>
 </div>
 </div>
 <div id="select-personality-data" class="section level2">
@@ -951,70 +1008,70 @@ alldata_parents_checked = left_join(alldata_parents_checked, risk, by=&quot;pidl
 table(is.na(alldata_parents_checked$big5_ext))</code></pre>
 <pre><code>## 
 ## FALSE  TRUE 
-##  5847  1987</code></pre>
+##  3738  1994</code></pre>
 </div>
 <div id="calculate-age-related-t-scores" class="section level3">
 <h3>Calculate age related t-scores</h3>
 <pre class="r"><code>qplot(data = alldata, factor(age), raven, geom = &quot;blank&quot;) + stat_summary( fun.data = &quot;mean_sdl&quot;)</code></pre>
-<pre><code>## Warning: Removed 44341 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>## Warning: Removed 18403 rows containing non-finite values (stat_summary).</code></pre>
 <pre><code>## Warning: Removed 5 rows containing missing values (geom_pointrange).</code></pre>
 <p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-1.png" width="672" /></p>
 <pre class="r"><code>### IQ
 alldata$raven_t &lt;- 10*ave(alldata$raven, alldata$age, FUN=scale) + 50
 qplot(alldata$raven_t)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 44346 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 18410 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-2.png" width="672" /></p>
 <pre class="r"><code>alldata$math_t &lt;- 10*ave(alldata$math, alldata$age, FUN=scale) + 50
 qplot(alldata$math_t)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 46969 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 18446 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-3.png" width="672" /></p>
 <pre class="r"><code>alldata$count_backwards_t &lt;- 10*ave(alldata$count_backwards, alldata$age, FUN=scale) + 50
 qplot(alldata$count_backwards_t)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 39310 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 13364 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-4.png" width="672" /></p>
 <pre class="r"><code>alldata$words_immediate_t &lt;- 10*ave(alldata$words_immediate, alldata$age, FUN=scale) + 50
 qplot(alldata$words_immediate_t)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 44216 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 18275 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-5.png" width="672" /></p>
 <pre class="r"><code>alldata$words_delayed_t &lt;- 10*ave(alldata$words_delayed, alldata$age, FUN=scale) + 50
 qplot(alldata$words_delayed_t)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 44219 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 18278 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-6.png" width="672" /></p>
 <pre class="r"><code>alldata$adaptive_numbering_t &lt;- 10*ave(alldata$adaptive_numbering, alldata$age, FUN=scale) + 50
 qplot(alldata$adaptive_numbering_t)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 44276 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 18340 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-7.png" width="672" /></p>
 <pre class="r"><code>### Personality
 alldata$big5_ext_t &lt;- 10*ave(alldata$big5_ext, alldata$age, FUN=scale) + 50
 qplot(alldata$big5_ext_t)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 44239 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 18305 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-8.png" width="672" /></p>
 <pre class="r"><code>alldata$big5_agree_t &lt;- 10*ave(alldata$big5_agree, alldata$age, FUN=scale) + 50
 qplot(alldata$big5_agree_t)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 44241 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 18303 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-9.png" width="672" /></p>
 <pre class="r"><code>alldata$big5_open_t &lt;- 10*ave(alldata$big5_open, alldata$age, FUN=scale) + 50
 qplot(alldata$big5_open_t)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 44239 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 18302 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-10.png" width="672" /></p>
 <pre class="r"><code>alldata$big5_con_t &lt;- 10*ave(alldata$big5_con, alldata$age, FUN=scale) + 50
 qplot(alldata$big5_con_t)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 44241 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 18304 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-11.png" width="672" /></p>
 <pre class="r"><code>alldata$big5_neu_t &lt;- 10*ave(alldata$big5_neu, alldata$age, FUN=scale) + 50
 qplot(alldata$big5_neu_t)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 44239 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 18304 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/Calculate%20age%20related%20t-scores-12.png" width="672" /></p>
 <pre class="r"><code>###Risktaking (geht nicht, da es keine intervallskalierte Variable ist (nur 5 level))</code></pre>
 </div>
@@ -1022,15 +1079,15 @@ qplot(alldata$big5_neu_t)</code></pre>
 <h3>Exploring data</h3>
 <pre class="r"><code>### Birth order and sibling size
 ggplot(alldata, aes(x=siblingcount, y=birthorder)) + geom_jitter()</code></pre>
-<pre><code>## Warning: Removed 40056 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 41369 rows containing missing values (geom_point).</code></pre>
 <p><img src="1_data_import_files/figure-html/exploring%20data-1.png" width="672" /></p>
 <pre class="r"><code>### Birth order and age
 ggplot(alldata, aes(x=birthorder, y=age)) + geom_jitter() + coord_cartesian(ylim = c(0, 100))</code></pre>
-<pre><code>## Warning: Removed 40056 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 41369 rows containing missing values (geom_point).</code></pre>
 <p><img src="1_data_import_files/figure-html/exploring%20data-2.png" width="672" /></p>
 <pre class="r"><code>### Personality
 ggplot(alldata, aes(x=big5_agree, y=big5_neu)) + geom_jitter()</code></pre>
-<pre><code>## Warning: Removed 44234 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 18296 rows containing missing values (geom_point).</code></pre>
 <p><img src="1_data_import_files/figure-html/exploring%20data-3.png" width="672" /></p>
 <pre class="r"><code>###Openness and Intelligence
 round(cor(alldata %&gt;% ungroup %&gt;% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor, big5_open), use = &quot;pairwise.complete.obs&quot;), 2)</code></pre>
@@ -1131,8 +1188,8 @@ round(cor(alldata %&gt;% ungroup %&gt;% select(raven, math, count_backwards, wor
 ## big5_neu                    0.00               0.00     0.01     1.00</code></pre>
 <pre class="r"><code># Opennes has the highest values!
 ggplot(alldata, aes(x=big5_open, y=g_factor)) + geom_jitter() + geom_smooth(method=lm) </code></pre>
-<pre><code>## Warning: Removed 44680 rows containing non-finite values (stat_smooth).</code></pre>
-<pre><code>## Warning: Removed 44680 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 18742 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 18742 rows containing missing values (geom_point).</code></pre>
 <p><img src="1_data_import_files/figure-html/exploring%20data-4.png" width="672" /></p>
 </div>
 <div id="save-data" class="section level3">

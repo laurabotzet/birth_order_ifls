@@ -19,11 +19,50 @@ library(haven)
 library(plyr)
 library(tidyr)
 library(ggplot2)
+library(stringr)
 library(dplyr)
+```
 
+## Helper
+```{r}
+all_available_info_birth_date = function(byear, bmonth, bday = NULL) {
+  if(!is.null(bday)) {
+    bday = paste0("-", bday)
+  } else {
+    bday = ""
+  }
+  ifelse(is.na(byear), NA,
+         paste0(byear, "-", bmonth, bday))
+  # can yield 2016-NA-NA
+  #           2016-01-NA
+  #           2016-01-01
+  #           2016-01
+}
 
+#' ##### only older sibs
+older_sibs_alive_and_dependent = function(byear, dyear) {
+	sibs = length(byear)
+	older_sibs_alive_and_dependent = integer(length=sibs)
+	for(i in 1:sibs) {
+		older_sibs = byear <= byear[i] # not using < because of twins
+		older_sibs[i] = F # minus self
+		my_sibs = sum(older_sibs,na.rm = T) # minus self
+		if(my_sibs > 0) {
+			sib_births = byear[ which(older_sibs) ]
+			sib_deaths = dyear[ which(older_sibs) ]
+			my_sibs = my_sibs -
+				sum(
+					# sib_births < (byear[i] - 5) | # others born more than 5y earlier than me  # 10 seconds of 17
+						(sib_deaths <= byear[i]) # died before my birth
+				,na.rm=T)
+			older_sibs_alive_and_dependent[i] = my_sibs
+		}
+	}
+	older_sibs_alive_and_dependent
+}
 
 ```
+
 
 
 ## Load data
@@ -62,9 +101,9 @@ b3a_si = read_dta("data/hh14_all_dta/b3a_si.dta")
 ## Select individual data
 ```{r select individual data}
 ### Individuals
-individuals = bk_ar1 %>% select(hhid14_9, pidlink, father_pidlink, mother_pidlink, ar02b, ar10, ar11, ar07, ar08day, ar08mth, ar08yr, ar09, ar18h)
+individuals = bk_ar1 %>% select(hhid14_9, pidlink, father_pidlink, mother_pidlink, ar01a, ar02b, ar10, ar11, ar07, ar08day, ar08mth, ar08yr, ar09, ar18h)
 #Rename variables to make it easier
-individuals <- plyr::rename(individuals, c("ar02b"="relation_to_HH_head", "ar10"="fatherID", "ar11" = "motherID", "ar07" = "sex", "ar09" = "age", "ar18h" = "alive")) 
+individuals <- rename(individuals, relation_to_HH_head = ar02b, fatherID = ar10, motherID = ar11, sex = ar07, age = ar09, alive = ar18h, status = ar01a) 
 # Remove duplicats:
 table(duplicated(individuals$pidlink))
 individuals <- individuals %>% distinct(pidlink, .keep_all = TRUE)
@@ -142,10 +181,11 @@ qplot(individuals$birthorder)
 motherinformations = b4_ba6 %>% select(hhid14_9, pidlink, ba63cx, ba64, ba64bmt, ba64byr, ba64c, ba65, ba65mt, ba65ayr, ba66, ba63n)
 
 #Rename variables to make it easier
-motherinformations <- plyr::rename(motherinformations, c("ba63cx"="biologicalchild_m", "ba64"="sex_m", "ba64bmt" = "birth_month_m", "ba64byr" = "birth_year_m", "ba64c" = "living_in_HH_m", "ba65" = "alive_m", "ba65mt"= "death_month_m", "ba65ayr" = "death_year_m", "ba66" = "death_age_m", "ba63n" = "total_number_childs_m", "pidlink"="mother_pidlink")) 
+motherinformations <- rename(motherinformations, biologicalchild_m = ba63cx, sex_m = ba64,  birth_month_m = ba64bmt, birth_year_m = ba64byr, living_in_HH_m = ba64c, alive_m = ba65, death_month_m = ba65mt, death_year_m = ba65ayr, death_age_m = ba66,total_number_childs_m = ba63n, mother_pidlink = pidlink) 
 
 # Mothercheck
-individuals$check = ifelse(individuals$mother_pidlink %in% motherinformations$mother_pidlink, 1, 0)
+individuals$mother_reported_on_other_sibs = ifelse(individuals$mother_pidlink %in% motherinformations$mother_pidlink, 1, 0)
+crosstabs(individuals$mother_reported_on_other_sibs)
 
 motherinformations$birth_year_m = (ifelse(motherinformations$birth_year_m<2016, motherinformations$birth_year_m, NA))
 
@@ -155,72 +195,108 @@ motherinformations$death_year_m = (ifelse(motherinformations$death_year_m<2016, 
 
 motherinformations$death_month_m = (ifelse(motherinformations$death_month_m<13, motherinformations$death_month_m, NA))
 
-motherinformations = motherinformations %>%
-    mutate(mother_birthdate = 
-           ifelse(is.na(birth_year_m), NA,
-                  ifelse(is.na(mother_pidlink), NA,
-                         ifelse(is.na(birth_month_m), NA, 
-                         paste0(mother_pidlink, "-", birth_year_m, "-", birth_month_m)))))
+missingness_patterns(motherinformations %>% select(mother_pidlink, birth_year_m, birth_month_m))
 
+motherinformations = motherinformations %>%
+    mutate(mother_birthdate = str_c(mother_pidlink, 
+          all_available_info_birth_date(birth_year_m, birth_month_m) ))
+
+# remove all with unknown mothers/unknown birthmonths
 motherinformations = motherinformations %>%
   filter(!is.na(mother_birthdate))
 
 individuals = individuals %>%
-    mutate(mother_birthdate = 
-           ifelse(is.na(ar08yr), NA,
-                  ifelse(is.na(ar08mth), NA,
-                     ifelse(is.na(mother_pidlink), NA,
-                           paste0(mother_pidlink, "-", ar08yr, "-", ar08mth)))))
+    mutate(mother_birthdate = str_c(mother_pidlink, 
+          all_available_info_birth_date(ar08yr, ar08mth) ))
+
+# remove all with unknown mothers/unknown birthmonths
+crosstabs(~ is.na(mother_birthdate) + mother_reported_on_other_sibs, data = individuals)
 
 individuals = individuals %>%
-  filter(!is.na(mother_birthdate)) %>%
-  subset(individuals$check == 1)
+  filter(!is.na(mother_birthdate), mother_reported_on_other_sibs == 1)
 
 
+# overlap between individuals and motherinfo
+length(intersect(individuals$mother_birthdate, motherinformations$mother_birthdate))
+
+ind_mbd = na.omit(individuals$mother_birthdate)
+ind_dupes = unique(ind_mbd[duplicated(ind_mbd)])
+length(ind_dupes)
+minfo_mbd = na.omit(motherinformations$mother_birthdate)
+minfo_dupes = unique(minfo_mbd[duplicated(minfo_mbd)])
+length(minfo_dupes)
+# overlap between duplicates in ind and minfo
+intersect(minfo_dupes, ind_dupes)
+# suboptimal solution: because twins and triplets are not uniquely identified in the motherinformations file. We're using the mother informations file mainly to get sibs MISSING from the indidivuals file, so this is not a big deal. We also get death dates > 12m ago from the minfo file, but individuals who died >12m ago are not in the individuals file.
+motherinformations = motherinformations %>% filter(! mother_birthdate %in% intersect(minfo_dupes, ind_dupes))
+
+length(union(motherinformations$mother_birthdate, individuals$mother_birthdate)) # expected size of parentscheck minus twins
 parentscheck = full_join(individuals, motherinformations, by = "mother_birthdate")
+nrow(parentscheck)
 
-parentscheck$mother_pidlink = ifelse(!is.na(parentscheck$mother_pidlink.y), parentscheck$mother_pidlink.y, ifelse(!is.na(parentscheck$mother_pidlink.x), parentscheck$mother_pidlink.x, NA))
+parentscheck = parentscheck %>% aggregate2sources("mother_pidlink", "mother_pidlink.x", "mother_pidlink.y")
 
 parentscheck = parentscheck %>%
-  filter(!is.na(mother_birthdate)) %>%
-  filter(!is.na(mother_pidlink))
-
-parentscheck = subset(parentscheck,!duplicated(parentscheck$mother_birthdate))
+  filter(!is.na(mother_birthdate), !is.na(mother_pidlink))
 
 
-### Biological Birthorder: Order in Uterus
-# only include biological childs
-parentscheck_biological = parentscheck
-parentscheck_biological$biologicalchild_m = ifelse(is.na(parentscheck_biological$biologicalchild_m), 1, parentscheck_biological$biologicalchild_m)
-parentscheck_biological = parentscheck_biological %>%
-  filter(biologicalchild_m==1)
-
-parentscheck_biological = parentscheck_biological %>% 
-   group_by(mother_pidlink) %>%
-   mutate(siblingcount2 = n())
-
-parentscheck_biological = parentscheck_biological %>%
-    mutate(birth = 
-           ifelse(!is.na(ar08yr), paste0(ar08yr, "-", ar08mth),
-                  ifelse(!is.na(birth_year_m), paste0(birth_year_m, "-", birth_month_m), NA)))
-
-parentscheck_biological = parentscheck_biological %>%
-  group_by(mother_pidlink) %>%
-  mutate(birthorder = min_rank(birth)) %>%
-  group_by(mother_pidlink, birth) %>%
-  mutate(multiple_birth = n()) %>%
-  group_by(mother_pidlink) %>%
-  mutate(any_multiple_birth_in_fam = any(multiple_birth > 1))
-
-ggplot(parentscheck_biological, aes(x=siblingcount2, y=birthorder)) + geom_jitter()
-
-
-
+bk_ar1$ar18h = as.numeric(as.character(bk_ar1$ar18h))
+bk_ar1$ar18h[is.nan(bk_ar1$ar18h)] = NA
+crosstabs(~ ar01a + ar18h, data = bk_ar1)
+crosstabs(~ bk_ar1$ar01a)
+crosstabs(parentscheck$alive_m + parentscheck$status) # almost no one died in last12m?
 ### Social Birthorder - siblings by the time of birth
 parentscheck$alive_m = ifelse(is.na(parentscheck$alive_m), 1, parentscheck$alive_m)
 qplot(parentscheck$alive_m)
 
-parentscheck$death_year_m = ifelse(parentscheck$alive_m==3, ifelse(!is.na(parentscheck$death_year_m), parentscheck$death_year_m, parentscheck$birth_year_m+parentscheck$death_age_m), parentscheck$death_year_m)
+qplot(parentscheck$death_age_m, binwidth=1)
+# all who're dead in our subset have their death date in minfo
+parentscheck = parentscheck %>% mutate(
+  death_year_m_agg = ifelse(is.na(death_year_m), birth_year_m + death_age_m, death_year_m),
+  death_date = all_available_info_birth_date(death_year_m_agg, death_month_m))
+
+### Biological Birthorder: Order in Uterus
+# only include biological childs
+parentscheck$biologicalchild_m = ifelse(
+  is.na(parentscheck$biologicalchild_m), 1, # those who don't have this var are from the individuals file and are biological kids
+  parentscheck$biologicalchild_m) # the ones from the minfo file can have a zero here (be adopted)
+
+parentscheck = parentscheck %>%
+    mutate(birth_ind = all_available_info_birth_date(ar08yr, ar08mth, ar08day),
+           birth_minfo = all_available_info_birth_date(birth_year_m, birth_month_m)) %>%
+    aggregate2sources("birth", "birth_ind", "birth_minfo")
+
+parentscheck = parentscheck %>%
+  group_by(mother_pidlink) %>%
+  mutate(
+    birth_bio = ifelse(biologicalchild_m == 1, birth, NA),
+    birthorder_uterus = min_rank(birth_bio),
+    siblingcount_maternal = sum(biologicalchild_m == 1),
+    
+    born_lived_5y = ifelse(death_age_m <= 5, NA, birth),
+    birthorder_min5y = min_rank(born_lived_5y),
+    siblingcount_min5y = sum(is.na(born_lived_5y)),
+    
+    birthorder_alive = older_sibs_alive_and_dependent(as.numeric(str_sub(birth, 1, 4)), death_year_m)
+    
+  ) %>%
+  group_by(mother_pidlink, birth) %>% # adopt
+  mutate(multiple_birth = sum(biologicalchild_m == 1)) %>%
+  group_by(mother_pidlink) %>%
+  mutate(any_multiple_birth_in_fam = any(multiple_birth > 1))
+
+ggplot(parentscheck, aes(x=siblingcount_maternal, y=birthorder_uterus)) + geom_jitter()
+ggplot(parentscheck, aes(x=siblingcount_maternal, y=birthorder_uterus)) + geom_jitter()
+
+# how to compute social birth order
+# count only those who're alive at own time of birth?
+# count only those who survived their own infancy?
+
+crosstabs(parentscheck$birthorder_min5y)
+qplot(parentscheck$birthorder_min5y, parentscheck$birthorder_uterus, geom = 'jitter')
+crosstabs(~ birthorder_min5y + birthorder_uterus, data = parentscheck)
+crosstabs(~ birthorder_alive + birthorder_uterus, data = parentscheck)
+qplot(parentscheck$birthorder_alive, parentscheck$birthorder_uterus, geom = 'jitter')
 
 table(parentscheck$living_in_HH_m==3)
 
@@ -230,9 +306,7 @@ parentscheck = parentscheck %>%
 
 
 
-individuals_parents_checked = subset(parentscheck, parentscheck$age>14)
-
-
+individuals_parents_checked = filter(parentscheck, age>14)
 ```
 
 ## Select IQ data
@@ -417,7 +491,7 @@ psych::alpha(data.frame(risk %>% select(riskA, riskB)), check.keys = T)
 
 ```{r merge data}
 ### Merge ALL data (including all participants)
-alldata = full_join(individuals, iq, by="pidlink")
+alldata = full_join(individuals_parents_checked, iq, by="pidlink")
 alldata = full_join(alldata, pers, by="pidlink")
 alldata = full_join(alldata, risk, by="pidlink")
 
@@ -495,6 +569,6 @@ ggplot(alldata, aes(x=big5_open, y=g_factor)) + geom_jitter() + geom_smooth(meth
 for future analyses
 
 ```{r save data}
-saveRDS(alldata, file = "data/hh14_all_dta/alldata.dta")
+saveRDS(alldata, file = "data/all.rds")
 
 ```

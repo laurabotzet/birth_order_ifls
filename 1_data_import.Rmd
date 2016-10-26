@@ -57,10 +57,8 @@ b3a_si = read_dta("data/hh14_all_dta/b3a_si.dta")
 
 ```
 
-```{r compare mother information with our information}
 
 
-```
 ## Select individual data
 ```{r select individual data}
 ### Individuals
@@ -146,52 +144,91 @@ motherinformations = b4_ba6 %>% select(hhid14_9, pidlink, ba63cx, ba64, ba64bmt,
 #Rename variables to make it easier
 motherinformations <- plyr::rename(motherinformations, c("ba63cx"="biologicalchild_m", "ba64"="sex_m", "ba64bmt" = "birth_month_m", "ba64byr" = "birth_year_m", "ba64c" = "living_in_HH_m", "ba65" = "alive_m", "ba65mt"= "death_month_m", "ba65ayr" = "death_year_m", "ba66" = "death_age_m", "ba63n" = "total_number_childs_m", "pidlink"="mother_pidlink")) 
 
+# Mothercheck
+individuals$check = ifelse(individuals$mother_pidlink %in% motherinformations$mother_pidlink, 1, 0)
 
-# only include biological childs
-motherinformations = motherinformations %>%
-  filter(biologicalchild_m==1)
+motherinformations$birth_year_m = (ifelse(motherinformations$birth_year_m<2016, motherinformations$birth_year_m, NA))
+
+motherinformations$birth_month_m = (ifelse(motherinformations$birth_month_m<13, motherinformations$birth_month_m, NA))
+
+motherinformations$death_year_m = (ifelse(motherinformations$death_year_m<2016, motherinformations$death_year_m, NA))
+
+motherinformations$death_month_m = (ifelse(motherinformations$death_month_m<13, motherinformations$death_month_m, NA))
 
 motherinformations = motherinformations %>%
     mutate(mother_birthdate = 
            ifelse(is.na(birth_year_m), NA,
                   ifelse(is.na(mother_pidlink), NA,
-                         paste0(mother_pidlink, "-", birth_year_m, "-", birth_month_m))))
+                         ifelse(is.na(birth_month_m), NA, 
+                         paste0(mother_pidlink, "-", birth_year_m, "-", birth_month_m)))))
+
+motherinformations = motherinformations %>%
+  filter(!is.na(mother_birthdate))
 
 individuals = individuals %>%
     mutate(mother_birthdate = 
            ifelse(is.na(ar08yr), NA,
-                  ifelse(is.na(mother_pidlink), NA,
-                         paste0(mother_pidlink, "-", ar08yr, "-", ar08mth))))
+                  ifelse(is.na(ar08mth), NA,
+                     ifelse(is.na(mother_pidlink), NA,
+                           paste0(mother_pidlink, "-", ar08yr, "-", ar08mth)))))
 
+individuals = individuals %>%
+  filter(!is.na(mother_birthdate)) %>%
+  subset(individuals$check == 1)
 
 
 parentscheck = full_join(individuals, motherinformations, by = "mother_birthdate")
-parentscheck = parentscheck %>%
-  filter(!is.na(mother_pidlink.y)) %>%
-  filter(!is.na(mother_pidlink.x)) %>%
-  filter(!is.na(mother_birthdate))
+
+parentscheck$mother_pidlink = ifelse(!is.na(parentscheck$mother_pidlink.y), parentscheck$mother_pidlink.y, ifelse(!is.na(parentscheck$mother_pidlink.x), parentscheck$mother_pidlink.x, NA))
 
 parentscheck = parentscheck %>%
-    mutate(unique = 
-               paste0(mother_birthdate, "-", pidlink))
+  filter(!is.na(mother_birthdate)) %>%
+  filter(!is.na(mother_pidlink))
 
-parentscheck = subset(parentscheck,!duplicated(parentscheck$unique))
+parentscheck = subset(parentscheck,!duplicated(parentscheck$mother_birthdate))
 
-parentscheck = parentscheck %>% 
-   group_by(mother_pidlink.y) %>%
+
+### Biological Birthorder: Order in Uterus
+# only include biological childs
+parentscheck_biological = parentscheck
+parentscheck_biological$biologicalchild_m = ifelse(is.na(parentscheck_biological$biologicalchild_m), 1, parentscheck_biological$biologicalchild_m)
+parentscheck_biological = parentscheck_biological %>%
+  filter(biologicalchild_m==1)
+
+parentscheck_biological = parentscheck_biological %>% 
+   group_by(mother_pidlink) %>%
    mutate(siblingcount2 = n())
 
-ggplot(parentscheck, aes(x=siblingcount2, y=total_number_childs_m)) + geom_jitter()
+parentscheck_biological = parentscheck_biological %>%
+    mutate(birth = 
+           ifelse(!is.na(ar08yr), paste0(ar08yr, "-", ar08mth),
+                  ifelse(!is.na(birth_year_m), paste0(birth_year_m, "-", birth_month_m), NA)))
+
+parentscheck_biological = parentscheck_biological %>%
+  group_by(mother_pidlink) %>%
+  mutate(birthorder = min_rank(birth)) %>%
+  group_by(mother_pidlink, birth) %>%
+  mutate(multiple_birth = n()) %>%
+  group_by(mother_pidlink) %>%
+  mutate(any_multiple_birth_in_fam = any(multiple_birth > 1))
+
+ggplot(parentscheck_biological, aes(x=siblingcount2, y=birthorder)) + geom_jitter()
+
+
+
+### Social Birthorder - siblings by the time of birth
+parentscheck$alive_m = ifelse(is.na(parentscheck$alive_m), 1, parentscheck$alive_m)
+qplot(parentscheck$alive_m)
+
+parentscheck = parentscheck %>% 
+   group_by(mother_pidlink) %>%
+   mutate(siblingcount_total = n())
+
+parentscheck$death_year_m = ifelse(parentscheck$alive_m==3, ifelse(!is.na(parentscheck$death_year_m), parentscheck$death_year_m, parentscheck$birth_year_m+parentscheck$death_age_m), parentscheck$death_year_m)
 
 individuals_parents_checked = subset(parentscheck, parentscheck$age>14)
 
-individuals_parents_checked = individuals_parents_checked %>%
-  group_by(mother_father_dyad) %>%
-  mutate(birthorder = min_rank(birth)) %>%
-  group_by(mother_father_dyad, birth) %>%
-  mutate(multiple_birth = n()) %>%
-  group_by(mother_father_dyad) %>%
-  mutate(any_multiple_birth_in_fam = any(multiple_birth > 1))
+
 ```
 
 ## Select IQ data
@@ -280,6 +317,8 @@ summary(cfa_g)
 iq$g_factor = predict(cfa_g)[,1]
 qplot(iq$g_factor)
 round(cor(iq %>% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+
+formr::missingness_patterns(iq %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor)) ## oops, lavaan only predicts the g factor for complete cases
 ```
 
 

@@ -1,0 +1,33 @@
+---
+author: "Laura Botzet"
+date: "11/03/2016"
+output:
+  html_document:
+    lib_dir: library
+    self_contained: no
+  pdf_document: default
+---
+
+## Library
+```{r Library}
+library(formr)
+library(devtools)
+library(haven)
+# devtools::install_github("hadley/haven")
+library(tidyr)
+library(ggplot2)
+library(stringr)
+library(dplyr)
+library(GPArotation)
+```
+
+## Load data
+```{r Load data}
+### Import alldata used for birthorder
+alldata_birthorder = readRDS("data/alldata_birthorder.rds")
+
+### Import all alldata
+alldata = readRDS("data/alldata.rds")
+
+```
+

@@ -8,7 +8,6 @@ output:
   pdf_document: default
 ---
 
-# Data import {.tabset}
 
 ## Library
 ```{r Library}
@@ -585,6 +584,11 @@ round(cor(alldata %>% ungroup %>% select(raven, math, count_backwards, words_imm
 round(cor(alldata %>% ungroup %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor, big5_neu), use = "pairwise.complete.obs"), 2)
 # Opennes has the highest values!
 ggplot(alldata, aes(x=big5_open, y=g_factor)) + geom_jitter() + geom_smooth(method=lm) 
+
+### Birth Order
+alldata_birthorder %>%
+  filter(birthorder_uterus<6) %>%
+  ggplot(aes(x=birthorder_uterus, y=g_factor)) + geom_jitter() + geom_smooth(method=lm) 
 ```
 
 
@@ -593,6 +597,7 @@ ggplot(alldata, aes(x=big5_open, y=g_factor)) + geom_jitter() + geom_smooth(meth
 for future analyses
 
 ```{r save data}
-saveRDS(alldata, file = "data/all.rds")
+saveRDS(alldata, file = "data/alldata.rds")
+saveRDS(alldata_birthorder, file = "data/alldata_birthorder.rds")
 
 ```

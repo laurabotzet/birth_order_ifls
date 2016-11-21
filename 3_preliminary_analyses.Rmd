@@ -15,47 +15,53 @@ library(effects)
 
 ## Load data
 ```{r}
-all_data = readRDS("data/all.rds")
+alldata_birthorder = readRDS("data/alldata_birthorder.rds")
 ```
 
 ```{r}
-all_data$byear = all_data$ar08yr
-qplot(all_data$byear,binwidth = 1)
-qplot(all_data$age,binwidth = 1)
-crosstabs(all_data$sex.x + all_data$sex.y)
-all_data$male = factor(all_data$sex.x == 1)
-qplot(all_data$birthorder_uterus, binwidth = 1)
-all_data = all_data %>% 
+qplot(alldata_birthorder$byear,binwidth = 1)
+qplot(alldata_birthorder$age,binwidth = 1)
+crosstabs(alldata_birthorder$sex.x + alldata_birthorder$sex.y)
+qplot(alldata_birthorder$birthorder_uterus_alive, binwidth = 1)
+
+alldata_birthorder = alldata_birthorder %>% 
   mutate(
-    birthorder_uterus_factor = as.character(birthorder_uterus),
-    birthorder_uterus_factor = ifelse(birthorder_uterus > 5, "5+", birthorder_uterus_factor),
-    birthorder_uterus_factor = factor(birthorder_uterus_factor, levels = c("1","2","3","4","5","5+")),
-    siblingcount_maternal_factor = as.character(siblingcount_maternal),
-    siblingcount_maternal_factor = ifelse(siblingcount_maternal > 5, "5+", siblingcount_maternal_factor),
-    siblingcount_maternal_factor = factor(siblingcount_maternal_factor, levels = c("1","2","3","4","5","5+"))
-  )
-crosstabs(~ siblingcount_maternal_factor + birthorder_uterus_factor, data = all_data)
+    birthorder_uterus_alive_factor = as.character(birthorder_uterus_alive),
+    birthorder_uterus_alive_factor = ifelse(birthorder_uterus_alive > 5, "5+", birthorder_uterus_alive_factor),
+    birthorder_uterus_alive_factor = factor(birthorder_uterus_alive_factor, levels = c("1","2","3","4","5","5+")),
+    sibling_count_uterus_alive_factor = as.character(sibling_count_uterus_alive),
+    sibling_count_uterus_alive_factor = ifelse(sibling_count_uterus_alive > 5, "5+", sibling_count_uterus_alive_factor),
+    sibling_count_uterus_alive_factor = factor(sibling_count_uterus_alive_factor, levels = c("1","2","3","4","5","5+")))
+
+
+crosstabs(~ sibling_count_uterus_alive_factor + birthorder_uterus_alive_factor, data = alldata_birthorder)
+
+alldata_birthorder$sex = factor(ifelse(alldata_birthorder$sex.x==1, "male", "female"))
+
 # remove only children?
-no_only_children = all_data %>% filter(siblingcount_maternal > 1)
-crosstabs(~ siblingcount_maternal_factor + birthorder_uterus_factor, data = no_only_children)
+no_only_children = alldata_birthorder %>% filter(as.numeric(sibling_count_uterus_alive) > 1)
+crosstabs(~ sibling_count_uterus_alive_factor + birthorder_uterus_alive_factor, data = no_only_children)
+
+
 ```
 
 
-```{r}
-m1 = lm(riskA ~ male + age + byear + birthorder_uterus, data = all_data)
-summary(m1)
-m2 = lm(riskA ~ male + age + byear + birthorder_alive, data = all_data)
-summary(m2)
-m3 = lm(riskA ~ male + age + byear + birthorder_uterus + birthorder_alive, data = all_data)
-summary(m3)
-anova(m1,m2,m3)
 
-x1 = lm(riskA ~ male + age + byear + birthorder_uterus_factor * siblingcount_maternal_factor, data = no_only_children)
+```{r}
+m1 = lm(riskA ~ sex + age + byear + birthorder_uterus_alive, data = alldata_birthorder)
+summary(m1)
+m2 = lm(riskA ~ sex + age + byear + birthorder_uterus_preg, data = alldata_birthorder)
+summary(m2)
+
+x1 = lm(riskA ~ sex + age + byear + birthorder_uterus_alive_factor * sibling_count_uterus_alive_factor, data = no_only_children)
 summary(x1)
 plot(allEffects(x1))
 
-m1m = lmer(riskA ~ male + age + byear + birthorder_uterus_factor * siblingcount_maternal + (1 | mother_pidlink), data = no_only_children)
+x2 = lm(g_factor ~ sex + age + byear + birthorder_uterus_alive_factor * sibling_count_uterus_alive_factor, data = no_only_children)
+summary(x2)
+plot(allEffects(x2))
+
+m1m = lmer(riskA ~ gender + age + byear + birthorder_uterus_alive_factor * sibling_count_uterus_alive_factor + (1 | mother_pidlink), data = no_only_children)
 summary(m1m)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

@@ -1,0 +1,993 @@
+
+     ===================================================================
+
+         IIII     FFFFFFF     LLL          SSSSSS           3333333333  
+          II       FF   F     LL          SS    SS                 333  
+          II       FF         LL          SS     S                 33   
+          II       FF         LL          SSS                     33    
+          II       FFFFF      LL           SSSSS                333     
+          II       FF         LL            SSSSS                 33    
+          II       FF         LL               SSS                 33   
+          II       FF         LL          S     SS                  33  
+          II       FF         LL     L    SS    SS          33      33  
+         IIII     FFFF        LLLLLLLL     SSSSSS            33333333   
+
+     ===================================================================
+
+
+
+     I N D O N E S I A N    F A M I L Y    L I F E    S U R V E Y    3  
+
+       A survey of individuals, households, families, communities       
+          and facilities conducted in 13 provinces in Indonesia         
+                   between August 2000 and February 2001                
+
+     ===================================================================
+
+                               Directed by                              
+
+                 John Strauss, RAND and Michigan State Univ.            
+
+                  Kathleen Beegle,  RAND and The World Bank             
+
+                            Bondan Sikoki, RAND                         
+
+                                  and                                   
+
+              Agus Dwiyanto, Center for Population and Policy Studies,  
+                          Univ. of Gadjah Mada                          
+
+     ===================================================================
+
+     Financial support for the Indonesian Family Life Surveys has been  
+     provided by the National Institute of Aging grant number 1R01      
+     AG17637 and the National Institute of Child and Human Development, 
+     grant number 1R01 HD38484                                          
+
+     ===================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+              Website: http://www.rand.org/FLS/IFLS                     
+          Send all questions to ifls-supp@rand.org                      
+
+                       Copyright (2004)                                 
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                               page 2  
+
+
+
+
+
+
+
+================================================================================
+
+          H   H   OOO    U   U    SS    EEEE   H   H   OOO   L     DDDD         
+          H   H  O   O   U   U   S  S   E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U   S      E      H   H  O   O  L     D   D        
+          HHHHH  O   O   U   U    S     EEEE   HHHHH  O   O  L     D   D        
+          H   H  O   O   U   U     S    E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U      S   E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U   S  S   E      H   H  O   O  L     D   D        
+          H   H   OOO     UUU     SS    EEEE   H   H   OOO   LLLL  DDDD         
+
+
+                    SS    U   U   RRR    V    V    EEEE   Y    Y                
+                   S  S   U   U   R  R   V    V    E      Y    Y                
+                   S      U   U   R  R   V    V    E       Y  Y                 
+                    S     U   U   RRR    V    V    EEE       Y                  
+                     S    U   U   R R     V  V     E         Y                  
+                      S   U   U   R  R    V  V     E         Y                  
+                   S  S   U   U   R  R     V       E         Y                  
+                    SS     UUU    R  R     V       EEEE      Y                  
+
+
+            CCC    OOO    DDDD    EEEE   BBBB     OOO     OOO    K   K          
+           C   C  O   O   D   D   E      B   B   O   O   O   O   K  K           
+           C      O   O   D   D   E      B   B   O   O   O   O   K K            
+           C      O   O   D   D   EEE    BBBB    O   O   O   O   KK             
+           C      O   O   D   D   E      B   B   O   O   O   O   KK             
+           C      O   O   D   D   E      B   B   O   O   O   O   K K            
+           C   C  O   O   D   D   E      B   B   O   O   O   O   K  K           
+            CCC    OOO    DDDD    EEEE   BBBB     OOO     OOO    K   K          
+
+================================================================================
+
+ B O O K :       HTRACK                                            
+ T O P I C :     HOUSEHOLD TRACKING                                           
+
+================================================================================
+
+
+
+
+
+
+
+
+
+
+
+                               Prepared by                                      
+                Roald Euller, John Strauss, Firman Witolar                      
+                     Created on 09NOV2005 at 11:22                           
+
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 3
+--------------------------------------------------------------------------------
+ B O O K :       HTRACK
+ T O P I C :     Household Tracking
+
+--------------------------------------------------------------------------------
+
+DATA FILES                                                                    
+----------                                                                    
+  Data are available in SAS (8.2) export and STATA (7.0) formats.             
+  Data and electronic documentation are available on the IFLS website.        
+
+  The survey instrument contains multiple sections.  Where possible, sections 
+  have been merged together to form a single data module.  The modules are    
+  organized by level of observation.  The module names are listed below.  They
+  serve as the names of the SAS and STATA data files. The codebook is also    
+  organised by module.                                                        
+
+  The modules are:                                                            
+
+   --------------------------------------------------------------------------
+                                                             # of
+      Module    Description                                  recs
+   --------------------------------------------------------------------------
+      HTRACK    HH-level tracking across waves              11111
+
+USER SUPPORT                                                                   
+------------                                                                   
+    These data should be used in conjunction with the Questionnaires and Users'
+    Manuals.  Check the IFLS web page for updates and answers to frequently    
+    asked questions.  Please send all questions to ifls-supp@rand.org.         
+
+USAGE NOTES                                                                    
+-----------                                                                    
+  READING THE DICTIONARY                                                       
+    For each variable in the dataset, the dictionary provides                  
+       Variable name : Typically the question number                           
+               Label : Describes variable                                      
+    Variable coding is described as follows:                                   
+               Value : Meaning of values for coded variables                   
+           Frequency : Frequency of each value                                 
+
+SPECIAL CODES                                                                  
+-------------                                                                  
+  The following values are reserved and have a special meaning:                
+      Numeric    Alphanumeric    Meaning                                       
+     5/95/995         V          Top coded/out of range                        
+     6/96/996         W          Not applicable                                
+     7/97/997         X          Refused to answer                             
+     8/98/998         Y          Don't know                                    
+     9/99/999         Z          Missing                                       
+
+DATASET VERSION                                                                
+---------------                                                                
+  The variable VERSION identifies the release version of these data; it         
+  will be updated with each revision of the data and can be used to confirm     
+  that you are using the most recent version of the data.                       
+
+NOTES ABOUT TRACKING FILES                                               
+--------------------------                                               
+
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 4
+--------------------------------------------------------------------------------
+ B O O K :       HTRACK
+ T O P I C :     Household Tracking
+
+--------------------------------------------------------------------------------
+
+  The TRACKING FILES, HTRACK and PTRACK, are provided to facilitate        
+  using the longitudinal dimensions of the survey.  All variables          
+  included in these files are drawn from interviews conducted in           
+  IFLS1 (1993), IFLS2 (1997/8), IFLS2+ (1998) and IFLS3 (2000).            
+
+
+HOUSEHOLD TRACKING FILE                                                  
+-----------------------                                                  
+  HTRACK00 contains a list of all HOUSEHOLDS that were interviewed in      
+  any wave of IFLS; they are identified by the 2000 HOUSEHOLD identifier,  
+  HHID00.  It is a 7 digit string variable.  The first 3 digits are        
+  the enumeration area in which the household resided in 1993 and          
+  the next two digits are a household sequence number within that          
+  enumeration area which uniquely identifies the household.  The           
+  last two digits are always '00'.  (The first 5 digits of HHID93          
+  are the same as the last 5 digits of CASE, the HH identifier             
+  variable in the original IFLS1 release.)                                 
+
+  In IFLS3, households are identified by HHID00.  If an IFLS               
+  household was found intact in 2000, it was assigned the same             
+  identifier as in 1993 and 1997; in this case                             
+  HHID93=HHID97==HHID00.  If the household had split up since              
+  1993, then part of that household was designated the                     
+  'original' household and the prior household identifier                  
+  assigned to it (see Volume 2 of the User's Guide for the                 
+  rules).   Each additional household that was spawned by that             
+  HHID93 was given a new HHID in the wave in which it was found.           
+  The first 5 digits of the new HHID are identical to the first            
+  5 digits of HHID93 (and, therefore, all new households that              
+  are spawned by one 1993 household share the same first 5                 
+  digits in their HHIDs).  The last two digits of HHID00 are a             
+  1, 2 or 3 (in column 6) and then a sequence number starting at           
+  1 (in the 7th column).  The digit in column 6 tells us in                
+  which wave of IFLS the split-off was first found; for                    
+  split-off households first found in IFLS2 the digit is a '1',            
+  for split-off households found first in IFLS2+ a '2' and for             
+  split-off households first found in 2000 a '3'.  The 7th                 
+  column is the order of new split-offs found, if there are                
+  multiple splits found within a wave.                                     
+
+  Thus the last two digits of HHID00 are '00' for the household            
+  retaining the original 93 HHID and then '31' for the first new           
+  IFLS3 split-off, '32' for the second new IFLS3 split-off, and            
+  so on.                                                                   
+
+  For example, say HHID93 is 2071900.  This is household 19 from           
+  enumeration area 207.  The household stayed intact through               
+  IFLS2+, but split into 3 households between 1998 and 2000.               
+  The three households are assigned HHID00 2071900 (for the                
+  first of the three HHs found), 2071931 (for the first                    
+  split-off HH that was found) and 2071932 (for the second                 
+  split-off HH that was found).                                            
+
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 5
+--------------------------------------------------------------------------------
+ B O O K :       HTRACK
+ T O P I C :     Household Tracking
+
+--------------------------------------------------------------------------------
+Location of HH                                                           
+--------------                                                           
+  Note that the enumeration area in 1993 (digits 1-3) in the HHID          
+  is not the location of residence of the household in 2000 (unless        
+  the household has not moved) and should not be used to determine         
+  geographic location of the household.  1993 location was built           
+  into the 1993 HH identifier, CASE.  It is not built into HHID93,         
+  HHID97 or HHID00.                                                        
+
+  Location information is recorded in module BK_SC in each wave            
+  of the survey.  A summary is included in HTRACK00.  HTRACK00             
+  also provides information on the household's location in 1993,           
+  1997, 1998 and 2000, if it was found.  For 1993, three sets of           
+  location codes are given:  those used by the Central Bureau of           
+  Statistics (BPS) in 1993 (also in the original IFLS1 data),              
+  and those used by BPS in 1998 (in the IFLS2 data) and those              
+  used by BPS in 1999.   For 1997 locations, two sets of codes             
+  are given: those based on 1998 BPS codes and those based on              
+  1999 codes.  For 2000 locations we also provide two sets of              
+  codes.  We use the 1999 BPS codes as the main set, and these             
+  are used consistently throughout IFLS3 (for example in module            
+  SC of books T and K).  However, in case some users may want to           
+  link IFLS3 to the February 2001 SUSENAS, so we also provide              
+  the 2000 BPS codes to facilitate that linkage.  Note that                
+  using the 2000 codes is more difficult because two new                   
+  provinces were created from IFLS provinces in the 2000 codes:            
+  West Java was split into two as was South Sumatra.  This split           
+  is NOT manifested in any of the IFLS3 codes, making it easier            
+  to use the 1999 BPS codes.                                               
+
+  For households that were interviewed in IFLS3, variable                  
+  MOVER00 identifies whether the household moved between the               
+  last time it was interviewed (which could be 1998, 1997 or               
+  1993) and 2000, taking the following values:                             
+
+  0 = Did not move                                                         
+  1 = Moved within same village/municipality                               
+  2 = Moved within same kecamatan                                          
+  3 = Moved within same kabupaten                                          
+  4 = Moved within same province                                           
+  5 = Moved within other IFLS province                                     
+
+  MOVER00 is non-missing not only for origin households                    
+  interviewed in 2000, but also for split-off households                   
+  interviewed in IFLS2 or 2+.  In addition, we calculate MOVER00           
+  for new split-off households in IFLS3.  Because each split-off           
+  household contains at least one person who was tracked from an           
+  IFLS household (which could have been an origin household or             
+  could have been a split-off), we have calculated MOVER00 for             
+  split-off households on the basis of the household's 2000                
+  location relative to the last known location of the household            
+  from which the tracked person came. In addition to the BPS               
+  location codes, HTRACK00 contains COMMID93, COMMID97 and                 
+  COMMID00, which can be used to link households to the IFLS               
+
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 6
+--------------------------------------------------------------------------------
+ B O O K :       HTRACK
+ T O P I C :     Household Tracking
+
+--------------------------------------------------------------------------------
+  community-level data.  COMMID, described in detail above, is a           
+  four digit/character code. The first two digits represent the            
+  province, the third the district within province and the                 
+  fourth the sub-district within district.  All households found           
+  in a particular wave have non-missing COMMID for that wave,              
+  even if they are movers.  COMMIDs for movers tend to have                
+  letters as their third or fourth characters.  COMMID is                  
+  defined at the level of the sub-district for mover households.           
+  For stayers, COMMID is defined at the enumeration area, except           
+  for the nine twin EAs, for whom their EAs are combined into              
+  one COMMID.  This will allow users to estimate models with               
+  COMMID fixed effects, for example. However for movers outside            
+  of the IFLS EAs, COMMID00 is not of help in linking to                   
+  community data.  MKID00 must be used instead to link to                  
+  Mini-CFS, because it is defined at the EA-level for movers,              
+  not at the sub-district level.  MKID00 is a five digit or                
+  character code, which contains COMMID00 as the first four                
+  characters, followed by a number or letter signifying EA                 
+  within sub-district.  Non-movers have a 0 as the fifth digit,            
+  whereas movers have a non-zero number or a letter.  MKID00               
+  should be used to match mover households to their Mini-CFS               
+  data files. HTRACK00 also contains household weight variables,           
+  discussed in Volume 2 of the User's Guide, for IFLS1, 2 and 3,           
+  both cross-section and longitudinal weights.                             
+
+
+PERSON TRACKING FILE                                                     
+--------------------                                                     
+  PTRACK00 contains a record for every person who has ever                 
+  appeared in an IFLS1, 2 or 3 household roster.                           
+
+  PID is a two digit sequence number identifying each individual           
+  within a household.  The combination of HHID00 and PID00                 
+  uniquely identifies every respondent in IFLS3.  It may be used           
+  to link records within IFLS3.   If an IFLS3 respondent was               
+  found in the original household, HHID00=HHID97=HHID93 and                
+  PID00=PID97=PID93.  All new respondents since IFLS1 are                  
+  assigned PID97, PID98 or PID00 that begins after the highest             
+  PID93 for that household.  In split-off households, PID00 was            
+  assigned starting at 01 for the household head.  The                     
+  combination of HHID97 and PID97 uniquely identifies every                
+  respondent in IFLS2 and likewise for HHID00 and PID00 in                 
+  IFLS3.                                                                   
+
+  HHID93 and PID93 or HHID97 and PID97 or HHID00 and PID00                 
+  should NOT however be used to link respondents across waves of           
+  IFLS. Individuals who moved out of the 1993 origin household             
+  and were interviewed in a new household will have different              
+  HHID and PIDs across waves.  Individuals who were new                    
+  household members in 2000 will have missing HHID and PID for             
+  1993 or 1997.                                                            
+
+Linking respondents across waves: PIDLINK                                
+-----------------------------------------                                
+
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 7
+--------------------------------------------------------------------------------
+ B O O K :       HTRACK
+ T O P I C :     Household Tracking
+
+--------------------------------------------------------------------------------
+  Many individuals have moved across households between IFLS1              
+  and IFLS3.  In order to link records for a particular                    
+  individual  across waves of the IFLS, use PIDLINK. It is a               
+  unique person-level identifier which is the same in IFLS1, 2,            
+  2+ and 3 for  a particular individual.   Within PTRACK00, each           
+  observation is identified by PIDLINK.                                    
+
+  PTRACK00 contains a number of variables that will help                   
+  establish the basic demographic composition of each IFLS wave            
+  and the availability of individual-level data from each wave.            
+  PTRACK00 indicates in which household each person who was ever           
+  an IFLS household member was found, in each wave, HHID93, 97,            
+  00; plus their person IDs (PID) with the household in each               
+  wave.  Further MEMBER93, 97 and 00 indicates whether the                 
+  person was indeed found in that wave.                                    
+
+  Variables indicate our best guess of each person's age at each           
+  wave: AGE93, 97, 00.  We also report our best guess of the               
+  person's date of birth.  AGE93 and AGE97 are taken from the              
+  IFLS2 PTRACK and so represent the best guess age in 1993 and             
+  1997 using information available in IFLS2 or IFLS1. AGE00 is             
+  our best guess age in 2000 based on IFLS3 information.  The              
+  three will not necessarily be consistent, although the                   
+  algorithm that generates them is essentially the same across             
+  the waves.  In theory respondents interviewed in IFLS1 should            
+  have been three or four years older in 1997, depending on the            
+  time of year the interview took place in each wave.  In                  
+  Indonesia, as in many developing countries, however, not                 
+  everyone knows his/her birthdate or age accurately.                      
+  Therefore, reported birthdate and ages across waves do not               
+  always match for a respondent, and there may even be                     
+  discrepancies between books within a wave.  In addition to age           
+  and date of birth, we report our best guess of the person's              
+  sex based on IFLS3 data.  For all but a few respondents, the             
+  reported sex matches across waves.  The PTRACK00 file provides           
+  our best guess for sex in an attempt to resolve discrepancies.           
+
+  PTRACK00 also reports information on marital status at each              
+  wave and the survey books for which data are available from              
+  each wave.  Such information allows the analyst to calculate             
+  the number of observations in IFLS1 and IFLS2 and the number             
+  of panel observations for the various survey books.                      
+
+  PTRACK00 does not provide information on individuals'                    
+  locations.  At the household level, that information is in               
+  HTRACK00.  For individuals who were new household members in             
+  2000 (AR01a_00 = 5), the location information in HTRACK00 for            
+  1993 or 1997 is not necessarily the location where the new               
+  individual resided in those years.  The individual's household           
+  of residence from past waves, in PTRACK00, can be used                   
+  together with the location information in HTRACK00 to obtain             
+  past location, so long as the person was present in an IFLS              
+  household in that particular wave.  Otherwise, to ascertain              
+  where a new household member lived in the past, data from                
+
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 8
+--------------------------------------------------------------------------------
+ B O O K :       HTRACK
+ T O P I C :     Household Tracking
+
+--------------------------------------------------------------------------------
+  module MG in book 3A should be used.                                     
+
+  PTRACK00 also contains individual weights variables, described           
+  in Volume 2 of the User's Guide, from IFLS1, 2 and 3.                    
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 9
+book:    HTRACK  - Household Tracking                                   
+module:  HTRACK              HH-level tracking across waves
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID00             2000 Household ID
+
+
+CASE               IFLS HH number (used in IFLS1)
+
+
+COMMID00           Community ID (2000 wave)
+
+
+COMMID93           Community ID (1993 wave)
+
+
+COMMID97           Community ID (1997 wave)
+
+
+FORMT1             HHd has  2000 T1 tracking form
+
+                   min:                                          1.00
+                   mean:                                         2.81
+                   max:                                          3.00
+                   #obs                                        11,111
+                   #miss:                                           0
+
+HHID00_9           HH Identifier (2000 wave)
+
+
+HHID93             Household ID (1993 wave)
+
+
+HHID97             Household ID (1997 wave)
+
+
+HHID98             Household ID (1998 wave)
+
+
+HWT00LA            Long. HH wgt (w/o found in 97 in logit)
+
+                   min:                                          0.03
+                   mean:                                         0.70
+                   max:                                          3.85
+                   #obs                                        10,088
+                   #miss:                                       1,023
+
+HWT00LB            Long. HH wgt (w/ found in 97 in logit)
+
+                   min:                                          0.03
+                   mean:                                         0.70
+                   max:                                          4.02
+                   #obs                                        10,088
+                   #miss:                                       1,023
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 10
+book:    HTRACK  - Household Tracking                                   
+module:  HTRACK              HH-level tracking across waves
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HWT00XA            Xsect. HH wgt (w/o found in 97 in logit)
+
+                   min:                                          0.32
+                   mean:                                         1.01
+                   max:                                          1.60
+                   #obs                                        10,540
+                   #miss:                                         571
+
+HWT00XB            Xsect. HH wgt (w/ found in 97 in logit)
+
+                   min:                                          0.32
+                   mean:                                         1.01
+                   max:                                          1.57
+                   #obs                                        10,540
+                   #miss:                                         571
+
+HWT93              93: HH weight =HHWT224 in IFLS1
+
+                   min:                                          0.24
+                   mean:                                         1.00
+                   max:                                          1.91
+                   #obs                                         7,224
+                   #miss:                                       3,887
+
+HWT93SMP           93: HH wt for target sample=HHWT730
+
+                   min:                                          0.24
+                   mean:                                         1.00
+                   max:                                          1.92
+                   #obs                                         7,224
+                   #miss:                                       3,887
+
+HWT97X             97 Xsection HH weight (raked->SUSENAS97)
+
+                   min:                                          0.29
+                   mean:                                         1.00
+                   max:                                          1.71
+                   #obs                                         7,629
+                   #miss:                                       3,482
+
+HWT97L             97: Longitudinal HH weight
+
+                   min:                                          0.03
+                   mean:                                         0.94
+                   max:                                          3.46
+                   #obs                                         7,688
+                   #miss:                                       3,423
+
+MKID00             5-digit minikamades ID
+
+
+MODULE             survey module
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 11
+book:    HTRACK  - Household Tracking                                   
+module:  HTRACK              HH-level tracking across waves
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+MOVER00            Moved since last survey?
+
+                   missing                                        676      6.08
+                   0.did not move                               7,634     68.71
+                   1.within same desa                             683      6.15
+                   2.within same kec.                             360      3.24
+                   3.within same kab.                             483      4.35
+                   4.within same prov.                            708      6.37
+                   5.other IFLS prov.                             496      4.46
+                   6.other prov.                                   71      0.64
+                   total                                       11,111    100.00
+
+MOVER97            Moved between 1993 & 1997?
+
+                   missing                                      3,474     31.27
+                   0.did not move                               6,131     55.18
+                   1.within same desa                             567      5.10
+                   2.within same kec.                             201      1.81
+                   3.within same kab.                             254      2.29
+                   4.within same prov.                            324      2.92
+                   5.other IFLS prov.                             160      1.44
+                   total                                       11,111    100.00
+
+RES00B1            00 Result of Bk 1
+
+                   missing                                        676      6.08
+                   1.complete                                  10,259     92.33
+                   3.not completed                                176      1.58
+                   total                                       11,111    100.00
+
+RES00B2            00 Result of Bk 2
+
+                   missing                                        676      6.08
+                   1.complete                                  10,269     92.42
+                   3.not completed                                166      1.49
+                   total                                       11,111    100.00
+
+RES00BK            00 Result of Bk K
+
+                   missing                                         96      0.86
+                   1.complete                                  10,435     93.92
+                   3.not completed                                580      5.22
+                   total                                       11,111    100.00
+
+RES93B1            93 Result Bk 1
+
+                   missing                                      3,887     34.98
+                   1.complete                                   7,224     65.02
+                   total                                       11,111    100.00
+
+RES93B2            93 Result Bk 2
+
+                   missing                                      3,887     34.98
+                   1.complete                                   7,184     64.66
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 12
+book:    HTRACK  - Household Tracking                                   
+module:  HTRACK              HH-level tracking across waves
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(RES93B2  continued)
+
+                   3.not completed                                 40      0.36
+                   total                                       11,111    100.00
+
+RES93BK            93 Result Bk K
+
+                   missing                                      3,887     34.98
+                   1.complete                                   7,224     65.02
+                   total                                       11,111    100.00
+
+RES97B1            97 Result Bk 1
+
+                   missing                                      3,492     31.43
+                   1.complete                                   7,565     68.09
+                   3.not completed                                 54      0.49
+                   total                                       11,111    100.00
+
+RES97B2            97 Result Bk 2
+
+                   missing                                      3,492     31.43
+                   1.complete                                   7,599     68.39
+                   3.not completed                                 20      0.18
+                   total                                       11,111    100.00
+
+RES97BK            97 Result Bk K
+
+                   missing                                      2,996     26.96
+                   1.complete                                   7,698     69.28
+                   3.not completed                                417      3.75
+                   total                                       11,111    100.00
+
+RES98B1            98 Result of Bk 1
+
+                   missing                                      8,436     75.92
+                   1.complete                                   2,534     22.81
+                   3.not completed                                141      1.27
+                   total                                       11,111    100.00
+
+RES98B2            98 Result of Bk 2
+
+                   missing                                      8,436     75.92
+                   1.complete                                   2,538     22.84
+                   3.not completed                                137      1.23
+                   total                                       11,111    100.00
+
+RES98BK            98 Result of Bk K
+
+                   missing                                      8,436     75.92
+                   1.complete                                   2,481     22.33
+                   2.partially complete                            63      0.57
+                   3.not completed                                131      1.18
+                   total                                       11,111    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 13
+book:    HTRACK  - Household Tracking                                   
+module:  HTRACK              HH-level tracking across waves
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+RESULT00           00 Result of HH Ivw
+
+                   1.Interviewed                               10,435     93.92
+                   2.Joined other household                       105      0.95
+                   3.All target members dead                       34      0.31
+                   4.Refused                                       67      0.60
+                   5.Not found                                    374      3.37
+                   9                                               96      0.86
+                   total                                       11,111    100.00
+
+RESULT93           93 Result of HH ivw
+
+                   min:                                          1.00
+                   mean:                                         1.00
+                   max:                                          1.00
+                   #obs                                         7,224
+                   #miss:                                       3,887
+
+RESULT97           97 Result of HH ivw
+
+                   missing                                      2,996     26.96
+                   01.Interview conducted                       7,619     68.57
+                   02.Joined other IFLS HH                         10      0.09
+                   03.All target mems dead                         69      0.62
+                   04.Refused                                      88      0.79
+                   11.Moved (w/in prov)                            87      0.78
+                   12.Moved (oth IFLS prov)                        69      0.62
+                   13.Moved (non IFLS prov)                        47      0.42
+                   14.Moved (diff country)                          6      0.05
+                   15.Moved (DK location)                          79      0.71
+                   21.Unable to contact                             7      0.06
+                   22.Building vacant                               3      0.03
+                   23.Building demolished                           3      0.03
+                   24.Building not found                           28      0.25
+                   total                                       11,111    100.00
+
+RESULT98           98 Result of HH Ivw
+
+                   missing                                      8,436     75.92
+                   1.Interviewed                                2,576     23.18
+                   3.All target members dead                       15      0.14
+                   5.Not found                                     84      0.76
+                   total                                       11,111    100.00
+
+SC010000           00: '00 BPS Prov. code
+
+                   min:                                         11.00
+                   mean:                                        34.71
+                   max:                                         74.00
+                   #obs                                        10,435
+                   #miss:                                         676
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 14
+book:    HTRACK  - Household Tracking                                   
+module:  HTRACK              HH-level tracking across waves
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+SC010099           00: '99 BPS Prov. code
+
+                   min:                                         11.00
+                   mean:                                        34.58
+                   max:                                         74.00
+                   #obs                                        10,435
+                   #miss:                                         676
+
+SC0193R2           93: '99 BPS prov.code
+
+                   min:                                         12.00
+                   mean:                                        34.45
+                   max:                                         73.00
+                   #obs                                        10,435
+                   #miss:                                         676
+
+SC0197R2           97: '99 BPS prov.code
+
+                   min:                                         12.00
+                   mean:                                        34.54
+                   max:                                         73.00
+                   #obs                                        10,142
+                   #miss:                                         969
+
+SC01_93            93: Province of residence (93 BPS code)
+
+                   min:                                         12.00
+                   mean:                                        34.36
+                   max:                                         73.00
+                   #obs                                        10,759
+                   #miss:                                         352
+
+SC01_97            97: Province of residence (98 BPS code)
+
+                   min:                                         12.00
+                   mean:                                        34.50
+                   max:                                         73.00
+                   #obs                                        10,237
+                   #miss:                                         874
+
+SC020000           00: '00 BPS Kab. code
+
+                   min:                                          1.00
+                   mean:                                        27.32
+                   max:                                         78.00
+                   #obs                                        10,435
+                   #miss:                                         676
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 15
+book:    HTRACK  - Household Tracking                                   
+module:  HTRACK              HH-level tracking across waves
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+SC020099           00: '99 BPS Kab. code
+
+                   min:                                          1.00
+                   mean:                                        27.91
+                   max:                                         78.00
+                   #obs                                        10,435
+                   #miss:                                         676
+
+SC0293R2           93: '99 BPS kab.code
+
+                   min:                                          1.00
+                   mean:                                        27.63
+                   max:                                         78.00
+                   #obs                                        10,435
+                   #miss:                                         676
+
+SC0297R2           97: '99 BPS kab.code
+
+                   min:                                          1.00
+                   mean:                                        27.21
+                   max:                                         78.00
+                   #obs                                        10,142
+                   #miss:                                         969
+
+SC02_93            93: Kabupaten of residence (93 BPS code)
+
+                   min:                                          1.00
+                   mean:                                        27.41
+                   max:                                         78.00
+                   #obs                                        10,759
+                   #miss:                                         352
+
+SC02_93R           93: Kabupaten resid(revise->98 BPS code)
+
+                   min:                                          1.00
+                   mean:                                        28.15
+                   max:                                         78.00
+                   #obs                                        10,759
+                   #miss:                                         352
+
+SC02_97            97: Kabupaten of residence (98 BPS code)
+
+                   min:                                          1.00
+                   mean:                                        27.00
+                   max:                                         78.00
+                   #obs                                        10,237
+                   #miss:                                         874
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 16
+book:    HTRACK  - Household Tracking                                   
+module:  HTRACK              HH-level tracking across waves
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+SC030000           00: '00 BPS Kec. code
+
+                   min:                                         10.00
+                   mean:                                        89.76
+                   max:                                        999.00
+                   #obs                                        10,435
+                   #miss:                                         676
+
+SC030099           00: '99 BPS Kec. code
+
+                   min:                                         10.00
+                   mean:                                        89.76
+                   max:                                        999.00
+                   #obs                                        10,435
+                   #miss:                                         676
+
+SC0393R2           93: '99 BPS kec.code
+
+                   min:                                         10.00
+                   mean:                                        89.33
+                   max:                                        730.00
+                   #obs                                        10,435
+                   #miss:                                         676
+
+SC0397R2           97: '99 BPS kec.code
+
+                   min:                                         10.00
+                   mean:                                        89.17
+                   max:                                        730.00
+                   #obs                                        10,142
+                   #miss:                                         969
+
+SC03_93            93: Kecamatan of residence (93 BPS code)
+
+                   min:                                         10.00
+                   mean:                                        90.95
+                   max:                                        730.00
+                   #obs                                        10,759
+                   #miss:                                         352
+
+SC03_93R           93: Kecamatan resid(revise->98 BPS code)
+
+                   min:                                         10.00
+                   mean:                                        83.37
+                   max:                                        730.00
+                   #obs                                        10,759
+                   #miss:                                         352
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 17
+book:    HTRACK  - Household Tracking                                   
+module:  HTRACK              HH-level tracking across waves
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+SC03_97            97: Kecamatan of residence (98 BPS code)
+
+                   min:                                         10.00
+                   mean:                                        84.75
+                   max:                                        730.00
+                   #obs                                        10,237
+                   #miss:                                         874
+
+SC05_93            93: Urban/rural residence
+
+                   missing                                        352      3.17
+                   1.Urban                                      5,091     45.82
+                   2.Rural                                      5,668     51.01
+                   total                                       11,111    100.00
+
+SC05_97            97: Urban/rural residence
+
+                   missing                                        874      7.87
+                   1.Urban                                      4,757     42.81
+                   2.Rural                                      5,480     49.32
+                   total                                       11,111    100.00
+
+SPLTOF00           2000 splitoff household
+
+                   min:                                          0.00
+                   mean:                                         0.24
+                   max:                                          1.00
+                   #obs                                        11,111
+                   #miss:                                           0
+
+SPLTOF97           1997 splitoff household
+
+                   min:                                          0.00
+                   mean:                                         0.08
+                   max:                                          1.00
+                   #obs                                        11,111
+                   #miss:                                           0
+
+SPLTOF98           1998 splitoff household
+
+                   min:                                          0.00
+                   mean:                                         0.03
+                   max:                                          1.00
+                   #obs                                        11,111
+                   #miss:                                           0
+
+VERSION            IFLS3 version
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 18
+book:    HTRACK  - Household Tracking                                   
+module:  HTRACK              HH-level tracking across waves
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+W939700L           Longit. HH weight for being in 93,97,00
+
+                   min:                                          0.03
+                   mean:                                         0.72
+                   max:                                          3.90
+                   #obs                                         9,860
+                   #miss:                                       1,251

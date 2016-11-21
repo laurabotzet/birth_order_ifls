@@ -1,0 +1,1434 @@
+
+     ===================================================================
+
+         IIII     FFFFFFF     LLL          SSSSSS                44     
+          II       FF   F     LL          SS    SS              444     
+          II       FF         LL          SS     S             4444     
+          II       FF         LL          SSS                 44 44     
+          II       FFFFF      LL           SSSSS             44  44     
+          II       FF         LL            SSSSS           44   44     
+          II       FF         LL               SSS         44    44     
+          II       FF         LL          S     SS        44444444444   
+          II       FF         LL     L    SS    SS               44     
+         IIII     FFFF        LLLLLLLL     SSSSSS                44     
+
+     ===================================================================
+
+
+
+     I N D O N E S I A N    F A M I L Y    L I F E    S U R V E Y    7  
+
+       A survey of individuals, households, families, communities       
+          and facilities conducted in 13 provinces in Indonesia         
+                   between November 2007 and July 2008                  
+
+     ===================================================================
+
+                               Directed by                              
+
+                      John Strauss, RAND and USC                        
+
+                      Firman Witoelar, Survey Meter                     
+
+                       Bondan Sikoki, Survey Meter                      
+
+                                  and                                   
+
+                 Anna Marie Wattie, Univ. of Gadjah Mada                
+
+     ===================================================================
+
+     Financial support for the Indonesian Family Life Survey Wave 4 has 
+     been provided by the National Institute of Aging grant number 1R01 
+     AG026676 and the National Institute of Child and Human Development,
+     grant number 1R01 HD050764                                         
+
+     ===================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+              Website: http://www.rand.org/FLS/IFLS                     
+          Send all questions to ifls-supp@rand.org                      
+
+
+                       Copyright (2009)                                 
+
+INDONESIAN FAMILY LIFE SURVEY 4: CODEBOOK                               page 2  
+
+
+
+
+
+
+
+================================================================================
+
+          H   H   OOO    U   U    SS    EEEE   H   H   OOO   L     DDDD         
+          H   H  O   O   U   U   S  S   E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U   S      E      H   H  O   O  L     D   D        
+          HHHHH  O   O   U   U    S     EEEE   HHHHH  O   O  L     D   D        
+          H   H  O   O   U   U     S    E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U      S   E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U   S  S   E      H   H  O   O  L     D   D        
+          H   H   OOO     UUU     SS    EEEE   H   H   OOO   LLLL  DDDD         
+
+
+                    SS    U   U   RRR    V    V    EEEE   Y    Y                
+                   S  S   U   U   R  R   V    V    E      Y    Y                
+                   S      U   U   R  R   V    V    E       Y  Y                 
+                    S     U   U   RRR    V    V    EEE       Y                  
+                     S    U   U   R R     V  V     E         Y                  
+                      S   U   U   R  R    V  V     E         Y                  
+                   S  S   U   U   R  R     V       E         Y                  
+                    SS     UUU    R  R     V       EEEE      Y                  
+
+
+            CCC    OOO    DDDD    EEEE   BBBB     OOO     OOO    K   K          
+           C   C  O   O   D   D   E      B   B   O   O   O   O   K  K           
+           C      O   O   D   D   E      B   B   O   O   O   O   K K            
+           C      O   O   D   D   EEE    BBBB    O   O   O   O   KK             
+           C      O   O   D   D   E      B   B   O   O   O   O   KK             
+           C      O   O   D   D   E      B   B   O   O   O   O   K K            
+           C   C  O   O   D   D   E      B   B   O   O   O   O   K  K           
+            CCC    OOO    DDDD    EEEE   BBBB     OOO     OOO    K   K          
+
+================================================================================
+
+ B O O K :       PTRACK                                            
+ T O P I C :     PERSON TRACKING                                           
+
+================================================================================
+
+
+
+
+
+
+
+
+
+
+
+                               Prepared by                                      
+                Roald Euller, John Strauss, Firman Witolar                      
+                     Created on 16JUN2011 at 14:33                           
+
+INDONESIAN FAMILY LIFE SURVEY 4: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 3
+--------------------------------------------------------------------------------
+ B O O K :       PTRACK
+ T O P I C :     Person Tracking
+
+--------------------------------------------------------------------------------
+
+DATA FILES                                                                    
+----------                                                                    
+  Data are available in SAS (9.2) export and STATA (8.0) formats.             
+  Data and electronic documentation are available on the IFLS website.        
+
+  The survey instrument contains multiple sections.  Where possible, sections 
+  have been merged together to form a single data module.  The modules are    
+  organized by level of observation.  The module names are listed below.  They
+  serve as the names of the SAS and STATA data files. The codebook is also    
+  organised by module.                                                        
+
+  The modules are:                                                            
+
+   --------------------------------------------------------------------------
+                                                             # of
+      Module    Description                                  recs
+   --------------------------------------------------------------------------
+      PTRACK                                                66784
+
+USER SUPPORT                                                                   
+------------                                                                   
+    These data should be used in conjunction with the Questionnaires and Users'
+    Manuals.  Check the IFLS web page for updates and answers to frequently    
+    asked questions.  Please send all questions to ifls-supp@rand.org.         
+
+USAGE NOTES                                                                    
+-----------                                                                    
+  READING THE DICTIONARY                                                       
+    For each variable in the dataset, the dictionary provides                  
+       Variable name : Typically the question number                           
+               Label : Describes variable                                      
+    Variable coding is described as follows:                                   
+               Value : Meaning of values for coded variables                   
+           Frequency : Frequency of each value                                 
+
+SPECIAL CODES                                                                  
+-------------                                                                  
+  The following values are reserved and have a special meaning:                
+      Numeric    Alphanumeric    Meaning                                       
+     5/95/995         V          Top coded/out of range                        
+     6/96/996         W          Not applicable                                
+     7/97/997         X          Refused to answer                             
+     8/98/998         Y          Don't know                                    
+     9/99/999         Z          Missing                                       
+
+DATASET VERSION                                                                
+---------------                                                                
+  The variable VERSION identifies the release version of these data; it        
+  will be updated with each revision of the data and can be used to confirm    
+  that you are using the most recent version of the data.                      
+
+NOTES ABOUT TRACKING FILES                                               
+--------------------------                                               
+
+INDONESIAN FAMILY LIFE SURVEY 4: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 4
+--------------------------------------------------------------------------------
+ B O O K :       PTRACK
+ T O P I C :     Person Tracking
+
+--------------------------------------------------------------------------------
+
+  The TRACKING FILES, HTRACK and PTRACK, are provided to facilitate      
+  using the longitudinal dimensions of the survey.  All variables        
+  included in these files are drawn from interviews conducted in         
+  IFLS1 (1993), IFLS2 (1997/8), IFLS2+ (1998), IFLS3 (2000) and IFLS4    
+  (2007).                                                                
+
+
+HOUSEHOLD TRACKING FILE                                                  
+-----------------------                                                  
+  HTRACK07 contains a list of all HOUSEHOLDS that were interviewed in      
+  any wave of IFLS; they are identified by the 2007 HOUSEHOLD identifier,  
+  HHID07.  It is a 7 digit string variable.  The first 3 digits are        
+  the enumeration area in which the household resided in 1993 and          
+  the next two digits are a household sequence number within that          
+  enumeration area which uniquely identifies the household.  The           
+  last two digits are always '00'.  (The first 5 digits of HHID93          
+  are the same as the last 5 digits of CASE, the HH identifier             
+  variable in the original IFLS1 release.)                                 
+
+  In IFLS4, households are identified by HHID07.  If an IFLS               
+  household was found intact in 2007, it was assigned the same             
+  identifier as in 1993, 1997 and 2000; in this case                       
+  HHID93=HHID97=HHID00=HHID07.  If the household had split up since        
+  1993, then part of that household was designated the                     
+  'original' household and the prior household identifier                  
+  assigned to it (see Volume 2 of the User's Guide for the                 
+  rules).   Each additional household that was spawned by that             
+  HHID93 was given a new HHID in the wave in which it was found.           
+  The first 5 digits of the new HHID are identical to the first            
+  5 digits of HHID93 (and, therefore, all new households that              
+  are spawned by one 1993 household share the same first 5                 
+  digits in their HHIDs).  The last two digits of HHID07 are a             
+  1, 2, 3 or 4 (in column 6) and then a sequence number starting at        
+  1 (in the 7th column).  The digit in column 6 tells us in                
+  which wave of IFLS the split-off was first found; for                    
+  split-off households first found in IFLS2 the digit is a '1',            
+  for split-off households found first in IFLS2+ a '2', for                
+  split-off households first found in 2000 a '3', and for 2007             
+  split-off households the digit is a 4.  The 7th                          
+  column is the order of new split-offs found, if there are                
+  multiple splits found within a wave.                                     
+
+  Thus the last two digits of HHID07 are '00' for the household            
+  retaining the original 93 HHID and then '41' for the first new           
+  IFLS4 split-off, '42' for the second new IFLS4 split-off, and            
+  so on.                                                                   
+
+  For example, say HHID93 is 2071900.  This is household 19 from           
+  enumeration area 207.  The household stayed intact through               
+  IFLS2+, but split into 3 households between 1998 and 2000.               
+  The three households are assigned HHID00 2071900 (for the                
+  first of the three HHs found), 2071931 (for the first                    
+  split-off HH that was found) and 2071932 (for the second                 
+
+INDONESIAN FAMILY LIFE SURVEY 4: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 5
+--------------------------------------------------------------------------------
+ B O O K :       PTRACK
+ T O P I C :     Person Tracking
+
+--------------------------------------------------------------------------------
+  split-off HH that was found).                                            
+
+Location of HH                                                             
+--------------                                                             
+  Note that the enumeration area in 1993 (digits 1-3) in the HHID          
+  is not the location of residence of the household in 2000 (unless        
+  the household has not moved) and should not be used to determine         
+  geographic location of the household.  1993 location was built           
+  into the 1993 HH identifier, CASE.  It is not built into HHID93,         
+  HHID97 or HHID00.                                                        
+
+  Location information is recorded in module BK_SC in each wave            
+  of the survey.  A summary is included in HTRACK07.  HTRACK07             
+  also provides information on the household's location in 1993,           
+  1997, 1998, 2000 and 2007, if it was found.  For 1993, three sets of     
+  location codes are given:  those used by the Central Bureau of           
+  Statistics (BPS) in 1993 (also in the original IFLS1 data),              
+  and those used by BPS in 1998 (in the IFLS2 data) and those              
+  used by BPS in 1999.   For 1997 locations, two sets of codes             
+  are given: those based on 1998 BPS codes and those based on              
+  1999 codes.  For 2000 locations we also provide two sets of              
+  codes.  We use the 1999 BPS codes as the main set, and these             
+  are used consistently throughout IFLS4 (for example in module            
+  SC of books T and K).  However, in case some users may want to           
+  link IFLS4 to the February 2001 SUSENAS, so we also provide              
+  the 2000 BPS codes to facilitate that linkage.  Note that                
+  using the 2000 codes is more difficult because two new                   
+  provinces were created from IFLS provinces in the 2000 codes:            
+  West Java was split into two as was South Sumatra.  This split           
+  is NOT manifested in any of the IFLS4 codes, making it easier            
+  to use the 1999 BPS codes.                                               
+
+  For households that were interviewed in IFLS4, variable                  
+  MOVER00 identifies whether the household moved between the               
+  last time it was interviewed (which could be 1998, 1997 or               
+  1993) and 2000, taking the following values:                             
+
+  0 = Did not move                                                         
+  1 = Moved within same village/municipality                               
+  2 = Moved within same kecamatan                                          
+  3 = Moved within same kabupaten                                          
+  4 = Moved within same province                                           
+  5 = Moved within other IFLS province                                     
+
+  MOVER07 is non-missing not only for origin households                    
+  interviewed in 2007, but also for split-off households                   
+  interviewed in IFLS2, 2+, or 3.  In addition, we calculate MOVER07       
+  for new split-off households in IFLS4.  Because each split-off           
+  household contains at least one person who was tracked from an           
+  IFLS household (which could have been an origin household or             
+  could have been a split-off), we have calculated MOVER00 for             
+  split-off households on the basis of the household's 2000                
+  location relative to the last known location of the household            
+  from which the tracked person came. In addition to the BPS               
+
+INDONESIAN FAMILY LIFE SURVEY 4: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 6
+--------------------------------------------------------------------------------
+ B O O K :       PTRACK
+ T O P I C :     Person Tracking
+
+--------------------------------------------------------------------------------
+  location codes, HTRACK07 contains COMMID93, COMMID97 and                 
+  COMMID00, which can be used to link households to the IFLS               
+  community-level data.  COMMID, described in detail above, is a           
+  four digit/character code. The first two digits represent the            
+  province, the third the district within province and the                 
+  fourth the sub-district within district.  All households found           
+  in a particular wave have non-missing COMMID for that wave,              
+  even if they are movers.  COMMIDs for movers tend to have                
+  letters as their third or fourth characters.  COMMID is                  
+  defined at the level of the sub-district for mover households.           
+  For stayers, COMMID is defined at the enumeration area, except           
+  for the nine twin EAs, for whom their EAs are combined into              
+  one COMMID.  This will allow users to estimate models with               
+  COMMID fixed effects, for example. However for movers outside            
+  of the IFLS EAs, COMMID07 is not of help in linking to                   
+  community data.  MKID07 must be used instead to link to                  
+  Mini-CFS, because it is defined at the EA-level for movers,              
+  not at the sub-district level.  MKID07 is a five digit or                
+  character code, which contains COMMID07 as the first four                
+  characters, followed by a number or letter signifying EA                 
+  within sub-district.  Non-movers have a 0 as the fifth digit,            
+  whereas movers have a non-zero number or a letter.  MKID07               
+  should be used to match mover households to their Mini-CFS               
+  data files. HTRACK07 also contains household weight variables,           
+  discussed in Volume 2 of the User's Guide, for IFLS1, 2 and 3,           
+  both cross-section and longitudinal weights.                             
+
+
+PERSON TRACKING FILE                                                       
+--------------------                                                       
+  PTRACK07 contains a record for every person who has ever                 
+  appeared in an IFLS1, 2 or 3 household roster.                           
+
+  PID is a two digit sequence number identifying each individual           
+  within a household.  The combination of HHID07 and PID07                 
+  uniquely identifies every respondent in IFLS4.  It may be used           
+  to link records within IFLS4.   If an IFLS4 respondent was               
+  found in the original household, HHID07=HHID00=HHID97=HHID93 and         
+  PID07=PID00=PID97=PID93.  All new respondents since IFLS1 are            
+  assigned PID97, PID98, PID00, or PID07 that begins after the highest     
+  PID93 for that household.  In split-off households, PID07 was            
+  assigned starting at 01 for the household head.  The                     
+  combination of HHID00 and PID00 uniquely identifies every                
+  respondent in IFLS3 and likewise for HHID07 and PID07 in                 
+  IFLS4.                                                                   
+
+  HHID93 and PID93 or HHID97 and PID97 or HHID00 and PID00                 
+  should NOT however be used to link respondents across waves of           
+  IFLS. Individuals who moved out of the 1993 origin household             
+  and were interviewed in a new household will have different              
+  HHID and PIDs across waves.  Individuals who were new                    
+  household members in 2007 will have missing HHID and PID for             
+  1993, 1997, or 2000.                                                     
+
+INDONESIAN FAMILY LIFE SURVEY 4: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 7
+--------------------------------------------------------------------------------
+ B O O K :       PTRACK
+ T O P I C :     Person Tracking
+
+--------------------------------------------------------------------------------
+Linking respondents across waves: PIDLINK                                  
+-----------------------------------------                                  
+  Many individuals have moved across households between IFLS1              
+  and IFLS4.  In order to link records for a particular                    
+  individual  across waves of the IFLS, use PIDLINK. It is a               
+  unique person-level identifier which is the same in IFLS1, 2,            
+  2+ and 3 for  a particular individual.   Within PTRACK07, each           
+  observation is identified by PIDLINK.                                    
+
+  PTRACK07 contains a number of variables that will help                   
+  establish the basic demographic composition of each IFLS wave            
+  and the availability of individual-level data from each wave.            
+  PTRACK07 indicates in which household each person who was ever           
+  an IFLS household member was found, in each wave, HHID93, 97,            
+  00; plus their person IDs (PID) with the household in each               
+  wave.  Further MEMBER93, 97, 00 and 07 indicates whether the             
+  person was indeed found in that wave.                                    
+
+  Variables indicate our best guess of each person's age at each           
+  wave: AGE93, 97, 00, 07.  We also report our best guess of the           
+  person's date of birth.  AGE93, AGE97, and AGE00 are taken from the      
+  IFLS3 PTRACK and so represent the best guess age in 1993, 1997 and       
+  2000 using information available in IFLS2 or IFLS1. AGE07 is             
+  our best guess age in 2007 based on IFLS4 information.  The              
+  three will not necessarily be consistent, although the                   
+  algorithm that generates them is essentially the same across             
+  the waves.  In theory respondents interviewed in IFLS1 should            
+  have been three or four years older in 1997, depending on the            
+  time of year the interview took place in each wave.  In                  
+  Indonesia, as in many developing countries, however, not                 
+  everyone knows his/her birthdate or age accurately.                      
+  Therefore, reported birthdate and ages across waves do not               
+  always match for a respondent, and there may even be                     
+  discrepancies between books within a wave.  In addition to age           
+  and date of birth, we report our best guess of the person's              
+  sex based on IFLS4 data.  For all but a few respondents, the             
+  reported sex matches across waves.  The PTRACK07 file provides           
+  our best guess for sex in an attempt to resolve discrepancies.           
+
+  PTRACK07 also reports information on marital status at each              
+  wave and the survey books for which data are available from              
+  each wave.  Such information allows the analyst to calculate             
+  the number of observations in IFLS1, IFLS2 and IFLS3 and the number      
+  of panel observations for the various survey books.                      
+
+  PTRACK07 does not provide information on individuals'                    
+  locations.  At the household level, that information is in               
+  HTRACK07.  For individuals who were new household members in             
+  2007 (AR01a_07 = 5), the location information in HTRACK07 for            
+  1993, 1997 or 2000 is not necessarily the location where the new         
+  individual resided in those years.  The individual's household           
+  of residence from past waves, in PTRACK07, can be used                   
+  together with the location information in HTRACK07 to obtain             
+  past location, so long as the person was present in an IFLS              
+
+INDONESIAN FAMILY LIFE SURVEY 4: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 8
+--------------------------------------------------------------------------------
+ B O O K :       PTRACK
+ T O P I C :     Person Tracking
+
+--------------------------------------------------------------------------------
+  household in that particular wave.  Otherwise, to ascertain              
+  where a new household member lived in the past, data from                
+  module MG in book 3A should be used.                                     
+
+  PTRACK07 also contains individual weights variables, described           
+  in Volume 2 of the User's Guide, from IFLS1, 2, 3 and 4.                 
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 9
+book:    PTRACK  - Person Tracking                                   
+module:  PTRACK               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID07             2007 Household ID
+
+
+PID07              2007 Person ID within household
+
+
+PIDLINK            2007 Person ID
+
+
+MODULE             IFLS survey module
+
+                   PTRACK                                      66,784    100.00
+                   total                                       66,784    100.00
+
+AGE_00             age of resp in 2000 (constructed)
+
+                   min:                                          0.00
+                   mean:                                        28.97
+                   max:                                        115.00
+                   #obs                                        49,373
+                   #miss:                                      17,411
+
+AGE_07             age of resp in 2007 (constructed)
+
+                   min:                                          0.00
+                   mean:                                        31.22
+                   max:                                        120.00
+                   #obs                                        62,711
+                   #miss:                                       4,073
+
+AGE_93             Age of Resp in 1993 (constructed)
+
+                   min:                                          0.00
+                   mean:                                        26.25
+                   max:                                        111.00
+                   #obs                                        33,081
+                   #miss:                                      33,703
+
+AGE_97             Age of Resp in 1997 (constructed)
+
+                   min:                                          0.00
+                   mean:                                        28.24
+                   max:                                        115.00
+                   #obs                                        38,239
+                   #miss:                                      28,545
+
+AR01A_00           00: Is person member of HH?
+
+                   missing                                     17,360     25.99
+                   0.Dead                                       1,499      2.24
+                   1.Yes                                       32,753     49.04
+                   3.No                                         4,276      6.40
+                   5.New Household member                      10,896     16.32
+                   total                                       66,784    100.00
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 10
+book:    PTRACK  - Person Tracking                                   
+module:  PTRACK               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+
+AR01A_07           Is HH member still live in this HH
+
+                   0.Dead                                       5,155      7.72
+                   1.Yes                                       28,668     42.93
+                   2.ART comeback                               6,389      9.57
+                   3.No                                        11,047     16.54
+                   5.New Household member                      15,441     23.12
+                   6.Duplicate                                      4      0.01
+                   11.entered after interview                      80      0.12
+                   total                                       66,784    100.00
+
+AR01A_97           97: Is person member of HH?
+
+                   missing                                     28,545     42.74
+                   0.Dead                                         857      1.28
+                   1.Yes                                       25,770     38.59
+                   3.No                                         3,452      5.17
+                   4.In new HHd                                 1,466      2.20
+                   5.New Household member                       6,694     10.02
+                   total                                       66,784    100.00
+
+AR01B_00           00: Tracking status
+
+                   missing                                     27,342     40.94
+                   1.Y1                                        31,335     46.92
+                   3.T                                          8,107     12.14
+                   total                                       66,784    100.00
+
+AR01B_07           Tracking Status
+
+                   missing                                      7,691     11.52
+                   1.Y1                                        29,887     44.75
+                   3.T                                         29,206     43.73
+                   total                                       66,784    100.00
+
+AR01B_97           97: Track respond? (Preprinted in IFLS2)
+
+                   missing                                     33,703     50.47
+                   1.Y1                                        23,948     35.86
+                   3.T                                          9,133     13.68
+                   total                                       66,784    100.00
+
+AR01I_00           00: Status of interview
+
+                   missing                                     17,360     25.99
+                   1. Yes                                      38,823     58.13
+                   3. No                                       10,601     15.87
+                   total                                       66,784    100.00
+
+AR01I_07           Status of interview
+
+                   missing                                      7,691     11.52
+                   1. Yes                                      51,520     77.14
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 11
+book:    PTRACK  - Person Tracking                                   
+module:  PTRACK               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(AR01I_07  continued)
+
+                   3. No                                        7,573     11.34
+                   total                                       66,784    100.00
+
+AR02B_00           00: Relation to HH Head
+
+                   missing                                     18,856     28.23
+                   1.Head of the household                     10,431     15.62
+                   2.Husband/wife                               7,997     11.97
+                   3.Children (biological                      19,376     29.01
+                   4.Children (step/adopted)                      520      0.78
+                   5.Sons/daughters-in-law                      1,361      2.04
+                   6.Parents                                      658      0.99
+                   7.Father/mother-in-law                         685      1.03
+                   8.Siblings                                     610      0.91
+                   9.Brother/sister-in-law                        669      1.00
+                   10.Grandchild                                2,865      4.29
+                   11.Grandparents                                 87      0.13
+                   12.Uncles/aunts                                 78      0.12
+                   13.Nephews/nieces                            1,037      1.55
+                   14.Cousins                                     147      0.22
+                   15.Servants                                    565      0.85
+                   16.Relative                                     43      0.06
+                   17.Non-relative                                227      0.34
+                   18.Tenant                                      185      0.28
+                   19.Friend                                      289      0.43
+                   21.Ex spouse                                    40      0.06
+                   22.Family of Ex spouse                           1      0.00
+                   99.Missing                                      57      0.09
+                   total                                       66,784    100.00
+
+AR02B_07           Relation to HH Head (2000)
+
+                   missing                                      7,691     11.52
+                   1.Head of the household                     13,511     20.23
+                   2.Husband/wife                              10,033     15.02
+                   3.Children (biological                      22,368     33.49
+                   4.Children (step/adopted)                      624      0.93
+                   5.Sons/daughters-in-law                      1,556      2.33
+                   6.Parents                                    1,017      1.52
+                   7.Father/mother-in-law                         934      1.40
+                   8.Siblings                                   1,104      1.65
+                   9.Brother/sister-in-law                      1,090      1.63
+                   10.Grandchild                                3,217      4.82
+                   11.Grandparents                                100      0.15
+                   12.Uncles/aunts                                164      0.25
+                   13.Nephews/nieces                            1,259      1.89
+                   14.Cousins                                     206      0.31
+                   15.Servants                                    389      0.58
+                   16.Relative                                    427      0.64
+                   17.Non-relative                              1,047      1.57
+                   21.Ex spouse                                    47      0.07
+                   total                                       66,784    100.00
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 12
+book:    PTRACK  - Person Tracking                                   
+module:  PTRACK               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+AR02_07            Relation to HH Head in last interview
+
+                   missing                                     28,730     43.02
+                   1.Head of the household                      8,252     12.36
+                   2.Husband/wife                               7,083     10.61
+                   3.Children (biological                      15,451     23.14
+                   4.Children (step/adopted)                      408      0.61
+                   5.Sons/daughters-in-law                        970      1.45
+                   6.Parents                                      361      0.54
+                   7.Father/mother-in-law                         373      0.56
+                   8.Siblings                                     470      0.70
+                   9.Brother/sister-in-law                        526      0.79
+                   10.Grandchild                                2,168      3.25
+                   11.Grandparents                                 38      0.06
+                   12.Uncles/aunts                                 49      0.07
+                   13.Nephews/nieces                              792      1.19
+                   14.Cousins                                     107      0.16
+                   15.Servants                                    376      0.56
+                   16.Relative                                     43      0.06
+                   17.Non-relative                                194      0.29
+                   18.Tenant                                      143      0.21
+                   19.Friend                                      175      0.26
+                   21.Ex spouse                                    32      0.05
+                   99.Missing                                      43      0.06
+                   total                                       66,784    100.00
+
+AR02_93            93: Relation to HH Head
+
+                   missing                                     33,703     50.47
+                   1.Head of the household                      7,224     10.82
+                   2.Husband/wife                               5,739      8.59
+                   3.Children (biological                      14,869     22.26
+                   4.Children (step/adopted)                      317      0.47
+                   5.Sons/daughters-in-law                        657      0.98
+                   6.Parents                                      427      0.64
+                   7.Father/mother-in-law                         421      0.63
+                   8.Siblings                                     361      0.54
+                   9.Brother/sister-in-law                        345      0.52
+                   10.Grandchild                                1,634      2.45
+                   11.Grandparents                                 46      0.07
+                   12.Uncles/aunts                                 29      0.04
+                   13.Nephews/nieces                              390      0.58
+                   14.Cousins                                      29      0.04
+                   15.Servants                                    232      0.35
+                   16.Relative                                    140      0.21
+                   17.Non-relative                                212      0.32
+                   96                                               1      0.00
+                   99.Missing                                       8      0.01
+                   total                                       66,784    100.00
+
+AR02_97            97: Relation to HH head (=ar02b in AR1)
+
+                   missing                                     29,410     44.04
+                   1.Head of the household                      7,619     11.41
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 13
+book:    PTRACK  - Person Tracking                                   
+module:  PTRACK               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(AR02_97  continued)
+
+                   2.Husband/wife                               6,012      9.00
+                   3.Children (biological                      16,603     24.86
+                   4.Children (step/adopted)                      325      0.49
+                   5.Sons/daughters-in-law                        979      1.47
+                   6.Parents                                      482      0.72
+                   7.Father/mother-in-law                         520      0.78
+                   8.Siblings                                     403      0.60
+                   9.Brother/sister-in-law                        473      0.71
+                   10.Grandchild                                2,253      3.37
+                   11.Grandparents                                 43      0.06
+                   12.Uncles/aunts                                 53      0.08
+                   13.Nephews/nieces                              641      0.96
+                   14.Cousins                                      51      0.08
+                   15.Servants                                    353      0.53
+                   16.Relative                                    196      0.29
+                   17.Non-relative                                202      0.30
+                   18.Tenant                                       65      0.10
+                   19.Friend                                       88      0.13
+                   21.Ex spouse                                    12      0.02
+                   22.Family of Ex spouse                           1      0.00
+                   total                                       66,784    100.00
+
+BTH_DAY            Birth  day - (constructed) (07)
+
+                   min:                                          1.00
+                   mean:                                        14.11
+                   max:                                         31.00
+                   #obs                                        62,711
+                   #miss:                                       4,073
+
+BTH_MNTH           Birth  month - (constructed) (07)
+
+                   missing                                      4,073      6.10
+                   1.Jan                                        3,707      5.55
+                   2.Feb                                        3,539      5.30
+                   3.Mar                                        4,018      6.02
+                   4.Apr                                        4,304      6.44
+                   5.May                                        8,765     13.12
+                   6.Jun                                        4,617      6.91
+                   7.Jul                                        8,330     12.47
+                   8.Aug                                        4,829      7.23
+                   9.Sep                                        7,645     11.45
+                   10.Oct                                       4,060      6.08
+                   11.Nov                                       3,684      5.52
+                   12.Dec                                       5,213      7.81
+                   total                                       66,784    100.00
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 14
+book:    PTRACK  - Person Tracking                                   
+module:  PTRACK               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+BTH_YEAR           Birth  year - (constructed) (07)
+
+                   min:                                       1887.00
+                   mean:                                      1975.91
+                   max:                                       2008.00
+                   #obs                                        62,711
+                   #miss:                                       4,073
+
+CALIVE07           contacted alive in 2007
+
+                   missing                                     12,401     18.57
+                   0.no                                         3,805      5.70
+                   1.yes                                       50,578     75.73
+                   total                                       66,784    100.00
+
+CASE               1993 HHID (numeric)
+
+                   min:                                     120100106
+                   mean:                                    344188800
+                   max:                                     737132130
+                   #obs                                        33,081
+                   #miss:                                      33,703
+
+COV8B5             Relation to child
+
+                   min:                                          1.00
+                   mean:                                         2.15
+                   max:                                          6.00
+                   #obs                                        13,551
+                   #miss:                                      53,233
+
+DIED07             died between 2000 and 2007
+
+                   missing                                     12,401     18.57
+                   0.no                                        50,578     75.73
+                   1.yes                                        3,805      5.70
+                   total                                       66,784    100.00
+
+FORMT2             pidlink has 2000 T2 tracking form
+
+                   missing                                     15,641     23.42
+                   1. Yes                                       5,150      7.71
+                   3. No                                       45,993     68.87
+                   total                                       66,784    100.00
+
+HHID00             2000 Household ID
+
+
+HHID93             93: HH identifier
+
+
+HHID97             97: HH identifier
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 15
+book:    PTRACK  - Person Tracking                                   
+module:  PTRACK               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID98             HHID (from field)
+
+
+HWT93              93: HH weight =HHWT224 in IFLS1
+
+                   min:                                          0.24
+                   mean:                                         1.00
+                   max:                                          1.91
+                   #obs                                        26,797
+                   #miss:                                      39,987
+
+MEMBER00           Current resident of HH (00)
+
+                   0.no                                        23,135     34.64
+                   1.yes                                       43,649     65.36
+                   total                                       66,784    100.00
+
+MEMBER07           current resident of HH (07)
+
+                   0.no                                        16,202     24.26
+                   1.yes                                       50,582     75.74
+                   total                                       66,784    100.00
+
+MEMBER93           Current resident of HH (93)
+
+                   0.no                                        33,703     50.47
+                   1.yes                                       33,081     49.53
+                   total                                       66,784    100.00
+
+MEMBER97           Current resident of HH (97)
+
+                   0.no                                        32,854     49.19
+                   1.yes                                       33,930     50.81
+                   total                                       66,784    100.00
+
+MEMBER98           Current resident of HH (98)
+
+                   0.no                                        55,626     83.29
+                   1.yes                                       11,158     16.71
+                   total                                       66,784    100.00
+
+MRESP07            main respondent 2007
+
+                   missing                                     16,206     24.27
+                   0.no                                         6,482      9.71
+                   1.yes                                       44,096     66.03
+                   total                                       66,784    100.00
+
+MRSP9307           HHM interviewed in 1993,1997,2000,2007
+
+                   missing                                     42,898     64.23
+                   0.no                                         9,331     13.97
+                   1.yes                                       14,555     21.79
+                   total                                       66,784    100.00
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 16
+book:    PTRACK  - Person Tracking                                   
+module:  PTRACK               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+
+MSRD07             measured in 2007
+
+                   missing                                     12,401     18.57
+                   0.no                                        11,873     17.78
+                   1.yes                                       42,510     63.65
+                   total                                       66,784    100.00
+
+MSRD9307           HHM measured in 1993,1997,2000,2007
+
+                   min:                                          0.00
+                   mean:                                         0.55
+                   max:                                          1.00
+                   #obs                                        26,662
+                   #miss:                                      40,122
+
+P939700L           00 Long. perwt 93 MAIN resp. 97/00
+
+                   min:                                          0.25
+                   mean:                                         1.38
+                   max:                                         12.94
+                   #obs                                        18,302
+                   #miss:                                      48,482
+
+P939700U           00 Hlth assess. long. per. wgt
+
+                   min:                                          0.05
+                   mean:                                         1.21
+                   max:                                         15.76
+                   #obs                                        16,903
+                   #miss:                                      49,881
+
+PID00              00: Person identifier
+
+                   min:                                          1.00
+                   mean:                                         3.75
+                   max:                                         37.00
+                   #obs                                        49,424
+                   #miss:                                      17,360
+
+PID93              93: Person identifier
+
+                   min:                                          1.00
+                   mean:                                         3.31
+                   max:                                         20.00
+                   #obs                                        33,067
+                   #miss:                                      33,717
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 17
+book:    PTRACK  - Person Tracking                                   
+module:  PTRACK               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+PID97              97: Person identifier
+
+                   min:                                          1.00
+                   mean:                                         3.64
+                   max:                                         28.00
+                   #obs                                        38,239
+                   #miss:                                      28,545
+
+PID98              98: Person identifier
+
+                   min:                                          1.00
+                   mean:                                         3.70
+                   max:                                         37.00
+                   #obs                                        11,158
+                   #miss:                                      55,626
+
+PW00USXA           00 Xsct. perwt-hlth ass.(lgt wo msrd 97)
+
+                   min:                                          0.23
+                   mean:                                         1.03
+                   max:                                          2.18
+                   #obs                                        36,660
+                   #miss:                                      30,124
+
+PW07USX            IFLS4 person X-section lbs w/o attrition
+
+                   min:                                          0.27
+                   mean:                                         1.00
+                   max:                                          2.42
+                   #obs                                        42,510
+                   #miss:                                      24,274
+
+PW00USXB           00 Xsct. perwt-hlth ass.(lgt w msrd 97)
+
+                   min:                                          0.25
+                   mean:                                         1.03
+                   max:                                          2.60
+                   #obs                                        36,660
+                   #miss:                                      30,124
+
+PW07USXA           IFLS4 person X-section lsb w/ attrition
+
+                   min:                                          0.25
+                   mean:                                         1.03
+                   max:                                          2.76
+                   #obs                                        42,510
+                   #miss:                                      24,274
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 18
+book:    PTRACK  - Person Tracking                                   
+module:  PTRACK               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+PW9307L            IFLS4 longit. interview lbs 93/97/00/07
+
+                   min:                                          0.26
+                   mean:                                         1.25
+                   max:                                          4.57
+                   #obs                                        14,555
+                   #miss:                                      52,229
+
+PW9307LR           IFLS4 longit. roster lbs for 93/97/00/07
+
+                   min:                                          0.26
+                   mean:                                         1.34
+                   max:                                          6.20
+                   #obs                                        21,352
+                   #miss:                                      45,432
+
+PW9307UL           IFLS4 longit. measure lbs 93/97/00/07
+
+                   min:                                          0.26
+                   mean:                                         1.23
+                   max:                                          4.30
+                   #obs                                        14,535
+                   #miss:                                      52,249
+
+PWT00LA            00 Long. perwt (logit wo prsnt in 97)
+
+                   min:                                          0.25
+                   mean:                                         1.12
+                   max:                                          3.92
+                   #obs                                        27,478
+                   #miss:                                      39,306
+
+PWT00LB            00 Long. perwt (logit w prsnt in 97)
+
+                   min:                                          0.25
+                   mean:                                         1.11
+                   max:                                          7.44
+                   #obs                                        27,478
+                   #miss:                                      39,306
+
+PWT00XA            00 Xsct. perwt (logit w/o prsnt 97)
+
+                   min:                                          0.25
+                   mean:                                         1.03
+                   max:                                          2.11
+                   #obs                                        43,611
+                   #miss:                                      23,173
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 19
+book:    PTRACK  - Person Tracking                                   
+module:  PTRACK               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+PWT00XB            00 Xsct. perwt (logit w/ prsnt 97)
+
+                   min:                                          0.26
+                   mean:                                         1.02
+                   max:                                          2.10
+                   #obs                                        43,611
+                   #miss:                                      23,173
+
+PWT07LA            IFLS4 longit. weight for 93 HHM found 07
+
+                   min:                                          0.25
+                   mean:                                         1.20
+                   max:                                          6.11
+                   #obs                                        23,886
+                   #miss:                                      42,898
+
+PWT07XA            IFLS4 X-section  weight w/ attrition
+
+                   min:                                          0.25
+                   mean:                                         1.02
+                   max:                                          2.76
+                   #obs                                        50,578
+                   #miss:                                      16,206
+
+PWT07X_            IFLS4 X-section  weight w/o attrition
+
+                   min:                                          0.27
+                   mean:                                         1.00
+                   max:                                          2.42
+                   #obs                                        50,578
+                   #miss:                                      16,206
+
+PWT93              93 person weight (=ROSTERWT in IFLS1)
+
+                   min:                                          0.09
+                   mean:                                         1.00
+                   max:                                          3.10
+                   #obs                                        33,081
+                   #miss:                                      33,703
+
+PWT93IN            93 MAIN respondent wt (=RESPWT in IFLS1)
+
+                   min:                                          0.25
+                   mean:                                         1.19
+                   max:                                          5.72
+                   #obs                                        22,019
+                   #miss:                                      44,765
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 20
+book:    PTRACK  - Person Tracking                                   
+module:  PTRACK               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+PWT97EKX           97 Xsection psn wgt-cognitive a
+
+                   min:                                          0.42
+                   mean:                                         1.02
+                   max:                                          1.91
+                   #obs                                         7,837
+                   #miss:                                      58,947
+
+PWT93US            93 psn wt for health msrs (=CA_WT IFLS1)
+
+                   min:                                          0.00
+                   mean:                                         0.66
+                   max:                                          5.72
+                   #obs                                        33,078
+                   #miss:                                      33,706
+
+PWT97INL           97 Longitudinal person wt--93 MAIN resp
+
+                   min:                                          0.24
+                   mean:                                         1.08
+                   max:                                          2.93
+                   #obs                                        18,886
+                   #miss:                                      47,898
+
+PWT97L             97 Longitudinal analysis person weight
+
+                   min:                                          0.25
+                   mean:                                         1.15
+                   max:                                          6.45
+                   #obs                                        27,236
+                   #miss:                                      39,548
+
+PWT97USX           97 Xsection psn wgt-health asse
+
+                   min:                                          0.24
+                   mean:                                         1.00
+                   max:                                          2.30
+                   #obs                                        28,908
+                   #miss:                                      37,876
+
+PWT97USL           97 Health assessmt longit perso
+
+                   min:                                          0.25
+                   mean:                                         1.20
+                   max:                                          4.65
+                   #obs                                        19,524
+                   #miss:                                      47,260
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 21
+book:    PTRACK  - Person Tracking                                   
+module:  PTRACK               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+PWT97X             97 Xsection person weight
+
+                   min:                                          0.25
+                   mean:                                         1.00
+                   max:                                          2.52
+                   #obs                                        33,930
+                   #miss:                                      32,854
+
+RES00B3A           Result 00: Book 3a done by resp?
+
+                   missing                                     40,955     61.32
+                   1.complete                                  25,473     38.14
+                   2.partially complete                            17      0.03
+                   3.not completed                                339      0.51
+                   total                                       66,784    100.00
+
+RES00B3B           Result 00: Book 3b done by resp?
+
+                   missing                                     40,955     61.32
+                   1.complete                                  25,459     38.12
+                   2.partially complete                            11      0.02
+                   3.not completed                                359      0.54
+                   total                                       66,784    100.00
+
+RES00B3P           Result 00: Book 3p done by resp?
+
+                   missing                                     65,506     98.09
+                   1.complete                                   1,273      1.91
+                   2.partially complete                             3      0.00
+                   3.not completed                                  2      0.00
+                   total                                       66,784    100.00
+
+RES00B4            Result 00: Book 4 done by resp?
+
+                   missing                                     58,432     87.49
+                   1.complete                                   8,267     12.38
+                   2.partially complete                             3      0.00
+                   3.not completed                                 82      0.12
+                   total                                       66,784    100.00
+
+RES00B5            Result 00: Book 5 done by resp?
+
+                   missing                                     55,045     82.42
+                   1.complete                                   2,480      3.71
+                   2.partially complete                         9,206     13.78
+                   3.not completed                                 53      0.08
+                   total                                       66,784    100.00
+
+RES00EK            Rslt 00: EL(Cog.) asses. done by resp?
+
+                   missing                                     52,646     78.83
+                   1.complete                                  13,340     19.97
+                   3.not completed                                798      1.19
+                   total                                       66,784    100.00
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 22
+book:    PTRACK  - Person Tracking                                   
+module:  PTRACK               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+
+RES00US            Rslt 00: US(Hlth) asses. done by resp?
+
+                   missing                                     17,996     26.95
+                   1.complete                                  21,798     32.64
+                   3.not completed                             26,990     40.41
+                   total                                       66,784    100.00
+
+RES07B3A           result 07: Book 3A completed by resp?
+
+                   missing                                     36,818     55.13
+                   1.complete                                  29,045     43.49
+                   2.partially complete                            13      0.02
+                   3.not completed                                908      1.36
+                   total                                       66,784    100.00
+
+RES07B3B           result 07: Book 3B completed by resp?
+
+                   missing                                     36,818     55.13
+                   1.complete                                  29,014     43.44
+                   2.partially complete                            16      0.02
+                   3.not completed                                936      1.40
+                   total                                       66,784    100.00
+
+RES07B4            result 07: Book 4 completed by resp?
+
+                   missing                                     55,903     83.71
+                   1.complete                                  10,663     15.97
+                   2.partially complete                             1      0.00
+                   3.not completed                                217      0.32
+                   total                                       66,784    100.00
+
+RES07B5            result 07: Book 5 completed by resp?
+
+                   missing                                     53,134     79.56
+                   1.complete                                  13,509     20.23
+                   3.not completed                                141      0.21
+                   total                                       66,784    100.00
+
+RES07BK1           result 07: Book EK1 completed by resp?
+
+                   missing                                     55,582     83.23
+                   1.complete                                   9,221     13.81
+                   2.partially complete                         1,481      2.22
+                   3.not completed                                500      0.75
+                   total                                       66,784    100.00
+
+RES07BK2           result 07: Book EK2 completed by resp?
+
+                   missing                                     54,959     82.29
+                   1.complete                                   9,253     13.86
+                   2.partially complete                         1,830      2.74
+                   3.not completed                                742      1.11
+                   total                                       66,784    100.00
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 23
+book:    PTRACK  - Person Tracking                                   
+module:  PTRACK               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+
+RES07BP            interview of book i
+
+                   missing                                     65,252     97.71
+                   1.complete                                   1,531      2.29
+                   3.not completed                                  1      0.00
+                   total                                       66,784    100.00
+
+RES07US            result 07: Book US completed by resp?
+
+                   missing                                      6,284      9.41
+                   1.complete                                  59,140     88.55
+                   3.not completed                              1,360      2.04
+                   total                                       66,784    100.00
+
+RES93B3            Result 93: Book 3 done by Resp?
+
+                   missing                                     52,135     78.07
+                   1.complete                                  12,992     19.45
+                   2.partially complete                         1,426      2.14
+                   3.not completed                                231      0.35
+                   total                                       66,784    100.00
+
+RES93B4            Result 93: Book 4 done by Resp?
+
+                   missing                                     61,637     92.29
+                   1.complete                                   4,888      7.32
+                   2.partially complete                            93      0.14
+                   3.not completed                                166      0.25
+                   total                                       66,784    100.00
+
+RES93B5            Result 93: Book 5 done by Resp?
+
+                   missing                                     58,912     88.21
+                   1.complete                                     770      1.15
+                   2.partially complete                         6,981     10.45
+                   3.not completed                                121      0.18
+                   total                                       66,784    100.00
+
+RES93US            Result 93: (US=CA)Health assess done?
+
+                   missing                                     33,703     50.47
+                   1.complete                                  24,479     36.65
+                   3.not completed                              8,602     12.88
+                   total                                       66,784    100.00
+
+RES97B3A           Result 97: Book 3A done by Resp?
+
+                   missing                                     43,594     65.28
+                   1.complete                                  19,908     29.81
+                   2.partially complete                         1,652      2.47
+                   3.not completed                              1,630      2.44
+                   total                                       66,784    100.00
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 24
+book:    PTRACK  - Person Tracking                                   
+module:  PTRACK               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+RES97B3B           Result 97: Book 3B done by Resp?
+
+                   missing                                     43,594     65.28
+                   1.complete                                  19,890     29.78
+                   2.partially complete                         1,653      2.48
+                   3.not completed                              1,647      2.47
+                   total                                       66,784    100.00
+
+RES97B3P           Result 97: Book 3P done by Proxy?
+
+                   missing                                     63,483     95.06
+                   1.complete                                   1,653      2.48
+                   3.not completed                              1,648      2.47
+                   total                                       66,784    100.00
+
+RES97B4            Result 97: Book 4 done by Resp?
+
+                   missing                                     60,103     90.00
+                   1.complete                                   6,158      9.22
+                   2.partially complete                           154      0.23
+                   3.not completed                                369      0.55
+                   total                                       66,784    100.00
+
+RES97B5            Result 97: Book 5 done by Resp?
+
+                   missing                                     56,027     83.89
+                   1.complete                                   2,893      4.33
+                   2.partially complete                         7,490     11.22
+                   3.not completed                                374      0.56
+                   total                                       66,784    100.00
+
+RES97EKB           Result 97: Assessmt-Bah Indones
+
+                   missing                                     54,655     81.84
+                   1.complete                                   7,759     11.62
+                   3.not completed                              4,370      6.54
+                   total                                       66,784    100.00
+
+RES97EKM           Result 97: Assessment-Math done
+
+                   missing                                     54,655     81.84
+                   1.complete                                   7,635     11.43
+                   3.not completed                              4,494      6.73
+                   total                                       66,784    100.00
+
+SEX                Sex
+
+                   1.male                                      32,867     49.21
+                   3.female                                    33,917     50.79
+                   total                                       66,784    100.00
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 25
+book:    PTRACK  - Person Tracking                                   
+module:  PTRACK               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(RES97US  continued)
+
+RES97US            Result 97: (US)Health assessmen
+
+                   missing                                     32,884     49.24
+                   1.complete                                  28,923     43.31
+                   3.not completed                              4,977      7.45
+                   total                                       66,784    100.00
+
+VERSION            IFLS 4 release number
+
+                   min:                                          1.00
+                   mean:                                         1.00
+                   max:                                          1.00
+                   #obs                                        66,784
+                   #miss:                                           0

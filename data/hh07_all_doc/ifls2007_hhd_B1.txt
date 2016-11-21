@@ -1,0 +1,2427 @@
+
+     ===================================================================
+
+         IIII     FFFFFFF     LLL          SSSSSS                44     
+          II       FF   F     LL          SS    SS              444     
+          II       FF         LL          SS     S             4444     
+          II       FF         LL          SSS                 44 44     
+          II       FFFFF      LL           SSSSS             44  44     
+          II       FF         LL            SSSSS           44   44     
+          II       FF         LL               SSS         44    44     
+          II       FF         LL          S     SS        44444444444   
+          II       FF         LL     L    SS    SS               44     
+         IIII     FFFF        LLLLLLLL     SSSSSS                44     
+
+     ===================================================================
+
+
+
+     I N D O N E S I A N    F A M I L Y    L I F E    S U R V E Y    7  
+
+       A survey of individuals, households, families, communities       
+          and facilities conducted in 13 provinces in Indonesia         
+                   between November 2007 and July 2008                  
+
+     ===================================================================
+
+                               Directed by                              
+
+                      John Strauss, RAND and USC                        
+
+                      Firman Witoelar, Survey Meter                     
+
+                       Bondan Sikoki, Survey Meter                      
+
+                                  and                                   
+
+                 Anna Marie Wattie, Univ. of Gadjah Mada                
+
+     ===================================================================
+
+     Financial support for the Indonesian Family Life Survey Wave 4 has 
+     been provided by the National Institute of Aging grant number 1R01 
+     AG026676 and the National Institute of Child and Human Development,
+     grant number 1R01 HD050764                                         
+
+     ===================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+              Website: http://www.rand.org/FLS/IFLS                     
+          Send all questions to ifls-supp@rand.org                      
+
+
+                       Copyright (2009)                                 
+
+INDONESIAN FAMILY LIFE SURVEY 4: CODEBOOK                               page 2  
+
+
+
+
+
+
+
+================================================================================
+
+          H   H   OOO    U   U    SS    EEEE   H   H   OOO   L     DDDD         
+          H   H  O   O   U   U   S  S   E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U   S      E      H   H  O   O  L     D   D        
+          HHHHH  O   O   U   U    S     EEEE   HHHHH  O   O  L     D   D        
+          H   H  O   O   U   U     S    E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U      S   E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U   S  S   E      H   H  O   O  L     D   D        
+          H   H   OOO     UUU     SS    EEEE   H   H   OOO   LLLL  DDDD         
+
+
+                    SS    U   U   RRR    V    V    EEEE   Y    Y                
+                   S  S   U   U   R  R   V    V    E      Y    Y                
+                   S      U   U   R  R   V    V    E       Y  Y                 
+                    S     U   U   RRR    V    V    EEE       Y                  
+                     S    U   U   R R     V  V     E         Y                  
+                      S   U   U   R  R    V  V     E         Y                  
+                   S  S   U   U   R  R     V       E         Y                  
+                    SS     UUU    R  R     V       EEEE      Y                  
+
+
+            CCC    OOO    DDDD    EEEE   BBBB     OOO     OOO    K   K          
+           C   C  O   O   D   D   E      B   B   O   O   O   O   K  K           
+           C      O   O   D   D   E      B   B   O   O   O   O   K K            
+           C      O   O   D   D   EEE    BBBB    O   O   O   O   KK             
+           C      O   O   D   D   E      B   B   O   O   O   O   KK             
+           C      O   O   D   D   E      B   B   O   O   O   O   K K            
+           C   C  O   O   D   D   E      B   B   O   O   O   O   K  K           
+            CCC    OOO    DDDD    EEEE   BBBB     OOO     OOO    K   K          
+
+================================================================================
+
+ B O O K :       1                                            
+ T O P I C :     HOUSEHOLD ECONOMY                                           
+
+================================================================================
+
+
+
+
+
+
+
+
+
+
+
+                               Prepared by                                      
+                Roald Euller, John Strauss, Firman Witolar                      
+                     Created on 16JUN2011 at 14:33                           
+
+INDONESIAN FAMILY LIFE SURVEY 4: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 3
+--------------------------------------------------------------------------------
+ B O O K :       1
+ T O P I C :     Household Economy
+
+--------------------------------------------------------------------------------
+
+DATA FILES                                                                    
+----------                                                                    
+  Data are available in SAS (9.2) export and STATA (8.0) formats.             
+  Data and electronic documentation are available on the IFLS website.        
+
+  The survey instrument contains multiple sections.  Where possible, sections 
+  have been merged together to form a single data module.  The modules are    
+  organized by level of observation.  The module names are listed below.  They
+  serve as the names of the SAS and STATA data files. The codebook is also    
+  organised by module.                                                        
+
+  The modules are:                                                            
+
+   --------------------------------------------------------------------------
+                                                             # of
+      Module    Description                                  recs
+   --------------------------------------------------------------------------
+      B1_COV    Bk 1 HHd Economy                            13056
+      B1_CR1                                                77856
+      B1_CR2                                                12976
+      B1_KS0    Bk 1 Consumption (1)-Misc.                  12977
+      B1_KS1    Bk 1 Consumption (2)-Food                  480149
+      B1_KS2    Bk 1 Consumption (3)-Food traded           155724
+      B1_KS3    Bk 1 Consumption (4)-Non food items         90839
+      B1_KS4    Bk 1 Consumption (5)-Prices                116793
+      B1_KSR1   Bk 1 Consumption                            25951
+      B1_KSR2                                               25953
+      B1_KSR3   Bk 1 Assistance                             38928
+      B1_KSR4   Bk 1 Subsidized purchases                   25952
+      B1_PP     Bk 1 Health Facilities                     155712
+
+USER SUPPORT                                                                   
+------------                                                                   
+    These data should be used in conjunction with the Questionnaires and Users'
+    Manuals.  Check the IFLS web page for updates and answers to frequently    
+    asked questions.  Please send all questions to ifls-supp@rand.org.         
+
+USAGE NOTES                                                                    
+-----------                                                                    
+  READING THE DICTIONARY                                                       
+    For each variable in the dataset, the dictionary provides                  
+       Variable name : Typically the question number                           
+               Label : Describes variable                                      
+    Variable coding is described as follows:                                   
+               Value : Meaning of values for coded variables                   
+           Frequency : Frequency of each value                                 
+
+SPECIAL CODES                                                                  
+-------------                                                                  
+  The following values are reserved and have a special meaning:                
+      Numeric    Alphanumeric    Meaning                                       
+     5/95/995         V          Top coded/out of range                        
+     6/96/996         W          Not applicable                                
+
+INDONESIAN FAMILY LIFE SURVEY 4: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 4
+--------------------------------------------------------------------------------
+ B O O K :       1
+ T O P I C :     Household Economy
+
+--------------------------------------------------------------------------------
+     7/97/997         X          Refused to answer                             
+     8/98/998         Y          Don't know                                    
+     9/99/999         Z          Missing                                       
+
+DATASET VERSION                                                                
+---------------                                                                
+  The variable VERSION identifies the release version of these data; it        
+  will be updated with each revision of the data and can be used to confirm    
+  that you are using the most recent version of the data.                      
+
+NOTES ABOUT BOOK 1                                                         
+------------------                                                         
+
+  BOOK 1 contains information on household expenditures on food and        
+  non-food items.  The modules are similar to the SUSENAS short            
+  consumption module.  The book also contains information on prices        
+  of goods and a module about health facilities that the respondent        
+  knows about.  Responses in this module were used to draw the sample      
+  of health facilities enumerated in the Community and Facility Survey.    
+
+  One member of each household is asked to complete Book 1.  This          
+  person is typically the woman in charge of food preparation and          
+  shopping.                                                                
+
+  In IFLS4, HHID07 is a seven digit character variable whose digits carry       
+  the following meaning:                                                        
+
+                  x  x  x           x  x                    x  x                
+                  -------    ------------------        ---------------          
+                    EA       specific household        origin/split-off         
+
+  In the last two digits, 00 designates an origin household.  For a split-off   
+  household, the 6th digit is either 1, 2, 3 or 4 depending on which wave the   
+  split-off first appeared.  Split-offs from IFLS2 have their sixth digit equal 
+  to 1, while split-off households first appearing in IFLS2+ have a 2, new      
+  split-offs in 2000 have a 3, and new 2007 split-off have a 4.  The 7th digit  
+  indicates whether it is the first, second, or other split-off (some multiple  
+  split-offs occurred).                                                         
+
+  Note that the enumeration area identifier used to define a               
+  household contains no information about the current whereabouts          
+  of the household unless it has not moved.  The location of the           
+  household is recorded in BK_SC.                                          
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 5
+book:    1  - Household Economy                                   
+module:  B1_COV              Bk 1 HHd Economy
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID07             2007 Household ID
+
+
+PID07              2007 Person ID within household
+
+
+MODULE             IFLS survey module
+
+                   B1_COV                                      13,056    100.00
+                   total                                       13,056    100.00
+
+BEGHR1             Time interview began (hour)(1)
+
+                   min:                                          0.00
+                   mean:                                        13.40
+                   max:                                         23.00
+                   #obs                                        13,054
+                   #miss:                                           2
+
+BEGHR2             Time interview began (hour)(2)
+
+                   min:                                          0.00
+                   mean:                                        13.28
+                   max:                                         22.00
+                   #obs                                           287
+                   #miss:                                      12,769
+
+BEGHR3             Time interview began (hour)(3)
+
+                   min:                                          5.00
+                   mean:                                        12.56
+                   max:                                         20.00
+                   #obs                                            43
+                   #miss:                                      13,013
+
+BEGMIN1            Time interview began (minute)(1)
+
+                   min:                                          0.00
+                   mean:                                        27.67
+                   max:                                         59.00
+                   #obs                                        13,054
+                   #miss:                                           2
+
+BEGMIN2            Time interview began (minute)(2)
+
+                   min:                                          0.00
+                   mean:                                        24.44
+                   max:                                         59.00
+                   #obs                                           287
+                   #miss:                                      12,769
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 6
+book:    1  - Household Economy                                   
+module:  B1_COV              Bk 1 HHd Economy
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+BEGMIN3            Time interview began (minute)(3)
+
+                   min:                                          0.00
+                   mean:                                        20.28
+                   max:                                         56.00
+                   #obs                                            43
+                   #miss:                                      13,013
+
+CP1                Who else was present at interview?
+
+                   Variable CP1 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, CP1 will have the value ACF.  If the       
+                   interviewee selected D and E, CP1 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+
+CP2                Evaluation of accuracy of R's answers
+
+                   min:                                          1.00
+                   mean:                                         1.94
+                   max:                                          5.00
+                   #obs                                        12,976
+                   #miss:                                          80
+
+CP3                How serious and attentive was R?
+
+                   min:                                          1.00
+                   mean:                                         1.91
+                   max:                                          5.00
+                   #obs                                        12,976
+                   #miss:                                          80
+
+EDITOR             Code of Editor book 1
+
+
+EDIT_CK            Review by editor
+
+                   min:                                          0.00
+                   mean:                                         1.91
+                   max:                                          3.00
+                   #obs                                        13,054
+                   #miss:                                           2
+
+ENDHR1             Time interview ended (hour)(1)
+
+                   min:                                          0.00
+                   mean:                                        14.07
+                   max:                                         99.00
+                   #obs                                        13,054
+                   #miss:                                           2
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 7
+book:    1  - Household Economy                                   
+module:  B1_COV              Bk 1 HHd Economy
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+ENDHR2             Time interview ended (hour)(2)
+
+                   min:                                          0.00
+                   mean:                                        13.55
+                   max:                                         22.00
+                   #obs                                           287
+                   #miss:                                      12,769
+
+ENDHR3             Time interview ended (hour)(3)
+
+                   min:                                          5.00
+                   mean:                                        12.65
+                   max:                                         20.00
+                   #obs                                            43
+                   #miss:                                      13,013
+
+ENDMIN1            Time interview ended (minute)(1)
+
+                   min:                                          0.00
+                   mean:                                        28.71
+                   max:                                         99.00
+                   #obs                                        13,054
+                   #miss:                                           2
+
+ENDMIN2            Time interview ended (minute)(2)
+
+                   min:                                          0.00
+                   mean:                                        27.18
+                   max:                                         59.00
+                   #obs                                           287
+                   #miss:                                      12,769
+
+ENDMIN3            Time interview ended (minute)(3)
+
+                   min:                                          1.00
+                   mean:                                        23.37
+                   max:                                         55.00
+                   #obs                                            43
+                   #miss:                                      13,013
+
+HHID07_9           Household ID number
+
+
+IDIVWR             Code of Interviewer book 1
+
+
+IDKEYPUN           Keypuncher code
+
+
+IDVERIF            Verification code
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 8
+book:    1  - Household Economy                                   
+module:  B1_COV              Bk 1 HHd Economy
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+IVWDAY1            Date of intrvw (day of month)(1)
+
+                   min:                                          1.00
+                   mean:                                        15.62
+                   max:                                         31.00
+                   #obs                                        13,054
+                   #miss:                                           2
+
+IVWDAY2            Date of intrvw (day of month)(2)
+
+                   min:                                          1.00
+                   mean:                                        16.89
+                   max:                                         31.00
+                   #obs                                           287
+                   #miss:                                      12,769
+
+IVWDAY3            Date of intrvw (day of month)(3)
+
+                   min:                                          1.00
+                   mean:                                        15.67
+                   max:                                         31.00
+                   #obs                                            43
+                   #miss:                                      13,013
+
+IVWMTH1            Date of interview (month)(1)
+
+                   missing                                          2      0.02
+                   1.Jan                                        2,489     19.06
+                   2.Feb                                        2,289     17.53
+                   3.Mar                                        2,132     16.33
+                   4.Apr                                        1,957     14.99
+                   5.May                                        1,670     12.79
+                   6.Jun                                          543      4.16
+                   7.Jul                                           98      0.75
+                   11.Nov                                         287      2.20
+                   12.Dec                                       1,589     12.17
+                   total                                       13,056    100.00
+
+IVWMTH2            Date of interview (month)(2)
+
+                   missing                                     12,769     97.80
+                   1.Jan                                           65      0.50
+                   2.Feb                                           39      0.30
+                   3.Mar                                           43      0.33
+                   4.Apr                                           42      0.32
+                   5.May                                           29      0.22
+                   6.Jun                                           10      0.08
+                   7.Jul                                            3      0.02
+                   11.Nov                                          13      0.10
+                   12.Dec                                          43      0.33
+                   total                                       13,056    100.00
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 9
+book:    1  - Household Economy                                   
+module:  B1_COV              Bk 1 HHd Economy
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+IVWMTH3            Date of interview (month)(3)
+
+                   missing                                     13,013     99.67
+                   1.Jan                                           13      0.10
+                   2.Feb                                            2      0.02
+                   3.Mar                                           12      0.09
+                   4.Apr                                            4      0.03
+                   5.May                                            1      0.01
+                   6.Jun                                            1      0.01
+                   7.Jul                                            1      0.01
+                   11.Nov                                           1      0.01
+                   12.Dec                                           8      0.06
+                   total                                       13,056    100.00
+
+IVWYR1             Date of Visit (year)(1)
+
+                   min:                                          7.00
+                   mean:                                         7.86
+                   max:                                          8.00
+                   #obs                                        13,054
+                   #miss:                                           2
+
+IVWYR2             Date of Visit (year)(2)
+
+                   min:                                          7.00
+                   mean:                                         7.80
+                   max:                                          8.00
+                   #obs                                           287
+                   #miss:                                      12,769
+
+IVWYR3             Date of Visit (year)(3)
+
+                   min:                                          7.00
+                   mean:                                         7.79
+                   max:                                          8.00
+                   #obs                                            43
+                   #miss:                                      13,013
+
+LANGMAIN           Interview in what language?
+
+                   min:                                          0.00
+                   mean:                                         1.82
+                   max:                                         20.00
+                   #obs                                        13,054
+                   #miss:                                           2
+
+LANGOTHR           Other language used if any
+
+                   min:                                          0.00
+                   mean:                                        62.05
+                   max:                                         99.00
+                   #obs                                        13,054
+                   #miss:                                           2
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 10
+book:    1  - Household Economy                                   
+module:  B1_COV              Bk 1 HHd Economy
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+NUMVIS             Number of visits
+
+                   min:                                          1.00
+                   mean:                                         1.03
+                   max:                                          3.00
+                   #obs                                        13,055
+                   #miss:                                           1
+
+REASON             Reason of C1
+
+                   min:                                          1.00
+                   mean:                                         3.00
+                   max:                                          5.00
+                   #obs                                            86
+                   #miss:                                      12,970
+
+RESULT             Interview of book I
+
+                   min:                                          1.00
+                   mean:                                         1.01
+                   max:                                          3.00
+                   #obs                                        13,054
+                   #miss:                                           2
+
+RSPNDNT            Respondent
+
+                   min:                                          1.00
+                   mean:                                         1.83
+                   max:                                          9.00
+                   #obs                                        13,056
+                   #miss:                                           0
+
+SUP_EDIT           Edited by local supervisor
+
+                   min:                                          1.00
+                   mean:                                         2.91
+                   max:                                          3.00
+                   #obs                                        13,054
+                   #miss:                                           2
+
+SUP_OBS            Observed by local supervisor
+
+                   min:                                          1.00
+                   mean:                                         2.92
+                   max:                                          3.00
+                   #obs                                        13,054
+                   #miss:                                           2
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 11
+book:    1  - Household Economy                                   
+module:  B1_COV              Bk 1 HHd Economy
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+SUP_VER            Verivication by local supervisor
+
+                   min:                                          1.00
+                   mean:                                         2.97
+                   max:                                          3.00
+                   #obs                                        13,054
+                   #miss:                                           2
+
+VERSION            IFLS 4 release number
+
+                   min:                                          1.00
+                   mean:                                         1.00
+                   max:                                          1.00
+                   #obs                                        13,056
+                   #miss:                                           0
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 12
+book:    1  - Household Economy                                   
+module:  B1_CR1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID07             2007 Household ID
+
+
+MODULE             IFLS survey module
+
+                   B1_CR1                                      77,856    100.00
+                   total                                       77,856    100.00
+
+CR01               In the last 12 months, victim of [...]?
+
+                   1. Yes                                         779      1.00
+                   3. No                                       77,041     98.95
+                   9. Missing                                      36      0.05
+                   total                                       77,856    100.00
+
+CR02               How many times has [...] happened ?
+
+                   min:                                          1.00
+                   mean:                                         6.23
+                   max:                                         99.00
+                   #obs                                           815
+                   #miss:                                      77,041
+
+CR03MTH            When did the worst case of [...] occur?
+
+                   missing                                     77,041     98.95
+                   1.Jan                                           99      0.13
+                   2.Feb                                           52      0.07
+                   3.Mar                                           52      0.07
+                   4.Apr                                           50      0.06
+                   5.May                                           46      0.06
+                   6.Jun                                           30      0.04
+                   7.Jul                                           26      0.03
+                   8.Aug                                           49      0.06
+                   9.Sep                                           49      0.06
+                   10.Oct                                          90      0.12
+                   11.Nov                                          61      0.08
+                   12.Dec                                          79      0.10
+                   98.Don't know                                   96      0.12
+                   99.Missing                                      36      0.05
+                   total                                       77,856    100.00
+
+CR03YR             When did the worst case of [...] occur?
+
+                   min:                                       2000.00
+                   mean:                                      2360.23
+                   max:                                       9999.00
+                   #obs                                           815
+                   #miss:                                      77,041
+
+CR04               During the [...] did this also occur?
+
+                   Variable CR04 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 13
+book:    1  - Household Economy                                   
+module:  B1_CR1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, CR04 will have the value ACF.  If the       
+                   interviewee selected D and E, CR04 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+
+                   key for variable: CR04      C =  Mugging and Robbery                            
+                                               D =  Sexual assaults                                
+                                               F =  Physical assaults                              
+                                               W =  Not applicable                                 
+                                               Z =  Missing                                        
+
+
+CR05               What implements/weapons during [...]
+
+                   Variable CR05 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, CR05 will have the value ACF.  If the       
+                   interviewee selected D and E, CR05 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+
+                   key for variable: CR05      A =  Sharp weapon                                   
+                                               B =  Fire arm                                       
+                                               C =  Other tool                                     
+                                               W =  Not applicable                                 
+                                               Z =  Missing                                        
+
+
+CR06               Any HH death after the [....]?
+
+                   missing                                     77,723     99.83
+                   3. No                                          109      0.14
+                   9. Missing                                      24      0.03
+                   total                                       77,856    100.00
+
+CR07               Medical attention needed after [...]?
+
+                   missing                                     77,723     99.83
+                   1. Yes                                          10      0.01
+                   3. No                                           99      0.13
+                   9. Missing                                      24      0.03
+                   total                                       77,856    100.00
+
+CR08X              Do you know the value lost in [...]?
+
+                   missing                                     77,041     98.95
+                   1. Enter ammount                               733      0.94
+                   6. Not applicable                               46      0.06
+                   9. Missing                                      36      0.05
+                   total                                       77,856    100.00
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 14
+book:    1  - Household Economy                                   
+module:  B1_CR1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(CR08X  continued)
+
+
+CR08               Value of the money/goods lost in [...]
+
+                   min:                                          0.00
+                   mean:                                   7260883.35
+                   max:                                     999999998
+                   #obs                                           733
+                   #miss:                                      77,123
+
+CR09X              Day/mo/yr of activites lost in [...]
+
+                   missing                                     77,041     98.95
+                   1. Day                                         561      0.72
+                   2. Week                                        133      0.17
+                   3. Month                                        84      0.11
+                   9. Missing                                      37      0.05
+                   total                                       77,856    100.00
+
+CR09               Day/mo/yr of activites lost in [...]
+
+                   min:                                          0.00
+                   mean:                                         6.10
+                   max:                                         99.00
+                   #obs                                           815
+                   #miss:                                      77,041
+
+CR10               Was [...] reported to the police?
+
+                   missing                                     77,041     98.95
+                   1. Yes                                         105      0.13
+                   3. No                                          674      0.87
+                   9. Missing                                      36      0.05
+                   total                                       77,856    100.00
+
+CR11               Why not?
+
+                   Variable CR11 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, CR11 will have the value ACF.  If the       
+                   interviewee selected D and E, CR11 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+
+                   key for variable: CR11      A =  Don't want to aggravate matters                
+                                               B =  Concerned of own safety                        
+                                               C =  Waste of time                                  
+                                               D =  Need to pay money                              
+                                               E =  Have no money                                  
+                                               F =  Feel ashamed                                   
+                                               G =  Don't trust the police                         
+                                               H =  Don't know where to report                     
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 15
+book:    1  - Household Economy                                   
+module:  B1_CR1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+                                               Z =  Missing                                        
+
+
+CR12               Any payments to the police?
+
+                   missing                                     77,751     99.87
+                   1. Yes                                          29      0.04
+                   3. No                                           75      0.10
+                   9. Missing                                       1      0.00
+                   total                                       77,856    100.00
+
+CR13               How much was the payment to the police?
+
+                   min:                                          0.00
+                   mean:                                   67172666.5
+                   max:                                     999999998
+                   #obs                                            30
+                   #miss:                                      77,826
+
+CR14               What was outcome of the investigation
+
+                   Variable CR14 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, CR14 will have the value ACF.  If the       
+                   interviewee selected D and E, CR14 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+
+                   key for variable: CR14      A =  Still investigating                            
+                                               B =  Perpertrator caught                            
+                                               C =  Perpertrator arrested                          
+                                               D =  Money/goods returned                           
+                                               E =  Private settlement                             
+                                               W =  No action                                      
+                                               Z =  Missing                                        
+
+
+CR15               Was [...] repoted to [...]?
+
+                   Variable CR15 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, CR15 will have the value ACF.  If the       
+                   interviewee selected D and E, CR15 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+
+                   key for variable: CR15      A =  Chief RT/RW                                    
+                                               B =  Head of orchard                                
+                                               C =  Head of village                                
+                                               W =  Not report                                     
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 16
+book:    1  - Household Economy                                   
+module:  B1_CR1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+                                               Z =  Missing                                        
+
+
+CR16               In last 12 monts, any [...] in village?
+
+                   missing                                        815      1.05
+                   1. Yes                                       3,922      5.04
+                   3. No                                       68,640     88.16
+                   8. Don't Know                                4,479      5.75
+                   total                                       77,856    100.00
+
+CR17               During [...] did [...] also occur?
+
+                   Variable CR17 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, CR17 will have the value ACF.  If the       
+                   interviewee selected D and E, CR17 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+
+                   key for variable: CR17      C =  Mugging and Robbery                            
+                                               D =  Sexual assaults                                
+                                               F =  Physical assaults                              
+                                               W =  Not applicable                                 
+                                               Z =  Missing                                        
+
+
+CR18               Was this [...] reported to the police
+
+                   missing                                     73,934     94.96
+                   1. Yes                                       1,862      2.39
+                   3. No                                        2,060      2.65
+                   total                                       77,856    100.00
+
+CRTYPE             CRTYPE
+
+                   A. Theft (not including crops and livest    12,976     16.67
+                   B. Crops and livestock theft                12,976     16.67
+                   C. Mugging and Robbery                      12,976     16.67
+                   D. Sexual assaults                          12,976     16.67
+                   E. Domestic assaults                        12,976     16.67
+                   F. Other physical assaults                  12,976     16.67
+                   total                                       77,856    100.00
+
+VERSION            IFLS 4 release number
+
+                   min:                                          1.00
+                   mean:                                         1.00
+                   max:                                          1.00
+                   #obs                                        77,856
+                   #miss:                                           0
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 17
+book:    1  - Household Economy                                   
+module:  B1_CR2               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID07             2007 Household ID
+
+
+MODULE             IFLS survey module
+
+                   B1_CR2                                      12,976    100.00
+                   total                                       12,976    100.00
+
+CR19               In last 12 months, murder in village?
+
+                   1. Yes                                         315      2.43
+                   3. No                                       12,654     97.52
+                   9. Missing                                       7      0.05
+                   total                                       12,976    100.00
+
+CR20               In last 12 months, conflict in village?
+
+                   1. Yes                                         365      2.81
+                   3. No                                       12,605     97.14
+                   9. Missing                                       6      0.05
+                   total                                       12,976    100.00
+
+CR21X              Was anyone killed in the conflict?
+
+                   missing                                     12,605     97.14
+                   1. Yes                                          89      0.69
+                   3. No                                          276      2.13
+                   9. Missing                                       6      0.05
+                   total                                       12,976    100.00
+
+CR21               Was anyone killed in the conflict?
+
+                   min:                                          0.00
+                   mean:                                         4.42
+                   max:                                         98.00
+                   #obs                                            89
+                   #miss:                                      12,887
+
+CR23               Impact of violence/conflict on feelings
+
+                   Variable CR23 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, CR23 will have the value ACF.  If the       
+                   interviewee selected D and E, CR23 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+
+                   key for variable: CR23      A =  Always remembered                              
+                                               B =  Feel angry if considering the incident         
+                                               C =  B. Feel sad if considering the incident        
+                                               D =  More afraid,anxious, and attentive             
+                                               E =  Becoming less trust in the other               
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 18
+book:    1  - Household Economy                                   
+module:  B1_CR2               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+                                               W =  No influence                                   
+                                               Z =  Missing                                        
+
+
+CR24               Adjustments because violence/conclict
+
+                   Variable CR24 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, CR24 will have the value ACF.  If the       
+                   interviewee selected D and E, CR24 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+
+                   key for variable: CR24      A =  Go out at night less frequently                
+                                               B =  Changed mode of transportation                 
+                                               C =  Changed routes to reach the places             
+                                               D =  Carry self defensive weapon around             
+                                               E =  Install barbed wire/grating/security device at 
+                                               F =  Hire someone for security                      
+                                               G =  Move house                                     
+                                               W =  No change                                      
+                                               Z =  Missing                                        
+
+
+VERSION            IFLS 4 release number
+
+                   min:                                          1.00
+                   mean:                                         1.00
+                   max:                                          1.00
+                   #obs                                        12,976
+                   #miss:                                           0
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 19
+book:    1  - Household Economy                                   
+module:  B1_KS0              Bk 1 Consumption (1)-Misc.
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID07             2007 Household ID
+
+
+MODULE             IFLS survey module
+
+                   B1_KS0                                      12,977    100.00
+                   total                                       12,977    100.00
+
+IDRTK              Identification
+
+
+KS02A              Uncooked rice(Kg.) purchased last week
+
+                   min:                                          0.00
+                   mean:                                        13.55
+                   max:                                       9999.99
+                   #obs                                        12,977
+                   #miss:                                           0
+
+KS03A              Uncooked rice(Kg.) own-produc last week
+
+                   min:                                          0.00
+                   mean:                                         8.77
+                   max:                                       9999.99
+                   #obs                                        12,977
+                   #miss:                                           0
+
+KS04BX             able to answer KS04B
+
+                   1.given                                     12,977    100.00
+                   total                                       12,977    100.00
+
+KS04B              Value of food given to person out of HH
+
+                   min:                                          0.00
+                   mean:                                     11027.84
+                   max:                                     999999.00
+                   #obs                                        12,977
+                   #miss:                                           0
+
+KS07AX             able to answer KS07A
+
+                   1.given                                     12,977    100.00
+                   total                                       12,977    100.00
+
+KS07A              Value of nonfood items consumed last mo
+
+                   min:                                          0.00
+                   mean:                                    248925.29
+                   max:                                    99999999.0
+                   #obs                                        12,977
+                   #miss:                                           0
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 20
+book:    1  - Household Economy                                   
+module:  B1_KS0              Bk 1 Consumption (1)-Misc.
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+KS10AAX            able to answer KS10AA
+
+                   1.given                                     12,977    100.00
+                   total                                       12,977    100.00
+
+KS10AA             Educ exp last yr (mems in HH): tuition
+
+                   min:                                          0.00
+                   mean:                                    749531.40
+                   max:                                    99999999.0
+                   #obs                                        12,977
+                   #miss:                                           0
+
+KS10ABX            able to answer KS10AB
+
+                   1.given                                     12,977    100.00
+                   total                                       12,977    100.00
+
+KS10AB             Educ exp last yr (mems out HH): tuition
+
+                   min:                                          0.00
+                   mean:                                    330474.04
+                   max:                                    99999999.0
+                   #obs                                        12,977
+                   #miss:                                           0
+
+KS11AAX            able to answer KS11AA
+
+                   1.given                                     12,977    100.00
+                   total                                       12,977    100.00
+
+KS11AA             Educ exp last yr (mems in HH): supplies
+
+                   min:                                          0.00
+                   mean:                                    548306.74
+                   max:                                    99999999.0
+                   #obs                                        12,977
+                   #miss:                                           0
+
+KS11ABX            able to answer KS11AB
+
+                   1.given                                     12,977    100.00
+                   total                                       12,977    100.00
+
+KS11AB             Educ exp last yr (mems out HH): supplies
+
+                   min:                                          0.00
+                   mean:                                    216666.85
+                   max:                                    99999999.0
+                   #obs                                        12,977
+                   #miss:                                           0
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 21
+book:    1  - Household Economy                                   
+module:  B1_KS0              Bk 1 Consumption (1)-Misc.
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+KS12AAX            able to answer KS12AA
+
+                   1.given                                     12,977    100.00
+                   total                                       12,977    100.00
+
+KS12AA             Educ exp last yr (mems in HH): transport
+
+                   min:                                          0.00
+                   mean:                                   1008014.40
+                   max:                                    99999999.0
+                   #obs                                        12,977
+                   #miss:                                           0
+
+KS12ABX            able to answer KS12AB
+
+                   1.given                                     12,977    100.00
+                   total                                       12,977    100.00
+
+KS12AB             Educ exp last yr (mems out HH): transprt
+
+                   min:                                          0.00
+                   mean:                                    272814.75
+                   max:                                    99999999.0
+                   #obs                                        12,977
+                   #miss:                                           0
+
+KS12BBX            able to answer KS12BB
+
+                   1.given                                     12,977    100.00
+                   total                                       12,977    100.00
+
+KS12BB             Educ exp last yr (mems out HH): rent
+
+                   min:                                          0.00
+                   mean:                                    195109.35
+                   max:                                    99999999.0
+                   #obs                                        12,977
+                   #miss:                                           0
+
+VERSION            IFLS 4 release number
+
+                   min:                                          1.00
+                   mean:                                         1.00
+                   max:                                          1.00
+                   #obs                                        12,977
+                   #miss:                                           0
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 22
+book:    1  - Household Economy                                   
+module:  B1_KS1              Bk 1 Consumption (2)-Food
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID07             2007 Household ID
+
+
+MODULE             IFLS survey module
+
+                   B1_KS1                                     480,149    100.00
+                   total                                      480,149    100.00
+
+KS02X              able to answer KS02
+
+                   1.given                                    480,149    100.00
+                   total                                      480,149    100.00
+
+KS02               food last week: purchases (Rp)
+
+                   min:                                          0.00
+                   mean:                                      6482.95
+                   max:                                     999999.00
+                   #obs                                       480,149
+                   #miss:                                           0
+
+KS03X              able to answer KS03
+
+                   1.given                                    480,149    100.00
+                   total                                      480,149    100.00
+
+KS03               food last week: own production (Rp)
+
+                   min:                                          0.00
+                   mean:                                      1565.76
+                   max:                                     999999.00
+                   #obs                                       480,149
+                   #miss:                                           0
+
+KS1TYPE            Type of food item
+
+                   A                                           12,977      2.70
+                   AA. Granulated sugar                        12,977      2.70
+                   B. Corn                                     12,977      2.70
+                   BA. Coffee                                  12,977      2.70
+                   C. Sago,flour                               12,977      2.70
+                   CA. Tea                                     12,977      2.70
+                   D. Cassava,Tapioca,dried cassava            12,977      2.70
+                   DA. Cocoa                                   12,977      2.70
+                   E. Other staple foods,like sweet potatoe    12,977      2.70
+                   EA. Soft drink like fanta,Sprite,etc        12,977      2.70
+                   F. Kangkung,cucumber,spinach,mustard gre    12,977      2.70
+                   FA. Alcoholic beverages like beer,palm w    12,977      2.70
+                   G. Beans like mung-beans,peanuts,soya-be    12,977      2.70
+                   GA. Betel nut(for chewing)                  12,977      2.70
+                   H. Fruits like papaya,mango,banana and t    12,977      2.70
+                   HA. Cigarettes,tobacco                      12,977      2.70
+                   I. Noodles,rice noodles,macaroni,shrimp     12,977      2.70
+                   IA. Snacks(eaten at home)                   12,977      2.70
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 23
+book:    1  - Household Economy                                   
+module:  B1_KS1              Bk 1 Consumption (2)-Food
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(KS1TYPE  continued)
+
+                   IB. Meals eaten away from home              12,977      2.70
+                   J. Cookies,breads,crackers                  12,977      2.70
+                   K. Beef,mutton,water buffalo meat and th    12,977      2.70
+                   L. Chicken,duck and the like                12,977      2.70
+                   M. Fresh fish,oysters,shrimp,squid and t    12,977      2.70
+                   N. Salted fish                              12,977      2.70
+                   OA. Jerky, shreded beef, canned meat, sa    12,977      2.70
+                   OB. Tofu, tempe, other side dishes          12,977      2.70
+                   P. Eggs                                     12,977      2.70
+                   Q. Fresh milk,canned milk, powdered milk    12,977      2.70
+                   R. Sweet and salty soy sauce                12,977      2.70
+                   S. Salt                                     12,977      2.70
+                   T. Shrimp paste                             12,977      2.70
+                   U. Chili sauce,tomatoe sauces, and the l    12,977      2.70
+                   V. Shallot,garlic,chili,candle nuts,corr    12,977      2.70
+                   W. Javanese (brown) sugar                   12,977      2.70
+                   X. Butter                                   12,977      2.70
+                   Y. Cooking oil like coconut oil,peanut o    12,977      2.70
+                   Z. Drinking water                           12,977      2.70
+                   total                                      480,149    100.00
+
+VERSION            IFLS 4 release number
+
+                   min:                                          1.00
+                   mean:                                         1.00
+                   max:                                          1.00
+                   #obs                                       480,149
+                   #miss:                                           0
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 24
+book:    1  - Household Economy                                   
+module:  B1_KS2              Bk 1 Consumption (3)-Food traded
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID07             2007 Household ID
+
+
+MODULE             IFLS survey module
+
+                   B1_KS2                                     155,724    100.00
+                   total                                      155,724    100.00
+
+KS06X              able to answer KS06
+
+                   1.given                                    155,724    100.00
+                   total                                      155,724    100.00
+
+KS06               nonfood expenditure last month (Rp)
+
+                   min:                                          0.00
+                   mean:                                    300169.74
+                   max:                                    99999999.0
+                   #obs                                       155,724
+                   #miss:                                           0
+
+KS2TYPE            Type of non-food items
+
+                   A1. Electricity                             12,977      8.33
+                   A2. Water                                   12,977      8.33
+                   A3. Household fuel                          12,977      8.33
+                   A4. Telephone                               12,977      8.33
+                   B. Personal toiletries                      12,977      8.33
+                   C. Houshold items                           12,977      8.33
+                   C1. Domestic service and servant's wages    12,977      8.33
+                   D. Recreation and entertainment             12,977      8.33
+                   E. Transportation                           12,977      8.33
+                   F1. Sweeptakes                              12,977      8.33
+                   F2. Arisan                                  12,977      8.33
+                   G. Value of non food items given to othe    12,977      8.33
+                   total                                      155,724    100.00
+
+VERSION            IFLS 4 release number
+
+                   min:                                          1.00
+                   mean:                                         1.00
+                   max:                                          1.00
+                   #obs                                       155,724
+                   #miss:                                           0
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 25
+book:    1  - Household Economy                                   
+module:  B1_KS3              Bk 1 Consumption (4)-Non food items
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID07             2007 Household ID
+
+
+MODULE             IFLS survey module
+
+                   B1_KS3                                      90,839    100.00
+                   total                                       90,839    100.00
+
+KS08X              able to answer KS08
+
+
+KS08               nonfood last year: purchases (Rp)
+
+                   min:                                          0.00
+                   mean:                                    912109.34
+                   max:                                    99999999.0
+                   #obs                                        90,839
+                   #miss:                                           0
+
+KS09AX             able to answer KS09A
+
+                   missing                                     25,954     28.57
+                   1.given                                     64,885     71.43
+                   total                                       90,839    100.00
+
+KS09A              nonfood last year: own production (Rp)
+
+                   min:                                          0.00
+                   mean:                                    289043.34
+                   max:                                    99999999.0
+                   #obs                                        64,885
+                   #miss:                                      25,954
+
+KS3TYPE            Type of non-food items
+
+                   A. Clothing                                 12,977     14.29
+                   B. Household supplies and furniture         12,977     14.29
+                   C. Medical costs                            12,977     14.29
+                   D. Ritual ceremonies,charities and gifts    12,977     14.29
+                   E. Taxes                                    12,977     14.29
+                   F. Other expenditures not specified abov    12,977     14.29
+                   G. Value of non food items given to othe    12,977     14.29
+                   total                                       90,839    100.00
+
+VERSION            IFLS 4 release number
+
+                   min:                                          1.00
+                   mean:                                         1.00
+                   max:                                          1.00
+                   #obs                                        90,839
+                   #miss:                                           0
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 26
+book:    1  - Household Economy                                   
+module:  B1_KS4              Bk 1 Consumption (5)-Prices
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID07             2007 Household ID
+
+
+MODULE             IFLS survey module
+
+                   B1_KS4                                     116,793    100.00
+                   total                                      116,793    100.00
+
+KS13               Quantity [...] purchased in last month
+
+                   min:                                          0.00
+                   mean:                                         4.95
+                   max:                                        999.99
+                   #obs                                        71,189
+                   #miss:                                      45,604
+
+KS13X              able to answer KS13
+
+                   missing                                     45,603     39.05
+                   1.given                                     71,175     60.94
+                   3.not given                                     14      0.01
+                   9.missing                                        1      0.00
+                   total                                      116,793    100.00
+
+KS13A              Did you buy item in last month?
+
+                   1. Yes                                      71,134     60.91
+                   3. No                                       45,603     39.05
+                   9. Missing                                      56      0.05
+                   total                                      116,793    100.00
+
+KS14               Ivwr Note : Unit of quantity
+
+                   missing                                     45,603     39.05
+                   1. Kg                                       42,206     36.14
+                   2. Liter                                    13,681     11.71
+                   3. Bunch                                    10,740      9.20
+                   4. Bottle                                      313      0.27
+                   5. Bag                                         727      0.62
+                   6. Bamboo scoop                                 10      0.01
+                   7. Tail                                      2,274      1.95
+                   9. Ounce                                       700      0.60
+                   95. Other                                      412      0.35
+                   98. Don't know                                  70      0.06
+                   99. Missing                                     57      0.05
+                   total                                      116,793    100.00
+
+KS14AX             able to answer KS14A
+
+                   missing                                    101,490     86.90
+                   1.given                                     15,291     13.09
+                   3.not given                                      5      0.00
+                   8.don't know                                     5      0.00
+                   9.missing                                        2      0.00
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 27
+book:    1  - Household Economy                                   
+module:  B1_KS4              Bk 1 Consumption (5)-Prices
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(KS14AX  continued)
+
+                   total                                      116,793    100.00
+
+KS14A              what was quantity of [...]
+
+                   min:                                          0.00
+                   mean:                                        84.87
+                   max:                                        999.99
+                   #obs                                        15,296
+                   #miss:                                     101,497
+
+KS14X              able to answer KS14
+
+                   missing                                     45,603     39.05
+                   1.given                                     71,190     60.95
+                   total                                      116,793    100.00
+
+KS14B              Unit of quantity
+
+                   missing                                    101,490     86.90
+                   1. Kilograms                                13,688     11.72
+                   2. Liters                                      363      0.31
+                   98. Don't Know                               1,191      1.02
+                   99. Missing                                     61      0.05
+                   total                                      116,793    100.00
+
+KS15               Price paid last time bought
+
+                   min:                                          0.00
+                   mean:                                     17793.53
+                   max:                                     999999.00
+                   #obs                                        71,190
+                   #miss:                                      45,603
+
+KS16               Comment on Quantity
+
+                   missing                                     67,469     57.77
+                   1. High/Fresh fish                          11,561      9.90
+                   2. Medium/average/briny fish                26,058     22.31
+                   3. Low/sardines                                899      0.77
+                   4. Import quality                            1,094      0.94
+                   5. Local quality                             9,417      8.06
+                   8. Don't know                                  245      0.21
+                   9. Missing                                      50      0.04
+                   total                                      116,793    100.00
+
+KS4TYPE            Type of consumption
+
+                   A. Rice                                     12,977     11.11
+                   C. Fish                                     12,977     11.11
+                   E. Cooking oil                              12,977     11.11
+                   F. Granulated Sugar                         12,977     11.11
+                   H1. Kangkung                                12,977     11.11
+                   H3. Spinach                                 12,977     11.11
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 28
+book:    1  - Household Economy                                   
+module:  B1_KS4              Bk 1 Consumption (5)-Prices
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(KS4TYPE  continued)
+
+                   K. Kerosene                                 12,977     11.11
+                   M. Beef                                     12,977     11.11
+                   N. Chicken                                  12,977     11.11
+                   total                                      116,793    100.00
+
+VERSION            IFLS 4 release number
+
+                   min:                                          1.00
+                   mean:                                         1.00
+                   max:                                          1.00
+                   #obs                                       116,793
+                   #miss:                                           0
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 29
+book:    1  - Household Economy                                   
+module:  B1_KSR1             Bk 1 Consumption
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID07             2007 Household ID
+
+
+MODULE             IFLS survey module
+
+                   B1_KSR1                                     25,951    100.00
+                   total                                       25,951    100.00
+
+KSR17              Cash transfer from[..] program ?
+
+                   1. Yes                                       2,918     11.24
+                   3. No                                       14,581     56.19
+                   6. No Program                                8,440     32.52
+                   9. Missing                                      12      0.05
+                   total                                       25,951    100.00
+
+KSR18M             Month of 1st transfer from [...] program
+
+                   missing                                     23,021     88.71
+                   1.Jan                                           92      0.35
+                   2.Feb                                           35      0.13
+                   3.Mar                                           82      0.32
+                   4.Apr                                           40      0.15
+                   5.May                                           35      0.13
+                   6.Jun                                           39      0.15
+                   7.Jul                                           19      0.07
+                   8.Aug                                           32      0.12
+                   9.Sep                                           71      0.27
+                   10.Oct                                         168      0.65
+                   11.Nov                                          45      0.17
+                   12.Dec                                          28      0.11
+                   98.Don't know                                2,232      8.60
+                   99.Missing                                      12      0.05
+                   total                                       25,951    100.00
+
+KSR18Y             Year of 1st transfer from [...] program
+
+                   min:                                       1995.00
+                   mean:                                      2234.53
+                   max:                                       9999.00
+                   #obs                                         2,930
+                   #miss:                                      23,021
+
+KSR19              Number of transfers from [...] program
+
+                   min:                                          0.00
+                   mean:                                         3.93
+                   max:                                         99.00
+                   #obs                                         2,930
+                   #miss:                                      23,021
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 30
+book:    1  - Household Economy                                   
+module:  B1_KSR1             Bk 1 Consumption
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+KSR20X             Do you know the total amount?
+
+                   missing                                     23,021     88.71
+                   1. Given Money                               2,911     11.22
+                   8. Don't know                                    7      0.03
+                   9. Missing                                      12      0.05
+                   total                                       25,951    100.00
+
+KSR20              Total amnt of tranfers from [...] program
+
+                   min:                                       1200.00
+                   mean:                                    990354.24
+                   max:                                    12000000.0
+                   #obs                                         2,911
+                   #miss:                                      23,040
+
+KSR21X             Do you know the last year amount?
+
+                   missing                                     23,021     88.71
+                   1. Given Money                                 357      1.38
+                   6. Not accept the money in 1 the last ye     2,545      9.81
+                   8. Don't know                                   16      0.06
+                   9. Missing                                      12      0.05
+                   total                                       25,951    100.00
+
+KSR21              lastyr amnt of tranfers from [...] program
+
+                   min:                                          0.00
+                   mean:                                    690596.64
+                   max:                                    12000000.0
+                   #obs                                           357
+                   #miss:                                      25,594
+
+KSR22M             Month of last transfer from [...] program
+
+                   missing                                     23,021     88.71
+                   1.Jan                                           30      0.12
+                   2.Feb                                           22      0.08
+                   3.Mar                                           31      0.12
+                   4.Apr                                           24      0.09
+                   5.May                                           29      0.11
+                   6.Jun                                           64      0.25
+                   7.Jul                                           35      0.13
+                   8.Aug                                           42      0.16
+                   9.Sep                                          123      0.47
+                   10.Oct                                         218      0.84
+                   11.Nov                                          57      0.22
+                   12.Dec                                         176      0.68
+                   98.Don't know                                2,065      7.96
+                   99.Missing                                      14      0.05
+                   total                                       25,951    100.00
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 31
+book:    1  - Household Economy                                   
+module:  B1_KSR1             Bk 1 Consumption
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+KSR22Y             Year of last transfer from [...] program
+
+                   min:                                       1995.00
+                   mean:                                      2226.84
+                   max:                                       9999.00
+                   #obs                                         2,930
+                   #miss:                                      23,021
+
+KSR23X             Do you know the amout of money
+
+                   missing                                     23,021     88.71
+                   1. Given Money                               2,910     11.21
+                   8. Don't know                                    7      0.03
+                   9. Missing                                      13      0.05
+                   total                                       25,951    100.00
+
+KSR23              amount of money (Rp)
+
+                   min:                                          0.00
+                   mean:                                    315721.99
+                   max:                                    6000000.00
+                   #obs                                         2,910
+                   #miss:                                      23,041
+
+KSR3TYPE           Program type
+
+                   A. Program Kompensasi Penurunan Subsidi     12,977     50.01
+                   B. Program Bantuan Tunai Bersyarat (Kelu    12,974     49.99
+                   total                                       25,951    100.00
+
+VERSION            IFLS 4 release number
+
+                   min:                                          1.00
+                   mean:                                         1.00
+                   max:                                          1.00
+                   #obs                                        25,951
+                   #miss:                                           0
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 32
+book:    1  - Household Economy                                   
+module:  B1_KSR2              
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID07             2007 Household ID
+
+
+MODULE             IFLS survey module
+
+                   B1_KSR2                                     25,953    100.00
+                   total                                       25,953    100.00
+
+KSR24              Past yr, bought rice  from [...] program?
+
+                   1. Yes                                       5,776     22.26
+                   3. No                                       11,004     42.40
+                   6. Don't know/No Program                     9,161     35.30
+                   9. Missing                                      12      0.05
+                   total                                       25,953    100.00
+
+KSR25              How many times was rice bought from [...]
+
+                   min:                                          0.00
+                   mean:                                         7.37
+                   max:                                         99.00
+                   #obs                                         5,788
+                   #miss:                                      20,165
+
+KSR26X             Do you know last year quantity?
+
+                   missing                                     20,165     77.70
+                   1. Given                                     5,749     22.15
+                   8. Don't know                                   26      0.10
+                   9. Missing                                      13      0.05
+                   total                                       25,953    100.00
+
+KSR26              Quantity of rice bought from [...] last yr
+
+                   min:                                          0.00
+                   mean:                                        55.49
+                   max:                                        998.00
+                   #obs                                         5,749
+                   #miss:                                      20,204
+
+KSR27X             Do you know last month quantity?
+
+                   missing                                     20,165     77.70
+                   1. Given                                     5,770     22.23
+                   8. Don't know                                    6      0.02
+                   9. Missing                                      12      0.05
+                   total                                       25,953    100.00
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 33
+book:    1  - Household Economy                                   
+module:  B1_KSR2              
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+KSR27              Quantity of rice bought from [...] last mo
+
+                   min:                                          0.00
+                   mean:                                        25.78
+                   max:                                        998.00
+                   #obs                                         5,770
+                   #miss:                                      20,183
+
+KSR28M             Month you last bought RASKIN rice?
+
+                   missing                                     20,165     77.70
+                   1.Jan                                          619      2.39
+                   2.Feb                                        1,116      4.30
+                   3.Mar                                          874      3.37
+                   4.Apr                                          443      1.71
+                   5.May                                          260      1.00
+                   6.Jun                                           76      0.29
+                   7.Jul                                           42      0.16
+                   8.Aug                                           82      0.32
+                   9.Sep                                          188      0.72
+                   10.Oct                                         262      1.01
+                   11.Nov                                         596      2.30
+                   12.Dec                                       1,046      4.03
+                   98.Don't know                                  172      0.66
+                   99.Missing                                      12      0.05
+                   total                                       25,953    100.00
+
+KSR28Y             Year you last bought RASKIN rice?
+
+                   min:                                       1996.00
+                   mean:                                      2032.39
+                   max:                                       9999.00
+                   #obs                                         5,788
+                   #miss:                                      20,165
+
+KSR29X             Do you know the quantity of rice?
+
+                   missing                                     20,165     77.70
+                   1. Given                                     5,769     22.23
+                   8. Don't know                                    7      0.03
+                   9. Missing                                      12      0.05
+                   total                                       25,953    100.00
+
+KSR29              Quantity of rice bought last time?
+
+                   min:                                          0.00
+                   mean:                                        30.64
+                   max:                                        998.00
+                   #obs                                         5,769
+                   #miss:                                      20,184
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 34
+book:    1  - Household Economy                                   
+module:  B1_KSR2              
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+KSR30X             Do you know the maximum amount of rice?
+
+                   missing                                     20,165     77.70
+                   1. Given                                     5,683     21.90
+                   6. No maximum                                   47      0.18
+                   8. Don't know                                   46      0.18
+                   9. Missing                                      12      0.05
+                   total                                       25,953    100.00
+
+KSR30              Max amount of rice purchasable from [...]?
+
+                   min:                                          0.00
+                   mean:                                        31.50
+                   max:                                        998.00
+                   #obs                                         5,683
+                   #miss:                                      20,270
+
+KSR31X             Do you know the total amount?
+
+                   missing                                     20,165     77.70
+                   1. Given money                               5,764     22.21
+                   8. Don't know                                   12      0.05
+                   9. Missing                                      12      0.05
+                   total                                       25,953    100.00
+
+KSR31              total amount spent last time (Rp)
+
+                   min:                                          0.00
+                   mean:                                     12537.68
+                   max:                                    6500000.00
+                   #obs                                         5,763
+                   #miss:                                      20,190
+
+KSR32X             Do you know the regular market price?
+
+                   missing                                     20,166     77.70
+                   1. Given money                               5,362     20.66
+                   8. Don't know                                  413      1.59
+                   9. Missing                                      12      0.05
+                   total                                       25,953    100.00
+
+KSR32              Regular market price of rice (Rp)
+
+                   min:                                          0.00
+                   mean:                                     30811.97
+                   max:                                    9000000.00
+                   #obs                                         5,362
+                   #miss:                                      20,591
+
+KSR33X             Do you know the price per kg?
+
+                   missing                                     20,166     77.70
+                   1. Given money                               5,659     21.80
+                   8. Don't know                                  114      0.44
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 35
+book:    1  - Household Economy                                   
+module:  B1_KSR2              
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(KSR33X  continued)
+
+                   9. Missing                                      14      0.05
+                   total                                       25,953    100.00
+
+KSR33              last time bought price per kg (Rp)
+
+                   min:                                          0.00
+                   mean:                                      1753.46
+                   max:                                      99995.00
+                   #obs                                         5,659
+                   #miss:                                      20,294
+
+KSR34X             Do you know market price per kg (Rp)
+
+                   missing                                     20,166     77.70
+                   1. Given money                               5,470     21.08
+                   8. Don't know                                  305      1.18
+                   9. Missing                                      12      0.05
+                   total                                       25,953    100.00
+
+KSR34              Regular market price per kg (Rp)
+
+                   min:                                          0.00
+                   mean:                                      4254.44
+                   max:                                      99998.00
+                   #obs                                         5,470
+                   #miss:                                      20,483
+
+KSR35              Quality of rice purchased from [...]
+
+                   missing                                     20,166     77.70
+                   1. High                                        245      0.94
+                   2. Medium                                    3,005     11.58
+                   3. Low                                       2,524      9.73
+                   9. Missing                                      13      0.05
+                   total                                       25,953    100.00
+
+KSR36              Past yr, declined to buy rice from [...]?
+
+                   missing                                      9,162     35.30
+                   1. Yes                                       1,236      4.76
+                   3. No                                       11,360     43.77
+                   6. NA                                        4,170     16.07
+                   9. Missing                                      25      0.10
+                   total                                       25,953    100.00
+
+KSR37              Why did you decline to by rice ?
+
+                   missing                                     24,692     95.14
+                   1. Have no money                               236      0.91
+                   2. The rice's quality is low                   201      0.77
+                   3. Have no time                                 74      0.29
+                   4. Too far                                      70      0.27
+                   5. Someone else need it more                   227      0.87
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 36
+book:    1  - Household Economy                                   
+module:  B1_KSR2              
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(KSR37  continued)
+
+                   6. No eligible                                  40      0.15
+                   7. Don't have coupon for the program           242      0.93
+                   8. Out of rice                                 146      0.56
+                   9. Missing                                      25      0.10
+                   total                                       25,953    100.00
+
+KSR4TYPE           Raskin and Market Operation
+
+                   A. RASKIN                                   12,977     50.00
+                   B. Market Operation                         12,976     50.00
+                   total                                       25,953    100.00
+
+VERSION            IFLS 4 release number
+
+                   min:                                          1.00
+                   mean:                                         1.00
+                   max:                                          1.00
+                   #obs                                        25,953
+                   #miss:                                           0
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 37
+book:    1  - Household Economy                                   
+module:  B1_KSR3             Bk 1 Assistance
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID07             2007 Household ID
+
+
+MODULE             IFLS survey module
+
+                   B1_KSR3                                     38,928    100.00
+                   total                                       38,928    100.00
+
+KSR2TYPE           Type of purchase from subsidized market
+
+                   D. Sugar                                    12,976     33.33
+                   J. Cooking oil                              12,976     33.33
+                   K. Kerosene                                 12,976     33.33
+                   total                                       38,928    100.00
+
+KSR38              Did HH buy this item in last 12 months?
+
+                   1. Yes                                         299      0.77
+                   3. No                                       38,611     99.19
+                   9. Missing                                      18      0.05
+                   total                                       38,928    100.00
+
+KSR39              Name's of seller
+
+                   Variable KSR39 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, KSR39 will have the value ACF.  If the       
+                   interviewee selected D and E, KSR39 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+
+                   key for variable: KSR39     A =  Central Government                             
+                                               B =  Regional Government                            
+                                               C =  Non-government                                 
+                                               Y =  Don't know                                     
+                                               Z =  Missing                                        
+
+
+KSR40X             last 12 months, Do you know time bought
+
+                   missing                                     38,629     99.23
+                   1. Given                                       298      0.77
+                   8. Don't know                                    1      0.00
+                   total                                       38,928    100.00
+
+KSR40              last 12 months, how many times bought
+
+                   min:                                          1.00
+                   mean:                                         2.08
+                   max:                                         48.00
+                   #obs                                           298
+                   #miss:                                      38,630
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 38
+book:    1  - Household Economy                                   
+module:  B1_KSR3             Bk 1 Assistance
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+
+KSR41M             When was the last time (month)
+
+                   missing                                     38,629     99.23
+                   1.Jan                                           12      0.03
+                   2.Feb                                           20      0.05
+                   3.Mar                                           27      0.07
+                   4.Apr                                           34      0.09
+                   5.May                                           12      0.03
+                   6.Jun                                            5      0.01
+                   7.Jul                                            4      0.01
+                   8.Aug                                            6      0.02
+                   9.Sep                                           34      0.09
+                   10.Oct                                          63      0.16
+                   11.Nov                                          22      0.06
+                   12.Dec                                          36      0.09
+                   98.Don't know                                   24      0.06
+                   total                                       38,928    100.00
+
+KSR41Y             When was the last time (year)
+
+                   min:                                       2001.00
+                   mean:                                      2007.31
+                   max:                                       2008.00
+                   #obs                                           299
+                   #miss:                                      38,629
+
+KSR42X             Do you know the cost of last purchase?
+
+                   missing                                     38,629     99.23
+                   1. Given                                       285      0.73
+                   8. Don't know                                   14      0.04
+                   total                                       38,928    100.00
+
+KSR42              Total cost of last purchase (Rp)
+
+                   min:                                          0.00
+                   mean:                                     16422.63
+                   max:                                     300000.00
+                   #obs                                           285
+                   #miss:                                      38,643
+
+KSR43X             Do you know unit price of last purchase?
+
+                   missing                                     38,629     99.23
+                   1. Given Money                                 263      0.68
+                   8. Don't know                                   36      0.09
+                   total                                       38,928    100.00
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 39
+book:    1  - Household Economy                                   
+module:  B1_KSR3             Bk 1 Assistance
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+KSR43              Price per unit cost of last purchase(Rp)
+
+                   min:                                          0.00
+                   mean:                                      5959.64
+                   max:                                      25000.00
+                   #obs                                           263
+                   #miss:                                      38,665
+
+KSR44              Unit
+
+                   missing                                     38,629     99.23
+                   1. Kg                                          154      0.40
+                   2. Liter                                       145      0.37
+                   total                                       38,928    100.00
+
+KSR45X             Do you know the market unit price?
+
+                   missing                                     38,629     99.23
+                   1. Given Money                                 266      0.68
+                   8. Don't know                                   33      0.08
+                   total                                       38,928    100.00
+
+KSR45              Market unit price of last purchase (Rp)
+
+                   min:                                       2000.00
+                   mean:                                      9081.20
+                   max:                                     100000.00
+                   #obs                                           266
+                   #miss:                                      38,662
+
+KSR46              Unit
+
+                   missing                                     38,629     99.23
+                   1. Kg                                          162      0.42
+                   2. Liter                                       137      0.35
+                   total                                       38,928    100.00
+
+VERSION            IFLS 4 release number
+
+                   min:                                          1.00
+                   mean:                                         1.00
+                   max:                                          1.00
+                   #obs                                        38,928
+                   #miss:                                           0
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 40
+book:    1  - Household Economy                                   
+module:  B1_KSR4             Bk 1 Subsidized purchases
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID07             2007 Household ID
+
+
+MODULE             IFLS survey module
+
+                   B1_KSR4                                     25,952    100.00
+                   total                                       25,952    100.00
+
+KSR47              Last 12 months, did household accept aid
+
+                   1. Yes                                         489      1.88
+                   3. No                                       25,451     98.07
+                   9. Missing                                      12      0.05
+                   total                                       25,952    100.00
+
+KSR48              From where the source
+
+                   Variable KSR48 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, KSR48 will have the value ACF.  If the       
+                   interviewee selected D and E, KSR48 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+
+                   key for variable: KSR48     A =  Religious Organization                         
+                                               B =  Politic Organization                           
+                                               C =  Local LSM                                      
+                                               D =  Individual                                     
+                                               E =  Company                                        
+                                               F =  Foreign government/foreign LSM/donor           
+                                               Z =  Missing                                        
+
+
+KSR49X             Do you know the month aid was accepted
+
+                   missing                                     25,451     98.07
+                   1. Enter date                                  483      1.86
+                   8. Don't know                                    7      0.03
+                   9. Missing                                      11      0.04
+                   total                                       25,952    100.00
+
+KSR49M             last 12 months, month aid was accepted
+
+                   missing                                     25,469     98.14
+                   1.Jan                                           45      0.17
+                   2.Feb                                           35      0.13
+                   3.Mar                                           30      0.12
+                   4.Apr                                           22      0.08
+                   5.May                                           20      0.08
+                   6.Jun                                           22      0.08
+                   7.Jul                                           12      0.05
+                   8.Aug                                           32      0.12
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 41
+book:    1  - Household Economy                                   
+module:  B1_KSR4             Bk 1 Subsidized purchases
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(KSR49M  continued)
+
+                   9.Sep                                           42      0.16
+                   10.Oct                                          96      0.37
+                   11.Nov                                          34      0.13
+                   12.Dec                                          63      0.24
+                   98.Don't know                                   30      0.12
+                   total                                       25,952    100.00
+
+KSR49Y             last 12 months, year aid was accepted
+
+                   min:                                       2002.00
+                   mean:                                      2007.26
+                   max:                                       2008.00
+                   #obs                                           483
+                   #miss:                                      25,469
+
+KSR50X             Do you know total amount received
+
+                   missing                                     25,451     98.07
+                   1. Enter ammount                               268      1.03
+                   6. Not applicable                              211      0.81
+                   8. Don't know                                   11      0.04
+                   9. Missing                                      11      0.04
+                   total                                       25,952    100.00
+
+KSR50              last 4 weeks, total amount received (Rp)
+
+                   min:                                       2000.00
+                   mean:                                   2174238.06
+                   max:                                     350000000
+                   #obs                                           268
+                   #miss:                                      25,684
+
+KSR5TYPE           Type of household aid recieved
+
+                   A. Cash                                     12,976     50.00
+                   B. Goods                                    12,976     50.00
+                   total                                       25,952    100.00
+
+VERSION            IFLS 4 release number
+
+                   min:                                          1.00
+                   mean:                                         1.00
+                   max:                                          1.00
+                   #obs                                        25,952
+                   #miss:                                           0
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 42
+book:    1  - Household Economy                                   
+module:  B1_PP               Bk 1 Health Facilities
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID07             2007 Household ID
+
+
+MODULE             IFLS survey module
+
+                   B1_PP                                      155,712    100.00
+                   total                                      155,712    100.00
+
+EA                  
+
+
+HHID07_9           Household ID number
+
+
+IDRT                
+
+
+MATCH               
+
+
+PP3X               Do you know name of the facility?
+
+                   missing                                     76,640     49.22
+                   1.given                                     74,533     47.87
+                   8.don't know                                 4,538      2.91
+                   9.missing                                        1      0.00
+                   total                                      155,712    100.00
+
+PP2                Do you know where facility is located?
+
+                   1. Yes                                      79,072     50.78
+                   3. No                                       76,557     49.17
+                   9. Missing                                      83      0.05
+                   total                                      155,712    100.00
+
+PP4ADDRX           Do you know the address of facility?
+
+                   missing                                     84,797     54.46
+                   1.given                                     66,019     42.40
+                   8.don't know                                 4,891      3.14
+                   9.missing                                        5      0.00
+                   total                                      155,712    100.00
+
+PP5X               One way travel time (unit of measurment)
+
+                   missing                                     76,640     49.22
+                   1. Minutes                                  74,184     47.64
+                   2. Hours                                     4,459      2.86
+                   3. Days                                         33      0.02
+                   30                                               1      0.00
+                   98. Don't know                                 384      0.25
+                   99. Missing                                     11      0.01
+                   total                                      155,712    100.00
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 43
+book:    1  - Household Economy                                   
+module:  B1_PP               Bk 1 Health Facilities
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+PP5                One way travel time (unit of measurment)
+
+                   min:                                          0.00
+                   mean:                                        12.53
+                   max:                                         99.00
+                   #obs                                        79,072
+                   #miss:                                      76,640
+
+PP6X               Do you know one way transport cost?
+
+                   missing                                     76,640     49.22
+                   1. Estimate of cost                         17,597     11.30
+                   3. Walk                                     30,456     19.56
+                   5. Use own transportation                   30,646     19.68
+                   8. Don't know                                  361      0.23
+                   9. Missing                                      12      0.01
+                   total                                      155,712    100.00
+
+PP6                amount of money (Rp)
+
+                   min:                                          0.00
+                   mean:                                      5065.14
+                   max:                                     999996.00
+                   #obs                                        17,597
+                   #miss:                                     138,115
+
+PPCOMFAS           Comfas code
+
+
+PPTYPE             Type of out-patient facility
+
+                   missing                                          1      0.00
+                   A. Public Hospital (General or Specify)     12,976      8.33
+                   B. Private Hospital                         12,976      8.33
+                   C. Public Health Center/Auxiliary Center    12,976      8.33
+                   D. Private Clinic                           12,976      8.33
+                   E. Private Physician                        12,976      8.33
+                   F1. Midwife (Private or village Midwife)    12,976      8.33
+                   F2. Nurse/Paramedic                         12,976      8.33
+                   G1. Traditional Birth Attendant             12,976      8.33
+                   G2. Traditional Practitioner (Shamans, w    12,976      8.33
+                   H. Pharmacy                                 12,976      8.33
+                   I1. Posyandu                                12,976      8.33
+                   I2. Posyandu for Elderly                    12,975      8.33
+                   total                                      155,712    100.00
+
+VERSION            IFLS 4 release number
+
+                   min:                                          1.00
+                   mean:                                         1.00
+                   max:                                          1.00
+                   #obs                                       155,712
+                   #miss:                                           0

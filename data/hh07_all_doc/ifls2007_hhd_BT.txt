@@ -1,0 +1,585 @@
+
+     ===================================================================
+
+         IIII     FFFFFFF     LLL          SSSSSS                44     
+          II       FF   F     LL          SS    SS              444     
+          II       FF         LL          SS     S             4444     
+          II       FF         LL          SSS                 44 44     
+          II       FFFFF      LL           SSSSS             44  44     
+          II       FF         LL            SSSSS           44   44     
+          II       FF         LL               SSS         44    44     
+          II       FF         LL          S     SS        44444444444   
+          II       FF         LL     L    SS    SS               44     
+         IIII     FFFF        LLLLLLLL     SSSSSS                44     
+
+     ===================================================================
+
+
+
+     I N D O N E S I A N    F A M I L Y    L I F E    S U R V E Y    7  
+
+       A survey of individuals, households, families, communities       
+          and facilities conducted in 13 provinces in Indonesia         
+                   between November 2007 and July 2008                  
+
+     ===================================================================
+
+                               Directed by                              
+
+                      John Strauss, RAND and USC                        
+
+                      Firman Witoelar, Survey Meter                     
+
+                       Bondan Sikoki, Survey Meter                      
+
+                                  and                                   
+
+                 Anna Marie Wattie, Univ. of Gadjah Mada                
+
+     ===================================================================
+
+     Financial support for the Indonesian Family Life Survey Wave 4 has 
+     been provided by the National Institute of Aging grant number 1R01 
+     AG026676 and the National Institute of Child and Human Development,
+     grant number 1R01 HD050764                                         
+
+     ===================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+              Website: http://www.rand.org/FLS/IFLS                     
+          Send all questions to ifls-supp@rand.org                      
+
+
+                       Copyright (2009)                                 
+
+INDONESIAN FAMILY LIFE SURVEY 4: CODEBOOK                               page 2  
+
+
+
+
+
+
+
+================================================================================
+
+          H   H   OOO    U   U    SS    EEEE   H   H   OOO   L     DDDD         
+          H   H  O   O   U   U   S  S   E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U   S      E      H   H  O   O  L     D   D        
+          HHHHH  O   O   U   U    S     EEEE   HHHHH  O   O  L     D   D        
+          H   H  O   O   U   U     S    E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U      S   E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U   S  S   E      H   H  O   O  L     D   D        
+          H   H   OOO     UUU     SS    EEEE   H   H   OOO   LLLL  DDDD         
+
+
+                    SS    U   U   RRR    V    V    EEEE   Y    Y                
+                   S  S   U   U   R  R   V    V    E      Y    Y                
+                   S      U   U   R  R   V    V    E       Y  Y                 
+                    S     U   U   RRR    V    V    EEE       Y                  
+                     S    U   U   R R     V  V     E         Y                  
+                      S   U   U   R  R    V  V     E         Y                  
+                   S  S   U   U   R  R     V       E         Y                  
+                    SS     UUU    R  R     V       EEEE      Y                  
+
+
+            CCC    OOO    DDDD    EEEE   BBBB     OOO     OOO    K   K          
+           C   C  O   O   D   D   E      B   B   O   O   O   O   K  K           
+           C      O   O   D   D   E      B   B   O   O   O   O   K K            
+           C      O   O   D   D   EEE    BBBB    O   O   O   O   KK             
+           C      O   O   D   D   E      B   B   O   O   O   O   KK             
+           C      O   O   D   D   E      B   B   O   O   O   O   K K            
+           C   C  O   O   D   D   E      B   B   O   O   O   O   K  K           
+            CCC    OOO    DDDD    EEEE   BBBB     OOO     OOO    K   K          
+
+================================================================================
+
+ B O O K :       BT                                            
+ T O P I C :     TRACKING BOOK                                           
+
+================================================================================
+
+
+
+
+
+
+
+
+
+
+
+                               Prepared by                                      
+                Roald Euller, John Strauss, Firman Witolar                      
+                     Created on 16JUN2011 at 14:33                           
+
+INDONESIAN FAMILY LIFE SURVEY 4: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 3
+--------------------------------------------------------------------------------
+ B O O K :       BT
+ T O P I C :     Tracking Book
+
+--------------------------------------------------------------------------------
+
+DATA FILES                                                                    
+----------                                                                    
+  Data are available in SAS (9.2) export and STATA (8.0) formats.             
+  Data and electronic documentation are available on the IFLS website.        
+
+  The survey instrument contains multiple sections.  Where possible, sections 
+  have been merged together to form a single data module.  The modules are    
+  organized by level of observation.  The module names are listed below.  They
+  serve as the names of the SAS and STATA data files. The codebook is also    
+  organised by module.                                                        
+
+  The modules are:                                                            
+
+   --------------------------------------------------------------------------
+                                                             # of
+      Module    Description                                  recs
+   --------------------------------------------------------------------------
+      BT_COV                                                13537
+
+USER SUPPORT                                                                   
+------------                                                                   
+    These data should be used in conjunction with the Questionnaires and Users'
+    Manuals.  Check the IFLS web page for updates and answers to frequently    
+    asked questions.  Please send all questions to ifls-supp@rand.org.         
+
+USAGE NOTES                                                                    
+-----------                                                                    
+  READING THE DICTIONARY                                                       
+    For each variable in the dataset, the dictionary provides                  
+       Variable name : Typically the question number                           
+               Label : Describes variable                                      
+    Variable coding is described as follows:                                   
+               Value : Meaning of values for coded variables                   
+           Frequency : Frequency of each value                                 
+
+SPECIAL CODES                                                                  
+-------------                                                                  
+  The following values are reserved and have a special meaning:                
+      Numeric    Alphanumeric    Meaning                                       
+     5/95/995         V          Top coded/out of range                        
+     6/96/996         W          Not applicable                                
+     7/97/997         X          Refused to answer                             
+     8/98/998         Y          Don't know                                    
+     9/99/999         Z          Missing                                       
+
+DATASET VERSION                                                                
+---------------                                                                
+  The variable VERSION identifies the release version of these data; it        
+  will be updated with each revision of the data and can be used to confirm    
+  that you are using the most recent version of the data.                      
+
+NOTES ON BOOK T                                                          
+----------------                                                         
+
+INDONESIAN FAMILY LIFE SURVEY 4: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 4
+--------------------------------------------------------------------------------
+ B O O K :       BT
+ T O P I C :     Tracking Book
+
+--------------------------------------------------------------------------------
+
+  This is a new book in IFLS4 and takes the place of some of what was in 
+  the book K cover in previous waves.  Book T is a contact book for      
+  households, all target households: all original IFLS1 households plus  
+  split-off households from IFLS2, 2+, and 3, have at least one book T.  A   
+  book T was filled out at every location where a household was searched.
+  In the public release only one book T is provided for each household,  
+  from when a household was actually contacted, or from the last place   
+  where it was searched.                                                 
+
+  For the purpose of users, the key variables are TB1 and TB2, which     
+  record whether the household was found and interviewed or not, had all 
+  members die, moved or moved into another IFLS household, in which case 
+  TB2 lists the household id of the destination household.               
+
+
+  To link records across waves of the IFLS, use PIDLINK.  It is                 
+  a unique person identifier which is the same in IFLS1, 2, 2+, 3               
+  and 4 for a particular individual.  It may also be used to                    
+  link records within IFLS4, except that as is described in                     
+  Volume 2 of the User's Guide, a person if they moved                          
+  households since IFLS1 may be found in multiple households                    
+  with PIDLINK.  However there will be only 1 household in                      
+  which the respondent currently resides, which can be found by                 
+  examining variable ar01a in Book K, which is equal to 1 or 5 if               
+  the respondent is a resident.                                                 
+
+  PIDLINK is a string variable comprising 9 digits.  For a                      
+  respondent in IFLS1, 2, 2+, or 3. PIDLINK is made up of HHID for              
+  the wave in which they were first found, followed by 00 and                   
+  then the person identifier, PID, for that wave of IFLS.  For                  
+  a new respondent in IFLS4, PIDLINK is made up of HHID07 and                   
+  PID07.                                                                        
+
+
+  In IFLS4, HHID07 is a seven digit character variable whose digits carry       
+  the following meaning:                                                        
+
+                  x  x  x           x  x                    x  x                
+                  -------    ------------------        ---------------          
+                    EA       specific household        origin/split-off         
+
+  In the last two digits, 00 designates an origin household.  For a split-off   
+  household, the 6th digit is either 1, 2, 3 or 4 depending on which wave the   
+  split-off first appeared.  Split-offs from IFLS2 have their sixth digit equal 
+  to 1, while split-off households first appearing in IFLS2+ have a 2, new      
+  split-offs in 2000 have a 3, and new 2007 split-off have a 4.  The 7th digit  
+  indicates whether it is the first, second, or other split-off (some multiple  
+  split-offs occurred).                                                         
+
+  Note that the enumeration area identifier used to define a               
+  household contains no information about the current whereabouts          
+  of the household unless it has not moved.  The location of the           
+  household is recorded in BK_SC.                                          
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 5
+book:    BT  - Tracking Book                                   
+module:  BT_COV               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID07             2007 Household ID
+
+
+MODULE             IFLS survey module
+
+                   BT_COV                                      13,537    100.00
+                   total                                       13,537    100.00
+
+BEGHR1             Time interview began (hour)(1)
+
+                   min:                                          4.00
+                   mean:                                        12.76
+                   max:                                         22.00
+                   #obs                                        13,537
+                   #miss:                                           0
+
+BEGHR2             Time interview began (hour)(2)
+
+                   min:                                          5.00
+                   mean:                                        13.31
+                   max:                                         21.00
+                   #obs                                           324
+                   #miss:                                      13,213
+
+BEGHR3             Time interview began (hour)(3)
+
+                   min:                                          5.00
+                   mean:                                        13.44
+                   max:                                         21.00
+                   #obs                                           103
+                   #miss:                                      13,434
+
+BEGMIN1            Time interview began (minute)(1)
+
+                   min:                                          0.00
+                   mean:                                        24.80
+                   max:                                         59.00
+                   #obs                                        13,537
+                   #miss:                                           0
+
+BEGMIN2            Time interview began (minute)(2)
+
+                   min:                                          0.00
+                   mean:                                        22.40
+                   max:                                         59.00
+                   #obs                                           324
+                   #miss:                                      13,213
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 6
+book:    BT  - Tracking Book                                   
+module:  BT_COV               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+BEGMIN3            Time interview began (minute)(3)
+
+                   min:                                          0.00
+                   mean:                                        22.12
+                   max:                                         59.00
+                   #obs                                           103
+                   #miss:                                      13,434
+
+EDITOR             Code of editor buku T
+
+
+ENDHR1             Time interview ended (minute)(1)
+
+                   min:                                          4.00
+                   mean:                                        12.81
+                   max:                                         23.00
+                   #obs                                        13,537
+                   #miss:                                           0
+
+ENDHR2             Time interview ended (minute)(2)
+
+                   min:                                          5.00
+                   mean:                                        13.38
+                   max:                                         22.00
+                   #obs                                           324
+                   #miss:                                      13,213
+
+ENDHR3             Time interview ended (minute)(3)
+
+                   min:                                          5.00
+                   mean:                                        13.57
+                   max:                                         21.00
+                   #obs                                           103
+                   #miss:                                      13,434
+
+ENDMIN1            Time interview ended (minute)(1)
+
+                   min:                                          0.00
+                   mean:                                        24.84
+                   max:                                         59.00
+                   #obs                                        13,537
+                   #miss:                                           0
+
+ENDMIN2            Time interview ended (minute)(2)
+
+                   min:                                          0.00
+                   mean:                                        24.13
+                   max:                                         59.00
+                   #obs                                           324
+                   #miss:                                      13,213
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 7
+book:    BT  - Tracking Book                                   
+module:  BT_COV               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+ENDMIN3            Time interview ended (minute)(3)
+
+                   min:                                          0.00
+                   mean:                                        22.48
+                   max:                                         59.00
+                   #obs                                           103
+                   #miss:                                      13,434
+
+HHID07_9           ID Household
+
+
+IVIVWR             ID number of field interviewer
+
+
+IVWDAY1            Date of interview (day)(1)
+
+                   min:                                          1.00
+                   mean:                                        15.74
+                   max:                                         31.00
+                   #obs                                        13,537
+                   #miss:                                           0
+
+IVWDAY2            Date of interview (day)(2)
+
+                   min:                                          1.00
+                   mean:                                        15.86
+                   max:                                         31.00
+                   #obs                                           324
+                   #miss:                                      13,213
+
+IVWDAY3            Date of interview (day)(3)
+
+                   min:                                          1.00
+                   mean:                                        15.41
+                   max:                                         31.00
+                   #obs                                           103
+                   #miss:                                      13,434
+
+IVWMTH1            Date of interview (month)(1)
+
+                   1.Jan                                        2,623     19.38
+                   2.Feb                                        2,307     17.04
+                   3.Mar                                        2,252     16.64
+                   4.Apr                                        1,990     14.70
+                   5.May                                        1,734     12.81
+                   6.Jun                                          569      4.20
+                   7.Jul                                           97      0.72
+                   8.Aug                                            2      0.01
+                   10.Oct                                           1      0.01
+                   11.Nov                                         306      2.26
+                   12.Dec                                       1,656     12.23
+                   total                                       13,537    100.00
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 8
+book:    BT  - Tracking Book                                   
+module:  BT_COV               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+IVWMTH2            Date of interview (month)(2)
+
+                   missing                                     13,213     97.61
+                   1.Jan                                           47      0.35
+                   2.Feb                                           59      0.44
+                   3.Mar                                           70      0.52
+                   4.Apr                                           43      0.32
+                   5.May                                           49      0.36
+                   6.Jun                                           18      0.13
+                   7.Jul                                            5      0.04
+                   8.Aug                                            1      0.01
+                   11.Nov                                           1      0.01
+                   12.Dec                                          31      0.23
+                   total                                       13,537    100.00
+
+IVWMTH3            Date of interview (month)(3)
+
+                   missing                                     13,434     99.24
+                   1.Jan                                           15      0.11
+                   2.Feb                                           22      0.16
+                   3.Mar                                           18      0.13
+                   4.Apr                                           14      0.10
+                   5.May                                           11      0.08
+                   6.Jun                                            6      0.04
+                   7.Jul                                            2      0.01
+                   12.Dec                                          15      0.11
+                   total                                       13,537    100.00
+
+IVWYR1             Date of interview(year)(1)
+
+                   min:                                          0.00
+                   mean:                                         7.85
+                   max:                                          8.00
+                   #obs                                        13,537
+                   #miss:                                           0
+
+IVWYR2             Date of interview(year)(2)
+
+                   min:                                          7.00
+                   mean:                                         7.90
+                   max:                                          8.00
+                   #obs                                           324
+                   #miss:                                      13,213
+
+IVWYR3             Date of interview(year)(3)
+
+                   min:                                          7.00
+                   mean:                                         7.85
+                   max:                                          8.00
+                   #obs                                           103
+                   #miss:                                      13,434
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 9
+book:    BT  - Tracking Book                                   
+module:  BT_COV               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+NUMVIS             Number of visits
+
+                   min:                                          1.00
+                   mean:                                         1.03
+                   max:                                          3.00
+                   #obs                                        13,537
+                   #miss:                                           0
+
+RESULT1            Result for every visit(1)
+
+                   1. Be interviewed                           13,158     97.20
+                   2. Respondent refused to be interviewed         29      0.21
+                   5. Household was not available/not found       102      0.75
+                   6. HH not yet interviewed                      248      1.83
+                   total                                       13,537    100.00
+
+RESULT2            Result for every visit(2)
+
+                   missing                                     13,213     97.61
+                   1. Be interviewed                              221      1.63
+                   2. Respondent refused to be interviewed         14      0.10
+                   5. Household was not available/not found         9      0.07
+                   6. HH not yet interviewed                       80      0.59
+                   total                                       13,537    100.00
+
+RESULT3            Result for every visit(3)
+
+                   missing                                     13,434     99.24
+                   1. Be interviewed                               98      0.72
+                   2. Respondent refused to be interviewed          1      0.01
+                   5. Household was not available/not found         1      0.01
+                   6. HH not yet interviewed                        3      0.02
+                   total                                       13,537    100.00
+
+TB1                Result of this household interview
+
+                   1. Be interviewed                           13,438     99.27
+                   2. Respondent refused to be interviewed         10      0.07
+                   5. Household was not available/not found        84      0.62
+                   6. HH not yet interviewed                        5      0.04
+                   total                                       13,537    100.00
+
+TB2                What's the new IDRT
+
+
+TB4                Telationship between HH and informant
+
+                   missing                                     13,532     99.96
+                   1. Neighbour                                     3      0.02
+                   3. Friend                                        2      0.01
+                   total                                       13,537    100.00
+
+------------------------------------------------------------------------------------
+IFLS4 HOUSEHOLD SURVEY CODEBOOK                                            page 10
+book:    BT  - Tracking Book                                   
+module:  BT_COV               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+TB5                Where did you get the address
+
+                   min:                                          1.00
+                   mean:                                         2.12
+                   max:                                          3.00
+                   #obs                                            84
+                   #miss:                                      13,453
+
+TB6                Was physical building found
+
+                   missing                                     13,453     99.38
+                   1. Yes                                          72      0.53
+                   3. No, not enough adrress information           11      0.08
+                   5. Other........                                 1      0.01
+                   total                                       13,537    100.00
+
+T_NUM              Number of Book T
+
+                   min:                                          1.00
+                   mean:                                         1.05
+                   max:                                          3.00
+                   #obs                                        13,537
+                   #miss:                                           0
+
+VERSION            IFLS 4 release number
+
+                   min:                                          1.00
+                   mean:                                         1.00
+                   max:                                          1.00
+                   #obs                                        13,537
+                   #miss:                                           0

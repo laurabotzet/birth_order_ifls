@@ -1,0 +1,897 @@
+
+     ===================================================================
+
+         IIII     FFFFFFF     LLL          SSSSSS           3333333333  
+          II       FF   F     LL          SS    SS                 333  
+          II       FF         LL          SS     S                 33   
+          II       FF         LL          SSS                     33    
+          II       FFFFF      LL           SSSSS                333     
+          II       FF         LL            SSSSS                 33    
+          II       FF         LL               SSS                 33   
+          II       FF         LL          S     SS                  33  
+          II       FF         LL     L    SS    SS          33      33  
+         IIII     FFFF        LLLLLLLL     SSSSSS            33333333   
+
+     ===================================================================
+
+
+
+     I N D O N E S I A N    F A M I L Y    L I F E    S U R V E Y    3  
+
+       A survey of individuals, households, families, communities       
+          and facilities conducted in 13 provinces in Indonesia         
+                   between August 2000 and February 2001                
+
+     ===================================================================
+
+                               Directed by                              
+
+                 John Strauss, RAND and Michigan State Univ.            
+
+                  Kathleen Beegle,  RAND and The World Bank             
+
+                            Bondan Sikoki, RAND                         
+
+                                  and                                   
+
+              Agus Dwiyanto, Center for Population and Policy Studies,  
+                          Univ. of Gadjah Mada                          
+
+     ===================================================================
+
+     Financial support for the Indonesian Family Life Surveys has been  
+     provided by the National Institute of Aging grant number 1R01      
+     AG17637 and the National Institute of Child and Human Development, 
+     grant number 1R01 HD38484                                          
+
+     ===================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+              Website: http://www.rand.org/FLS/IFLS                     
+          Send all questions to ifls-supp@rand.org                      
+
+                       Copyright (2004)                                 
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                               page 2  
+
+
+
+
+
+
+
+================================================================================
+
+          H   H   OOO    U   U    SS    EEEE   H   H   OOO   L     DDDD         
+          H   H  O   O   U   U   S  S   E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U   S      E      H   H  O   O  L     D   D        
+          HHHHH  O   O   U   U    S     EEEE   HHHHH  O   O  L     D   D        
+          H   H  O   O   U   U     S    E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U      S   E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U   S  S   E      H   H  O   O  L     D   D        
+          H   H   OOO     UUU     SS    EEEE   H   H   OOO   LLLL  DDDD         
+
+
+                    SS    U   U   RRR    V    V    EEEE   Y    Y                
+                   S  S   U   U   R  R   V    V    E      Y    Y                
+                   S      U   U   R  R   V    V    E       Y  Y                 
+                    S     U   U   RRR    V    V    EEE       Y                  
+                     S    U   U   R R     V  V     E         Y                  
+                      S   U   U   R  R    V  V     E         Y                  
+                   S  S   U   U   R  R     V       E         Y                  
+                    SS     UUU    R  R     V       EEEE      Y                  
+
+
+            CCC    OOO    DDDD    EEEE   BBBB     OOO     OOO    K   K          
+           C   C  O   O   D   D   E      B   B   O   O   O   O   K  K           
+           C      O   O   D   D   E      B   B   O   O   O   O   K K            
+           C      O   O   D   D   EEE    BBBB    O   O   O   O   KK             
+           C      O   O   D   D   E      B   B   O   O   O   O   KK             
+           C      O   O   D   D   E      B   B   O   O   O   O   K K            
+           C   C  O   O   D   D   E      B   B   O   O   O   O   K  K           
+            CCC    OOO    DDDD    EEEE   BBBB     OOO     OOO    K   K          
+
+================================================================================
+
+ B O O K :       BEK                                            
+ T O P I C :     EVALUATIONS                                           
+
+================================================================================
+
+
+
+
+
+
+
+
+
+
+
+                               Prepared by                                      
+                Roald Euller, John Strauss, Firman Witolar                      
+                     Created on 09NOV2005 at 11:22                           
+
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 3
+--------------------------------------------------------------------------------
+ B O O K :       BEK
+ T O P I C :     Evaluations
+
+--------------------------------------------------------------------------------
+
+DATA FILES                                                                    
+----------                                                                    
+  Data are available in SAS (8.2) export and STATA (7.0) formats.             
+  Data and electronic documentation are available on the IFLS website.        
+
+  The survey instrument contains multiple sections.  Where possible, sections 
+  have been merged together to form a single data module.  The modules are    
+  organized by level of observation.  The module names are listed below.  They
+  serve as the names of the SAS and STATA data files. The codebook is also    
+  organised by module.                                                        
+
+  The modules are:                                                            
+
+   --------------------------------------------------------------------------
+                                                             # of
+      Module    Description                                  recs
+   --------------------------------------------------------------------------
+      BEK       Bk EK Math/Bah Indonesia assessments        14145
+
+USER SUPPORT                                                                   
+------------                                                                   
+    These data should be used in conjunction with the Questionnaires and Users'
+    Manuals.  Check the IFLS web page for updates and answers to frequently    
+    asked questions.  Please send all questions to ifls-supp@rand.org.         
+
+USAGE NOTES                                                                    
+-----------                                                                    
+  READING THE DICTIONARY                                                       
+    For each variable in the dataset, the dictionary provides                  
+       Variable name : Typically the question number                           
+               Label : Describes variable                                      
+    Variable coding is described as follows:                                   
+               Value : Meaning of values for coded variables                   
+           Frequency : Frequency of each value                                 
+
+SPECIAL CODES                                                                  
+-------------                                                                  
+  The following values are reserved and have a special meaning:                
+      Numeric    Alphanumeric    Meaning                                       
+     5/95/995         V          Top coded/out of range                        
+     6/96/996         W          Not applicable                                
+     7/97/997         X          Refused to answer                             
+     8/98/998         Y          Don't know                                    
+     9/99/999         Z          Missing                                       
+
+DATASET VERSION                                                                
+---------------                                                                
+  The variable VERSION identifies the release version of these data; it         
+  will be updated with each revision of the data and can be used to confirm     
+  that you are using the most recent version of the data.                       
+
+  NOTES ON BOOK EK:                                                        
+-------------------                                                        
+
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 4
+--------------------------------------------------------------------------------
+ B O O K :       BEK
+ T O P I C :     Evaluations
+
+--------------------------------------------------------------------------------
+
+  Cognitive Assessments.  Respondents between the ages of 7 and            
+  24 were administered cognitive tests to assess their general             
+  cognitive level, as well as skills in mathematics. The tests             
+  were redesigned from what was administered in IFLS2. Two                 
+  levels of tests were given, an easier version to all                     
+  respondents (including those who never attended or were not              
+  currently enrolled in school) aged 7-14 and a more difficult             
+  version of the math questions to all respondents age 15-24.              
+
+  The variable ekage indicates which version of the test was               
+  given.  The 7-14 year olds, who were more likely to still be             
+  in school, were given more questions: 12 cognitive and 5 math.           
+  The 15-24 year olds were only given 8 cognitive questions and            
+  5 math questions.  This was to avoid refusals among 15-24 year           
+  olds, whom from past waves tended to refuse to take such tests           
+  with higher frequency. The question numbers are unique, so               
+  that question 6 in the 7-14 age book will be identical (except           
+  for color) to question 6 in the 15-24 year book. The first 12            
+  questions are cognitive for both groups and the last 5                   
+  questions were simple math questions for the 7-14 age group              
+  and the last 10 questions for the 15-24 age group (see the               
+  questionnaire). As can be seen, the cognitive questions                  
+  overlap for the two groups, while the math questions were more           
+  difficult for the older group.                                           
+
+  To link records across waves of the IFLS, use PIDLINK.  It is                 
+  a unique person identifier which is the same in IFLS1, 2, 2+                  
+  and 3 for a particular individual.  It may also be used to                    
+  link records within IFLS3, except that as is described in                     
+  Volume 2 of the User's Guide, a person if they moved                          
+  households since IFLS1 may be found in multiple households                    
+  with PIDLINK.  However there will be only 1 household in                      
+  which the respondent currently resides, which can be found by                 
+  examining variable ar01a in Book K, which is equal to 1 or 5 if               
+  the respondent is a resident.                                                 
+
+  PIDLINK is a string variable comprising 9 digits.  For a                      
+  respondent in IFLS1, 2, or 2+, PIDLINK is made up of HHID for                 
+  the wave in which they were first found, followed by 00 and                   
+  then the person identifier, PID, for that wave of IFLS.  For                  
+  a new respondent in IFLS3, PIDLINK is made up of HHID00 and                   
+  PID00.                                                                        
+
+
+  In IFLS3, HHID00 is a seven digit character variable whose digits carry       
+  the following meaning:                                                        
+
+                  x  x  x           x  x                    x  x                
+                  -------    ------------------        ---------------          
+                    EA       specific household        origin/split-off         
+
+  In the last two digits, 00 designates an origin household.  For a split-off   
+  household, the 6th digit is either 1, 2 or 3 depending on which wave the      
+
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 5
+--------------------------------------------------------------------------------
+ B O O K :       BEK
+ T O P I C :     Evaluations
+
+--------------------------------------------------------------------------------
+  split-off first appeared.  Split-offs from IFLS2 have their sixth digit equal 
+  to 1, while split-off households first appearing in IFLS2+ have a 2 and new   
+  split-offs in 2000 have a 3.  The 7th digit indicates whether it is the first,
+  second, or other split-off (some multiple split-offs occurred).               
+
+  Note that the enumeration area identifier used to define a               
+  household contains no information about the current whereabouts          
+  of the household unless it has not moved.  The location of the           
+  household is recorded in BK_SC.                                          
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 6
+book:    BEK  - Evaluations                                   
+module:  BEK                 Bk EK Math/Bah Indonesia assessments
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID00             2000 Household ID
+
+
+PID00              Person id
+
+
+PIDLINK            Tracking ID
+
+
+EDNAME             Name of Editor
+
+
+EDTEK              Code of Editor
+
+
+EK0X               result of answer to question EK0
+
+                   1.answered correctly                        12,304     86.98
+                   3.answered incorrectly                         993      7.02
+                   9.missing - should have answered               848      6.00
+                   total                                       14,145    100.00
+
+EK0                test question 0
+
+                   missing                                        534      3.78
+                   A                                            6,865     48.53
+                   B                                              246      1.74
+                   C                                              151      1.07
+                   D                                            5,576     39.42
+                   E                                              364      2.57
+                   F                                               95      0.67
+                   Z.missing, not answered                        314      2.22
+                   total                                       14,145    100.00
+
+EK1                test question 1
+
+                   missing                                        534      3.78
+                   A                                              171      1.21
+                   B                                              454      3.21
+                   C                                              150      1.06
+                   D                                              368      2.60
+                   E                                           11,947     84.46
+                   F                                              119      0.84
+                   Z.missing, not answered                        402      2.84
+                   total                                       14,145    100.00
+
+EK10X              result of answer to question EK10
+
+                   1.answered correctly                         4,496     31.79
+                   3.answered incorrectly                       1,305      9.23
+                   6.inapp - not asked of this age group        7,963     56.30
+                   9.missing - should have answered               381      2.69
+                   total                                       14,145    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 7
+book:    BEK  - Evaluations                                   
+module:  BEK                 Bk EK Math/Bah Indonesia assessments
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(EK10  continued)
+
+EK10               test question 10
+
+                   missing                                      8,125     57.44
+                   A                                              426      3.01
+                   B                                            4,496     31.79
+                   C                                              140      0.99
+                   D                                              188      1.33
+                   E                                              119      0.84
+                   F                                              432      3.05
+                   Z.missing, not answered                        219      1.55
+                   total                                       14,145    100.00
+
+EK11X              result of answer to question EK11
+
+                   1.answered correctly                        10,305     72.85
+                   3.answered incorrectly                       2,867     20.27
+                   9.missing - should have answered               973      6.88
+                   total                                       14,145    100.00
+
+EK11               test question 11
+
+                   missing                                        534      3.78
+                   A                                              366      2.59
+                   B                                              325      2.30
+                   C                                           10,305     72.85
+                   D                                              118      0.83
+                   E                                              461      3.26
+                   F                                            1,597     11.29
+                   Z.missing, not answered                        439      3.10
+                   total                                       14,145    100.00
+
+EK12X              result of answer to question EK12
+
+                   1.answered correctly                         5,433     38.41
+                   3.answered incorrectly                       7,729     54.64
+                   9.missing - should have answered               983      6.95
+                   total                                       14,145    100.00
+
+EK12               test question 12
+
+                   missing                                        534      3.78
+                   A                                            1,621     11.46
+                   B                                            1,083      7.66
+                   C                                              573      4.05
+                   D                                            2,089     14.77
+                   E                                            5,433     38.41
+                   F                                            2,363     16.71
+                   Z.missing, not answered                        449      3.17
+                   total                                       14,145    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 8
+book:    BEK  - Evaluations                                   
+module:  BEK                 Bk EK Math/Bah Indonesia assessments
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+EK13X              result of answer to question EK13
+
+                   1.answered correctly                         5,029     35.55
+                   3.answered incorrectly                         505      3.57
+                   6.inapp - not asked of this age group        7,963     56.30
+                   9.missing - should have answered               648      4.58
+                   total                                       14,145    100.00
+
+EK13               test question 13
+
+                   missing                                      8,125     57.44
+                   A                                              208      1.47
+                   B                                            5,029     35.55
+                   C                                              297      2.10
+                   Z.missing, not answered                        486      3.44
+                   total                                       14,145    100.00
+
+EK14X              result of answer to question EK14
+
+                   1.answered correctly                         4,300     30.40
+                   3.answered incorrectly                       1,072      7.58
+                   6.inapp - not asked of this age group        7,963     56.30
+                   9.missing - should have answered               810      5.73
+                   total                                       14,145    100.00
+
+EK14               test question 14
+
+                   missing                                      8,125     57.44
+                   A                                              647      4.57
+                   B                                              425      3.00
+                   C                                            4,300     30.40
+                   Z.missing, not answered                        648      4.58
+                   total                                       14,145    100.00
+
+EK15X              result of answer to question EK15
+
+                   1.answered correctly                         3,973     28.09
+                   3.answered incorrectly                       1,216      8.60
+                   6.inapp - not asked of this age group        7,963     56.30
+                   9.missing - should have answered               993      7.02
+                   total                                       14,145    100.00
+
+EK15               test question 15
+
+                   missing                                      8,125     57.44
+                   A                                              589      4.16
+                   B                                              627      4.43
+                   C                                            3,973     28.09
+                   Z.missing, not answered                        831      5.87
+                   total                                       14,145    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 9
+book:    BEK  - Evaluations                                   
+module:  BEK                 Bk EK Math/Bah Indonesia assessments
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+EK16X              result of answer to question EK16
+
+                   1.answered correctly                         1,841     13.02
+                   3.answered incorrectly                       2,887     20.41
+                   6.inapp - not asked of this age group        7,963     56.30
+                   9.missing - should have answered             1,454     10.28
+                   total                                       14,145    100.00
+
+EK16               test question 16
+
+                   missing                                      8,125     57.44
+                   A                                              872      6.16
+                   B                                            1,841     13.02
+                   C                                            1,000      7.07
+                   D                                            1,015      7.18
+                   Z.missing, not answered                      1,292      9.13
+                   total                                       14,145    100.00
+
+EK17X              result of answer to question EK17
+
+                   1.answered correctly                         1,795     12.69
+                   3.answered incorrectly                       3,028     21.41
+                   6.inapp - not asked of this age group        7,963     56.30
+                   9.missing - should have answered             1,359      9.61
+                   total                                       14,145    100.00
+
+EK17               test question 17
+
+                   missing                                      8,125     57.44
+                   A                                              610      4.31
+                   B                                            1,818     12.85
+                   C                                            1,795     12.69
+                   D                                              600      4.24
+                   Z.missing, not answered                      1,197      8.46
+                   total                                       14,145    100.00
+
+EK18X              result of answer to question EK18
+
+                   1.answered correctly                         2,841     20.08
+                   3.answered incorrectly                       3,466     24.50
+                   6.inapp - not asked of this age group        6,182     43.70
+                   9.missing - should have answered             1,656     11.71
+                   total                                       14,145    100.00
+
+EK18               test question 18
+
+                   missing                                      6,554     46.33
+                   A                                            1,335      9.44
+                   B                                            2,841     20.08
+                   C                                            1,227      8.67
+                   D                                              904      6.39
+                   Z.missing, not answered                      1,284      9.08
+                   total                                       14,145    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 10
+book:    BEK  - Evaluations                                   
+module:  BEK                 Bk EK Math/Bah Indonesia assessments
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+EK19X              result of answer to question EK19
+
+                   1.answered correctly                         3,474     24.56
+                   3.answered incorrectly                       2,917     20.62
+                   6.inapp - not asked of this age group        6,182     43.70
+                   9.missing - should have answered             1,572     11.11
+                   total                                       14,145    100.00
+
+EK19               test question 19
+
+                   missing                                      6,554     46.33
+                   A                                              957      6.77
+                   B                                              822      5.81
+                   C                                            1,138      8.05
+                   D                                            3,474     24.56
+                   Z.missing, not answered                      1,200      8.48
+                   total                                       14,145    100.00
+
+EK1X               result of answer to question EK1
+
+                   1.answered correctly                        11,947     84.46
+                   3.answered incorrectly                       1,262      8.92
+                   9.missing - should have answered               936      6.62
+                   total                                       14,145    100.00
+
+EK2                test question 2
+
+                   missing                                        534      3.78
+                   A                                            1,471     10.40
+                   B                                              486      3.44
+                   C                                              139      0.98
+                   D                                            1,517     10.72
+                   E                                              150      1.06
+                   F                                            9,472     66.96
+                   Z.missing, not answered                        376      2.66
+                   total                                       14,145    100.00
+
+EK20X              result of answer to question EK20
+
+                   1.answered correctly                         3,705     26.19
+                   3.answered incorrectly                       2,564     18.13
+                   6.inapp - not asked of this age group        6,182     43.70
+                   9.missing - should have answered             1,694     11.98
+                   total                                       14,145    100.00
+
+EK20               test question 20
+
+                   missing                                      6,554     46.33
+                   A                                              689      4.87
+                   B                                            1,117      7.90
+                   C                                            3,705     26.19
+                   D                                              758      5.36
+                   Z.missing, not answered                      1,322      9.35
+                   total                                       14,145    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 11
+book:    BEK  - Evaluations                                   
+module:  BEK                 Bk EK Math/Bah Indonesia assessments
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+
+EK21X              result of answer to question EK21
+
+                   1.answered correctly                         2,188     15.47
+                   3.answered incorrectly                       4,058     28.69
+                   6.inapp - not asked of this age group        6,182     43.70
+                   9.missing - should have answered             1,717     12.14
+                   total                                       14,145    100.00
+
+EK21               test question 21
+
+                   missing                                      6,554     46.33
+                   A                                            1,976     13.97
+                   B                                            1,207      8.53
+                   C                                              875      6.19
+                   D                                            2,188     15.47
+                   Z.missing, not answered                      1,345      9.51
+                   total                                       14,145    100.00
+
+EK22X              result of answer to question EK22
+
+                   1.answered correctly                         3,488     24.66
+                   3.answered incorrectly                       2,859     20.21
+                   6.inapp - not asked of this age group        6,182     43.70
+                   9.missing - should have answered             1,616     11.42
+                   total                                       14,145    100.00
+
+EK22               test question 22
+
+                   missing                                      6,554     46.33
+                   A                                              858      6.07
+                   B                                            3,488     24.66
+                   C                                            1,077      7.61
+                   D                                              924      6.53
+                   Z.missing, not answered                      1,244      8.79
+                   total                                       14,145    100.00
+
+EK2X               result of answer to question EK2
+
+                   1.answered correctly                         9,472     66.96
+                   3.answered incorrectly                       3,763     26.60
+                   9.missing - should have answered               910      6.43
+                   total                                       14,145    100.00
+
+EK3X               result of answer to question EK3
+
+                   1.answered correctly                         8,987     63.53
+                   3.answered incorrectly                       4,178     29.54
+                   9.missing - should have answered               980      6.93
+                   total                                       14,145    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 12
+book:    BEK  - Evaluations                                   
+module:  BEK                 Bk EK Math/Bah Indonesia assessments
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(EK3  continued)
+
+EK3                test question 3
+
+                   missing                                        534      3.78
+                   A                                            8,987     63.53
+                   B                                            1,676     11.85
+                   C                                              451      3.19
+                   D                                              214      1.51
+                   E                                            1,417     10.02
+                   F                                              420      2.97
+                   Z.missing, not answered                        446      3.15
+                   total                                       14,145    100.00
+
+EK4X               result of answer to question EK4
+
+                   1.answered correctly                         8,974     63.44
+                   3.answered incorrectly                       4,169     29.47
+                   9.missing - should have answered             1,002      7.08
+                   total                                       14,145    100.00
+
+EK4                test question 4
+
+                   missing                                        534      3.78
+                   A                                              177      1.25
+                   B                                            1,984     14.03
+                   C                                              220      1.56
+                   D                                            8,974     63.44
+                   E                                            1,622     11.47
+                   F                                              166      1.17
+                   Z.missing, not answered                        468      3.31
+                   total                                       14,145    100.00
+
+EK5X               result of answer to question EK5
+
+                   1.answered correctly                         8,233     58.20
+                   3.answered incorrectly                       4,994     35.31
+                   9.missing - should have answered               918      6.49
+                   total                                       14,145    100.00
+
+EK5                test question 5
+
+                   missing                                        534      3.78
+                   A                                              164      1.16
+                   B                                              208      1.47
+                   C                                            8,233     58.20
+                   D                                              995      7.03
+                   E                                              372      2.63
+                   F                                            3,255     23.01
+                   Z.missing, not answered                        384      2.71
+                   total                                       14,145    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 13
+book:    BEK  - Evaluations                                   
+module:  BEK                 Bk EK Math/Bah Indonesia assessments
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+EK6X               result of answer to question EK6
+
+                   1.answered correctly                         5,253     37.14
+                   3.answered incorrectly                       7,888     55.77
+                   9.missing - should have answered             1,004      7.10
+                   total                                       14,145    100.00
+
+EK6                test question 6
+
+                   missing                                        559      3.95
+                   A                                            2,668     18.86
+                   B                                            5,253     37.14
+                   C                                              848      6.00
+                   D                                            2,568     18.15
+                   E                                            1,333      9.42
+                   F                                              470      3.32
+                   X                                                1      0.01
+                   Z.missing, not answered                        445      3.15
+                   total                                       14,145    100.00
+
+EK7X               result of answer to question EK7
+
+                   1.answered correctly                         5,458     38.59
+                   3.answered incorrectly                         391      2.76
+                   6.inapp - not asked of this age group        7,963     56.30
+                   9.missing - should have answered               333      2.35
+                   total                                       14,145    100.00
+
+EK7                test question 7
+
+                   missing                                      8,125     57.44
+                   A                                               53      0.37
+                   B                                              142      1.00
+                   C                                               96      0.68
+                   D                                               54      0.38
+                   E                                            5,458     38.59
+                   F                                               46      0.33
+                   Z.missing, not answered                        171      1.21
+                   total                                       14,145    100.00
+
+EK8X               result of answer to question EK8
+
+                   1.answered correctly                         5,334     37.71
+                   3.answered incorrectly                         510      3.61
+                   6.inapp - not asked of this age group        7,963     56.30
+                   9.missing - should have answered               338      2.39
+                   total                                       14,145    100.00
+
+EK8                test question 8
+
+                   missing                                      8,125     57.44
+                   A                                               46      0.33
+                   B                                            5,334     37.71
+                   C                                              148      1.05
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 14
+book:    BEK  - Evaluations                                   
+module:  BEK                 Bk EK Math/Bah Indonesia assessments
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(EK8  continued)
+
+                   D                                              118      0.83
+                   E                                               74      0.52
+                   F                                              124      0.88
+                   Z.missing, not answered                        176      1.24
+                   total                                       14,145    100.00
+
+EK9X               result of answer to question EK9
+
+                   1.answered correctly                         4,624     32.69
+                   3.answered incorrectly                       1,191      8.42
+                   6.inapp - not asked of this age group        7,963     56.30
+                   9.missing - should have answered               367      2.59
+                   total                                       14,145    100.00
+
+EK9                test question 9
+
+                   missing                                      8,125     57.44
+                   A                                              121      0.86
+                   B                                              827      5.85
+                   C                                            4,624     32.69
+                   D                                              118      0.83
+                   E                                               71      0.50
+                   F                                               54      0.38
+                   Z.missing, not answered                        205      1.45
+                   total                                       14,145    100.00
+
+EKAGE              Age group
+
+                   15-24                                        7,963     56.30
+                   7-14                                         6,182     43.70
+                   total                                       14,145    100.00
+
+EKC3               Result of measurement
+
+                   1.Finished                                  12,095     85.51
+                   2.Did not complete                           1,246      8.81
+                   3.Did not anwer                                804      5.68
+                   total                                       14,145    100.00
+
+EKC33              Reason why did not answer
+
+                   missing                                     13,341     94.32
+                   1.Refused                                      265      1.87
+                   2.Illiterate                                    81      0.57
+                   3.No/little ability                             57      0.40
+                   4.Not enought time                              10      0.07
+                   5.Adult but answered by proxy                  179      1.27
+                   6.Other, specify                                82      0.58
+                   7.Can't be contacted                           130      0.92
+                   total                                       14,145    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 15
+book:    BEK  - Evaluations                                   
+module:  BEK                 Bk EK Math/Bah Indonesia assessments
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+EKDAY              Day of interview
+
+                   min:                                          1.00
+                   mean:                                        15.67
+                   max:                                         31.00
+                   #obs                                        14,145
+                   #miss:                                           0
+
+EKHRSBEG           Time interview began (hour)
+
+                   min:                                          0.00
+                   mean:                                        15.39
+                   max:                                         23.00
+                   #obs                                        14,145
+                   #miss:                                           0
+
+EKHRSEND           Time interviewer ended (Hour)
+
+                   min:                                          1.00
+                   mean:                                        15.57
+                   max:                                         23.00
+                   #obs                                        14,145
+                   #miss:                                           0
+
+EKMINBEG           Time interview began (mnt)
+
+                   min:                                          0.00
+                   mean:                                        24.09
+                   max:                                         59.00
+                   #obs                                        14,145
+                   #miss:                                           0
+
+EKMINEND           Time interviewer ended (mnt)
+
+                   min:                                          0.00
+                   mean:                                        27.31
+                   max:                                         59.00
+                   #obs                                        14,145
+                   #miss:                                           0
+
+EKMTH              Month of interview
+
+                   min:                                          1.00
+                   mean:                                         8.82
+                   max:                                         12.00
+                   #obs                                        14,145
+                   #miss:                                           0
+
+IDRTEK             IDRT for Examination Book
+
+
+IVWEK              Interviewer code
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 16
+book:    BEK  - Evaluations                                   
+module:  BEK                 Bk EK Math/Bah Indonesia assessments
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+IVWNAME            Name of Interviewer
+
+
+MODULE             survey module
+
+
+PIDEK              PID Number of respondent
+
+                   min:                                          1.00
+                   mean:                                         4.47
+                   max:                                         37.00
+                   #obs                                        14,145
+                   #miss:                                           0
+
+VERSION            IFLS3 version

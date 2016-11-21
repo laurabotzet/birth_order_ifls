@@ -14,7 +14,6 @@ output:
 library(formr)
 library(devtools)
 library(haven)
-# devtools::install_github("hadley/haven")
 library(tidyr)
 library(ggplot2)
 library(stringr)
@@ -23,7 +22,7 @@ library(GPArotation)
 ```
 
 ## Helper
-```{r}
+```{r helper}
 ### Function to calculate the birthdate out of all available informations for one individual
 all_available_info_birth_date = function(byear, bmonth, bday = NULL) {
   if(!is.null(bday)) {
@@ -42,7 +41,7 @@ all_available_info_birth_date = function(byear, bmonth, bday = NULL) {
 ##### Function to calculate the birthorder based on the siblings still alive at the time of birth
 older_sibs_alive_and_dependent = function(byear, dyear) {
 	sibs = length(byear)
-	older_sibs_alive_and_dependent = integer(length=sibs)
+	older_sibs_alive_and_dependent = integer(length=sibs) + 1
 	for(i in 1:sibs) {
 		older_sibs = byear <= byear[i] # not using < because of twins
 		older_sibs[i] = F # minus self
@@ -75,6 +74,9 @@ bk_ar1 = left_join(bk_ar1, bk_ar1 %>% select(hhid14_9, pid14, pidlink) %>% renam
 # compute mother pidlink
 bk_ar1 = left_join(bk_ar1, bk_ar1 %>% select(hhid14_9, pid14, pidlink) %>% rename(ar11 = pid14, mother_pidlink = pidlink), by = c("hhid14_9", "ar11"))
 
+### Informations from IFLS wave 5 to link data to earlier waves:
+ptrack = read_dta("data/hh14_all_dta/ptrack.dta") # Traking informations
+
 ## Additional information from mothers (ever-maried women aged 15 - 57) about children that do not live in the household anymore
 # biological children
 b4_ba6 = read_dta("data/hh14_all_dta/b4_ba6.dta") # Book 4, Section ba6
@@ -90,7 +92,17 @@ b3b_ba6 = read_dta("data/hh14_all_dta/b3b_ba6.dta") # Book 3b, Section ba6
 # Book used to find out who completed book 3b (to find out for which fathers/mothers we have all informations about their children)
 b3b_cov = read_dta("data/hh14_all_dta/b3b_cov.dta") # Book 3b, Section cov
 
-
+### Pregnancy Informations from mother
+## Wave 5 - 2014
+w5_pregnancy = read_dta("data/hh14_all_dta/b4_ch1.dta") # Book 4, Section ch
+## Wave 4 - 2007
+w4_pregnancy = read_dta("data/hh07_all_dta/b4_ch1.dta") # Book 4, Section ch
+## Wave 3 - 2000
+w3_pregnancy = read_dta("data/hh00_all_dta/b4_ch1.dta") # Book 4, Section ch
+## Wave 2 - 1997
+w2_pregnancy = read_dta("data/hh97dta/b4_ch1.dta") # Book 4, Section ch
+## Wave 1 - 1993
+w1_pregnancy = read_dta("data/hh93dta/buk4ch1.dta") # Book 4, Section ch
 
 ### IQ Information
 ek_ek2 = read_dta("data/hh14_all_dta/ek_ek2.dta") # Book ek2
@@ -105,27 +117,97 @@ b3a_si = read_dta("data/hh14_all_dta/b3a_si.dta") # Book 3b, Section si
 
 ```
 
-## Determine parents that we can use for birthorder calcualations
-```{r parents for birthorder}
-### All women who completed book 4 (we have all informatios about their children)
-mothers_15_57 = b4_cov %>% select(pidlink)
 
-### All men and women >57 who completed book 3b (we have all informatios about their children)
-fathers_restmothers = b3b_cov %>% select(pidlink, sex) # include sex to determin wether we are talking about a mother or a father; 1 = male, 3 = female
+## Pregnancy informations
+```{r}
+## Select data
+w5_pregnancy = w5_pregnancy %>% select(pidlink, ch06, ch08, ch09day, ch09mth, ch09yr)
+w4_pregnancy = w4_pregnancy %>% select(pidlink, ch06, ch08, ch09day, ch09mth, ch09yr)
+w3_pregnancy = w3_pregnancy %>% select(pidlink, ch06, ch08, ch09day, ch09mth, ch09yr)
+w2_pregnancy = w2_pregnancy %>% select(pidlink, ch06, ch08, ch09day, ch09mth, ch09yr)
+w1_pregnancy = w1_pregnancy %>% select(pidlink, ch06, ch08, ch09day, ch09mth, ch09yr)
+# In the first wave the year is named wrong
+w1_pregnancy = w1_pregnancy %>%
+  filter(ch09yr <=93)
+w1_pregnancy$ch09yr = as.numeric(str_c("19", w1_pregnancy$ch09yr))
 
-### All fathers that we have all informations that we need to compute birthorder for children
-fathers_allinfo = fathers_restmothers %>%
-  filter(sex==1)
+## Combine data
+pregnancy = bind_rows(w1_pregnancy, w2_pregnancy, w3_pregnancy, w4_pregnancy, w5_pregnancy)
+length(unique(pregnancy$pidlink))
 
-### All mothers that we have all inforamtions that we need to compute birthorder for children
-mothers_allinfo = fathers_restmothers %>%
-  filter(sex==3)
-mothers_allinfo = bind_rows(mothers_allinfo, mothers_15_57)
-mothers_allinfo = mothers_allinfo %>% distinct(pidlink, .keep_all = TRUE) # completed either book 4 or book 3b or both
+## Rename Variables
+pregnancy = pregnancy %>% rename(lifebirths = ch06, gender = ch08, birth_day = ch09day, birth_month = ch09mth, birth_year = ch09yr, mother_pidlink = pidlink) # pregnancy$lifebirths values: 1 = still pregnant, 2 = livebirth, 3 = still birth, 4 = misscarriage
+
+## Set values as NA that are missing
+pregnancy$birth_day[ pregnancy$birth_day>31] = NA
+pregnancy$birth_month[ pregnancy$birth_month>12] = NA
+pregnancy$birth_year[ pregnancy$birth_year>2016] = NA
+pregnancy$birth_day[ is.nan(pregnancy$birth_day) ] = NA
+pregnancy$birth_month[ is.nan(pregnancy$birth_month) ] = NA
+pregnancy$birth_year[ is.nan(pregnancy$birth_year)] = NA
+
+
+pregnancy = pregnancy %>%
+  mutate(birthdate = all_available_info_birth_date(birth_year, birth_month, birth_day),
+         mother_birthdate = str_c(mother_pidlink, "-", birthdate))
+
+##remove all with missing mother_birthdate
+pregnancy = pregnancy %>%
+  filter(!is.na(mother_birthdate))
+
+
+### Remove all families with multiple births:
+## Mark multpile births
+pregnancy = pregnancy %>%
+  mutate(multiple_birth = ifelse(duplicated(mother_birthdate), 1, 0))
+## All women that ever had multiple births
+twinmothers = pregnancy %>%
+  filter(multiple_birth == 1)
+length(unique(twinmothers$mother_pidlink)) ## number of families that have to be excluded due to multiple births
+
+pregnancy = pregnancy %>%
+    filter(!(mother_pidlink %in% twinmothers$mother_pidlink))
 ```
 
 
+## Uterus Birthorder and maternal sibling count
+```{r Uterus birthorder and maternal sibling count}
+### Birthorder calculations
+## Biological Uterus Birthorder calculations with all pregnancies:
+pregnancy1 = pregnancy %>%
+  group_by(mother_pidlink) %>%
+  mutate(birthorder_uterus_preg = min_rank(birthdate),
+         sibling_count_uterus_preg = sum(!is.na(birthdate)))
+         
+## Biological Uterus Birthorder calculations with all births:
+pregnancy2 = pregnancy %>%
+  filter(lifebirths == 2) %>%
+  group_by(mother_pidlink) %>%
+    mutate(birthorder_uterus_alive = min_rank(birthdate),
+           sibling_count_uterus_alive = sum(!is.na(birthdate)))
 
+pregnancy2 = pregnancy2 %>% select(mother_birthdate, birthorder_uterus_alive, sibling_count_uterus_alive)
+
+### 3040 individuals are removed because of death before/during birth
+
+### Combine birthorder data
+pregnancy = left_join(pregnancy1, pregnancy2, by="mother_birthdate")
+
+### Graphs
+## Biological Birthorder - Uterus_Pregnancies
+qplot(pregnancy$birthorder_uterus_preg)
+ggplot(pregnancy, aes(x=sibling_count_uterus_preg, y=birthorder_uterus_preg)) + geom_jitter()
+
+## Biological Birthorder - Uterus_Births
+qplot(pregnancy$birthorder_uterus_alive)
+ggplot(pregnancy, aes(x=sibling_count_uterus_alive, y=birthorder_uterus_alive)) + geom_jitter()
+
+## Bio: Uterus_preg vs. Uterus_Births
+ggplot(pregnancy, aes(x=birthorder_uterus_preg, y=birthorder_uterus_alive)) + geom_jitter()
+# The birth_order_alive is always lower, which makes sense, becaus not live births (miscarriage, still births are excluded)
+
+
+```
 
 ## Select individual data
 ```{r select individual data}
@@ -135,17 +217,11 @@ individuals = bk_ar1 %>% select(hhid14_9, pidlink, father_pidlink, mother_pidlin
 individuals = rename(individuals, relation_to_HH_head = ar02b, fatherID = ar10, motherID = ar11, sex = ar07, age = ar09, status = ar01a, death_yr = ar18eyr, death_month = ar18emth) 
 # Remove duplicats (some people are mentioned in two households, e.g. because they moved in the last 12 months)
 individuals = individuals %>% distinct(pidlink, .keep_all = TRUE)
-
+individuals_unchanged = individuals
 
 ## people whose parents can not be identified have to be marked as NA:
 individuals$fatherID[ individuals$fatherID>50] = NA
 individuals$motherID[ individuals$motherID>50] = NA
-
-## people where we dont have any informations about all other children of their mother have to be marked
-# mother
-individuals$mother_reported_on_other_sibs = ifelse(individuals$mother_pidlink %in% mothers_allinfo$pidlink, 1, 0) ## compares mother_pidlink to all pidlinks that completed Book 3b or Book 4 and are female; 1 = all info, 0 = not all info
-
-
 
 
 ## create mother_father_number that should be identical for all siblings in one family that share the same parents
@@ -170,171 +246,34 @@ individuals$death_yr[ is.nan(individuals$death_yr)] = NA
 ## Create variable that contains pidlink of mother and birthdate of child:
 individuals = individuals %>%
     mutate(mother_birthdate = str_c(mother_pidlink, "-",
-          all_available_info_birth_date(ar08yr, ar08mth))) # mother_pidlink-YYYY-MM; is NA if birth_year is missing
+          all_available_info_birth_date(ar08yr, ar08mth, ar08day))) # mother_pidlink-YYYY-MM; is NA if birth_year is missing
 
-
-```
-
-## Select informations about additional siblings from mother
-```{r Select informations about additional sibilngs from mother}
-# We have three sources for informations about the children of one women: Biological children (Book 4, women aged 15-57 & maried), Adopted Children (Book 4, women aged 15-57 & maried), All children (Book 3b, >57 or never maried)
-
-## Get all the informations about biological children (Book 4, women aged 15-57 & maried)
-motherinformations_bio = b4_ba6 %>% select(hhid14_9, pidlink, ba63cx, ba64, ba64bmt, ba64byr, ba65, ba65mt, ba65ayr, ba66)
-#Rename variables:
-motherinformations_bio = rename(motherinformations_bio, kind_of_child_m = ba63cx, sex_m = ba64,  birth_month_m = ba64bmt, birth_year_m = ba64byr, alive_m = ba65, death_month_m = ba65mt, death_year_m = ba65ayr, current_age_or_death_age_m = ba66, mother_pidlink = pidlink) 
-
-## Get all the informations about non-biological children (Book 4, women aged 15-57 & maried)
-motherinformations_adop = b4_bx6 %>% select(hhid14_9, pidlink, bx63cx, bx64, bx64bmt, bx64byr, bx65, bx65amt, bx65ayr, bx66)
-#Rename variables:
-motherinformations_adop = rename(motherinformations_adop, kind_of_child_m = bx63cx, sex_m = bx64,  birth_month_m = bx64bmt, birth_year_m = bx64byr, alive_m = bx65, death_month_m = bx65amt, death_year_m = bx65ayr, current_age_or_death_age_m = bx66, mother_pidlink = pidlink) 
-
-## Get the rest informations (Book 3b, >57 or never maried)
-motherinformations_old = subset(b3b_ba6, pidlink %in% mothers_allinfo$pidlink) # we only want female participants
-motherinformations_old = motherinformations_old %>% select(hhid14_9, pidlink, ba63cx, ba64, ba64bmt, ba64byr, ba65, ba65amt, ba65ayr, ba66)
-# Rename variables:
-motherinformations_old = rename(motherinformations_old, kind_of_child_m = ba63cx, sex_m = ba64,  birth_month_m = ba64bmt, birth_year_m = ba64byr, alive_m = ba65, death_month_m = ba65amt, death_year_m = ba65ayr, current_age_or_death_age_m = ba66, mother_pidlink = pidlink) 
-
-## Combine all informations
-motherinformations = bind_rows(motherinformations_bio, motherinformations_adop)
-motherinformations = bind_rows(motherinformations, motherinformations_old)
-
-## Create variable that contains pidlink of mother and birthdate of child:
-#Set all variables missing that have not been reported:
-motherinformations$birth_month_m[ motherinformations$birth_month_m>12] = NA
-motherinformations$birth_year_m[ motherinformations$birth_year_m>2016] = NA
-motherinformations$birth_month_m[ is.nan(motherinformations$birth_month_m) ] = NA
-motherinformations$birth_year_m[ is.nan(motherinformations$birth_year_m)] = NA
-motherinformations$death_month_m[ motherinformations$death_month_m>12] = NA
-motherinformations$death_year_m[ motherinformations$death_year_m>2016] = NA
-motherinformations$death_month_m[ is.nan(motherinformations$death_month_m) ] = NA
-motherinformations$death_year_m[ is.nan(motherinformations$death_year_m)] = NA
-
-motherinformations = motherinformations %>%
-    mutate(mother_birthdate = str_c(mother_pidlink, "-",
-          all_available_info_birth_date(birth_year_m, birth_month_m))) # mother_pidlink-YYYY-MM; is NA if birth_year is missing
-
-## Remove all with missing mothers/birth_years
-motherinformations = motherinformations %>%
+##Remove all with missing mother_birthdate
+individuals = individuals %>%
   filter(!is.na(mother_birthdate))
 
-## Remove duplicats (some children are reported both in the biological and in the adopted list - confusing question?)
-motherinformations = motherinformations %>% distinct(mother_birthdate, .keep_all = TRUE)
 
+### Remove all families with multiple births:
+## Mark multpile births
+individuals = individuals %>%
+  mutate(multiple_birth = ifelse(duplicated(mother_birthdate), 1, 0))
+
+## All women that ever had multiple births
+twinmothers_individual = individuals %>%
+  filter(multiple_birth == 1)
+length(unique(twinmothers_individual$mother_pidlink)) # number of families that have to be excluded due to multiple birth
+
+individuals = individuals %>%
+    filter(!(mother_pidlink %in% twinmothers_individual$mother_pidlink))
 
 ```
 
 
+## Combine informations from pregnancy file and individual file
+```{r Combine informations from pregnancy file and individual file}
+## Combine informations from pregnancy history and individual files
+alldata_pregnancy = inner_join(individuals, pregnancy, by = "mother_birthdate")
 
-## Combine informations from mother and individuals file
-```{r Combine informations from father, mother and individuals file}
-### For our future analysis we only want informations about individuals whose mother reported informations about all other siblings (living in the same HH and not living in the same HH)
-individuals_siblinginfos = individuals %>%
-  filter(mother_reported_on_other_sibs == 1)
-
-### Combination of individual data and motherinformations
-individualsinformations_only = left_join(individuals_siblinginfos, motherinformations, by = "mother_birthdate")
-motherinformations_only = anti_join(motherinformations, individuals_siblinginfos, by = "mother_birthdate") # all rows from motherinformations that do not occur in individuals
-parentscheck = bind_rows(individualsinformations_only, motherinformations_only) # combines all rows in individual that occur in motherinformationsfile only
-
-### All mother_pidlinks should be in one column:
-parentscheck$mother_pidlink = ifelse(is.na(parentscheck$mother_pidlink), parentscheck$mother_pidlink.x, parentscheck$mother_pidlink)
-
-### For the individuals that are only in the motherinformationsfile we do not have a pidlink - so we create one (counting from one to the end of all missing pidlinks is reached)
-parentscheck$pidlink = ifelse(is.na(parentscheck$pidlink), c(1:sum(is.na(parentscheck$pidlink))), parentscheck$pidlink)
-```
-
-
-
-## Birth Orders
-
-```{r Birth Orders}
-## Create a variable that contains the birthdate for all individuals:
-parentscheck = parentscheck %>%
-    mutate(birth_ind = all_available_info_birth_date(ar08yr, ar08mth, ar08day), # from individuals file
-           birth_parents = all_available_info_birth_date(birth_year_m, birth_month_m)) %>% # from parents file
-    aggregate2sources("birth", "birth_ind", "birth_parents") # aggregate both informations in one column
-
-#Remove missing birthdates:
-parentscheck = parentscheck %>%
-  filter(!is.na(birth))
-
-
-### Preperations
-## Biological Birthorder - Order in Uterus: We only want to include biological children: 
-# Modify kind_of_child_variable_m (1 = bio_child, 2 = stepchild, 3 = adopted):
-parentscheck$kind_of_child_m = ifelse(
-  is.na(parentscheck$kind_of_child_m), 1, # those who don't have this var are from the individuals file and are biological kids
-  parentscheck$kind_of_child_m) # the ones from the minfo file can be adopted, stepchildren, etc.
-
-# Create Birth for biological children:
-parentscheck = parentscheck %>%
-  mutate(birth_bio = ifelse(kind_of_child_m == 1, birth, NA))
-
-## Biological Birthorder - Genes
-# Create birth variable for siblings that share the same mother and father
-parentscheck = parentscheck %>%
-  mutate(birth_genes = ifelse(!is.na(mother_father_dyad), birth, NA))
-
-
-## Social Birthorder: Calculate Death Age:
-# We have two sources for death informations: The household roster (Book K, Section ar,) and the mother informations (Book 4). We need to combine the informations that we have
-parentscheck$alive_m = ifelse(is.na(parentscheck$alive_m), 1, parentscheck$alive_m) # 1=alive, 3=dead
-
-# For the mother informations file some age information is missing. So we calculate it by substracting the birthyear/deathyear from the year of the interview
-parentscheck$current_age_or_death_age_m = ifelse(!is.na(parentscheck$current_age_or_death_age_m), parentscheck$current_age_or_death_age_m, ifelse(parentscheck$alive_m==1, 2014-parentscheck$birth_year_m, NA))
-                                                  parentscheck$current_age_or_death_age_m = ifelse(!is.na(parentscheck$current_age_or_death_age_m), parentscheck$current_age_or_death_age_m, ifelse(parentscheck$alive_m==3, 2014-parentscheck$death_year_m, NA))
-                                                  
-# Now we aggregate the informations 
-parentscheck = parentscheck %>%
-  aggregate2sources("age_aggregated", "age", "current_age_or_death_age_m", remove_old_variables = FALSE)
-
-# And we create a variable that contains the age of death for every individual that died:
-parentscheck$death_age = ifelse(parentscheck$alive_m == 3, parentscheck$age_aggregated, NA)
-
-# Now we want the birthdates of all individuals that are either still alive or lived longer than 5 years
-parentscheck$birth_lived_5y = ifelse(parentscheck$alive_m == 1, parentscheck$birth, ifelse(parentscheck$death_age>5, parentscheck$birth, NA))
-
-
-### Birthorder calculations
-parentscheck = parentscheck %>%
-  group_by(mother_pidlink) %>%
-  mutate(birthorder_uterus = min_rank(birth_bio), # Biological Birthorder - Uterus
-         siblingcount_maternal = sum(kind_of_child_m == 1), # Biological Sibling Count
-         birthorder_alive = older_sibs_alive_and_dependent(as.numeric(str_sub(birth, 1, 4)), death_year_m), # calculates the birthorder of all siblings (bio&adopted) that are alive by the time of the own birth; mistak: starts with 0??
-         # mistake: i would like to calculate the siblingcount_alive - but how?
-         birthorder_min5y = min_rank(birth_lived_5y),# calculates the birthorder of all siblings (bio&adopted) that lived longer than 5 years
-         siblingcount_min5y = sum(!is.na(birth_lived_5y))) %>% # sibling count for one family for all siblings that lived longer than 5y
-  group_by(mother_father_dyad) %>%
-    mutate(birthorder_genes = min_rank(birth),
-           birthorder_genes = ifelse(is.na(mother_father_dyad), NA, birthorder_genes),
-           siblingcount_genes = sum(!is.na(mother_father_dyad))) %>%
-  group_by(mother_pidlink, birth) %>%
-  mutate(multiple_birth = sum(kind_of_child_m == 1)) %>% # Biological Multiple births (Uterus)
-  group_by(mother_pidlink) %>%
-  mutate(any_multiple_birth_in_fam = any(multiple_birth > 1)) # Any biological multiple births in one family?
-
-### Graphs
-## Biological Birthorder - Uterus
-qplot(parentscheck$birthorder_uterus)
-ggplot(parentscheck, aes(x=siblingcount_maternal, y=birthorder_uterus)) + geom_jitter()
-
-## Biological Birthorder - Genes
-qplot(parentscheck$birthorder_genes)
-ggplot(parentscheck, aes(x=siblingcount_genes, y=birthorder_genes)) + geom_jitter()
-
-## Social Birthorder - min 5 years
-qplot(parentscheck$birthorder_min5y)
-ggplot(parentscheck, aes(x=siblingcount_min5y, y=birthorder_min5y)) + geom_jitter()
-
-## Social Birthorder - alive at birth
-qplot(parentscheck$birthorder_alive)
-
-## Bio: Uterus vs. Genes
-ggplot(parentscheck, aes(x=birthorder_uterus, y=birthorder_genes)) + geom_jitter()
-
-## Social: min5years vs. alive at birth
-ggplot(parentscheck, aes(x=birthorder_min5y, y=birthorder_alive)) + geom_jitter()
 ```
 
 
@@ -427,6 +366,19 @@ qplot(iq$g_factor)
 round(cor(iq %>% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
 
 formr::missingness_patterns(iq %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor)) ## oops, lavaan only predicts the g factor for complete cases
+
+# impute missing values
+# library(missMDA)
+# estimate number of components
+# rr = iq %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering)
+# nb <- estim_ncpPCA(rr, ncp.min=0, ncp.max=5)
+# actual impute
+# rr.impute <- imputePCA(rr, ncp=nb$ncp)
+# https://stats.stackexchange.com/questions/123725/how-can-i-estimate-a-principal-component-from-incomplete-data?noredirect=1&lq=1
+
+# Run pca
+# pca.fit <- prcomp(rr.impute$completeObs)
+# pca.fit$rotation
 ```
 
 
@@ -520,53 +472,16 @@ psych::alpha(data.frame(risk %>% select(riskA, riskB)), check.keys = T)
 ## Merge data
 
 ```{r merge data}
-### Merge ALL data (including all participants)
-alldata_birthorder = left_join(parentscheck, iq, by="pidlink")
-alldata_birthorder = left_join(alldata_birthorder, pers, by="pidlink")
-alldata_birthorder = left_join(alldata_birthorder, risk, by="pidlink")
+### Merge all data for people with birthorder informations
+alldata_birthorder = left_join(alldata_pregnancy, iq, by = "pidlink")
+alldata_birthorder = left_join(alldata_birthorder, pers, by = "pidlink")
+alldata_birthorder = left_join(alldata_birthorder, risk, by = "pidlink")
 
-alldata = left_join(individuals, iq, by="pidlink")
-alldata = left_join(alldata, pers, by="pidlink")
-alldata = left_join(alldata, risk, by="pidlink")
-
+alldata = left_join(individuals_unchanged, iq, by = "pidlink")
+alldata = left_join(alldata, pers, by = "pidlink")
+alldata = left_join(alldata, risk, by = "pidlink")
 ```
 
-
-## Calculate age related t-scores
-
-```{r Calculate age related t-scores}
-qplot(data = alldata, factor(age), raven, geom = "blank") + stat_summary( fun.data = "mean_sdl")
-
-### IQ
-alldata$raven_t <- 10*ave(alldata$raven, alldata$age, FUN=scale) + 50
-qplot(alldata$raven_t)
-alldata$math_t <- 10*ave(alldata$math, alldata$age, FUN=scale) + 50
-qplot(alldata$math_t)
-alldata$count_backwards_t <- 10*ave(alldata$count_backwards, alldata$age, FUN=scale) + 50
-qplot(alldata$count_backwards_t)
-alldata$words_immediate_t <- 10*ave(alldata$words_immediate, alldata$age, FUN=scale) + 50
-qplot(alldata$words_immediate_t)
-alldata$words_delayed_t <- 10*ave(alldata$words_delayed, alldata$age, FUN=scale) + 50
-qplot(alldata$words_delayed_t)
-alldata$adaptive_numbering_t <- 10*ave(alldata$adaptive_numbering, alldata$age, FUN=scale) + 50
-qplot(alldata$adaptive_numbering_t)
-
-
-### Personality
-alldata$big5_ext_t <- 10*ave(alldata$big5_ext, alldata$age, FUN=scale) + 50
-qplot(alldata$big5_ext_t)
-alldata$big5_agree_t <- 10*ave(alldata$big5_agree, alldata$age, FUN=scale) + 50
-qplot(alldata$big5_agree_t)
-alldata$big5_open_t <- 10*ave(alldata$big5_open, alldata$age, FUN=scale) + 50
-qplot(alldata$big5_open_t)
-alldata$big5_con_t <- 10*ave(alldata$big5_con, alldata$age, FUN=scale) + 50
-qplot(alldata$big5_con_t)
-alldata$big5_neu_t <- 10*ave(alldata$big5_neu, alldata$age, FUN=scale) + 50
-qplot(alldata$big5_neu_t)
-
-
-###Risktaking (geht nicht, da es keine intervallskalierte Variable ist (nur 5 level))
-```
 
 ## Exploring data
 
@@ -587,8 +502,48 @@ ggplot(alldata, aes(x=big5_open, y=g_factor)) + geom_jitter() + geom_smooth(meth
 
 ### Birth Order
 alldata_birthorder %>%
-  filter(birthorder_uterus<6) %>%
-  ggplot(aes(x=birthorder_uterus, y=g_factor)) + geom_jitter() + geom_smooth(method=lm) 
+  filter(birthorder_uterus_alive<6) %>%
+  ggplot(aes(x=birthorder_uterus_alive, y=g_factor)) + geom_jitter() + geom_smooth(method=lm) 
+
+table(alldata_birthorder$sibling_count_uterus_alive)
+
+alldata_birthorder %>%
+  filter(birthorder_uterus_alive<8) %>%
+  filter(sibling_count_uterus_alive<8) %>%
+  ggplot(aes(x=birthorder_uterus_alive, y=g_factor)) + 
+  facet_wrap(~ sibling_count_uterus_alive) + 
+  geom_jitter() + geom_smooth(method=lm) 
+
+alldata_birthorder %>% select(birthorder_uterus_alive, sibling_count_uterus_alive, birthdate) -> subs
+alldata_birthorder$byear = as.numeric(stringr::str_sub(alldata_birthorder$birthdate,1,4))
+
+alldata_birthorder %>%
+  filter(birthorder_uterus_alive < 8) %>%
+  filter(sibling_count_uterus_alive < 8) %>%
+   mutate(birthorder_uterus_alive = factor(birthorder_uterus_alive),
+         sibling_count_uters_alive = sibling_count_uterus_alive) %>%
+  ggplot(aes(x=birthorder_uterus_alive, y=g_factor, colour = sibling_count_uterus_alive, group = sibling_count_uterus_alive)) + 
+  geom_pointrange(fun.data = "mean_cl_boot", stat = "summary", position = position_dodge(width = 0.4)) + 
+  geom_line(fun.data = "mean_cl_boot", stat = "summary", position = position_dodge(width = 0.4))
+
+alldata_birthorder %>%
+  filter(birthorder_uterus_alive < 8) %>%
+  filter(sibling_count_uterus_alive < 8) %>%
+   mutate(birthorder_uterus_alive = factor(birthorder_uterus_alive),
+         sibling_count_uters_alive = sibling_count_uterus_alive) %>%
+  ggplot(aes(x=birthorder_uterus_alive, y=big5_open, colour = sibling_count_uterus_alive, group = sibling_count_uterus_alive)) + 
+  geom_pointrange(fun.data = "mean_cl_boot", stat = "summary", position = position_dodge(width = 0.4)) + 
+  geom_line(fun.data = "mean_cl_boot", stat = "summary", position = position_dodge(width = 0.4))
+
+alldata_birthorder %>%
+  filter(birthorder_uterus_alive < 8) %>%
+  filter(sibling_count_uterus_alive < 8) %>%
+   mutate(birthorder_uterus_alive = factor(birthorder_uterus_alive),
+         sibling_count_uters_alive = sibling_count_uterus_alive) %>%
+  ggplot(aes(x=birthorder_uterus_alive, y=big5_ext, colour = sibling_count_uterus_alive, group = sibling_count_uterus_alive)) + 
+  geom_pointrange(fun.data = "mean_cl_boot", stat = "summary", position = position_dodge(width = 0.4)) + 
+  geom_line(fun.data = "mean_cl_boot", stat = "summary", position = position_dodge(width = 0.4))
+
 ```
 
 
@@ -597,7 +552,8 @@ alldata_birthorder %>%
 for future analyses
 
 ```{r save data}
-saveRDS(alldata, file = "data/alldata.rds")
 saveRDS(alldata_birthorder, file = "data/alldata_birthorder.rds")
+
+saveRDS(alldata, file = "data/alldata.rds")
 
 ```

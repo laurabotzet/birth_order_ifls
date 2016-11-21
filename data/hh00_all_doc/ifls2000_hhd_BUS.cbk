@@ -1,0 +1,1665 @@
+
+     ===================================================================
+
+         IIII     FFFFFFF     LLL          SSSSSS           3333333333  
+          II       FF   F     LL          SS    SS                 333  
+          II       FF         LL          SS     S                 33   
+          II       FF         LL          SSS                     33    
+          II       FFFFF      LL           SSSSS                333     
+          II       FF         LL            SSSSS                 33    
+          II       FF         LL               SSS                 33   
+          II       FF         LL          S     SS                  33  
+          II       FF         LL     L    SS    SS          33      33  
+         IIII     FFFF        LLLLLLLL     SSSSSS            33333333   
+
+     ===================================================================
+
+
+
+     I N D O N E S I A N    F A M I L Y    L I F E    S U R V E Y    3  
+
+       A survey of individuals, households, families, communities       
+          and facilities conducted in 13 provinces in Indonesia         
+                   between August 2000 and February 2001                
+
+     ===================================================================
+
+                               Directed by                              
+
+                 John Strauss, RAND and Michigan State Univ.            
+
+                  Kathleen Beegle,  RAND and The World Bank             
+
+                            Bondan Sikoki, RAND                         
+
+                                  and                                   
+
+              Agus Dwiyanto, Center for Population and Policy Studies,  
+                          Univ. of Gadjah Mada                          
+
+     ===================================================================
+
+     Financial support for the Indonesian Family Life Surveys has been  
+     provided by the National Institute of Aging grant number 1R01      
+     AG17637 and the National Institute of Child and Human Development, 
+     grant number 1R01 HD38484                                          
+
+     ===================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+              Website: http://www.rand.org/FLS/IFLS                     
+          Send all questions to ifls-supp@rand.org                      
+
+                       Copyright (2004)                                 
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                               page 2  
+
+
+
+
+
+
+
+================================================================================
+
+          H   H   OOO    U   U    SS    EEEE   H   H   OOO   L     DDDD         
+          H   H  O   O   U   U   S  S   E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U   S      E      H   H  O   O  L     D   D        
+          HHHHH  O   O   U   U    S     EEEE   HHHHH  O   O  L     D   D        
+          H   H  O   O   U   U     S    E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U      S   E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U   S  S   E      H   H  O   O  L     D   D        
+          H   H   OOO     UUU     SS    EEEE   H   H   OOO   LLLL  DDDD         
+
+
+                    SS    U   U   RRR    V    V    EEEE   Y    Y                
+                   S  S   U   U   R  R   V    V    E      Y    Y                
+                   S      U   U   R  R   V    V    E       Y  Y                 
+                    S     U   U   RRR    V    V    EEE       Y                  
+                     S    U   U   R R     V  V     E         Y                  
+                      S   U   U   R  R    V  V     E         Y                  
+                   S  S   U   U   R  R     V       E         Y                  
+                    SS     UUU    R  R     V       EEEE      Y                  
+
+
+            CCC    OOO    DDDD    EEEE   BBBB     OOO     OOO    K   K          
+           C   C  O   O   D   D   E      B   B   O   O   O   O   K  K           
+           C      O   O   D   D   E      B   B   O   O   O   O   K K            
+           C      O   O   D   D   EEE    BBBB    O   O   O   O   KK             
+           C      O   O   D   D   E      B   B   O   O   O   O   KK             
+           C      O   O   D   D   E      B   B   O   O   O   O   K K            
+           C   C  O   O   D   D   E      B   B   O   O   O   O   K  K           
+            CCC    OOO    DDDD    EEEE   BBBB     OOO     OOO    K   K          
+
+================================================================================
+
+ B O O K :       BUS                                            
+ T O P I C :     HEALTH MEASUREMENTS                                           
+
+================================================================================
+
+
+
+
+
+
+
+
+
+
+
+                               Prepared by                                      
+                Roald Euller, John Strauss, Firman Witolar                      
+                     Created on 09NOV2005 at 11:22                           
+
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 3
+--------------------------------------------------------------------------------
+ B O O K :       BUS
+ T O P I C :     Health Measurements
+
+--------------------------------------------------------------------------------
+
+DATA FILES                                                                    
+----------                                                                    
+  Data are available in SAS (8.2) export and STATA (7.0) formats.             
+  Data and electronic documentation are available on the IFLS website.        
+
+  The survey instrument contains multiple sections.  Where possible, sections 
+  have been merged together to form a single data module.  The modules are    
+  organized by level of observation.  The module names are listed below.  They
+  serve as the names of the SAS and STATA data files. The codebook is also    
+  organised by module.                                                        
+
+  The modules are:                                                            
+
+   --------------------------------------------------------------------------
+                                                             # of
+      Module    Description                                  recs
+   --------------------------------------------------------------------------
+      BUS1_0                                                10294
+      BUS1_1                                                53488
+      BUS2_0                                                10294
+      BUS2_1                                                53488
+
+USER SUPPORT                                                                   
+------------                                                                   
+    These data should be used in conjunction with the Questionnaires and Users'
+    Manuals.  Check the IFLS web page for updates and answers to frequently    
+    asked questions.  Please send all questions to ifls-supp@rand.org.         
+
+USAGE NOTES                                                                    
+-----------                                                                    
+  READING THE DICTIONARY                                                       
+    For each variable in the dataset, the dictionary provides                  
+       Variable name : Typically the question number                           
+               Label : Describes variable                                      
+    Variable coding is described as follows:                                   
+               Value : Meaning of values for coded variables                   
+           Frequency : Frequency of each value                                 
+
+SPECIAL CODES                                                                  
+-------------                                                                  
+  The following values are reserved and have a special meaning:                
+      Numeric    Alphanumeric    Meaning                                       
+     5/95/995         V          Top coded/out of range                        
+     6/96/996         W          Not applicable                                
+     7/97/997         X          Refused to answer                             
+     8/98/998         Y          Don't know                                    
+     9/99/999         Z          Missing                                       
+
+DATASET VERSION                                                                
+---------------                                                                
+  The variable VERSION identifies the release version of these data; it         
+  will be updated with each revision of the data and can be used to confirm     
+  that you are using the most recent version of the data.                       
+
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 4
+--------------------------------------------------------------------------------
+ B O O K :       BUS
+ T O P I C :     Health Measurements
+
+--------------------------------------------------------------------------------
+
+NOTES ON BOOKS US1 AND US2                                               
+--------------------------                                               
+
+  Two specially trained nurses recorded                                    
+  physical measurements of health for household members.  The              
+  heath workers (usually newly trained nurses) visited each                
+  household (often multiple times) to record various measures of           
+  physical health for each household member.  The health workers           
+  received special training in taking the measurements, which              
+  included height, weight and head circumference (all members),            
+  waist and hip circumference (members 40 years and older),                
+  blood pressure and pulse (members 15 and older), lung capacity           
+  (members 9 and older), and hemoglobin (members 1 year and                
+  older).  In addition, respondents 15 and older were timed                
+  while they rose from a sitting to a standing position five               
+  times (nurses brought plastic stools for the respondents to              
+  sit on).  The nurses also assessed each respondent's health              
+  status on a nine-point scale.  In addition to individual                 
+  measurements, the iodine content of the household's salt was             
+  tested.  The head, waist and hip circumferences are new to               
+  IFLS3.  The latter two help to measure body fat content, which           
+  conditional on BMI, can be used to indicate risk of chronic              
+  health problems such as high blood pressure, diabetes, and               
+  generally cardiovascular diseases among the older population.            
+
+
+  To link records across waves of the IFLS, use PIDLINK.  It is                 
+  a unique person identifier which is the same in IFLS1, 2, 2+                  
+  and 3 for a particular individual.  It may also be used to                    
+  link records within IFLS3, except that as is described in                     
+  Volume 2 of the User's Guide, a person if they moved                          
+  households since IFLS1 may be found in multiple households                    
+  with PIDLINK.  However there will be only 1 household in                      
+  which the respondent currently resides, which can be found by                 
+  examining variable ar01a in Book K, which is equal to 1 or 5 if               
+  the respondent is a resident.                                                 
+
+  PIDLINK is a string variable comprising 9 digits.  For a                      
+  respondent in IFLS1, 2, or 2+, PIDLINK is made up of HHID for                 
+  the wave in which they were first found, followed by 00 and                   
+  then the person identifier, PID, for that wave of IFLS.  For                  
+  a new respondent in IFLS3, PIDLINK is made up of HHID00 and                   
+  PID00.                                                                        
+
+
+  In IFLS3, HHID00 is a seven digit character variable whose digits carry       
+  the following meaning:                                                        
+
+                  x  x  x           x  x                    x  x                
+                  -------    ------------------        ---------------          
+                    EA       specific household        origin/split-off         
+
+  In the last two digits, 00 designates an origin household.  For a split-off   
+
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 5
+--------------------------------------------------------------------------------
+ B O O K :       BUS
+ T O P I C :     Health Measurements
+
+--------------------------------------------------------------------------------
+  household, the 6th digit is either 1, 2 or 3 depending on which wave the      
+  split-off first appeared.  Split-offs from IFLS2 have their sixth digit equal 
+  to 1, while split-off households first appearing in IFLS2+ have a 2 and new   
+  split-offs in 2000 have a 3.  The 7th digit indicates whether it is the first,
+  second, or other split-off (some multiple split-offs occurred).               
+
+  Note that the enumeration area identifier used to define a               
+  household contains no information about the current whereabouts          
+  of the household unless it has not moved.  The location of the           
+  household is recorded in BK_SC.                                          
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 6
+book:    BUS  - Health Measurements                                   
+module:  BUS1_0               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID00             2000 Household ID
+
+
+LANGMAIN           Language of interview?
+
+                   0.Indonesian                                 7,255     70.48
+                   1.Javanese                                   2,919     28.36
+                   2.Sundanese                                     11      0.11
+                   3.Balinese                                       2      0.02
+                   4.Batak                                          1      0.01
+                   7.Maduranese                                    56      0.54
+                   8.Sasak                                          1      0.01
+                   9.Minang                                         6      0.06
+                   10.Banjar                                       14      0.14
+                   11.Bima                                          3      0.03
+                   13.Nias                                         22      0.21
+                   14.Palembang                                     2      0.02
+                   99.Missing                                       2      0.02
+                   total                                       10,294    100.00
+
+LANGOTHR           Other language used if any?
+
+                   0.Indonesian                                 1,311     12.74
+                   1.Javanese                                     707      6.87
+                   2.Sundanese                                    596      5.79
+                   3.Balinese                                      13      0.13
+                   4.Batak                                         26      0.25
+                   6.Chinese                                        2      0.02
+                   7.Maduranese                                    48      0.47
+                   9.Minang                                        28      0.27
+                   10.Banjar                                      199      1.93
+                   91.Other                                         1      0.01
+                   96.No other                                  7,357     71.47
+                   99.Missing                                       6      0.06
+                   total                                       10,294    100.00
+
+BEGHR1             Time interview began (hour) :1
+
+                   min:                                          0.00
+                   mean:                                        15.06
+                   max:                                         23.00
+                   #obs                                        10,294
+                   #miss:                                           0
+
+BEGHR2             Time interview began (hour) :2
+
+                   min:                                          0.00
+                   mean:                                        15.09
+                   max:                                         23.00
+                   #obs                                         2,920
+                   #miss:                                       7,374
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 7
+book:    BUS  - Health Measurements                                   
+module:  BUS1_0               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+BEGHR3             Time interview began (hour) :3
+
+                   min:                                          0.00
+                   mean:                                        14.22
+                   max:                                         22.00
+                   #obs                                           534
+                   #miss:                                       9,760
+
+BEGMIN1            Time interview began (minute)  :1
+
+                   min:                                          0.00
+                   mean:                                        25.17
+                   max:                                         59.00
+                   #obs                                        10,294
+                   #miss:                                           0
+
+BEGMIN2            Time interview began (minute)  :2
+
+                   min:                                          0.00
+                   mean:                                        25.87
+                   max:                                         59.00
+                   #obs                                         2,920
+                   #miss:                                       7,374
+
+BEGMIN3            Time interview began (minute)  :3
+
+                   min:                                          0.00
+                   mean:                                        22.29
+                   max:                                         58.00
+                   #obs                                           534
+                   #miss:                                       9,760
+
+EDITOR             Field editor ID code
+
+
+EDIT_CK            Reviewed by editor
+
+                   1.DE, without error                          8,635     83.88
+                   2.DE, with correction                        1,658     16.11
+                   3.DE, without correct.                           1      0.01
+                   total                                       10,294    100.00
+
+ENDHR1             Time interview ended (hour) :1
+
+                   min:                                          0.00
+                   mean:                                        15.45
+                   max:                                         23.00
+                   #obs                                        10,294
+                   #miss:                                           0
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 8
+book:    BUS  - Health Measurements                                   
+module:  BUS1_0               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+ENDHR2             Time interview ended (hour) :2
+
+                   min:                                          0.00
+                   mean:                                        15.33
+                   max:                                         23.00
+                   #obs                                         2,920
+                   #miss:                                       7,374
+
+ENDHR3             Time interview ended (hour) :3
+
+                   min:                                          0.00
+                   mean:                                        14.46
+                   max:                                         22.00
+                   #obs                                           534
+                   #miss:                                       9,760
+
+ENDMIN1            Time interview ended (minute)  :1
+
+                   min:                                          0.00
+                   mean:                                        28.55
+                   max:                                         59.00
+                   #obs                                        10,294
+                   #miss:                                           0
+
+ENDMIN2            Time interview ended (minute)  :2
+
+                   min:                                          0.00
+                   mean:                                        27.55
+                   max:                                         59.00
+                   #obs                                         2,920
+                   #miss:                                       7,374
+
+ENDMIN3            Time interview ended (minute)  :3
+
+                   min:                                          0.00
+                   mean:                                        26.51
+                   max:                                         59.00
+                   #obs                                           534
+                   #miss:                                       9,760
+
+HHSIZE             Number of household members
+
+                   min:                                          1.00
+                   mean:                                         5.26
+                   max:                                         37.00
+                   #obs                                        10,294
+                   #miss:                                           0
+
+IDIVWR             Interviewer ID code
+
+
+IDKEYPUN           Keypuncher code
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 9
+book:    BUS  - Health Measurements                                   
+module:  BUS1_0               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+IDRT               Household ID #
+
+
+IDVERIF            Verification keypuncher code
+
+
+IVWDAY1            Date of interview (day) :1
+
+                   min:                                          1.00
+                   mean:                                        15.76
+                   max:                                         31.00
+                   #obs                                        10,294
+                   #miss:                                           0
+
+IVWDAY2            Date of interview (day) :2
+
+                   min:                                          1.00
+                   mean:                                        15.77
+                   max:                                         31.00
+                   #obs                                         2,998
+                   #miss:                                       7,296
+
+IVWDAY3            Date of interview (day) :3
+
+                   min:                                          1.00
+                   mean:                                        15.04
+                   max:                                         31.00
+                   #obs                                           570
+                   #miss:                                       9,724
+
+IVWDAY4            date of 4th interview: day
+
+                   min:                                          2.00
+                   mean:                                        14.38
+                   max:                                         24.00
+                   #obs                                            13
+                   #miss:                                      10,281
+
+IVWMTH1            Date of interview (month) :1
+
+                   1.January                                       18      0.17
+                   6.June                                         269      2.61
+                   7.July                                       1,460     14.18
+                   8.August                                     2,318     22.52
+                   9.September                                  2,552     24.79
+                   10.October                                   2,097     20.37
+                   11.November                                  1,124     10.92
+                   12.December                                    456      4.43
+                   total                                       10,294    100.00
+
+IVWMTH2            Date of interview (month) :2
+
+                   missing                                      7,296     70.88
+                   6.June                                          94      0.91
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 10
+book:    BUS  - Health Measurements                                   
+module:  BUS1_0               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(IVWMTH2  continued)
+
+                   7.July                                         447      4.34
+                   8.August                                       696      6.76
+                   9.September                                    750      7.29
+                   10.October                                     585      5.68
+                   11.November                                    323      3.14
+                   12.December                                    103      1.00
+                   total                                       10,294    100.00
+
+IVWMTH3            Date of interview (month) :3
+
+                   missing                                      9,724     94.46
+                   6.June                                          12      0.12
+                   7.July                                          88      0.85
+                   8.August                                        99      0.96
+                   9.September                                    122      1.19
+                   10.October                                     129      1.25
+                   11.November                                     93      0.90
+                   12.December                                     27      0.26
+                   total                                       10,294    100.00
+
+IVWMTH4            date of 4th interview: month
+
+                   missing                                     10,281     99.87
+                   11.November                                      8      0.08
+                   12.December                                      5      0.05
+                   total                                       10,294    100.00
+
+MODULE             survey module
+
+
+NUMVIS             Number of visits
+
+                   min:                                          1.00
+                   mean:                                         1.34
+                   max:                                          3.00
+                   #obs                                        10,294
+                   #miss:                                           0
+
+REASON             Reason for book US1 result
+
+                   missing                                      8,826     85.74
+                   1.Resp. not at home                            470      4.57
+                   2.Resp. seriously ill                           80      0.78
+                   3.Resp. refused                                519      5.04
+                   5.Other                                        399      3.88
+                   total                                       10,294    100.00
+
+RESULT             Result of interview: book US1
+
+                   1.Completed                                  8,826     85.74
+                   2.Partially completed                        1,337     12.99
+                   3.Not completed                                131      1.27
+                   total                                       10,294    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 11
+book:    BUS  - Health Measurements                                   
+module:  BUS1_0               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+
+SUP_EDIT           Reviewed by local supervisor
+
+                   1.Yes                                          481      4.67
+                   3.No                                         9,813     95.33
+                   total                                       10,294    100.00
+
+SUP_OBS            Observed by local supervisor
+
+                   1.Yes                                        1,026      9.97
+                   3.No                                         9,268     90.03
+                   total                                       10,294    100.00
+
+US21               Iodine level of salt used by HH
+
+                   missing                                        131      1.27
+                   1.White                                      2,228     21.64
+                   3.Blue                                       6,341     61.60
+                   5.Rather blue                                1,299     12.62
+                   6.Didn't have salt                             256      2.49
+                   9.Missing                                       39      0.38
+                   total                                       10,294    100.00
+
+VERSION            IFLS3 version
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 12
+book:    BUS  - Health Measurements                                   
+module:  BUS1_1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID00             2000 Household ID
+
+
+PID00              PID member
+
+
+PIDLINK            Tracking ID
+
+
+AR01A              Is HH member still live in this HH
+
+                   0.Dead                                       1,493      2.79
+                   1.Yes                                       31,976     59.78
+                   3.No                                         9,413     17.60
+                   5.New Household member                      10,606     19.83
+                   total                                       53,488    100.00
+
+MODULE             survey module
+
+
+US00               Respondent measured?
+
+                   0.Dead                                       1,499      2.80
+                   1.Yes                                       36,405     68.06
+                   2.Disabled                                      33      0.06
+                   3.Other reason not measured                    191      0.36
+                   5.Too old                                       19      0.04
+                   6.Moved/can't be contacted                  10,484     19.60
+                   7.Refused                                      528      0.99
+                   8.Equipment problem                              2      0.00
+                   9.Missing                                    4,257      7.96
+                   10.Sick/pregnant                                70      0.13
+                   total                                       53,488    100.00
+
+US01               Sex
+
+                   missing                                      1,499      2.80
+                   1.Male                                      25,381     47.45
+                   3.Female                                    26,608     49.75
+                   total                                       53,488    100.00
+
+US02DAY            Date of birth (day)
+
+                   min:                                          1.00
+                   mean:                                        52.73
+                   max:                                         99.00
+                   #obs                                        51,989
+                   #miss:                                       1,499
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 13
+book:    BUS  - Health Measurements                                   
+module:  BUS1_1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+US02MTH            Month of birth
+
+                   min:                                          1.00
+                   mean:                                        27.46
+                   max:                                         99.00
+                   #obs                                        52,004
+                   #miss:                                       1,484
+
+US02YR             Year of birth
+
+                   min:                                       1895.00
+                   mean:                                      2213.49
+                   max:                                       9999.00
+                   #obs                                        52,014
+                   #miss:                                       1,474
+
+US03               Age
+
+                   min:                                          0.00
+                   mean:                                        29.11
+                   max:                                        999.00
+                   #obs                                        51,989
+                   #miss:                                       1,499
+
+US07A              Blood pressure (systolic)
+
+                   min:                                         53.00
+                   mean:                                       124.55
+                   max:                                        253.00
+                   #obs                                        25,306
+                   #miss:                                      28,182
+
+US07X              Blood pressure measured?
+
+                   missing                                     16,816     31.44
+                   1.Yes                                       25,303     47.31
+                   2.Disabled                                       4      0.01
+                   3.Other reason not measured                      9      0.02
+                   4.Not able                                       6      0.01
+                   5.Too old                                        2      0.00
+                   6.Moved/can't be contacted                  11,310     21.14
+                   7.Refused                                       16      0.03
+                   8.Equipment problem                             10      0.02
+                   9.Missing                                        9      0.02
+                   10.Sick/pregnant                                 2      0.00
+                   12.Resp not home/not avaliable                   1      0.00
+                   total                                       53,488    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 14
+book:    BUS  - Health Measurements                                   
+module:  BUS1_1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+US07B              Blood pressure (diastolic)
+
+                   min:                                         25.00
+                   mean:                                        79.76
+                   max:                                        156.00
+                   #obs                                        25,306
+                   #miss:                                      28,182
+
+US08X              Pulse measured?
+
+                   missing                                     16,820     31.45
+                   1.Yes                                       25,270     47.24
+                   2.Disabled                                       4      0.01
+                   3.Other reason not measured                      4      0.01
+                   4.Not able                                       8      0.01
+                   5.Too old                                        2      0.00
+                   6.Moved/can't be contacted                  11,311     21.15
+                   7.Refused                                       30      0.06
+                   8.Equipment problem                             13      0.02
+                   9.Missing                                       20      0.04
+                   10.Sick/pregnant                                 4      0.01
+                   12.Resp not home/not avaliable                   2      0.00
+                   total                                       53,488    100.00
+
+US08               Pulse
+
+                   min:                                         18.00
+                   mean:                                        78.56
+                   max:                                        270.00
+                   #obs                                        25,276
+                   #miss:                                      28,212
+
+US09AX             Knows lung capacity (1st measurement)?
+
+                   missing                                     16,819     31.44
+                   1.Yes                                       29,352     54.88
+                   2.Disabled                                      31      0.06
+                   3.Other reason not measured                      9      0.02
+                   4.Not able                                      61      0.11
+                   5.Too old                                       70      0.13
+                   6.Moved/can't be contacted                   6,850     12.81
+                   7.Refused                                       63      0.12
+                   8.Equipment problem                             66      0.12
+                   9.Missing                                        8      0.01
+                   10.Sick/pregnant                               148      0.28
+                   11.Not target respondent                         9      0.02
+                   12.Resp not home/not avaliable                   2      0.00
+                   total                                       53,488    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 15
+book:    BUS  - Health Measurements                                   
+module:  BUS1_1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+US09A              Lung capacity (1st measurment)
+
+                   min:                                          0.00
+                   mean:                                       295.26
+                   max:                                        999.00
+                   #obs                                        29,357
+                   #miss:                                      24,131
+
+US09BX             Knows lung capacity (2nd measurement)?
+
+                   missing                                     16,819     31.44
+                   1.Yes                                       29,349     54.87
+                   2.Disabled                                      29      0.05
+                   3.Other reason not measured                     10      0.02
+                   4.Not able                                      62      0.12
+                   5.Too old                                       71      0.13
+                   6.Moved/can't be contacted                   6,851     12.81
+                   7.Refused                                       61      0.11
+                   8.Equipment problem                             66      0.12
+                   9.Missing                                        7      0.01
+                   10.Sick/pregnant                               151      0.28
+                   11.Not target respondent                         9      0.02
+                   12.Resp not home/not avaliable                   3      0.01
+                   total                                       53,488    100.00
+
+US09B              Lung capacity (2nd measurement)
+
+                   min:                                          0.00
+                   mean:                                       310.93
+                   max:                                        810.00
+                   #obs                                        29,355
+                   #miss:                                      24,133
+
+US09CX             Knows lung capacity (3rd measurement)?
+
+                   missing                                     16,813     31.43
+                   1.Yes                                       29,345     54.86
+                   2.Disabled                                      30      0.06
+                   3.Other reason not measured                     10      0.02
+                   4.Not able                                      62      0.12
+                   5.Too old                                       72      0.13
+                   6.Moved/can't be contacted                   6,849     12.80
+                   7.Refused                                       60      0.11
+                   8.Equipment problem                             70      0.13
+                   9.Missing                                        9      0.02
+                   10.Sick/pregnant                               149      0.28
+                   11.Not target respondent                         9      0.02
+                   12.Resp not home/not avaliable                  10      0.02
+                   total                                       53,488    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 16
+book:    BUS  - Health Measurements                                   
+module:  BUS1_1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+US09C              Lung capacity (3rd measurement)
+
+                   min:                                          0.00
+                   mean:                                       318.74
+                   max:                                        999.00
+                   #obs                                        29,354
+                   #miss:                                      24,134
+
+US13               Hb measurement
+
+                   min:                                          2.40
+                   mean:                                        12.75
+                   max:                                         99.90
+                   #obs                                        34,811
+                   #miss:                                      18,677
+
+US13AX             SPRT of blood measured?
+
+                   missing                                     16,818     31.44
+                   1.Yes                                       34,812     65.08
+                   2.Disabled                                       4      0.01
+                   3.Other reason not measured                     15      0.03
+                   6.Moved/can't be contacted                   1,011      1.89
+                   7.Refused                                      752      1.41
+                   8.Equipment problem                             42      0.08
+                   9.Missing                                       15      0.03
+                   10.Sick/pregnant                                11      0.02
+                   12.Resp not home/not avaliable                   8      0.01
+                   total                                       53,488    100.00
+
+US13A              SPRT blood measurement
+
+                   min:                                          0.00
+                   mean:                                       679.19
+                   max:                                        999.00
+                   #obs                                           839
+                   #miss:                                      52,649
+
+US13X              Hb measured
+
+                   missing                                     16,816     31.44
+                   1.Yes                                       34,584     64.66
+                   2.Disabled                                       3      0.01
+                   3.Other reason not measured                      3      0.01
+                   4.Not able                                       1      0.00
+                   6.Moved/can't be contacted                     968      1.81
+                   7.Refused                                      755      1.41
+                   8.Equipment problem                            325      0.61
+                   9.Missing                                       10      0.02
+                   10.Sick/pregnant                                14      0.03
+                   12.Resp not home/not avaliable                   9      0.02
+                   total                                       53,488    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 17
+book:    BUS  - Health Measurements                                   
+module:  BUS1_1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+US15A              Currently pregnant
+
+                   missing                                     16,822     31.45
+                   1.Yes                                          693      1.30
+                   3.No                                         6,133     11.47
+                   6.Not applicable                            29,838     55.78
+                   9.Missing                                        2      0.00
+                   total                                       53,488    100.00
+
+US15B              Currently breastfeeding
+
+                   missing                                     16,822     31.45
+                   1.Yes                                        1,300      2.43
+                   2                                                2      0.00
+                   3.No                                         5,520     10.32
+                   6.Not Applicable                            29,841     55.79
+                   9.Missing                                        3      0.01
+                   total                                       53,488    100.00
+
+US16HR             Time measured (hour)
+
+                   min:                                          0.00
+                   mean:                                        15.62
+                   max:                                         99.00
+                   #obs                                        36,666
+                   #miss:                                      16,822
+
+US16MNT            Time measured (minutes)
+
+                   min:                                          0.00
+                   mean:                                        28.77
+                   max:                                         99.00
+                   #obs                                        36,666
+                   #miss:                                      16,822
+
+US17ADYA           day of measurement - non-height/weight
+
+                   min:                                          1.00
+                   mean:                                        15.79
+                   max:                                         99.00
+                   #obs                                        36,666
+                   #miss:                                      16,822
+
+US17ADYB           day of measurement - height/weight
+
+                   min:                                          1.00
+                   mean:                                        15.87
+                   max:                                         99.00
+                   #obs                                        36,936
+                   #miss:                                      16,552
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 18
+book:    BUS  - Health Measurements                                   
+module:  BUS1_1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+US17AMTA           month of measurement - non-height/weight
+
+                   min:                                          1.00
+                   mean:                                         8.82
+                   max:                                         12.00
+                   #obs                                        36,666
+                   #miss:                                      16,822
+
+US17AMTB           month of measurement - height/weight
+
+                   min:                                          1.00
+                   mean:                                         8.88
+                   max:                                         12.00
+                   #obs                                        36,936
+                   #miss:                                      16,552
+
+US17AYRA           year of measurement - non-height/weight
+
+                   min:                                       2000.00
+                   mean:                                      2000.00
+                   max:                                       2000.00
+                   #obs                                        53,488
+                   #miss:                                           0
+
+US17AYRB           year of measurement - height/weight
+
+                   min:                                       2000.00
+                   mean:                                      2000.00
+                   max:                                       2000.00
+                   #obs                                        53,488
+                   #miss:                                           0
+
+US18               Currently fasting
+
+                   missing                                     16,822     31.45
+                   1                                              651      1.22
+                   3                                           36,006     67.32
+                   9                                                9      0.02
+                   total                                       53,488    100.00
+
+VERSION            IFLS3 version
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 19
+book:    BUS  - Health Measurements                                   
+module:  BUS2_0               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID00             2000 Household ID
+
+
+LANGMAIN           Language of interview?
+
+                   0.Indonesian                                 7,261     70.54
+                   1.Javanese                                   2,922     28.39
+                   2.Sundanese                                     10      0.10
+                   3.Balinese                                       1      0.01
+                   4.Batak                                          1      0.01
+                   7.Maduranese                                    55      0.53
+                   9.Minang                                        10      0.10
+                   10.Banjar                                       10      0.10
+                   11.Bima                                          1      0.01
+                   13.Nias                                         22      0.21
+                   99.Missing                                       1      0.01
+                   total                                       10,294    100.00
+
+LANGOTHR           Other language used if any?
+
+                   0.Indonesian                                 1,317     12.79
+                   1.Javanese                                     706      6.86
+                   2.Sundanese                                    600      5.83
+                   3.Balinese                                      12      0.12
+                   4.Batak                                         24      0.23
+                   6.Chinese                                        1      0.01
+                   7.Maduranese                                    49      0.48
+                   9.Minang                                        31      0.30
+                   10.Banjar                                      198      1.92
+                   11.Bima                                          3      0.03
+                   19.Betawi                                        1      0.01
+                   20.Lampung                                       1      0.01
+                   91.Other                                         1      0.01
+                   96.No other                                  7,348     71.38
+                   99.Missing                                       2      0.02
+                   total                                       10,294    100.00
+
+BEGHR1             Time interview began (hour) :1
+
+                   min:                                          0.00
+                   mean:                                        15.07
+                   max:                                         23.00
+                   #obs                                        10,294
+                   #miss:                                           0
+
+BEGHR2             Time interview began (hour) :2
+
+                   min:                                          0.00
+                   mean:                                        15.10
+                   max:                                         23.00
+                   #obs                                         2,887
+                   #miss:                                       7,407
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 20
+book:    BUS  - Health Measurements                                   
+module:  BUS2_0               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+BEGHR3             Time interview began (hour) :3
+
+                   min:                                          0.00
+                   mean:                                        14.13
+                   max:                                         22.00
+                   #obs                                           506
+                   #miss:                                       9,788
+
+BEGMIN1            Time interview began (minute)  :1
+
+                   min:                                          0.00
+                   mean:                                        25.36
+                   max:                                         59.00
+                   #obs                                        10,294
+                   #miss:                                           0
+
+BEGMIN2            Time interview began (minute)  :2
+
+                   min:                                          0.00
+                   mean:                                        26.22
+                   max:                                         59.00
+                   #obs                                         2,887
+                   #miss:                                       7,407
+
+BEGMIN3            Time interview began (minute)  :3
+
+                   min:                                          0.00
+                   mean:                                        22.43
+                   max:                                         58.00
+                   #obs                                           506
+                   #miss:                                       9,788
+
+C2                 Reason not completed
+
+                   missing                                      9,878     95.96
+                   1.Resp. not at home                            162      1.57
+                   2.Resp. seriously ill                           49      0.48
+                   3.Resp. refused                                 35      0.34
+                   5.Other                                         53      0.51
+                   6.Moved                                          2      0.02
+                   8.Equipment problem                             30      0.29
+                   9.Missing                                       85      0.83
+                   total                                       10,294    100.00
+
+EDITOR             Field editor ID code
+
+
+EDIT_CK            Reviewed by editor
+
+                   1.DE, without error                          8,803     85.52
+                   2.DE, with correction                        1,491     14.48
+                   total                                       10,294    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 21
+book:    BUS  - Health Measurements                                   
+module:  BUS2_0               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+ENDHR1             Time interview ended (hour) :1
+
+                   min:                                          0.00
+                   mean:                                        15.45
+                   max:                                         23.00
+                   #obs                                        10,294
+                   #miss:                                           0
+
+ENDHR2             Time interview ended (hour) :2
+
+                   min:                                          0.00
+                   mean:                                        15.35
+                   max:                                         23.00
+                   #obs                                         2,887
+                   #miss:                                       7,407
+
+ENDHR3             Time interview ended (hour) :3
+
+                   min:                                          0.00
+                   mean:                                        14.33
+                   max:                                         22.00
+                   #obs                                           506
+                   #miss:                                       9,788
+
+ENDMIN1            Time interview ended (minute)  :1
+
+                   min:                                          0.00
+                   mean:                                        28.74
+                   max:                                         59.00
+                   #obs                                        10,294
+                   #miss:                                           0
+
+ENDMIN2            Time interview ended (minute)  :2
+
+                   min:                                          0.00
+                   mean:                                        27.85
+                   max:                                         59.00
+                   #obs                                         2,887
+                   #miss:                                       7,407
+
+ENDMIN3            Time interview ended (minute)  :3
+
+                   min:                                          0.00
+                   mean:                                        27.27
+                   max:                                         59.00
+                   #obs                                           506
+                   #miss:                                       9,788
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 22
+book:    BUS  - Health Measurements                                   
+module:  BUS2_0               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHSIZE             Number of household members
+
+                   min:                                          1.00
+                   mean:                                         5.26
+                   max:                                         37.00
+                   #obs                                        10,294
+                   #miss:                                           0
+
+IDIVWR             Interviewer ID code
+
+
+IDKEYPUN           Keypuncher code
+
+
+IDRT               Household ID #
+
+
+IDVERIF            Verification keypuncher code
+
+
+IVWDAY1            Date of interview (day of month) :1
+
+                   min:                                          1.00
+                   mean:                                        15.75
+                   max:                                         31.00
+                   #obs                                        10,294
+                   #miss:                                           0
+
+IVWDAY2            Date of interview (day of month) :2
+
+                   min:                                          1.00
+                   mean:                                        15.93
+                   max:                                         31.00
+                   #obs                                         2,967
+                   #miss:                                       7,327
+
+IVWDAY3            Date of interview (day of month) :3
+
+                   min:                                          1.00
+                   mean:                                        15.28
+                   max:                                         31.00
+                   #obs                                           540
+                   #miss:                                       9,754
+
+IVWDAY4            date of 4th interview: day
+
+                   min:                                          2.00
+                   mean:                                        14.38
+                   max:                                         24.00
+                   #obs                                            13
+                   #miss:                                      10,281
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 23
+book:    BUS  - Health Measurements                                   
+module:  BUS2_0               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+IVWMTH1            Date of interview (month) :1
+
+                   1.January                                       18      0.17
+                   6.June                                         269      2.61
+                   7.July                                       1,460     14.18
+                   8.August                                     2,318     22.52
+                   9.September                                  2,552     24.79
+                   10.October                                   2,097     20.37
+                   11.November                                  1,124     10.92
+                   12.December                                    456      4.43
+                   total                                       10,294    100.00
+
+IVWMTH2            Date of interview (month) :2
+
+                   missing                                      7,327     71.18
+                   6.June                                          91      0.88
+                   7.July                                         454      4.41
+                   8.August                                       704      6.84
+                   9.September                                    758      7.36
+                   10.October                                     547      5.31
+                   11.November                                    325      3.16
+                   12.December                                     88      0.85
+                   total                                       10,294    100.00
+
+IVWMTH3            Date of interview (month) :3
+
+                   missing                                      9,754     94.75
+                   6.June                                          13      0.13
+                   7.July                                          87      0.85
+                   8.August                                        96      0.93
+                   9.September                                    123      1.19
+                   10.October                                     108      1.05
+                   11.November                                     90      0.87
+                   12.December                                     23      0.22
+                   total                                       10,294    100.00
+
+IVWMTH4            date of 4th interview: month
+
+                   missing                                     10,281     99.87
+                   11.November                                      8      0.08
+                   12.December                                      5      0.05
+                   total                                       10,294    100.00
+
+MODULE             survey module
+
+
+NUMVIS             Number of visits
+
+                   min:                                          1.00
+                   mean:                                         1.33
+                   max:                                          3.00
+                   #obs                                        10,294
+                   #miss:                                           0
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 24
+book:    BUS  - Health Measurements                                   
+module:  BUS2_0               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+REASON             Reason not completed
+
+                   missing                                      9,000     87.43
+                   1.Resp. not at home                            470      4.57
+                   2.Resp. seriously ill                           97      0.94
+                   3.Resp. refused                                377      3.66
+                   5.Other                                        350      3.40
+                   total                                       10,294    100.00
+
+RESULT             Result of book US2 interview
+
+                   1.Completed                                  9,000     87.43
+                   2.Partially completed                        1,163     11.30
+                   3.Not completed                                131      1.27
+                   total                                       10,294    100.00
+
+SUP_EDIT           Reviewed by local supervisor
+
+                   1.Yes                                          467      4.54
+                   3.No                                         9,827     95.46
+                   total                                       10,294    100.00
+
+SUP_OBS            Observed by local supervisor
+
+                   1.Yes                                          961      9.34
+                   3.No                                         9,333     90.66
+                   total                                       10,294    100.00
+
+VERSION            IFLS3 version
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 25
+book:    BUS  - Health Measurements                                   
+module:  BUS2_1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID00             2000 Household ID
+
+
+PID00              PID member
+
+
+PIDLINK            Tracking ID
+
+
+AR01A              Is HH member still live in this HH
+
+                   0.Dead                                       1,493      2.79
+                   1.Yes                                       31,976     59.78
+                   3.No                                         9,413     17.60
+                   5.New Household member                      10,606     19.83
+                   total                                       53,488    100.00
+
+MODULE             survey module
+
+
+US00               Respondent measured
+
+                   0.Dead                                       1,497      2.80
+                   1.Yes                                       36,402     68.06
+                   2.Disabled                                      23      0.04
+                   3.Other reason not measured                    210      0.39
+                   5.Too old                                       22      0.04
+                   6.Moved/can't be contacted                  10,474     19.58
+                   7.Refused                                      538      1.01
+                   9.Missing                                    4,231      7.91
+                   10.Sick/pregnant                                91      0.17
+                   total                                       53,488    100.00
+
+US01               Sex
+
+                   missing                                     16,830     31.47
+                   1.Male                                      17,639     32.98
+                   3.Female                                    19,019     35.56
+                   total                                       53,488    100.00
+
+US04X              Height measured?
+
+                   missing                                     16,844     31.49
+                   1.Yes                                       36,482     68.21
+                   3.Other reason not measured                     83      0.16
+                   5.Too old                                        4      0.01
+                   6.Moved/can't be contacted                       1      0.00
+                   7.Refused                                       66      0.12
+                   9.Missing                                        8      0.01
+                   total                                       53,488    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 26
+book:    BUS  - Health Measurements                                   
+module:  BUS2_1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+US04               Height (cm)
+
+                   min:                                         10.40
+                   mean:                                       141.84
+                   max:                                        191.70
+                   #obs                                        36,485
+                   #miss:                                      17,003
+
+US05               Type of measurement
+
+                   missing                                     17,003     31.79
+                   1.Standing                                  34,833     65.12
+                   3.Lying                                      1,619      3.03
+                   9.Missing                                       33      0.06
+                   total                                       53,488    100.00
+
+US06               Weight (kg)
+
+                   min:                                          2.10
+                   mean:                                        42.46
+                   max:                                        999.90
+                   #obs                                        36,440
+                   #miss:                                      17,048
+
+US06AX             Waist circumference measured?
+
+                   missing                                     16,846     31.49
+                   1.Yes                                        9,455     17.68
+                   3.Other reason not measured                     47      0.09
+                   5.Too old                                        2      0.00
+                   6.Moved/can't be contacted                  27,126     50.71
+                   7.Refused                                        3      0.01
+                   9.Missing                                        9      0.02
+                   total                                       53,488    100.00
+
+US06A              Waist circumference (cm)
+
+                   min:                                         31.50
+                   mean:                                        78.42
+                   max:                                        999.90
+                   #obs                                         9,455
+                   #miss:                                      44,033
+
+US06BX             Hip circumference measured?
+
+                   missing                                     16,846     31.49
+                   1.Yes                                        9,444     17.66
+                   3.Other reason not measured                     53      0.10
+                   5.Too old                                        3      0.01
+                   6.Moved/can't be contacted                  27,128     50.72
+                   7.Refused                                        5      0.01
+                   9.Missing                                        9      0.02
+                   total                                       53,488    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 27
+book:    BUS  - Health Measurements                                   
+module:  BUS2_1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+US06B              Hip circumference (cm)
+
+                   min:                                         37.70
+                   mean:                                        90.18
+                   max:                                        999.90
+                   #obs                                         9,445
+                   #miss:                                      44,043
+
+US06CX             Head circumference measured?
+
+                   missing                                     16,844     31.49
+                   1.Yes                                       35,419     66.22
+                   3.Other reason not measured                     14      0.03
+                   5.Too old                                        2      0.00
+                   6.Moved/can't be contacted                       1      0.00
+                   7.Refused                                       41      0.08
+                   9.Missing                                    1,167      2.18
+                   total                                       53,488    100.00
+
+US06C              Head circumference (cm)
+
+                   min:                                          0.00
+                   mean:                                        52.14
+                   max:                                         99.90
+                   #obs                                        35,422
+                   #miss:                                      18,066
+
+US06X              Weight measured?
+
+                   missing                                     16,842     31.49
+                   1.Yes                                       36,207     67.69
+                   3.Other reason not measured                     80      0.15
+                   5.Too old                                        3      0.01
+                   6.Moved/can't be contacted                       8      0.01
+                   7.Refused                                       29      0.05
+                   8.Equipment problem                            309      0.58
+                   9.Missing                                       10      0.02
+                   total                                       53,488    100.00
+
+US10X              Knows time sitting to standing
+
+                   missing                                     16,845     31.49
+                   1.Measured                                  24,676     46.13
+                   3.Other resaon not measured                    320      0.60
+                   5.Too old                                       92      0.17
+                   6.<15 years old                             11,317     21.16
+                   7.Refused                                      139      0.26
+                   8.Equipment problem                              1      0.00
+                   9.Missing                                        8      0.01
+                   11.Pregnant                                     89      0.17
+                   12.resp. not available                           1      0.00
+                   total                                       53,488    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 28
+book:    BUS  - Health Measurements                                   
+module:  BUS2_1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+US10               Time sitting to standing 5 times
+
+                   min:                                          1.50
+                   mean:                                         7.25
+                   max:                                         99.90
+                   #obs                                        24,679
+                   #miss:                                      28,809
+
+US11               Times respondent stood up after sitting
+
+                   min:                                          0.00
+                   mean:                                         4.91
+                   max:                                          9.00
+                   #obs                                        25,178
+                   #miss:                                      28,310
+
+US12               Reason for standing up less than 5 times
+
+
+US14               IVW NOTE: RESP HEALTH COMP TO OTH PERSON
+
+                   min:                                          1.00
+                   mean:                                         6.10
+                   max:                                          9.00
+                   #obs                                        36,642
+                   #miss:                                      16,846
+
+US16HR             Currrent time: Hours
+
+                   min:                                          0.00
+                   mean:                                        15.60
+                   max:                                         23.00
+                   #obs                                        36,642
+                   #miss:                                      16,846
+
+US16MIN            Current time: Minute
+
+                   min:                                          0.00
+                   mean:                                        28.86
+                   max:                                         99.00
+                   #obs                                        36,642
+                   #miss:                                      16,846
+
+US17BDYA           day of measurement - non-height/weight
+
+                   min:                                          1.00
+                   mean:                                        15.78
+                   max:                                         99.00
+                   #obs                                        36,642
+                   #miss:                                      16,846
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 29
+book:    BUS  - Health Measurements                                   
+module:  BUS2_1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+US17BDYB           day of measurement - height/weight
+
+                   min:                                          1.00
+                   mean:                                        15.86
+                   max:                                         99.00
+                   #obs                                        36,912
+                   #miss:                                      16,576
+
+US17BMTA           month of measurement - non-height/weight
+
+                   min:                                          1.00
+                   mean:                                         8.83
+                   max:                                         99.00
+                   #obs                                        36,642
+                   #miss:                                      16,846
+
+US17BMTB           month of measurement - height/weight
+
+                   min:                                          1.00
+                   mean:                                         8.88
+                   max:                                         99.00
+                   #obs                                        36,912
+                   #miss:                                      16,576
+
+US17BYRA           year of measurement - non-height/weight
+
+                   min:                                       2000.00
+                   mean:                                      2000.00
+                   max:                                       2000.00
+                   #obs                                        53,488
+                   #miss:                                           0
+
+US17BYRB           year of measurement - height/weight
+
+                   min:                                       2000.00
+                   mean:                                      2000.00
+                   max:                                       2000.00
+                   #obs                                        53,488
+                   #miss:                                           0
+
+US18AA             Uses medicine for anemia
+
+                   missing                                     16,846     31.49
+                   1.Yes                                          359      0.67
+                   3.No                                        36,273     67.82
+                   9.Missing                                       10      0.02
+                   total                                       53,488    100.00
+
+US18AB             Uses medicine for hypertention
+
+                   missing                                     16,846     31.49
+                   1.Yes                                          119      0.22
+                   3.No                                        36,513     68.26
+                   9.Missing                                       10      0.02
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 30
+book:    BUS  - Health Measurements                                   
+module:  BUS2_1               
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+                   total                                       53,488    100.00
+
+US18AC             Uses medicine for Diabetes
+
+                   missing                                     16,846     31.49
+                   1.Yes                                           43      0.08
+                   3.No                                        36,588     68.40
+                   9.Missing                                       11      0.02
+                   total                                       53,488    100.00
+
+VERSION            IFLS3 version

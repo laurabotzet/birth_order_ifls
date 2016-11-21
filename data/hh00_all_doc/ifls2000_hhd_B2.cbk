@@ -1,0 +1,2832 @@
+
+     ===================================================================
+
+         IIII     FFFFFFF     LLL          SSSSSS           3333333333  
+          II       FF   F     LL          SS    SS                 333  
+          II       FF         LL          SS     S                 33   
+          II       FF         LL          SSS                     33    
+          II       FFFFF      LL           SSSSS                333     
+          II       FF         LL            SSSSS                 33    
+          II       FF         LL               SSS                 33   
+          II       FF         LL          S     SS                  33  
+          II       FF         LL     L    SS    SS          33      33  
+         IIII     FFFF        LLLLLLLL     SSSSSS            33333333   
+
+     ===================================================================
+
+
+
+     I N D O N E S I A N    F A M I L Y    L I F E    S U R V E Y    3  
+
+       A survey of individuals, households, families, communities       
+          and facilities conducted in 13 provinces in Indonesia         
+                   between August 2000 and February 2001                
+
+     ===================================================================
+
+                               Directed by                              
+
+                 John Strauss, RAND and Michigan State Univ.            
+
+                  Kathleen Beegle,  RAND and The World Bank             
+
+                            Bondan Sikoki, RAND                         
+
+                                  and                                   
+
+              Agus Dwiyanto, Center for Population and Policy Studies,  
+                          Univ. of Gadjah Mada                          
+
+     ===================================================================
+
+     Financial support for the Indonesian Family Life Surveys has been  
+     provided by the National Institute of Aging grant number 1R01      
+     AG17637 and the National Institute of Child and Human Development, 
+     grant number 1R01 HD38484                                          
+
+     ===================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+              Website: http://www.rand.org/FLS/IFLS                     
+          Send all questions to ifls-supp@rand.org                      
+
+                       Copyright (2004)                                 
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                               page 2  
+
+
+
+
+
+
+
+================================================================================
+
+          H   H   OOO    U   U    SS    EEEE   H   H   OOO   L     DDDD         
+          H   H  O   O   U   U   S  S   E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U   S      E      H   H  O   O  L     D   D        
+          HHHHH  O   O   U   U    S     EEEE   HHHHH  O   O  L     D   D        
+          H   H  O   O   U   U     S    E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U      S   E      H   H  O   O  L     D   D        
+          H   H  O   O   U   U   S  S   E      H   H  O   O  L     D   D        
+          H   H   OOO     UUU     SS    EEEE   H   H   OOO   LLLL  DDDD         
+
+
+                    SS    U   U   RRR    V    V    EEEE   Y    Y                
+                   S  S   U   U   R  R   V    V    E      Y    Y                
+                   S      U   U   R  R   V    V    E       Y  Y                 
+                    S     U   U   RRR    V    V    EEE       Y                  
+                     S    U   U   R R     V  V     E         Y                  
+                      S   U   U   R  R    V  V     E         Y                  
+                   S  S   U   U   R  R     V       E         Y                  
+                    SS     UUU    R  R     V       EEEE      Y                  
+
+
+            CCC    OOO    DDDD    EEEE   BBBB     OOO     OOO    K   K          
+           C   C  O   O   D   D   E      B   B   O   O   O   O   K  K           
+           C      O   O   D   D   E      B   B   O   O   O   O   K K            
+           C      O   O   D   D   EEE    BBBB    O   O   O   O   KK             
+           C      O   O   D   D   E      B   B   O   O   O   O   KK             
+           C      O   O   D   D   E      B   B   O   O   O   O   K K            
+           C   C  O   O   D   D   E      B   B   O   O   O   O   K  K           
+            CCC    OOO    DDDD    EEEE   BBBB     OOO     OOO    K   K          
+
+================================================================================
+
+ B O O K :       2                                            
+ T O P I C :     HOUSEHOLD ENTERPRISES AND WEALTH                                           
+
+================================================================================
+
+
+
+
+
+
+
+
+
+
+
+                               Prepared by                                      
+                Roald Euller, John Strauss, Firman Witolar                      
+                     Created on 09NOV2005 at 11:22                           
+
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 3
+--------------------------------------------------------------------------------
+ B O O K :       2
+ T O P I C :     Household Enterprises and Wealth
+
+--------------------------------------------------------------------------------
+
+DATA FILES                                                                    
+----------                                                                    
+  Data are available in SAS (8.2) export and STATA (7.0) formats.             
+  Data and electronic documentation are available on the IFLS website.        
+
+  The survey instrument contains multiple sections.  Where possible, sections 
+  have been merged together to form a single data module.  The modules are    
+  organized by level of observation.  The module names are listed below.  They
+  serve as the names of the SAS and STATA data files. The codebook is also    
+  organised by module.                                                        
+
+  The modules are:                                                            
+
+   --------------------------------------------------------------------------
+                                                             # of
+      Module    Description                                  recs
+   --------------------------------------------------------------------------
+      B2_COV    Bk 2 Cover (HH Bus, wealth)                 10292
+      B2_GE     Bk 2 HH econ hardships                      82152
+      B2_HI     Bk 2 HH Non labor income                    51337
+      B2_HR1    Bk 2 HH Assets (1)-grid                    102576
+      B2_HR2    Bk 2 HH Assets (2)-debts                    30807
+      B2_KR     Bk 2 Housing characs                        10269
+      B2_NT1    Bk 2 Non farm business (1)-income           10269
+      B2_NT2    Bk 2 Non farm business (2)-assets            5461
+      B2_UT1    Bk 2 Farm business (1)-income               10269
+      B2_UT2    Bk 2 Farm business (2)-assets               43651
+
+USER SUPPORT                                                                   
+------------                                                                   
+    These data should be used in conjunction with the Questionnaires and Users'
+    Manuals.  Check the IFLS web page for updates and answers to frequently    
+    asked questions.  Please send all questions to ifls-supp@rand.org.         
+
+USAGE NOTES                                                                    
+-----------                                                                    
+  READING THE DICTIONARY                                                       
+    For each variable in the dataset, the dictionary provides                  
+       Variable name : Typically the question number                           
+               Label : Describes variable                                      
+    Variable coding is described as follows:                                   
+               Value : Meaning of values for coded variables                   
+           Frequency : Frequency of each value                                 
+
+SPECIAL CODES                                                                  
+-------------                                                                  
+  The following values are reserved and have a special meaning:                
+      Numeric    Alphanumeric    Meaning                                       
+     5/95/995         V          Top coded/out of range                        
+     6/96/996         W          Not applicable                                
+     7/97/997         X          Refused to answer                             
+     8/98/998         Y          Don't know                                    
+     9/99/999         Z          Missing                                       
+
+INDONESIAN FAMILY LIFE SURVEY 3: CODEBOOK                                       
+--------------------------------------------------------------------------------
+ H O U S E H O L D    S U R V E Y    C O D E B O O K                 page 4
+--------------------------------------------------------------------------------
+ B O O K :       2
+ T O P I C :     Household Enterprises and Wealth
+
+--------------------------------------------------------------------------------
+
+DATASET VERSION                                                                
+---------------                                                                
+  The variable VERSION identifies the release version of these data; it         
+  will be updated with each revision of the data and can be used to confirm     
+  that you are using the most recent version of the data.                       
+
+NOTES ABOUT BOOK 2                                                       
+ ------------------                                                      
+
+  BOOK 2 contains information on household enterprises, household          
+  assets and debts, economic shocks and plans for moving in the            
+  future.  The book is usually completed by the household head.            
+
+  In IFLS3, HHID00 is a seven digit character variable whose digits carry       
+  the following meaning:                                                        
+
+                  x  x  x           x  x                    x  x                
+                  -------    ------------------        ---------------          
+                    EA       specific household        origin/split-off         
+
+  In the last two digits, 00 designates an origin household.  For a split-off   
+  household, the 6th digit is either 1, 2 or 3 depending on which wave the      
+  split-off first appeared.  Split-offs from IFLS2 have their sixth digit equal 
+  to 1, while split-off households first appearing in IFLS2+ have a 2 and new   
+  split-offs in 2000 have a 3.  The 7th digit indicates whether it is the first,
+  second, or other split-off (some multiple split-offs occurred).               
+
+  Note that the enumeration area identifier used to define a               
+  household contains no information about the current whereabouts          
+  of the household unless it has not moved.  The location of the           
+  household is recorded in BK_SC.                                          
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 5
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_COV              Bk 2 Cover (HH Bus, wealth)
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID00             2000 Household ID
+
+
+PID00              PID # of respondent #1
+
+
+PIDLINK            Tracking ID
+
+
+RSPNDNT            Respondent
+
+                   1.Head of household                          7,853     76.30
+                   2.Spouse of head                             1,589     15.44
+                   3.Other HH member                              844      8.20
+                   4.Other not known                                6      0.06
+                   total                                       10,292    100.00
+
+LANGMAIN           Interview in what language?
+
+                   0.Indonesian                                 5,956     57.87
+                   1.Javanese                                   1,902     18.48
+                   2.Sundanese                                    698      6.78
+                   3.Balinese                                     147      1.43
+                   4.Batak                                         41      0.40
+                   5.Bugis                                         75      0.73
+                   6.Chinese                                        1      0.01
+                   7.Maduranese                                   130      1.26
+                   8.Sasak                                        322      3.13
+                   9.Minang                                       393      3.82
+                   10.Banjar                                      372      3.61
+                   11.Bima                                         19      0.18
+                   12.Makasar                                      14      0.14
+                   13.Nias                                         21      0.20
+                   14.Palembang                                   171      1.66
+                   16.Toraja                                        9      0.09
+                   17.Lahat                                        21      0.20
+                   total                                       10,292    100.00
+
+LANGOTHR           Other language used if any
+
+                   0.Indonesian                                 1,184     11.50
+                   1.Javanese                                     775      7.53
+                   2.Sundanese                                    174      1.69
+                   3.Balinese                                      77      0.75
+                   4.Batak                                         24      0.23
+                   5.Bugis                                         38      0.37
+                   6.Chinese                                        8      0.08
+                   7.Maduranese                                    42      0.41
+                   8.Sasak                                         38      0.37
+                   9.Minang                                        33      0.32
+                   10.Banjar                                       44      0.43
+                   11.Bima                                          3      0.03
+                   12.Makasar                                       6      0.06
+                   14.Palembang                                    30      0.29
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 6
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_COV              Bk 2 Cover (HH Bus, wealth)
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(LANGOTHR  continued)
+
+                   15.Sumbawa                                       1      0.01
+                   16.Toraja                                       14      0.14
+                   17.Lahat                                         4      0.04
+                   18.Other South Sumatra                          31      0.30
+                   19.Betawi                                        6      0.06
+                   96.No other                                  7,758     75.38
+                   99.Missing                                       2      0.02
+                   total                                       10,292    100.00
+
+BEGHR1             Time interview began (hour) :1
+
+                   min:                                          0.00
+                   mean:                                        14.14
+                   max:                                         23.00
+                   #obs                                        10,292
+                   #miss:                                           0
+
+BEGHR2             Time interview began (hour) :2
+
+                   min:                                          7.00
+                   mean:                                        13.90
+                   max:                                         21.00
+                   #obs                                            52
+                   #miss:                                      10,240
+
+BEGHR3             Time interview began (hour) :3
+
+                   min:                                          9.00
+                   mean:                                        14.82
+                   max:                                         22.00
+                   #obs                                            11
+                   #miss:                                      10,281
+
+BEGMIN1            Time interview began (minute)  :1
+
+                   min:                                          0.00
+                   mean:                                        26.43
+                   max:                                         59.00
+                   #obs                                        10,292
+                   #miss:                                           0
+
+BEGMIN2            Time interview began (minute)  :2
+
+                   min:                                          0.00
+                   mean:                                        20.54
+                   max:                                         50.00
+                   #obs                                            52
+                   #miss:                                      10,240
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 7
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_COV              Bk 2 Cover (HH Bus, wealth)
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+BEGMIN3            Time interview began (minute)  :3
+
+                   min:                                          0.00
+                   mean:                                        13.18
+                   max:                                         35.00
+                   #obs                                            11
+                   #miss:                                      10,281
+
+CP1                Who else was present at interview?
+
+                   Variable CP1 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, CP1 will have the value ACF.  If the       
+                   interviewee selected D and E, CP1 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+                   key for variable CP1 :         A.No one                                
+                                                  B.Children 5 or under                   
+                                                  C.Children older than 5                 
+                                                  D.Husband/wife                          
+                                                  E.An Adult, Other HH members            
+                                                  F.An Adult,non-HH members               
+
+
+
+CP2                Evaluation of accuracy of R's answers
+
+                   missing                                         23      0.22
+                   1.Excellent                                    522      5.07
+                   2.Good                                       7,007     68.08
+                   3.Fair                                       2,650     25.75
+                   4.Not so good                                   88      0.86
+                   5.Very bad                                       2      0.02
+                   total                                       10,292    100.00
+
+CP3                How serious and attentive was R?
+
+                   missing                                         23      0.22
+                   1.Excellent                                    739      7.18
+                   2.Good                                       7,202     69.98
+                   3.Fair                                       2,275     22.10
+                   4.Not so good                                   49      0.48
+                   5.Very bad                                       4      0.04
+                   total                                       10,292    100.00
+
+EDITOR             Editor
+
+
+EDIT_CK            Review by editor
+
+                   1.Data entered, no corrections necessary     6,285     61.07
+                   2.Data entered and corrected                 4,007     38.93
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 8
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_COV              Bk 2 Cover (HH Bus, wealth)
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+                   total                                       10,292    100.00
+
+ENDHR1             Time interview ended (hour) :1
+
+                   min:                                          0.00
+                   mean:                                        14.49
+                   max:                                         23.00
+                   #obs                                        10,292
+                   #miss:                                           0
+
+ENDHR2             Time interview ended (hour) :2
+
+                   min:                                          7.00
+                   mean:                                        14.06
+                   max:                                         21.00
+                   #obs                                            52
+                   #miss:                                      10,240
+
+ENDHR3             Time interview ended (hour) :3
+
+                   min:                                          9.00
+                   mean:                                        14.82
+                   max:                                         22.00
+                   #obs                                            11
+                   #miss:                                      10,281
+
+ENDMIN1            Time interview ended (minute)  :1
+
+                   min:                                          0.00
+                   mean:                                        28.07
+                   max:                                         59.00
+                   #obs                                        10,292
+                   #miss:                                           0
+
+ENDMIN2            Time interview ended (minute)  :2
+
+                   min:                                          0.00
+                   mean:                                        26.44
+                   max:                                         57.00
+                   #obs                                            52
+                   #miss:                                      10,240
+
+ENDMIN3            Time interview ended (minute)  :3
+
+                   min:                                         10.00
+                   mean:                                        25.00
+                   max:                                         55.00
+                   #obs                                            11
+                   #miss:                                      10,281
+
+IDIVWR             Interviewer
+
+
+IDKEYPUN           Keypuncher code id
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 9
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_COV              Bk 2 Cover (HH Bus, wealth)
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+
+
+IDVERIF            Verification code
+
+
+IVWDAY1            Date of intrvw (day of month)  :1
+
+                   min:                                          1.00
+                   mean:                                        15.65
+                   max:                                         31.00
+                   #obs                                        10,292
+                   #miss:                                           0
+
+IVWDAY2            Date of intrvw (day of month)  :2
+
+                   min:                                          1.00
+                   mean:                                        17.17
+                   max:                                         31.00
+                   #obs                                            52
+                   #miss:                                      10,240
+
+IVWDAY3            Date of intrvw (day of month)  :3
+
+                   min:                                          1.00
+                   mean:                                        13.09
+                   max:                                         30.00
+                   #obs                                            11
+                   #miss:                                      10,281
+
+IVWMTH1            Date of interview (month) :1
+
+                   min:                                          1.00
+                   mean:                                         8.93
+                   max:                                         12.00
+                   #obs                                        10,292
+                   #miss:                                           0
+
+IVWMTH2            Date of interview (month) :2
+
+                   min:                                          7.00
+                   mean:                                         9.13
+                   max:                                         12.00
+                   #obs                                            52
+                   #miss:                                      10,240
+
+IVWMTH3            Date of interview (month) :3
+
+                   min:                                          7.00
+                   mean:                                         9.45
+                   max:                                         11.00
+                   #obs                                            11
+                   #miss:                                      10,281
+
+MODULE             survey module
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 10
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_COV              Bk 2 Cover (HH Bus, wealth)
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+
+
+NUMVIS             Number of visits
+
+                   min:                                          1.00
+                   mean:                                         1.01
+                   max:                                          3.00
+                   #obs                                        10,292
+                   #miss:                                           0
+
+REASON             Reason for book 2 result
+
+                   missing                                     10,265     99.74
+                   1.Resp. not at home                              6      0.06
+                   3.Resp. refused                                 19      0.18
+                   5.Other                                          1      0.01
+                   9.Missing                                        1      0.01
+                   total                                       10,292    100.00
+
+RESULT             Result of interview: book 2
+
+                   1.Completed                                 10,267     99.76
+                   2.Partially completed                            2      0.02
+                   3.Not completed                                 23      0.22
+                   total                                       10,292    100.00
+
+SUP_EDIT           Edited by local supervisor
+
+                   1.Yes                                          833      8.09
+                   3.No                                         9,459     91.91
+                   total                                       10,292    100.00
+
+SUP_OBS            Observed by local supervisor
+
+                   1.Yes                                          651      6.33
+                   3.No                                         9,641     93.67
+                   total                                       10,292    100.00
+
+VERSION            IFLS3 version
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 11
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_GE               Bk 2 HH econ hardships
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID00             2000 Household ID
+
+
+GE01               Has HH suffered hardship last 12 mths
+
+                   1.Yes                                        4,048      4.93
+                   3.No                                        78,096     95.06
+                   9.Missing                                        8      0.01
+                   total                                       82,152    100.00
+
+GE02MTHX           Know mnth hardship started?
+
+                   missing                                     78,104     95.07
+                   1.Given                                      2,929      3.57
+                   8.Don't Know                                    17      0.02
+                   9.Missing                                    1,102      1.34
+                   total                                       82,152    100.00
+
+GE02MTH            Month hardship started
+
+                   missing                                     79,223     96.43
+                   1.January                                      220      0.27
+                   2.February                                     210      0.26
+                   3.March                                        230      0.28
+                   4.April                                        258      0.31
+                   5.May                                          316      0.38
+                   6.June                                         308      0.37
+                   7.July                                         317      0.39
+                   8.August                                       346      0.42
+                   9.September                                    223      0.27
+                   10.October                                     167      0.20
+                   11.November                                    141      0.17
+                   12.December                                    193      0.23
+                   total                                       82,152    100.00
+
+GE02YRX            Knows year of hardship
+
+                   missing                                     78,121     95.09
+                   1.yes                                        4,031      4.91
+                   total                                       82,152    100.00
+
+GE02YR             Year hardship started
+
+                   min:                                       1994.00
+                   mean:                                      1998.49
+                   max:                                       2000.00
+                   #obs                                         4,031
+                   #miss:                                      78,121
+
+GE03               Steps taken to respond to difficulties
+
+                   Variable GE03 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 12
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_GE               Bk 2 HH econ hardships
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, GE03 will have the value ACF.  If the       
+                   interviewee selected D and E, GE03 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+                   key for variable GE03 :        A.Eat less food                         
+                                                  B.Buy less food                         
+                                                  C.Take child out of school              
+                                                  D.Reduce current spending               
+                                                  E.Delay plans to spend money            
+                                                  F.Save less money                       
+                                                  G.Use savings                           
+                                                  H.Sell possessions                      
+                                                  I.Borrow money                          
+                                                  J.Move within village                   
+                                                  K.Move to new village                   
+                                                  L.Receive assistance from friends/family
+                                                  M.Receive assistance from government    
+                                                  N.Receive assistance from other group   
+                                                  O.Close/reduce busines activities       
+                                                  P.Changed business                      
+                                                  Q.Changed job/Quit job                  
+                                                  R.Take a border into the household      
+                                                  S.Start working for pay                 
+                                                  T.Increase working hours                
+                                                  U.Take an additional job                
+                                                  V.Expand business activities            
+                                                  W.Start a business                      
+                                                  X.Pray                                  
+                                                  Y.Other                                 
+                                                  Z.Nothing                               
+
+
+
+GE04AX             How much average cost for that (...)?
+
+                   missing                                     78,104     95.07
+                   1.yes                                        3,655      4.45
+                   5.out of range                                   1      0.00
+                   6.inapplicable                                   1      0.00
+                   7.refused                                        2      0.00
+                   9.missing                                      389      0.47
+                   total                                       82,152    100.00
+
+GE04A              Average cost for every evidence
+
+                   min:                                          0.00
+                   mean:                                   2596013.55
+                   max:                                    1000000000
+                   #obs                                         3,656
+                   #miss:                                      78,496
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 13
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_GE               Bk 2 HH econ hardships
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+GE05X              Approximate cost for treatement/death
+
+                   missing                                     80,265     97.70
+                   1.Cost given                                 1,754      2.14
+                   6.inapplicable                                   3      0.00
+                   7.refused                                        1      0.00
+                   8.Don't know                                     1      0.00
+                   9.Missing                                      128      0.16
+                   total                                       82,152    100.00
+
+GE05               Approximate cost
+
+                   min:                                          0.00
+                   mean:                                   2350323.21
+                   max:                                     200000000
+                   #obs                                         1,755
+                   #miss:                                      80,397
+
+GETYPE             Type of economic hardship
+
+                   A.Death of a householder or other family    10,269     12.50
+                   B.Sickness of householder or other famil    10,269     12.50
+                   C.Crop loss because of........., specify    10,269     12.50
+                   D.Loss due to earthquake, fire, etc.        10,269     12.50
+                   E.A householder loss of job or business     10,269     12.50
+                   F.Less of income due to low production o    10,269     12.50
+                   G1.Other,specify                            10,269     12.50
+                   G2                                          10,269     12.50
+                   total                                       82,152    100.00
+
+MODULE             survey module
+
+
+VERSION            IFLS3 version
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 14
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_HI               Bk 2 HH Non labor income
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID00             2000 Household ID
+
+
+HI14X              Know HH last year's inc item?
+
+                   1.Given                                      2,350      4.58
+                   8.Don't Know                                     7      0.01
+                   9.Missing                                   48,980     95.41
+                   total                                       51,337    100.00
+
+HI14               Tot HH income from this item last year
+
+                   min:                                          0.00
+                   mean:                                   2078635.66
+                   max:                                     120000000
+                   #obs                                         2,350
+                   #miss:                                      48,987
+
+HITYPE             Type of Income
+
+                   A.Retirement                                10,269     20.00
+                   B.Scholarship                               10,269     20.00
+                   C.Insurance money                           10,269     20.00
+                   D1.Winings/lottery                          10,269     20.00
+                   D2.Winings/lottery                           1,039      2.02
+                   E1.Other                                     9,042     17.61
+                   E2.Transfer                                     69      0.13
+                   E3.Earnings                                     30      0.06
+                   E4.Bonus                                        81      0.16
+                   total                                       51,337    100.00
+
+MODULE             survey module
+
+
+VERSION            IFLS3 version
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 15
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_HR1              Bk 2 HH Assets (1)-grid
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID00             2000 Household ID
+
+
+HR01               Do any HHM own non-business assets?
+
+                   1.Yes                                       47,367     46.18
+                   3.No                                        55,188     53.80
+                   9.Missing                                       21      0.02
+                   total                                      102,576    100.00
+
+HR02X              knows tot value of non-business asst?
+
+                   missing                                     55,209     53.82
+                   1.Enter amount                              45,763     44.61
+                   5.Out of range                                  20      0.02
+                   8.Don't know                                     1      0.00
+                   9.Missing                                    1,583      1.54
+                   total                                      102,576    100.00
+
+HR02               Tot value of non-bus asset
+
+                   min:                                          0.00
+                   mean:                                   8500777.75
+                   max:                                     965000000
+                   #obs                                        45,763
+                   #miss:                                      56,813
+
+HR05X              knows tot inc from rent of [...] lst yr
+
+                   missing                                     71,220     69.43
+                   1.Given                                      1,110      1.08
+                   9.Missing                                   30,246     29.49
+                   total                                      102,576    100.00
+
+HR05               Total income from the rent of [...] in
+
+                   min:                                          0.00
+                   mean:                                   1541519.86
+                   max:                                     300000000
+                   #obs                                         1,110
+                   #miss:                                     101,466
+
+HR06               Are all assets owned by HH?
+
+                   missing                                     55,209     53.82
+                   1.Yes                                       46,491     45.32
+                   3.No                                           875      0.85
+                   9.Missing                                        1      0.00
+                   total                                      102,576    100.00
+
+HR07X              knows % share of non-bus assets owned
+
+                   missing                                    101,711     99.16
+                   1.yes                                          865      0.84
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 16
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_HR1              Bk 2 HH Assets (1)-grid
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(HR07X  continued)
+
+                   total                                      102,576    100.00
+
+HR07               What % of non-bus. assets owned by HH?
+
+                   min:                                          1.00
+                   mean:                                        46.36
+                   max:                                         90.00
+                   #obs                                           865
+                   #miss:                                     101,711
+
+HR08               Who outside hh owns % non-bus. assets?
+
+                   Variable HR08 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, HR08 will have the value ACF.  If the       
+                   interviewee selected D and E, HR08 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+                   key for variable HR08 :        B.Spouse                                
+                                                  C.Child                                 
+                                                  D.Parent                                
+                                                  E.Parent-in-law                         
+                                                  F.Sibling                               
+                                                  G.Sibling-in-law                        
+                                                  H.Others                                
+                                                  I.Grandkid                              
+                                                  J.Grandparent                           
+                                                  K.Uncle/aunt                            
+                                                  L.Nephew/niece                          
+                                                  M.Cousin                                
+                                                  N.Other family                          
+                                                  P.Non Family                            
+                                                  Q.Step/adopted kid                      
+                                                  R.Family of spouse                      
+                                                  U.Ex spouse                             
+
+
+
+HR10               Which HHM owns non-business assets?
+
+                   Variable HR10 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, HR10 will have the value ACF.  If the       
+                   interviewee selected D and E, HR10 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+                   key for variable HR10 :        A.Respondent                            
+                                                  B.Spouse                                
+                                                  C.Child                                 
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 17
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_HR1              Bk 2 HH Assets (1)-grid
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+                                                  D.Parent                                
+                                                  E.Parent-in-law                         
+                                                  F.Sibling                               
+                                                  G.Sibling-in-law                        
+                                                  H.Others                                
+                                                  I.Grandkid                              
+                                                  J.Grandparent                           
+                                                  K.Uncle/aunt                            
+                                                  L.Nephew/niece                          
+                                                  M.Cousin                                
+                                                  N.Other family                          
+                                                  P.Non Family                            
+                                                  Q.Step/adopted kid                      
+                                                  R.Family of spouse                      
+                                                  U.Ex spouse                             
+
+
+
+HR11               Tot # HHM who own non-business assets
+
+                   missing                                     55,211     53.82
+                   1                                           21,024     20.50
+                   2                                           21,528     20.99
+                   3                                            2,223      2.17
+                   4                                            1,321      1.29
+                   5                                              659      0.64
+                   6                                              327      0.32
+                   7                                              170      0.17
+                   8                                               67      0.07
+                   9                                               24      0.02
+                   10                                              16      0.02
+                   12                                               5      0.00
+                   14                                               1      0.00
+                   total                                      102,576    100.00
+
+HR12A              % age owned by Resp
+
+                   min:                                          0.00
+                   mean:                                        46.22
+                   max:                                         92.00
+                   #obs                                        23,674
+                   #miss:                                      78,902
+
+HR12X              knows % of non-bus. asst ownd by R/sp
+
+                   missing                                     76,233     74.32
+                   1.Enter percentage                          24,529     23.91
+                   5.Out of range                                   7      0.01
+                   6.Neither A nor B                            1,605      1.56
+                   8.Don't Know                                   196      0.19
+                   9.Missing                                        6      0.01
+                   total                                      102,576    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 18
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_HR1              Bk 2 HH Assets (1)-grid
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HR12B              % age owned by R's spouse
+
+                   min:                                          0.00
+                   mean:                                        46.25
+                   max:                                         95.00
+                   #obs                                        22,374
+                   #miss:                                      80,202
+
+HRTYPE             Type of assets
+
+                   A.House occupied by this HH                 10,269     10.01
+                   B.Other house/building                      10,269     10.01
+                   C.Land outside farm land                    10,269     10.01
+                   D.Livestock/Poultry/Fish Pond                  333      0.32
+                   E.Vehicles(car,boats,bicycles,motorbikes    10,269     10.01
+                   F.HH appliances(radio,tape,TV,fridge,sew    10,269     10.01
+                   G.Savings/certificate of deposit/stocks     10,269     10.01
+                   H.Receivables                               10,269     10.01
+                   J.Jewelry                                   10,269     10.01
+                   K1.HH furniture and Utensils                10,269     10.01
+                   K2.Other assets,_______________              9,822      9.58
+                   total                                      102,576    100.00
+
+MODULE             survey module
+
+
+VERSION            IFLS3 version
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 19
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_HR2              Bk 2 HH Assets (2)-debts
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID00             2000 Household ID
+
+
+HR16X              knows value of assets bought lst yr
+
+                   1.yes                                        2,158      7.00
+                   3.no                                             2      0.01
+                   8.don't know                                     3      0.01
+                   9.missing                                   28,644     92.98
+                   total                                       30,807    100.00
+
+HR16               Value assets bought last 12 mnths
+
+                   min:                                          0.00
+                   mean:                                   3048661.48
+                   max:                                     220000000
+                   #obs                                         2,160
+                   #miss:                                      28,647
+
+HR17X              knows value of assets sold last year
+
+                   1.yes                                        1,021      3.31
+                   9.missing                                   29,786     96.69
+                   total                                       30,807    100.00
+
+HR17               Value assets sold last 12 mnths
+
+                   min:                                          0.00
+                   mean:                                   2518053.97
+                   max:                                     220000000
+                   #obs                                         1,021
+                   #miss:                                      29,786
+
+HR2TYPE            Type of HH assets
+
+                   A.House occupied by this Household          10,269     33.33
+                   J.Jewelry                                   10,269     33.33
+                   L.Other assets outside those for farm or    10,269     33.33
+                   total                                       30,807    100.00
+
+MODULE             survey module
+
+
+VERSION            IFLS3 version
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 20
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_KR               Bk 2 Housing characs
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID00             2000 Household ID
+
+
+KR03               What is the status your house?
+
+                   1.Self owned                                 7,633     74.33
+                   2.Occupying                                  1,510     14.70
+                   5.Rented/contracted                          1,122     10.93
+                   6.Other                                          4      0.04
+                   total                                       10,269    100.00
+
+KR04X              Know mnthly rent?
+
+                   missing                                      9,127     88.88
+                   1.Given                                      1,131     11.01
+                   8.Dont' Know                                     1      0.01
+                   9.Missing                                       10      0.10
+                   total                                       10,269    100.00
+
+KR04               Monthly rent
+
+                   min:                                          0.00
+                   mean:                                     98458.70
+                   max:                                    4800000.00
+                   #obs                                         1,132
+                   #miss:                                       9,137
+
+KR05X              Know how much house would rent for?
+
+                   missing                                      1,142     11.12
+                   1.Given                                      8,466     82.44
+                   9.Missing                                      661      6.44
+                   total                                       10,269    100.00
+
+KR05               Rent would pay per mnth
+
+                   min:                                          0.00
+                   mean:                                    151282.94
+                   max:                                    50000000.0
+                   #obs                                         8,467
+                   #miss:                                       1,802
+
+KR11               Does house use electricity?
+
+                   1.Yes                                        9,280     90.37
+                   3.No                                           989      9.63
+                   total                                       10,269    100.00
+
+KR13               What is main water source for drinking
+
+                   1.Pipe water                                 2,746     26.74
+                   2.Well water w/pump                          2,954     28.77
+                   3.Well water (no pump)                       3,148     30.66
+                   4.Spring water                                 626      6.10
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 21
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_KR               Bk 2 Housing characs
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(KR13  continued)
+
+                   5.Rain water                                    57      0.56
+                   6.River or creek water                         294      2.86
+                   7.Pond, fish pond                               10      0.10
+                   8.Watr collction basin                         109      1.06
+                   9.Other, specify                                31      0.30
+                   10.Aqua/Air mineral                            294      2.86
+                   total                                       10,269    100.00
+
+KR13A              Is water boiled before drinking?
+
+                   missing                                        293      2.85
+                   1.Yes                                        9,394     91.48
+                   3.No                                           582      5.67
+                   total                                       10,269    100.00
+
+KR13B              Do you purchase water?
+
+                   1.Yes, delivered                               864      8.41
+                   2.Yes, self-service                            656      6.39
+                   3.No                                         8,749     85.20
+                   total                                       10,269    100.00
+
+KR14               Where is water source located?
+
+                   missing                                        864      8.41
+                   1.Inside the house                           4,148     40.39
+                   3.Outside the house                          5,257     51.19
+                   total                                       10,269    100.00
+
+KR15               Dist. from house to main water source?
+
+                   min:                                          0.00
+                   mean:                                         7.49
+                   max:                                      11500.00
+                   #obs                                         2,796
+                   #miss:                                       7,473
+
+KR16               Same water source for bath/laundry?
+
+                   1.Yes                                        8,109     78.97
+                   3.No                                         2,160     21.03
+                   total                                       10,269    100.00
+
+KR17               What is main source bath/laundry
+
+                   missing                                      8,109     78.97
+                   1.Pipe water                                   147      1.43
+                   2.Well water w/pump                            566      5.51
+                   3.Well water (no pump)                         541      5.27
+                   4.Spring water                                  80      0.78
+                   5.Rain water                                    13      0.13
+                   6.River or creek water                         689      6.71
+                   7.Pond, fish pond                               93      0.91
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 22
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_KR               Bk 2 Housing characs
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(KR17  continued)
+
+                   8.Watr collction basin                          28      0.27
+                   9.Other, specify                                 3      0.03
+                   total                                       10,269    100.00
+
+KR17B              Do you purchase the water?
+
+                   missing                                      8,109     78.97
+                   1.Yes, delivered                                51      0.50
+                   2.Yes, self-service                             81      0.79
+                   3.No                                         2,027     19.74
+                   9.Missing                                        1      0.01
+                   total                                       10,269    100.00
+
+KR18               Where is the main watr source?
+
+                   missing                                      8,160     79.46
+                   1.Inside the house                             641      6.24
+                   3.Outside the house                          1,468     14.30
+                   total                                       10,269    100.00
+
+KR19               Dist. from house to main water source
+
+                   min:                                          1.00
+                   mean:                                        98.07
+                   max:                                       5000.00
+                   #obs                                         1,468
+                   #miss:                                       8,801
+
+KR20               Where do hh members defecate?
+
+                   1.Own toilet w/septank                       4,969     48.39
+                   2.Own toilt w/o sptank                       1,678     16.34
+                   3.Communal toilet                              666      6.49
+                   4.Public toilet                                424      4.13
+                   5.Creek/river/ditch                          1,776     17.29
+                   6.Yard or field                                352      3.43
+                   7.Sewer                                         49      0.48
+                   8.Other, specify                                 6      0.06
+                   9.Pond, fishpond                               255      2.48
+                   10.Animal stable                                 4      0.04
+                   11.Sea, lake                                    90      0.88
+                   total                                       10,269    100.00
+
+KR21               To where does hh sewage drain?
+
+                   1.Drainage ditch (flowing)                   5,235     50.98
+                   2.Drainage ditch (stagnant)                    589      5.74
+                   3.Permanent pit                                872      8.49
+                   4.Disposed into river                        1,070     10.42
+                   5.Disposed of in yard                        1,716     16.71
+                   6.Underneath House                              13      0.13
+                   7.Pond, fishpond                               313      3.05
+                   8.Hole                                         320      3.12
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 23
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_KR               Bk 2 Housing characs
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(KR21  continued)
+
+                   9.Paddy field                                  101      0.98
+                   11.Into the sea                                 40      0.39
+                   total                                       10,269    100.00
+
+KR22               How does hh dispose of garbage?
+
+                   1.Disposed in trash can,collected by san     2,770     26.97
+                   2.Burned                                     4,406     42.91
+                   3.Dipose into river/creek                      843      8.21
+                   4.Disposed in yard and let decomposed        1,340     13.05
+                   5.Disposed in pit                              602      5.86
+                   6.Other, specify                                12      0.12
+                   7.Forest, montain                               64      0.62
+                   8.Sea, lake, beach                             140      1.36
+                   9.Paddy field                                   92      0.90
+                   total                                       10,269    100.00
+
+KR23               Is food stored in refrigerator?
+
+                   1.Yes                                        1,495     14.56
+                   3.No                                         1,552     15.11
+                   6.Don't have refrigerator                    7,221     70.32
+                   9.Missing                                        1      0.01
+                   total                                       10,269    100.00
+
+KR24               What kind of stove for cooking?
+
+                   1.Electricity                                   50      0.49
+                   2.Gas                                        1,280     12.46
+                   3.Kerosene stove                             5,140     50.05
+                   4.Firewood                                   3,511     34.19
+                   5.Charcoal                                      15      0.15
+                   6.Other, specify                                 9      0.09
+                   7.Don't cook                                   264      2.57
+                   total                                       10,269    100.00
+
+KR24A              Does HH have television?
+
+                   1.Yes                                        5,892     57.38
+                   3.No                                         4,374     42.59
+                   9.Missing                                        3      0.03
+                   total                                       10,269    100.00
+
+KR25               Bsides Indo, other language used in HH?
+
+                   0.Indonesian                                 1,476     14.37
+                   1.Javanese                                   3,982     38.78
+                   2.Sundanese                                  1,154     11.24
+                   3.Balinese                                     493      4.80
+                   4.Batak                                        250      2.43
+                   5.Bugis                                        403      3.92
+                   6.Chinese                                      496      4.83
+                   7.Maduranese                                   304      2.96
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 24
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_KR               Bk 2 Housing characs
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(KR25  continued)
+
+                   8.Sasak                                        301      2.93
+                   9.Minang                                        45      0.44
+                   10.Banjar                                      365      3.55
+                   11.Bima                                        327      3.18
+                   12.Makasar                                      98      0.95
+                   13.Nias                                         12      0.12
+                   14.Palembang                                    86      0.84
+                   15.Sumbawa                                      45      0.44
+                   16.Toraja                                       56      0.55
+                   17.Lahat                                        46      0.45
+                   18.Other South Sumatra                         238      2.32
+                   19.Betawi                                       67      0.65
+                   20.Lampung                                      25      0.24
+                   total                                       10,269    100.00
+
+KR26               HHs have Kartu Sehat?
+
+                   1.Yes                                        1,802     17.55
+                   3.No                                         8,467     82.45
+                   total                                       10,269    100.00
+
+KR27               HHs participate in Dana Sehat?
+
+                   1.Yes                                          778      7.58
+                   3.No                                         5,188     50.52
+                   6.No program                                 4,303     41.90
+                   total                                       10,269    100.00
+
+KR27A              HH uses 'Surat Keterangan tidak mampu'
+
+                   1.Yes                                          523      5.09
+                   3.No                                         9,629     93.77
+                   8.Don't know                                   117      1.14
+                   total                                       10,269    100.00
+
+KR29AX             Do you know mnth/yr of asst. A
+
+                   missing                                     10,009     97.47
+                   1.Yes                                          182      1.77
+                   8.Don't know                                     5      0.05
+                   9.Missing                                       73      0.71
+                   total                                       10,269    100.00
+
+KR28               HH ever got $ from community group
+
+                   1.Yes                                          260      2.53
+                   3.No                                        10,009     97.47
+                   total                                       10,269    100.00
+
+KR29BX             Do you know mnth/yr of asst. B
+
+                   missing                                     10,010     97.48
+                   1.Yes                                           18      0.18
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 25
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_KR               Bk 2 Housing characs
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(KR29BX  continued)
+
+                   3.No more insurance                            231      2.25
+                   8.Don't know                                     1      0.01
+                   9.Missing                                        9      0.09
+                   total                                       10,269    100.00
+
+KR29CX             Do you know mnth/yr of asst. C
+
+                   missing                                     10,241     99.73
+                   1.Yes                                            2      0.02
+                   3.No more insurance                             21      0.20
+                   8.Don't know                                     1      0.01
+                   9.Missing                                        4      0.04
+                   total                                       10,269    100.00
+
+KR29DX             Do you know mnth/yr of asst. D
+
+                   missing                                     10,262     99.93
+                   1.Yes                                            1      0.01
+                   3.No more insurance                              2      0.02
+                   8.Don't know                                     1      0.01
+                   9.Missing                                        3      0.03
+                   total                                       10,269    100.00
+
+KR29MTHA           Month of assistance A
+
+                   min:                                          1.00
+                   mean:                                         6.14
+                   max:                                         12.00
+                   #obs                                           182
+                   #miss:                                      10,087
+
+KR29MTHB           Month of assistance B
+
+                   min:                                          1.00
+                   mean:                                         6.22
+                   max:                                         12.00
+                   #obs                                            18
+                   #miss:                                      10,251
+
+KR29MTHC           Month of assistance C
+
+                   min:                                          1.00
+                   mean:                                         6.00
+                   max:                                         11.00
+                   #obs                                             2
+                   #miss:                                      10,267
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 26
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_KR               Bk 2 Housing characs
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+KR29MTHD           Month of assistance D
+
+                   min:                                          1.00
+                   mean:                                         1.00
+                   max:                                          1.00
+                   #obs                                             1
+                   #miss:                                      10,268
+
+KR29YRA            Year of assistance A
+
+                   min:                                       1976.00
+                   mean:                                      1998.03
+                   max:                                       2000.00
+                   #obs                                           255
+                   #miss:                                      10,014
+
+KR29YRB            Year of assistance B
+
+                   min:                                       1996.00
+                   mean:                                      1998.83
+                   max:                                       2000.00
+                   #obs                                            24
+                   #miss:                                      10,245
+
+KR29YRC            Year of assistance C
+
+                   min:                                       1998.00
+                   mean:                                      1998.67
+                   max:                                       1999.00
+                   #obs                                             3
+                   #miss:                                      10,266
+
+KR29YRD            Year of assistance D
+
+                   min:                                       1997.00
+                   mean:                                      1997.00
+                   max:                                       1997.00
+                   #obs                                             1
+                   #miss:                                      10,268
+
+KR30AX             knows yr recvd assist. most recent
+
+                   missing                                     10,264     99.95
+                   1.yes                                            5      0.05
+                   total                                       10,269    100.00
+
+KR30A              Received asst. A how many years ago?
+
+                   min:                                          0.66
+                   mean:                                         1.78
+                   max:                                          5.00
+                   #obs                                             6
+                   #miss:                                      10,263
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 27
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_KR               Bk 2 Housing characs
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+KR30BX             knows yr recvd assist. 2nd most recent
+
+                   missing                                     10,268     99.99
+                   1.yes                                            1      0.01
+                   total                                       10,269    100.00
+
+KR30B              Received asst. B how many years ago?
+
+                   min:                                          8.00
+                   mean:                                         8.00
+                   max:                                          8.00
+                   #obs                                             1
+                   #miss:                                      10,268
+
+KR30CX             knows yr recvd assist. 3rd most recent
+
+                   missing                                     10,268     99.99
+                   1.yes                                            1      0.01
+                   total                                       10,269    100.00
+
+KR30C              Received asst. C how many years ago?
+
+                   min:                                          8.00
+                   mean:                                         8.00
+                   max:                                          8.00
+                   #obs                                             1
+                   #miss:                                      10,268
+
+KR30DX             knows yr recvd assist. 4th most recent
+
+                   missing                                     10,268     99.99
+                   1.yes                                            1      0.01
+                   total                                       10,269    100.00
+
+KR30D              Received asst. D how many years ago?
+
+                   min:                                          8.00
+                   mean:                                         8.00
+                   max:                                          8.00
+                   #obs                                             1
+                   #miss:                                      10,268
+
+KR33AX             knows value of assist. most recent
+
+                   missing                                     10,009     97.47
+                   1.yes                                          257      2.50
+                   3.no                                             1      0.01
+                   8.don't know                                     2      0.02
+                   total                                       10,269    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 28
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_KR               Bk 2 Housing characs
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+KR33A              How much was assistance A
+
+                   min:                                          0.00
+                   mean:                                    961807.75
+                   max:                                     125000000
+                   #obs                                           258
+                   #miss:                                      10,011
+
+KR33BX             knows value of assist. 2nd most recent
+
+                   missing                                     10,240     99.72
+                   1.yes                                           25      0.24
+                   3.no                                             1      0.01
+                   8.don't know                                     2      0.02
+                   9.missing                                        1      0.01
+                   total                                       10,269    100.00
+
+KR33B              How much was assistance B
+
+                   min:                                          0.00
+                   mean:                                    272234.58
+                   max:                                    2000000.00
+                   #obs                                            26
+                   #miss:                                      10,243
+
+KR33CX             knows value of assist. 3rd most recent
+
+                   missing                                     10,261     99.92
+                   1.yes                                            4      0.04
+                   3.no                                             1      0.01
+                   8.don't know                                     1      0.01
+                   9.missing                                        2      0.02
+                   total                                       10,269    100.00
+
+KR33C              How much was assistance C
+
+                   min:                                          0.00
+                   mean:                                    452019.80
+                   max:                                    2000000.00
+                   #obs                                             5
+                   #miss:                                      10,264
+
+KR33DX             knows value of assist. 4th most recent
+
+                   missing                                     10,263     99.94
+                   1.yes                                            2      0.02
+                   3.no                                             1      0.01
+                   8.don't know                                     1      0.01
+                   9.missing                                        2      0.02
+                   total                                       10,269    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 29
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_KR               Bk 2 Housing characs
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+KR33D              How much was assistance D
+
+                   min:                                          0.00
+                   mean:                                     33366.33
+                   max:                                     100000.00
+                   #obs                                             3
+                   #miss:                                      10,266
+
+KR34A              What was assistance A for
+
+
+KR34B              What was assistance B for
+
+
+KR34C              What was assistance C for
+
+
+KR36AX             Did you pay back assistance A
+
+                   missing                                     10,009     97.47
+                   1.Date given                                    79      0.77
+                   2.Didnot repaid completely                      49      0.48
+                   3.Have not repaid yet                           19      0.19
+                   5.Don't have to  repaid                        110      1.07
+                   8.Don't know                                     3      0.03
+                   total                                       10,269    100.00
+
+KR34D              What was assistance D for
+
+
+KR36BX             Did you pay back assistance B
+
+                   missing                                     10,241     99.73
+                   1.Date given                                     4      0.04
+                   2.Didnot repaid completely                       5      0.05
+                   3.Have not repaid yet                            1      0.01
+                   5.Don't have to  repaid                         14      0.14
+                   8.Don't know                                     1      0.01
+                   9.Missing                                        3      0.03
+                   total                                       10,269    100.00
+
+KR36CX             Did you pay back assistance C
+
+                   missing                                     10,262     99.93
+                   1.Date given                                     2      0.02
+                   5.Don't have to  repaid                          1      0.01
+                   8.Don't know                                     1      0.01
+                   9.Missing                                        3      0.03
+                   total                                       10,269    100.00
+
+KR36DX             Did you pay back assistance D
+
+                   missing                                     10,264     99.95
+                   5.Don't have to  repaid                          1      0.01
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 30
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_KR               Bk 2 Housing characs
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(KR36DX  continued)
+
+                   8.Don't know                                     1      0.01
+                   9.Missing                                        3      0.03
+                   total                                       10,269    100.00
+
+KR36MTHA           Month when A repaid
+
+                   min:                                          1.00
+                   mean:                                         6.91
+                   max:                                         12.00
+                   #obs                                            55
+                   #miss:                                      10,214
+
+KR36MTHB           Month when B repaid
+
+                   min:                                          1.00
+                   mean:                                         2.67
+                   max:                                          4.00
+                   #obs                                             3
+                   #miss:                                      10,266
+
+KR36MTHC           Month when C repaid
+
+                   min:                                          5.00
+                   mean:                                         5.00
+                   max:                                          5.00
+                   #obs                                             1
+                   #miss:                                      10,268
+
+KR36MTHD           Month when D repaid
+
+                   min:                                           .  
+                   mean:                                          .  
+                   max:                                           .  
+                   #obs                                             0
+                   #miss:                                      10,269
+
+KR36YRA            Year when A repaid
+
+                   min:                                       1992.00
+                   mean:                                      1998.80
+                   max:                                       2001.00
+                   #obs                                            79
+                   #miss:                                      10,190
+
+KR36YRB            Year when B repaid
+
+                   min:                                       1999.00
+                   mean:                                      1999.50
+                   max:                                       2000.00
+                   #obs                                             4
+                   #miss:                                      10,265
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 31
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_KR               Bk 2 Housing characs
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+KR36YRC            Year when C repaid
+
+                   min:                                       1999.00
+                   mean:                                      1999.50
+                   max:                                       2000.00
+                   #obs                                             2
+                   #miss:                                      10,267
+
+KR36YRD            Year when D repaid
+
+                   min:                                           .  
+                   mean:                                          .  
+                   max:                                           .  
+                   #obs                                             0
+                   #miss:                                      10,269
+
+MODULE             survey module
+
+
+VERSION            IFLS3 version
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 32
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_NT1              Bk 2 Non farm business (1)-income
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID00             2000 Household ID
+
+
+MODULE             survey module
+
+
+NT01               Did any HHM work in non-farm business?
+
+                   1.Yes                                        4,401     42.86
+                   3.No                                         5,868     57.14
+                   total                                       10,269    100.00
+
+NT01A              # non-farm activities last 12 mths
+
+                   min:                                          1.00
+                   mean:                                         1.24
+                   max:                                          6.00
+                   #obs                                         4,401
+                   #miss:                                       5,868
+
+VERSION            IFLS3 version
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 33
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_NT2              Bk 2 Non farm business (2)-assets
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID00             2000 Household ID
+
+
+MODULE             survey module
+
+
+NT01B              Type of business
+
+
+NT02               Owned entirely by this HH
+
+                   1.Yes                                        5,239     95.93
+                   3.No                                           222      4.07
+                   total                                        5,461    100.00
+
+NT03X              knows % share of capital owned by hh
+
+                   missing                                      5,239     95.93
+                   1.yes                                          196      3.59
+                   3.no                                            23      0.42
+                   8.don't know                                     3      0.05
+                   total                                        5,461    100.00
+
+NT03               % share capital owned by this HH
+
+                   min:                                          0.00
+                   mean:                                        36.73
+                   max:                                         80.00
+                   #obs                                           219
+                   #miss:                                       5,242
+
+NT04               Who outside HH ownes this business
+
+                   Variable NT04 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, NT04 will have the value ACF.  If the       
+                   interviewee selected D and E, NT04 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+                   key for variable NT04 :        B.Spouse                                
+                                                  C.Child                                 
+                                                  D.Parents                               
+                                                  E.Parents in law                        
+                                                  F.Sibling                               
+                                                  G.Brother/sister in law                 
+                                                  H.Other HH-ers                          
+                                                  I.Grand child                           
+                                                  J.Grand parent                          
+                                                  K.Uncle/aunt                            
+                                                  L.Nephew/niece                          
+                                                  M.Cousin                                
+                                                  N.Other family                          
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 34
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_NT2              Bk 2 Non farm business (2)-assets
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+                                                  P.Non family                            
+                                                  Q.Step/adopted child                    
+                                                  R.Family of spouse                      
+                                                  U.Ex spouse                             
+
+
+
+NT05               Who are HHers who owned this business
+
+                   Variable NT05 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, NT05 will have the value ACF.  If the       
+                   interviewee selected D and E, NT05 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+                   key for variable NT05 :        A.Respondent                            
+                                                  B.Spouse                                
+                                                  C.Child                                 
+                                                  D.Parents                               
+                                                  E.Parents in law                        
+                                                  F.Sibling                               
+                                                  G.Brother/sister in law                 
+                                                  H.Other HH-ers                          
+                                                  I.Grand child                           
+                                                  J.Grand parent                          
+                                                  K.Uncle/aunt                            
+                                                  L.Nephew/niece                          
+                                                  M.Cousin                                
+                                                  N.Other family                          
+                                                  P.Non family                            
+                                                  Q.Step/adopted child                    
+                                                  R.Family of spouse                      
+                                                  U.Ex spouse                             
+
+
+
+NT05AA             PID primarily respon. for this bus.
+
+                   min:                                          1.00
+                   mean:                                         2.01
+                   max:                                         15.00
+                   #obs                                         5,461
+                   #miss:                                           0
+
+NT05AB             PID primarily respon. for this bus.
+
+                   min:                                          1.00
+                   mean:                                         2.39
+                   max:                                         15.00
+                   #obs                                           738
+                   #miss:                                       4,723
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 35
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_NT2              Bk 2 Non farm business (2)-assets
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+NT05B              Is/was business operated out of home?
+
+                   1.Yes, all bussines                          3,002     54.97
+                   2.Yes, part of that bussines                 1,092     20.00
+                   3.No                                         1,351     24.74
+                   9.Missing                                       16      0.29
+                   total                                        5,461    100.00
+
+NT05C              What field of work is this business?
+
+                   missing                                          2      0.04
+                   1.Agriculture,forestry,fishing,factory         139      2.55
+                   2.Sales                                         31      0.57
+                   4.Electricity,Gas and Water                     26      0.48
+                   5.Construction                                 120      2.20
+                   7.Transportation and communication             187      3.42
+                   8.Finance,insurance,real estate                120      2.20
+                   21.Restaurant, food store                    1,672     30.62
+                   22.Industrial: food                            303      5.55
+                   23.Industrial: garment                         104      1.90
+                   24.Industrial: other                           304      5.57
+                   25.Store: outside of food                    1,437     26.31
+                   31.Service: Government                           7      0.13
+                   32.Service: Teacher                             17      0.31
+                   33.Service: Proffesional staff                 151      2.77
+                   34.Service: Transportation (motorbike, t       261      4.78
+                   35.Service: Other (tailor, salon)              577     10.57
+                   95.Other,____________                            3      0.05
+                   total                                        5,461    100.00
+
+NT07X              Know val. revenue recvd last yr
+
+                   missing                                        130      2.38
+                   1.Given                                      3,644     66.73
+                   5.Out of range                                   6      0.11
+                   9.Missing                                    1,681     30.78
+                   total                                        5,461    100.00
+
+NT07               Approx. total rev. recvd last year?
+
+                   min:                                          0.00
+                   mean:                                    115806921
+                   max:                                        3.6E11
+                   #obs                                         3,649
+                   #miss:                                       1,812
+
+NT08X              Know tot exp. for business last yr
+
+                   missing                                      1,811     33.16
+                   1.Given                                      3,369     61.69
+                   5.Out of range                                   3      0.05
+                   9.Missing                                      278      5.09
+                   total                                        5,461    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 36
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_NT2              Bk 2 Non farm business (2)-assets
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+NT08               The approx. total exp. spent last year?
+
+                   min:                                          0.00
+                   mean:                                   62367226.7
+                   max:                                     1.6725E11
+                   #obs                                         3,372
+                   #miss:                                       2,089
+
+NT09X              What is approx. net profit last year?
+
+                   missing                                      3,502     64.13
+                   1.Given                                      1,665     30.49
+                   3.Given minus                                   11      0.20
+                   9.Missing                                      283      5.18
+                   total                                        5,461    100.00
+
+NT09               Approx. net profit during last year?
+
+                   min:                                          0.00
+                   mean:                                   4396778.40
+                   max:                                     384000000
+                   #obs                                         1,676
+                   #miss:                                       3,785
+
+NT10AX             Knows total market value of this land?
+
+                   1.Given                                        636     11.65
+                   5.Out of range                                   1      0.02
+                   8.Don't know                                     1      0.02
+                   9.Missing                                    4,823     88.32
+                   total                                        5,461    100.00
+
+NT10A              Total market value of this land
+
+                   min:                                          0.00
+                   mean:                                   22001936.6
+                   max:                                    1500000000
+                   #obs                                           637
+                   #miss:                                       4,824
+
+NT10BX             Knows total market value of buildings?
+
+                   1.Given                                      1,152     21.10
+                   5.Out of range                                   1      0.02
+                   8.Don't know                                     1      0.02
+                   9.Missing                                    4,307     78.87
+                   total                                        5,461    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 37
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_NT2              Bk 2 Non farm business (2)-assets
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+NT10B              Total market value of buildings?
+
+                   min:                                          0.00
+                   mean:                                   11925827.0
+                   max:                                    1000000000
+                   #obs                                         1,153
+                   #miss:                                       4,308
+
+NT10C1X            Knows total value of motor vehicles
+
+                   1.Given                                        348      6.37
+                   8.Don't know                                     1      0.02
+                   9.Missing                                    5,112     93.61
+                   total                                        5,461    100.00
+
+NT10C1             Total market value of motor vehicle
+
+                   min:                                          0.00
+                   mean:                                   32802908.0
+                   max:                                     600000000
+                   #obs                                           348
+                   #miss:                                       5,113
+
+NT10C4X            Knows market value of other vehicles?
+
+                   1.Given                                      1,036     18.97
+                   8.Don't know                                     1      0.02
+                   9.Missing                                    4,424     81.01
+                   total                                        5,461    100.00
+
+NT10C4             Total market value of other vehicles
+
+                   min:                                          0.00
+                   mean:                                   4072349.42
+                   max:                                     220000000
+                   #obs                                         1,036
+                   #miss:                                       4,425
+
+NT10HX             Knows market value other equipment
+
+                   1.Given                                      3,711     67.95
+                   5.Out of range                                   2      0.04
+                   8.Don't know                                    11      0.20
+                   9.Missing                                    1,737     31.81
+                   total                                        5,461    100.00
+
+NT10H              Tot market value of other equipment
+
+                   min:                                          0.00
+                   mean:                                   2677001.21
+                   max:                                    2500000000
+                   #obs                                         3,712
+                   #miss:                                       1,749
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 38
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_NT2              Bk 2 Non farm business (2)-assets
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+NT15MTX            Knows mnth this business started
+
+                   1.Given                                      5,355     98.06
+                   8.Don't know                                   100      1.83
+                   9.Missing                                        6      0.11
+                   total                                        5,461    100.00
+
+NT15MTH            Month this business started
+
+                   min:                                          1.00
+                   mean:                                         6.13
+                   max:                                         12.00
+                   #obs                                         2,381
+                   #miss:                                       3,080
+
+NT15YR             Year this business started
+
+                   min:                                       1930.00
+                   mean:                                      1991.37
+                   max:                                       2000.00
+                   #obs                                         5,354
+                   #miss:                                         107
+
+NT16X              Knows # unpaid workers in business
+
+                   1.Given                                      5,443     99.67
+                   8.Don't know                                    18      0.33
+                   total                                        5,461    100.00
+
+NT16               # unpaid workers in business
+
+                   min:                                          0.00
+                   mean:                                         0.54
+                   max:                                         45.00
+                   #obs                                         5,443
+                   #miss:                                          18
+
+NT17X              Knows # of paid workers in business
+
+                   1.Given                                      5,437     99.56
+                   8.Don't know                                    24      0.44
+                   total                                        5,461    100.00
+
+NT17               # paid workers in business
+
+                   min:                                          0.00
+                   mean:                                         0.97
+                   max:                                       1978.00
+                   #obs                                         5,437
+                   #miss:                                          24
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 39
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_NT2              Bk 2 Non farm business (2)-assets
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+NT18               Is this business still in operation?
+
+                   1.Yes                                        5,331     97.62
+                   3.No                                           130      2.38
+                   total                                        5,461    100.00
+
+NT19MTX            Knows month this business ended?
+
+                   missing                                      5,331     97.62
+                   1.Given                                        130      2.38
+                   total                                        5,461    100.00
+
+NT19MTH            Month this business ended
+
+                   min:                                          1.00
+                   mean:                                         6.30
+                   max:                                         12.00
+                   #obs                                           125
+                   #miss:                                       5,336
+
+NT19YR             Year this business ended
+
+                   min:                                       1948.00
+                   mean:                                      1999.05
+                   max:                                       2000.00
+                   #obs                                           132
+                   #miss:                                       5,329
+
+NT20X              Knows # unpaid wrkrs mnth before closed
+
+                   missing                                      5,331     97.62
+                   1.Given                                        130      2.38
+                   total                                        5,461    100.00
+
+NT20               # unpaid workers mnth before closed
+
+                   missing                                      5,331     97.62
+                   0                                               90      1.65
+                   1                                               29      0.53
+                   2                                                6      0.11
+                   3                                                3      0.05
+                   6                                                1      0.02
+                   8                                                1      0.02
+                   total                                        5,461    100.00
+
+NT21X              Knows # non HHM workers in bus.
+
+                   missing                                      5,331     97.62
+                   1.Given                                        130      2.38
+                   total                                        5,461    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 40
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_NT2              Bk 2 Non farm business (2)-assets
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(NT21  continued)
+
+NT21               # non HHM workers in bus.
+
+                   missing                                      5,331     97.62
+                   0                                              109      2.00
+                   1                                                5      0.09
+                   2                                                6      0.11
+                   3                                                3      0.05
+                   4                                                2      0.04
+                   5                                                3      0.05
+                   10                                               1      0.02
+                   50                                               1      0.02
+                   total                                        5,461    100.00
+
+NT22X              Knows # unpaid workers during last 4 wks
+
+                   missing                                        130      2.38
+                   1.Given                                      5,326     97.53
+                   8.Don't know                                     5      0.09
+                   total                                        5,461    100.00
+
+NT22               unpaid workers during last 4 wks
+
+                   missing                                        135      2.47
+                   0                                            3,579     65.54
+                   1                                            1,158     21.20
+                   2                                              360      6.59
+                   3                                              135      2.47
+                   4                                               58      1.06
+                   5                                               17      0.31
+                   6                                                8      0.15
+                   7                                                2      0.04
+                   8                                                2      0.04
+                   9                                                1      0.02
+                   10                                               3      0.05
+                   11                                               1      0.02
+                   12                                               2      0.04
+                   total                                        5,461    100.00
+
+NT23X              Knows # paid workers during last 4 wks
+
+                   missing                                        130      2.38
+                   1.Given                                      5,324     97.49
+                   8.Don't know                                     7      0.13
+                   total                                        5,461    100.00
+
+NT23               # paid workers during last 4 wks
+
+                   min:                                          0.00
+                   mean:                                         0.81
+                   max:                                        473.00
+                   #obs                                         5,324
+                   #miss:                                         137
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 41
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_NT2              Bk 2 Non farm business (2)-assets
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+NT24X              Knows tot value assets purch. past yr?
+
+                   1.Given                                      1,568     28.71
+                   5.Out of range                                   1      0.02
+                   9.Missing                                    3,892     71.27
+                   total                                        5,461    100.00
+
+NT24               Tot value assets purch. past year?
+
+                   min:                                          0.00
+                   mean:                                   4530568.25
+                   max:                                     600000000
+                   #obs                                         1,568
+                   #miss:                                       3,893
+
+NT25X              Knows tot val assets sold in past yr?
+
+                   1.Given                                        216      3.96
+                   9.Missing                                    5,245     96.04
+                   total                                        5,461    100.00
+
+NT25               Tot value assets sold in past year?
+
+                   min:                                          0.00
+                   mean:                                   13403596.3
+                   max:                                     600000000
+                   #obs                                           216
+                   #miss:                                       5,245
+
+NT26X              Knows tot inc frm rent of assets pst yr
+
+                   1.Given                                        131      2.40
+                   9.Missing                                    5,330     97.60
+                   total                                        5,461    100.00
+
+NT26               Tot inc from rent of assets past year
+
+                   min:                                          0.00
+                   mean:                                   3136706.11
+                   max:                                    68400000.0
+                   #obs                                           131
+                   #miss:                                       5,330
+
+NT_NUM             # business
+
+                   min:                                          1.00
+                   mean:                                         1.23
+                   max:                                          6.00
+                   #obs                                         5,461
+                   #miss:                                           0
+
+VERSION            IFLS3 version
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 42
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_UT1              Bk 2 Farm business (1)-income
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID00             2000 Household ID
+
+
+MODULE             survey module
+
+
+UT00A              Do you have land for farm
+
+                   1.Yes                                        3,472     33.81
+                   3.No                                         6,797     66.19
+                   total                                       10,269    100.00
+
+UT00BX             Knows how large is own farm land?
+
+                   missing                                      6,797     66.19
+                   1.Given in Hectare                           2,804     27.31
+                   2.Given in meter cubic                         613      5.97
+                   8.Don'tknow                                     51      0.50
+                   9.Missing                                        4      0.04
+                   total                                       10,269    100.00
+
+UT00B              How large is own farm land?
+
+                   min:                                          0.00
+                   mean:                                        69.34
+                   max:                                       1615.00
+                   #obs                                         3,417
+                   #miss:                                       6,852
+
+UT01               Any HHM wrkd in othr farm last year?
+
+                   1.Yes                                        3,753     36.55
+                   3.No                                         6,516     63.45
+                   total                                       10,269    100.00
+
+UT01AX             Knows Size cultivated farm land
+
+                   missing                                      6,516     63.45
+                   1.Given in Hectare                           3,005     29.26
+                   2.Given in meter cubic                         654      6.37
+                   6.Not applicable                                 1      0.01
+                   8.Don't know                                    66      0.64
+                   9.Missing                                       27      0.26
+                   total                                       10,269    100.00
+
+UT01A              Size cultivated farm land
+
+                   min:                                          0.00
+                   mean:                                        63.31
+                   max:                                       1750.00
+                   #obs                                         3,659
+                   #miss:                                       6,610
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 43
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_UT1              Bk 2 Farm business (1)-income
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+UT01BX             Knows Size rented/shared farm land
+
+                   missing                                      6,516     63.45
+                   1.Given in Hectare                           3,066     29.86
+                   2.Given in meter cubic                         595      5.79
+                   8.Don't know                                    78      0.76
+                   9.Missing                                       14      0.14
+                   total                                       10,269    100.00
+
+UT01B              Size rented/shared farm land
+
+                   min:                                          0.00
+                   mean:                                        17.77
+                   max:                                       1750.00
+                   #obs                                         3,661
+                   #miss:                                       6,608
+
+UT01C              INTERVIEWER CHEK
+
+                   1.UT01=3 & UT00A=1                             624      6.08
+                   2.UT01=3 & UT00A=3                           5,892     57.38
+                   3.UT01=1                                     3,753     36.55
+                   total                                       10,269    100.00
+
+UT02               Is farm business all owned by HH?
+
+                   missing                                      6,516     63.45
+                   1.Yes                                        3,147     30.65
+                   3.No                                           606      5.90
+                   total                                       10,269    100.00
+
+UT03               What % of farm business  is owned by HH?
+
+                   min:                                          0.00
+                   mean:                                        43.56
+                   max:                                         90.00
+                   #obs                                           599
+                   #miss:                                       9,670
+
+UT04               Who outside HH owns % farm business?
+
+                   Variable UT04 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, UT04 will have the value ACF.  If the       
+                   interviewee selected D and E, UT04 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+                   key for variable UT04 :        B.Spouse                                
+                                                  C.Child                                 
+                                                  D.Parent                                
+                                                  E.Parent-in-law                         
+                                                  F.Sibling                               
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 44
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_UT1              Bk 2 Farm business (1)-income
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+                                                  G.Sibling-in-law                        
+                                                  H.Others                                
+                                                  I.Grandchild                            
+                                                  J.Grandparent                           
+                                                  K.Uncle/aunt                            
+                                                  L.Nephew/niece                          
+                                                  M.Cousin                                
+                                                  N.Other family                          
+                                                  P.Non Family                            
+                                                  Q.Step / adopted child                  
+                                                  R.Family of Spouse                      
+                                                  U.Ex spouse                             
+
+
+
+UT05               Which HHM owns the farm business
+
+                   Variable UT05 can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, UT05 will have the value ACF.  If the       
+                   interviewee selected D and E, UT05 will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+                   key for variable UT05 :        A.Respondent                            
+                                                  B.Spouse                                
+                                                  C.Child                                 
+                                                  D.Parent                                
+                                                  E.Parent-in-law                         
+                                                  F.Sibling                               
+                                                  G.Sibling-in-law                        
+                                                  H.Others                                
+                                                  I.Grandchild                            
+                                                  J.Grandparent                           
+                                                  K.Uncle/aunt                            
+                                                  L.Nephew/niece                          
+                                                  M.Cousin                                
+                                                  N.Other family                          
+                                                  P.Non Family                            
+                                                  Q.Step / adopted child                  
+                                                  R.Family of Spouse                      
+                                                  U.Ex spouse                             
+
+
+
+UT07               Total revenue from farm bus. last year
+
+                   min:                                          0.00
+                   mean:                                   2596257.76
+                   max:                                     300000000
+                   #obs                                         3,364
+                   #miss:                                       6,905
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 45
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_UT1              Bk 2 Farm business (1)-income
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+UT07AX             Knows Most valuable crop/livestock?
+
+                   missing                                      6,516     63.45
+                   1.Given                                      3,394     33.05
+                   5.Out of range                                 354      3.45
+                   8.Don't Know                                     4      0.04
+                   9.Missing                                        1      0.01
+                   total                                       10,269    100.00
+
+UT07A              Most valuable crop/livestock
+
+                   missing                                      6,520     63.49
+                   1.Cassava                                      222      2.16
+                   2.Other tuber                                    6      0.06
+                   3.Groundnuts                                    50      0.49
+                   4.Cashews and other nuts                        30      0.29
+                   5.Soybean                                       19      0.19
+                   6.Corn                                         153      1.49
+                   7.Chili                                         40      0.39
+                   8.Garlic                                         8      0.08
+                   9.Coconut                                       66      0.64
+                   10.Banana trees                                 63      0.61
+                   11.Spice                                        73      0.71
+                   12.Coffe                                       170      1.66
+                   13.Sugarcane                                     8      0.08
+                   14.Tobacco                                      53      0.52
+                   15.Rubber                                      119      1.16
+                   16.Wood                                         28      0.27
+                   17.Chickens                                     39      0.38
+                   18.Fish                                        145      1.41
+                   19.Pigs                                         11      0.11
+                   20.Goats                                        36      0.35
+                   21.Cattle                                       70      0.68
+                   22.Other vegetables                             64      0.62
+                   23.Other fruits                                106      1.03
+                   90.Rice                                      2,055     20.01
+                   95.Other,_________                             113      1.10
+                   96.No other Crop                                 2      0.02
+                   total                                       10,269    100.00
+
+UT07BX             Knows 2nd most valuable crop/livestock?
+
+                   missing                                      6,516     63.45
+                   1.Given                                      2,242     21.83
+                   5.Out of range                                 457      4.45
+                   6.Inapp                                      1,045     10.18
+                   8.Don't Know                                     7      0.07
+                   9.Missing                                        2      0.02
+                   total                                       10,269    100.00
+
+UT07B              2nd most valuable crop/livestock
+
+                   missing                                      7,562     73.64
+                   1.Cassava                                      242      2.36
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 46
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_UT1              Bk 2 Farm business (1)-income
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+(UT07B  continued)
+
+                   2.Other tuber                                   23      0.22
+                   3.Groundnuts                                   157      1.53
+                   4.Cashews and other nuts                       132      1.29
+                   5.Soybean                                      176      1.71
+                   6.Corn                                         334      3.25
+                   7.Chili                                        110      1.07
+                   8.Garlic                                        18      0.18
+                   9.Coconut                                      119      1.16
+                   10.Bananas trees                               163      1.59
+                   11.Spice                                        65      0.63
+                   12.Coffe                                        77      0.75
+                   13.Sugarcane                                    12      0.12
+                   14.Tobacco                                      77      0.75
+                   15.Rubber                                       49      0.48
+                   16.Wood                                         32      0.31
+                   17.Chickens                                     79      0.77
+                   18.Fish                                         42      0.41
+                   19.Pigs                                         27      0.26
+                   20.Goats                                        61      0.59
+                   21.Cattle                                      100      0.97
+                   22.Other vegetables                            135      1.31
+                   23.Other fruits                                106      1.03
+                   90.Rice                                        238      2.32
+                   95.Other,_________                             130      1.27
+                   96.No other Crop                                 3      0.03
+                   total                                       10,269    100.00
+
+UT07X              Know revnue from farm last year?
+
+                   missing                                      6,516     63.45
+                   1.Enter total rupiah                         3,361     32.73
+                   3.not able to answer                             1      0.01
+                   5.out of range                                   4      0.04
+                   9.Missing                                      387      3.77
+                   total                                       10,269    100.00
+
+UT07C              Crops/livestock HH farm produced
+
+                   Variable UT07C can have multiple responses.  Users were asked to select 
+                   all applicable responses from a list of all possible responses.  These were  
+                   concatenated together into a single character string variable which appears  
+                   in this public use file.  For example, if the interviewee selected responses 
+                   A, C, and F from the list, UT07C will have the value ACF.  If the       
+                   interviewee selected D and E, UT07C will have the value DE.  Use the key
+                   below to correctly interpret these values.                                   
+
+                   key for variable UT07C :       A.Cassava                               
+                                                  B.Other tuber                           
+                                                  C.Groundnuts                            
+                                                  D.Cashews and other nuts                
+                                                  E.Soybean                               
+                                                  F.Corn                                  
+                                                  G.Chili                                 
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 47
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_UT1              Bk 2 Farm business (1)-income
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+                                                  H.Garlic                                
+                                                  I.Coconut                               
+                                                  J.Bananas trees                         
+                                                  K.Spice                                 
+                                                  L.Coffe                                 
+                                                  M.Sugarcane                             
+                                                  N.Tobacco                               
+                                                  O.Rubber                                
+                                                  P.Wood                                  
+                                                  Q.Chickens                              
+                                                  R.Fish                                  
+                                                  S.Pigs                                  
+                                                  T.Goats                                 
+                                                  U.Cattle                                
+                                                  V.Other,_________                       
+                                                  X.No other Crop                         
+                                                  Y.Rice                                  
+                                                  Z.MISSING                               
+
+
+UT08X              Know HH exp. last year: farm?
+
+                   missing                                      6,900     67.19
+                   1.Enter total rupiah                         3,294     32.08
+                   5.out of range                                   1      0.01
+                   9.Missing                                       74      0.72
+                   total                                       10,269    100.00
+
+UT08               Tot HH exp. last year: farm business
+
+                   min:                                          0.00
+                   mean:                                    851879.36
+                   max:                                    74000000.0
+                   #obs                                         3,294
+                   #miss:                                       6,975
+
+UT09X              Know last year's farm net profit?
+
+                   missing                                      9,811     95.54
+                   1.Enter total rupiah                           363      3.53
+                   3.Enter total rupiah (minus)                     8      0.08
+                   9.Missing                                       87      0.85
+                   total                                       10,269    100.00
+
+UT09               Net profit last year from farm
+
+                   min:                                          0.00
+                   mean:                                   1704359.16
+                   max:                                    24000000.0
+                   #obs                                           371
+                   #miss:                                       9,898
+
+VERSION            IFLS3 version
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 48
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_UT2              Bk 2 Farm business (2)-assets
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+HHID00             2000 Household ID
+
+
+MODULE             survey module
+
+
+UT10               Know if HH owns assets from farm bus.?
+
+                   missing                                      4,375     10.02
+                   1.Yes                                       12,859     29.46
+                   3.No                                        26,416     60.52
+                   9.Missing                                        1      0.00
+                   total                                       43,651    100.00
+
+UT11X              Know total market value assets?
+
+                   missing                                     30,792     70.54
+                   1.Enter amount                              12,481     28.59
+                   5.out of range                                   6      0.01
+                   8.Don't know                                     1      0.00
+                   9.Missing                                      371      0.85
+                   total                                       43,651    100.00
+
+UT11               Total market value of farm bus. assets
+
+                   min:                                          0.00
+                   mean:                                   8681064.53
+                   max:                                    2740000000
+                   #obs                                        12,485
+                   #miss:                                      31,166
+
+UT12X              Know total spent on assets lst yr?
+
+                   missing                                     30,522     69.92
+                   1.Enter amount                                 619      1.42
+                   9.Missing                                   12,510     28.66
+                   total                                       43,651    100.00
+
+UT12               Total spent last year: assets
+
+                   min:                                          0.00
+                   mean:                                   3653464.05
+                   max:                                     417496000
+                   #obs                                           619
+                   #miss:                                      43,032
+
+UT13X              Know total sale of assets last year?
+
+                   missing                                     30,522     69.92
+                   1.Enter amount                                 517      1.18
+                   9.Missing                                   12,612     28.89
+                   total                                       43,651    100.00
+
+------------------------------------------------------------------------------------
+IFLS3 HOUSEHOLD SURVEY CODEBOOK                                            page 49
+book:    2  - Household Enterprises and Wealth                                   
+module:  B2_UT2              Bk 2 Farm business (2)-assets
+------------------------------------------------------------------------------------
+variable name      value                                    frequency     percent   
+------------------------------------------------------------------------------------
+
+UT13               Total revenue lst yr: sale of assets
+
+                   min:                                          0.00
+                   mean:                                   4337961.61
+                   max:                                     478400000
+                   #obs                                           517
+                   #miss:                                      43,134
+
+UT14X              Know income from rent/profit last year?
+
+                   missing                                     30,522     69.92
+                   1.Enter amount                                 887      2.03
+                   9.Missing                                   12,242     28.05
+                   total                                       43,651    100.00
+
+UT14               Total revenue last year: rent/profit
+
+                   min:                                          0.00
+                   mean:                                   1777978.39
+                   max:                                     250000000
+                   #obs                                           887
+                   #miss:                                      42,764
+
+UTTYPE             Type of assets
+
+                   missing                                          8      0.02
+                   A.Farm land                                  4,377     10.03
+                   B.Hard stem plants                           4,377     10.03
+                   C.House/building                             4,377     10.03
+                   D.Livestock/poultry/fish pond                4,377     10.03
+                   E.Vehicles                                   4,377     10.03
+                   F.Tractor                                    4,377     10.03
+                   G.Heavy equipment                            4,377     10.03
+                   H.Small tools                                4,377     10.03
+                   I.Other specify,______                       4,250      9.74
+                   J.Other assets beside land, specify          4,377     10.03
+                   total                                       43,651    100.00
+
+VERSION            IFLS3 version

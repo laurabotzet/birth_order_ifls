@@ -390,6 +390,15 @@ length(unique(twinmothers_individual$mother_pidlink)) # number of families that 
 <pre class="r"><code>## Combine informations from pregnancy history and individual files
 alldata_pregnancy = inner_join(individuals, pregnancy, by = &quot;mother_birthdate&quot;)</code></pre>
 </div>
+<div id="gene-birthorder-based-on-both-parents" class="section level2">
+<h2>Gene birthorder (based on both parents)</h2>
+<pre class="r"><code>### Gene birthorder is calculated by grouping individuals together, for whom we know both parents and making a rank list
+alldata_pregnancy = alldata_pregnancy %&gt;%
+  group_by(mother_father_dyad) %&gt;%
+    mutate(birthorder_genes = min_rank(birthdate),
+           birthorder_genes = ifelse(is.na(mother_father_dyad), NA, birthorder_genes),
+           siblingcount_genes = sum(!is.na(mother_father_dyad)))</code></pre>
+</div>
 <div id="select-iq-data" class="section level2">
 <h2>Select IQ data</h2>
 <pre class="r"><code>### IQ Informations
@@ -1160,8 +1169,9 @@ alldata_birthorder %&gt;%
 <pre><code>## Warning: Removed 11996 rows containing non-finite values (stat_smooth).</code></pre>
 <pre><code>## Warning: Removed 11996 rows containing missing values (geom_point).</code></pre>
 <p><img src="1_data_import_files/figure-html/exploring%20data-4.png" width="672" /></p>
-<pre class="r"><code>alldata_birthorder %&gt;% select(birthorder_uterus_alive, sibling_count_uterus_alive, birthdate) -&gt; subs
-alldata_birthorder$byear = as.numeric(stringr::str_sub(alldata_birthorder$birthdate,1,4))
+<pre class="r"><code>alldata_birthorder %&gt;% select(birthorder_uterus_alive, sibling_count_uterus_alive, birthdate) -&gt; subs</code></pre>
+<pre><code>## Adding missing grouping variables: `mother_father_dyad`</code></pre>
+<pre class="r"><code>alldata_birthorder$byear = as.numeric(stringr::str_sub(alldata_birthorder$birthdate,1,4))
 
 alldata_birthorder %&gt;%
   filter(birthorder_uterus_alive &lt; 8) %&gt;%
@@ -1201,7 +1211,9 @@ alldata_birthorder %&gt;%
 <div id="save-data" class="section level2">
 <h2>Save data</h2>
 <p>for future analyses</p>
-<pre class="r"><code>saveRDS(alldata_birthorder, file = &quot;data/alldata_birthorder.rds&quot;)</code></pre>
+<pre class="r"><code>saveRDS(alldata_birthorder, file = &quot;data/alldata_birthorder.rds&quot;)
+
+saveRDS(alldata, file = &quot;data/alldata.rds&quot;)</code></pre>
 </div>
 
 

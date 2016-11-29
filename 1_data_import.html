@@ -130,6 +130,7 @@ library(haven)
 library(tidyr)
 library(ggplot2)
 library(stringr)
+library(GPArotation)
 library(dplyr)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
@@ -142,7 +143,6 @@ library(dplyr)</code></pre>
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(GPArotation)</code></pre>
 </div>
 <div id="helper" class="section level2">
 <h2>Helper</h2>
@@ -397,7 +397,233 @@ alldata_pregnancy = alldata_pregnancy %&gt;%
   group_by(mother_father_dyad) %&gt;%
     mutate(birthorder_genes = min_rank(birthdate),
            birthorder_genes = ifelse(is.na(mother_father_dyad), NA, birthorder_genes),
-           siblingcount_genes = sum(!is.na(mother_father_dyad)))</code></pre>
+           sibling_count_genes = sum(!is.na(mother_father_dyad)))
+ggplot(alldata_pregnancy, aes(x=sibling_count_genes, y=birthorder_genes)) + geom_jitter()</code></pre>
+<pre><code>## Warning: Removed 1582 rows containing missing values (geom_point).</code></pre>
+<p><img src="1_data_import_files/figure-html/gene%20birthorder-1.png" width="672" /></p>
+<pre class="r"><code>## Plot uterus birth order vs. gene birthorder
+ggplot(alldata_pregnancy, aes(x=birthorder_uterus_alive, y=birthorder_genes)) + geom_jitter()</code></pre>
+<pre><code>## Warning: Removed 1586 rows containing missing values (geom_point).</code></pre>
+<p><img src="1_data_import_files/figure-html/gene%20birthorder-2.png" width="672" /></p>
+</div>
+<div id="determine-parents-that-we-can-use-for-birthorder-calcualations" class="section level2">
+<h2>Determine parents that we can use for birthorder calcualations</h2>
+<pre class="r"><code>### All women who completed book 4 (we have all informatios about their children)
+mothers_15_57 = b4_cov %&gt;% select(pidlink)
+
+### All men and women &gt;57 who completed book 3b (we have all informatios about their children)
+fathers_restmothers = b3b_cov %&gt;% select(pidlink, sex) # include sex to determin wether we are talking about a mother or a father; 1 = male, 3 = female
+
+### All fathers that we have all informations that we need to compute birthorder for children
+fathers_allinfo = fathers_restmothers %&gt;%
+  filter(sex==1)
+
+### All mothers that we have all inforamtions that we need to compute birthorder for children
+mothers_allinfo = fathers_restmothers %&gt;%
+  filter(sex==3)
+mothers_allinfo = bind_rows(mothers_allinfo, mothers_15_57)
+mothers_allinfo = mothers_allinfo %&gt;% distinct(pidlink, .keep_all = TRUE) # completed either book 4 or book 3b or both</code></pre>
+</div>
+<div id="select-informations-about-additional-siblings-from-mother" class="section level2">
+<h2>Select informations about additional siblings from mother</h2>
+<pre class="r"><code># We have three sources for informations about the children of one women: Biological children (Book 4, women aged 15-57 &amp; maried), Adopted Children (Book 4, women aged 15-57 &amp; maried), All children (Book 3b, &gt;57 or never maried)
+
+## Get all the informations about biological children (Book 4, women aged 15-57 &amp; maried)
+motherinformations_bio = b4_ba6 %&gt;% select(hhid14_9, pidlink, ba63cx, ba64, ba64bmt, ba64byr, ba65, ba65mt, ba65ayr, ba66)
+#Rename variables:
+motherinformations_bio = rename(motherinformations_bio, kind_of_child_m = ba63cx, sex_m = ba64,  birth_month_m = ba64bmt, birth_year_m = ba64byr, alive_m = ba65, death_month_m = ba65mt, death_year_m = ba65ayr, current_age_or_death_age_m = ba66, mother_pidlink = pidlink) 
+
+## Get all the informations about non-biological children (Book 4, women aged 15-57 &amp; maried)
+motherinformations_adop = b4_bx6 %&gt;% select(hhid14_9, pidlink, bx63cx, bx64, bx64bmt, bx64byr, bx65, bx65amt, bx65ayr, bx66)
+#Rename variables:
+motherinformations_adop = rename(motherinformations_adop, kind_of_child_m = bx63cx, sex_m = bx64,  birth_month_m = bx64bmt, birth_year_m = bx64byr, alive_m = bx65, death_month_m = bx65amt, death_year_m = bx65ayr, current_age_or_death_age_m = bx66, mother_pidlink = pidlink) 
+
+## Get the rest informations (Book 3b, &gt;57 or never maried)
+motherinformations_old = subset(b3b_ba6, pidlink %in% mothers_allinfo$pidlink) # we only want female participants
+motherinformations_old = motherinformations_old %&gt;% select(hhid14_9, pidlink, ba63cx, ba64, ba64bmt, ba64byr, ba65, ba65amt, ba65ayr, ba66)
+# Rename variables:
+motherinformations_old = rename(motherinformations_old, kind_of_child_m = ba63cx, sex_m = ba64,  birth_month_m = ba64bmt, birth_year_m = ba64byr, alive_m = ba65, death_month_m = ba65amt, death_year_m = ba65ayr, current_age_or_death_age_m = ba66, mother_pidlink = pidlink) 
+
+## Combine all informations
+motherinformations = bind_rows(motherinformations_bio, motherinformations_adop)
+motherinformations = bind_rows(motherinformations, motherinformations_old)
+
+## Create variable that contains pidlink of mother and birthdate of child:
+#Set all variables missing that have not been reported:
+motherinformations$birth_month_m[ motherinformations$birth_month_m&gt;12] = NA
+motherinformations$birth_year_m[ motherinformations$birth_year_m&gt;2016] = NA
+motherinformations$birth_year_m[ motherinformations$birth_year_m&lt;1930] = NA # get rid of some weird byears (1079, 98,80, 8)
+motherinformations$birth_month_m[ is.nan(motherinformations$birth_month_m) ] = NA
+motherinformations$birth_year_m[ is.nan(motherinformations$birth_year_m)] = NA
+motherinformations$death_month_m[ motherinformations$death_month_m&gt;12] = NA
+motherinformations$death_year_m[ motherinformations$death_year_m&gt;2016] = NA
+motherinformations$death_month_m[ is.nan(motherinformations$death_month_m) ] = NA
+motherinformations$death_year_m[ is.nan(motherinformations$death_year_m)] = NA
+
+motherinformations = motherinformations %&gt;%
+    mutate(mother_birthdate = str_c(mother_pidlink, &quot;-&quot;,
+          all_available_info_birth_date(birth_year_m, birth_month_m))) # mother_pidlink-YYYY-MM; is NA if birth_year is missing
+
+## Remove all with missing mothers/birth_years
+motherinformations = motherinformations %&gt;%
+  filter(!is.na(mother_birthdate))
+
+## Remove duplicats (some children are reported both in the biological and in the adopted list - confusing question?)
+motherinformations = motherinformations %&gt;% distinct(mother_birthdate, .keep_all = TRUE)</code></pre>
+</div>
+<div id="combine-informations-from-mother-and-individuals-file" class="section level2">
+<h2>Combine informations from mother and individuals file</h2>
+<pre class="r"><code>### For our future analysis we only want informations about individuals whose mother reported informations about all other siblings (living in the same HH and not living in the same HH)
+individuals_siblinginfos = individuals %&gt;%
+  filter(mother_pidlink %in% mothers_allinfo$pidlink)
+
+### Combination of individual data and motherinformations
+individualsinformations_only = left_join(individuals_siblinginfos, motherinformations, by = &quot;mother_birthdate&quot;)
+motherinformations_only = anti_join(motherinformations, individuals_siblinginfos, by = &quot;mother_birthdate&quot;) # all rows from motherinformations that do not occur in individuals
+parentscheck = bind_rows(individualsinformations_only, motherinformations_only) # combines all rows in individual that occur in motherinformationsfile only
+
+### All mother_pidlinks should be in one column:
+parentscheck$mother_pidlink = ifelse(is.na(parentscheck$mother_pidlink), parentscheck$mother_pidlink.x, parentscheck$mother_pidlink)
+
+### For the individuals that are only in the motherinformationsfile we do not have a pidlink - so we create one (counting from one to the end of all missing pidlinks is reached)
+parentscheck$pidlink = ifelse(is.na(parentscheck$pidlink), c(1:sum(is.na(parentscheck$pidlink))), parentscheck$pidlink)
+
+### Remove all families with multiple births:
+## Mark multpile births
+parentscheck = parentscheck %&gt;%
+  mutate(multiple_birth = ifelse(duplicated(mother_birthdate), 1, 0))
+## All women that ever had multiple births
+twinmothers = parentscheck %&gt;%
+  filter(multiple_birth == 1)
+length(unique(twinmothers$mother_pidlink)) ## number of families that have to be excluded due to multiple births</code></pre>
+<pre><code>## [1] 0</code></pre>
+</div>
+<div id="birth-orders" class="section level2">
+<h2>Birth Orders</h2>
+<pre class="r"><code>## Create a variable that contains the birthdate for all individuals:
+parentscheck = parentscheck %&gt;%
+    mutate(birth_ind = all_available_info_birth_date(ar08yr, ar08mth, ar08day), # from individuals file
+           birth_parents = all_available_info_birth_date(birth_year_m, birth_month_m)) %&gt;% # from parents file
+    aggregate2sources(&quot;birth&quot;, &quot;birth_ind&quot;, &quot;birth_parents&quot;) # aggregate both informations in one column</code></pre>
+<pre><code>## 26958  fewer missings</code></pre>
+<pre class="r"><code>#Remove missing birthdates:
+parentscheck = parentscheck %&gt;%
+  filter(!is.na(birth))
+
+
+### Preperations
+## Biological Birthorder - Order in Uterus: We only want to include biological children: 
+# Modify kind_of_child_variable_m (1 = bio_child, 2 = stepchild, 3 = adopted):
+parentscheck$kind_of_child_m = ifelse(
+  is.na(parentscheck$kind_of_child_m), 1, # those who don&#39;t have this var are from the individuals file and are biological kids
+  parentscheck$kind_of_child_m) # the ones from the minfo file can be adopted, stepchildren, etc.
+
+# Create Birth for biological children:
+parentscheck = parentscheck %&gt;%
+  mutate(birth_bio = ifelse(kind_of_child_m == 1, birth, NA))
+
+## Biological Birthorder - Genes
+# Create birth variable for siblings that share the same mother and father
+parentscheck = parentscheck %&gt;%
+  mutate(birth_genes = ifelse(!is.na(mother_father_dyad), birth, NA))
+
+
+## Social Birthorder: Calculate Death Age:
+# We have two sources for death informations: The household roster (Book K, Section ar,) and the mother informations (Book 4). We need to combine the informations that we have
+parentscheck$alive_m = ifelse(is.na(parentscheck$alive_m), 1, parentscheck$alive_m) # 1=alive, 3=dead
+
+# For the mother informations file some age information is missing. So we calculate it by substracting the birthyear/deathyear from the year of the interview
+parentscheck$current_age_or_death_age_m = ifelse(!is.na(parentscheck$current_age_or_death_age_m), parentscheck$current_age_or_death_age_m, ifelse(parentscheck$alive_m==1, 2014-parentscheck$birth_year_m, NA))
+                                                  parentscheck$current_age_or_death_age_m = ifelse(!is.na(parentscheck$current_age_or_death_age_m), parentscheck$current_age_or_death_age_m, ifelse(parentscheck$alive_m==3, 2014-parentscheck$death_year_m, NA))
+                                                  
+# Now we aggregate the informations 
+parentscheck = parentscheck %&gt;%
+  aggregate2sources(&quot;age_aggregated&quot;, &quot;age&quot;, &quot;current_age_or_death_age_m&quot;, remove_old_variables = FALSE)</code></pre>
+<pre><code>## 26910  fewer missings</code></pre>
+<pre class="r"><code># And we create a variable that contains the age of death for every individual that died:
+parentscheck$death_age = ifelse(parentscheck$alive_m == 3, parentscheck$age_aggregated, NA)
+
+# Now we want the birthdates of all individuals that are either still alive or lived longer than 5 years
+parentscheck$birth_lived_5y = ifelse(parentscheck$alive_m == 1, parentscheck$birth, ifelse(parentscheck$death_age&gt;5, parentscheck$birth, NA))
+
+
+### Birthorder calculations
+parentscheck = parentscheck %&gt;%
+  group_by(mother_pidlink) %&gt;%
+  mutate(birthorder_uterus = min_rank(birth_bio), # Biological Birthorder - Uterus
+         siblingcount_maternal = sum(kind_of_child_m == 1), # Biological Sibling Count
+         birthorder_alive = older_sibs_alive_and_dependent(as.numeric(str_sub(birth, 1, 4)), death_year_m) + 1, # calculates the birthorder of all siblings (bio&amp;adopted) that are alive by the time of the own birth
+         # mistake: i would like to calculate the siblingcount_alive - but how?
+         birthorder_min5y = min_rank(birth_lived_5y),# calculates the birthorder of all siblings (bio&amp;adopted) that lived longer than 5 years
+         siblingcount_min5y = sum(!is.na(birth_lived_5y))) %&gt;% # sibling count for one family for all siblings that lived longer than 5y
+  group_by(mother_father_dyad) %&gt;%
+    mutate(birthorder_genes = min_rank(birth),
+           birthorder_genes = ifelse(is.na(mother_father_dyad), NA, birthorder_genes),
+           siblingcount_genes = sum(!is.na(mother_father_dyad))) %&gt;%
+  group_by(mother_pidlink, birth) %&gt;%
+  mutate(multiple_birth = sum(kind_of_child_m == 1)) %&gt;% # Biological Multiple births (Uterus)
+  group_by(mother_pidlink) %&gt;%
+  mutate(any_multiple_birth_in_fam = any(multiple_birth &gt; 1)) # Any biological multiple births in one family?
+
+### Graphs
+## Biological Birthorder - Uterus
+qplot(parentscheck$birthorder_uterus)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 1657 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/Birth%20Orders-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(parentscheck, aes(x=siblingcount_maternal, y=birthorder_uterus)) + geom_jitter()</code></pre>
+<pre><code>## Warning: Removed 1657 rows containing missing values (geom_point).</code></pre>
+<p><img src="1_data_import_files/figure-html/Birth%20Orders-2.png" width="672" /></p>
+<pre class="r"><code>## Biological Birthorder - Genes
+qplot(parentscheck$birthorder_genes)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 30430 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/Birth%20Orders-3.png" width="672" /></p>
+<pre class="r"><code>ggplot(parentscheck, aes(x=siblingcount_genes, y=birthorder_genes)) + geom_jitter()</code></pre>
+<pre><code>## Warning: Removed 30430 rows containing missing values (geom_point).</code></pre>
+<p><img src="1_data_import_files/figure-html/Birth%20Orders-4.png" width="672" /></p>
+<pre class="r"><code>## Social Birthorder - min 5 years
+qplot(parentscheck$birthorder_min5y)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 337 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="1_data_import_files/figure-html/Birth%20Orders-5.png" width="672" /></p>
+<pre class="r"><code>ggplot(parentscheck, aes(x=siblingcount_min5y, y=birthorder_min5y)) + geom_jitter()</code></pre>
+<pre><code>## Warning: Removed 337 rows containing missing values (geom_point).</code></pre>
+<p><img src="1_data_import_files/figure-html/Birth%20Orders-6.png" width="672" /></p>
+<pre class="r"><code>## Social Birthorder - alive at birth
+qplot(parentscheck$birthorder_alive)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="1_data_import_files/figure-html/Birth%20Orders-7.png" width="672" /></p>
+<pre class="r"><code>## Bio: Uterus vs. Genes
+ggplot(parentscheck, aes(x=birthorder_uterus, y=birthorder_genes)) + geom_jitter()</code></pre>
+<pre><code>## Warning: Removed 30430 rows containing missing values (geom_point).</code></pre>
+<p><img src="1_data_import_files/figure-html/Birth%20Orders-8.png" width="672" /></p>
+<pre class="r"><code>## Social: min5years vs. alive at birth
+ggplot(parentscheck, aes(x=birthorder_min5y, y=birthorder_alive)) + geom_jitter()</code></pre>
+<pre><code>## Warning: Removed 337 rows containing missing values (geom_point).</code></pre>
+<p><img src="1_data_import_files/figure-html/Birth%20Orders-9.png" width="672" /></p>
+</div>
+<div id="combination-of-birthorder-measurements" class="section level2">
+<h2>combination of birthorder measurements</h2>
+<pre class="r"><code>### Add &quot;old&quot; to the proxy measurment of birthorder
+parentscheck = data.frame(parentscheck)
+names(parentscheck) = str_c(names(parentscheck), &quot;old&quot;, sep=&quot;_&quot;)
+
+parentscheck = parentscheck %&gt;%
+  rename(pidlink = pidlink_old) %&gt;%
+  select(pidlink, birthorder_alive_old, birthorder_uterus_old, birthorder_min5y_old, birthorder_genes_old, siblingcount_min5y_old, siblingcount_maternal_old, siblingcount_genes_old)
+
+### Combine old birthorders with new birthorder
+alldata_pregnancy = left_join(alldata_pregnancy, parentscheck, by = &quot;pidlink&quot;)
+
+
+### Compare birthorders
+ggplot(alldata_pregnancy, aes(x=birthorder_uterus_alive, y=birthorder_uterus_old)) + geom_jitter()</code></pre>
+<pre><code>## Warning: Removed 1176 rows containing missing values (geom_point).</code></pre>
+<p><img src="1_data_import_files/figure-html/combine%20exact%20measurement%20of%20birthorder%20and%20proxy%20of%20birthorder-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(alldata_pregnancy, aes(x=birthorder_genes, y=birthorder_genes_old)) + geom_jitter()</code></pre>
+<pre><code>## Warning: Removed 2614 rows containing missing values (geom_point).</code></pre>
+<p><img src="1_data_import_files/figure-html/combine%20exact%20measurement%20of%20birthorder%20and%20proxy%20of%20birthorder-2.png" width="672" /></p>
 </div>
 <div id="select-iq-data" class="section level2">
 <h2>Select IQ data</h2>
@@ -1207,6 +1433,40 @@ alldata_birthorder %&gt;%
 
 ## Warning: Removed 11966 rows containing non-finite values (stat_summary).</code></pre>
 <p><img src="1_data_import_files/figure-html/exploring%20data-7.png" width="672" /></p>
+<pre class="r"><code>### Genes:
+alldata_birthorder %&gt;%
+  filter(birthorder_genes &lt; 8) %&gt;%
+  filter(sibling_count_genes &lt; 8) %&gt;%
+   mutate(birthorder_genes = factor(birthorder_genes),
+         sibling_count_genes = sibling_count_genes) %&gt;%
+  ggplot(aes(x=birthorder_genes, y=g_factor, colour = sibling_count_genes, group = sibling_count_genes)) + 
+  geom_pointrange(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4)) + 
+  geom_line(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4))</code></pre>
+<pre><code>## Warning: Removed 10997 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>## Warning: Removed 10997 rows containing non-finite values (stat_summary).</code></pre>
+<p><img src="1_data_import_files/figure-html/exploring%20data-8.png" width="672" /></p>
+<pre class="r"><code>alldata_birthorder %&gt;%
+  filter(birthorder_genes &lt; 8) %&gt;%
+  filter(sibling_count_genes &lt; 8) %&gt;%
+   mutate(birthorder_genes = factor(birthorder_genes),
+         sibling_count_genes = sibling_count_genes) %&gt;%
+  ggplot(aes(x=birthorder_genes, y=big5_open, colour = sibling_count_genes, group = sibling_count_genes)) + 
+  geom_pointrange(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4)) + 
+  geom_line(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4))</code></pre>
+<pre><code>## Warning: Removed 10969 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>## Warning: Removed 10969 rows containing non-finite values (stat_summary).</code></pre>
+<p><img src="1_data_import_files/figure-html/exploring%20data-9.png" width="672" /></p>
+<pre class="r"><code>alldata_birthorder %&gt;%
+  filter(birthorder_uterus_alive &lt; 8) %&gt;%
+  filter(sibling_count_uterus_alive &lt; 8) %&gt;%
+   mutate(birthorder_uterus_alive = factor(birthorder_uterus_alive),
+         sibling_count_uters_alive = sibling_count_uterus_alive) %&gt;%
+  ggplot(aes(x=birthorder_uterus_alive, y=big5_ext, colour = sibling_count_uterus_alive, group = sibling_count_uterus_alive)) + 
+  geom_pointrange(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4)) + 
+  geom_line(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4))</code></pre>
+<pre><code>## Warning: Removed 11966 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>## Warning: Removed 11966 rows containing non-finite values (stat_summary).</code></pre>
+<p><img src="1_data_import_files/figure-html/exploring%20data-10.png" width="672" /></p>
 </div>
 <div id="save-data" class="section level2">
 <h2>Save data</h2>

@@ -13,12 +13,12 @@ output:
 library(formr)
 library(devtools)
 library(haven)
-# devtools::install_github("hadley/haven")
 library(tidyr)
 library(ggplot2)
 library(stringr)
-library(dplyr)
 library(GPArotation)
+library(apaTables)
+library(dplyr)
 ```
 
 ## Load data
@@ -29,5 +29,34 @@ alldata_birthorder = readRDS("data/alldata_birthorder.rds")
 ### Import all alldata
 alldata = readRDS("data/alldata.rds")
 
+```
+
+## mark data that we can use for our analyses
+
+```{r mark data}
+### All people in the birthorder data file that have ANY intelligence, personality or risk values have to be marked
+alldata_birthorder = alldata_birthorder %>%
+  mutate(used = ifelse(!is.na(raven) ||!is.na(math) || !is.na(count_backwards) || !is.na(words_immediate) || !is.na(words_delayed) || !is.na(adaptive_numbering) || !is.na(big5_ext) || !is.na(big5_open) || !is.na(big5_agree) || !is.na(big5_neu) || !is.na(big5_con) || !is.na(riskA) || !is.na(riskB), 1, NA)) # used = 1:included, 0:not_included
+
+alldata_birthorder_used = alldata_birthorder %>%
+  filter(used == 1)
+
+## in the datafile of all individuals we have to mark those who are not included in the analysis
+pidlink_used = alldata_birthorder_used$pidlink
+
+alldata_notused = alldata %>%
+  filter(!(pidlink %in% pidlink_used))%>%
+  mutate(used = 0)# used = 1:included, 0:not_included
+
+## combine both datasets to use it for comparisons
+inclusion = bind_rows(alldata_birthorder_used, alldata_notused)
+```
+
+
+## Age
+```{r age}
+gender = inclusion %>%
+  group_by(used)%>%
+  summarise(avg = mean(birthdate))
 ```
 

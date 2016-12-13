@@ -1,6 +1,6 @@
 PackratFormat: 1.4
 PackratVersion: 0.4.8.1
-RVersion: 3.2.0
+RVersion: 3.3.2
 Repos: BioCsoft=http://bioconductor.org/packages/2.14/bioc,
     BioCann=http://bioconductor.org/packages/2.14/data/annotation,
     BioCexp=http://bioconductor.org/packages/2.14/data/experiment,
@@ -27,18 +27,11 @@ Source: CRAN
 Version: 2014.11-1
 Hash: 4821625833bcab5af24257ead9119e01
 
-Package: Hmisc
-Source: CRAN
-Version: 4.0-0
-Hash: 3cf051e7cd426faa70543f436289ed30
-Requires: Formula, acepack, data.table, foreign, ggplot2, gridExtra,
-    gtable, htmlTable, htmltools, latticeExtra, survival, viridis
-
 Package: MBESS
 Source: CRAN
 Version: 4.1.0
 Hash: b7b50e18f483e445a11737895d061849
-Requires: OpenMx, gsl, lavaan, mnormt, nlme, sem, semTools
+Requires: gsl, mnormt, nlme, lavaan, semTools, OpenMx, sem
 
 Package: MatrixModels
 Source: CRAN
@@ -49,7 +42,7 @@ Package: OpenMx
 Source: CRAN
 Version: 2.6.9
 Hash: c6afb40b1d2da98bd4007b17b815a145
-Requires: BH, Rcpp, RcppEigen, StanHeaders, digest, rpf
+Requires: BH, Rcpp, StanHeaders, digest, RcppEigen, rpf
 
 Package: R6
 Source: CRAN
@@ -96,18 +89,23 @@ Package: apaTables
 Source: CRAN
 Version: 1.0.4
 Hash: a503414f4103d545865ec9e9d7d35ba8
-Requires: MBESS, car, rockchalk
+Requires: car, rockchalk, MBESS
 
 Package: arm
 Source: CRAN
 Version: 1.9-1
 Hash: 034dd6b399588c1e18f5a4327a5742c9
-Requires: abind, coda, lme4, nlme
+Requires: abind, coda, nlme, lme4
 
 Package: assertthat
 Source: CRAN
 Version: 0.1
 Hash: 0afb92b59b02593c70ff8046700ba9d3
+
+Package: backports
+Source: CRAN
+Version: 1.0.4
+Hash: d8ada9ba0406f95eb7cebaef5e6b5d19
 
 Package: base64enc
 Source: CRAN
@@ -129,7 +127,7 @@ Package: car
 Source: CRAN
 Version: 2.1-3
 Hash: 97f6860dc04ba4f513cb2aaf092ce1e7
-Requires: pbkrtest, quantreg
+Requires: quantreg, pbkrtest
 
 Package: chron
 Source: CRAN
@@ -148,13 +146,13 @@ Hash: a5cf9920b36c0a171e1b04ffed1ace5a
 
 Package: commonmark
 Source: CRAN
-Version: 0.9
-Hash: a30f32e823790d82981d211e0f7d781a
+Version: 1.0
+Hash: 0bc934f0964247bbc4fa254ad6ffd21d
 
 Package: curl
 Source: CRAN
-Version: 2.2
-Hash: 4533829fb0026bd0dea77ba8f1612d37
+Version: 2.3
+Hash: 9a0b969942c61511002e103f7b047b98
 
 Package: data.table
 Source: CRAN
@@ -219,21 +217,21 @@ Hash: b2a47a2b91737978cf50ba95825a9cd1
 
 Package: formr
 Source: github
-Version: 0.4.2
-Hash: 7e2d6fe15675613110018cd81d8d809b
+Version: 0.4.3
+Hash: 9b28215f23fe41652b9010d20aa2947d
 Requires: commonmark, curl, dplyr, ggplot2, haven, httr, jsonlite,
-    knitr, likert, lubridate, plyr, pryr, psych, reshape2, rmarkdown,
-    scales, stringr, tidyr
+    knitr, likert, lubridate, pryr, psych, reshape2, rmarkdown, scales,
+    stringr, tidyr
 GithubRepo: formr
 GithubUsername: rubenarslan
 GithubRef: master
-GithubSha1: 5984c68b76268c0aaed78967749a6ba61af5427a
+GithubSha1: 46820a62138c811c5a80927e7ec4818a9d86ab86
 
 Package: ggplot2
 Source: CRAN
-Version: 2.1.0
-Hash: 50e297b0191179c39c7dcae0eff72b51
-Requires: digest, gtable, plyr, reshape2, scales
+Version: 2.2.0
+Hash: 78c14285e0c114542d051a09bd552472
+Requires: digest, gtable, lazyeval, plyr, reshape2, scales, tibble
 
 Package: git2r
 Source: CRAN
@@ -301,9 +299,9 @@ Hash: 86d4b85b84421a4815f1bb4872e30ef4
 
 Package: knitr
 Source: CRAN
-Version: 1.14
-Hash: e7b411f5a5512295a260a45683fa0c4a
-Requires: digest, evaluate, formatR, highr, markdown, stringr, yaml
+Version: 1.15.1
+Hash: eed7437e2b614c9e3923b7932b16ac97
+Requires: digest, evaluate, highr, markdown, stringr, yaml
 
 Package: labeling
 Source: CRAN
@@ -342,7 +340,7 @@ Package: lme4
 Source: CRAN
 Version: 1.1-12
 Hash: 71d6bd20eb374245f7b852e9b4995f22
-Requires: Rcpp, RcppEigen, minqa, nlme, nloptr
+Requires: Rcpp, nlme, nloptr, RcppEigen, minqa
 
 Package: lubridate
 Source: CRAN
@@ -485,22 +483,28 @@ Requires: Rcpp, plyr, stringr
 
 Package: rmarkdown
 Source: CRAN
-Version: 1.1
-Hash: d0e9f583d85019c99a171b094979fcb3
+Version: 1.2
+Hash: 0bcccd4b0db101c709ee10012320a66f
 Requires: base64enc, caTools, evaluate, htmltools, jsonlite, knitr,
-    tibble, yaml
+    rprojroot, yaml
 
 Package: rockchalk
 Source: CRAN
 Version: 1.8.101
 Hash: 2dd18e8aabe924b9fe4a306ce24a0cb1
-Requires: car, lme4
+Requires: lme4, car
 
 Package: rpf
 Source: CRAN
 Version: 0.53
 Hash: b3f109ca40a56603b21e70bc6eed9506
-Requires: RcppEigen, mvtnorm
+Requires: mvtnorm, RcppEigen
+
+Package: rprojroot
+Source: CRAN
+Version: 1.1
+Hash: bd5b942006c3fa1352c07ba765a2c670
+Requires: backports
 
 Package: rstudioapi
 Source: CRAN
@@ -509,8 +513,8 @@ Hash: fd256f8bfb9a64cc35f98b0decb1a79f
 
 Package: scales
 Source: CRAN
-Version: 0.4.0
-Hash: ceb735f3c8a286732bc9c7d5c04d71c5
+Version: 0.4.1
+Hash: cf658953d600d4736b058df1558df481
 Requires: RColorBrewer, Rcpp, dichromat, labeling, munsell, plyr
 
 Package: scatterplot3d
@@ -581,5 +585,5 @@ Hash: 7293235cfcc14cdff1ce7fd1a0212031
 
 Package: yaml
 Source: CRAN
-Version: 2.1.13
-Hash: 4854ccabebc225e8a7309fb4a74980de
+Version: 2.1.14
+Hash: c81230c3a7d9ba20607ad6b4331173d1

@@ -8,9 +8,14 @@ output: html_document
 
 ## Load libraries
 ```{r}
-library(dplyr)
+# library(Hmisc)
 library(lme4)
+library(ggplot2)
+library(formr)
 library(effects)
+library(stringr)
+library(dplyr)
+library(tidyr)
 ```
 
 ## Load data
@@ -37,7 +42,19 @@ alldata_birthorder = alldata_birthorder %>%
     birthorder_genes_factor = factor(birthorder_genes_factor, levels = c("1","2","3","4","5","5+")),
     sibling_count_genes_factor = as.character(sibling_count_genes),
     sibling_count_genes_factor = ifelse(sibling_count_genes >5 , "5+", sibling_count_genes_factor),
-    sibling_count_genes_factor = factor(sibling_count_genes_factor, levels = c("1","2","3","4","5","5+")))
+    sibling_count_genes_factor = factor(sibling_count_genes_factor, levels = c("1","2","3","4","5","5+")),
+
+    count_birthorder = factor(str_replace(as.character(interaction(birthorder_uterus_alive_factor, sibling_count_uterus_alive_factor)), "\\.", "/"), levels =   c("1/1","1/2","2/2",
+     "1/3",  "2/3",  "3/3", 
+    "1/4", "2/4", "3/4", "4/4", 
+    "1/5", "2/5", "3/5", "4/5", "5/5", 
+    "1/5+", "2/5+", "3/5+", "4/5+", "5/5+", "5+/5+")),
+    byear = byear - mean(byear, na.rm = T),
+    age = age - mean(age, na.rm = T),
+    male = factor(gender == 1),
+    male = ifelse(gender > 3, NA, male),
+    g_factor = scale(g_factor)[,1]
+)
 
 
 crosstabs(~ sibling_count_uterus_alive_factor + birthorder_uterus_alive_factor, data = alldata_birthorder)
@@ -49,27 +66,46 @@ alldata_birthorder$sex = factor(ifelse(alldata_birthorder$sex.x==1, "male", "fem
 no_only_children_uterus = alldata_birthorder %>% filter(as.numeric(sibling_count_uterus_alive) > 1)
 crosstabs(~ sibling_count_uterus_alive_factor + birthorder_uterus_alive_factor, data = no_only_children_uterus)
 
-no_only_children_genes = alldata_birthorder %>% filter(as.numeric(sibling_count_genes) > 1)
+no_only_children_genes = alldata_birthorder %>% filter(as.numeric(as.character(sibling_count_genes)) > 1)
 
 crosstabs(~ sibling_count_genes_factor + birthorder_genes_factor, data = no_only_children_genes)
+```
+
+```{r}
+plot_birthorder = function(model) {
+  if(inherits(model, "merMod")) {
+    outcome = names(model@frame)[1]
+  } else {
+    outcome = names(model$frame[1])
+  }
+  emm = allEffects(model)
+  cemm = as.data.frame(emm$count_birthorder)  %>% separate(count_birthorder, into = c("Birth order", "Nr. Siblings"), sep = "/")
+  print(
+  ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower, colour = `Nr. Siblings`, group = `Nr. Siblings`)) + 
+    geom_pointrange(stat = "identity", position = position_dodge(width = 0.5)) + 
+    geom_line(position = position_dodge(width = 0.5)) +
+    ylab(outcome)
+  )
+}
 
 ```
 
 
-
 ```{r}
-m1 = lm(riskA ~ sex + age + byear + birthorder_uterus_alive, data = alldata_birthorder)
+m1 = lm(riskA ~ male + age + byear + birthorder_uterus_alive, data = alldata_birthorder)
 summary(m1)
-m2 = lm(riskA ~ sex + age + byear + birthorder_uterus_preg, data = alldata_birthorder)
+m2 = lm(riskA ~ male + age + byear + birthorder_uterus_preg, data = alldata_birthorder)
 summary(m2)
 
-x1 = lm(riskA ~ sex + age + byear + birthorder_uterus_alive_factor * sibling_count_uterus_alive_factor, data = no_only_children_uterus)
+x1 = lm(riskA ~ male + age + byear + count_birthorder, data = no_only_children_uterus)
 summary(x1)
 plot(allEffects(x1))
+plot_birthorder(x1)
 
-x2 = lm(g_factor ~ sex + age + byear + birthorder_uterus_alive_factor * sibling_count_uterus_alive_factor, data = no_only_children_uterus)
+x2 = lm(g_factor ~ male + age + byear + count_birthorder, data = no_only_children_uterus)
 summary(x2)
 plot(allEffects(x2))
+plot_birthorder(x2)
 
 no_only_children_uterus %>%
     ggplot(aes(x=birthorder_uterus_alive_factor, y=g_factor, colour = sibling_count_uterus_alive_factor, group = sibling_count_uterus_alive_factor)) + 
@@ -85,7 +121,30 @@ no_only_children_genes %>%
   geom_pointrange(fun.data = "mean_cl_boot", stat = "summary", position = position_dodge(width = 0.4)) + 
   geom_line(fun.data = "mean_cl_boot", stat = "summary", position = position_dodge(width = 0.4))
 
-m1m = lmer(riskA ~ gender + age + byear + birthorder_uterus_alive_factor * sibling_count_uterus_alive_factor + (1 | mother_pidlink), data = no_only_children_uterus)
+
+
+crosstabs(no_only_children_uterus$count_birthorder)
+
+m1m = lmer(riskA ~ male + age + byear + count_birthorder + (1 | mother_pidlink), data = no_only_children_uterus)
+
+
+
+model_risk = lmer(riskA ~ male + age + byear + count_birthorder + (1 | mother_pidlink), data = no_only_children_uterus)
 summary(m1m)
+plot_birthorder(model_risk)
+
+
+model_g = lmer(g_factor ~ male + age + byear + count_birthorder + (1 | mother_pidlink), data = no_only_children_uterus)
+summary(model_g)
+plot_birthorder(model_g)
+
+model_raven = lmer(raven ~ male + age + byear + count_birthorder + (1 | mother_pidlink), data = no_only_children_uterus)
+summary(model_raven)
+plot_birthorder(model_raven)
+
+xtabs(~ is.na(g_factor) + count_birthorder, data = no_only_children_uterus)
+# emm = lsmeans(m1m, "count_birthorder")
+# cemm = confint(emm) %>% separate(count_birthorder, into = c("Birth order", "Nr. Siblings"), sep = "/")
+
 ```
 

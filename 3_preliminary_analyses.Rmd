@@ -121,18 +121,13 @@ no_only_children_genes %>%
   geom_pointrange(fun.data = "mean_cl_boot", stat = "summary", position = position_dodge(width = 0.4)) + 
   geom_line(fun.data = "mean_cl_boot", stat = "summary", position = position_dodge(width = 0.4))
 
-
-
 crosstabs(no_only_children_uterus$count_birthorder)
 
 m1m = lmer(riskA ~ male + age + byear + count_birthorder + (1 | mother_pidlink), data = no_only_children_uterus)
 
-
-
 model_risk = lmer(riskA ~ male + age + byear + count_birthorder + (1 | mother_pidlink), data = no_only_children_uterus)
 summary(m1m)
 plot_birthorder(model_risk)
-
 
 model_g = lmer(g_factor ~ male + age + byear + count_birthorder + (1 | mother_pidlink), data = no_only_children_uterus)
 summary(model_g)
@@ -145,6 +140,5 @@ plot_birthorder(model_raven)
 xtabs(~ is.na(g_factor) + count_birthorder, data = no_only_children_uterus)
 # emm = lsmeans(m1m, "count_birthorder")
 # cemm = confint(emm) %>% separate(count_birthorder, into = c("Birth order", "Nr. Siblings"), sep = "/")
-
 ```
 

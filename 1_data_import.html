@@ -248,8 +248,9 @@ length(unique(pregnancy$pidlink))</code></pre>
 <pre><code>## [1] 16035</code></pre>
 <pre class="r"><code>## Rename Variables
 pregnancy = pregnancy %&gt;% rename(lifebirths = ch06, gender = ch08, birth_day = ch09day, birth_month = ch09mth, birth_year = ch09yr, mother_pidlink = pidlink, alive = ch25) # pregnancy$lifebirths values: 1 = still pregnant, 2 = livebirth, 3 = still birth, 4 = misscarriage
-
-## Set values as NA that are missing
+n_missing(pregnancy$mother_pidlink)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code>## Set values as NA that are missing
 pregnancy$birth_day[ pregnancy$birth_day&gt;31] = NA
 pregnancy$birth_month[ pregnancy$birth_month&gt;12] = NA
 pregnancy$birth_year[ pregnancy$birth_year&gt;2016] = NA
@@ -302,7 +303,7 @@ pregnancy1 = pregnancy %&gt;%
   group_by(mother_pidlink) %&gt;%
   mutate(birthorder_uterus_preg = min_rank(birthdate),
          sibling_count_uterus_preg = sum(!is.na(birthdate)))
-         
+
 ## Biological Uterus Birthorder calculations with all births:
 pregnancy2 = pregnancy %&gt;%
   filter(lifebirths == 2) %&gt;%
@@ -319,7 +320,7 @@ pregnancy = left_join(pregnancy1, pregnancy2, by=&quot;mother_birthdate&quot;)
 
 ### How many no-only-children are left?
 pregnancy = as.data.frame(pregnancy)
-pregnancy$mother_pidlink = pregnancy$mother_pidlink.y
+pregnancy$mother_pidlink = pregnancy$mother_pidlink.x
 pregnancy$mother_pidlink.y = pregnancy$mother_pidlink.x = NULL
 
 pregnancy_check = pregnancy %&gt;%
@@ -337,9 +338,9 @@ pregnancy_alive_check = pregnancy_alive_check %&gt;%
 pregnancy_alive_and_old_enough_check = pregnancy_alive_check %&gt;%
     filter(birth_year &lt; 2000)
 
-
-
-### Graphs
+n_missing(pregnancy$mother_pidlink)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code>### Graphs
 ## Biological Birthorder - Uterus_Pregnancies
 qplot(pregnancy$birthorder_uterus_preg)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
@@ -379,10 +380,19 @@ w1_marriage = w1_marriage %&gt;% rename(kw10mth = kw05b, kw10yr = kw05a, kw18mth
 
 ## Combine marriage informations
 marriage = bind_rows(w1_marriage, w2_marriage, w3_marriage, w4_marriage, w5_marriage)
-# Rename columns
+
+length(intersect(marriage$pidlink, pregnancy$mother_pidlink))</code></pre>
+<pre><code>## [1] 13010</code></pre>
+<pre class="r"><code>length(setdiff(pregnancy$mother_pidlink, marriage$pidlink))</code></pre>
+<pre><code>## [1] 88</code></pre>
+<pre class="r"><code>length(setdiff(marriage$pidlink, pregnancy$mother_pidlink))</code></pre>
+<pre><code>## [1] 3783</code></pre>
+<pre class="r"><code># Rename columns
 marriage = marriage %&gt;% rename(start_year = kw10yr, start_month = kw10mth, end_year = kw18yr, end_month = kw18mth)
 marriage = marriage %&gt;% arrange(pidlink, start_year, start_month, end_year, end_month)
+
 marriage = marriage %&gt;% filter(!duplicated(cbind(pidlink, start_year, start_month)) | !is.na(start_year) | is.na(start_month)) # nobody gets married twice on the same day, right? so these are dupes.
+
 # Set values as NA that are missing
 marriage$start_year[ marriage$start_year&lt;1900] = NA
 marriage$start_year[ marriage$start_year&gt;2016] = NA
@@ -412,12 +422,12 @@ table(is.na(marriage$start_year))</code></pre>
 <pre class="r"><code>## Calculate date for beginning of marriage:
 pad_month = function(x) { str_pad(x, width = 2, side = &quot;left&quot;, pad = &quot;0&quot;)}
 marriage = marriage %&gt;% 
+  ungroup() %&gt;%
   mutate(
         start_string = str_c(start_year, &quot;-&quot;, ifelse(is.na(start_month), &quot;01&quot;, pad_month(start_month)), &quot;-01&quot;),
-        end_string = str_c(end_year, &quot;-&quot;, ifelse(is.na(end_month), &quot;12&quot;, pad_month(end_month)), &quot;-01&quot;)
-  )
-marriage = marriage %&gt;% ungroup() %&gt;% mutate(start = ymd(start_string),
-                               end = ymd(end_string) + months(1) - days(1))
+        end_string = str_c(end_year, &quot;-&quot;, ifelse(is.na(end_month), &quot;12&quot;, pad_month(end_month)), &quot;-01&quot;),
+        start = ymd(start_string),
+        end = ymd(end_string) + months(1) - days(1))
 
 # marriage$start_string[!is.na(marriage$start_string) &amp; is.na(marriage$start) ]
 # marriage$end_string[!is.na(marriage$end_string) &amp; is.na(marriage$end) ]
@@ -440,9 +450,6 @@ marriage = marriage %&gt;%
 
 dupes = unique(marriage$marriage_id[duplicated(marriage$marriage_id)])
 
-## Remove all families with unclear fathers
-marriage = marriage %&gt;%
-  filter(! marriage_id %in% dupes)
 
 ## Graphic analysis
 marriage %&gt;% ggplot(aes(number_marriages, order_marriage)) + geom_jitter(width=0.1)</code></pre>
@@ -452,19 +459,21 @@ marriage %&gt;% ggplot(aes(number_marriages, order_marriage)) + geom_jitter(widt
 table(is.na(marriage$start))</code></pre>
 <pre><code>## 
 ## FALSE  TRUE 
-## 24756  1050</code></pre>
+## 36583  1758</code></pre>
 <pre class="r"><code>table(is.na(marriage$end))</code></pre>
 <pre><code>## 
 ## FALSE  TRUE 
-##  4855 20951</code></pre>
+##  5144 33197</code></pre>
 <pre class="r"><code>pregnancy$month = paste0(pregnancy$birth_year,&quot;-&quot;, ifelse(is.na(pregnancy$birth_month), &quot;01&quot;, pad_month(pregnancy$birth_month)))
 
+
+### Marriage Timeline
 minimum_start = min(ymd(str_c(pregnancy$month, &quot;-01&quot;)), na.rm = T)
 maximum_end = max(ymd(str_c(pregnancy$month, &quot;-01&quot;)), na.rm = T)
 marriage_timeline = marriage %&gt;%
     mutate(implied_start = as.Date(ifelse(is.na(start), minimum_start , start), origin=&quot;1970-01-01&quot;),
            implied_end = as.Date(ifelse(is.na(end), maximum_end , end), origin=&quot;1970-01-01&quot;)) %&gt;%
-  filter(start &lt; end)
+  filter(implied_start &lt; implied_end)
 
 marriage_timeline = marriage_timeline %&gt;%
     rowwise() %&gt;%
@@ -474,32 +483,32 @@ marriage_timeline = marriage_timeline %&gt;%
         order_marriage = .$order_marriage,
         start = .$start,
         end = .$end,
-        month=seq(.$implied_start,.$implied_end,by=&quot;1 month&quot;)))</code></pre>
+        month = seq(.$implied_start,.$implied_end, by=&quot;1 month&quot;) ))</code></pre>
 <pre><code>## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
 <pre><code>## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
-<pre class="r"><code>marriage_timeline = marriage_timeline %&gt;% 
+<pre class="r"><code># no duplicate mother_id - month combinations (no two marriages at the same time)
+marriage_timeline = marriage_timeline %&gt;% 
   arrange(mother_pidlink, start, end) %&gt;% 
   distinct(mother_pidlink, month, .keep_all = TRUE)
 
-
 marriage_timeline$month = stringr::str_sub(as.character(marriage_timeline$month),1,7)
 
+# How many IDs from the pregnancy file match the marriage file?
 length(intersect(pregnancy$mother_pidlink, marriage_timeline$mother_pidlink))</code></pre>
-<pre><code>## [1] 2084</code></pre>
-<pre class="r"><code>length(setdiff(pregnancy$mother_pidlink, marriage_timeline$mother_pidlink))</code></pre>
-<pre><code>## [1] 10798</code></pre>
-<pre class="r"><code>length(setdiff(marriage_timeline$mother_pidlink, pregnancy$mother_pidlink))</code></pre>
-<pre><code>## [1] 681</code></pre>
+<pre><code>## [1] 13010</code></pre>
 <pre class="r"><code>pregnancy = pregnancy %&gt;% left_join(marriage_timeline, by = c(&quot;mother_pidlink&quot;, &quot;month&quot;))
 
-rm(marriage_timeline)
-
-table(table(pregnancy$marriage_id))</code></pre>
+table(is.na(pregnancy$marriage_id))</code></pre>
 <pre><code>## 
-##   1   2   3   4   5   6   7   8   9  10  11  12  14 
-## 797 422 252 160 106  60  28  17  12   7   3   2   1</code></pre>
-<pre class="r"><code>sum(table(table(pregnancy$marriage_id)))</code></pre>
-<pre><code>## [1] 1867</code></pre>
+## FALSE  TRUE 
+## 35476   567</code></pre>
+<pre class="r"><code>table(table(pregnancy$marriage_id))</code></pre>
+<pre><code>## 
+##    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15 
+## 4469 3899 2157 1194  733  448  230  175   96   72   32   26   10    9    3 
+##   16   18 
+##    2    1</code></pre>
+<pre class="r"><code>rm(marriage_timeline)</code></pre>
 </div>
 <div id="select-individual-data" class="section level2">
 <h2>Select individual data</h2>
@@ -514,12 +523,6 @@ individuals_unchanged = individuals
 ## people whose parents can not be identified have to be marked as NA:
 individuals$fatherID[ individuals$fatherID&gt;50] = NA
 individuals$motherID[ individuals$motherID&gt;50] = NA
-
-
-## create mother_father_number that should be identical for all siblings in one family that share the same parents
-individuals = individuals %&gt;% mutate(
-  mother_father_dyad = stringr::str_c(father_pidlink, mother_pidlink)
-) # father_pidlink and mother_pidlink; if one is missing = NA
 
 
 ## Create date of birth
@@ -566,18 +569,20 @@ alldata_pregnancy_check = inner_join(individuals, pregnancy_alive_and_old_enough
 </div>
 <div id="gene-birthorder-based-on-both-parents" class="section level2">
 <h2>Gene birthorder (based on both parents)</h2>
-<pre class="r"><code>### Gene birthorder is calculated by grouping individuals together, for whom we know both parents and making a rank list
+<pre class="r"><code>### Gene birthorder is calculated by grouping individuals together, for whom we know both the mother and her marriage history and making a rank list
 alldata_pregnancy = alldata_pregnancy %&gt;%
-  group_by(mother_father_dyad) %&gt;%
+  filter(!is.na(marriage_id)) %&gt;%
+  group_by(marriage_id) %&gt;%
     mutate(birthorder_genes = min_rank(birthdate),
-           birthorder_genes = ifelse(is.na(mother_father_dyad), NA, birthorder_genes),
-           sibling_count_genes = sum(!is.na(mother_father_dyad)))
+           birthorder_genes = ifelse(is.na(marriage_id), NA, birthorder_genes),
+           sibling_count_genes = sum(!is.na(marriage_id)))
+
+
 ggplot(alldata_pregnancy, aes(x=sibling_count_genes, y=birthorder_genes)) + geom_jitter()</code></pre>
-<pre><code>## Warning: Removed 1582 rows containing missing values (geom_point).</code></pre>
 <p><img src="1_data_import_files/figure-html/gene%20birthorder-1.png" width="672" /></p>
 <pre class="r"><code>## Plot uterus birth order vs. gene birthorder
 ggplot(alldata_pregnancy, aes(x=birthorder_uterus_alive, y=birthorder_genes)) + geom_jitter()</code></pre>
-<pre><code>## Warning: Removed 1586 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 4 rows containing missing values (geom_point).</code></pre>
 <p><img src="1_data_import_files/figure-html/gene%20birthorder-2.png" width="672" /></p>
 </div>
 <div id="select-iq-data" class="section level2">
@@ -1002,18 +1007,6 @@ qplot(iq$g_factor)</code></pre>
 ## 4 1_____4_5_6   324        
 ## 5 1_2_3_4____    47        
 ## 6 1_____4____    15</code></pre>
-<pre class="r"><code># impute missing values
-# library(missMDA)
-# estimate number of components
-# rr = iq %&gt;% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering)
-# nb &lt;- estim_ncpPCA(rr, ncp.min=0, ncp.max=5)
-# actual impute
-# rr.impute &lt;- imputePCA(rr, ncp=nb$ncp)
-# https://stats.stackexchange.com/questions/123725/how-can-i-estimate-a-principal-component-from-incomplete-data?noredirect=1&amp;lq=1
-
-# Run pca
-# pca.fit &lt;- prcomp(rr.impute$completeObs)
-# pca.fit$rotation</code></pre>
 </div>
 <div id="select-personality-data" class="section level2">
 <h2>Select personality data</h2>
@@ -1411,24 +1404,24 @@ ggplot(alldata, aes(x=big5_open, y=g_factor)) + geom_jitter() + geom_smooth(meth
 alldata_birthorder %&gt;%
   filter(birthorder_uterus_alive&lt;6) %&gt;%
   ggplot(aes(x=birthorder_uterus_alive, y=g_factor)) + geom_jitter() + geom_smooth(method=lm) </code></pre>
-<pre><code>## Warning: Removed 11901 rows containing non-finite values (stat_smooth).</code></pre>
-<pre><code>## Warning: Removed 11901 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 11689 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 11689 rows containing missing values (geom_point).</code></pre>
 <p><img src="1_data_import_files/figure-html/exploring%20data-3.png" width="672" /></p>
 <pre class="r"><code>table(alldata_birthorder$sibling_count_uterus_alive)</code></pre>
 <pre><code>## 
 ##    1    2    3    4    5    6    7    8    9   10   11   12   13   14 
-## 3232 5876 3429 1936 1043  639  311  212  112   98   36   39    5   16</code></pre>
+## 3120 5793 3409 1929 1042  637  311  212  111   98   36   39    5   16</code></pre>
 <pre class="r"><code>alldata_birthorder %&gt;%
   filter(birthorder_uterus_alive&lt;8) %&gt;%
   filter(sibling_count_uterus_alive&lt;8) %&gt;%
   ggplot(aes(x=birthorder_uterus_alive, y=g_factor)) + 
   facet_wrap(~ sibling_count_uterus_alive) + 
   geom_jitter() + geom_smooth(method=lm) </code></pre>
-<pre><code>## Warning: Removed 11996 rows containing non-finite values (stat_smooth).</code></pre>
-<pre><code>## Warning: Removed 11996 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 11784 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 11784 rows containing missing values (geom_point).</code></pre>
 <p><img src="1_data_import_files/figure-html/exploring%20data-4.png" width="672" /></p>
 <pre class="r"><code>alldata_birthorder %&gt;% select(birthorder_uterus_alive, sibling_count_uterus_alive, birthdate) -&gt; subs</code></pre>
-<pre><code>## Adding missing grouping variables: `mother_father_dyad`</code></pre>
+<pre><code>## Adding missing grouping variables: `marriage_id`</code></pre>
 <pre class="r"><code>alldata_birthorder$byear = as.numeric(stringr::str_sub(alldata_birthorder$birthdate,1,4))
 
 alldata_birthorder %&gt;%
@@ -1439,8 +1432,8 @@ alldata_birthorder %&gt;%
   ggplot(aes(x=birthorder_uterus_alive, y=g_factor, colour = sibling_count_uterus_alive, group = sibling_count_uterus_alive)) + 
   geom_pointrange(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4)) + 
   geom_line(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4))</code></pre>
-<pre><code>## Warning: Removed 11996 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>## Warning: Removed 11996 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>## Warning: Removed 11784 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>## Warning: Removed 11784 rows containing non-finite values (stat_summary).</code></pre>
 <p><img src="1_data_import_files/figure-html/exploring%20data-5.png" width="672" /></p>
 <pre class="r"><code>alldata_birthorder %&gt;%
   filter(birthorder_uterus_alive &lt; 8) %&gt;%
@@ -1450,8 +1443,8 @@ alldata_birthorder %&gt;%
   ggplot(aes(x=birthorder_uterus_alive, y=big5_open, colour = sibling_count_uterus_alive, group = sibling_count_uterus_alive)) + 
   geom_pointrange(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4)) + 
   geom_line(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4))</code></pre>
-<pre><code>## Warning: Removed 11966 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>## Warning: Removed 11966 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>## Warning: Removed 11754 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>## Warning: Removed 11754 rows containing non-finite values (stat_summary).</code></pre>
 <p><img src="1_data_import_files/figure-html/exploring%20data-6.png" width="672" /></p>
 <pre class="r"><code>alldata_birthorder %&gt;%
   filter(birthorder_uterus_alive &lt; 8) %&gt;%
@@ -1461,9 +1454,9 @@ alldata_birthorder %&gt;%
   ggplot(aes(x=birthorder_uterus_alive, y=big5_ext, colour = sibling_count_uterus_alive, group = sibling_count_uterus_alive)) + 
   geom_pointrange(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4)) + 
   geom_line(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4))</code></pre>
-<pre><code>## Warning: Removed 11966 rows containing non-finite values (stat_summary).
+<pre><code>## Warning: Removed 11754 rows containing non-finite values (stat_summary).
 
-## Warning: Removed 11966 rows containing non-finite values (stat_summary).</code></pre>
+## Warning: Removed 11754 rows containing non-finite values (stat_summary).</code></pre>
 <p><img src="1_data_import_files/figure-html/exploring%20data-7.png" width="672" /></p>
 <pre class="r"><code>### Genes:
 alldata_birthorder %&gt;%
@@ -1474,8 +1467,8 @@ alldata_birthorder %&gt;%
   ggplot(aes(x=birthorder_genes, y=g_factor, colour = sibling_count_genes, group = sibling_count_genes)) + 
   geom_pointrange(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4)) + 
   geom_line(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4))</code></pre>
-<pre><code>## Warning: Removed 10997 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>## Warning: Removed 10997 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>## Warning: Removed 11964 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>## Warning: Removed 11964 rows containing non-finite values (stat_summary).</code></pre>
 <p><img src="1_data_import_files/figure-html/exploring%20data-8.png" width="672" /></p>
 <pre class="r"><code>alldata_birthorder %&gt;%
   filter(birthorder_genes &lt; 8) %&gt;%
@@ -1485,8 +1478,8 @@ alldata_birthorder %&gt;%
   ggplot(aes(x=birthorder_genes, y=big5_open, colour = sibling_count_genes, group = sibling_count_genes)) + 
   geom_pointrange(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4)) + 
   geom_line(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4))</code></pre>
-<pre><code>## Warning: Removed 10969 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>## Warning: Removed 10969 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>## Warning: Removed 11933 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>## Warning: Removed 11933 rows containing non-finite values (stat_summary).</code></pre>
 <p><img src="1_data_import_files/figure-html/exploring%20data-9.png" width="672" /></p>
 <pre class="r"><code>alldata_birthorder %&gt;%
   filter(birthorder_uterus_alive &lt; 8) %&gt;%
@@ -1496,8 +1489,8 @@ alldata_birthorder %&gt;%
   ggplot(aes(x=birthorder_uterus_alive, y=big5_ext, colour = sibling_count_uterus_alive, group = sibling_count_uterus_alive)) + 
   geom_pointrange(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4)) + 
   geom_line(fun.data = &quot;mean_cl_boot&quot;, stat = &quot;summary&quot;, position = position_dodge(width = 0.4))</code></pre>
-<pre><code>## Warning: Removed 11966 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>## Warning: Removed 11966 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>## Warning: Removed 11754 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>## Warning: Removed 11754 rows containing non-finite values (stat_summary).</code></pre>
 <p><img src="1_data_import_files/figure-html/exploring%20data-10.png" width="672" /></p>
 </div>
 <div id="save-data" class="section level2">

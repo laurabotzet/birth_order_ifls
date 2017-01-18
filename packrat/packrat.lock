@@ -82,6 +82,12 @@ Source: CRAN
 Version: 2.12.0-1
 Hash: aade2e006e1a6a8dc4e33da2ef84679e
 
+Package: TH.data
+Source: CRAN
+Version: 1.0-7
+Hash: 0c57e23c3a07fc579222d0e7f8b63556
+Requires: survival
+
 Package: abind
 Source: CRAN
 Version: 1.4-5
@@ -201,6 +207,11 @@ Source: CRAN
 Version: 0.3-8
 Hash: d46612e1f7e4f0794776420303f3db63
 
+Package: estimability
+Source: CRAN
+Version: 1.2
+Hash: 9632ba095a2e0f4ed73291c10363d777
+
 Package: evaluate
 Source: CRAN
 Version: 0.10
@@ -211,6 +222,12 @@ Package: flashClust
 Source: CRAN
 Version: 1.01-2
 Hash: 023ac07c165d659e6535c689864ef205
+
+Package: forcats
+Source: CRAN
+Version: 0.1.1
+Hash: 7f93e560ba45f278e1d66df743747d2a
+Requires: magrittr, tibble
 
 Package: foreign
 Source: CRAN
@@ -349,6 +366,18 @@ Version: 1.1-12
 Hash: 71d6bd20eb374245f7b852e9b4995f22
 Requires: Rcpp, RcppEigen, minqa, nlme, nloptr
 
+Package: lmerTest
+Source: CRAN
+Version: 2.0-33
+Hash: eebe91adf31427a467384a8e13b797a1
+Requires: Hmisc, ggplot2, lme4, plyr
+
+Package: lsmeans
+Source: CRAN
+Version: 2.25
+Hash: 336442b2c8ab2a090052fb065474ea30
+Requires: coda, estimability, multcomp, mvtnorm, nlme, plyr, xtable
+
 Package: lubridate
 Source: CRAN
 Version: 1.6.0
@@ -404,6 +433,12 @@ Package: mnormt
 Source: CRAN
 Version: 1.5-5
 Hash: d0d5efbb1fb26d2dc5f9394c223084b5
+
+Package: multcomp
+Source: CRAN
+Version: 1.4-6
+Hash: 6c2ce6c04299742433fde739755f0f4f
+Requires: TH.data, mvtnorm, sandwich, survival
 
 Package: munsell
 Source: CRAN
@@ -518,6 +553,12 @@ Source: CRAN
 Version: 0.6
 Hash: fd256f8bfb9a64cc35f98b0decb1a79f
 
+Package: sandwich
+Source: CRAN
+Version: 2.3-4
+Hash: eb356b4a90fa5887a45917b42587bf6c
+Requires: zoo
+
 Package: scales
 Source: CRAN
 Version: 0.4.1
@@ -599,3 +640,8 @@ Package: yaml
 Source: CRAN
 Version: 2.1.14
 Hash: c81230c3a7d9ba20607ad6b4331173d1
+
+Package: zoo
+Source: CRAN
+Version: 1.7-14
+Hash: a4c3a385cd122b5d6af30732bf267060

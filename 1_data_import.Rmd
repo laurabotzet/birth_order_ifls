@@ -18,11 +18,17 @@ library(tidyr)
 library(ggplot2)
 library(stringr)
 library(GPArotation)
+library(lubridate)
+library(psych)
+library(lavaan)
 library(dplyr)
 ```
 
 ## Helper
 ```{r helper}
+
+pad_month = function(x) { str_pad(x, width = 2, side = "left", pad = "0")}
+
 ### Function to calculate the birthdate out of all available informations for one individual
 all_available_info_birth_date = function(byear, bmonth, bday = NULL) {
   if(!is.null(bday)) {
@@ -100,6 +106,18 @@ w3_marriage = read_dta("data/hh00_all_dta/b4_kw3.dta") # Book 4, Section kw3
 w2_marriage = read_dta("data/hh97dta/b4_kw2.dta") # Book 4, Section kw2
 ## Wave 1 - 1993
 w1_marriage = read_dta("data/hh93dta/buk4kw2.dta") # Book 4, Section kw2
+
+## Additional marriage information from mother
+# Wave 5 - 2014
+w5_marriage_additional = read_dta("data/hh14_all_dta/b4_cov.dta") # Book 4, Section cov
+# Wave 4 - 2007
+w4_marriage_additional = read_dta("data/hh07_all_dta/b4_cov.dta") # Book 4, Section cov
+# Wave 3 - 2000
+w3_marriage_additional = read_dta("data/hh00_all_dta/b4_cov.dta") # Book 4, Section cov
+# Wave 2 - 1997
+w2_marriage_additional = read_dta("data/hh97dta/b4_cov.dta") # Book 4, Section cov
+# Wave 1 - 1993
+w1_marriage_additional = read_dta("data/hh93dta/bukkar2.dta") # Book K, Section ar, household roaster
 
 ### IQ Information
 ek_ek2 = read_dta("data/hh14_all_dta/ek_ek2.dta") # Book ek2
@@ -197,7 +215,8 @@ pregnancy2 = pregnancy %>%
   filter(lifebirths == 2) %>%
   group_by(mother_pidlink) %>%
     mutate(birthorder_uterus_alive = min_rank(birthdate),
-           sibling_count_uterus_alive = sum(!is.na(birthdate)))
+           sibling_count_uterus_alive = sum(!is.na(birthdate))) %>%
+  ungroup()
 
 pregnancy2 = pregnancy2 %>% select(mother_birthdate, birthorder_uterus_alive, sibling_count_uterus_alive)
 
@@ -205,27 +224,7 @@ pregnancy2 = pregnancy2 %>% select(mother_birthdate, birthorder_uterus_alive, si
 
 ### Combine birthorder data
 pregnancy = left_join(pregnancy1, pregnancy2, by="mother_birthdate")
-
-### How many no-only-children are left?
-pregnancy = as.data.frame(pregnancy)
-pregnancy$mother_pidlink = pregnancy$mother_pidlink.x
-pregnancy$mother_pidlink.y = pregnancy$mother_pidlink.x = NULL
-
-pregnancy_check = pregnancy %>%
-  filter(sibling_count_uterus_preg != 1)
-
-pregnancy_alive_check = pregnancy %>%
-  filter(!is.na(sibling_count_uterus_alive), sibling_count_uterus_alive != 1)
-
-
-### How many participants are still alive by IFLS 5:
-pregnancy_alive_check = pregnancy_alive_check %>%
-  filter(alive != 3)
-
-### How many participants are 15 or older by the time of ifls 5?
-pregnancy_alive_and_old_enough_check = pregnancy_alive_check %>%
-    filter(birth_year < 2000)
-
+pregnancy$month = paste0(pregnancy$birth_year,"-", ifelse(is.na(pregnancy$birth_month), "01", pad_month(pregnancy$birth_month)))
 n_missing(pregnancy$mother_pidlink)
 
 ### Graphs
@@ -246,31 +245,52 @@ ggplot(pregnancy, aes(x=birthorder_uterus_preg, y=birthorder_uterus_alive)) + ge
 
 ## Marriage History
 ```{r marriage history}
-## Select data
-w5_marriage = w5_marriage %>% select(pidlink, kw10mth, kw10yr, kw18mth, kw18yr)
-w4_marriage = w4_marriage %>% select(pidlink, kw10mth, kw10yr, kw18mth, kw18yr)
-w3_marriage = w3_marriage %>% select(pidlink, kw10mth, kw10yr, kw18mth, kw18yr)
-w2_marriage = w2_marriage %>% select(pidlink, kw10mth, kw10yr, kw18mth, kw18yr)
-w1_marriage = w1_marriage %>% select(pidlink, kw05a, kw05b, kw13a, kw13b)
+## Select marriage data
+w5_marriage = w5_marriage %>% select(pidlink, kw10mth, kw10yr, kw18mth, kw18yr, kw11, kw19)
+w4_marriage = w4_marriage %>% select(pidlink, kw10mth, kw10yr, kw18mth, kw18yr, kw11, kw19)
+w3_marriage = w3_marriage %>% select(pidlink, kw10mth, kw10yr, kw18mth, kw18yr, kw11, kw19)
+w2_marriage = w2_marriage %>% select(pidlink, kw10mth, kw10yr, kw18mth, kw18yr, kw11, kw19)
+w1_marriage = w1_marriage %>% select(pidlink, kw05a, kw05b, kw13a, kw13b, kw06, kw14age)
 # In the first wave the year is named wrong
 w1_marriage = w1_marriage %>%
   mutate(kw05a = ifelse(kw05a <= 93, as.numeric(str_c("19", w1_marriage$kw05a)), kw05a),
          kw13a = ifelse(kw13a <=93 , as.numeric(str_c("19", w1_marriage$kw13a)), kw13a))
 # And the column names are wrong...
-w1_marriage = w1_marriage %>% rename(kw10mth = kw05b, kw10yr = kw05a, kw18mth = kw13b, kw18yr = kw13a)
+w1_marriage = w1_marriage %>% rename(kw10mth = kw05b, kw10yr = kw05a, kw18mth = kw13b, kw18yr = kw13a, kw11 = kw06, kw19 = kw14age)
+
+## Select additional marriage information (age of respondent)
+w5_marriage_additional = w5_marriage_additional %>% select(pidlink, age, dob_yr)
+w4_marriage_additional = w4_marriage_additional %>% select(pidlink, age, dob_yr)
+w3_marriage_additional = w3_marriage_additional %>% select(pidlink, age, dob_yr)
+w2_marriage_additional = w2_marriage_additional %>% select(pidlink, age, dob_yr)
+
+w1_marriage_additional = w1_marriage_additional %>% select(pidlink, ar09yr, ar08yr)
+# In the first wave the year is named wrong
+w1_marriage_additional = w1_marriage_additional %>%
+  mutate(ar08yr = ifelse(ar08yr <= 93, 
+                         as.numeric(str_c("19", w1_marriage_additional$ar08yr)),
+                         ar08yr))
+# And the column names are wrong...
+w1_marriage_additional = w1_marriage_additional %>% rename(age = ar09yr, dob_yr = ar08yr)
+
+## Combine marriage information and additional marriage information:
+w1_marriage = left_join(w1_marriage, w1_marriage_additional, by = "pidlink") %>%
+  mutate(wave = as.numeric("1993"))
+w2_marriage = left_join(w2_marriage, w2_marriage_additional, by = "pidlink") %>%
+  mutate(wave = as.numeric("1997"))
+w3_marriage = left_join(w3_marriage, w3_marriage_additional, by = "pidlink")  %>%
+  mutate(wave = as.numeric("2000"))
+w4_marriage = left_join(w4_marriage, w4_marriage_additional, by = "pidlink") %>%
+  mutate(wave = as.numeric("2007"))
+w5_marriage = left_join(w5_marriage, w5_marriage_additional, by = "pidlink") %>%
+  mutate(wave = as.numeric("2014"))
 
 ## Combine marriage informations
 marriage = bind_rows(w1_marriage, w2_marriage, w3_marriage, w4_marriage, w5_marriage)
 
-length(intersect(marriage$pidlink, pregnancy$mother_pidlink))
-length(setdiff(pregnancy$mother_pidlink, marriage$pidlink))
-length(setdiff(marriage$pidlink, pregnancy$mother_pidlink))
-
 # Rename columns
-marriage = marriage %>% rename(start_year = kw10yr, start_month = kw10mth, end_year = kw18yr, end_month = kw18mth)
-marriage = marriage %>% arrange(pidlink, start_year, start_month, end_year, end_month)
+marriage = marriage %>% rename(start_year = kw10yr, start_month = kw10mth, end_year = kw18yr, end_month = kw18mth, start_age = kw11, end_age = kw19, birth_year = dob_yr, birth_age = age)
 
-marriage = marriage %>% filter(!duplicated(cbind(pidlink, start_year, start_month)) | !is.na(start_year) | is.na(start_month)) # nobody gets married twice on the same day, right? so these are dupes.
 
 # Set values as NA that are missing
 marriage$start_year[ marriage$start_year<1900] = NA
@@ -283,16 +303,33 @@ marriage$start_month [marriage$start_month>12] = NA
 marriage$start_month [is.nan(marriage$start_month)] = NA
 marriage$end_month [marriage$end_month>12] = NA
 marriage$end_month [is.nan(marriage$end_month)] = NA
+marriage$start_age [marriage$start_age > 97] = NA
+marriage$start_age [is.nan(marriage$start_age)] = NA
+marriage$end_age [marriage$end_age > 97] = NA
+marriage$end_age [is.nan(marriage$end_age)] = NA
+marriage$birth_year[ marriage$birth_year<1900] = NA
+marriage$birth_year[ marriage$birth_year>2016] = NA
+marriage$birth_year[ is.nan(marriage$birth_year)] = NA
+marriage$birth_age [marriage$birth_age > 97] = NA
+marriage$birth_age [is.nan(marriage$birth_age)] = NA
 
-table(is.na(marriage$start_year))
-table(is.na(marriage$end_year))
-library(lubridate)
+## Reconstruct marriage start year and end year for marriages with missing year
+marriage = marriage %>%
+  mutate(birth_year = ifelse(is.na(birth_year), wave - birth_age, birth_year),
+         start_year = ifelse(is.na(start_year), birth_year + start_age, start_year),
+         end_year = ifelse(is.na(end_year), birth_year + end_age, end_year))
+
+
+marriage = marriage %>% arrange(pidlink, start_year, start_month, start_age, end_year, end_month, end_age)
+
+marriage = marriage %>% filter(!duplicated(cbind(pidlink, start_year, start_month)) | !is.na(start_year) | is.na(start_month)) # nobody gets married twice on the same day, right? so these are dupes.
+
 ## Calculate date for beginning of marriage:
-pad_month = function(x) { str_pad(x, width = 2, side = "left", pad = "0")}
+
 marriage = marriage %>% 
   ungroup() %>%
-  mutate(
-        start_string = str_c(start_year, "-", ifelse(is.na(start_month), "01", pad_month(start_month)), "-01"),
+  mutate(start_string = str_c(start_year, "-", ifelse(is.na(start_month), "01",
+                                                      pad_month(start_month)), "-01"),
         end_string = str_c(end_year, "-", ifelse(is.na(end_month), "12", pad_month(end_month)), "-01"),
         start = ymd(start_string),
         end = ymd(end_string) + months(1) - days(1))
@@ -308,8 +345,9 @@ marriage = marriage %>%
   arrange(pidlink, start, end) %>%
   group_by(pidlink) %>%
   mutate(number_marriages = n(),
-         order_marriage = row_number()) %>%
-  mutate(marriage_id = paste0(pidlink, "_", as.character(start), "/",as.character(end)))
+         order_marriage = row_number(),
+         marriage_id = paste0(pidlink, "_", as.character(order_marriage), "_",
+                              as.character(start), "/",as.character(end)))
 
 dupes = unique(marriage$marriage_id[duplicated(marriage$marriage_id)])
 
@@ -322,15 +360,17 @@ marriage %>% ggplot(aes(number_marriages, order_marriage)) + geom_jitter(width=0
 table(is.na(marriage$start))
 table(is.na(marriage$end))
 
-pregnancy$month = paste0(pregnancy$birth_year,"-", ifelse(is.na(pregnancy$birth_month), "01", pad_month(pregnancy$birth_month)))
+
 
 
 ### Marriage Timeline
 minimum_start = min(ymd(str_c(pregnancy$month, "-01")), na.rm = T)
 maximum_end = max(ymd(str_c(pregnancy$month, "-01")), na.rm = T)
 marriage_timeline = marriage %>%
-    mutate(implied_start = as.Date(ifelse(is.na(start), minimum_start , start), origin="1970-01-01"),
-           implied_end = as.Date(ifelse(is.na(end), maximum_end , end), origin="1970-01-01")) %>%
+    mutate(implied_start = as.Date(ifelse(is.na(start), minimum_start , start),
+                                   origin="1970-01-01"),
+           implied_end = as.Date(ifelse(is.na(end), maximum_end , end),
+                                 origin="1970-01-01")) %>%
   filter(implied_start < implied_end)
 
 marriage_timeline = marriage_timeline %>%
@@ -355,13 +395,29 @@ length(intersect(pregnancy$mother_pidlink, marriage_timeline$mother_pidlink))
 
 pregnancy = pregnancy %>% left_join(marriage_timeline, by = c("mother_pidlink", "month"))
 
-table(is.na(pregnancy$marriage_id))
-table(table(pregnancy$marriage_id))
-
-rm(marriage_timeline)
+# rm(marriage_timeline)
 ```
 
 
+## Gene birthorder (based on both parents)
+```{r gene birthorder}
+### Gene birthorder is calculated by grouping individuals together, for whom we know both the mother and her marriage history and making a rank list
+pregnancy_save = pregnancy
+
+pregnancy = pregnancy %>%
+  group_by(marriage_id) %>%
+    mutate(birthorder_genes = min_rank(birthdate),
+           birthorder_genes = ifelse(is.na(marriage_id), NA, birthorder_genes),
+           sibling_count_genes = ifelse(is.na(marriage_id), NA, sum(!is.na(marriage_id))))
+
+pregnancy = pregnancy %>% filter(!is.na(birthorder_uterus_preg))
+
+ggplot(pregnancy, aes(x=sibling_count_genes, y=birthorder_genes)) + geom_jitter()
+
+## Plot uterus birth order vs. gene birthorder
+ggplot(pregnancy, aes(x=birthorder_uterus_alive, y=birthorder_genes)) + geom_jitter()
+
+```
 
 
 ## Select individual data
@@ -422,27 +478,9 @@ individuals = individuals %>%
 ## Combine informations from pregnancy file and individual file
 ```{r Combine informations from pregnancy file and individual file}
 ## Combine informations from pregnancy history and individual files
-alldata_pregnancy = inner_join(individuals, pregnancy, by = "mother_birthdate")
-alldata_pregnancy_check = inner_join(individuals, pregnancy_alive_and_old_enough_check, by = "mother_birthdate")
+alldata_pregnancy = left_join(pregnancy, individuals, by = "mother_birthdate")
 ```
 
-## Gene birthorder (based on both parents)
-```{r gene birthorder}
-### Gene birthorder is calculated by grouping individuals together, for whom we know both the mother and her marriage history and making a rank list
-alldata_pregnancy = alldata_pregnancy %>%
-  filter(!is.na(marriage_id)) %>%
-  group_by(marriage_id) %>%
-    mutate(birthorder_genes = min_rank(birthdate),
-           birthorder_genes = ifelse(is.na(marriage_id), NA, birthorder_genes),
-           sibling_count_genes = sum(!is.na(marriage_id)))
-
-
-ggplot(alldata_pregnancy, aes(x=sibling_count_genes, y=birthorder_genes)) + geom_jitter()
-
-## Plot uterus birth order vs. gene birthorder
-ggplot(alldata_pregnancy, aes(x=birthorder_uterus_alive, y=birthorder_genes)) + geom_jitter()
-
-```
 
 ## Select IQ data
 ```{r select IQ data}
@@ -522,19 +560,25 @@ iq$words_immediate = iq$words_immediate/10
 iq$adaptive_numbering = iq$adaptive_numbering/100
 
 
-library(psych)
 fa.parallel(iq %>% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
-fa(iq %>% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
-omega(iq %>% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
+fa(iq %>% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1)
+om_results = omega(iq %>% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1, sl = F)
+om_results
+omega.diagram(om_results)
+```
 
-library(lavaan)
+````{r gfactor additional}
+
 "g_factor =~ raven + math + count_backwards +  words_delayed+ adaptive_numbering" %>%
-  cfa(missing = "fiml", data = iq) -> cfa_g
+  cfa(missing = "fiml", data = iq, std.lv = T, std.ov = T) -> cfa_g
 summary(cfa_g)
+#commonalities <- inspect(cfa_g , "parameter.estimates")
+#pars = parameterEstimates(cfa_g, rsquare = T, standardized = T)
+#mean(pars[pars$op == "r2", "est"]) # avg variance explained by g factor
 
 iq$g_factor = predict(cfa_g)[,1]
 qplot(iq$g_factor)
-round(cor(iq %>% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+round(cor(iq %>% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, words_immediate), use = "pairwise.complete.obs"), 2)
 
 formr::missingness_patterns(iq %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor)) ## oops, lavaan only predicts the g factor for complete cases
 
@@ -640,20 +684,16 @@ alldata = left_join(individuals_unchanged, iq, by = "pidlink")
 alldata = left_join(alldata, pers, by = "pidlink")
 alldata = left_join(alldata, risk, by = "pidlink")
 
-alldata_check = left_join(alldata_pregnancy_check, iq, by = "pidlink")
-alldata_check = left_join(alldata_check, pers, by = "pidlink")
-alldata_check = left_join(alldata_check, risk, by = "pidlink")
-
 
 ### Which values are missing?
 ## All data
-formr::missingness_patterns(alldata_check %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, big5_ext, riskA, riskB))
+formr::missingness_patterns(alldata_birthorder %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, big5_ext, riskA, riskB))
 ## Intelligence
-formr::missingness_patterns(alldata_check %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering))
+formr::missingness_patterns(alldata_birthorder %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering))
 ##Personality
-formr::missingness_patterns(alldata_check %>% select(big5_ext, big5_con, big5_open, big5_neu, big5_agree))
+formr::missingness_patterns(alldata_birthorder %>% select(big5_ext, big5_con, big5_open, big5_neu, big5_agree))
 ##Risk
-formr::missingness_patterns(alldata_check %>% select(riskA, riskB))
+formr::missingness_patterns(alldata_birthorder %>% select(riskA, riskB))
 ```
 
 
@@ -756,6 +796,8 @@ alldata_birthorder %>%
 for future analyses
 
 ```{r save data}
+alldata_birthorder = alldata_birthorder %>% ungroup()
+alldata = alldata %>% ungroup()
 saveRDS(alldata_birthorder, file = "data/alldata_birthorder.rds")
 
 saveRDS(alldata, file = "data/alldata.rds")

@@ -1,0 +1,268 @@
+---
+author: "Laura Botzet"
+date: "11/03/2016"
+output:
+  html_document:
+    lib_dir: library
+    self_contained: no
+  pdf_document: default
+---
+
+## Library
+```{r Library}
+library(formr)
+library(devtools)
+library(haven)
+library(tidyr)
+library(ggplot2)
+library(stringr)
+library(GPArotation)
+library(apaTables)
+library(dplyr)
+```
+
+## Load data
+```{r Load data}
+### Import all data with known birthorder
+alldata_birthorder = readRDS("data/alldata_birthorder.rds")
+
+### Import all data
+alldata = readRDS("data/alldata.rds")
+
+```
+
+## data wrangling
+```{r data wrangling}
+## we only want to include people in the birthorder group that actually have iq, personality, etc. data
+birthorder = alldata_birthorder %>%
+  mutate(check = ifelse(!is.na(g_factor), 1,
+                        ifelse(!is.na(riskA), 1,
+                               ifelse(!is.na(riskB), 1,
+                                      ifelse(!is.na(big5_ext), 1, 0)))),
+         group = "test",
+         male = factor(sex.x == 1),
+         male = ifelse(sex.x > 3, NA, male)) %>%
+  filter(check == 1)
+
+## we have to exclude people in the control group who are part of the birthorder group
+individuals = birthorder$pidlink
+
+alldata = alldata %>%
+  filter(!pidlink %in% individuals) %>%
+  mutate(check = ifelse(!is.na(g_factor), 1,
+                        ifelse(!is.na(riskA), 1,
+                               ifelse(!is.na(riskB), 1,
+                                      ifelse(!is.na(big5_ext), 1, 0)))),
+         group = "control",
+         sex.x = (ifelse(is.na(sex.x), sex.y, sex.x)),
+         male = factor(sex.x == 1),
+         male = ifelse(sex.x > 3, NA, male),
+         age = ifelse(age>112, NA, age)) %>%
+  filter(check == 1)
+
+df = bind_rows(alldata, birthorder)
+```
+
+## data comparison
+```{r data comparison}
+## In order to compare our test group to an alike group from the control sample we have to restict age
+check_test = df %>% filter(group == "test") %>%
+  arrange(gender) %>%
+  group_by(age) %>%
+  mutate(random = min_rank(pidlink),
+         choose = paste0(age, "-", random))
+        
+check_control = df %>% filter(group == "control", !is.na(g_factor), !is.na(riskA),
+                      !is.na(big5_agree), !is.na(big5_ext), !is.na(big5_con),
+                      !is.na(big5_neu), !is.na(big5_open)) %>%
+  arrange(gender) %>%
+  group_by(age) %>%
+  mutate(random = min_rank(pidlink),
+         choose = paste0(age, "-", random),
+         pidlink_choose = pidlink)
+
+table(check_test$choose)
+table(check_control$age)
+check = left_join(check_test, check_control, by = "choose")
+
+individuals_restricted = check$pidlink_choose
+
+df = df %>%
+  mutate(group2 = ifelse(age == 16 & male ==2 , "control_restricted", NA),
+         group2 = ifelse(age == 17 & male ==2 , "control_restricted", group2),
+         group2 = ifelse(age == 18 & male ==2 , "control_restricted", group2),
+         group2 = ifelse(age == 19 & male ==2 , "control_restricted", group2),
+         group2 = ifelse(pidlink %in% individuals_restricted, "control_restricted",
+                         group2),
+         group2 = ifelse(group=="test", "test", group2))
+
+crosstabs(~ df$group2 + df$group)
+
+descriptives = df %>%
+  group_by(group) %>%
+    summarise(n = n(),
+              age_mean = mean(age, na.rm=TRUE),
+              age_confidence_low = mean(age, na.rm = T) - 
+                (qt(.975, n()-1)*sd(age, na.rm = T)/sqrt(n())),
+              age_confidence_high = mean(age, na.rm = T) + 
+                (qt(.975, n()-1)*sd(age, na.rm = T)/sqrt(n())),
+              age_min = min(age, na.rm = TRUE),
+              age_max = max(age, na.rm = TRUE),
+              gender = mean(male, na.rm=TRUE) - 1)
+
+## Ttest
+t.test(df$age ~ df$group, var.equal = T)
+
+descriptives_restricted = df %>%
+  group_by(group2) %>%
+    summarise(n = n(),
+              age_mean = mean(age, na.rm=TRUE),
+              age_sd = sd(age, na.rm=T),
+              age_confidence_low = mean(age, na.rm = T) - 
+                (qt(.975, n()-1)*sd(age, na.rm = T)/sqrt(n())),
+              age_confidence_high = mean(age, na.rm = T) +
+                (qt(.975, n()-1)*sd(age, na.rm = T)/sqrt(n())),
+              age_min = min(age, na.rm = TRUE),
+              age_max = max(age, na.rm = TRUE),
+              gender = mean(male, na.rm=TRUE) - 1)
+
+t.test(df$age ~ df$group2, var.equal = T)
+
+
+ratings = df %>%
+  group_by(group) %>%
+  summarise(g_factor_mean = mean(g_factor, na.rm=T),
+            g_factor_confidence_low= mean(g_factor, na.rm = T) - 
+                (qt(.975, n()-1)*sd(g_factor, na.rm = T)/sqrt(n())),
+            g_factor_confidence_high = mean(g_factor, na.rm = T) +
+                (qt(.975, n()-1)*sd(g_factor, na.rm = T)/sqrt(n())),
+            riskA_mean = mean(riskA, na.rm=T),
+            riskA_confidence_low= mean(riskA, na.rm = T) - 
+                (qt(.975, n()-1)*sd(riskA, na.rm = T)/sqrt(n())),
+            riskA_confidence_high = mean(riskA, na.rm = T) +
+                (qt(.975, n()-1)*sd(riskA, na.rm = T)/sqrt(n())),
+            riskB_mean = mean(riskB, na.rm=T),
+            riskB_confidence_low= mean(riskB, na.rm = T) - 
+                (qt(.975, n()-1)*sd(riskB, na.rm = T)/sqrt(n())),
+            riskB_confidence_high = mean(riskB, na.rm = T) +
+                (qt(.975, n()-1)*sd(riskB, na.rm = T)/sqrt(n())),
+            big5_ext_mean = mean(big5_ext, na.rm=T),
+            big5_ext_confidence_low= mean(big5_ext, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_ext, na.rm = T)/sqrt(n())),
+            big5_ext_confidence_high = mean(big5_ext, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_ext, na.rm = T)/sqrt(n())),
+            big5_neu_mean = mean(big5_neu, na.rm=T),
+            big5_neu_confidence_low= mean(big5_neu, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_neu, na.rm = T)/sqrt(n())),
+            big5_neu_confidence_high = mean(big5_neu, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_neu, na.rm = T)/sqrt(n())),
+            big5_con_mean = mean(big5_con, na.rm=T),
+            big5_con_confidence_low= mean(big5_con, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_con, na.rm = T)/sqrt(n())),
+            big5_con_confidence_high = mean(big5_con, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_con, na.rm = T)/sqrt(n())),
+            big5_agree_mean = mean(big5_agree, na.rm=T),
+            big5_agree_confidence_low= mean(big5_agree, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_agree, na.rm = T)/sqrt(n())),
+            big5_agree_confidence_high = mean(big5_agree, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_agree, na.rm = T)/sqrt(n())),
+            big5_open_mean = mean(big5_open, na.rm=T),
+            big5_open_confidence_low= mean(big5_open, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())),
+            big5_open_confidence_high = mean(big5_open, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())))
+
+t.test(df$g_factor ~ df$group, var.equal = T)
+t.test(df$riskA ~ df$group, var.equal = T)
+t.test(df$riskB ~ df$group, var.equal = T)
+t.test(df$big5_ext ~ df$group, var.equal = T)
+t.test(df$big5_neu ~ df$group, var.equal = T)
+t.test(df$big5_con ~ df$group, var.equal = T)
+t.test(df$big5_agree ~ df$group, var.equal = T)
+t.test(df$big5_open ~ df$group, var.equal = T)
+
+
+ratings_restricted = df %>%
+  group_by(group2) %>%
+   summarise(n = n(),
+             g_factor_mean = mean(g_factor, na.rm=T),
+            g_factor_confidence_low= mean(g_factor, na.rm = T) - 
+                (qt(.975, n()-1)*sd(g_factor, na.rm = T)/sqrt(n())),
+            g_factor_confidence_high = mean(g_factor, na.rm = T) +
+                (qt(.975, n()-1)*sd(g_factor, na.rm = T)/sqrt(n())),
+            riskA_mean = mean(riskA, na.rm=T),
+            riskA_confidence_low= mean(riskA, na.rm = T) - 
+                (qt(.975, n()-1)*sd(riskA, na.rm = T)/sqrt(n())),
+            riskA_confidence_high = mean(riskA, na.rm = T) +
+                (qt(.975, n()-1)*sd(riskA, na.rm = T)/sqrt(n())),
+            riskB_mean = mean(riskB, na.rm=T),
+            riskB_confidence_low= mean(riskB, na.rm = T) - 
+                (qt(.975, n()-1)*sd(riskB, na.rm = T)/sqrt(n())),
+            riskB_confidence_high = mean(riskB, na.rm = T) +
+                (qt(.975, n()-1)*sd(riskB, na.rm = T)/sqrt(n())),
+            big5_ext_mean = mean(big5_ext, na.rm=T),
+            big5_ext_confidence_low= mean(big5_ext, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_ext, na.rm = T)/sqrt(n())),
+            big5_ext_confidence_high = mean(big5_ext, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_ext, na.rm = T)/sqrt(n())),
+            big5_neu_mean = mean(big5_neu, na.rm=T),
+            big5_neu_confidence_low= mean(big5_neu, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_neu, na.rm = T)/sqrt(n())),
+            big5_neu_confidence_high = mean(big5_neu, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_neu, na.rm = T)/sqrt(n())),
+            big5_con_mean = mean(big5_con, na.rm=T),
+            big5_con_confidence_low= mean(big5_con, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_con, na.rm = T)/sqrt(n())),
+            big5_con_confidence_high = mean(big5_con, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_con, na.rm = T)/sqrt(n())),
+            big5_agree_mean = mean(big5_agree, na.rm=T),
+            big5_agree_confidence_low= mean(big5_agree, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_agree, na.rm = T)/sqrt(n())),
+            big5_agree_confidence_high = mean(big5_agree, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_agree, na.rm = T)/sqrt(n())),
+            big5_open_mean = mean(big5_open, na.rm=T),
+            big5_open_confidence_low= mean(big5_open, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())),
+            big5_open_confidence_high = mean(big5_open, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())))
+
+t.test(df$g_factor ~ df$group2, var.equal = T)
+t.test(df$riskA ~ df$group2, var.equal = T)
+t.test(df$riskB ~ df$group2, var.equal = T)
+t.test(df$big5_ext ~ df$group2, var.equal = T)
+t.test(df$big5_neu ~ df$group2, var.equal = T)
+t.test(df$big5_con ~ df$group2, var.equal = T)
+t.test(df$big5_agree ~ df$group2, var.equal = T)
+t.test(df$big5_open ~ df$group2, var.equal = T)
+
+           
+
+```
+
+## correlation
+```{r correlation}
+mean_sd = birthorder %>%
+  group_by(group) %>%
+  summarise(age_mean = mean(age, na.rm=T),
+            age_sd = sd(age, na.rm=T),
+            g_factor_mean = mean(g_factor, na.rm=T),
+            g_factor_sd = sd(g_factor, na.rm=T),
+            big5_ext_mean = mean(big5_ext, na.rm=T),
+            big5_ext_sd = sd(big5_ext, na.rm=T),
+            big5_neu_mean = mean(big5_neu, na.rm=T),
+            big5_neu_sd = sd(big5_neu, na.rm=T),
+            big5_con_mean = mean(big5_con, na.rm=T),
+            big5_con_sd = sd(big5_con, na.rm=T),
+            big5_agree_mean = mean(big5_agree, na.rm=T),
+            big5_agree_sd = sd(big5_agree, na.rm=T),
+            big5_open_mean = mean(big5_open, na.rm=T),
+            big5_open_sd = sd(big5_open, na.rm=T),
+            riskA_mean = mean(riskA, na.rm=T),
+            riskA_sd = sd(riskA, na.rm=T),
+            riskB_mean = mean(riskB, na.rm=T),
+            riskB_sd = sd(riskB, na.rm=T))
+           
+round(cor(birthorder %>% ungroup() %>% select(age, male, g_factor, big5_ext, big5_neu, big5_con, big5_agree, big5_open, riskA, riskB), use = "pairwise.complete.obs"), 2) 
+cor.test(birthorder$age, birthorder$male)
+```
+

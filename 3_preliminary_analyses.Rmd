@@ -21,16 +21,14 @@ library(dplyr)
 ## helper
 ```{r helper}
 apatheme=theme_bw()+
-  theme_set(theme_bw(base_size = 12)) +
-  theme(panel.grid.major=element_blank(),
+    theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
         panel.border=element_blank(),
         axis.line=element_line(),
-        text=element_text(family='Times'))
-  
+        text=element_text(family='Times', size = 16))
 
  
-plot_birthorder = function(model, ylabel, bo_var = "birthorder") {
+plot_birthorder = function(model, ylabel, a, bo_var = "birthorder") {
   if(inherits(model, "merMod")) {
     varnames = names(model@frame)
   } else {
@@ -43,16 +41,16 @@ plot_birthorder = function(model, ylabel, bo_var = "birthorder") {
   cemm = as.data.frame(emm[[bo_var]]) %>%
     separate_(bo_var, into = c("Birth order", "Sibship"), sep = "/")
   number = spread(as.data.frame(table(model.frame(model)[`bo_var`])), Var1, Freq)
-  n1 = paste0("1...................", sum(number$`1/1`), seperate="")
-  n2 = paste0("2...................", sum(number$`1/2`, number$`2/2`), seperate="")
-  n3 = paste0("3...................", sum(number$`1/3`, number$`2/3`, number$`3/3`),
+  n1 = paste0("1 (", sum(number$`1/1`), ")", seperate="")
+  n2 = paste0("2 (", sum(number$`1/2`, number$`2/2`), ")", seperate="")
+  n3 = paste0("3 (", sum(number$`1/3`, number$`2/3`, number$`3/3`), ")",
               seperate="")
-  n4 = paste0("4...................", sum(number$`1/4`, number$`2/4`, number$`3/4`,
-                                      number$`4/4`), seperate="")
-  n5 = paste0("5...................", sum(number$`1/5`, number$`2/5`, number$`3/5`,
-                                      number$`4/5`, number$`5/5`), seperate="")
-  n5more = paste0("5+.................", sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
-                                          number$`4/5+`, number$`5/5+`, number$`5+/5+`),
+  n4 = paste0("4 (", sum(number$`1/4`, number$`2/4`, number$`3/4`,
+                                      number$`4/4`), ")", seperate="")
+  n5 = paste0("5 (", sum(number$`1/5`, number$`2/5`, number$`3/5`,
+                                      number$`4/5`, number$`5/5`), ")", seperate="")
+  n5more = paste0("5+ (", sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
+                                          number$`4/5+`, number$`5/5+`, number$`5+/5+`), ")",
                   seperate="")
   cemm = cemm %>%
     mutate(Sibship = recode_factor(Sibship, "1" = `n1`, "2" = `n2`, "3" = `n3`, "4" = `n4`,
@@ -61,11 +59,13 @@ plot_birthorder = function(model, ylabel, bo_var = "birthorder") {
                    colour = `Sibship`, group = `Sibship`)) + 
     geom_pointrange(stat = "identity", position = position_dodge(width = 0.5)) + 
     geom_line(position = position_dodge(width = 0.5)) +
-    scale_y_continuous(name=ylabel, limits = c(-0.6, 0.6), breaks = c(-0.6, -0.4, -0.2, 0,
-                                                                  0.2, 0.4, 0.6)) +
+    scale_y_continuous(name=ylabel, limits = c(-0.6, 0.5), breaks = c(-0.4, -0.2, 0,
+                                                                  0.2, 0.4)) +
+    labs(title=a) +
     apatheme +
-    theme(legend.background = element_rect(fill="gray90", size=.5, linetype="dotted")) +
-    guides(colour=guide_legend(title = "Sibship Size.....n"))
+    theme(legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),
+          plot.title = element_text(hjust = 0)) +
+    guides(colour=guide_legend(title = "Sibship"))
   print(plotx)
   assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)
   
@@ -1638,57 +1638,102 @@ anova(lme_riskB_genes, ddf="kenw")
 
 ## plots
 ```{r plots}
-alldata_birthorder$big5_ext
+
 ### Between
 ## Intelligence
 m_g_factor_uterus_alive = lm(g_factor ~ count_birthorder_uterus_alive + birthyear + male,
-                             data = alldata_birthorder) %>% plot_birthorder("Intelligence")
-plot_g_factor
+                             data = alldata_birthorder) %>% plot_birthorder("Intelligence", "a")
 
 ## Personality
 #Extraversion
 m_big5_ext_uterus_alive = lm(big5_ext ~ count_birthorder_uterus_alive + birthyear + male,
-                             data = alldata_birthorder) %>% plot_birthorder("Extraversion")
-plot_big5_ext
+                             data = alldata_birthorder) %>% plot_birthorder("Extraversion", "b")
 
 # Neuroticism
 m_big5_neu_uterus_alive = lm(big5_neu ~ count_birthorder_uterus_alive + birthyear + male,
-                             data = alldata_birthorder) %>% plot_birthorder("Neuroticism")
-plot_big5_neu
+                             data = alldata_birthorder) %>% plot_birthorder("Neuroticism", "c")
 
 #Conscientiuosness
 m_big5_con_uterus_alive = lm(big5_con ~ count_birthorder_uterus_alive + birthyear + male,
-                             data = alldata_birthorder) %>% plot_birthorder("Cosncientiousness")
-plot_big5_con
+                             data = alldata_birthorder) %>%
+  plot_birthorder("Cosncientiousness", "d")
 
 #Agreeableness
-m_big5_agree_uterus_alive = lm(big5_agree ~ count_birthorder_uterus_alive + birthyear + male,
-                             data = alldata_birthorder) %>% plot_birthorder("Agreeableness")
-plot_big5_agree
+m_big5_agree_uterus_alive = lm(big5_agree ~ count_birthorder_uterus_alive + birthyear +
+                                 male, data = alldata_birthorder) %>%
+  plot_birthorder("Agreeableness", "e")
 
 #Openness
 m_big5_open_uterus_alive = lm(big5_open ~ count_birthorder_uterus_alive + birthyear + male,
-                             data = alldata_birthorder) %>% plot_birthorder("Openness")
-plot_big5_open
+                             data = alldata_birthorder) %>% 
+  plot_birthorder("Openness", "f")
 
 ##Risk
 #Risk A
 m_riskA_uterus_alive = lm(riskA ~ count_birthorder_uterus_alive + birthyear + male,
-                             data = alldata_birthorder) %>% plot_birthorder("Risk A")
-plot_riskA
+                             data = alldata_birthorder) %>% plot_birthorder("Risk A", "g")
+
 
 # Risk B
 m_riskB_uterus_alive = lm(riskB ~ count_birthorder_uterus_alive + birthyear + male,
-                             data = alldata_birthorder) %>% plot_birthorder("Risk B")
-plot_riskB
-
-attributes(plot_g_factor)
+                             data = alldata_birthorder) %>% plot_birthorder("Risk B", "h")
 
 
-par(mfrow=c(1,2))
-plot_g_factor
-plot_big5_open
+library(grid)
+library(gridExtra)
+plots = grid.arrange(plot_g_factor, plot_big5_ext, plot_big5_neu, plot_big5_con, plot_big5_agree,
+             plot_big5_open, plot_riskA, plot_riskB,
+             ncol = 2)
+
+### Within
+## Intelligence
+lm_g_factor_uterus_alive = lmer(g_factor ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink) + birthyear + male,
+                             data = alldata_birthorder) %>% plot_birthorder("Intelligence", "a")
+
+## Personality
+#Extraversion
+lm_big5_ext_uterus_alive = lmer(big5_ext ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink) + birthyear + male,
+                             data = alldata_birthorder) %>% plot_birthorder("Extraversion", "b")
+
+# Neuroticism
+lm_big5_neu_uterus_alive = lmer(big5_neu ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink)  + birthyear + male,
+                             data = alldata_birthorder) %>% plot_birthorder("Neuroticism", "c")
+
+#Conscientiuosness
+lm_big5_con_uterus_alive = lmer(big5_con ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink)  + birthyear + male,
+                             data = alldata_birthorder) %>%
+  plot_birthorder("Cosncientiousness", "d")
+
+#Agreeableness
+lm_big5_agree_uterus_alive = lmer(big5_agree ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink)  + birthyear +
+                                 male, data = alldata_birthorder) %>%
+  plot_birthorder("Agreeableness", "e")
+
+#Openness
+lm_big5_open_uterus_alive = lmer(big5_open ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink)  + birthyear + male,
+                             data = alldata_birthorder) %>% 
+  plot_birthorder("Openness", "f")
+
+##Risk
+#Risk A
+lm_riskA_uterus_alive = lmer(riskA ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink)  + birthyear + male,
+                             data = alldata_birthorder) %>% plot_birthorder("Risk A", "g")
 
 
- plot_grid(plot_g_factor, plot_big5_open, labels = c("a", "b"), nrwo=2, align=hv)
+# Risk B
+lm_riskB_uterus_alive = lmer(riskB ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink)  + birthyear + male,
+                             data = alldata_birthorder) %>% plot_birthorder("Risk B", "h")
+
+
+plots = grid.arrange(plot_g_factor, plot_big5_ext, plot_big5_neu, plot_big5_con, plot_big5_agree,
+             plot_big5_open, plot_riskA, plot_riskB,
+             ncol = 2)
 ```

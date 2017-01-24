@@ -162,6 +162,12 @@ Source: CRAN
 Version: 1.0
 Hash: 0bc934f0964247bbc4fa254ad6ffd21d
 
+Package: cowplot
+Source: CRAN
+Version: 0.7.0
+Hash: 2466c098180dba6d13128bbdafeb1eda
+Requires: ggplot2, gtable, plyr
+
 Package: curl
 Source: CRAN
 Version: 2.3

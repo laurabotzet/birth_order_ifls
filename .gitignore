@@ -9,3 +9,4 @@ figure-html/
 *.pdf
 *.html
 packrat/src/
+.Rhistory

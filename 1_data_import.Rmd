@@ -13,6 +13,7 @@ output:
 ```{r Library}
 library(formr)
 library(rmarkdown)
+library(formatR)
 library(devtools)
 library(haven)
 library(tidyr)

@@ -12,6 +12,7 @@ output:
 ## Library
 ```{r Library}
 library(formr)
+library(rmarkdown)
 library(devtools)
 library(haven)
 library(tidyr)

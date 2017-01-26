@@ -17,15 +17,41 @@ Source: CRAN
 Version: 0.5-1
 Hash: 375869004db963f9915f2b8a49b4a718
 
+Package: Formula
+Source: CRAN
+Version: 1.2-1
+Hash: 47ae34d89a8dd8fde36c9c0b5c587819
+
 Package: GPArotation
 Source: CRAN
 Version: 2014.11-1
 Hash: 4821625833bcab5af24257ead9119e01
 
+Package: Hmisc
+Source: CRAN
+Version: 4.0-2
+Hash: 4d3704cb29c9fd363837f2db54b1eb57
+Requires: Formula, acepack, base64enc, data.table, foreign, ggplot2,
+    gridExtra, gtable, htmlTable, htmltools, latticeExtra, viridis
+
 Package: MASS
 Source: CRAN
 Version: 7.3-45
 Hash: 0650d5701aa7e369e77c9e2c8e1dc913
+
+Package: MBESS
+Source: CRAN
+Version: 4.1.0
+Requires: MASS, mnormt, lavaan, OpenMx, gsl, sem, semTools
+
+Package: MatrixModels
+Source: CRAN
+Version: 0.4-1
+
+Package: OpenMx
+Source: CRAN
+Version: 2.7.4
+Requires: MASS, Rcpp, digest
 
 Package: R6
 Source: CRAN
@@ -47,6 +73,29 @@ Source: CRAN
 Version: 0.3.2.9.0
 Hash: 190c54763f088d4e8684d69ffb56a9c3
 Requires: Rcpp
+
+Package: SparseM
+Source: CRAN
+Version: 1.74
+
+Package: abind
+Source: CRAN
+Version: 1.4-5
+
+Package: acepack
+Source: CRAN
+Version: 1.4.1
+Hash: 5ed3b04bc1fa1a934188fc6022d3ba7c
+
+Package: apaTables
+Source: CRAN
+Version: 1.0.4
+Requires: MBESS, car, rockchalk
+
+Package: arm
+Source: CRAN
+Version: 1.9-3
+Requires: MASS, lme4, abind, coda
 
 Package: assertthat
 Source: CRAN
@@ -74,6 +123,21 @@ Version: 1.17.1
 Hash: 97cb6f6293cd18d17df77a6383cc6763
 Requires: bitops
 
+Package: car
+Source: CRAN
+Version: 2.1-4
+Requires: MASS, pbkrtest, quantreg
+
+Package: checkmate
+Source: CRAN
+Version: 1.8.2
+Hash: ca9a37c13c0fead85d580384ce5e25dc
+Requires: backports
+
+Package: coda
+Source: CRAN
+Version: 0.19-1
+
 Package: codetools
 Source: CRAN
 Version: 0.2-15
@@ -89,17 +153,27 @@ Source: CRAN
 Version: 1.0
 Hash: 0bc934f0964247bbc4fa254ad6ffd21d
 
+Package: cowplot
+Source: CRAN
+Version: 0.7.0
+Requires: gtable, plyr, ggplot2
+
 Package: curl
 Source: CRAN
 Version: 2.3
 Hash: 9a0b969942c61511002e103f7b047b98
 
+Package: data.table
+Source: CRAN
+Version: 1.10.0
+Hash: 3be20bb55823803066dce2a38d52cafb
+
 Package: devtools
 Source: CRAN
 Version: 1.12.0
 Hash: bbad95109ae75cbb14099281cda43af2
-Requires: digest, git2r, jsonlite, rstudioapi, whisker, withr, memoise,
-    httr
+Requires: digest, git2r, httr, jsonlite, memoise, rstudioapi, whisker,
+    withr
 
 Package: dichromat
 Source: CRAN
@@ -129,6 +203,11 @@ Version: 0.10
 Hash: c3601a10c987d439e0c63ec635234a76
 Requires: stringr
 
+Package: forcats
+Source: CRAN
+Version: 0.2.0
+Requires: magrittr, tibble
+
 Package: foreign
 Source: CRAN
 Version: 0.8-67
@@ -143,9 +222,9 @@ Package: formr
 Source: github
 Version: 0.4.3
 Hash: 9b28215f23fe41652b9010d20aa2947d
-Requires: commonmark, curl, jsonlite, psych, httr, stringr, scales,
-    dplyr, lubridate, pryr, reshape2, tidyr, haven, knitr, ggplot2,
-    rmarkdown, likert
+Requires: commonmark, curl, dplyr, ggplot2, haven, httr, jsonlite,
+    knitr, likert, lubridate, pryr, psych, reshape2, rmarkdown, scales,
+    stringr, tidyr
 GithubRepo: formr
 GithubUsername: rubenarslan
 GithubRef: master
@@ -169,6 +248,10 @@ Version: 2.2.1
 Hash: 8f54b57d4b0598ed5b27e0eafe86a670
 Requires: gtable
 
+Package: gsl
+Source: CRAN
+Version: 1.9-10.3
+
 Package: gtable
 Source: CRAN
 Version: 0.2.0
@@ -178,7 +261,7 @@ Package: haven
 Source: github
 Version: 1.0.0
 Hash: b8183dcfc4a33086ef9ad97edea9f1c7
-Requires: BH, Rcpp, hms, tibble, readr
+Requires: BH, Rcpp, hms, readr, tibble
 GithubRepo: haven
 GithubUsername: hadley
 GithubRef: master
@@ -193,6 +276,12 @@ Package: hms
 Source: CRAN
 Version: 0.2
 Hash: c1b6ded8c65ae31a98d73a312b2e6574
+
+Package: htmlTable
+Source: CRAN
+Version: 1.8
+Hash: 916465e26bfe48b36051b89b65afdf26
+Requires: checkmate, knitr, magrittr, stringr
 
 Package: htmltools
 Source: CRAN
@@ -215,12 +304,18 @@ Package: knitr
 Source: CRAN
 Version: 1.15.1
 Hash: eed7437e2b614c9e3923b7932b16ac97
-Requires: digest, highr, yaml, markdown, stringr, evaluate
+Requires: digest, evaluate, highr, markdown, stringr, yaml
 
 Package: labeling
 Source: CRAN
 Version: 0.3
 Hash: ecf589b42cd284b03a4beb9665482d3e
+
+Package: latticeExtra
+Source: CRAN
+Version: 0.6-28
+Hash: efdf3a10a129129f7b8f4ae5a0d7ec3d
+Requires: RColorBrewer
 
 Package: lavaan
 Source: CRAN
@@ -237,13 +332,19 @@ Package: likert
 Source: CRAN
 Version: 1.3.3
 Hash: aae2de21763f4d7dc90a7afc773303f0
-Requires: xtable, plyr, gridExtra, psych, reshape2, ggplot2
+Requires: ggplot2, gridExtra, plyr, psych, reshape2, xtable
 
 Package: lme4
 Source: CRAN
 Version: 1.1-12
 Hash: 71d6bd20eb374245f7b852e9b4995f22
-Requires: MASS, Rcpp, nloptr, minqa, RcppEigen
+Requires: MASS, Rcpp, nloptr, RcppEigen, minqa
+
+Package: lmerTest
+Source: CRAN
+Version: 2.0-33
+Hash: eebe91adf31427a467384a8e13b797a1
+Requires: Hmisc, MASS, ggplot2, lme4, plyr
 
 Package: lubridate
 Source: CRAN
@@ -262,11 +363,20 @@ Version: 0.7.7
 Hash: fea2343a1119d61b0cc5c0a950d103a3
 Requires: mime
 
+Package: matrixcalc
+Source: CRAN
+Version: 1.0-3
+
 Package: memoise
 Source: CRAN
 Version: 1.0.0
 Hash: 56e7087c3559eb7ba72a9afb349bf896
 Requires: digest
+
+Package: mi
+Source: CRAN
+Version: 1.0
+Requires: arm
 
 Package: mime
 Source: CRAN
@@ -310,6 +420,11 @@ Source: CRAN
 Version: 0.6.0
 Hash: 49a3782a63f861575cd5e3ad0559690f
 
+Package: pbkrtest
+Source: CRAN
+Version: 0.4-6
+Requires: MASS, lme4
+
 Package: plyr
 Source: CRAN
 Version: 1.8.4
@@ -333,6 +448,11 @@ Source: CRAN
 Version: 1.5-5
 Hash: 69000b7dc41b09977dcf781f909d235c
 
+Package: quantreg
+Source: CRAN
+Version: 5.29
+Requires: MatrixModels, SparseM
+
 Package: readr
 Source: CRAN
 Version: 1.0.0
@@ -349,8 +469,13 @@ Package: rmarkdown
 Source: CRAN
 Version: 1.2
 Hash: 0bcccd4b0db101c709ee10012320a66f
-Requires: base64enc, jsonlite, yaml, rprojroot, caTools, htmltools,
-    evaluate, knitr
+Requires: base64enc, caTools, evaluate, htmltools, jsonlite, knitr,
+    rprojroot, yaml
+
+Package: rockchalk
+Source: CRAN
+Version: 1.8.101
+Requires: MASS, lme4, car
 
 Package: rprojroot
 Source: CRAN
@@ -368,6 +493,16 @@ Source: CRAN
 Version: 0.4.1
 Hash: cf658953d600d4736b058df1558df481
 Requires: RColorBrewer, Rcpp, dichromat, labeling, plyr, munsell
+
+Package: sem
+Source: CRAN
+Version: 3.1-8
+Requires: MASS, matrixcalc, mi
+
+Package: semTools
+Source: CRAN
+Version: 0.4-14
+Requires: lavaan
 
 Package: stringi
 Source: CRAN
@@ -390,7 +525,13 @@ Package: tidyr
 Source: CRAN
 Version: 0.6.0
 Hash: 55b2d458dcd3407abb74732c82be146c
-Requires: Rcpp, lazyeval, magrittr, stringi, tibble, dplyr
+Requires: Rcpp, dplyr, lazyeval, magrittr, stringi, tibble
+
+Package: viridis
+Source: CRAN
+Version: 0.3.4
+Hash: c98cc0ee11a389f397c38ddb3762880c
+Requires: ggplot2, gridExtra
 
 Package: whisker
 Source: CRAN

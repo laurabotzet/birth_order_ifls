@@ -1,14 +1,19 @@
 ---
 author: "Laura Botzet"
 date: "10/26/2016"
-output: html_document
+output:
+  html_document:
+    lib_dir: library
+    code_folding: "hide"
+    self_contained: FALSE
 ---
 
-# Preliminary Analyses
+# Preliminary Analyses {.tabset}
 
 ## Load libraries
 ```{r libraries}
 library(lme4)
+library(lmerTest)
 library(ggplot2)
 library(formr)
 library(effects)
@@ -36,6 +41,7 @@ plot_birthorder = function(model, ylabel, a, bo_var = "birthorder") {
   }
   outcome = varnames[1]
   library(effects)
+  library(tidyr)
   emm = allEffects(model)
   bo_var = names(emm)[names(emm) %contains% bo_var]
   cemm = as.data.frame(emm[[bo_var]]) %>%
@@ -901,6 +907,7 @@ lme_g_factor_genes_covariats = lmer(g_factor ~ count_birthorder_genes +
                                            data = alldata_birthorder)
 summary(lme_g_factor_genes_covariats)
 plot_birthorder(lme_g_factor_genes_covariats)
+anova(lme_g_factor_genes_covariats)
 
 ### Raven
 ## Raven - uterus_alive

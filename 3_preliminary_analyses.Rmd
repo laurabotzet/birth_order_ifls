@@ -101,8 +101,9 @@ alldata_birthorder = alldata_birthorder %>%
     # center birthyear
     birthyear = byear - mean(byear, na.rm = T),
     # Sex (1 = male, 2 = female)
-    male = factor(sex.x == 1),
-    male = ifelse(sex.x > 3, NA, male),
+    male = ifelse(sex.x == 1, 1L, 0L),
+    male = ifelse(sex.x > 3, NA_integer_, male),
+    male = factor(male),
     # mother_pidlink has to be specified
     mother_pidlink = mother_pidlink.x,
     # center variables that are used for analysy - but first save old values

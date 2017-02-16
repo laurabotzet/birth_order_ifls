@@ -1,0 +1,49 @@
+```{r}
+m1_covariates_only = lm(g_factor ~ sibling_count_uterus_alive_factor + birthyear + male, data = alldata_birthorder)
+m1_covariates_only = lmer(g_factor ~ sibling_count_uterus_alive_factor + birthyear + male + (1 | mother_pidlink), data = alldata_birthorder)
+```
+
+
+### Basic model {.tabset}
+
+#### Model summary
+```{r}
+summary(m1_covariates_only)
+```
+
+#### Coefficient plot
+```{r}
+plot(allEffects(m1_covariates_only))
+```
+
+### Add covariates {.tabset}
+
+#### Model summary
+```{r}
+m2_birthorder = update(m1_covariates_only, formula = . ~ . + birthorder_uterus_alive_factor)
+summary(m2_birthorder)
+```
+
+#### Coefficient plot
+```{r}
+plot_birthorder(m2_birthorder, separate = FALSE)
+```
+
+### Add interaction {.tabset}
+
+#### Model summary
+```{r}
+m3_interaction = update(m2_birthorder, formula = . ~ . - birthorder_uterus_alive_factor - sibling_count_uterus_alive_factor + count_birthorder_uterus_alive)
+summary(m3_interaction)
+```
+
+#### Coefficient plot
+```{r}
+plot_birthorder(m3_interaction)
+```
+
+### Model comparison
+```{r}
+anova(m1_covariates_only, m2_birthorder, m3_interaction)
+```
+

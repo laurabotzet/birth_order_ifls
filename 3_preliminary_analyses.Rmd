@@ -33,48 +33,53 @@ apatheme=theme_bw()+
         text=element_text(family='Times', size = 16))
 
  
-plot_birthorder = function(model, ylabel, a, bo_var = "birthorder") {
+plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birthorder", separate = TRUE) {
   if(inherits(model, "merMod")) {
     varnames = names(model@frame)
   } else {
     varnames = names(model$model)
   }
   outcome = varnames[1]
+  if(is.null(ylabel)) ylabel = outcome
   library(effects)
   library(tidyr)
   emm = allEffects(model)
   bo_var = names(emm)[names(emm) %contains% bo_var]
-  cemm = as.data.frame(emm[[bo_var]]) %>%
+  cemm = as.data.frame(emm[[bo_var]])
+  if (separate != TRUE) {
+    cemm = cemm %>% rename_("Birth order" = bo_var) %>% mutate(Sibship = "across")
+  } else {
+    cemm = cemm %>% 
     separate_(bo_var, into = c("Birth order", "Sibship"), sep = "/")
-  number = spread(as.data.frame(table(model.frame(model)[`bo_var`])), Var1, Freq)
-  n1 = paste0("1 (", sum(number$`1/1`), ")", seperate="")
-  n2 = paste0("2 (", sum(number$`1/2`, number$`2/2`), ")", seperate="")
-  n3 = paste0("3 (", sum(number$`1/3`, number$`2/3`, number$`3/3`), ")",
-              seperate="")
-  n4 = paste0("4 (", sum(number$`1/4`, number$`2/4`, number$`3/4`,
-                                      number$`4/4`), ")", seperate="")
-  n5 = paste0("5 (", sum(number$`1/5`, number$`2/5`, number$`3/5`,
-                                      number$`4/5`, number$`5/5`), ")", seperate="")
-  n5more = paste0("5+ (", sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
-                                          number$`4/5+`, number$`5/5+`, number$`5+/5+`), ")",
-                  seperate="")
-  cemm = cemm %>%
-    mutate(Sibship = recode_factor(Sibship, "1" = `n1`, "2" = `n2`, "3" = `n3`, "4" = `n4`,
-                                   "5" = `n5`, "5+" = `n5more`))
-  plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
+    number = spread(as.data.frame(table(model.frame(model)[`bo_var`])), Var1, Freq)
+    n1 = paste0("1 (", sum(number$`1/1`), ")", seperate="")
+    n2 = paste0("2 (", sum(number$`1/2`, number$`2/2`), ")", seperate="")
+    n3 = paste0("3 (", sum(number$`1/3`, number$`2/3`, number$`3/3`), ")",
+                seperate="")
+    n4 = paste0("4 (", sum(number$`1/4`, number$`2/4`, number$`3/4`,
+                                        number$`4/4`), ")", seperate="")
+    n5 = paste0("5 (", sum(number$`1/5`, number$`2/5`, number$`3/5`,
+                                        number$`4/5`, number$`5/5`), ")", seperate="")
+    n5more = paste0("5+ (", sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
+                                            number$`4/5+`, number$`5/5+`, number$`5+/5+`), ")",
+                    seperate="")
+    cemm = cemm %>%
+      mutate(Sibship = recode_factor(Sibship, "1" = `n1`, "2" = `n2`, "3" = `n3`, "4" = `n4`,
+                                     "5" = `n5`, "5+" = `n5more`))
+  }
+    plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
                    colour = `Sibship`, group = `Sibship`)) + 
     geom_pointrange(stat = "identity", position = position_dodge(width = 0.5)) + 
     geom_line(position = position_dodge(width = 0.5)) +
     scale_y_continuous(name=ylabel, limits = c(-0.6, 0.5), breaks = c(-0.4, -0.2, 0,
                                                                   0.2, 0.4)) +
-    labs(title=a) +
+    labs(title= title) +
     apatheme +
     theme(legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),
           plot.title = element_text(hjust = 0)) +
     guides(colour=guide_legend(title = "Sibship"))
   print(plotx)
   assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)
-  
 }
 
 ```
@@ -205,37 +210,43 @@ alldata_birthorder = alldata_birthorder %>%
 ## Between-family Analysis Intelligence
 
 ```{r Between-family Analysis Intelligence}
-### Main Test: G-Factor - without covariats
+### Main Test: G-Factor - without covariates
 ## Main Test: G-Factor - uterus_alive
+m_g_factor_uterus_alive_no_interaction = lm(g_factor ~ birthorder_uterus_alive_factor + sibling_count_uterus_alive_factor,
+                             data = alldata_birthorder)
+summary(m_g_factor_uterus_alive_no_interaction)
+plot_birthorder(m_g_factor_uterus_alive_no_interaction, 
+                ylabel = "G factor", title = "G factor", separate = FALSE)
+
 m_g_factor_uterus_alive = lm(g_factor ~ count_birthorder_uterus_alive,
                              data = alldata_birthorder)
-
+anova(m_g_factor_uterus_alive_no_interaction, m_g_factor_uterus_alive)
 anova(m_g_factor_uterus_alive)
 plot_birthorder(m_g_factor_uterus_alive)
 
-## Main Test: G-Factor - uterus_alive with covariats
-m_g_factor_uterus_alive_covariats = lm(g_factor ~ birthorder_uterus_alive_factor  +
+## Main Test: G-Factor - uterus_alive with covariates
+m_g_factor_uterus_alive_covariates = lm(g_factor ~ birthorder_uterus_alive_factor  +
                              sibling_count_uterus_alive_factor 
                                        + birthyear + male,
                              data = alldata_birthorder)
-anova(m_g_factor_uterus_alive_covariats)
-m_g_factor_uterus_preg_covariats = lm(g_factor ~ birthorder_uterus_preg_factor  +
+anova(m_g_factor_uterus_alive_covariates)
+m_g_factor_uterus_preg_covariates = lm(g_factor ~ birthorder_uterus_preg_factor  +
                              sibling_count_uterus_preg_factor 
                                        + birthyear + male,
                              data = alldata_birthorder)
-anova(m_g_factor_uterus_alive_covariats)
-m_g_factor_genes_covariats = lm(g_factor ~ birthorder_genes_factor  +
+anova(m_g_factor_uterus_alive_covariates)
+m_g_factor_genes_covariates = lm(g_factor ~ birthorder_genes_factor  +
                              sibling_count_genes_factor 
                                        + birthyear + male,
                              data = alldata_birthorder)
-anova(m_g_factor_genes_covariats)
+anova(m_g_factor_genes_covariates)
 
 
-m_g_factor_uterus_alive_covariats = lm(g_factor ~ count_birthorder_uterus_alive 
+m_g_factor_uterus_alive_covariates = lm(g_factor ~ count_birthorder_uterus_alive 
                                        + birthyear + male,
                              data = alldata_birthorder)
-anova(m_g_factor_uterus_alive_covariats)
-plot_birthorder(m_g_factor_uterus_alive_covariats)
+anova(m_g_factor_uterus_alive_covariates)
+plot_birthorder(m_g_factor_uterus_alive_covariates)
 
 ## Main Test: G-Factor - uterus_preg
 m_g_factor_uterus_preg = lm(g_factor ~ count_birthorder_uterus_preg,
@@ -249,12 +260,12 @@ m_g_factor_genes = lm(g_factor ~ count_birthorder_genes,
 summary(m_g_factor_genes)
 plot_birthorder(m_g_factor_genes)
 
-## Main Test: G-Factor - genes with covariats
-m_g_factor_genes_covariats = lm(g_factor ~ count_birthorder_genes
+## Main Test: G-Factor - genes with covariates
+m_g_factor_genes_covariates = lm(g_factor ~ count_birthorder_genes
                                 + birthyear + male,
                             data = alldata_birthorder)
-summary(m_g_factor_genes_covariats)
-plot_birthorder(m_g_factor_genes_covariats)
+summary(m_g_factor_genes_covariates)
+plot_birthorder(m_g_factor_genes_covariates)
 
 ### Sub Tests
 ## Raven’s matrices test
@@ -362,7 +373,7 @@ plot_birthorder(m_adaptive_numbering_genes)
 
 
 ```{r Between-family Analysis Personality}
-### Personality - without covariats
+### Personality - without covariates
 ## Openness
 # big5_open - uterus_alive
 m_big5_open_uterus_alive = lm(big5_open ~ count_birthorder_uterus_alive,
@@ -370,18 +381,18 @@ m_big5_open_uterus_alive = lm(big5_open ~ count_birthorder_uterus_alive,
 summary(m_big5_open_uterus_alive)
 plot_birthorder(m_big5_open_uterus_alive)
 
-m_big5_open_uterus_alive_covariats = lm(big5_open ~ birthorder_uterus_alive_factor  +
+m_big5_open_uterus_alive_covariates = lm(big5_open ~ birthorder_uterus_alive_factor  +
                              sibling_count_uterus_alive_factor +
                                          birthyear + male,
                             data = alldata_birthorder)
-anova(m_big5_open_uterus_alive_covariats)
-plot_birthorder(m_big5_open_uterus_alive_covariats)
+anova(m_big5_open_uterus_alive_covariates)
+plot_birthorder(m_big5_open_uterus_alive_covariates)
 
-m_big5_open_uterus_alive_covariats = lm(big5_open ~ count_birthorder_uterus_alive +
+m_big5_open_uterus_alive_covariates = lm(big5_open ~ count_birthorder_uterus_alive +
                                          birthyear + male,
                             data = alldata_birthorder)
-summary(m_big5_open_uterus_alive_covariats)
-plot_birthorder(m_big5_open_uterus_alive_covariats)
+summary(m_big5_open_uterus_alive_covariates)
+plot_birthorder(m_big5_open_uterus_alive_covariates)
 
 # big5_open - uterus_preg
 m_big5_open_uterus_preg = lm(big5_open ~ count_birthorder_uterus_preg,
@@ -402,18 +413,18 @@ m_big5_ext_uterus_alive = lm(big5_ext ~ count_birthorder_uterus_alive ,
 summary(m_big5_ext_uterus_alive)
 plot_birthorder(m_big5_ext_uterus_alive)
 
-m_big5_open_uterus_alive_covariats = lm(big5_open ~ birthorder_uterus_alive_factor  +
+m_big5_open_uterus_alive_covariates = lm(big5_open ~ birthorder_uterus_alive_factor  +
                              sibling_count_uterus_alive_factor +
                                          birthyear + male,
                             data = alldata_birthorder)
-anova(m_big5_open_uterus_alive_covariats)
-plot_birthorder(m_big5_open_uterus_alive_covariats)
+anova(m_big5_open_uterus_alive_covariates)
+plot_birthorder(m_big5_open_uterus_alive_covariates)
 
-m_big5_ext_uterus_alive_covariats = lm(big5_ext ~ count_birthorder_uterus_alive +
+m_big5_ext_uterus_alive_covariates = lm(big5_ext ~ count_birthorder_uterus_alive +
                                          birthyear + male,
                             data = alldata_birthorder)
-summary(m_big5_ext_uterus_alive_covariats)
-plot_birthorder(m_big5_ext_uterus_alive_covariats)
+summary(m_big5_ext_uterus_alive_covariates)
+plot_birthorder(m_big5_ext_uterus_alive_covariates)
 
 # big5_ext - uterus_preg
 m_big5_ext_uterus_preg = lm(big5_ext ~ count_birthorder_uterus_preg,
@@ -434,11 +445,11 @@ m_big5_neu_uterus_alive = lm(big5_neu ~ count_birthorder_uterus_alive,
 summary(m_big5_neu_uterus_alive)
 plot_birthorder(m_big5_neu_uterus_alive)
 
-m_big5_neu_uterus_alive_covariats = lm(big5_neu ~ count_birthorder_uterus_alive +
+m_big5_neu_uterus_alive_covariates = lm(big5_neu ~ count_birthorder_uterus_alive +
                                          birthyear + male,
                             data = alldata_birthorder)
-summary(m_big5_neu_uterus_alive_covariats)
-plot_birthorder(m_big5_neu_uterus_alive_covariats)
+summary(m_big5_neu_uterus_alive_covariates)
+plot_birthorder(m_big5_neu_uterus_alive_covariates)
 
 # big5_neu - uterus_preg
 m_big5_neu_uterus_preg = lm(big5_neu ~ count_birthorder_uterus_preg,
@@ -459,11 +470,11 @@ m_big5_agree_uterus_alive = lm(big5_agree ~ count_birthorder_uterus_alive,
 summary(m_big5_agree_uterus_alive)
 plot_birthorder(m_big5_agree_uterus_alive)
 
-m_big5_agree_uterus_alive_covariats = lm(big5_agree ~ count_birthorder_uterus_alive +
+m_big5_agree_uterus_alive_covariates = lm(big5_agree ~ count_birthorder_uterus_alive +
                                          birthyear + male,
                             data = alldata_birthorder)
-summary(m_big5_agree_uterus_alive_covariats)
-plot_birthorder(m_big5_agree_uterus_alive_covariats)
+summary(m_big5_agree_uterus_alive_covariates)
+plot_birthorder(m_big5_agree_uterus_alive_covariates)
 
 
 # big5_agree - uterus_preg
@@ -485,11 +496,11 @@ m_big5_con_uterus_alive = lm(big5_con ~ count_birthorder_uterus_alive,
 summary(m_big5_con_uterus_alive)
 plot_birthorder(m_big5_con_uterus_alive)
 
-m_big5_con_uterus_alive_covariats = lm(big5_con ~ count_birthorder_uterus_alive +
+m_big5_con_uterus_alive_covariates = lm(big5_con ~ count_birthorder_uterus_alive +
                                          birthyear + male,
                             data = alldata_birthorder)
-summary(m_big5_con_uterus_alive_covariats)
-plot_birthorder(m_big5_con_uterus_alive_covariats)
+summary(m_big5_con_uterus_alive_covariates)
+plot_birthorder(m_big5_con_uterus_alive_covariates)
 
 # big5_con - uterus_preg
 m_big5_con_uterus_preg = lm(big5_con ~ count_birthorder_uterus_preg,
@@ -514,11 +525,11 @@ m_riskA_uterus_alive = lm(riskA ~ count_birthorder_uterus_alive,
 summary(m_riskA_uterus_alive)
 plot_birthorder(m_riskA_uterus_alive)
 
-m_riskA_uterus_alive_covariats = lm(riskA ~ count_birthorder_uterus_alive +
+m_riskA_uterus_alive_covariates = lm(riskA ~ count_birthorder_uterus_alive +
                                          birthyear + male,
                             data = alldata_birthorder)
-summary(m_riskA_uterus_alive_covariats)
-plot_birthorder(m_riskA_uterus_alive_covariats)
+summary(m_riskA_uterus_alive_covariates)
+plot_birthorder(m_riskA_uterus_alive_covariates)
 
 
 ## Risk A - Uterus preg
@@ -540,11 +551,11 @@ m_riskB_uterus_alive = lm(riskB ~ count_birthorder_uterus_alive,
 summary(m_riskB_uterus_alive)
 plot_birthorder(m_riskB_uterus_alive)
 
-m_riskB_uterus_alive_covariats = lm(riskB ~ count_birthorder_uterus_alive +
+m_riskB_uterus_alive_covariates = lm(riskB ~ count_birthorder_uterus_alive +
                                          birthyear + male,
                             data = alldata_birthorder)
-summary(m_riskB_uterus_alive_covariats)
-plot_birthorder(m_riskB_uterus_alive_covariats)
+summary(m_riskB_uterus_alive_covariates)
+plot_birthorder(m_riskB_uterus_alive_covariates)
 
 
 ## Risk B - Uterus preg
@@ -869,259 +880,259 @@ plot(allEffects(m_riskB_genes))
 ```{r Intelligence - Within Family Analysis}
 ### Main Test: G-Factor
 ## Main Test: G-Factor - uterus_alive
-# Without covariats
+# Without covariates
 lme_g_factor_uterus_alive = lmer(g_factor ~ count_birthorder_uterus_alive +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_g_factor_uterus_alive)
 
 plot_birthorder(lme_g_factor_uterus_alive)
-# With covariats
-lme_g_factor_uterus_alive_covariats = lmer(g_factor ~ count_birthorder_uterus_alive +
+# With covariates
+lme_g_factor_uterus_alive_covariates = lmer(g_factor ~ count_birthorder_uterus_alive +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_g_factor_uterus_alive_covariats)
-plot_birthorder(lme_g_factor_uterus_alive_covariats)
+summary(lme_g_factor_uterus_alive_covariates)
+plot_birthorder(lme_g_factor_uterus_alive_covariates)
 
 ## Main Test: G-Factor - uterus_preg
-# Without covariats
+# Without covariates
 lme_g_factor_uterus_preg = lmer(g_factor ~ count_birthorder_uterus_preg +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_g_factor_uterus_preg)
 plot_birthorder(lme_g_factor_uterus_preg)
-# With covariats
-lme_g_factor_uterus_preg_covariats = lmer(g_factor ~ count_birthorder_uterus_preg +
+# With covariates
+lme_g_factor_uterus_preg_covariates = lmer(g_factor ~ count_birthorder_uterus_preg +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_g_factor_uterus_preg_covariats)
-plot_birthorder(lme_g_factor_uterus_preg_covariats)
+summary(lme_g_factor_uterus_preg_covariates)
+plot_birthorder(lme_g_factor_uterus_preg_covariates)
 
 ## Main Test: G-Factor - genes
-# Without covariats
+# Without covariates
 lme_g_factor_genes = lmer(g_factor ~ count_birthorder_genes +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_g_factor_genes)
 plot_birthorder(lme_g_factor_genes)
-# With covariats
-lme_g_factor_genes_covariats = lmer(g_factor ~ count_birthorder_genes +
+# With covariates
+lme_g_factor_genes_covariates = lmer(g_factor ~ count_birthorder_genes +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_g_factor_genes_covariats)
-plot_birthorder(lme_g_factor_genes_covariats)
-anova(lme_g_factor_genes_covariats)
+summary(lme_g_factor_genes_covariates)
+plot_birthorder(lme_g_factor_genes_covariates)
+anova(lme_g_factor_genes_covariates)
 
 ### Raven
 ## Raven - uterus_alive
-# Without covariats
+# Without covariates
 lme_raven_uterus_alive = lmer(raven ~ count_birthorder_uterus_alive +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_raven_uterus_alive)
 plot_birthorder(lme_raven_uterus_alive)
-# With covariats
-lme_raven_uterus_alive_covariats = lmer(raven ~ count_birthorder_uterus_alive +
+# With covariates
+lme_raven_uterus_alive_covariates = lmer(raven ~ count_birthorder_uterus_alive +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_raven_uterus_alive_covariats)
-plot_birthorder(lme_raven_uterus_alive_covariats)
+summary(lme_raven_uterus_alive_covariates)
+plot_birthorder(lme_raven_uterus_alive_covariates)
 
 ## Raven - uterus_preg
-# Without covariats
+# Without covariates
 lme_raven_uterus_preg = lmer(raven ~ count_birthorder_uterus_preg +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_raven_uterus_preg)
 plot_birthorder(lme_raven_uterus_preg)
-# With covariats
-lme_raven_uterus_preg_covariats = lmer(raven ~ count_birthorder_uterus_preg +
+# With covariates
+lme_raven_uterus_preg_covariates = lmer(raven ~ count_birthorder_uterus_preg +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_raven_uterus_preg_covariats)
-plot_birthorder(lme_raven_uterus_preg_covariats)
+summary(lme_raven_uterus_preg_covariates)
+plot_birthorder(lme_raven_uterus_preg_covariates)
 
 ## Raven - genes
-# Without covariats
+# Without covariates
 lme_raven_genes = lmer(raven ~ count_birthorder_genes +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_raven_genes)
 plot_birthorder(lme_raven_genes)
-# With covariats
-lme_raven_genes_covariats = lmer(raven ~ count_birthorder_genes +
+# With covariates
+lme_raven_genes_covariates = lmer(raven ~ count_birthorder_genes +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_raven_genes_covariats)
-plot_birthorder(lme_raven_genes_covariats)
+summary(lme_raven_genes_covariates)
+plot_birthorder(lme_raven_genes_covariates)
 
 ### math
 ## math - uterus_alive
-# Without covariats
+# Without covariates
 lme_math_uterus_alive = lmer(math ~ count_birthorder_uterus_alive +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_math_uterus_alive)
 plot_birthorder(lme_math_uterus_alive)
-# With covariats
-lme_math_uterus_alive_covariats = lmer(math ~ count_birthorder_uterus_alive +
+# With covariates
+lme_math_uterus_alive_covariates = lmer(math ~ count_birthorder_uterus_alive +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_math_uterus_alive_covariats)
-plot_birthorder(lme_math_uterus_alive_covariats)
+summary(lme_math_uterus_alive_covariates)
+plot_birthorder(lme_math_uterus_alive_covariates)
 
 ## math - uterus_preg
-# Without covariats
+# Without covariates
 lme_math_uterus_preg = lmer(math ~ count_birthorder_uterus_preg +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_math_uterus_preg)
 plot_birthorder(lme_math_uterus_preg)
-# With covariats
-lme_math_uterus_preg_covariats = lmer(math ~ count_birthorder_uterus_preg +
+# With covariates
+lme_math_uterus_preg_covariates = lmer(math ~ count_birthorder_uterus_preg +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_math_uterus_preg_covariats)
-plot_birthorder(lme_math_uterus_preg_covariats)
+summary(lme_math_uterus_preg_covariates)
+plot_birthorder(lme_math_uterus_preg_covariates)
 
 ## math - genes
-# Without covariats
+# Without covariates
 lme_math_genes = lmer(math ~ count_birthorder_genes +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_math_genes)
 plot_birthorder(lme_math_genes)
-# With covariats
-lme_math_genes_covariats = lmer(math ~ count_birthorder_genes +
+# With covariates
+lme_math_genes_covariates = lmer(math ~ count_birthorder_genes +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_math_genes_covariats)
-plot_birthorder(lme_math_genes_covariats)
+summary(lme_math_genes_covariates)
+plot_birthorder(lme_math_genes_covariates)
 
 
 ### count_backwards
 ## count_backwards - uterus_alive
-# Without covariats
+# Without covariates
 lme_count_backwards_uterus_alive = lmer(count_backwards ~ count_birthorder_uterus_alive +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_count_backwards_uterus_alive)
 plot_birthorder(lme_count_backwards_uterus_alive)
-# With covariats
-lme_count_backwards_uterus_alive_covariats = lmer(count_backwards ~
+# With covariates
+lme_count_backwards_uterus_alive_covariates = lmer(count_backwards ~
                                                     count_birthorder_uterus_alive +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_count_backwards_uterus_alive_covariats)
-plot_birthorder(lme_count_backwards_uterus_alive_covariats)
+summary(lme_count_backwards_uterus_alive_covariates)
+plot_birthorder(lme_count_backwards_uterus_alive_covariates)
 
 ## count_backwards - uterus_preg
-# Without covariats
+# Without covariates
 lme_count_backwards_uterus_preg = lmer(count_backwards ~ count_birthorder_uterus_preg +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_count_backwards_uterus_preg)
 plot_birthorder(lme_count_backwards_uterus_preg)
-# With covariats
-lme_count_backwards_uterus_preg_covariats = lmer(count_backwards ~
+# With covariates
+lme_count_backwards_uterus_preg_covariates = lmer(count_backwards ~
                                                    count_birthorder_uterus_preg +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_count_backwards_uterus_preg_covariats)
-plot_birthorder(lme_count_backwards_uterus_preg_covariats)
+summary(lme_count_backwards_uterus_preg_covariates)
+plot_birthorder(lme_count_backwards_uterus_preg_covariates)
 
 ## count_backwards - genes
-# Without covariats
+# Without covariates
 lme_count_backwards_genes = lmer(count_backwards ~ count_birthorder_genes +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_count_backwards_genes)
 plot_birthorder(lme_count_backwards_genes)
-# With covariats
-lme_count_backwards_genes_covariats = lmer(count_backwards ~ count_birthorder_genes +
+# With covariates
+lme_count_backwards_genes_covariates = lmer(count_backwards ~ count_birthorder_genes +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_count_backwards_genes_covariats)
-plot_birthorder(lme_count_backwards_genes_covariats)
+summary(lme_count_backwards_genes_covariates)
+plot_birthorder(lme_count_backwards_genes_covariates)
 
 
 ### words_remembered_avg
 ## words_remembered_avg - uterus_alive
-# Without covariats
+# Without covariates
 lme_words_remembered_avg_uterus_alive = lmer(words_remembered_avg ~
                                                count_birthorder_uterus_alive +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_words_remembered_avg_uterus_alive)
 plot_birthorder(lme_words_remembered_avg_uterus_alive)
-# With covariats
-lme_words_remembered_avg_uterus_alive_covariats = lmer(words_remembered_avg ~
+# With covariates
+lme_words_remembered_avg_uterus_alive_covariates = lmer(words_remembered_avg ~
                                                     count_birthorder_uterus_alive +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_words_remembered_avg_uterus_alive_covariats)
-plot_birthorder(lme_words_remembered_avg_uterus_alive_covariats)
+summary(lme_words_remembered_avg_uterus_alive_covariates)
+plot_birthorder(lme_words_remembered_avg_uterus_alive_covariates)
 
 ## words_remembered_avg - uterus_preg
-# Without covariats
+# Without covariates
 lme_words_remembered_avg_uterus_preg = lmer(words_remembered_avg ~
                                               count_birthorder_uterus_preg +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_words_remembered_avg_uterus_preg)
 plot_birthorder(lme_words_remembered_avg_uterus_preg)
-# With covariats
-lme_words_remembered_avg_uterus_preg_covariats = lmer(words_remembered_avg ~
+# With covariates
+lme_words_remembered_avg_uterus_preg_covariates = lmer(words_remembered_avg ~
                                                    count_birthorder_uterus_preg +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_words_remembered_avg_uterus_preg_covariats)
-plot_birthorder(lme_words_remembered_avg_uterus_preg_covariats)
+summary(lme_words_remembered_avg_uterus_preg_covariates)
+plot_birthorder(lme_words_remembered_avg_uterus_preg_covariates)
 
 ## words_remembered_avg - genes
-# Without covariats
+# Without covariates
 lme_words_remembered_avg_genes = lmer(words_remembered_avg ~ count_birthorder_genes +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_words_remembered_avg_genes)
 plot_birthorder(lme_words_remembered_avg_genes)
-# With covariats
-lme_words_remembered_avg_genes_covariats = lmer(words_remembered_avg ~
+# With covariates
+lme_words_remembered_avg_genes_covariates = lmer(words_remembered_avg ~
                                                   count_birthorder_genes +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_words_remembered_avg_genes_covariats)
-plot_birthorder(lme_words_remembered_avg_genes_covariats)
+summary(lme_words_remembered_avg_genes_covariates)
+plot_birthorder(lme_words_remembered_avg_genes_covariates)
 
 ### adaptive_numbering
 ## adaptive_numbering - uterus_alive
-# Without covariats
+# Without covariates
 lme_adaptive_numbering_uterus_alive = lmer(adaptive_numbering ~
                                              count_birthorder_uterus_alive +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_adaptive_numbering_uterus_alive)
 plot_birthorder(lme_adaptive_numbering_uterus_alive)
-# With covariats
-lme_adaptive_numbering_uterus_alive_covariats = lmer(adaptive_numbering ~
+# With covariates
+lme_adaptive_numbering_uterus_alive_covariates = lmer(adaptive_numbering ~
                                                        count_birthorder_uterus_alive +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_adaptive_numbering_uterus_alive_covariats)
-plot_birthorder(lme_adaptive_numbering_uterus_alive_covariats)
+summary(lme_adaptive_numbering_uterus_alive_covariates)
+plot_birthorder(lme_adaptive_numbering_uterus_alive_covariates)
 
 ## adaptive_numbering - uterus_preg
-# Without covariats
+# Without covariates
 lme_adaptive_numbering_uterus_preg = lmer(adaptive_numbering ~
                                             count_birthorder_uterus_preg +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_adaptive_numbering_uterus_preg)
 plot_birthorder(lme_adaptive_numbering_uterus_preg)
-# With covariats
-lme_adaptive_numbering_uterus_preg_covariats = lmer(adaptive_numbering ~
+# With covariates
+lme_adaptive_numbering_uterus_preg_covariates = lmer(adaptive_numbering ~
                                                       count_birthorder_uterus_preg +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_adaptive_numbering_uterus_preg_covariats)
-plot_birthorder(lme_adaptive_numbering_uterus_preg_covariats)
+summary(lme_adaptive_numbering_uterus_preg_covariates)
+plot_birthorder(lme_adaptive_numbering_uterus_preg_covariates)
 
 ## adaptive_numbering - genes
-# Without covariats
+# Without covariates
 lme_adaptive_numbering_genes = lmer(adaptive_numbering ~ count_birthorder_genes +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_adaptive_numbering_genes)
 plot_birthorder(lme_adaptive_numbering_genes)
-# With covariats
-lme_adaptive_numbering_genes_covariats = lmer(adaptive_numbering ~ 
+# With covariates
+lme_adaptive_numbering_genes_covariates = lmer(adaptive_numbering ~ 
                                                 count_birthorder_genes +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_adaptive_numbering_genes_covariats)
-plot_birthorder(lme_adaptive_numbering_genes_covariats)
+summary(lme_adaptive_numbering_genes_covariates)
+plot_birthorder(lme_adaptive_numbering_genes_covariates)
 
 ```
 
@@ -1129,204 +1140,204 @@ plot_birthorder(lme_adaptive_numbering_genes_covariats)
 ```{r Personality - Within Family Analysis}
 ### big5_open
 ## big5_open - uterus_alive
-# Without covariats
+# Without covariates
 lme_big5_open_uterus_alive = lmer(big5_open ~ count_birthorder_uterus_alive +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_big5_open_uterus_alive)
 plot_birthorder(lme_big5_open_uterus_alive)
-# With covariats
-lme_big5_open_uterus_alive_covariats = lmer(big5_open ~ count_birthorder_uterus_alive +
+# With covariates
+lme_big5_open_uterus_alive_covariates = lmer(big5_open ~ count_birthorder_uterus_alive +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_big5_open_uterus_alive_covariats)
-plot_birthorder(lme_big5_open_uterus_alive_covariats)
+summary(lme_big5_open_uterus_alive_covariates)
+plot_birthorder(lme_big5_open_uterus_alive_covariates)
 
 ## big5_open - uterus_preg
-# Without covariats
+# Without covariates
 lme_big5_open_uterus_preg = lmer(big5_open ~ count_birthorder_uterus_preg +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_big5_open_uterus_preg)
 plot_birthorder(lme_big5_open_uterus_preg)
-# With covariats
-lme_big5_open_uterus_preg_covariats = lmer(big5_open ~ count_birthorder_uterus_preg +
+# With covariates
+lme_big5_open_uterus_preg_covariates = lmer(big5_open ~ count_birthorder_uterus_preg +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_big5_open_uterus_preg_covariats)
-plot_birthorder(lme_big5_open_uterus_preg_covariats)
+summary(lme_big5_open_uterus_preg_covariates)
+plot_birthorder(lme_big5_open_uterus_preg_covariates)
 
 ## big5_open - genes
-# Without covariats
+# Without covariates
 lme_big5_open_genes = lmer(big5_open ~ count_birthorder_genes +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_big5_open_genes)
 plot_birthorder(lme_big5_open_genes)
-# With covariats
-lme_big5_open_genes_covariats = lmer(big5_open ~ count_birthorder_genes +
+# With covariates
+lme_big5_open_genes_covariates = lmer(big5_open ~ count_birthorder_genes +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_big5_open_genes_covariats)
-plot_birthorder(lme_big5_open_genes_covariats)
+summary(lme_big5_open_genes_covariates)
+plot_birthorder(lme_big5_open_genes_covariates)
 
 ### big5_ext
 ## big5_ext - uterus_alive
-# Without covariats
+# Without covariates
 lme_big5_ext_uterus_alive = lmer(big5_ext ~ count_birthorder_uterus_alive +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_big5_ext_uterus_alive)
 plot_birthorder(lme_big5_ext_uterus_alive)
-# With covariats
-lme_big5_ext_uterus_alive_covariats = lmer(big5_ext ~ count_birthorder_uterus_alive +
+# With covariates
+lme_big5_ext_uterus_alive_covariates = lmer(big5_ext ~ count_birthorder_uterus_alive +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_big5_ext_uterus_alive_covariats)
-plot_birthorder(lme_big5_ext_uterus_alive_covariats)
+summary(lme_big5_ext_uterus_alive_covariates)
+plot_birthorder(lme_big5_ext_uterus_alive_covariates)
 
 ## big5_ext - uterus_preg
-# Without covariats
+# Without covariates
 lme_big5_ext_uterus_preg = lmer(big5_ext ~ count_birthorder_uterus_preg +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_big5_ext_uterus_preg)
 plot_birthorder(lme_big5_ext_uterus_preg)
-# With covariats
-lme_big5_ext_uterus_preg_covariats = lmer(big5_ext ~ count_birthorder_uterus_preg +
+# With covariates
+lme_big5_ext_uterus_preg_covariates = lmer(big5_ext ~ count_birthorder_uterus_preg +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_big5_ext_uterus_preg_covariats)
-plot_birthorder(lme_big5_ext_uterus_preg_covariats)
+summary(lme_big5_ext_uterus_preg_covariates)
+plot_birthorder(lme_big5_ext_uterus_preg_covariates)
 
 ## big5_ext - genes
-# Without covariats
+# Without covariates
 lme_big5_ext_genes = lmer(big5_ext ~ count_birthorder_genes +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_big5_ext_genes)
 plot_birthorder(lme_big5_ext_genes)
-# With covariats
-lme_big5_ext_genes_covariats = lmer(big5_ext ~ count_birthorder_genes +
+# With covariates
+lme_big5_ext_genes_covariates = lmer(big5_ext ~ count_birthorder_genes +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_big5_ext_genes_covariats)
-plot_birthorder(lme_big5_ext_genes_covariats)
+summary(lme_big5_ext_genes_covariates)
+plot_birthorder(lme_big5_ext_genes_covariates)
 
 ### big5_neu
 ## big5_neu - uterus_alive
-# Without covariats
+# Without covariates
 lme_big5_neu_uterus_alive = lmer(big5_neu ~ count_birthorder_uterus_alive +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_big5_neu_uterus_alive)
 plot_birthorder(lme_big5_neu_uterus_alive)
-# With covariats
-lme_big5_neu_uterus_alive_covariats = lmer(big5_neu ~ count_birthorder_uterus_alive +
+# With covariates
+lme_big5_neu_uterus_alive_covariates = lmer(big5_neu ~ count_birthorder_uterus_alive +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_big5_neu_uterus_alive_covariats)
-plot_birthorder(lme_big5_neu_uterus_alive_covariats)
+summary(lme_big5_neu_uterus_alive_covariates)
+plot_birthorder(lme_big5_neu_uterus_alive_covariates)
 
 ## big5_neu - uterus_preg
-# Without covariats
+# Without covariates
 lme_big5_neu_uterus_preg = lmer(big5_neu ~ count_birthorder_uterus_preg +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_big5_neu_uterus_preg)
 plot_birthorder(lme_big5_neu_uterus_preg)
-# With covariats
-lme_big5_neu_uterus_preg_covariats = lmer(big5_neu ~ count_birthorder_uterus_preg +
+# With covariates
+lme_big5_neu_uterus_preg_covariates = lmer(big5_neu ~ count_birthorder_uterus_preg +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_big5_neu_uterus_preg_covariats)
-plot_birthorder(lme_big5_neu_uterus_preg_covariats)
+summary(lme_big5_neu_uterus_preg_covariates)
+plot_birthorder(lme_big5_neu_uterus_preg_covariates)
 
 ## big5_neu - genes
-# Without covariats
+# Without covariates
 lme_big5_neu_genes = lmer(big5_neu ~ count_birthorder_genes +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_big5_neu_genes)
 plot_birthorder(lme_big5_neu_genes)
-# With covariats
-lme_big5_neu_genes_covariats = lmer(big5_neu ~ count_birthorder_genes +
+# With covariates
+lme_big5_neu_genes_covariates = lmer(big5_neu ~ count_birthorder_genes +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_big5_neu_genes_covariats)
-plot_birthorder(lme_big5_neu_genes_covariats)
+summary(lme_big5_neu_genes_covariates)
+plot_birthorder(lme_big5_neu_genes_covariates)
 
 ### big5_agree
 ## big5_agree - uterus_alive
-# Without covariats
+# Without covariates
 lme_big5_agree_uterus_alive = lmer(big5_agree ~ count_birthorder_uterus_alive +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_big5_agree_uterus_alive)
 plot_birthorder(lme_big5_agree_uterus_alive)
-# With covariats
-lme_big5_agree_uterus_alive_covariats = lmer(big5_agree ~ count_birthorder_uterus_alive +
+# With covariates
+lme_big5_agree_uterus_alive_covariates = lmer(big5_agree ~ count_birthorder_uterus_alive +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_big5_agree_uterus_alive_covariats)
-plot_birthorder(lme_big5_agree_uterus_alive_covariats)
+summary(lme_big5_agree_uterus_alive_covariates)
+plot_birthorder(lme_big5_agree_uterus_alive_covariates)
 
 ## big5_agree - uterus_preg
-# Without covariats
+# Without covariates
 lme_big5_agree_uterus_preg = lmer(big5_agree ~ count_birthorder_uterus_preg +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_big5_agree_uterus_preg)
 plot_birthorder(lme_big5_agree_uterus_preg)
-# With covariats
-lme_big5_agree_uterus_preg_covariats = lmer(big5_agree ~ count_birthorder_uterus_preg +
+# With covariates
+lme_big5_agree_uterus_preg_covariates = lmer(big5_agree ~ count_birthorder_uterus_preg +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_big5_agree_uterus_preg_covariats)
-plot_birthorder(lme_big5_agree_uterus_preg_covariats)
+summary(lme_big5_agree_uterus_preg_covariates)
+plot_birthorder(lme_big5_agree_uterus_preg_covariates)
 
 ## big5_agree - genes
-# Without covariats
+# Without covariates
 lme_big5_agree_genes = lmer(big5_agree ~ count_birthorder_genes +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_big5_agree_genes)
 plot_birthorder(lme_big5_agree_genes)
-# With covariats
-lme_big5_agree_genes_covariats = lmer(big5_agree ~ count_birthorder_genes +
+# With covariates
+lme_big5_agree_genes_covariates = lmer(big5_agree ~ count_birthorder_genes +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_big5_agree_genes_covariats)
-plot_birthorder(lme_big5_agree_genes_covariats)
+summary(lme_big5_agree_genes_covariates)
+plot_birthorder(lme_big5_agree_genes_covariates)
 
 
 ### big5_con
 ## big5_con - uterus_alive
-# Without covariats
+# Without covariates
 lme_big5_con_uterus_alive = lmer(big5_con ~ count_birthorder_uterus_alive +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_big5_con_uterus_alive)
 plot_birthorder(lme_big5_con_uterus_alive)
-# With covariats
-lme_big5_con_uterus_alive_covariats = lmer(big5_con ~ count_birthorder_uterus_alive +
+# With covariates
+lme_big5_con_uterus_alive_covariates = lmer(big5_con ~ count_birthorder_uterus_alive +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_big5_con_uterus_alive_covariats)
-plot_birthorder(lme_big5_con_uterus_alive_covariats)
+summary(lme_big5_con_uterus_alive_covariates)
+plot_birthorder(lme_big5_con_uterus_alive_covariates)
 
 ## big5_con - uterus_preg
-# Without covariats
+# Without covariates
 lme_big5_con_uterus_preg = lmer(big5_con ~ count_birthorder_uterus_preg +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_big5_con_uterus_preg)
 plot_birthorder(lme_big5_con_uterus_preg)
-# With covariats
-lme_big5_con_uterus_preg_covariats = lmer(big5_con ~ count_birthorder_uterus_preg +
+# With covariates
+lme_big5_con_uterus_preg_covariates = lmer(big5_con ~ count_birthorder_uterus_preg +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_big5_con_uterus_preg_covariats)
-plot_birthorder(lme_big5_con_uterus_preg_covariats)
+summary(lme_big5_con_uterus_preg_covariates)
+plot_birthorder(lme_big5_con_uterus_preg_covariates)
 
 ## big5_con - genes
-# Without covariats
+# Without covariates
 lme_big5_con_genes = lmer(big5_con ~ count_birthorder_genes +
                                    (1 | mother_pidlink), data = alldata_birthorder)
 summary(lme_big5_con_genes)
 plot_birthorder(lme_big5_con_genes)
-# With covariats
-lme_big5_con_genes_covariats = lmer(big5_con ~ count_birthorder_genes +
+# With covariates
+lme_big5_con_genes_covariates = lmer(big5_con ~ count_birthorder_genes +
                                              (1 | mother_pidlink) + birthyear + male,
                                            data = alldata_birthorder)
-summary(lme_big5_con_genes_covariats)
-plot_birthorder(lme_big5_con_genes_covariats)
+summary(lme_big5_con_genes_covariates)
+plot_birthorder(lme_big5_con_genes_covariates)
 ```
 
 

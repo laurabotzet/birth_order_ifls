@@ -1,6 +1,214 @@
+---
+author: "Laura Botzet"
+date: "10/26/2016"
+output:
+  html_document:
+    lib_dir: library
+    code_folding: "hide"
+    self_contained: FALSE
+---
+
+# Preliminary Analyses {.tabset}
+
+## Load libraries
+```{r libraries}
+library(lme4)
+library(ggplot2)
+library(formr)
+library(effects)
+library(stringr)
+library(forcats)
+library(cowplot)
+library(dplyr)
+```
+
+## helper
+```{r helper}
+apatheme=theme_bw()+
+    theme(panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        panel.border=element_blank(),
+        axis.line=element_line(),
+        text=element_text(family='Times', size = 16))
+
+ 
+plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birthorder", separate = TRUE) {
+  if(inherits(model, "merMod")) {
+    varnames = names(model@frame)
+  } else {
+    varnames = names(model$model)
+  }
+  outcome = varnames[1]
+  if(is.null(ylabel)) ylabel = outcome
+  library(effects)
+  library(tidyr)
+  emm = allEffects(model)
+  bo_var = names(emm)[names(emm) %contains% bo_var]
+  cemm = as.data.frame(emm[[bo_var]])
+  if (separate != TRUE) {
+    cemm = cemm %>% rename_("Birth order" = bo_var) %>% mutate(Sibship = "across")
+  } else {
+    cemm = cemm %>% 
+    separate_(bo_var, into = c("Birth order", "Sibship"), sep = "/")
+    number = spread(as.data.frame(table(model.frame(model)[`bo_var`])), Var1, Freq)
+    n1 = paste0("1 (", sum(number$`1/1`), ")", seperate="")
+    n2 = paste0("2 (", sum(number$`1/2`, number$`2/2`), ")", seperate="")
+    n3 = paste0("3 (", sum(number$`1/3`, number$`2/3`, number$`3/3`), ")",
+                seperate="")
+    n4 = paste0("4 (", sum(number$`1/4`, number$`2/4`, number$`3/4`,
+                                        number$`4/4`), ")", seperate="")
+    n5 = paste0("5 (", sum(number$`1/5`, number$`2/5`, number$`3/5`,
+                                        number$`4/5`, number$`5/5`), ")", seperate="")
+    n5more = paste0("5+ (", sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
+                                            number$`4/5+`, number$`5/5+`, number$`5+/5+`), ")",
+                    seperate="")
+    cemm = cemm %>%
+      mutate(Sibship = recode_factor(Sibship, "1" = `n1`, "2" = `n2`, "3" = `n3`, "4" = `n4`,
+                                     "5" = `n5`, "5+" = `n5more`))
+  }
+    plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
+                   colour = `Sibship`, group = `Sibship`)) + 
+    geom_pointrange(stat = "identity", position = position_dodge(width = 0.5)) + 
+    geom_line(position = position_dodge(width = 0.5)) +
+    scale_y_continuous(name=ylabel, limits = c(-0.6, 0.5), breaks = c(-0.4, -0.2, 0,
+                                                                  0.2, 0.4)) +
+    labs(title= title) +
+    apatheme +
+    theme(legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),
+          plot.title = element_text(hjust = 0)) +
+    guides(colour=guide_legend(title = "Sibship"))
+  print(plotx)
+  assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)
+}
+
+```
+
+
+## Load data
+```{r load data}
+alldata_birthorder = readRDS("data/alldata_birthorder.rds")
+
+```
+
+
+
+
+## Data Preperations
+```{r data preperations}
+### Variables
+alldata_birthorder = alldata_birthorder %>%
+  mutate(
+    # center birthyear
+    birthyear = byear - mean(byear, na.rm = T),
+    # Sex (1 = male, 2 = female)
+    male = ifelse(sex.x == 1, 1L, 0L),
+    male = ifelse(sex.x > 3, NA_integer_, male),
+    male = factor(male),
+    # mother_pidlink has to be specified
+    mother_pidlink = mother_pidlink.x,
+    # center variables that are used for analysy - but first save old values
+    old_g_factor = g_factor,
+    old_raven = raven,
+    old_math = math,
+    old_count_backwards = count_backwards,
+    old_words_remembered_avg = words_remembered_avg,
+    old_words_immediate = words_immediate,
+    old_words_delayed = words_delayed,
+    old_adaptive_numbering = adaptive_numbering,
+    old_big5_ext = big5_ext,
+    old_big5_con = big5_con,
+    old_big5_agree = big5_agree,
+    old_big5_neu = big5_neu,
+    old_big5_open = big5_open,
+    old_riskA = riskA,
+    old_riskB = riskB,
+    g_factor = (g_factor - mean(g_factor, na.rm=T)) / sd(g_factor, na.rm=T),
+    raven = (raven - mean(raven, na.rm=T)) / sd(raven, na.rm=T),
+    math = (math - mean(math, na.rm=T)) / sd(math, na.rm=T),
+    count_backwards = (count_backwards - mean(count_backwards, na.rm=T)) /
+      sd(count_backwards, na.rm=T),
+    words_remembered_avg = (words_remembered_avg - mean(words_remembered_avg, na.rm=T)) /
+      sd(words_remembered_avg, na.rm=T),
+    words_immediate = (words_immediate - mean(words_immediate, na.rm=T)) /
+      sd(words_immediate, na.rm=T),
+    words_delayed = (words_delayed - mean(words_delayed, na.rm=T)) /
+      sd(words_delayed, na.rm=T),
+    adaptive_numbering = (adaptive_numbering - mean(adaptive_numbering, na.rm=T)) /
+      sd(adaptive_numbering, na.rm=T),
+    big5_ext = (big5_ext - mean(big5_ext, na.rm=T)) / sd(big5_ext, na.rm=T),
+    big5_con = (big5_con - mean(big5_con, na.rm=T)) / sd(big5_con, na.rm=T),
+    big5_agree = (big5_agree - mean(big5_agree, na.rm=T)) / sd(big5_agree, na.rm=T),
+    big5_open = (big5_open - mean(big5_open, na.rm=T)) / sd(big5_open, na.rm=T),
+    big5_neu = (big5_neu - mean(big5_neu, na.rm=T)) / sd(big5_neu, na.rm=T),
+    riskA = (riskA - mean(riskA, na.rm=T)) / sd(riskA, na.rm=T),
+    riskB = (riskB - mean(riskB, na.rm=T)) / sd(riskB, na.rm=T)
+        )
+qplot(alldata_birthorder$g_factor)
+
+### Birthorder and Sibling Count
+alldata_birthorder = alldata_birthorder %>% 
+  mutate(
+# birthorder as factors with levels of 1, 2, 3, 4, 5, 5+
+    birthorder_uterus_alive_factor = as.character(birthorder_uterus_alive),
+    birthorder_uterus_alive_factor = ifelse(birthorder_uterus_alive > 5, "5+",
+                                            birthorder_uterus_alive_factor),
+    birthorder_uterus_alive_factor = factor(birthorder_uterus_alive_factor, 
+                                            levels = c("1","2","3","4","5","5+")),
+    sibling_count_uterus_alive_factor = as.character(sibling_count_uterus_alive),
+    sibling_count_uterus_alive_factor = ifelse(sibling_count_uterus_alive > 5, "5+",
+                                               sibling_count_uterus_alive_factor),
+    sibling_count_uterus_alive_factor = factor(sibling_count_uterus_alive_factor, 
+                                               levels = c("1","2","3","4","5","5+")),
+    birthorder_uterus_preg_factor = as.character(birthorder_uterus_preg),
+    birthorder_uterus_preg_factor = ifelse(birthorder_uterus_preg > 5, "5+",
+                                           birthorder_uterus_preg_factor),
+    birthorder_uterus_preg_factor = factor(birthorder_uterus_preg_factor,
+                                           levels = c("1","2","3","4","5","5+")),
+    sibling_count_uterus_preg_factor = as.character(sibling_count_uterus_preg),
+    sibling_count_uterus_preg_factor = ifelse(sibling_count_uterus_preg > 5, "5+",
+                                              sibling_count_uterus_preg_factor),
+    sibling_count_uterus_preg_factor = factor(sibling_count_uterus_preg_factor, 
+                                              levels = c("1","2","3","4","5","5+")),
+    birthorder_genes_factor = as.character(birthorder_genes),
+    birthorder_genes_factor = ifelse(birthorder_genes >5 , "5+", birthorder_genes_factor),
+    birthorder_genes_factor = factor(birthorder_genes_factor, 
+                                     levels = c("1","2","3","4","5","5+")),
+    sibling_count_genes_factor = as.character(sibling_count_genes),
+    sibling_count_genes_factor = ifelse(sibling_count_genes >5 , "5+",
+                                        sibling_count_genes_factor),
+    sibling_count_genes_factor = factor(sibling_count_genes_factor, 
+                                        levels = c("1","2","3","4","5","5+")),
+    # interaction birthorder * siblingcout for each birthorder
+    count_birthorder_uterus_alive =
+      factor(str_replace(as.character(interaction(birthorder_uterus_alive_factor,                                                              sibling_count_uterus_alive_factor)),
+                        "\\.", "/"),
+                                           levels =   c("1/1","1/2","2/2", "1/3",  "2/3",
+                                                        "3/3", "1/4", "2/4", "3/4", "4/4",
+                                                        "1/5", "2/5", "3/5", "4/5", "5/5",
+                                                        "1/5+", "2/5+", "3/5+", "4/5+",
+                                                        "5/5+", "5+/5+")),
+    count_birthorder_uterus_preg =
+      factor(str_replace(as.character(interaction(birthorder_uterus_preg_factor,                                                              sibling_count_uterus_preg_factor)), 
+                         "\\.", "/"),
+                                           levels =   c("1/1","1/2","2/2", "1/3",  "2/3",
+                                                        "3/3", "1/4", "2/4", "3/4", "4/4",
+                                                        "1/5", "2/5", "3/5", "4/5", "5/5",
+                                                        "1/5+", "2/5+", "3/5+", "4/5+",
+                                                        "5/5+", "5+/5+")),
+    count_birthorder_genes =
+      factor(str_replace(as.character(interaction(birthorder_genes_factor,                                                              sibling_count_genes_factor)), "\\.", "/"),
+                                           levels =   c("1/1","1/2","2/2", "1/3",  "2/3",
+                                                        "3/3", "1/4", "2/4", "3/4", "4/4",
+                                                        "1/5", "2/5", "3/5", "4/5", "5/5",
+                                                        "1/5+", "2/5+", "3/5+", "4/5+",
+                                                        "5/5+", "5+/5+")))
+```
+
+
+## Analysis {.tabset}
 ```{r}
 m1_covariates_only = lm(g_factor ~ sibling_count_uterus_alive_factor + birthyear + male, data = alldata_birthorder)
-m1_covariates_only = lmer(g_factor ~ sibling_count_uterus_alive_factor + birthyear + male + (1 | mother_pidlink), data = alldata_birthorder)
+# m1_covariates_only = lmer(g_factor ~ sibling_count_uterus_alive_factor + birthyear + male + (1 | mother_pidlink), data = alldata_birthorder)
 ```
 
 
@@ -16,34 +224,47 @@ summary(m1_covariates_only)
 plot(allEffects(m1_covariates_only))
 ```
 
-### Add covariates {.tabset}
+### Add birth order linear {.tabset}
 
 #### Model summary
 ```{r}
-m2_birthorder = update(m1_covariates_only, formula = . ~ . + birthorder_uterus_alive_factor)
-summary(m2_birthorder)
+m2_birthorder_linear = update(m1_covariates_only, formula = . ~ . + birthorder_uterus_alive)
+summary(m2_birthorder_linear)
 ```
 
 #### Coefficient plot
 ```{r}
-plot_birthorder(m2_birthorder, separate = FALSE)
+plot_birthorder(m2_birthorder_linear, separate = FALSE)
+```
+
+### Add birth order factor {.tabset}
+
+#### Model summary
+```{r}
+m3_birthorder_nonlinear = update(m1_covariates_only, formula = . ~ . + birthorder_uterus_alive_factor)
+summary(m3_birthorder_nonlinear)
+```
+
+#### Coefficient plot
+```{r}
+plot_birthorder(m3_birthorder_nonlinear, separate = FALSE)
 ```
 
 ### Add interaction {.tabset}
 
 #### Model summary
 ```{r}
-m3_interaction = update(m2_birthorder, formula = . ~ . - birthorder_uterus_alive_factor - sibling_count_uterus_alive_factor + count_birthorder_uterus_alive)
-summary(m3_interaction)
+m4_interaction = update(m3_birthorder_nonlinear, formula = . ~ . - birthorder_uterus_alive_factor - sibling_count_uterus_alive_factor + count_birthorder_uterus_alive)
+summary(m4_interaction)
 ```
 
 #### Coefficient plot
 ```{r}
-plot_birthorder(m3_interaction)
+plot_birthorder(m4_interaction)
 ```
 
 ### Model comparison
 ```{r}
-anova(m1_covariates_only, m2_birthorder, m3_interaction)
+anova(m1_covariates_only, m2_birthorder_linear, m3_birthorder_nonlinear, m4_interaction)
 ```
 

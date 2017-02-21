@@ -1,14 +1,3 @@
----
-author: "Laura Botzet"
-date: "9/15/2016"
-output:
-  html_document:
-    lib_dir: library
-    code_folding: "hide"
-    self_contained: FALSE
-  pdf_document: default
----
-
 # Data preparation {.tabset}
 
 ## Library

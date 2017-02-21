@@ -10,6 +10,8 @@ navbar:
       href: 2_demographics.html
     - text: "Preliminary Analyses"
       href: 3_preliminary_analyses.html
+    - text: "Analyses"
+      href: 4_analyses.html
   right:
     - text: ""
       icon: fa-github
@@ -21,5 +23,4 @@ output:
     code_folding: "hide"
     df_print: "tibble"
     code_download: true
-    highlight: "zenburn"
 exclude: ["packrat", "*.rda", "*.pdf", "*.dta", "*.csv", "geo", "item_tables", "*.csl", "*.bibtex", "*.rds", "*.dta", "data"]

@@ -33,7 +33,7 @@ apatheme=theme_bw()+
         text=element_text(family='Times', size = 16))
 
  
-plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birthorder", separate = TRUE) {
+plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_order", separate = TRUE) {
   if(inherits(model, "merMod")) {
     varnames = names(model@frame)
   } else {

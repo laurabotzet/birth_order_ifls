@@ -22,4 +22,4 @@ output:
     df_print: "tibble"
     code_download: true
     highlight: "zenburn"
-exclude: ["packrat", "*.rda", "*.pdf", "*.dta", "*.csv", "geo", "item_tables", "*.csl", "*.bibtex"]
+exclude: ["packrat", "*.rda", "*.pdf", "*.dta", "*.csv", "geo", "item_tables", "*.csl", "*.bibtex", "*.rds", "*.dta", "data"]

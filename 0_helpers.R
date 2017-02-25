@@ -38,6 +38,7 @@ library(ggplot2)
 library(tidyr)
 #' tidyverse-style data wrangling. has a lot of naming conflicts, so always load last
 library(dplyr)
+library(data.table)
 
 #' ## Spin R files
 #' R scripts can be documented in markdown using Roxygen comments, as demonstrated here
@@ -78,6 +79,25 @@ output:
 
 #' ## Output options
 #' use pander to pretty-print objects (if possible)
+pander_handler = function(x, ...) {
+  anyS3method = function(x) {
+    classes = class(x)
+    any(sapply(classes, FUN = function(classes) { !is.null(getS3method('pander',classes,TRUE)) } ))
+  }
+  if ("knit_asis" %in% class(x)) {
+    x
+  } else if (is.data.table(x)) {
+    ""
+    # don't ever print stupid data tables
+  } else if (anyS3method(x)) {
+    pander(x, row.names = F, ...)
+  } else if (isS4(x)) {
+    show(x)
+  } else {
+    print(x)
+  }
+}
+
 opts_chunk$set(
   render = pander_handler
 )
@@ -143,8 +163,9 @@ plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_ord
   assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)
 }
 
+
 compare_models_markdown = function(m1_covariates_only) {
-   formr::asis_knit_child("_test_outcome.Rmd")
-}
+  formr::asis_knit_child('_test_outcome.Rmd')
+  }
 
 

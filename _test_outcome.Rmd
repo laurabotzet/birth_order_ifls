@@ -1,56 +1,56 @@
 
-#### Basic model {.tabset}
+##### Basic Model {.tabset}
 
-##### Model summary
+###### Model Summary
 ```{r}
 summary(m1_covariates_only)
 ```
 
-##### Coefficient plot
+###### Coefficient Plot
 ```{r}
 plot(allEffects(m1_covariates_only))
 ```
 
-#### Add birth order linear {.tabset}
+##### Add Birth Order Linear {.tabset}
 
-##### Model summary
+###### Model Summary
 ```{r}
 m2_birthorder_linear = update(m1_covariates_only, formula = . ~ . + birth_order)
 summary(m2_birthorder_linear)
 ```
 
-##### Coefficient plot
+###### Coefficient Plot
 ```{r}
 plot_birthorder(m2_birthorder_linear, separate = FALSE)
 ```
 
-#### Add birth order factor {.tabset}
+##### Add Birth Order Factor {.tabset}
 
-##### Model summary
+###### Model Summary
 ```{r}
 m3_birthorder_nonlinear = update(m1_covariates_only, formula = . ~ . + birth_order_nonlinear)
 summary(m3_birthorder_nonlinear)
 ```
 
-##### Coefficient plot
+###### Coefficient Plot
 ```{r}
 plot_birthorder(m3_birthorder_nonlinear, separate = FALSE)
 ```
 
-#### Add interaction {.tabset}
+##### Add Interaction {.tabset}
 
-##### Model summary
+###### Model Summary
 ```{r}
 m4_interaction = update(m3_birthorder_nonlinear, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
 summary(m4_interaction)
 ```
 
-##### Coefficient plot
+###### Coefficient Plot
 ```{r}
 plot_birthorder(m4_interaction)
 ```
 
-#### Model comparison
+##### Model Comparison
 ```{r}
 anova(m1_covariates_only, m2_birthorder_linear, m3_birthorder_nonlinear, m4_interaction)
 ```

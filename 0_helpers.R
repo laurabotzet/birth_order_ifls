@@ -39,6 +39,29 @@ library(tidyr)
 #' tidyverse-style data wrangling. has a lot of naming conflicts, so always load last
 library(dplyr)
 library(data.table)
+library(lme4)
+library(lmerTest)
+library(ggplot2)
+library(formr)
+library(effects)
+library(stringr)
+library(forcats)
+library(cowplot)
+library(dplyr)
+library(formr)
+library(rmarkdown)
+library(formatR)
+library(devtools)
+library(haven)
+library(tidyr)
+library(ggplot2)
+library(stringr)
+library(GPArotation)
+library(lubridate)
+library(psych)
+library(lavaan)
+library(Hmisc)
+library(dplyr)
 
 #' ## Spin R files
 #' R scripts can be documented in markdown using Roxygen comments, as demonstrated here
@@ -167,5 +190,44 @@ plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_ord
 compare_models_markdown = function(m1_covariates_only) {
   formr::asis_knit_child('_test_outcome.Rmd')
   }
+
+pad_month = function(x) { str_pad(x, width = 2, side = "left", pad = "0")}
+
+### Function to calculate the birthdate out of all available informations for one individual
+all_available_info_birth_date = function(byear, bmonth, bday = NULL) {
+  if(!is.null(bday)) {
+    bday = paste0("-", bday)
+  } else {
+    bday = ""
+  }
+  ifelse(is.na(byear), NA,
+         paste0(byear, "-", bmonth, bday))
+  # can yield 2016-NA-NA
+  #           2016-01-NA
+  #           2016-01-01
+  #           2016-01
+}
+
+##### Function to calculate the birthorder based on the siblings still alive at the time of birth
+older_sibs_alive_and_dependent = function(byear, dyear) {
+  sibs = length(byear)
+  older_sibs_alive_and_dependent = integer(length=sibs) + 1
+  for(i in 1:sibs) {
+    older_sibs = byear <= byear[i] # not using < because of twins
+    older_sibs[i] = F # minus self
+    my_sibs = sum(older_sibs,na.rm = T) # minus self
+    if(my_sibs > 0) {
+      sib_births = byear[ which(older_sibs) ]
+      sib_deaths = dyear[ which(older_sibs) ]
+      my_sibs = my_sibs -
+        sum(
+          # sib_births < (byear[i] - 5) | # others born more than 5y earlier than me  # 10 seconds of 17
+          (sib_deaths <= byear[i]) # died before my birth
+          ,na.rm=T)
+      older_sibs_alive_and_dependent[i] = my_sibs
+    }
+  }
+  older_sibs_alive_and_dependent
+}
 
 

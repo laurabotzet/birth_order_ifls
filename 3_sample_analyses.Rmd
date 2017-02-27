@@ -1,24 +1,8 @@
----
-author: "Laura Botzet"
-date: "11/03/2016"
-output:
-  html_document:
-    lib_dir: library
-    self_contained: no
-  pdf_document: default
----
+# Sample Analyses {.tabset}
 
-## Library
-```{r Library}
-library(formr)
-library(devtools)
-library(haven)
-library(tidyr)
-library(ggplot2)
-library(stringr)
-library(GPArotation)
-library(apaTables)
-library(dplyr)
+## Helper
+```{r helper}
+source("0_helpers.R")
 ```
 
 ## Load data

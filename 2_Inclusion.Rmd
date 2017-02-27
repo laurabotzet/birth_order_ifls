@@ -1,0 +1,72 @@
+# Inclusion Process {.tabset}
+
+## Helper
+```{r helper}
+source("0_helpers.R")
+```
+
+## Load data
+```{r Load data}
+### Import alldata used for birthorder
+alldata_birthorder = readRDS("data/alldata_birthorder.rds")
+
+### Import all alldata
+alldata = readRDS("data/alldata.rds")
+
+```
+
+## No only Children
+
+## No Multiple Births
+``` {r}
+
+
+```
+
+
+
+## Still alive
+
+## Interviewed for IFLS 5  {.tabset}
+
+### Total
+```{r}
+### All people in the birthorder data file that have ANY g-factor, personality or risk values have to be marked
+alldata_birthorder = alldata_birthorder %>%
+  mutate(used_all = ifelse(!is.na(g_factor) || !is.na(big5_ext) || !is.na(big5_open) || !is.na(big5_agree) ||
+                             !is.na(big5_neu) || !is.na(big5_con) || !is.na(riskA) || !is.na(riskB), 1, 0
+                           # used_all = 1:included, 0:not_included
+  ))
+
+```
+
+### Intelligence
+```{r}
+### All people in the birthorder data file that have all Intelligence measurements
+alldata_birthorder = alldata_birthorder %>%
+  mutate(used_iq = ifelse(!is.na(g_factor), 1, 0)) # used_iq = 1:included, 0:not_included
+
+```
+
+### Personality
+```{r}
+### All people in the birthorder data file that have Personality Measurements
+alldata_birthorder = alldata_birthorder %>%
+  mutate(used_ext = ifelse(!is.na(big5_ext), 1, 0),
+         used_neuro = ifelse(!is.na(big5_neu), 1, 0),
+         used_con = ifelse(!is.na(big5_con), 1, 0),
+         used_agree =  ifelse(!is.na(big5_agree), 1, 0),
+         used_open = ifelse(!is.na(big5_open), 1, 0))
+
+```
+
+### Risk
+```{r}
+### All people in the birthorder data file that have Personality Measurements
+alldata_birthorder = alldata_birthorder %>%
+  mutate(used_riskA = ifelse(!is.na(riskA), 1, 0),
+         used_riskB = ifelse(!is.na(riskB), 1, 0))
+
+```
+
+

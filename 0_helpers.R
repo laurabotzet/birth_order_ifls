@@ -156,7 +156,6 @@ plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_ord
     cemm = cemm %>%
       separate_(bo_var, into = c("Birth order", "Sibship"), sep = "/")
     number = spread(as.data.frame(table(model.frame(model)[`bo_var`])), Var1, Freq)
-    n1 = paste0("1 (", sum(number$`1/1`), ")", seperate="")
     n2 = paste0("2 (", sum(number$`1/2`, number$`2/2`), ")", seperate="")
     n3 = paste0("3 (", sum(number$`1/3`, number$`2/3`, number$`3/3`), ")",
                 seperate="")
@@ -168,7 +167,7 @@ plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_ord
                                 number$`4/5+`, number$`5/5+`, number$`5+/5+`), ")",
                     seperate="")
     cemm = cemm %>%
-      mutate(Sibship = recode_factor(Sibship, "1" = `n1`, "2" = `n2`, "3" = `n3`, "4" = `n4`,
+      mutate(Sibship = recode_factor(Sibship, "2" = `n2`, "3" = `n3`, "4" = `n4`,
                                      "5" = `n5`, "5+" = `n5more`))
   }
   plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,

@@ -12,61 +12,391 @@ alldata_birthorder = readRDS("data/alldata_birthorder.rds")
 
 ### Import all alldata
 alldata = readRDS("data/alldata.rds")
-
 ```
 
-## No only Children
-
-## No Multiple Births
-``` {r}
-
-
-```
-
-
-
-## Still alive
-
-## Interviewed for IFLS 5  {.tabset}
-
+## Birthorder
 ### Total
+Number of individuals we were able to reconstruct the three different birth orders based on pregnancy and marriage history for 
+```{r}
+## Count Birthorder
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate)),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate)),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate)))
+print(n_birthorder)
+```
+
+
+### No Multiple Births
+``` {r}
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1))
+print(n_birthorder)
+
+```
+
+### No only Children
+```{r}
+## Count Birthorder - without only children
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1 & sibling_count_uterus_alive != 1),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1 &
+                                             sibling_count_uterus_preg != 1),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1 & 
+                                                      sibling_count_genes != 1))
+print(n_birthorder)
+```
+
+
+### Still alive
+```{r}
+## Count Birthorder - without only children
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1 & sibling_count_uterus_alive != 1 &
+                                         alive != 3, na.rm = T),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1 &
+                                             sibling_count_uterus_preg != 1 & alive != 3, na.rm = T),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1 & 
+                                                      sibling_count_genes != 1 & alive != 3, na.rm =T))
+print(n_birthorder)
+```
+
+### Aged 15 or older
+```{r}
+## Count Birthorder - without only children
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1 & sibling_count_uterus_alive != 1 &
+                                         alive != 3 & birth_year <= 2000, na.rm = T),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1 &
+                                             sibling_count_uterus_preg != 1 & alive != 3 & birth_year <= 2000,
+                                           na.rm = T),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1 & 
+                                                      sibling_count_genes != 1 & alive != 3 & birth_year <= 2000,
+                                                    na.rm =T))
+print(n_birthorder)
+```
+
+
+### Interviewed for IFLS 5  {.tabset}
+
+#### Total
 ```{r}
 ### All people in the birthorder data file that have ANY g-factor, personality or risk values have to be marked
 alldata_birthorder = alldata_birthorder %>%
   mutate(used_all = ifelse(!is.na(g_factor) || !is.na(big5_ext) || !is.na(big5_open) || !is.na(big5_agree) ||
-                             !is.na(big5_neu) || !is.na(big5_con) || !is.na(riskA) || !is.na(riskB), 1, 0
-                           # used_all = 1:included, 0:not_included
-  ))
+                             !is.na(big5_neu) || !is.na(big5_con) || !is.na(riskA) || !is.na(riskB), 1, 0))
 
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1 & sibling_count_uterus_alive != 1 &
+                                         alive != 3 & birth_year <= 2000 & used_all == 1, na.rm = T),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1 &
+                                             sibling_count_uterus_preg != 1 & alive != 3 & birth_year <= 2000 &
+                                             used_all == 1,
+                                           na.rm = T),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1 & 
+                                                      sibling_count_genes != 1 & alive != 3 & birth_year <= 2000 &
+                                                      used_all == 1,
+                                                    na.rm =T))
+print(n_birthorder)
 ```
 
-### Intelligence
+#### Intelligence
 ```{r}
 ### All people in the birthorder data file that have all Intelligence measurements
 alldata_birthorder = alldata_birthorder %>%
   mutate(used_iq = ifelse(!is.na(g_factor), 1, 0)) # used_iq = 1:included, 0:not_included
 
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1 & sibling_count_uterus_alive != 1 &
+                                         alive != 3 & birth_year <= 2000 & used_iq == 1, na.rm = T),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1 &
+                                             sibling_count_uterus_preg != 1 & alive != 3 & birth_year <= 2000 &
+                                             used_iq == 1,
+                                           na.rm = T),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1 & 
+                                                      sibling_count_genes != 1 & alive != 3 & birth_year <= 2000 &
+                                                      used_iq == 1,
+                                                    na.rm =T))
+print(n_birthorder)
+
 ```
 
-### Personality
+#### Personality
 ```{r}
 ### All people in the birthorder data file that have Personality Measurements
+missingness_patterns(alldata_birthorder %>% select(big5_ext, big5_con, big5_open, big5_neu, big5_agree, big5_open))
+# Missingness Pattern shows that if one of the personality measurements is missing all Measurements are missing
 alldata_birthorder = alldata_birthorder %>%
-  mutate(used_ext = ifelse(!is.na(big5_ext), 1, 0),
-         used_neuro = ifelse(!is.na(big5_neu), 1, 0),
-         used_con = ifelse(!is.na(big5_con), 1, 0),
-         used_agree =  ifelse(!is.na(big5_agree), 1, 0),
-         used_open = ifelse(!is.na(big5_open), 1, 0))
-
+  mutate(used_pers = ifelse(!is.na(big5_ext), 1, 0))
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1 & sibling_count_uterus_alive != 1 &
+                                         alive != 3 & birth_year <= 2000 & used_pers == 1, na.rm = T),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1 &
+                                             sibling_count_uterus_preg != 1 & alive != 3 & birth_year <= 2000 &
+                                             used_pers == 1,
+                                           na.rm = T),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1 & 
+                                                      sibling_count_genes != 1 & alive != 3 & birth_year <= 2000 &
+                                                      used_pers == 1,
+                                                    na.rm =T))
+print(n_birthorder)
 ```
 
-### Risk
+#### Risk
 ```{r}
-### All people in the birthorder data file that have Personality Measurements
+### All people in the birthorder data file that have Risk Measurements
+missingness_patterns(alldata_birthorder %>% select(riskA, riskB))
+## Missingness Pattern shows that sometimes A and sometimes B is missing
 alldata_birthorder = alldata_birthorder %>%
   mutate(used_riskA = ifelse(!is.na(riskA), 1, 0),
          used_riskB = ifelse(!is.na(riskB), 1, 0))
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1 & sibling_count_uterus_alive != 1 &
+                                         alive != 3 & birth_year <= 2000 & used_riskA == 1, na.rm = T),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1 &
+                                             sibling_count_uterus_preg != 1 & alive != 3 & birth_year <= 2000 &
+                                             used_riskA == 1,
+                                           na.rm = T),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1 & 
+                                                      sibling_count_genes != 1 & alive != 3 & birth_year <= 2000 &
+                                                      used_riskA == 1,
+                                                    na.rm =T))
+print(n_birthorder)
+
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1 & sibling_count_uterus_alive != 1 &
+                                         alive != 3 & birth_year <= 2000 & used_riskB == 1, na.rm = T),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1 &
+                                             sibling_count_uterus_preg != 1 & alive != 3 & birth_year <= 2000 &
+                                             used_riskB == 1,
+                                           na.rm = T),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1 & 
+                                                      sibling_count_genes != 1 & alive != 3 & birth_year <= 2000 &
+                                                      used_riskB == 1,
+                                                    na.rm =T))
+print(n_birthorder)
 
 ```
+
+# Inclusion Process {.tabset}
+
+## Helper
+```{r helper}
+source("0_helpers.R")
+```
+
+## Load data
+```{r Load data}
+### Import alldata used for birthorder
+alldata_birthorder = readRDS("data/alldata_birthorder.rds")
+
+### Import all alldata
+alldata = readRDS("data/alldata.rds")
+```
+
+## Birthorder
+### Total
+Number of individuals we were able to reconstruct the three different birth orders based on pregnancy and marriage history for 
+```{r}
+## Count Birthorder
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate)),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate)),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate)))
+print(n_birthorder)
+```
+
+
+### No Multiple Births
+``` {r}
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1))
+print(n_birthorder)
+
+```
+
+### No only Children
+```{r}
+## Count Birthorder - without only children
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1 & sibling_count_uterus_alive != 1),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1 &
+                                             sibling_count_uterus_preg != 1),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1 & 
+                                                      sibling_count_genes != 1))
+print(n_birthorder)
+```
+
+
+### Still alive
+```{r}
+## Count Birthorder - without only children
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1 & sibling_count_uterus_alive != 1 &
+                                         alive != 3, na.rm = T),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1 &
+                                             sibling_count_uterus_preg != 1 & alive != 3, na.rm = T),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1 & 
+                                                      sibling_count_genes != 1 & alive != 3, na.rm =T))
+print(n_birthorder)
+```
+
+### Aged 15 or older
+```{r}
+## Count Birthorder - without only children
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1 & sibling_count_uterus_alive != 1 &
+                                         alive != 3 & birth_year <= 2000, na.rm = T),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1 &
+                                             sibling_count_uterus_preg != 1 & alive != 3 & birth_year <= 2000,
+                                           na.rm = T),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1 & 
+                                                      sibling_count_genes != 1 & alive != 3 & birth_year <= 2000,
+                                                    na.rm =T))
+print(n_birthorder)
+```
+
+
+### Interviewed for IFLS 5  {.tabset}
+
+#### Total
+```{r}
+### All people in the birthorder data file that have ANY g-factor, personality or risk values have to be marked
+alldata_birthorder = alldata_birthorder %>%
+  mutate(used_all = ifelse(!is.na(g_factor) || !is.na(big5_ext) || !is.na(big5_open) || !is.na(big5_agree) ||
+                             !is.na(big5_neu) || !is.na(big5_con) || !is.na(riskA) || !is.na(riskB), 1, 0))
+
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1 & sibling_count_uterus_alive != 1 &
+                                         alive != 3 & birth_year <= 2000 & used_all == 1, na.rm = T),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1 &
+                                             sibling_count_uterus_preg != 1 & alive != 3 & birth_year <= 2000 &
+                                             used_all == 1,
+                                           na.rm = T),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1 & 
+                                                      sibling_count_genes != 1 & alive != 3 & birth_year <= 2000 &
+                                                      used_all == 1,
+                                                    na.rm =T))
+print(n_birthorder)
+```
+
+#### Intelligence
+```{r}
+### All people in the birthorder data file that have all Intelligence measurements
+alldata_birthorder = alldata_birthorder %>%
+  mutate(used_iq = ifelse(!is.na(g_factor), 1, 0)) # used_iq = 1:included, 0:not_included
+
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1 & sibling_count_uterus_alive != 1 &
+                                         alive != 3 & birth_year <= 2000 & used_iq == 1, na.rm = T),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1 &
+                                             sibling_count_uterus_preg != 1 & alive != 3 & birth_year <= 2000 &
+                                             used_iq == 1,
+                                           na.rm = T),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1 & 
+                                                      sibling_count_genes != 1 & alive != 3 & birth_year <= 2000 &
+                                                      used_iq == 1,
+                                                    na.rm =T))
+print(n_birthorder)
+
+```
+
+#### Personality
+```{r}
+### All people in the birthorder data file that have Personality Measurements
+missingness_patterns(alldata_birthorder %>% select(big5_ext, big5_con, big5_open, big5_neu, big5_agree, big5_open))
+# Missingness Pattern shows that if one of the personality measurements is missing all Measurements are missing
+alldata_birthorder = alldata_birthorder %>%
+  mutate(used_pers = ifelse(!is.na(big5_ext), 1, 0))
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1 & sibling_count_uterus_alive != 1 &
+                                         alive != 3 & birth_year <= 2000 & used_pers == 1, na.rm = T),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1 &
+                                             sibling_count_uterus_preg != 1 & alive != 3 & birth_year <= 2000 &
+                                             used_pers == 1,
+                                           na.rm = T),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1 & 
+                                                      sibling_count_genes != 1 & alive != 3 & birth_year <= 2000 &
+                                                      used_pers == 1,
+                                                    na.rm =T))
+print(n_birthorder)
+```
+
+#### Risk
+```{r}
+### All people in the birthorder data file that have Risk Measurements
+missingness_patterns(alldata_birthorder %>% select(riskA, riskB))
+## Missingness Pattern shows that sometimes A and sometimes B is missing
+alldata_birthorder = alldata_birthorder %>%
+  mutate(used_riskA = ifelse(!is.na(riskA), 1, 0),
+         used_riskB = ifelse(!is.na(riskB), 1, 0))
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1 & sibling_count_uterus_alive != 1 &
+                                         alive != 3 & birth_year <= 2000 & used_riskA == 1, na.rm = T),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1 &
+                                             sibling_count_uterus_preg != 1 & alive != 3 & birth_year <= 2000 &
+                                             used_riskA == 1,
+                                           na.rm = T),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1 & 
+                                                      sibling_count_genes != 1 & alive != 3 & birth_year <= 2000 &
+                                                      used_riskA == 1,
+                                                    na.rm =T))
+print(n_birthorder)
+
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(lifebirths == 2 & !is.na(mother_birthdate) &
+                                         multiple_birth_in_family_alive != 1 & sibling_count_uterus_alive != 1 &
+                                         alive != 3 & birth_year <= 2000 & used_riskB == 1, na.rm = T),
+            Maternal_Pregnancy_Order = sum(!is.na(mother_birthdate) & multiple_birth_in_family_preg != 1 &
+                                             sibling_count_uterus_preg != 1 & alive != 3 & birth_year <= 2000 &
+                                             used_riskB == 1,
+                                           na.rm = T),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(marriage_id_birthdate) & 
+                                                      multiple_birth_in_family_full != 1 & 
+                                                      sibling_count_genes != 1 & alive != 3 & birth_year <= 2000 &
+                                                      used_riskB == 1,
+                                                    na.rm =T))
+print(n_birthorder)
+
+```
+
 
 

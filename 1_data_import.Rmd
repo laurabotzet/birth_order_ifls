@@ -473,24 +473,20 @@ qplot(iq$words_remembered_avg)
 
 ##Adaptive Numbering
 iq$adaptive_numbering = iq$w_abil
-
-
-#iq$drew_pentagons = as.numeric(iq$cob19b == 1)
-#iq$number_of_animals = iq$cob18
+qplot(iq$adaptive_numbering)
 
 ## Correlation of all Iq-Tests
 round(cor(iq %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
 
 ##Missingness_Patterns
 formr::missingness_patterns(iq %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering))
-
 ```
 
 ### g-factor
 ```{r}
-iq$words_delayed = iq$words_delayed/10
-iq$words_immediate = iq$words_immediate/10
-iq$adaptive_numbering = iq$adaptive_numbering/100
+# iq$words_delayed = iq$words_delayed/10
+# iq$words_immediate = iq$words_immediate/10
+# iq$adaptive_numbering = iq$adaptive_numbering/100
 
 
 fa.parallel(iq %>% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
@@ -507,10 +503,17 @@ summary(cfa_g)
 #mean(pars[pars$op == "r2", "est"]) # avg variance explained by g factor
 
 iq$g_factor = predict(cfa_g)[,1]
+iq = iq %>%
+  mutate(g_factor = ifelse(is.na(raven), NA, g_factor),
+         g_factor = ifelse(is.na(math), NA, g_factor),
+         g_factor = ifelse(is.na(count_backwards), NA, g_factor),
+         g_factor = ifelse(is.na(words_immediate), NA, g_factor),
+         g_factor = ifelse(is.na(words_delayed), NA, g_factor),
+         g_factor = ifelse(is.na(adaptive_numbering), NA, g_factor))
 qplot(iq$g_factor)
 round(cor(iq %>% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, words_immediate), use = "pairwise.complete.obs"), 2)
 
-formr::missingness_patterns(iq %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor)) ## oops, lavaan only predicts the g factor for complete cases
+formr::missingness_patterns(iq %>% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor)) ## oops, lavaan only predicts the g factor for complete cases
 
 ```
 

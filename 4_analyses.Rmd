@@ -15,8 +15,16 @@ alldata_birthorder = readRDS("data/alldata_birthorder.rds")
 ### Variables
 alldata_birthorder = alldata_birthorder %>%
   mutate(
+    # if only child, we have to set birthorder and siblingcount as NA
+    birthorder_uterus_alive = ifelse(sibling_count_uterus_alive == 1, NA, birthorder_uterus_alive),
+    birthorder_uterus_preg = ifelse(sibling_count_uterus_preg == 1, NA, birthorder_uterus_preg),
+    birthorder_genes = ifelse(sibling_count_genes == 1, NA, birthorder_genes),
+    # if only child we have to set siblingcount as NA
+    sibling_count_uterus_alive = ifelse(sibling_count_uterus_alive == 1, NA, sibling_count_uterus_alive),
+    sibling_count_uterus_preg = ifelse(sibling_count_uterus_preg == 1, NA, sibling_count_uterus_preg),
+    sibling_count_genes = ifelse(sibling_count_genes == 1, NA, sibling_count_genes),
     # center birthyear
-    birthyear = byear - mean(byear, na.rm = T),
+    birthyear = birth_year - mean(birth_year, na.rm = T),
     # Sex (1 = male, 2 = female)
     male = ifelse(sex.x == 1, 1L, 0L),
     male = ifelse(sex.x > 3, NA_integer_, male),
@@ -75,7 +83,7 @@ alldata_birthorder = alldata_birthorder %>%
     sibling_count_uterus_alive_factor = ifelse(sibling_count_uterus_alive > 5, "5+",
                                                sibling_count_uterus_alive_factor),
     sibling_count_uterus_alive_factor = factor(sibling_count_uterus_alive_factor, 
-                                               levels = c("1","2","3","4","5","5+")),
+                                               levels = c("2","3","4","5","5+")),
     birthorder_uterus_preg_factor = as.character(birthorder_uterus_preg),
     birthorder_uterus_preg_factor = ifelse(birthorder_uterus_preg > 5, "5+",
                                            birthorder_uterus_preg_factor),
@@ -85,7 +93,7 @@ alldata_birthorder = alldata_birthorder %>%
     sibling_count_uterus_preg_factor = ifelse(sibling_count_uterus_preg > 5, "5+",
                                               sibling_count_uterus_preg_factor),
     sibling_count_uterus_preg_factor = factor(sibling_count_uterus_preg_factor, 
-                                              levels = c("1","2","3","4","5","5+")),
+                                              levels = c("2","3","4","5","5+")),
     birthorder_genes_factor = as.character(birthorder_genes),
     birthorder_genes_factor = ifelse(birthorder_genes >5 , "5+", birthorder_genes_factor),
     birthorder_genes_factor = factor(birthorder_genes_factor, 
@@ -94,12 +102,12 @@ alldata_birthorder = alldata_birthorder %>%
     sibling_count_genes_factor = ifelse(sibling_count_genes >5 , "5+",
                                         sibling_count_genes_factor),
     sibling_count_genes_factor = factor(sibling_count_genes_factor, 
-                                        levels = c("1","2","3","4","5","5+")),
+                                        levels = c("2","3","4","5","5+")),
     # interaction birthorder * siblingcout for each birthorder
     count_birthorder_uterus_alive =
       factor(str_replace(as.character(interaction(birthorder_uterus_alive_factor,                                                              sibling_count_uterus_alive_factor)),
                         "\\.", "/"),
-                                           levels =   c("1/1","1/2","2/2", "1/3",  "2/3",
+                                           levels =   c("1/2","2/2", "1/3",  "2/3",
                                                         "3/3", "1/4", "2/4", "3/4", "4/4",
                                                         "1/5", "2/5", "3/5", "4/5", "5/5",
                                                         "1/5+", "2/5+", "3/5+", "4/5+",
@@ -107,14 +115,14 @@ alldata_birthorder = alldata_birthorder %>%
     count_birthorder_uterus_preg =
       factor(str_replace(as.character(interaction(birthorder_uterus_preg_factor,                                                              sibling_count_uterus_preg_factor)), 
                          "\\.", "/"),
-                                           levels =   c("1/1","1/2","2/2", "1/3",  "2/3",
+                                           levels =   c("1/2","2/2", "1/3",  "2/3",
                                                         "3/3", "1/4", "2/4", "3/4", "4/4",
                                                         "1/5", "2/5", "3/5", "4/5", "5/5",
                                                         "1/5+", "2/5+", "3/5+", "4/5+",
                                                         "5/5+", "5+/5+")),
     count_birthorder_genes =
       factor(str_replace(as.character(interaction(birthorder_genes_factor,                                                              sibling_count_genes_factor)), "\\.", "/"),
-                                           levels =   c("1/1","1/2","2/2", "1/3",  "2/3",
+                                           levels =   c("1/2","2/2", "1/3",  "2/3",
                                                         "3/3", "1/4", "2/4", "3/4", "4/4",
                                                         "1/5", "2/5", "3/5", "4/5", "5/5",
                                                         "1/5+", "2/5+", "3/5+", "4/5+",
@@ -126,7 +134,7 @@ alldata_birthorder = alldata_birthorder %>%
 
 
 ## Intelligence {.tabset}
-### Intelligence - G factor {.tabset}
+### G factor {.tabset}
 
 #### Maternal Birth Order {.tabset}
 
@@ -163,6 +171,242 @@ g_factor_parental_m1 = lmer(g_factor ~ birthyear + male + sibling_count + (1 | m
          count_birth_order = count_birthorder_genes
          ))
 compare_models_markdown(g_factor_parental_m1)
+```
+
+### Raven {.tabset}
+
+#### Maternal Birth Order {.tabset}
+
+```{r}
+raven_m1 = lmer(raven ~ birthyear + male + sibling_count + (1 | mother_pidlink),
+                   data = alldata_birthorder %>%
+                     rename(sibling_count = sibling_count_uterus_alive_factor,
+                            birth_order_nonlinear = birthorder_uterus_alive_factor,
+                            birth_order = birthorder_uterus_alive,
+                            count_birth_order = count_birthorder_uterus_alive))
+compare_models_markdown(raven_m1)
+```
+
+#### Maternal Pregnancy Order {.tabset}
+
+```{r}
+raven_preg_m1 = lmer(raven ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = alldata_birthorder %>% 
+  rename(sibling_count = sibling_count_uterus_preg_factor,
+         birth_order_nonlinear = birthorder_uterus_preg_factor,
+         birth_order = birthorder_uterus_preg,
+         count_birth_order = count_birthorder_uterus_preg
+         ))
+compare_models_markdown(raven_preg_m1)
+```
+
+#### Parental Full Silbing Order {.tabset}
+
+```{r}
+raven_parental_m1 = lmer(raven ~ birthyear + male + sibling_count + (1 | marriage_id),
+                            data = alldata_birthorder %>% 
+  rename(sibling_count = sibling_count_genes_factor,
+         birth_order_nonlinear = birthorder_genes_factor,
+         birth_order = birthorder_genes,
+         count_birth_order = count_birthorder_genes
+         ))
+compare_models_markdown(raven_parental_m1)
+```
+
+
+### Math {.tabset}
+
+#### Maternal Birth Order {.tabset}
+
+```{r}
+math_m1 = lmer(math ~ birthyear + male + sibling_count + (1 | mother_pidlink),
+                   data = alldata_birthorder %>%
+                     rename(sibling_count = sibling_count_uterus_alive_factor,
+                            birth_order_nonlinear = birthorder_uterus_alive_factor,
+                            birth_order = birthorder_uterus_alive,
+                            count_birth_order = count_birthorder_uterus_alive))
+compare_models_markdown(math_m1)
+```
+
+#### Maternal Pregnancy Order {.tabset}
+
+```{r}
+math_preg_m1 = lmer(math ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = alldata_birthorder %>% 
+  rename(sibling_count = sibling_count_uterus_preg_factor,
+         birth_order_nonlinear = birthorder_uterus_preg_factor,
+         birth_order = birthorder_uterus_preg,
+         count_birth_order = count_birthorder_uterus_preg
+         ))
+compare_models_markdown(math_preg_m1)
+```
+
+#### Parental Full Silbing Order {.tabset}
+
+```{r}
+math_parental_m1 = lmer(math ~ birthyear + male + sibling_count + (1 | marriage_id),
+                            data = alldata_birthorder %>% 
+  rename(sibling_count = sibling_count_genes_factor,
+         birth_order_nonlinear = birthorder_genes_factor,
+         birth_order = birthorder_genes,
+         count_birth_order = count_birthorder_genes
+         ))
+compare_models_markdown(math_parental_m1)
+```
+
+### Counting backwards {.tabset}
+
+#### Maternal Birth Order {.tabset}
+
+```{r}
+count_backwards_m1 = lmer(count_backwards ~ birthyear + male + sibling_count + (1 | mother_pidlink),
+               data = alldata_birthorder %>%
+                 rename(sibling_count = sibling_count_uterus_alive_factor,
+                        birth_order_nonlinear = birthorder_uterus_alive_factor,
+                        birth_order = birthorder_uterus_alive,
+                        count_birth_order = count_birthorder_uterus_alive))
+compare_models_markdown(count_backwards_m1)
+```
+
+#### Maternal Pregnancy Order {.tabset}
+
+```{r}
+count_backwards_preg_m1 = lmer(count_backwards ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = alldata_birthorder %>% 
+                      rename(sibling_count = sibling_count_uterus_preg_factor,
+                             birth_order_nonlinear = birthorder_uterus_preg_factor,
+                             birth_order = birthorder_uterus_preg,
+                             count_birth_order = count_birthorder_uterus_preg
+                      ))
+compare_models_markdown(count_backwards_preg_m1)
+```
+
+#### Parental Full Silbing Order {.tabset}
+
+```{r}
+count_backwards_parental_m1 = lmer(count_backwards ~ birthyear + male + sibling_count + (1 | marriage_id),
+                        data = alldata_birthorder %>% 
+                          rename(sibling_count = sibling_count_genes_factor,
+                                 birth_order_nonlinear = birthorder_genes_factor,
+                                 birth_order = birthorder_genes,
+                                 count_birth_order = count_birthorder_genes
+                          ))
+compare_models_markdown(count_backwards_parental_m1)
+```
+
+### Immediate Word Recall {.tabset}
+
+#### Maternal Birth Order {.tabset}
+
+```{r}
+words_immediate_m1 = lmer(words_immediate ~ birthyear + male + sibling_count + (1 | mother_pidlink),
+                          data = alldata_birthorder %>%
+                            rename(sibling_count = sibling_count_uterus_alive_factor,
+                                   birth_order_nonlinear = birthorder_uterus_alive_factor,
+                                   birth_order = birthorder_uterus_alive,
+                                   count_birth_order = count_birthorder_uterus_alive))
+compare_models_markdown(words_immediate_m1)
+```
+
+#### Maternal Pregnancy Order {.tabset}
+
+```{r}
+words_immediate_preg_m1 = lmer(words_immediate ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = alldata_birthorder %>% 
+                                 rename(sibling_count = sibling_count_uterus_preg_factor,
+                                        birth_order_nonlinear = birthorder_uterus_preg_factor,
+                                        birth_order = birthorder_uterus_preg,
+                                        count_birth_order = count_birthorder_uterus_preg
+                                 ))
+compare_models_markdown(words_immediate_preg_m1)
+```
+
+#### Parental Full Silbing Order {.tabset}
+
+```{r}
+words_immediate_parental_m1 = lmer(words_immediate ~ birthyear + male + sibling_count + (1 | marriage_id),
+                                   data = alldata_birthorder %>% 
+                                     rename(sibling_count = sibling_count_genes_factor,
+                                            birth_order_nonlinear = birthorder_genes_factor,
+                                            birth_order = birthorder_genes,
+                                            count_birth_order = count_birthorder_genes
+                                     ))
+compare_models_markdown(words_immediate_parental_m1)
+```
+
+
+### Delayed Word Recall {.tabset}
+
+#### Maternal Birth Order {.tabset}
+
+```{r}
+words_delayed_m1 = lmer(words_delayed ~ birthyear + male + sibling_count + (1 | mother_pidlink),
+                          data = alldata_birthorder %>%
+                            rename(sibling_count = sibling_count_uterus_alive_factor,
+                                   birth_order_nonlinear = birthorder_uterus_alive_factor,
+                                   birth_order = birthorder_uterus_alive,
+                                   count_birth_order = count_birthorder_uterus_alive))
+compare_models_markdown(words_delayed_m1)
+```
+
+#### Maternal Pregnancy Order {.tabset}
+
+```{r}
+words_delayed_preg_m1 = lmer(words_delayed ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = alldata_birthorder %>% 
+                                 rename(sibling_count = sibling_count_uterus_preg_factor,
+                                        birth_order_nonlinear = birthorder_uterus_preg_factor,
+                                        birth_order = birthorder_uterus_preg,
+                                        count_birth_order = count_birthorder_uterus_preg
+                                 ))
+compare_models_markdown(words_delayed_preg_m1)
+```
+
+#### Parental Full Silbing Order {.tabset}
+
+```{r}
+words_delayed_parental_m1 = lmer(words_delayed ~ birthyear + male + sibling_count + (1 | marriage_id),
+                                   data = alldata_birthorder %>% 
+                                     rename(sibling_count = sibling_count_genes_factor,
+                                            birth_order_nonlinear = birthorder_genes_factor,
+                                            birth_order = birthorder_genes,
+                                            count_birth_order = count_birthorder_genes
+                                     ))
+compare_models_markdown(words_delayed_parental_m1)
+```
+
+### Adaptive Numbering {.tabset}
+
+#### Maternal Birth Order {.tabset}
+
+```{r}
+adaptive_numbering_m1 = lmer(adaptive_numbering ~ birthyear + male + sibling_count + (1 | mother_pidlink),
+                          data = alldata_birthorder %>%
+                            rename(sibling_count = sibling_count_uterus_alive_factor,
+                                   birth_order_nonlinear = birthorder_uterus_alive_factor,
+                                   birth_order = birthorder_uterus_alive,
+                                   count_birth_order = count_birthorder_uterus_alive))
+compare_models_markdown(adaptive_numbering_m1)
+```
+
+#### Maternal Pregnancy Order {.tabset}
+
+```{r}
+adaptive_numbering_preg_m1 = lmer(adaptive_numbering ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = alldata_birthorder %>% 
+                                 rename(sibling_count = sibling_count_uterus_preg_factor,
+                                        birth_order_nonlinear = birthorder_uterus_preg_factor,
+                                        birth_order = birthorder_uterus_preg,
+                                        count_birth_order = count_birthorder_uterus_preg
+                                 ))
+compare_models_markdown(adaptive_numbering_preg_m1)
+```
+
+#### Parental Full Silbing Order {.tabset}
+
+```{r}
+adaptive_numbering_parental_m1 = lmer(adaptive_numbering ~ birthyear + male + sibling_count + (1 | marriage_id),
+                                   data = alldata_birthorder %>% 
+                                     rename(sibling_count = sibling_count_genes_factor,
+                                            birth_order_nonlinear = birthorder_genes_factor,
+                                            birth_order = birthorder_genes,
+                                            count_birth_order = count_birthorder_genes
+                                     ))
+compare_models_markdown(adaptive_numbering_parental_m1)
 ```
 
 ## Personality {.tabset}

@@ -15,10 +15,12 @@ alldata = readRDS("data/alldata.rds")
 
 ```
 
-## data wrangling
+## Data Wrangling
 ```{r data wrangling}
 ## we only want to include people in the birthorder group that actually have iq, personality, etc. data
 birthorder = alldata_birthorder %>%
+  filter(!is.na(birthorder_uterus_preg) | !is.na(birthorder_uterus_alive) | !is.na(birthorder_genes)) %>%
+  filter(sibling_count_uterus_preg != 1 | sibling_count_uterus_alive != 1 | sibling_count_genes != 1) %>%
   mutate(check = ifelse(!is.na(g_factor), 1,
                         ifelse(!is.na(riskA), 1,
                                ifelse(!is.na(riskB), 1,
@@ -47,41 +49,10 @@ alldata = alldata %>%
 df = bind_rows(alldata, birthorder)
 ```
 
-## data comparison
+## Data Comparison {.tabset}
+### Control group
 ```{r data comparison}
-## In order to compare our test group to an alike group from the control sample we have to restict age
-check_test = df %>% filter(group == "test") %>%
-  arrange(gender) %>%
-  group_by(age) %>%
-  mutate(random = min_rank(pidlink),
-         choose = paste0(age, "-", random))
-        
-check_control = df %>% filter(group == "control", !is.na(g_factor), !is.na(riskA),
-                      !is.na(big5_agree), !is.na(big5_ext), !is.na(big5_con),
-                      !is.na(big5_neu), !is.na(big5_open)) %>%
-  arrange(gender) %>%
-  group_by(age) %>%
-  mutate(random = min_rank(pidlink),
-         choose = paste0(age, "-", random),
-         pidlink_choose = pidlink)
-
-table(check_test$choose)
-table(check_control$age)
-check = left_join(check_test, check_control, by = "choose")
-
-individuals_restricted = check$pidlink_choose
-
-df = df %>%
-  mutate(group2 = ifelse(age == 16 & male ==2 , "control_restricted", NA),
-         group2 = ifelse(age == 17 & male ==2 , "control_restricted", group2),
-         group2 = ifelse(age == 18 & male ==2 , "control_restricted", group2),
-         group2 = ifelse(age == 19 & male ==2 , "control_restricted", group2),
-         group2 = ifelse(pidlink %in% individuals_restricted, "control_restricted",
-                         group2),
-         group2 = ifelse(group=="test", "test", group2))
-
-crosstabs(~ df$group2 + df$group)
-
+## Descriptives
 descriptives = df %>%
   group_by(group) %>%
     summarise(n = n(),
@@ -93,26 +64,12 @@ descriptives = df %>%
               age_min = min(age, na.rm = TRUE),
               age_max = max(age, na.rm = TRUE),
               gender = mean(male, na.rm=TRUE) - 1)
+print(descriptives)
 
 ## Ttest
 t.test(df$age ~ df$group, var.equal = T)
 
-descriptives_restricted = df %>%
-  group_by(group2) %>%
-    summarise(n = n(),
-              age_mean = mean(age, na.rm=TRUE),
-              age_sd = sd(age, na.rm=T),
-              age_confidence_low = mean(age, na.rm = T) - 
-                (qt(.975, n()-1)*sd(age, na.rm = T)/sqrt(n())),
-              age_confidence_high = mean(age, na.rm = T) +
-                (qt(.975, n()-1)*sd(age, na.rm = T)/sqrt(n())),
-              age_min = min(age, na.rm = TRUE),
-              age_max = max(age, na.rm = TRUE),
-              gender = mean(male, na.rm=TRUE) - 1)
-
-t.test(df$age ~ df$group2, var.equal = T)
-
-
+## Ratings
 ratings = df %>%
   group_by(group) %>%
   summarise(g_factor_mean = mean(g_factor, na.rm=T),
@@ -155,6 +112,7 @@ ratings = df %>%
                 (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())),
             big5_open_confidence_high = mean(big5_open, na.rm = T) +
                 (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())))
+print(ratings)
 
 t.test(df$g_factor ~ df$group, var.equal = T)
 t.test(df$riskA ~ df$group, var.equal = T)
@@ -164,6 +122,56 @@ t.test(df$big5_neu ~ df$group, var.equal = T)
 t.test(df$big5_con ~ df$group, var.equal = T)
 t.test(df$big5_agree ~ df$group, var.equal = T)
 t.test(df$big5_open ~ df$group, var.equal = T)
+
+
+```
+
+### Restricted Control Group
+```{r}
+## In order to compare our test group to an alike group from the control sample we have to restict age
+check_test = df %>% filter(group == "test") %>%
+  arrange(gender) %>%
+  group_by(age) %>%
+  mutate(random = min_rank(pidlink),
+         choose = paste0(age, "-", random))
+        
+check_control = df %>% filter(group == "control", !is.na(g_factor), !is.na(riskA),
+                      !is.na(big5_agree), !is.na(big5_ext), !is.na(big5_con),
+                      !is.na(big5_neu), !is.na(big5_open)) %>%
+  arrange(gender) %>%
+  group_by(age) %>%
+  mutate(random = min_rank(pidlink),
+         choose = paste0(age, "-", random),
+         pidlink_choose = pidlink) %>%
+  ungroup() %>%
+  select(choose, pidlink_choose)
+
+check = left_join(check_test, check_control, by = "choose") %>%
+  ungroup() %>% arrange(pidlink_choose)
+
+individuals_restricted = unique(check$pidlink_choose)
+
+df = df %>%
+  mutate(group2 = ifelse(pidlink %in% individuals_restricted, "control_restricted",
+                         NA),
+         group2 = ifelse(age == 16, "control_restricted", group2),
+         group2 = ifelse(group=="test", "test", group2))
+
+## Descriptives
+descriptives_restricted = df %>%
+  group_by(group2) %>%
+    summarise(n = n(),
+              age_mean = mean(age, na.rm=TRUE),
+              age_sd = sd(age, na.rm=T),
+              age_confidence_low = mean(age, na.rm = T) - 
+                (qt(.975, n()-1)*sd(age, na.rm = T)/sqrt(n())),
+              age_confidence_high = mean(age, na.rm = T) +
+                (qt(.975, n()-1)*sd(age, na.rm = T)/sqrt(n())),
+              age_min = min(age, na.rm = TRUE),
+              age_max = max(age, na.rm = TRUE),
+              gender = mean(male, na.rm=TRUE) - 1)
+print(descriptives_restricted)
+t.test(df$age ~ df$group2, var.equal = T)
 
 
 ratings_restricted = df %>%
@@ -209,7 +217,7 @@ ratings_restricted = df %>%
                 (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())),
             big5_open_confidence_high = mean(big5_open, na.rm = T) +
                 (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())))
-
+print(ratings_restricted)
 t.test(df$g_factor ~ df$group2, var.equal = T)
 t.test(df$riskA ~ df$group2, var.equal = T)
 t.test(df$riskB ~ df$group2, var.equal = T)
@@ -223,7 +231,8 @@ t.test(df$big5_open ~ df$group2, var.equal = T)
 
 ```
 
-## correlation
+
+## Descriptives
 ```{r correlation}
 mean_sd = birthorder %>%
   group_by(group) %>%
@@ -245,7 +254,12 @@ mean_sd = birthorder %>%
             riskA_sd = sd(riskA, na.rm=T),
             riskB_mean = mean(riskB, na.rm=T),
             riskB_sd = sd(riskB, na.rm=T))
-           
+      
+print(mean_sd)
+```
+
+## Correlation
+```{r}
 round(cor(birthorder %>% ungroup() %>% select(age, male, g_factor, big5_ext, big5_neu, big5_con, big5_agree, big5_open, riskA, riskB), use = "pairwise.complete.obs"), 2) 
 cor.test(birthorder$age, birthorder$male)
 ```

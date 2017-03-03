@@ -8,7 +8,7 @@ source("0_helpers.R")
 ## Load data
 ```{r Load data}
 ### Import all data with known birthorder
-alldata_birthorder = readRDS("data/alldata_birthorder.rds")
+birthorder = readRDS("data/birthorder.rds")
 
 ### Import all data
 alldata = readRDS("data/alldata.rds")
@@ -17,19 +17,6 @@ alldata = readRDS("data/alldata.rds")
 
 ## Data Wrangling
 ```{r data wrangling}
-## we only want to include people in the birthorder group that actually have iq, personality, etc. data
-birthorder = alldata_birthorder %>%
-  filter(!is.na(birthorder_uterus_preg) | !is.na(birthorder_uterus_alive) | !is.na(birthorder_genes)) %>%
-  filter(sibling_count_uterus_preg != 1 | sibling_count_uterus_alive != 1 | sibling_count_genes != 1) %>%
-  mutate(check = ifelse(!is.na(g_factor), 1,
-                        ifelse(!is.na(riskA), 1,
-                               ifelse(!is.na(riskB), 1,
-                                      ifelse(!is.na(big5_ext), 1, 0)))),
-         group = "test",
-         male = factor(sex.x == 1),
-         male = ifelse(sex.x > 3, NA, male)) %>%
-  filter(check == 1)
-
 ## we have to exclude people in the control group who are part of the birthorder group
 individuals = birthorder$pidlink
 
@@ -45,6 +32,10 @@ alldata = alldata %>%
          male = ifelse(sex.x > 3, NA, male),
          age = ifelse(age>112, NA, age)) %>%
   filter(check == 1)
+
+birthorder = birthorder %>%
+  mutate(male = factor(gender == 1), 
+         male = (ifelse(gender > 3, NA, male)))
 
 df = bind_rows(alldata, birthorder)
 ```
@@ -64,7 +55,7 @@ descriptives = df %>%
               age_min = min(age, na.rm = TRUE),
               age_max = max(age, na.rm = TRUE),
               gender = mean(male, na.rm=TRUE) - 1)
-print(descriptives)
+descriptives
 
 ## Ttest
 t.test(df$age ~ df$group, var.equal = T)
@@ -112,7 +103,7 @@ ratings = df %>%
                 (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())),
             big5_open_confidence_high = mean(big5_open, na.rm = T) +
                 (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())))
-print(ratings)
+ratings
 
 t.test(df$g_factor ~ df$group, var.equal = T)
 t.test(df$riskA ~ df$group, var.equal = T)
@@ -154,9 +145,9 @@ individuals_restricted = unique(check$pidlink_choose)
 df = df %>%
   mutate(group2 = ifelse(pidlink %in% individuals_restricted, "control_restricted",
                          NA),
-         group2 = ifelse(age == 16, "control_restricted", group2),
          group2 = ifelse(group=="test", "test", group2))
 
+table(df$group2)
 ## Descriptives
 descriptives_restricted = df %>%
   group_by(group2) %>%
@@ -169,8 +160,9 @@ descriptives_restricted = df %>%
                 (qt(.975, n()-1)*sd(age, na.rm = T)/sqrt(n())),
               age_min = min(age, na.rm = TRUE),
               age_max = max(age, na.rm = TRUE),
-              gender = mean(male, na.rm=TRUE) - 1)
-print(descriptives_restricted)
+              gender = mean(male, na.rm=TRUE) - 1) %>%
+  filter(!is.na(group2))
+descriptives_restricted
 t.test(df$age ~ df$group2, var.equal = T)
 
 
@@ -182,16 +174,6 @@ ratings_restricted = df %>%
                 (qt(.975, n()-1)*sd(g_factor, na.rm = T)/sqrt(n())),
             g_factor_confidence_high = mean(g_factor, na.rm = T) +
                 (qt(.975, n()-1)*sd(g_factor, na.rm = T)/sqrt(n())),
-            riskA_mean = mean(riskA, na.rm=T),
-            riskA_confidence_low= mean(riskA, na.rm = T) - 
-                (qt(.975, n()-1)*sd(riskA, na.rm = T)/sqrt(n())),
-            riskA_confidence_high = mean(riskA, na.rm = T) +
-                (qt(.975, n()-1)*sd(riskA, na.rm = T)/sqrt(n())),
-            riskB_mean = mean(riskB, na.rm=T),
-            riskB_confidence_low= mean(riskB, na.rm = T) - 
-                (qt(.975, n()-1)*sd(riskB, na.rm = T)/sqrt(n())),
-            riskB_confidence_high = mean(riskB, na.rm = T) +
-                (qt(.975, n()-1)*sd(riskB, na.rm = T)/sqrt(n())),
             big5_ext_mean = mean(big5_ext, na.rm=T),
             big5_ext_confidence_low= mean(big5_ext, na.rm = T) - 
                 (qt(.975, n()-1)*sd(big5_ext, na.rm = T)/sqrt(n())),
@@ -216,19 +198,28 @@ ratings_restricted = df %>%
             big5_open_confidence_low= mean(big5_open, na.rm = T) - 
                 (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())),
             big5_open_confidence_high = mean(big5_open, na.rm = T) +
-                (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())))
-print(ratings_restricted)
+                (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())),
+            riskA_mean = mean(riskA, na.rm=T),
+            riskA_confidence_low= mean(riskA, na.rm = T) - 
+                (qt(.975, n()-1)*sd(riskA, na.rm = T)/sqrt(n())),
+            riskA_confidence_high = mean(riskA, na.rm = T) +
+                (qt(.975, n()-1)*sd(riskA, na.rm = T)/sqrt(n())),
+            riskB_mean = mean(riskB, na.rm=T),
+            riskB_confidence_low= mean(riskB, na.rm = T) - 
+                (qt(.975, n()-1)*sd(riskB, na.rm = T)/sqrt(n())),
+            riskB_confidence_high = mean(riskB, na.rm = T) +
+                (qt(.975, n()-1)*sd(riskB, na.rm = T)/sqrt(n()))) %>%
+  filter(!is.na(group2))
+
+ratings_restricted
 t.test(df$g_factor ~ df$group2, var.equal = T)
-t.test(df$riskA ~ df$group2, var.equal = T)
-t.test(df$riskB ~ df$group2, var.equal = T)
 t.test(df$big5_ext ~ df$group2, var.equal = T)
 t.test(df$big5_neu ~ df$group2, var.equal = T)
 t.test(df$big5_con ~ df$group2, var.equal = T)
 t.test(df$big5_agree ~ df$group2, var.equal = T)
 t.test(df$big5_open ~ df$group2, var.equal = T)
-
-           
-
+t.test(df$riskA ~ df$group2, var.equal = T)
+t.test(df$riskB ~ df$group2, var.equal = T)
 ```
 
 
@@ -255,12 +246,11 @@ mean_sd = birthorder %>%
             riskB_mean = mean(riskB, na.rm=T),
             riskB_sd = sd(riskB, na.rm=T))
       
-print(mean_sd)
+mean_sd
 ```
 
-## Correlation
+## Correlations
 ```{r}
 round(cor(birthorder %>% ungroup() %>% select(age, male, g_factor, big5_ext, big5_neu, big5_con, big5_agree, big5_open, riskA, riskB), use = "pairwise.complete.obs"), 2) 
-cor.test(birthorder$age, birthorder$male)
 ```
 

@@ -1,3 +1,9 @@
+---
+output:
+  html_document:
+    code_folding: "show"
+---
+
 # Data Import and Preparation {.tabset}
 
 ## Helper
@@ -88,18 +94,22 @@ w1_pregnancy = w1_pregnancy %>%
 
 ## Combine data
 pregnancy = bind_rows(w1 = w1_pregnancy, w2 = w2_pregnancy, w3 = w3_pregnancy, w4 = w4_pregnancy, w5 = w5_pregnancy, .id = "wave")
-prop.table(table(pregnancy$ch06a))
 
 ## Rename Variables
-pregnancy = pregnancy %>% rename(lifebirths = ch06, multiple_birth = ch06a, gender = ch08, birth_day = ch09day, birth_month = ch09mth, birth_year = ch09yr, mother_pidlink = pidlink, alive = ch25) # pregnancy$lifebirths values: 1 = still pregnant, 2 = livebirth, 3 = still birth, 4 = misscarriage
+pregnancy = pregnancy %>% rename(chron_order_birth = ch05, lifebirths = ch06, multiple_birth = ch06a, gender = ch08,
+                                 birth_day = ch09day, birth_month = ch09mth, birth_year = ch09yr, 
+                                 mother_pidlink = pidlink, alive = ch25) # pregnancy$lifebirths values: 1 = still pregnant, 2 = livebirth, 3 = still birth, 4 = misscarriage
 
 ## Set values as NA that are missing
-pregnancy$birth_day[ pregnancy$birth_day>31] = NA
-pregnancy$birth_month[ pregnancy$birth_month>12] = NA
-pregnancy$birth_year[ pregnancy$birth_year>2016] = NA
-pregnancy$birth_day[ is.nan(pregnancy$birth_day) ] = NA
-pregnancy$birth_month[ is.nan(pregnancy$birth_month) ] = NA
-pregnancy$birth_year[ is.nan(pregnancy$birth_year)] = NA
+pregnancy = pregnancy %>%
+  mutate(birth_day = ifelse(birth_day>31, NA, birth_day),
+         birth_month = ifelse(birth_month>12, NA, birth_month),
+         birth_year = ifelse(birth_year>2016, NA, birth_year),
+         birth_day = ifelse(is.nan(birth_day), NA, birth_day),
+         birth_month = ifelse(is.nan(birth_month), NA, birth_month),
+         birth_year = ifelse(is.nan(birth_year), NA, birth_year),
+         multiple_birth = ifelse(multiple_birth == 9, NA, multiple_birth),
+         multiple_birth = ifelse(is.nan(multiple_birth), NA, multiple_birth))
 
 pregnancy$month = paste0(pregnancy$birth_year,"-", ifelse(is.na(pregnancy$birth_month), "01",
                                                           pad_month(pregnancy$birth_month)))
@@ -108,54 +118,27 @@ pregnancy = pregnancy %>%
   mutate(birthdate = all_available_info_birth_date(birth_year, birth_month, birth_day),
          mother_birthdate = str_c(mother_pidlink, "-", birthdate))
 
-##remove all with missing birthdate/miscarriage date
-table(is.na(pregnancy$birthdate))
 
 pregnancy = pregnancy %>%
   filter(!is.na(birthdate))
 
-### Mark all families/individuals with multiple births for pregnancy order:
-## All women that ever had multiple births
-twinmothers_preg = pregnancy %>%
-  # born in the same month
-  mutate(multiple_birth_preg = ifelse(duplicated(mother_birthdate) & !is.na(birth_month), 1, 0)) %>% 
-  filter(multiple_birth_preg == 1) %>% 
-  select(mother_pidlink, mother_birthdate, multiple_birth_preg)
-table(duplicated(twinmothers_preg$mother_pidlink))
-nrow(twinmothers_preg)
-## Mark individuals with multiple births in family
-pregnancy = pregnancy %>% left_join(
-  twinmothers_preg %>% select(mother_birthdate, multiple_birth_preg) %>% unique(), 
-  by = "mother_birthdate") %>% 
-  left_join(
-  twinmothers_preg %>% select(mother_pidlink, multiple_birth_preg) %>% rename(any_multiple_birth_preg = multiple_birth_preg) %>% unique(), 
-  by = "mother_pidlink") %>% 
-  mutate(multiple_birth_preg = if_else(multiple_birth_preg==1, 1, 0, 0),
-         any_multiple_birth_preg = if_else(any_multiple_birth_preg==1, 1, 0, 0))
 
-prop.table(table(pregnancy$multiple_birth_preg))
-prop.table(table(pregnancy$any_multiple_birth_preg))
+pregnancy = pregnancy %>% 
+  mutate(wave_dup = 6 - str_sub(wave, 2, 3) %>% as.numeric()) %>% # from most recent wave to oldest
+  arrange(wave_dup) %>% # use most recent wave (because these will have pregnancy outcomes)
+  group_by(mother_birthdate) %>% 
+  mutate(duped_in_earlier_wave = min_rank(wave_dup)) %>% 
+  filter(duped_in_earlier_wave == 1) %>% 
+  ungroup() # eliminate dupes across waves (same mother_birthdate), keep mult births
 
-### Mark all families/individuals with multiple births for pregnancy order:
-## All women that ever had multiple births
-twinmothers = pregnancy %>%
-  filter(lifebirths == 2) %>%
-  # born in the same month
-  mutate(multiple_birth = ifelse(duplicated(mother_birthdate) & !is.na(birth_month), 1, 0)) %>% 
-  filter(multiple_birth == 1) %>% 
-  select(mother_pidlink, mother_birthdate, multiple_birth)
-table(duplicated(twinmothers$mother_pidlink))
-nrow(twinmothers)
-## Mark individuals with multiple births in family
-pregnancy = pregnancy %>% left_join(
-  twinmothers %>% select(mother_birthdate, multiple_birth) %>% unique(), 
-  by = "mother_birthdate") %>% 
-  left_join(
-  twinmothers %>% select(mother_pidlink, multiple_birth) %>% rename(any_multiple_birth = multiple_birth) %>% unique(), 
-  by = "mother_pidlink") %>% 
-  mutate(multiple_birth = if_else(multiple_birth == 1, 1, 0, 0),
-         any_multiple_birth = if_else(any_multiple_birth == 1, 1, 0, 0))
+##remove all with missing birthdate/miscarriage date
+table(is.na(pregnancy$birthdate))
 
+# for whatever reason there are some multiple births with just one row in the data 
+pregnancy %>% group_by(mother_birthdate) %>% mutate(mult = n()) %>% crosstabs(~ mult + multiple_birth, data = .)
+
+## Form variable for any multiple birth in family
+pregnancy = pregnancy %>% group_by(mother_pidlink) %>% mutate(any_multiple_birth = if_else(any(multiple_birth == 1), 1, 0))
 prop.table(table(pregnancy$multiple_birth))
 prop.table(table(pregnancy$any_multiple_birth))
 ```
@@ -180,7 +163,6 @@ w5_marriage_additional = w5_marriage_additional %>% select(pidlink, age, dob_yr)
 w4_marriage_additional = w4_marriage_additional %>% select(pidlink, age, dob_yr)
 w3_marriage_additional = w3_marriage_additional %>% select(pidlink, age, dob_yr)
 w2_marriage_additional = w2_marriage_additional %>% select(pidlink, age, dob_yr)
-
 w1_marriage_additional = w1_marriage_additional %>% select(pidlink, ar09yr, ar08yr)
 # In the first wave the year is named wrong
 w1_marriage_additional = w1_marriage_additional %>%
@@ -239,10 +221,9 @@ marriage = marriage %>%
 
 marriage = marriage %>% arrange(pidlink, start_year, start_month, start_age, end_year, end_month, end_age)
 
-marriage = marriage %>% filter(!duplicated(cbind(pidlink, start_year, start_month)) | !is.na(start_year) | is.na(start_month)) # nobody gets married twice on the same day, right? so these are dupes.
+marriage = marriage %>% filter(!duplicated(cbind(pidlink, start_year, start_month)) | is.na(start_year) | is.na(start_month)) # nobody gets married twice on the same day, right? so these are dupes.
 
 ## Calculate date for beginning of marriage:
-
 marriage = marriage %>% 
   ungroup() %>%
   mutate(start_string = str_c(start_year, "-", ifelse(is.na(start_month), "01",
@@ -250,10 +231,6 @@ marriage = marriage %>%
         end_string = str_c(end_year, "-", ifelse(is.na(end_month), "12", pad_month(end_month)), "-01"),
         start = ymd(start_string),
         end = ymd(end_string) + months(1) - days(1))
-
-# marriage$start_string[!is.na(marriage$start_string) & is.na(marriage$start) ]
-# marriage$end_string[!is.na(marriage$end_string) & is.na(marriage$end) ]
-# 
 
 ## Count number of marriages
 marriage = marriage %>%
@@ -263,8 +240,6 @@ marriage = marriage %>%
          order_marriage = row_number(),
          marriage_id = paste0(pidlink, "_", as.character(order_marriage), "_",
                               as.character(start), "/",as.character(end)))
-
-dupes = unique(marriage$marriage_id[duplicated(marriage$marriage_id)])
 
 ### Marriage Timeline
 minimum_start = min(ymd(str_c(pregnancy$month, "-01")), na.rm = T)
@@ -293,97 +268,80 @@ marriage_timeline = marriage_timeline %>%
 
 marriage_timeline$month = stringr::str_sub(as.character(marriage_timeline$month),1,7)
 
-pregnancy = pregnancy %>% left_join(marriage_timeline, by = c("mother_pidlink", "month"))
-
-# rm(marriage_timeline)
-
-### Remove all families with multiple births for birth order:
-## Mark multpile births
-pregnancy = pregnancy %>%
-  mutate(marriage_id_birthdate = str_c(marriage_id, "-", birthdate),
-    multiple_birth_full = ifelse(duplicated(marriage_id_birthdate), 1, 0),
-    multiple_birth_full = ifelse(is.na(marriage_id), NA, multiple_birth_full))
-## All women that ever had multiple births
-twinmothers_full = pregnancy %>%
-  filter(multiple_birth_full == 1)
-## Mark individuals with multiple births in family
-pregnancy = pregnancy %>%
-  mutate(multiple_birth_in_family_full = ifelse((mother_pidlink %in% twinmothers_full$mother_pidlink), 1, 0))
+pregnancy = pregnancy %>% left_join(marriage_timeline, by = c("mother_pidlink", "month")) %>% ungroup()
 ```
 
 
-### Maternal Birth and Pregnancy Order
+### Birth Order Calculation {.tabset}
 ```{r Uterus birthorder and maternal sibling count}
-### Birthorder calculations
-## Biological Uterus Birthorder calculations with all pregnancies:
+#### Maternal Pregnancy Order
 pregnancy1 = pregnancy %>%
   group_by(mother_pidlink) %>%
   mutate(birthorder_uterus_preg = min_rank(birthdate),
-         birthorder_uterus_preg = ifelse(is.na(mother_pidlink), NA, birthorder_uterus_preg),
-         birthorder_uterus_preg = ifelse(multiple_birth_in_family_preg == 1, NA, birthorder_uterus_preg),
-         sibling_count_uterus_preg = sum(!is.na(birthdate)),
-         sibling_count_uterus_preg = ifelse(is.na(mother_pidlink), NA, sibling_count_uterus_preg),
-         sibling_count_uterus_preg = ifelse(multiple_birth_in_family_preg == 1, NA, sibling_count_uterus_preg)) %>%
+         # birthorder_uterus_preg = ifelse(any_multiple_birth == 1, NA, birthorder_uterus_preg),
+         sibling_count_uterus_preg = sum(!is.na(birthdate))
+         # ,sibling_count_uterus_preg = ifelse(any_multiple_birth == 1, NA, sibling_count_uterus_preg)
+         ) %>%
   ungroup()
 
-## Biological Uterus Birthorder calculations with all births:
+#### Maternal Birth Order
 pregnancy2 = pregnancy %>%
   filter(lifebirths == 2) %>%
   group_by(mother_pidlink) %>%
     mutate(birthorder_uterus_alive = min_rank(birthdate),
-           birthorder_uterus_alive = ifelse(is.na(mother_pidlink), NA, birthorder_uterus_alive),
-           birthorder_uterus_alive = ifelse(multiple_birth_in_family_alive == 1, NA, birthorder_uterus_alive),
-           sibling_count_uterus_alive = sum(!is.na(birthdate)),
-           sibling_count_uterus_alive = ifelse(is.na(mother_pidlink), NA, sibling_count_uterus_alive),
-           sibling_count_uterus_alive = ifelse(multiple_birth_in_family_alive == 1, NA, sibling_count_uterus_alive)) %>%
+           # birthorder_uterus_alive = ifelse(any_multiple_birth == 1, NA, birthorder_uterus_alive),
+           sibling_count_uterus_alive = sum(!is.na(birthdate))
+           # ,sibling_count_uterus_alive = ifelse(any_multiple_birth == 1, NA, sibling_count_uterus_alive)
+           ) %>%
   ungroup()
 
-pregnancy2 = pregnancy2 %>% select(mother_birthdate, birthorder_uterus_alive, sibling_count_uterus_alive)
+pregnancy2 = pregnancy2 %>% select(mother_birthdate, birthorder_uterus_alive, sibling_count_uterus_alive) %>% distinct()
 
-### Combine birthorder data
-pregnancy = left_join(pregnancy1, pregnancy2, by="mother_birthdate")
-pregnancy$month = paste0(pregnancy$birth_year,"-", ifelse(is.na(pregnancy$birth_month), "01",
-                                                          pad_month(pregnancy$birth_month)))
-
-```
-
-### Full Sibling Birth Order
-```{r gene birthorder}
-### Gene birthorder is calculated by grouping individuals together, for whom we know both the mother and her marriage history and making a rank list
-pregnancy = pregnancy %>%
+#### Parental Full Sibling Birthorder
+pregnancy3 = pregnancy %>%
+  filter(lifebirths == 2) %>%
   group_by(marriage_id) %>%
     mutate(birthorder_genes = min_rank(birthdate),
            birthorder_genes = ifelse(is.na(marriage_id), NA, birthorder_genes),
-           birthorder_genes = ifelse(multiple_birth_in_family_full == 1, NA, birthorder_genes),
-           sibling_count_genes = ifelse(is.na(marriage_id), NA, sum(!is.na(marriage_id))),
-           sibling_count_genes = ifelse(multiple_birth_in_family_full == 1, NA, sibling_count_genes))
+           sibling_count_genes = ifelse(is.na(marriage_id), NA, sum(!is.na(marriage_id)))) %>%
+  ungroup()
 
+pregnancy3 = pregnancy3 %>% select(mother_birthdate, birthorder_genes, sibling_count_genes) %>% distinct()
+
+
+### Combine birthorder data
+pregnancy = left_join(pregnancy1, pregnancy2, by="mother_birthdate") %>% ungroup()
+pregnancy = left_join(pregnancy, pregnancy3, by = "mother_birthdate") %>% ungroup()
 ```
+
 
 ### Birth Order Graphs
 ```{r}
 ### Graphs
 ## Biological Birthorder - Uterus_Pregnancies
-ggplot(pregnancy, aes(x=sibling_count_uterus_preg, y=birthorder_uterus_preg)) + geom_jitter()
+ggplot(pregnancy, aes(x=sibling_count_uterus_preg, y=birthorder_uterus_preg)) + geom_jitter(alpha = 0.1)
 
 ## Biological Birthorder - Uterus_Births
-ggplot(pregnancy, aes(x=sibling_count_uterus_alive, y=birthorder_uterus_alive)) + geom_jitter()
+ggplot(pregnancy, aes(x=sibling_count_uterus_alive, y=birthorder_uterus_alive)) + geom_jitter(alpha = 0.1)
 
 ## Biological Birthorder - Full Sibling Order
-ggplot(pregnancy, aes(x=sibling_count_genes, y=birthorder_genes)) + geom_jitter()
+ggplot(pregnancy, aes(x=sibling_count_genes, y=birthorder_genes)) + geom_jitter(alpha = 0.1)
 
 ## Bio: Uterus_preg vs. Uterus_Births
-ggplot(pregnancy, aes(x=birthorder_uterus_preg, y=birthorder_uterus_alive)) + geom_jitter()
+ggplot(pregnancy, aes(x=birthorder_uterus_preg, y=birthorder_uterus_alive)) + geom_jitter(alpha = 0.1)
 # The birth_order_alive is always lower, which makes sense, becaus not live births (miscarriage, still births are excluded)
 
 ## Bio: Uterus_preg vs. Genes
-ggplot(pregnancy, aes(x=birthorder_uterus_preg, y=birthorder_genes)) + geom_jitter()
+ggplot(pregnancy, aes(x=birthorder_uterus_preg, y=birthorder_genes)) + geom_jitter(alpha = 0.1)
 # The birth_order_alive is always lower, which makes sense, becaus not live births (miscarriage, still births are excluded)
 
 ## Bio: Uterus_alive vs. Genes
-ggplot(pregnancy, aes(x=birthorder_uterus_alive, y=birthorder_genes)) + geom_jitter()
+ggplot(pregnancy, aes(x=birthorder_uterus_alive, y=birthorder_genes))  + geom_jitter(alpha = 0.1)
 # The birth_order_alive is always lower, which makes sense, becaus not live births (miscarriage, still births are excluded)
 
+pregnancy %>% select(birthorder_uterus_alive, birthorder_uterus_preg, birthorder_genes) %>% na.omit() %>% cor()
+pregnancy %>% select(birthorder_uterus_alive, birthorder_uterus_preg, birthorder_genes) %>% missingness_patterns()
+pregnancy %>% select(sibling_count_uterus_alive, sibling_count_uterus_preg, sibling_count_genes) %>% missingness_patterns()
 ```
 
 ## Select Individual Data from IFLS 5
@@ -416,29 +374,47 @@ individuals$death_yr[ is.nan(individuals$death_yr)] = NA
 
 ## Create variable that contains pidlink of mother and birthdate of child:
 individuals = individuals %>%
-    mutate(mother_birthdate = str_c(mother_pidlink, "-",
-          all_available_info_birth_date(ar08yr, ar08mth, ar08day))) # mother_pidlink-YYYY-MM; is NA if birth_year is missing
+    mutate(birthdate = all_available_info_birth_date(ar08yr, ar08mth, ar08day),
+           mother_birthdate = str_c(mother_pidlink, "-", birthdate)) # mother_pidlink-YYYY-MM; is NA if birth_year is missing
 
 ##Remove all with missing mother_birthdate
 individuals = individuals %>%
   filter(!is.na(mother_birthdate))
 
 
-### Remove all families with multiple births:
-## Mark multpile births
-individuals = individuals %>%
-  mutate(multiple_birth = ifelse(duplicated(mother_birthdate), 1, 0))
-
-## All women that ever had multiple births
-twinmothers_individual = individuals %>%
-  filter(multiple_birth == 1)
-length(unique(twinmothers_individual$mother_pidlink)) # number of families that have to be excluded due to multiple birth
-
-individuals = individuals %>%
-    filter(!(mother_pidlink %in% twinmothers_individual$mother_pidlink))
-
 ## Combine information from pregnancy history and individual files
-alldata_pregnancy = left_join(pregnancy, individuals, by = "mother_birthdate")
+pregnancy = pregnancy %>%
+  group_by(mother_birthdate) %>%
+  mutate(twin_order = row_number(birthdate),
+         mother_birthdate_unique = paste0(mother_birthdate, "-", twin_order)) %>%
+  ungroup()
+
+individuals = individuals %>%
+  group_by(mother_birthdate) %>%
+  mutate(twin_order = row_number(birthdate),
+         mother_birthdate_unique = paste0(mother_birthdate, "-", twin_order)) %>%
+  ungroup() %>%
+  select(mother_birthdate_unique, pidlink, sex, age)
+
+
+pregnancy_missing = pregnancy %>%
+  mutate(missing = ifelse(!(mother_birthdate_unique %in% individuals$mother_birthdate_unique),
+                          1, 0)) %>%
+  filter(missing == 1)
+
+# prevent that twins exist 4 times because they appear twice in pregnancy and twice in individuals, by eliminating dupes from pregnancy
+pregnancy_not_missing = pregnancy %>%
+  mutate(missing = ifelse(!(mother_birthdate_unique %in% individuals$mother_birthdate_unique),
+                          1, 0)) %>%
+  filter(missing == 0)          
+
+alldata_pregnancy = left_join(pregnancy_not_missing, individuals,
+                              by = "mother_birthdate_unique")
+
+alldata_pregnancy = bind_rows(alldata_pregnancy, pregnancy_missing)
+
+prop.table(table(alldata_pregnancy$multiple_birth))
+prop.table(table(alldata_pregnancy$any_multiple_birth))
 ```
 
 

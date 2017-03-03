@@ -195,12 +195,12 @@ pad_month = function(x) { str_pad(x, width = 2, side = "left", pad = "0")}
 ### Function to calculate the birthdate out of all available informations for one individual
 all_available_info_birth_date = function(byear, bmonth, bday = NULL) {
   if(!is.null(bday)) {
-    bday = paste0("-", bday)
+    bday = paste0("-", pad_month(bday))
   } else {
     bday = ""
   }
   ifelse(is.na(byear), NA,
-         paste0(byear, "-", bmonth, bday))
+         paste0(byear, "-", pad_month(bmonth), pad_month(bday)))
   # can yield 2016-NA-NA
   #           2016-01-NA
   #           2016-01-01

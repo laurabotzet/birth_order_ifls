@@ -8,7 +8,7 @@ navbar:
       href: 1_data_import.html
     - text: "Inclusion Process"
       href: 2_Inclusion.html
-    - text: "Sample Analyses"
+    - text: "Sample Representatives"
       href: 3_sample_analyses.html
     - text: "Analyses"
       href: 4_analyses.html

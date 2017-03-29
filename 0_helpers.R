@@ -61,6 +61,7 @@ library(lubridate)
 library(psych)
 library(lavaan)
 library(Hmisc)
+library(RColorBrewer)
 library(dplyr)
 
 #' ## Spin R files
@@ -180,7 +181,9 @@ plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_ord
     apatheme +
     theme(legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),
           plot.title = element_text(hjust = 0)) +
-    guides(colour=guide_legend(title = "Sibship"))
+    guides(colour=guide_legend(title = "Sibship")) +
+    scale_fill_brewer(palette = "Set2") +
+    scale_colour_brewer(palette = "Set2")
   print(plotx)
   assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)
 }

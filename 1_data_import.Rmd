@@ -119,10 +119,6 @@ pregnancy = pregnancy %>%
          mother_birthdate = str_c(mother_pidlink, "-", birthdate))
 
 
-pregnancy = pregnancy %>%
-  filter(!is.na(birthdate))
-
-
 pregnancy = pregnancy %>% 
   mutate(wave_dup = 6 - str_sub(wave, 2, 3) %>% as.numeric()) %>% # from most recent wave to oldest
   arrange(wave_dup) %>% # use most recent wave (because these will have pregnancy outcomes)
@@ -131,8 +127,13 @@ pregnancy = pregnancy %>%
   filter(duped_in_earlier_wave == 1) %>% 
   ungroup() # eliminate dupes across waves (same mother_birthdate), keep mult births
 
+x = (unique(pregnancy$mother_pidlink))
+
 ##remove all with missing birthdate/miscarriage date
 table(is.na(pregnancy$birthdate))
+pregnancy = pregnancy %>%
+  filter(!is.na(birthdate))
+
 
 # for whatever reason there are some multiple births with just one row in the data 
 pregnancy %>% group_by(mother_birthdate) %>% mutate(mult = n()) %>% crosstabs(~ mult + multiple_birth, data = .)
@@ -491,6 +492,7 @@ formr::missingness_patterns(iq %>% select(raven, math, count_backwards, words_im
 # iq$adaptive_numbering = iq$adaptive_numbering/100
 
 
+
 fa.parallel(iq %>% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
 fa(iq %>% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1)
 om_results = omega(iq %>% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1, sl = F)
@@ -513,9 +515,26 @@ iq = iq %>%
          g_factor = ifelse(is.na(words_delayed), NA, g_factor),
          g_factor = ifelse(is.na(adaptive_numbering), NA, g_factor))
 qplot(iq$g_factor)
-round(cor(iq %>% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, words_immediate), use = "pairwise.complete.obs"), 2)
 
-formr::missingness_patterns(iq %>% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor)) ## oops, lavaan only predicts the g factor for complete cases
+iq_mean_sd = iq %>%
+  summarise(g_factor_mean = mean(g_factor, na.rm = T),
+            g_factor_sd = sd(g_factor, na.rm =T),
+            raven_mean = mean(raven, na.rm = T),
+            raven_sd = sd(raven, na.rm =T),
+            math_mean = mean(math, na.rm = T),
+            math_sd = sd(math, na.rm =T),
+            count_backwards_mean = mean(count_backwards, na.rm = T),
+            count_backwards_sd = sd(count_backwards, na.rm =T),
+            words_immediate_mean = mean(words_immediate, na.rm = T),
+            words_immediate_sd = sd(words_immediate, na.rm =T),
+            words_delayed_mean = mean(words_delayed, na.rm = T),
+            words_delayed_sd = sd(words_delayed, na.rm =T),
+            adaptive_numbering_mean = mean(adaptive_numbering, na.rm = T),
+            adaptive_numbering_sd = sd(adaptive_numbering, na.rm =T))
+
+round(cor(iq %>% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+
+formr::missingness_patterns(iq %>% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor))
 
 ```
 
@@ -639,8 +658,9 @@ for future analyses
 ```{r save data}
 alldata_birthorder = alldata_birthorder %>% ungroup()
 alldata = alldata %>% ungroup()
+pregnancy = pregnancy %>% ungroup()
+
 saveRDS(alldata_birthorder, file = "data/alldata_birthorder.rds")
-
 saveRDS(alldata, file = "data/alldata.rds")
-
+saveRDS(pregnancy, file = "data/pregnancy.rds")
 ```

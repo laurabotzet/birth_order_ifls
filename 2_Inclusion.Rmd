@@ -12,6 +12,7 @@ alldata_birthorder = readRDS("data/alldata_birthorder.rds")
 ```
 
 ## Birthorder
+
 ### Total
 Number of individuals we were able to reconstruct the three different birth orders based on pregnancy and marriage history for 
 ```{r}
@@ -70,7 +71,10 @@ n_birthorder = alldata_birthorder %>%
                                                       sibling_count_genes != 1 & alive != 3,
                                                     na.rm = T))
 n_birthorder
+
+
 ```
+
 
 ### Aged 15 or older
 ```{r}
@@ -233,3 +237,15 @@ birthorder = alldata_birthorder %>%
 
 saveRDS(birthorder, file = "data/birthorder.rds")
 ```
+
+## How many siblings with data do we retain in each family?
+
+```{r}
+birthorder %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_uterus_alive)) -> counts
+```
+In families with an average size of `r mean(counts$all,na.rm= T)` siblings, we retain `r mean(counts$with_data)`.
+
+```{r}
+ggplot(counts, aes(all, with_data)) + geom_jitter(alpha = 0.1) + geom_smooth() + scale_x_continuous(breaks=1:15) + scale_y_continuous(breaks=1:15)
+```
+

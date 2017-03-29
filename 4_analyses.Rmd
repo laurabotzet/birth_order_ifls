@@ -15,9 +15,7 @@ birthorder = readRDS("data/birthorder.rds")
 ### Variables
 birthorder = birthorder %>%
   mutate(
-    # center birthyear
-    birthyear = birth_year - mean(birth_year, na.rm = T),
-    # Sex (1 = male, 2 = female)
+    birthyear = birth_year,
     male = ifelse(sex.x == 1, 1L, 0L),
     male = ifelse(sex.x > 3, NA_integer_, male),
     male = factor(male),
@@ -122,6 +120,11 @@ birthorder = birthorder %>%
 
 ```
 
+
+## Covariates and Birth Order
+```{r}
+round(cor(birthorder %>% ungroup() %>% select(birthorder_uterus_alive, birthorder_uterus_preg, birthorder_genes, sibling_count_uterus_alive, sibling_count_uterus_preg, sibling_count_genes), use = "pairwise.complete.obs"), 2) 
+```
 
 ## Intelligence {.tabset}
 ### G factor {.tabset}

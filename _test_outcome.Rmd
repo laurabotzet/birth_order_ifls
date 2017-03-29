@@ -52,6 +52,13 @@ plot_birthorder(m4_interaction)
 
 ##### Model Comparison
 ```{r}
-anova(m1_covariates_only, m2_birthorder_linear, m3_birthorder_nonlinear, m4_interaction)
+###### Model 1 - Model 2
+anova(m1_covariates_only, m2_birthorder_linear)
+
+###### Model 1 - Model 3
+anova(m1_covariates_only, m3_birthorder_nonlinear)
+
+###### Model 1 - Model 4
+anova(m1_covariates_only, m4_interaction)
 ```
 

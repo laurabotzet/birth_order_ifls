@@ -1,4 +1,4 @@
-name: "reproducible-website-stack"
+name: "birth-order-ifls"
 navbar:
   title: "Birth order IFLS"
   left:
@@ -23,4 +23,4 @@ output:
     code_folding: "hide"
     df_print: "tibble"
     code_download: true
-exclude: ["packrat", "*.rda", "*.pdf", "*.dta", "*.csv", "geo", "item_tables", "*.csl", "*.bibtex", "*.rds", "*.dta", "data"]
+exclude: ["packrat", "*.rda", "*.pdf", "*.dta", "*.csv", "geo", "*.csl", "*.bibtex", "*.rds", "*.dta", "data"]

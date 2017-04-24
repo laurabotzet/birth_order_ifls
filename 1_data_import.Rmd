@@ -502,10 +502,11 @@ omega.diagram(om_results)
 "g_factor =~ raven + math + count_backwards +  words_delayed+ adaptive_numbering" %>%
   cfa(missing = "fiml", data = iq, std.lv = T, std.ov = T) -> cfa_g
 summary(cfa_g)
-#commonalities <- inspect(cfa_g , "parameter.estimates")
-#pars = parameterEstimates(cfa_g, rsquare = T, standardized = T)
-#mean(pars[pars$op == "r2", "est"]) # avg variance explained by g factor
 
+## Explained variance:
+
+x = inspect(cfa_g, "rsquare")
+sum(x)/5
 iq$g_factor = predict(cfa_g)[,1]
 iq = iq %>%
   mutate(g_factor = ifelse(is.na(raven), NA, g_factor),

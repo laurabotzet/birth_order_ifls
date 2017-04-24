@@ -254,8 +254,16 @@ descriptives = df %>%
               gender = mean(male, na.rm=TRUE) - 1)
 descriptives
 
+
+
 ## Ttest
 t.test(df$age ~ df$group, var.equal = T)
+gender = df %>%
+  group_by(group) %>%
+    summarise(gender = sum(male == 1, na.rm=T),
+              gender2 = sum(male ==2,na.rm=T)) %>%
+  select(gender, gender2)
+chisq.test(gender)
 
 ## Ratings
 ratings = df %>%
@@ -360,6 +368,14 @@ descriptives_restricted = df %>%
   filter(!is.na(group2))
 descriptives_restricted
 t.test(df$age ~ df$group2, var.equal = T)
+
+gender = df %>%
+  group_by(group2) %>%
+    summarise(gender = sum(male == 1, na.rm=T),
+              gender2 = sum(male ==2,na.rm=T)) %>%
+  filter(!is.na(group2)) %>%
+  select(gender, gender2)
+chisq.test(gender)
 
 
 ratings_restricted = df %>%

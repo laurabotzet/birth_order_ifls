@@ -124,6 +124,9 @@ birthorder = birthorder %>%
 ## Covariates and Birth Order
 ```{r}
 round(cor(birthorder %>% ungroup() %>% select(birthorder_uterus_alive, birthorder_uterus_preg, birthorder_genes, sibling_count_uterus_alive, sibling_count_uterus_preg, sibling_count_genes), use = "pairwise.complete.obs"), 2) 
+
+test = birthorder %>%
+  filter(!is.na(riskA), !is.na(birthorder_genes))
 ```
 
 ## Intelligence {.tabset}

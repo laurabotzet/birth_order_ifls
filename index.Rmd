@@ -1,32 +1,53 @@
 ---
-title: "Birth order effects in the IFLS"
+title: "Effects of Birth Order on Intelligence, Personality, and Risk Preference in an Indonesian Sample"
 bibliography: packrat_bibliography.bibtex
 csl: apa-custom-no-issue.csl
 nocite: |
     @R @packrat @rmarkdown @knitr @formr @pander @lubridate @stringr @broom @effects @ggplot2 @tidyr @dplyr @formatR @devtools @haven @GPArotation @psych @lavaan @Hmisc @plyr @apaTables @lme4 @lmerTest @forcats @cowplot @gridExtra
 ---
 
-# Indonesian Family Life Study {.tabset .tabset-sticky}
 
-More information about the [IFLS](http://www.rand.org/labor/FLS/IFLS.html).
 
 ```{r message=FALSE, warning=FALSE}
 source("0_helpers.R")
 ```
 
+<div class="row">
+
+<div class="col-md-5">
+
+## Supplemental materials
 We used these [helper functions](0_helpers.html) and 
 this [knitr component](_test_outcome.html). These are the [.Rprofile settings](.Rprofile.html)
 
 1. First we [wrangled the data](1_data_import.html).
-2. Then we looked at some [descriptives](2_demographics.html).
-3. Then we [analysed](4_analyses.html) it.
+2. Then we [decided which data to keep](2_inclusion.html).
+3. Then we [analyzed our sample and looked at some descriptives](3_sample_analyses.html).
+4. Then we [analyzed](4_analyses.html) birth order effects (click here for nice graphs of birth order effects).
 
-## Authors & Acknowledgements {.tabset .tabset-sticky}
+More information about the [Indonesian Family Life Survey (IFLS)](http://www.rand.org/labor/FLS/IFLS.html).
+
+</div>
+
+<div class="col-md-6 col-md-offset-1">
+![Interaction effects of sibship size and birth order position on intelligence. Predicted mean scores and 95%-CI from mixed effects models with sibship size, birth order, gender and birth year as fixed effects and maternal identity as random effect are displayed. Intelligence was z-standardized. Numbers in paranthesis show sample size.](4_analyses_files/figure-html/unnamed-chunk-51-1.png)
+</div>
+
+</div>
+<div class="clearfix"></div>
+
+## Authors & Abstract & Acknowledgements {.tabset .tabset-sticky}
 
 ### Authors
 Laura J. Botzet & Ruben C. Arslan.
+Georg-Elias-Müller-Institut für Psychologie, Georg-August-Universität Göttingen
 
 This supplementary website has been archived on Zenodo.org [![DOI]()]().
+
+
+### Abstract
+
+Is it possible to replicate effects of birth order on intelligence, personality, and risk preference cross-culturally? So far, studies on birth order effects focused on samples from western, educated, industrialized, rich, democratic (WEIRD) countries. Based on earlier research we stated three hypotheses: (1) Intelligence declines with increasing birth order position, (2) personality is not related to birth order position and (2) risk preference rises with increasing birth order position. The Indonesian Family Life Survey collected data about intelligence, personality, and risk preference in the year 2014. Based on this data and the maternal pregnancy history we were able to determine birth order position, family membership and independent variables for 4,666 individuals. Analyses were performed using within-family designs in mixed-effects models. In model comparisons we analyzed the effect of birth order on the independent variables. We tested for linear and non-linear birth order effects as well as for possible interactions of birth order and sibship size. In contrast to earlier WEIRD-research we found a linear increase of intelligence with increasing birth order. Birth order had a categorical effect on extraversion and openness but not on neuroticism, conscientiousness, nor aggreeableness. The interaction of birth order and sibship size was significant for one risk preference measurement. We did not replicate results from earlier studies on WEIRD-people. This evidence points towards social mechanisms behind possible birth order effects based on cultural, political and economic circumstances rather than universally valid, biological mechanisms.
 
 ### Acknowledgements {.active}
 
@@ -43,3 +64,6 @@ sessionInfo()
 ```
 
 ##### References {.active}
+
+
+

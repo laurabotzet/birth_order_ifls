@@ -1,26 +1,24 @@
 #' # Helper functions used throughout {.tabset .tabset-sticky}
-#' documentation on the functions is interspersed through code comments
+#' Documentation on the functions is interspersed through code comments
 #'
-#' ## set some options
-#' dont show messages when loading libraries
-# library = function(...) suppressMessages(base::library(...))
-#' never set strings as factors automatically (google for reason why)
+#' ## Set some options
+#' do net set strings as factors
 options(stringsAsFactors = FALSE)
-#' show four significant digits tops
+#' show four significant digits
 options(digits = 4)
-#' tend not to show scientific notation, because we're just psychologists
+#' tend not to show scientific notation
 options(scipen = 7)
 #' make output a bit wider
 options(width = 110)
 #' set a seed to make analyses depending on random number generation reproducible
-set.seed(1710) # if you use your significant other's birthday make sure you stay together for the sake of reproducibility
+set.seed(1710)
 
 #' ## Load packages
 #' generate the site
 library(rmarkdown)
 #' set options for chunks
 library(knitr)
-#' my formr utility package to generate e.g. the bibliography
+#' formr utility package to generate e.g. the bibliography
 library(formr)
 #' pretty-printed output
 library(pander)
@@ -34,35 +32,41 @@ library(broom)
 library(effects)
 #' grammar of graphics plots
 library(ggplot2)
+#' enhanced version of data.frame
+library(data.table)
+#' linear mixed effects models
+library(lme4)
+#' interpret linear mixed effects models output
+library(lmerTest)
+#' effect displays for all sort of models
+library(effects)
+#' simple, consistent wrappers for common string operations
+library(stringr)
+#' tools for working with categorical variables
+library(forcats)
+#' helps with fancier graphs
+library(cowplot)
+#' provides a funtion to format R source corde
+library(formatR)
+#' loads specific r tools
+library(devtools)
+#' imports IFLS data
+library(haven)
+#' package to perform factor analysis
+library(GPArotation)
+#' another package to perform factor analysis
+library(psych)
+#' yet another package to perform factor analysis
+library(lavaan)
+#' many usefull functions for data analysis
+library(Hmisc)
+#' all colors are from here
+library(RColorBrewer)
 #' tidyverse: transform data wide to long
 library(tidyr)
 #' tidyverse-style data wrangling. has a lot of naming conflicts, so always load last
 library(dplyr)
-library(data.table)
-library(lme4)
-library(lmerTest)
-library(ggplot2)
-library(formr)
-library(effects)
-library(stringr)
-library(forcats)
-library(cowplot)
-library(dplyr)
-library(formr)
-library(rmarkdown)
-library(formatR)
-library(devtools)
-library(haven)
-library(tidyr)
-library(ggplot2)
-library(stringr)
-library(GPArotation)
-library(lubridate)
-library(psych)
-library(lavaan)
-library(Hmisc)
-library(RColorBrewer)
-library(dplyr)
+
 
 #' ## Spin R files
 #' R scripts can be documented in markdown using Roxygen comments, as demonstrated here
@@ -126,10 +130,12 @@ opts_chunk$set(
   render = pander_handler
 )
 
+
 #' don't split tables, scroll horizontally
 panderOptions("table.split.table", Inf)
 
-
+#' ## Functions used
+#' set apa-conform theme for all graphs
 apatheme=theme_bw()+
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
@@ -137,7 +143,7 @@ apatheme=theme_bw()+
         axis.line=element_line(),
         text=element_text(family='Times', size = 16))
 
-
+#' function used to do all birth order effect plots
 plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_order", separate = TRUE) {
   if(inherits(model, "merMod")) {
     varnames = names(model@frame)
@@ -188,14 +194,14 @@ plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_ord
   assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)
 }
 
-
+#' functions used to compare models
 compare_models_markdown = function(m1_covariates_only) {
   formr::asis_knit_child('_test_outcome.Rmd')
   }
 
 pad_month = function(x) { str_pad(x, width = 2, side = "left", pad = "0")}
 
-### Function to calculate the birthdate out of all available informations for one individual
+#' Function to calculate the birthdate out of all available informations for one individual
 all_available_info_birth_date = function(byear, bmonth, bday = NULL) {
   if(!is.null(bday)) {
     bday = paste0("-", pad_month(bday))
@@ -210,7 +216,7 @@ all_available_info_birth_date = function(byear, bmonth, bday = NULL) {
   #           2016-01
 }
 
-##### Function to calculate the birthorder based on the siblings still alive at the time of birth
+#' Function to calculate the birthorder based on the siblings still alive at the time of birth
 older_sibs_alive_and_dependent = function(byear, dyear) {
   sibs = length(byear)
   older_sibs_alive_and_dependent = integer(length=sibs) + 1

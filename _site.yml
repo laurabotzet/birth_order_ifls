@@ -1,21 +1,4 @@
 name: "birth-order-ifls"
-navbar:
-  title: "Birth order IFLS"
-  left:
-    - text: "Overview"
-      href: index.html
-    - text: "Data wrangling"
-      href: 1_data_import.html
-    - text: "Inclusion Process"
-      href: 2_Inclusion.html
-    - text: "Sample Representatives"
-      href: 3_sample_analyses.html
-    - text: "Analyses"
-      href: 4_analyses.html
-  right:
-    - text: ""
-      icon: fa-github
-      href: https://github.com/laurabotzet/birth_order_ifls
 output:
   html_document:
     self_contained: false
@@ -23,4 +6,5 @@ output:
     code_folding: "hide"
     df_print: "tibble"
     code_download: true
+    css: styles.css
 exclude: ["packrat", "*.rda", "*.pdf", "*.dta", "*.csv", "geo", "*.csl", "*.bibtex", "*.rds", "*.dta", "data"]

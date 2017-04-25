@@ -4,7 +4,7 @@ output:
     code_folding: "show"
 ---
 
-# Data Import and Preparation {.tabset}
+# Data import and preparation {.tabset}
 
 ## Helper
 ```{r helper}
@@ -12,9 +12,9 @@ source("0_helpers.R")
 ```
 
 
-## Import Data
+## Import data {.active}
 
-All data is retrieved from the RAND Corporation http://www.rand.org/labor/FLS/IFLS.html
+All data is retrieved from the [RAND foundatio]n(http://www.rand.org/labor/FLS/IFLS.html) 
 ```{r Import data}
 ### Informations about individuals living in the household in 2014/2015
 ## All Individuals living in the household
@@ -76,8 +76,8 @@ b3a_si = read_dta("data/hh14_all_dta/b3a_si.dta") # Book 3b, Section si
 
 ```
 
-## Birth Order Information {.tabset}
-### Information about Pregnancy
+## Birth order information {.tabset}
+### Information about pregnancy
 ```{r}
 ## Select data
 w5_pregnancy = w5_pregnancy %>% select(pidlink, ch05, ch06, ch06a, ch08, ch09day, ch09mth, ch09yr, ch25)
@@ -144,7 +144,7 @@ prop.table(table(pregnancy$multiple_birth))
 prop.table(table(pregnancy$any_multiple_birth))
 ```
 
-### Information about Marriage History
+### Information about marriage history
 ```{r marriage history}
 ## Select marriage data
 w5_marriage = w5_marriage %>% select(pidlink, kw10mth, kw10yr, kw18mth, kw18yr, kw11, kw19)
@@ -273,7 +273,7 @@ pregnancy = pregnancy %>% left_join(marriage_timeline, by = c("mother_pidlink", 
 ```
 
 
-### Birth Order Calculation {.tabset}
+### Birth order calculations {.tabset}
 ```{r Uterus birthorder and maternal sibling count}
 #### Maternal Pregnancy Order
 pregnancy1 = pregnancy %>%
@@ -316,7 +316,7 @@ pregnancy = left_join(pregnancy, pregnancy3, by = "mother_birthdate") %>% ungrou
 ```
 
 
-### Birth Order Graphs
+### Birth order graphs
 ```{r}
 ### Graphs
 ## Biological Birthorder - Uterus_Pregnancies
@@ -345,7 +345,7 @@ pregnancy %>% select(birthorder_uterus_alive, birthorder_uterus_preg, birthorder
 pregnancy %>% select(sibling_count_uterus_alive, sibling_count_uterus_preg, sibling_count_genes) %>% missingness_patterns()
 ```
 
-## Select Individual Data from IFLS 5
+## Select individual data from IFLS 5
 ```{r select individual data}
 ### Individuals
 individuals = bk_ar1 %>% select(hhid14_9, pidlink, father_pidlink, mother_pidlink, ar01a, ar02b, ar10, ar11, ar07, ar08day, ar08mth, ar08yr, ar09, ar18eyr, ar18emth)
@@ -483,30 +483,12 @@ round(cor(iq %>% select(raven, math, count_backwards, words_immediate, words_del
 
 ##Missingness_Patterns
 formr::missingness_patterns(iq %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering))
-```
 
-### g-factor
-```{r}
-# iq$words_delayed = iq$words_delayed/10
-# iq$words_immediate = iq$words_immediate/10
-# iq$adaptive_numbering = iq$adaptive_numbering/100
-
-
-
-fa.parallel(iq %>% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
-fa(iq %>% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1)
-om_results = omega(iq %>% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1, sl = F)
-om_results
-omega.diagram(om_results)
-
+##g_factor
 "g_factor =~ raven + math + count_backwards +  words_delayed+ adaptive_numbering" %>%
   cfa(missing = "fiml", data = iq, std.lv = T, std.ov = T) -> cfa_g
 summary(cfa_g)
 
-## Explained variance:
-
-x = inspect(cfa_g, "rsquare")
-sum(x)/5
 iq$g_factor = predict(cfa_g)[,1]
 iq = iq %>%
   mutate(g_factor = ifelse(is.na(raven), NA, g_factor),
@@ -516,27 +498,6 @@ iq = iq %>%
          g_factor = ifelse(is.na(words_delayed), NA, g_factor),
          g_factor = ifelse(is.na(adaptive_numbering), NA, g_factor))
 qplot(iq$g_factor)
-
-iq_mean_sd = iq %>%
-  summarise(g_factor_mean = mean(g_factor, na.rm = T),
-            g_factor_sd = sd(g_factor, na.rm =T),
-            raven_mean = mean(raven, na.rm = T),
-            raven_sd = sd(raven, na.rm =T),
-            math_mean = mean(math, na.rm = T),
-            math_sd = sd(math, na.rm =T),
-            count_backwards_mean = mean(count_backwards, na.rm = T),
-            count_backwards_sd = sd(count_backwards, na.rm =T),
-            words_immediate_mean = mean(words_immediate, na.rm = T),
-            words_immediate_sd = sd(words_immediate, na.rm =T),
-            words_delayed_mean = mean(words_delayed, na.rm = T),
-            words_delayed_sd = sd(words_delayed, na.rm =T),
-            adaptive_numbering_mean = mean(adaptive_numbering, na.rm = T),
-            adaptive_numbering_sd = sd(adaptive_numbering, na.rm =T))
-
-round(cor(iq %>% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
-
-formr::missingness_patterns(iq %>% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor))
-
 ```
 
 
@@ -585,7 +546,7 @@ qplot(pers$big5_agree)
 ```
 
 
-## Risk Preference
+## Risk preference
 ```{r select risk taking data}
 ###Risktaking
 risk = b3a_si %>% select(hhid14_9, pidlink, random_si, si01, si02, si03, si04, si05, si11, si12, si13, si14, si15)

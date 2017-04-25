@@ -18,7 +18,7 @@ pregnancy = readRDS("data/pregnancy.rds")
 
 ```
 
-## Data Wrangling
+## Data wrangling
 ```{r data wrangling}
 ## we have to exclude people in the control group who are part of the birthorder group
 individuals = birthorder$pidlink
@@ -58,7 +58,7 @@ df = bind_rows(alldata, birthorder)
 
 ```
 
-## Data Comparison Birth Order and Sibship Size {.tabset}
+## Birth order and sibship size {.active .tabset}
 
 ### Maternal birthorder
 ```{r maternal birthorder}
@@ -119,7 +119,7 @@ In the original sample families with an average size of `r mean(counts1$all,na.r
 ggplot(counts, aes(all, with_data)) + geom_jitter(alpha = 0.1) + geom_smooth() + scale_x_continuous(breaks=1:15) + scale_y_continuous(breaks=1:15)
 ```
 
-### Maternal Pregnancy Order
+### Maternal pregnancy order
 ```{r maternal pregnancy order}
 descriptives = df_pregnancy %>%
   filter(!is.na(birthorder_uterus_preg)) %>%
@@ -178,7 +178,7 @@ In the original sample families with an average size of `r mean(counts1$all,na.r
 ggplot(counts, aes(all, with_data)) + geom_jitter(alpha = 0.1) + geom_smooth() + scale_x_continuous(breaks=1:15) + scale_y_continuous(breaks=1:15)
 ```
 
-### Parental Full Sibling Order
+### Parental full sibling order
 ```{r parental full sibling order}
 descriptives = df_pregnancy %>%
   filter(!is.na(birthorder_genes)) %>%
@@ -237,7 +237,7 @@ In the original sample families with an average size of `r mean(counts1$all,na.r
 ggplot(counts, aes(all, with_data)) + geom_jitter(alpha = 0.1) + geom_smooth() + scale_x_continuous(breaks=1:15) + scale_y_continuous(breaks=1:15)
 ```
 
-## Data Comparison Outcome Measurements and covariats {.tabset}
+## Outcome measurements and covariates {.tabset}
 ### Control group
 ```{r data comparison}
 ## Descriptives
@@ -321,7 +321,7 @@ t.test(df$riskB ~ df$group, var.equal = T)
 
 ```
 
-### Restricted Control Group
+### Restricted control group
 ```{r}
 ## In order to compare our test group to an alike group from the control sample we have to restict age
 check_test = df %>% filter(group == "test") %>%
@@ -434,6 +434,55 @@ t.test(df$riskA ~ df$group2, var.equal = T)
 t.test(df$riskB ~ df$group2, var.equal = T)
 ```
 
+## Intelligence g-factor
+```{r}
+# iq$words_delayed = iq$words_delayed/10
+# iq$words_immediate = iq$words_immediate/10
+# iq$adaptive_numbering = iq$adaptive_numbering/100
+fa.parallel(alldata %>% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
+fa(alldata %>% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1)
+om_results = omega(alldata %>% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1, sl = F)
+om_results
+omega.diagram(om_results)
+
+"g_factor =~ raven + math + count_backwards +  words_delayed+ adaptive_numbering" %>%
+  cfa(missing = "fiml", data = alldata, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+## Explained variance:
+
+x = inspect(cfa_g, "rsquare")
+sum(x)/5
+alldata$g_factor = predict(cfa_g)[,1]
+alldata = alldata %>%
+  mutate(g_factor = ifelse(is.na(raven), NA, g_factor),
+         g_factor = ifelse(is.na(math), NA, g_factor),
+         g_factor = ifelse(is.na(count_backwards), NA, g_factor),
+         g_factor = ifelse(is.na(words_immediate), NA, g_factor),
+         g_factor = ifelse(is.na(words_delayed), NA, g_factor),
+         g_factor = ifelse(is.na(adaptive_numbering), NA, g_factor))
+qplot(alldata$g_factor)
+
+iq_mean_sd = alldata %>%
+  summarise(g_factor_mean = mean(g_factor, na.rm = T),
+            g_factor_sd = sd(g_factor, na.rm =T),
+            raven_mean = mean(raven, na.rm = T),
+            raven_sd = sd(raven, na.rm =T),
+            math_mean = mean(math, na.rm = T),
+            math_sd = sd(math, na.rm =T),
+            count_backwards_mean = mean(count_backwards, na.rm = T),
+            count_backwards_sd = sd(count_backwards, na.rm =T),
+            words_immediate_mean = mean(words_immediate, na.rm = T),
+            words_immediate_sd = sd(words_immediate, na.rm =T),
+            words_delayed_mean = mean(words_delayed, na.rm = T),
+            words_delayed_sd = sd(words_delayed, na.rm =T),
+            adaptive_numbering_mean = mean(adaptive_numbering, na.rm = T),
+            adaptive_numbering_sd = sd(adaptive_numbering, na.rm =T))
+
+round(cor(alldata %>% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+
+formr::missingness_patterns(alldata %>% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor))
+```
 
 ## Descriptives
 ```{r correlation}

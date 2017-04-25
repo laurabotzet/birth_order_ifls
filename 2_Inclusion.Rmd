@@ -11,7 +11,7 @@ source("0_helpers.R")
 alldata_birthorder = readRDS("data/alldata_birthorder.rds")
 ```
 
-## Birthorder
+## Birthorder {.active}
 
 ### Total
 Number of individuals we were able to reconstruct the three different birth orders based on pregnancy and marriage history for 
@@ -25,7 +25,7 @@ n_birthorder
 ```
 
 
-### No Multiple Births
+### No multiple births
 ``` {r}
 n_birthorder = alldata_birthorder %>%
   summarise(Maternal_Birth_Order = sum(!is.na(birthorder_uterus_alive) & any_multiple_birth != 1,
@@ -37,7 +37,7 @@ n_birthorder = alldata_birthorder %>%
 n_birthorder
 ```
 
-### No only Children
+### No single children
 ```{r}
 ## Count Birthorder - without only children
 n_birthorder = alldata_birthorder %>%
@@ -168,7 +168,7 @@ n_birthorder
 
 ```
 
-#### Risk
+#### Risk preference
 ```{r}
 ### All people in the birthorder data file that have Risk Measurements
 missingness_patterns(alldata_birthorder %>% select(riskA, riskB))
@@ -213,9 +213,8 @@ n_birthorder
 ```
 
 ### Save Data
-### We only want to include people in the birthorder group that are no children of a family with mutiple births, no only children and people who actually have iq, personality, etc. data in IFLS 5
 ```{r data wrangling}
-## we only want to include people in the birthorder group that are no children of a family with mutiple births, no only children and people who actually have iq, personality, etc. data
+## We only want to include people in the birthorder group that are no children of a family with mutiple births, no only children and people who actually have iq, personality, etc. data
 birthorder = alldata_birthorder %>%
   filter(any_multiple_birth != 1) %>%
   filter(!is.na(birthorder_uterus_preg) | !is.na(birthorder_uterus_alive) | !is.na(birthorder_genes)) %>%
@@ -236,16 +235,5 @@ birthorder = alldata_birthorder %>%
   filter(check == 1)
 
 saveRDS(birthorder, file = "data/birthorder.rds")
-```
-
-## How many siblings with data do we retain in each family?
-
-```{r}
-birthorder %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_uterus_alive)) -> counts
-```
-In families with an average size of `r mean(counts$all,na.rm= T)` siblings, we retain `r mean(counts$with_data)`.
-
-```{r}
-ggplot(counts, aes(all, with_data)) + geom_jitter(alpha = 0.1) + geom_smooth() + scale_x_continuous(breaks=1:15) + scale_y_continuous(breaks=1:15)
 ```
 

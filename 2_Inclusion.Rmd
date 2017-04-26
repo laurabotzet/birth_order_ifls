@@ -1,4 +1,4 @@
-# Inclusion Process {.tabset}
+# <span style="color:#8DA0CB">Data Sampling</span> {.tabset}
 
 ## Helper
 ```{r helper}

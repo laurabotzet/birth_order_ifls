@@ -1,4 +1,4 @@
-# Sample Analyses {.tabset}
+#  <span style="color:#E78AC3">Sample Analyses</span> {.tabset}
 
 ## Helper
 ```{r helper}

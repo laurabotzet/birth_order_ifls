@@ -1,5 +1,5 @@
 ---
-title: "Effects of Birth Order on Intelligence, Personality, and Risk Preference in an Indonesian Sample"
+title: <font color="#66C2A5">Effects of Birth Order on Intelligence, Personality, and Risk Preference in an Indonesian Sample</font>
 bibliography: packrat_bibliography.bibtex
 csl: apa-custom-no-issue.csl
 nocite: |
@@ -16,7 +16,7 @@ source("0_helpers.R")
 
 <div class="col-md-5">
 
-## Supplemental materials
+## Supplemental Materials
 We used these [helper functions](0_helpers.html) and 
 this [knitr component](_test_outcome.html). These are the [.Rprofile settings](.Rprofile.html)
 

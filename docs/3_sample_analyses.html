@@ -1,0 +1,2651 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/FileSaver.min.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+
+.section h2 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h3 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h4 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h5 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h6 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("3_sample_analyses.Rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Birth Order IFLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+
+<li style="background-color: #66C2A5">
+  <a href="index.html">Overview</a>
+</li>
+<li style="background-color: #FC8D62">
+  <a href="1_data_import.html">Data Wrangling</a>
+</li>
+<li style="background-color: #8DA0CB">
+  <a href="2_Inclusion.html">Data Sampling</a>
+</li>
+<li style="background-color: #E78AC3">
+  <a href="3_sample_analyses.html">Sample Analyses</a>
+</li>
+<li style="background-color: #A6D854">
+  <a href="4_analyses.html">Birth Order Effects</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/laurabotzet/birth_order_ifls">
+    <span class="fa fa-github"></span>
+
+
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<div id="sample-analyses" class="section level1 tabset">
+<h1><span style="color:#E78AC3">Sample Analyses</span></h1>
+<div id="helper" class="section level2">
+<h2>Helper</h2>
+<pre class="r"><code>source(&quot;0_helpers.R&quot;)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;formr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:rmarkdown&#39;:
+## 
+##     word_document</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     date</code></pre>
+<pre><code>## 
+## Attaching package: &#39;data.table&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:lubridate&#39;:
+## 
+##     hour, isoweek, mday, minute, month, quarter, second, wday, week, yday, year</code></pre>
+<pre><code>## The following objects are masked from &#39;package:formr&#39;:
+## 
+##     first, last</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lmerTest&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:lme4&#39;:
+## 
+##     lmer</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     step</code></pre>
+<pre><code>## 
+## Attaching package: &#39;cowplot&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     ggsave</code></pre>
+<pre><code>## 
+## Attaching package: &#39;haven&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:forcats&#39;:
+## 
+##     as_factor</code></pre>
+<pre><code>## 
+## Attaching package: &#39;psych&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:ggplot2&#39;:
+## 
+##     %+%, alpha</code></pre>
+<pre><code>## This is lavaan 0.5-23.1097</code></pre>
+<pre><code>## lavaan is BETA software! Please report any bugs.</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Loading required package: survival</code></pre>
+<pre><code>## Loading required package: Formula</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Hmisc&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     describe</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     format.pval, round.POSIXt, trunc.POSIXt, units</code></pre>
+<pre><code>## 
+## Attaching package: &#39;tidyr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:Matrix&#39;:
+## 
+##     expand</code></pre>
+<pre><code>## ------------------------------------------------------------------------------------------------------------</code></pre>
+<pre><code>## data.table + dplyr code now lives in dtplyr.
+## Please library(dtplyr)!</code></pre>
+<pre><code>## ------------------------------------------------------------------------------------------------------------</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:Hmisc&#39;:
+## 
+##     combine, src, summarize</code></pre>
+<pre><code>## The following objects are masked from &#39;package:data.table&#39;:
+## 
+##     between, first, last</code></pre>
+<pre><code>## The following objects are masked from &#39;package:lubridate&#39;:
+## 
+##     intersect, setdiff, union</code></pre>
+<pre><code>## The following objects are masked from &#39;package:formr&#39;:
+## 
+##     first, last</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+</div>
+<div id="load-data" class="section level2">
+<h2>Load data</h2>
+<pre class="r"><code>### Import all data with known birthorder
+birthorder = readRDS(&quot;data/birthorder.rds&quot;)
+
+### Import all data
+alldata = readRDS(&quot;data/alldata.rds&quot;)
+
+### Import all pregnancy data
+pregnancy = readRDS(&quot;data/pregnancy.rds&quot;)</code></pre>
+</div>
+<div id="data-wrangling" class="section level2">
+<h2>Data wrangling</h2>
+<pre class="r"><code>## we have to exclude people in the control group who are part of the birthorder group
+individuals = birthorder$pidlink
+mother_birthdate_unique_ind = birthorder$mother_birthdate_unique
+
+alldata = alldata %&gt;%
+  filter(!pidlink %in% individuals) %&gt;%
+  mutate(check = ifelse(!is.na(g_factor), 1,
+                        ifelse(!is.na(riskA), 1,
+                               ifelse(!is.na(riskB), 1,
+                                      ifelse(!is.na(big5_ext), 1, 0)))),
+         group = &quot;control&quot;,
+         sex.x = (ifelse(is.na(sex.x), sex.y, sex.x)),
+         male = factor(sex.x == 1),
+         male = ifelse(sex.x &gt; 3, NA, male),
+         age = ifelse(age&gt;112, NA, age)) %&gt;%
+  filter(check == 1)
+
+pregnancy = pregnancy %&gt;%
+  filter(!mother_birthdate_unique %in% mother_birthdate_unique_ind) %&gt;%
+  mutate(group = &quot;control&quot;,
+         male = factor(gender == 1),
+         male = ifelse(gender &gt; 3, NA, male)) %&gt;%
+  group_by(mother_pidlink) %&gt;%
+  mutate(number_siblings = n()) %&gt;%
+  ungroup
+
+birthorder = birthorder %&gt;%
+  mutate(male = factor(gender == 1), 
+         male = (ifelse(gender &gt; 3, NA, male))) %&gt;%
+  group_by(mother_pidlink) %&gt;%
+  mutate(number_siblings = n()) %&gt;%
+  ungroup
+
+df_pregnancy = bind_rows(pregnancy, birthorder)
+df = bind_rows(alldata, birthorder)</code></pre>
+</div>
+<div id="birth-order-and-sibship-size" class="section level2 active tabset">
+<h2>Birth order and sibship size</h2>
+<div id="maternal-birthorder" class="section level3">
+<h3>Maternal birthorder</h3>
+<pre class="r"><code>descriptives = df_pregnancy %&gt;%
+  filter(!is.na(birthorder_uterus_alive)) %&gt;%
+  group_by(group) %&gt;%
+    summarise(individuals = n(),
+              mothers = length(unique(mother_pidlink)),
+              sibship_size_mean = mean(sibling_count_uterus_alive, na.rm = T),
+              sibship_size_confidence_low = mean(sibling_count_uterus_alive, na.rm = T) - 
+                (qt(.975, n()-1)*sd(sibling_count_uterus_alive, na.rm = T)/sqrt(n())),
+              sibship_size_confidence_high = mean(sibling_count_uterus_alive, na.rm = T) + 
+                (qt(.975, n()-1)*sd(sibling_count_uterus_alive, na.rm = T)/sqrt(n())),
+              sibship_size_min = min(sibling_count_uterus_alive, na.rm = TRUE),
+              sibship_size_max = max(sibling_count_uterus_alive, na.rm = TRUE),
+              birthorder_mean = mean(birthorder_uterus_alive, na.rm = T),
+              birthorder_size_confidence_low = mean(birthorder_uterus_alive, na.rm = T) - 
+                (qt(.975, n()-1)*sd(birthorder_uterus_alive, na.rm = T)/sqrt(n())),
+              birthorder_size_confidence_high = mean(birthorder_uterus_alive, na.rm = T) + 
+                (qt(.975, n()-1)*sd(birthorder_uterus_alive, na.rm = T)/sqrt(n())),
+              birthorder_size_min = min(birthorder_uterus_alive, na.rm = TRUE),
+              birthorder_size_max = max(birthorder_uterus_alive, na.rm = TRUE),
+              number_siblings_mean = mean(number_siblings),
+              number_siblings_confidence_low = mean(number_siblings, na.rm = T) -
+                (qt(.975, n()-1)*sd(number_siblings, na.rm = T)/sqrt(n())),
+              number_siblings_confidence_high = mean(number_siblings, na.rm = T) +
+                (qt(.975, n()-1)*sd(number_siblings, na.rm = T)/sqrt(n())))
+
+descriptives</code></pre>
+<table>
+<colgroup>
+<col width="2%" />
+<col width="3%" />
+<col width="2%" />
+<col width="5%" />
+<col width="8%" />
+<col width="8%" />
+<col width="5%" />
+<col width="5%" />
+<col width="4%" />
+<col width="8%" />
+<col width="9%" />
+<col width="5%" />
+<col width="5%" />
+<col width="6%" />
+<col width="8%" />
+<col width="8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">group</th>
+<th align="center">individuals</th>
+<th align="center">mothers</th>
+<th align="center">sibship_size_mean</th>
+<th align="center">sibship_size_confidence_low</th>
+<th align="center">sibship_size_confidence_high</th>
+<th align="center">sibship_size_min</th>
+<th align="center">sibship_size_max</th>
+<th align="center">birthorder_mean</th>
+<th align="center">birthorder_size_confidence_low</th>
+<th align="center">birthorder_size_confidence_high</th>
+<th align="center">birthorder_size_min</th>
+<th align="center">birthorder_size_max</th>
+<th align="center">number_siblings_mean</th>
+<th align="center">number_siblings_confidence_low</th>
+<th align="center">number_siblings_confidence_high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">control</td>
+<td align="center">38874</td>
+<td align="center">15179</td>
+<td align="center">4.381</td>
+<td align="center">4.350</td>
+<td align="center">4.411</td>
+<td align="center">1</td>
+<td align="center">22</td>
+<td align="center">2.687</td>
+<td align="center">2.665</td>
+<td align="center">2.708</td>
+<td align="center">1</td>
+<td align="center">22</td>
+<td align="center">4.598</td>
+<td align="center">4.564</td>
+<td align="center">4.633</td>
+</tr>
+<tr class="even">
+<td align="center">test</td>
+<td align="center">4659</td>
+<td align="center">3016</td>
+<td align="center">4.164</td>
+<td align="center">4.103</td>
+<td align="center">4.225</td>
+<td align="center">2</td>
+<td align="center">19</td>
+<td align="center">2.545</td>
+<td align="center">2.492</td>
+<td align="center">2.597</td>
+<td align="center">1</td>
+<td align="center">15</td>
+<td align="center">1.983</td>
+<td align="center">1.952</td>
+<td align="center">2.015</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>df_pregnancy %&gt;% 
+  filter(!is.na(birthorder_uterus_alive)) %&gt;% 
+  t.test(sibling_count_uterus_alive ~ group, data = ., var.equal = T)</code></pre>
+<table style="width:90%;">
+<caption>Two Sample t-test: <code>sibling_count_uterus_alive</code> by <code>group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="25%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">4.673</td>
+<td align="center">43531</td>
+<td align="center">0.000002974 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>df_pregnancy %&gt;% 
+  filter(!is.na(birthorder_uterus_alive)) %&gt;% 
+  t.test(birthorder_uterus_alive ~ group, data = ., var.equal = T)</code></pre>
+<table style="width:88%;">
+<caption>Two Sample t-test: <code>birthorder_uterus_alive</code> by <code>group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="22%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">4.328</td>
+<td align="center">43531</td>
+<td align="center">0.0000151 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>df_pregnancy %&gt;% 
+  filter(!is.na(birthorder_uterus_alive)) %&gt;% 
+  t.test(number_siblings ~ group, data = ., var.equal = T)</code></pre>
+<table style="width:79%;">
+<caption>Two Sample t-test: <code>number_siblings</code> by <code>group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="13%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">51.44</td>
+<td align="center">43531</td>
+<td align="center">0 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<div id="how-many-siblings-with-data-do-we-retain-in-each-family" class="section level4">
+<h4>How many siblings with data do we retain in each family?</h4>
+<pre class="r"><code>birthorder %&gt;% filter(!is.na(birthorder_uterus_alive)) %&gt;% group_by(mother_pidlink) %&gt;% summarise(with_data = n(), all = mean(sibling_count_uterus_alive)) -&gt; counts
+pregnancy %&gt;% filter(!is.na(birthorder_uterus_alive)) %&gt;% group_by(mother_pidlink) %&gt;% summarise(with_data = n(), all = mean(sibling_count_uterus_alive)) -&gt; counts1</code></pre>
+<p>In our test sample families with an average size of 3.8667 siblings, we retain 1.5448.</p>
+<p>In the original sample families with an average size of 2.8228 siblings, we retain 2.561.</p>
+<pre class="r"><code>ggplot(counts, aes(all, with_data)) + geom_jitter(alpha = 0.1) + geom_smooth() + scale_x_continuous(breaks=1:15) + scale_y_continuous(breaks=1:15)</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39;</code></pre>
+<p><img src="3_sample_analyses_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+</div>
+<div id="maternal-pregnancy-order" class="section level3">
+<h3>Maternal pregnancy order</h3>
+<pre class="r"><code>descriptives = df_pregnancy %&gt;%
+  filter(!is.na(birthorder_uterus_preg)) %&gt;%
+  group_by(group) %&gt;%
+  summarise(individuals = n(),
+            mothers = length(unique(mother_pidlink)),
+            sibship_size_mean = mean(sibling_count_uterus_preg, na.rm = T),
+            sibship_size_confidence_low = mean(sibling_count_uterus_preg, na.rm = T) - 
+              (qt(.975, n()-1)*sd(sibling_count_uterus_preg, na.rm = T)/sqrt(n())),
+            sibship_size_confidence_high = mean(sibling_count_uterus_preg, na.rm = T) + 
+              (qt(.975, n()-1)*sd(sibling_count_uterus_preg, na.rm = T)/sqrt(n())),
+            sibship_size_min = min(sibling_count_uterus_preg, na.rm = TRUE),
+            sibship_size_max = max(sibling_count_uterus_preg, na.rm = TRUE),
+            birthorder_mean = mean(birthorder_uterus_preg, na.rm = T),
+            birthorder_size_confidence_low = mean(birthorder_uterus_preg, na.rm = T) - 
+              (qt(.975, n()-1)*sd(birthorder_uterus_preg, na.rm = T)/sqrt(n())),
+            birthorder_size_confidence_high = mean(birthorder_uterus_preg, na.rm = T) + 
+              (qt(.975, n()-1)*sd(birthorder_uterus_preg, na.rm = T)/sqrt(n())),
+            birthorder_size_min = min(birthorder_uterus_preg, na.rm = TRUE),
+            birthorder_size_max = max(birthorder_uterus_preg, na.rm = TRUE),
+            number_siblings_mean = mean(number_siblings),
+            number_siblings_confidence_low = mean(number_siblings, na.rm = T) -
+              (qt(.975, n()-1)*sd(number_siblings, na.rm = T)/sqrt(n())),
+            number_siblings_confidence_high = mean(number_siblings, na.rm = T) +
+              (qt(.975, n()-1)*sd(number_siblings, na.rm = T)/sqrt(n())))
+
+descriptives</code></pre>
+<table>
+<colgroup>
+<col width="2%" />
+<col width="3%" />
+<col width="2%" />
+<col width="5%" />
+<col width="8%" />
+<col width="8%" />
+<col width="5%" />
+<col width="5%" />
+<col width="4%" />
+<col width="8%" />
+<col width="9%" />
+<col width="5%" />
+<col width="5%" />
+<col width="6%" />
+<col width="8%" />
+<col width="8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">group</th>
+<th align="center">individuals</th>
+<th align="center">mothers</th>
+<th align="center">sibship_size_mean</th>
+<th align="center">sibship_size_confidence_low</th>
+<th align="center">sibship_size_confidence_high</th>
+<th align="center">sibship_size_min</th>
+<th align="center">sibship_size_max</th>
+<th align="center">birthorder_mean</th>
+<th align="center">birthorder_size_confidence_low</th>
+<th align="center">birthorder_size_confidence_high</th>
+<th align="center">birthorder_size_min</th>
+<th align="center">birthorder_size_max</th>
+<th align="center">number_siblings_mean</th>
+<th align="center">number_siblings_confidence_low</th>
+<th align="center">number_siblings_confidence_high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">control</td>
+<td align="center">44187</td>
+<td align="center">15425</td>
+<td align="center">4.994</td>
+<td align="center">4.962</td>
+<td align="center">5.027</td>
+<td align="center">1</td>
+<td align="center">26</td>
+<td align="center">2.988</td>
+<td align="center">2.965</td>
+<td align="center">3.011</td>
+<td align="center">1</td>
+<td align="center">26</td>
+<td align="center">4.749</td>
+<td align="center">4.717</td>
+<td align="center">4.782</td>
+</tr>
+<tr class="even">
+<td align="center">test</td>
+<td align="center">4666</td>
+<td align="center">3022</td>
+<td align="center">4.305</td>
+<td align="center">4.240</td>
+<td align="center">4.370</td>
+<td align="center">2</td>
+<td align="center">19</td>
+<td align="center">2.640</td>
+<td align="center">2.584</td>
+<td align="center">2.696</td>
+<td align="center">1</td>
+<td align="center">15</td>
+<td align="center">1.982</td>
+<td align="center">1.951</td>
+<td align="center">2.013</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>df_pregnancy %&gt;% 
+  filter(!is.na(birthorder_uterus_preg)) %&gt;% 
+  t.test(sibling_count_uterus_preg ~ group, data = ., var.equal = T)</code></pre>
+<table style="width:88%;">
+<caption>Two Sample t-test: <code>sibling_count_uterus_preg</code> by <code>group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="22%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">13.16</td>
+<td align="center">48851</td>
+<td align="center">1.768e-39 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>df_pregnancy %&gt;% 
+  filter(!is.na(birthorder_uterus_preg)) %&gt;% 
+  t.test(birthorder_uterus_preg ~ group, data = ., var.equal = T)</code></pre>
+<table style="width:88%;">
+<caption>Two Sample t-test: <code>birthorder_uterus_preg</code> by <code>group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="22%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">9.409</td>
+<td align="center">48851</td>
+<td align="center">5.239e-21 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>df_pregnancy %&gt;% 
+  filter(!is.na(birthorder_uterus_preg)) %&gt;% 
+  t.test(number_siblings ~ group, data = ., var.equal = T)</code></pre>
+<table style="width:79%;">
+<caption>Two Sample t-test: <code>number_siblings</code> by <code>group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="13%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">53.96</td>
+<td align="center">48851</td>
+<td align="center">0 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<div id="how-many-siblings-with-data-do-we-retain-in-each-family-1" class="section level4">
+<h4>How many siblings with data do we retain in each family?</h4>
+<pre class="r"><code>birthorder %&gt;% filter(!is.na(birthorder_uterus_preg)) %&gt;% group_by(mother_pidlink) %&gt;% summarise(with_data = n(), all = mean(sibling_count_uterus_preg)) -&gt; counts
+pregnancy %&gt;% filter(!is.na(birthorder_uterus_preg)) %&gt;% group_by(mother_pidlink) %&gt;% summarise(with_data = n(), all = mean(sibling_count_uterus_preg)) -&gt; counts1</code></pre>
+<p>In our test sample families with an average size of 3.9818 siblings, we retain 1.544.</p>
+<p>In the original sample families with an average size of 3.1286 siblings, we retain 2.8646.</p>
+<pre class="r"><code>ggplot(counts, aes(all, with_data)) + geom_jitter(alpha = 0.1) + geom_smooth() + scale_x_continuous(breaks=1:15) + scale_y_continuous(breaks=1:15)</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39;</code></pre>
+<p><img src="3_sample_analyses_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+</div>
+<div id="parental-full-sibling-order" class="section level3">
+<h3>Parental full sibling order</h3>
+<pre class="r"><code>descriptives = df_pregnancy %&gt;%
+  filter(!is.na(birthorder_genes)) %&gt;%
+  group_by(group) %&gt;%
+  summarise(individuals = n(),
+            mothers = length(unique(mother_pidlink)),
+            sibship_size_mean = mean(sibling_count_genes, na.rm = T),
+            sibship_size_confidence_low = mean(sibling_count_genes, na.rm = T) - 
+              (qt(.975, n()-1)*sd(sibling_count_genes, na.rm = T)/sqrt(n())),
+            sibship_size_confidence_high = mean(sibling_count_genes, na.rm = T) + 
+              (qt(.975, n()-1)*sd(sibling_count_genes, na.rm = T)/sqrt(n())),
+            sibship_size_min = min(sibling_count_genes, na.rm = TRUE),
+            sibship_size_max = max(sibling_count_genes, na.rm = TRUE),
+            birthorder_mean = mean(birthorder_genes, na.rm = T),
+            birthorder_size_confidence_low = mean(birthorder_genes, na.rm = T) - 
+              (qt(.975, n()-1)*sd(birthorder_genes, na.rm = T)/sqrt(n())),
+            birthorder_size_confidence_high = mean(birthorder_genes, na.rm = T) + 
+              (qt(.975, n()-1)*sd(birthorder_genes, na.rm = T)/sqrt(n())),
+            birthorder_size_min = min(birthorder_genes, na.rm = TRUE),
+            birthorder_size_max = max(birthorder_genes, na.rm = TRUE),
+            number_siblings_mean = mean(number_siblings),
+            number_siblings_confidence_low = mean(number_siblings, na.rm = T) -
+              (qt(.975, n()-1)*sd(number_siblings, na.rm = T)/sqrt(n())),
+            number_siblings_confidence_high = mean(number_siblings, na.rm = T) +
+              (qt(.975, n()-1)*sd(number_siblings, na.rm = T)/sqrt(n())))
+
+descriptives</code></pre>
+<table>
+<colgroup>
+<col width="2%" />
+<col width="3%" />
+<col width="2%" />
+<col width="5%" />
+<col width="8%" />
+<col width="8%" />
+<col width="5%" />
+<col width="5%" />
+<col width="4%" />
+<col width="8%" />
+<col width="9%" />
+<col width="5%" />
+<col width="5%" />
+<col width="6%" />
+<col width="8%" />
+<col width="8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">group</th>
+<th align="center">individuals</th>
+<th align="center">mothers</th>
+<th align="center">sibship_size_mean</th>
+<th align="center">sibship_size_confidence_low</th>
+<th align="center">sibship_size_confidence_high</th>
+<th align="center">sibship_size_min</th>
+<th align="center">sibship_size_max</th>
+<th align="center">birthorder_mean</th>
+<th align="center">birthorder_size_confidence_low</th>
+<th align="center">birthorder_size_confidence_high</th>
+<th align="center">birthorder_size_min</th>
+<th align="center">birthorder_size_max</th>
+<th align="center">number_siblings_mean</th>
+<th align="center">number_siblings_confidence_low</th>
+<th align="center">number_siblings_confidence_high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">control</td>
+<td align="center">38244</td>
+<td align="center">14980</td>
+<td align="center">4.206</td>
+<td align="center">4.176</td>
+<td align="center">4.236</td>
+<td align="center">1</td>
+<td align="center">22</td>
+<td align="center">2.601</td>
+<td align="center">2.580</td>
+<td align="center">2.622</td>
+<td align="center">1</td>
+<td align="center">22</td>
+<td align="center">4.615</td>
+<td align="center">4.580</td>
+<td align="center">4.649</td>
+</tr>
+<tr class="even">
+<td align="center">test</td>
+<td align="center">4563</td>
+<td align="center">2946</td>
+<td align="center">4.083</td>
+<td align="center">4.022</td>
+<td align="center">4.143</td>
+<td align="center">2</td>
+<td align="center">19</td>
+<td align="center">2.489</td>
+<td align="center">2.437</td>
+<td align="center">2.541</td>
+<td align="center">1</td>
+<td align="center">15</td>
+<td align="center">1.993</td>
+<td align="center">1.962</td>
+<td align="center">2.025</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>df_pregnancy %&gt;% 
+  filter(!is.na(birthorder_genes)) %&gt;% 
+  t.test(sibling_count_genes ~ group, data = ., var.equal = T)</code></pre>
+<table style="width:83%;">
+<caption>Two Sample t-test: <code>sibling_count_genes</code> by <code>group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="18%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">2.68</td>
+<td align="center">42805</td>
+<td align="center">0.007365 * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>df_pregnancy %&gt;% 
+  filter(!is.na(birthorder_genes)) %&gt;% 
+  t.test(birthorder_genes ~ group, data = ., var.equal = T)</code></pre>
+<table style="width:88%;">
+<caption>Two Sample t-test: <code>birthorder_genes</code> by <code>group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="22%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">3.471</td>
+<td align="center">42805</td>
+<td align="center">0.0005184 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>df_pregnancy %&gt;% 
+  filter(!is.na(birthorder_genes)) %&gt;% 
+  t.test(number_siblings ~ group, data = ., var.equal = T)</code></pre>
+<table style="width:79%;">
+<caption>Two Sample t-test: <code>number_siblings</code> by <code>group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="13%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">50.95</td>
+<td align="center">42805</td>
+<td align="center">0 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<div id="how-many-siblings-with-data-do-we-retain-in-each-family-2" class="section level4">
+<h4>How many siblings with data do we retain in each family?</h4>
+<pre class="r"><code>birthorder %&gt;% filter(!is.na(birthorder_genes)) %&gt;% group_by(mother_pidlink) %&gt;% summarise(with_data = n(), all = mean(sibling_count_genes)) -&gt; counts
+pregnancy %&gt;% filter(!is.na(birthorder_genes)) %&gt;% group_by(mother_pidlink) %&gt;% summarise(with_data = n(), all = mean(sibling_count_genes)) -&gt; counts1</code></pre>
+<p>In our test sample families with an average size of 3.7949 siblings, we retain 1.5489.</p>
+<p>In the original sample families with an average size of 2.7346 siblings, we retain 2.553.</p>
+<pre class="r"><code>ggplot(counts, aes(all, with_data)) + geom_jitter(alpha = 0.1) + geom_smooth() + scale_x_continuous(breaks=1:15) + scale_y_continuous(breaks=1:15)</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39;</code></pre>
+<p><img src="3_sample_analyses_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="outcome-measurements-and-covariates" class="section level2 tabset">
+<h2>Outcome measurements and covariates</h2>
+<div id="control-group" class="section level3">
+<h3>Control group</h3>
+<pre class="r"><code>## Descriptives
+descriptives = df %&gt;%
+  group_by(group) %&gt;%
+    summarise(n = n(),
+              age_mean = mean(age, na.rm=TRUE),
+              age_confidence_low = mean(age, na.rm = T) - 
+                (qt(.975, n()-1)*sd(age, na.rm = T)/sqrt(n())),
+              age_confidence_high = mean(age, na.rm = T) + 
+                (qt(.975, n()-1)*sd(age, na.rm = T)/sqrt(n())),
+              age_min = min(age, na.rm = TRUE),
+              age_max = max(age, na.rm = TRUE),
+              gender = mean(male, na.rm=TRUE) - 1)
+descriptives</code></pre>
+<table>
+<colgroup>
+<col width="8%" />
+<col width="6%" />
+<col width="11%" />
+<col width="21%" />
+<col width="22%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">group</th>
+<th align="center">n</th>
+<th align="center">age_mean</th>
+<th align="center">age_confidence_low</th>
+<th align="center">age_confidence_high</th>
+<th align="center">age_min</th>
+<th align="center">age_max</th>
+<th align="center">gender</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">control</td>
+<td align="center">26927</td>
+<td align="center">39.42</td>
+<td align="center">39.25</td>
+<td align="center">39.6</td>
+<td align="center">13</td>
+<td align="center">101</td>
+<td align="center">0.4651</td>
+</tr>
+<tr class="even">
+<td align="center">test</td>
+<td align="center">4666</td>
+<td align="center">25.07</td>
+<td align="center">24.84</td>
+<td align="center">25.3</td>
+<td align="center">14</td>
+<td align="center">51</td>
+<td align="center">0.4844</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>## Ttest
+t.test(df$age ~ df$group, var.equal = T)</code></pre>
+<table style="width:79%;">
+<caption>Two Sample t-test: <code>df$age</code> by <code>df$group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="13%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">64.3</td>
+<td align="center">31587</td>
+<td align="center">0 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>gender = df %&gt;%
+  group_by(group) %&gt;%
+    summarise(gender = sum(male == 1, na.rm=T),
+              gender2 = sum(male ==2,na.rm=T)) %&gt;%
+  select(gender, gender2)
+chisq.test(gender)</code></pre>
+<table style="width:43%;">
+<caption>Pearson’s Chi-squared test with Yates’ continuity correction: <code>gender</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="6%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">5.816</td>
+<td align="center">1</td>
+<td align="center">0.01588 *</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>## Ratings
+ratings = df %&gt;%
+  group_by(group) %&gt;%
+  summarise(g_factor_mean = mean(g_factor, na.rm=T),
+            g_factor_confidence_low= mean(g_factor, na.rm = T) - 
+                (qt(.975, n()-1)*sd(g_factor, na.rm = T)/sqrt(n())),
+            g_factor_confidence_high = mean(g_factor, na.rm = T) +
+                (qt(.975, n()-1)*sd(g_factor, na.rm = T)/sqrt(n())),
+            big5_ext_mean = mean(big5_ext, na.rm=T),
+            big5_ext_confidence_low= mean(big5_ext, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_ext, na.rm = T)/sqrt(n())),
+            big5_ext_confidence_high = mean(big5_ext, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_ext, na.rm = T)/sqrt(n())),
+            big5_neu_mean = mean(big5_neu, na.rm=T),
+            big5_neu_confidence_low= mean(big5_neu, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_neu, na.rm = T)/sqrt(n())),
+            big5_neu_confidence_high = mean(big5_neu, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_neu, na.rm = T)/sqrt(n())),
+            big5_con_mean = mean(big5_con, na.rm=T),
+            big5_con_confidence_low= mean(big5_con, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_con, na.rm = T)/sqrt(n())),
+            big5_con_confidence_high = mean(big5_con, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_con, na.rm = T)/sqrt(n())),
+            big5_agree_mean = mean(big5_agree, na.rm=T),
+            big5_agree_confidence_low= mean(big5_agree, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_agree, na.rm = T)/sqrt(n())),
+            big5_agree_confidence_high = mean(big5_agree, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_agree, na.rm = T)/sqrt(n())),
+            big5_open_mean = mean(big5_open, na.rm=T),
+            big5_open_confidence_low= mean(big5_open, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())),
+            big5_open_confidence_high = mean(big5_open, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())),
+            riskA_mean = mean(riskA, na.rm=T),
+            riskA_confidence_low= mean(riskA, na.rm = T) - 
+                (qt(.975, n()-1)*sd(riskA, na.rm = T)/sqrt(n())),
+            riskA_confidence_high = mean(riskA, na.rm = T) +
+                (qt(.975, n()-1)*sd(riskA, na.rm = T)/sqrt(n())),
+            riskB_mean = mean(riskB, na.rm=T),
+            riskB_confidence_low= mean(riskB, na.rm = T) - 
+                (qt(.975, n()-1)*sd(riskB, na.rm = T)/sqrt(n())),
+            riskB_confidence_high = mean(riskB, na.rm = T) +
+                (qt(.975, n()-1)*sd(riskB, na.rm = T)/sqrt(n())))
+ratings</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="1%" />
+<col width="2%" />
+<col width="4%" />
+<col width="4%" />
+<col width="2%" />
+<col width="4%" />
+<col width="4%" />
+<col width="2%" />
+<col width="4%" />
+<col width="4%" />
+<col width="2%" />
+<col width="4%" />
+<col width="4%" />
+<col width="3%" />
+<col width="5%" />
+<col width="5%" />
+<col width="3%" />
+<col width="4%" />
+<col width="5%" />
+<col width="2%" />
+<col width="4%" />
+<col width="4%" />
+<col width="2%" />
+<col width="4%" />
+<col width="4%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">group</th>
+<th align="center">g_factor_mean</th>
+<th align="center">g_factor_confidence_low</th>
+<th align="center">g_factor_confidence_high</th>
+<th align="center">big5_ext_mean</th>
+<th align="center">big5_ext_confidence_low</th>
+<th align="center">big5_ext_confidence_high</th>
+<th align="center">big5_neu_mean</th>
+<th align="center">big5_neu_confidence_low</th>
+<th align="center">big5_neu_confidence_high</th>
+<th align="center">big5_con_mean</th>
+<th align="center">big5_con_confidence_low</th>
+<th align="center">big5_con_confidence_high</th>
+<th align="center">big5_agree_mean</th>
+<th align="center">big5_agree_confidence_low</th>
+<th align="center">big5_agree_confidence_high</th>
+<th align="center">big5_open_mean</th>
+<th align="center">big5_open_confidence_low</th>
+<th align="center">big5_open_confidence_high</th>
+<th align="center">riskA_mean</th>
+<th align="center">riskA_confidence_low</th>
+<th align="center">riskA_confidence_high</th>
+<th align="center">riskB_mean</th>
+<th align="center">riskB_confidence_low</th>
+<th align="center">riskB_confidence_high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">control</td>
+<td align="center">0.06673</td>
+<td align="center">0.0571</td>
+<td align="center">0.07636</td>
+<td align="center">3.432</td>
+<td align="center">3.424</td>
+<td align="center">3.440</td>
+<td align="center">2.574</td>
+<td align="center">2.568</td>
+<td align="center">2.580</td>
+<td align="center">3.827</td>
+<td align="center">3.820</td>
+<td align="center">3.833</td>
+<td align="center">3.909</td>
+<td align="center">3.903</td>
+<td align="center">3.915</td>
+<td align="center">3.684</td>
+<td align="center">3.676</td>
+<td align="center">3.692</td>
+<td align="center">3.424</td>
+<td align="center">3.406</td>
+<td align="center">3.442</td>
+<td align="center">3.861</td>
+<td align="center">3.851</td>
+<td align="center">3.87</td>
+</tr>
+<tr class="even">
+<td align="center">test</td>
+<td align="center">0.66562</td>
+<td align="center">0.6475</td>
+<td align="center">0.68374</td>
+<td align="center">3.504</td>
+<td align="center">3.484</td>
+<td align="center">3.523</td>
+<td align="center">2.626</td>
+<td align="center">2.612</td>
+<td align="center">2.641</td>
+<td align="center">3.746</td>
+<td align="center">3.729</td>
+<td align="center">3.762</td>
+<td align="center">3.857</td>
+<td align="center">3.843</td>
+<td align="center">3.872</td>
+<td align="center">3.818</td>
+<td align="center">3.801</td>
+<td align="center">3.835</td>
+<td align="center">3.288</td>
+<td align="center">3.247</td>
+<td align="center">3.330</td>
+<td align="center">3.796</td>
+<td align="center">3.773</td>
+<td align="center">3.82</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>t.test(df$g_factor ~ df$group, var.equal = T)</code></pre>
+<table style="width:79%;">
+<caption>Two Sample t-test: <code>df$g_factor</code> by <code>df$group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="13%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-48.02</td>
+<td align="center">30998</td>
+<td align="center">0 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>t.test(df$big5_ext ~ df$group, var.equal = T)</code></pre>
+<table style="width:97%;">
+<caption>Two Sample t-test: <code>df$big5_ext</code> by <code>df$group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="31%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-6.794</td>
+<td align="center">31444</td>
+<td align="center">0.00000000001107 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>t.test(df$big5_neu ~ df$group, var.equal = T)</code></pre>
+<table style="width:96%;">
+<caption>Two Sample t-test: <code>df$big5_neu</code> by <code>df$group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="30%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-6.353</td>
+<td align="center">31444</td>
+<td align="center">0.0000000002139 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>t.test(df$big5_con ~ df$group, var.equal = T)</code></pre>
+<table style="width:88%;">
+<caption>Two Sample t-test: <code>df$big5_con</code> by <code>df$group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="22%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">9.259</td>
+<td align="center">31444</td>
+<td align="center">2.198e-20 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>t.test(df$big5_agree ~ df$group, var.equal = T)</code></pre>
+<table style="width:96%;">
+<caption>Two Sample t-test: <code>df$big5_agree</code> by <code>df$group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="30%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">6.419</td>
+<td align="center">31444</td>
+<td align="center">0.0000000001389 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>t.test(df$big5_open ~ df$group, var.equal = T)</code></pre>
+<table style="width:88%;">
+<caption>Two Sample t-test: <code>df$big5_open</code> by <code>df$group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="22%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-12.62</td>
+<td align="center">31444</td>
+<td align="center">1.968e-36 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>t.test(df$riskA ~ df$group, var.equal = T)</code></pre>
+<table style="width:92%;">
+<caption>Two Sample t-test: <code>df$riskA</code> by <code>df$group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="26%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">5.352</td>
+<td align="center">27778</td>
+<td align="center">0.0000000876 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>t.test(df$riskB ~ df$group, var.equal = T)</code></pre>
+<table style="width:89%;">
+<caption>Two Sample t-test: <code>df$riskB</code> by <code>df$group</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="8%" />
+<col width="23%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">4.789</td>
+<td align="center">29576</td>
+<td align="center">0.00000168 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="restricted-control-group" class="section level3">
+<h3>Restricted control group</h3>
+<pre class="r"><code>## In order to compare our test group to an alike group from the control sample we have to restict age
+check_test = df %&gt;% filter(group == &quot;test&quot;) %&gt;%
+  arrange(gender) %&gt;%
+  group_by(age) %&gt;%
+  mutate(random = min_rank(pidlink),
+         choose = paste0(age, &quot;-&quot;, random))
+        
+check_control = df %&gt;% filter(group == &quot;control&quot;, !is.na(g_factor), !is.na(riskA),
+                      !is.na(big5_agree), !is.na(big5_ext), !is.na(big5_con),
+                      !is.na(big5_neu), !is.na(big5_open)) %&gt;%
+  arrange(gender) %&gt;%
+  group_by(age) %&gt;%
+  mutate(random = min_rank(pidlink),
+         choose = paste0(age, &quot;-&quot;, random),
+         pidlink_choose = pidlink) %&gt;%
+  ungroup() %&gt;%
+  select(choose, pidlink_choose)
+
+check = left_join(check_test, check_control, by = &quot;choose&quot;) %&gt;%
+  ungroup() %&gt;% arrange(pidlink_choose)
+
+individuals_restricted = unique(check$pidlink_choose)
+
+df = df %&gt;%
+  mutate(group2 = ifelse(pidlink %in% individuals_restricted, &quot;control_restricted&quot;,
+                         NA),
+         group2 = ifelse(group==&quot;test&quot;, &quot;test&quot;, group2))
+
+table(df$group2)</code></pre>
+<table style="width:38%;">
+<colgroup>
+<col width="29%" />
+<col width="8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">control_restricted</th>
+<th align="center">test</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">4614</td>
+<td align="center">4666</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>## Descriptives
+descriptives_restricted = df %&gt;%
+  group_by(group2) %&gt;%
+    summarise(n = n(),
+              age_mean = mean(age, na.rm=TRUE),
+              age_sd = sd(age, na.rm=T),
+              age_confidence_low = mean(age, na.rm = T) - 
+                (qt(.975, n()-1)*sd(age, na.rm = T)/sqrt(n())),
+              age_confidence_high = mean(age, na.rm = T) +
+                (qt(.975, n()-1)*sd(age, na.rm = T)/sqrt(n())),
+              age_min = min(age, na.rm = TRUE),
+              age_max = max(age, na.rm = TRUE),
+              gender = mean(male, na.rm=TRUE) - 1) %&gt;%
+  filter(!is.na(group2))
+descriptives_restricted</code></pre>
+<table>
+<colgroup>
+<col width="16%" />
+<col width="4%" />
+<col width="9%" />
+<col width="7%" />
+<col width="17%" />
+<col width="18%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">group2</th>
+<th align="center">n</th>
+<th align="center">age_mean</th>
+<th align="center">age_sd</th>
+<th align="center">age_confidence_low</th>
+<th align="center">age_confidence_high</th>
+<th align="center">age_min</th>
+<th align="center">age_max</th>
+<th align="center">gender</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">control_restricted</td>
+<td align="center">4614</td>
+<td align="center">25.18</td>
+<td align="center">7.945</td>
+<td align="center">24.95</td>
+<td align="center">25.41</td>
+<td align="center">14</td>
+<td align="center">51</td>
+<td align="center">0.4621</td>
+</tr>
+<tr class="even">
+<td align="center">test</td>
+<td align="center">4666</td>
+<td align="center">25.07</td>
+<td align="center">7.972</td>
+<td align="center">24.84</td>
+<td align="center">25.30</td>
+<td align="center">14</td>
+<td align="center">51</td>
+<td align="center">0.4844</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>t.test(df$age ~ df$group2, var.equal = T)</code></pre>
+<table style="width:78%;">
+<caption>Two Sample t-test: <code>df$age</code> by <code>df$group2</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="6%" />
+<col width="13%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0.6868</td>
+<td align="center">9278</td>
+<td align="center">0.4922</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>gender = df %&gt;%
+  group_by(group2) %&gt;%
+    summarise(gender = sum(male == 1, na.rm=T),
+              gender2 = sum(male ==2,na.rm=T)) %&gt;%
+  filter(!is.na(group2)) %&gt;%
+  select(gender, gender2)
+chisq.test(gender)</code></pre>
+<table style="width:43%;">
+<caption>Pearson’s Chi-squared test with Yates’ continuity correction: <code>gender</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="6%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">4.537</td>
+<td align="center">1</td>
+<td align="center">0.03318 *</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>ratings_restricted = df %&gt;%
+  group_by(group2) %&gt;%
+   summarise(n = n(),
+             g_factor_mean = mean(g_factor, na.rm=T),
+            g_factor_confidence_low= mean(g_factor, na.rm = T) - 
+                (qt(.975, n()-1)*sd(g_factor, na.rm = T)/sqrt(n())),
+            g_factor_confidence_high = mean(g_factor, na.rm = T) +
+                (qt(.975, n()-1)*sd(g_factor, na.rm = T)/sqrt(n())),
+            big5_ext_mean = mean(big5_ext, na.rm=T),
+            big5_ext_confidence_low= mean(big5_ext, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_ext, na.rm = T)/sqrt(n())),
+            big5_ext_confidence_high = mean(big5_ext, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_ext, na.rm = T)/sqrt(n())),
+            big5_neu_mean = mean(big5_neu, na.rm=T),
+            big5_neu_confidence_low= mean(big5_neu, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_neu, na.rm = T)/sqrt(n())),
+            big5_neu_confidence_high = mean(big5_neu, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_neu, na.rm = T)/sqrt(n())),
+            big5_con_mean = mean(big5_con, na.rm=T),
+            big5_con_confidence_low= mean(big5_con, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_con, na.rm = T)/sqrt(n())),
+            big5_con_confidence_high = mean(big5_con, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_con, na.rm = T)/sqrt(n())),
+            big5_agree_mean = mean(big5_agree, na.rm=T),
+            big5_agree_confidence_low= mean(big5_agree, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_agree, na.rm = T)/sqrt(n())),
+            big5_agree_confidence_high = mean(big5_agree, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_agree, na.rm = T)/sqrt(n())),
+            big5_open_mean = mean(big5_open, na.rm=T),
+            big5_open_confidence_low= mean(big5_open, na.rm = T) - 
+                (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())),
+            big5_open_confidence_high = mean(big5_open, na.rm = T) +
+                (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())),
+            riskA_mean = mean(riskA, na.rm=T),
+            riskA_confidence_low= mean(riskA, na.rm = T) - 
+                (qt(.975, n()-1)*sd(riskA, na.rm = T)/sqrt(n())),
+            riskA_confidence_high = mean(riskA, na.rm = T) +
+                (qt(.975, n()-1)*sd(riskA, na.rm = T)/sqrt(n())),
+            riskB_mean = mean(riskB, na.rm=T),
+            riskB_confidence_low= mean(riskB, na.rm = T) - 
+                (qt(.975, n()-1)*sd(riskB, na.rm = T)/sqrt(n())),
+            riskB_confidence_high = mean(riskB, na.rm = T) +
+                (qt(.975, n()-1)*sd(riskB, na.rm = T)/sqrt(n()))) %&gt;%
+  filter(!is.na(group2))
+
+ratings_restricted</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="3%" />
+<col width="0%" />
+<col width="2%" />
+<col width="4%" />
+<col width="4%" />
+<col width="2%" />
+<col width="4%" />
+<col width="4%" />
+<col width="2%" />
+<col width="4%" />
+<col width="4%" />
+<col width="2%" />
+<col width="4%" />
+<col width="4%" />
+<col width="3%" />
+<col width="4%" />
+<col width="5%" />
+<col width="3%" />
+<col width="4%" />
+<col width="4%" />
+<col width="2%" />
+<col width="4%" />
+<col width="4%" />
+<col width="2%" />
+<col width="4%" />
+<col width="4%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">group2</th>
+<th align="center">n</th>
+<th align="center">g_factor_mean</th>
+<th align="center">g_factor_confidence_low</th>
+<th align="center">g_factor_confidence_high</th>
+<th align="center">big5_ext_mean</th>
+<th align="center">big5_ext_confidence_low</th>
+<th align="center">big5_ext_confidence_high</th>
+<th align="center">big5_neu_mean</th>
+<th align="center">big5_neu_confidence_low</th>
+<th align="center">big5_neu_confidence_high</th>
+<th align="center">big5_con_mean</th>
+<th align="center">big5_con_confidence_low</th>
+<th align="center">big5_con_confidence_high</th>
+<th align="center">big5_agree_mean</th>
+<th align="center">big5_agree_confidence_low</th>
+<th align="center">big5_agree_confidence_high</th>
+<th align="center">big5_open_mean</th>
+<th align="center">big5_open_confidence_low</th>
+<th align="center">big5_open_confidence_high</th>
+<th align="center">riskA_mean</th>
+<th align="center">riskA_confidence_low</th>
+<th align="center">riskA_confidence_high</th>
+<th align="center">riskB_mean</th>
+<th align="center">riskB_confidence_low</th>
+<th align="center">riskB_confidence_high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">control_restricted</td>
+<td align="center">4614</td>
+<td align="center">0.4107</td>
+<td align="center">0.3914</td>
+<td align="center">0.4300</td>
+<td align="center">3.479</td>
+<td align="center">3.459</td>
+<td align="center">3.499</td>
+<td align="center">2.615</td>
+<td align="center">2.600</td>
+<td align="center">2.630</td>
+<td align="center">3.756</td>
+<td align="center">3.740</td>
+<td align="center">3.773</td>
+<td align="center">3.844</td>
+<td align="center">3.829</td>
+<td align="center">3.860</td>
+<td align="center">3.760</td>
+<td align="center">3.742</td>
+<td align="center">3.778</td>
+<td align="center">3.373</td>
+<td align="center">3.331</td>
+<td align="center">3.414</td>
+<td align="center">3.823</td>
+<td align="center">3.800</td>
+<td align="center">3.846</td>
+</tr>
+<tr class="even">
+<td align="center">test</td>
+<td align="center">4666</td>
+<td align="center">0.6656</td>
+<td align="center">0.6475</td>
+<td align="center">0.6837</td>
+<td align="center">3.504</td>
+<td align="center">3.484</td>
+<td align="center">3.523</td>
+<td align="center">2.626</td>
+<td align="center">2.612</td>
+<td align="center">2.641</td>
+<td align="center">3.746</td>
+<td align="center">3.729</td>
+<td align="center">3.762</td>
+<td align="center">3.857</td>
+<td align="center">3.843</td>
+<td align="center">3.872</td>
+<td align="center">3.818</td>
+<td align="center">3.801</td>
+<td align="center">3.835</td>
+<td align="center">3.288</td>
+<td align="center">3.247</td>
+<td align="center">3.330</td>
+<td align="center">3.796</td>
+<td align="center">3.773</td>
+<td align="center">3.820</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>t.test(df$g_factor ~ df$group2, var.equal = T)</code></pre>
+<table style="width:86%;">
+<caption>Two Sample t-test: <code>df$g_factor</code> by <code>df$group2</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="6%" />
+<col width="22%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-18.83</td>
+<td align="center">9241</td>
+<td align="center">1.145e-77 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>t.test(df$big5_ext ~ df$group2, var.equal = T)</code></pre>
+<table style="width:78%;">
+<caption>Two Sample t-test: <code>df$big5_ext</code> by <code>df$group2</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="6%" />
+<col width="13%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-1.71</td>
+<td align="center">9267</td>
+<td align="center">0.08722</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>t.test(df$big5_neu ~ df$group2, var.equal = T)</code></pre>
+<table style="width:78%;">
+<caption>Two Sample t-test: <code>df$big5_neu</code> by <code>df$group2</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="6%" />
+<col width="13%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-1.104</td>
+<td align="center">9267</td>
+<td align="center">0.2695</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>t.test(df$big5_con ~ df$group2, var.equal = T)</code></pre>
+<table style="width:78%;">
+<caption>Two Sample t-test: <code>df$big5_con</code> by <code>df$group2</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="6%" />
+<col width="13%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0.8904</td>
+<td align="center">9267</td>
+<td align="center">0.3732</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>t.test(df$big5_agree ~ df$group2, var.equal = T)</code></pre>
+<table style="width:78%;">
+<caption>Two Sample t-test: <code>df$big5_agree</code> by <code>df$group2</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="6%" />
+<col width="13%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-1.192</td>
+<td align="center">9267</td>
+<td align="center">0.2334</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>t.test(df$big5_open ~ df$group2, var.equal = T)</code></pre>
+<table style="width:89%;">
+<caption>Two Sample t-test: <code>df$big5_open</code> by <code>df$group2</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="6%" />
+<col width="25%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-4.511</td>
+<td align="center">9267</td>
+<td align="center">0.000006542 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>t.test(df$riskA ~ df$group2, var.equal = T)</code></pre>
+<table style="width:82%;">
+<caption>Two Sample t-test: <code>df$riskA</code> by <code>df$group2</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="6%" />
+<col width="18%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">2.747</td>
+<td align="center">8808</td>
+<td align="center">0.006027 * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>t.test(df$riskB ~ df$group2, var.equal = T)</code></pre>
+<table style="width:78%;">
+<caption>Two Sample t-test: <code>df$riskB</code> by <code>df$group2</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="6%" />
+<col width="13%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1.541</td>
+<td align="center">8781</td>
+<td align="center">0.1234</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="intelligence-g-factor" class="section level2">
+<h2>Intelligence g-factor</h2>
+<pre class="r"><code># iq$words_delayed = iq$words_delayed/10
+# iq$words_immediate = iq$words_immediate/10
+# iq$adaptive_numbering = iq$adaptive_numbering/100
+fa.parallel(alldata %&gt;% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %&gt;% data.frame())</code></pre>
+<p><img src="3_sample_analyses_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre><code>## Parallel analysis suggests that the number of factors =  3  and the number of components =  1</code></pre>
+<pre class="r"><code>fa(alldata %&gt;% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %&gt;% data.frame(), nfactors = 1)</code></pre>
+<pre><code>## Factor Analysis using method =  minres
+## Call: fa(r = alldata %&gt;% select(raven, math, count_backwards, words_delayed, 
+##     adaptive_numbering) %&gt;% data.frame(), nfactors = 1)
+## Standardized loadings (pattern matrix) based upon correlation matrix
+##                     MR1   h2   u2 com
+## raven              0.65 0.43 0.57   1
+## math               0.52 0.27 0.73   1
+## count_backwards    0.52 0.27 0.73   1
+## words_delayed      0.55 0.31 0.69   1
+## adaptive_numbering 0.68 0.46 0.54   1
+## 
+##                 MR1
+## SS loadings    1.74
+## Proportion Var 0.35
+## 
+## Mean item complexity =  1
+## Test of the hypothesis that 1 factor is sufficient.
+## 
+## The degrees of freedom for the null model are  10  and the objective function was  0.86 with Chi Square of  23124
+## The degrees of freedom for the model are 5  and the objective function was  0.02 
+## 
+## The root mean square of the residuals (RMSR) is  0.03 
+## The df corrected root mean square of the residuals is  0.04 
+## 
+## The harmonic number of observations is  26531 with the empirical chi square  418.3  with prob &lt;  3.4e-88 
+## The total number of observations was  26927  with Likelihood Chi Square =  478.7  with prob &lt;  3.2e-101 
+## 
+## Tucker Lewis Index of factoring reliability =  0.959
+## RMSEA index =  0.004  and the 90 % confidence intervals are  0.004 0.064
+## BIC =  427.7
+## Fit based upon off diagonal values = 0.99
+## Measures of factor score adequacy             
+##                                                 MR1
+## Correlation of scores with factors             0.86
+## Multiple R square of scores with factors       0.74
+## Minimum correlation of possible factor scores  0.47</code></pre>
+<pre class="r"><code>om_results = omega(alldata %&gt;% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %&gt;% data.frame(), nfactors = 1, sl = F)</code></pre>
+<pre><code>## Omega_h for 1 factor is not meaningful, just omega_t</code></pre>
+<pre><code>## Warning in schmid(m, nfactors, fm, digits, rotate = rotate, n.obs = n.obs, : Omega_h and Omega_asymptotic are
+## not meaningful with one factor</code></pre>
+<pre><code>## Warning in cov2cor(t(w) %*% r %*% w): diag(.) had 0 or NA entries; non-finite result is doubtful</code></pre>
+<pre class="r"><code>om_results</code></pre>
+<pre><code>## Omega 
+## Call: omega(m = alldata %&gt;% select(raven, math, count_backwards, words_delayed, 
+##     adaptive_numbering) %&gt;% data.frame(), nfactors = 1, sl = F)
+## Alpha:                 0.72 
+## G.6:                   0.68 
+## Omega Hierarchical:    0.72 
+## Omega H asymptotic:    1 
+## Omega Total            0.72 
+## 
+## Schmid Leiman Factor loadings greater than  0.2 
+##                       g  F1*   h2   u2 p2
+## raven              0.65      0.43 0.57  1
+## math               0.52      0.27 0.73  1
+## count_backwards    0.52      0.27 0.73  1
+## words_delayed      0.55      0.31 0.69  1
+## adaptive_numbering 0.68      0.46 0.54  1
+## 
+## With eigenvalues of:
+##   g F1* 
+## 1.7 0.0 
+## 
+## general/max  Inf   max/min =   NaN
+## mean percent general =  1    with sd =  0 and cv of  0 
+## Explained Common Variance of the general factor =  1 
+## 
+## The degrees of freedom are 5  and the fit is  0.02 
+## The number of observations was  26927  with Chi Square =  478.7  with prob &lt;  3.2e-101
+## The root mean square of the residuals is  0.03 
+## The df corrected root mean square of the residuals is  0.04
+## RMSEA index =  0.004  and the 90 % confidence intervals are  0.004 0.064
+## BIC =  427.7
+## 
+## Compare this with the adequacy of just a general factor and no group factors
+## The degrees of freedom for just the general factor are 5  and the fit is  0.02 
+## The number of observations was  26927  with Chi Square =  478.7  with prob &lt;  3.2e-101
+## The root mean square of the residuals is  0.03 
+## The df corrected root mean square of the residuals is  0.04 
+## 
+## RMSEA index =  0.004  and the 90 % confidence intervals are  0.004 0.064
+## BIC =  427.7 
+## 
+## Measures of factor score adequacy             
+##                                                  g F1*
+## Correlation of scores with factors            0.86   0
+## Multiple R square of scores with factors      0.74   0
+## Minimum correlation of factor score estimates 0.47  -1
+## 
+##  Total, General and Subset omega for each subset
+##                                                  g  F1*
+## Omega total for total scores and subscales    0.72 0.72
+## Omega general for total scores and subscales  0.72 0.72
+## Omega group for total scores and subscales    0.00 0.00</code></pre>
+<pre class="r"><code>omega.diagram(om_results)</code></pre>
+<p><img src="3_sample_analyses_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<pre class="r"><code>&quot;g_factor =~ raven + math + count_backwards +  words_delayed+ adaptive_numbering&quot; %&gt;%
+  cfa(missing = &quot;fiml&quot;, data = alldata, std.lv = T, std.ov = T) -&gt; cfa_g</code></pre>
+<pre><code>## Warning in lav_data_full(data = data, group = group, cluster = cluster, : lavaan WARNING: some cases are empty and will be ignored:
+##   6764 6767 8296 8572</code></pre>
+<pre class="r"><code>summary(cfa_g)</code></pre>
+<pre><code>## lavaan (0.5-23.1097) converged normally after  15 iterations
+## 
+##                                                   Used       Total
+##   Number of observations                         26923       26927
+## 
+##   Number of missing patterns                         6
+## 
+##   Estimator                                         ML
+##   Minimum Function Test Statistic              430.175
+##   Degrees of freedom                                 5
+##   P-value (Chi-square)                           0.000
+## 
+## Parameter Estimates:
+## 
+##   Information                                 Observed
+##   Standard Errors                             Standard
+## 
+## Latent Variables:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##   g_factor =~                                         
+##     raven             0.664    0.007   99.124    0.000
+##     math              0.527    0.007   76.931    0.000
+##     count_backwrds    0.525    0.007   78.226    0.000
+##     words_delayed     0.556    0.007   83.601    0.000
+##     adaptiv_nmbrng    0.684    0.007  104.110    0.000
+## 
+## Intercepts:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##    .raven            -0.012    0.006   -1.966    0.049
+##    .math             -0.010    0.006   -1.562    0.118
+##    .count_backwrds    0.000    0.006    0.000    1.000
+##    .words_delayed    -0.002    0.006   -0.405    0.686
+##    .adaptiv_nmbrng   -0.005    0.006   -0.737    0.461
+##     g_factor          0.000                           
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##    .raven             0.569    0.007   81.310    0.000
+##    .math              0.728    0.007   98.659    0.000
+##    .count_backwrds    0.725    0.007   99.237    0.000
+##    .words_delayed     0.692    0.007   96.792    0.000
+##    .adaptiv_nmbrng    0.535    0.007   77.563    0.000
+##     g_factor          1.000</code></pre>
+<pre class="r"><code>## Explained variance:
+
+x = inspect(cfa_g, &quot;rsquare&quot;)
+sum(x)/5</code></pre>
+<p><em>0.3527</em></p>
+<pre class="r"><code>alldata$g_factor = predict(cfa_g)[,1]
+alldata = alldata %&gt;%
+  mutate(g_factor = ifelse(is.na(raven), NA, g_factor),
+         g_factor = ifelse(is.na(math), NA, g_factor),
+         g_factor = ifelse(is.na(count_backwards), NA, g_factor),
+         g_factor = ifelse(is.na(words_immediate), NA, g_factor),
+         g_factor = ifelse(is.na(words_delayed), NA, g_factor),
+         g_factor = ifelse(is.na(adaptive_numbering), NA, g_factor))
+qplot(alldata$g_factor)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 556 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="3_sample_analyses_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
+<pre class="r"><code>iq_mean_sd = alldata %&gt;%
+  summarise(g_factor_mean = mean(g_factor, na.rm = T),
+            g_factor_sd = sd(g_factor, na.rm =T),
+            raven_mean = mean(raven, na.rm = T),
+            raven_sd = sd(raven, na.rm =T),
+            math_mean = mean(math, na.rm = T),
+            math_sd = sd(math, na.rm =T),
+            count_backwards_mean = mean(count_backwards, na.rm = T),
+            count_backwards_sd = sd(count_backwards, na.rm =T),
+            words_immediate_mean = mean(words_immediate, na.rm = T),
+            words_immediate_sd = sd(words_immediate, na.rm =T),
+            words_delayed_mean = mean(words_delayed, na.rm = T),
+            words_delayed_sd = sd(words_delayed, na.rm =T),
+            adaptive_numbering_mean = mean(adaptive_numbering, na.rm = T),
+            adaptive_numbering_sd = sd(adaptive_numbering, na.rm =T))
+
+round(cor(alldata %&gt;% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = &quot;pairwise.complete.obs&quot;), 2)</code></pre>
+<table>
+<colgroup>
+<col width="20%" />
+<col width="8%" />
+<col width="6%" />
+<col width="5%" />
+<col width="14%" />
+<col width="14%" />
+<col width="13%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">g_factor</th>
+<th align="center">raven</th>
+<th align="center">math</th>
+<th align="center">count_backwards</th>
+<th align="center">words_immediate</th>
+<th align="center">words_delayed</th>
+<th align="center">adaptive_numbering</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>g_factor</strong></td>
+<td align="center">1</td>
+<td align="center">0.77</td>
+<td align="center">0.61</td>
+<td align="center">0.6</td>
+<td align="center">0.61</td>
+<td align="center">0.64</td>
+<td align="center">0.79</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>raven</strong></td>
+<td align="center">0.77</td>
+<td align="center">1</td>
+<td align="center">0.38</td>
+<td align="center">0.31</td>
+<td align="center">0.38</td>
+<td align="center">0.36</td>
+<td align="center">0.44</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>math</strong></td>
+<td align="center">0.61</td>
+<td align="center">0.38</td>
+<td align="center">1</td>
+<td align="center">0.23</td>
+<td align="center">0.3</td>
+<td align="center">0.3</td>
+<td align="center">0.33</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>count_backwards</strong></td>
+<td align="center">0.6</td>
+<td align="center">0.31</td>
+<td align="center">0.23</td>
+<td align="center">1</td>
+<td align="center">0.32</td>
+<td align="center">0.3</td>
+<td align="center">0.4</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>words_immediate</strong></td>
+<td align="center">0.61</td>
+<td align="center">0.38</td>
+<td align="center">0.3</td>
+<td align="center">0.32</td>
+<td align="center">1</td>
+<td align="center">0.77</td>
+<td align="center">0.4</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>words_delayed</strong></td>
+<td align="center">0.64</td>
+<td align="center">0.36</td>
+<td align="center">0.3</td>
+<td align="center">0.3</td>
+<td align="center">0.77</td>
+<td align="center">1</td>
+<td align="center">0.37</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>adaptive_numbering</strong></td>
+<td align="center">0.79</td>
+<td align="center">0.44</td>
+<td align="center">0.33</td>
+<td align="center">0.4</td>
+<td align="center">0.4</td>
+<td align="center">0.37</td>
+<td align="center">1</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>formr::missingness_patterns(alldata %&gt;% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor))</code></pre>
+<pre><code>##  index                col missings
+##      1           g_factor      556
+##      2              raven      529
+##      3               math      529
+##      4 adaptive_numbering      173
+##      5    words_immediate      120
+##      6      words_delayed      120
+##      7    count_backwards        4</code></pre>
+<table style="width:42%;">
+<colgroup>
+<col width="19%" />
+<col width="9%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Pattern</th>
+<th align="center">Freq</th>
+<th align="center">Culprit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">_____________</td>
+<td align="center">26371</td>
+<td align="center">_</td>
+</tr>
+<tr class="even">
+<td align="center">1_2_3________</td>
+<td align="center">383</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="center">1_2_3_4_5_6__</td>
+<td align="center">99</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="center">1_2_3_4______</td>
+<td align="center">43</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="center">1_____4_5_6__</td>
+<td align="center">17</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="center">1_____4______</td>
+<td align="center">10</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="center">1_2_3_4_5_6_7</td>
+<td align="center">4</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="descriptives" class="section level2">
+<h2>Descriptives</h2>
+<pre class="r"><code>mean_sd = birthorder %&gt;%
+  group_by(group) %&gt;%
+  summarise(age_mean = mean(age, na.rm=T),
+            age_sd = sd(age, na.rm=T),
+            g_factor_mean = mean(g_factor, na.rm=T),
+            g_factor_sd = sd(g_factor, na.rm=T),
+            big5_ext_mean = mean(big5_ext, na.rm=T),
+            big5_ext_sd = sd(big5_ext, na.rm=T),
+            big5_neu_mean = mean(big5_neu, na.rm=T),
+            big5_neu_sd = sd(big5_neu, na.rm=T),
+            big5_con_mean = mean(big5_con, na.rm=T),
+            big5_con_sd = sd(big5_con, na.rm=T),
+            big5_agree_mean = mean(big5_agree, na.rm=T),
+            big5_agree_sd = sd(big5_agree, na.rm=T),
+            big5_open_mean = mean(big5_open, na.rm=T),
+            big5_open_sd = sd(big5_open, na.rm=T),
+            riskA_mean = mean(riskA, na.rm=T),
+            riskA_sd = sd(riskA, na.rm=T),
+            riskB_mean = mean(riskB, na.rm=T),
+            riskB_sd = sd(riskB, na.rm=T))
+      
+mean_sd</code></pre>
+<table>
+<colgroup>
+<col width="3%" />
+<col width="4%" />
+<col width="3%" />
+<col width="6%" />
+<col width="5%" />
+<col width="6%" />
+<col width="5%" />
+<col width="6%" />
+<col width="5%" />
+<col width="6%" />
+<col width="5%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="5%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="3%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">group</th>
+<th align="center">age_mean</th>
+<th align="center">age_sd</th>
+<th align="center">g_factor_mean</th>
+<th align="center">g_factor_sd</th>
+<th align="center">big5_ext_mean</th>
+<th align="center">big5_ext_sd</th>
+<th align="center">big5_neu_mean</th>
+<th align="center">big5_neu_sd</th>
+<th align="center">big5_con_mean</th>
+<th align="center">big5_con_sd</th>
+<th align="center">big5_agree_mean</th>
+<th align="center">big5_agree_sd</th>
+<th align="center">big5_open_mean</th>
+<th align="center">big5_open_sd</th>
+<th align="center">riskA_mean</th>
+<th align="center">riskA_sd</th>
+<th align="center">riskB_mean</th>
+<th align="center">riskB_sd</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">test</td>
+<td align="center">25.07</td>
+<td align="center">7.972</td>
+<td align="center">0.6656</td>
+<td align="center">0.6314</td>
+<td align="center">3.504</td>
+<td align="center">0.6872</td>
+<td align="center">2.626</td>
+<td align="center">0.4936</td>
+<td align="center">3.746</td>
+<td align="center">0.5742</td>
+<td align="center">3.857</td>
+<td align="center">0.5078</td>
+<td align="center">3.818</td>
+<td align="center">0.5979</td>
+<td align="center">3.288</td>
+<td align="center">1.44</td>
+<td align="center">3.796</td>
+<td align="center">0.8206</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="correlations" class="section level2">
+<h2>Correlations</h2>
+<pre class="r"><code>round(cor(birthorder %&gt;% ungroup() %&gt;% select(age, male, g_factor, big5_ext, big5_neu, big5_con, big5_agree, big5_open, riskA, riskB), use = &quot;pairwise.complete.obs&quot;), 2) </code></pre>
+<table>
+<colgroup>
+<col width="14%" />
+<col width="5%" />
+<col width="6%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+<col width="10%" />
+<col width="6%" />
+<col width="6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">age</th>
+<th align="center">male</th>
+<th align="center">g_factor</th>
+<th align="center">big5_ext</th>
+<th align="center">big5_neu</th>
+<th align="center">big5_con</th>
+<th align="center">big5_agree</th>
+<th align="center">big5_open</th>
+<th align="center">riskA</th>
+<th align="center">riskB</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>age</strong></td>
+<td align="center">1</td>
+<td align="center">-0.05</td>
+<td align="center">-0.11</td>
+<td align="center">-0.01</td>
+<td align="center">-0.13</td>
+<td align="center">0.25</td>
+<td align="center">0.11</td>
+<td align="center">0</td>
+<td align="center">-0.06</td>
+<td align="center">0.02</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>male</strong></td>
+<td align="center">-0.05</td>
+<td align="center">1</td>
+<td align="center">-0.02</td>
+<td align="center">-0.13</td>
+<td align="center">0.03</td>
+<td align="center">0</td>
+<td align="center">0.03</td>
+<td align="center">0.06</td>
+<td align="center">-0.12</td>
+<td align="center">-0.07</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>g_factor</strong></td>
+<td align="center">-0.11</td>
+<td align="center">-0.02</td>
+<td align="center">1</td>
+<td align="center">0.07</td>
+<td align="center">0.05</td>
+<td align="center">-0.02</td>
+<td align="center">-0.05</td>
+<td align="center">0.09</td>
+<td align="center">-0.15</td>
+<td align="center">-0.12</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>big5_ext</strong></td>
+<td align="center">-0.01</td>
+<td align="center">-0.13</td>
+<td align="center">0.07</td>
+<td align="center">1</td>
+<td align="center">-0.11</td>
+<td align="center">0.07</td>
+<td align="center">0.08</td>
+<td align="center">0.18</td>
+<td align="center">-0.01</td>
+<td align="center">-0.02</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>big5_neu</strong></td>
+<td align="center">-0.13</td>
+<td align="center">0.03</td>
+<td align="center">0.05</td>
+<td align="center">-0.11</td>
+<td align="center">1</td>
+<td align="center">-0.2</td>
+<td align="center">-0.17</td>
+<td align="center">-0.16</td>
+<td align="center">-0.01</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>big5_con</strong></td>
+<td align="center">0.25</td>
+<td align="center">0</td>
+<td align="center">-0.02</td>
+<td align="center">0.07</td>
+<td align="center">-0.2</td>
+<td align="center">1</td>
+<td align="center">0.33</td>
+<td align="center">0.27</td>
+<td align="center">-0.04</td>
+<td align="center">0.01</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>big5_agree</strong></td>
+<td align="center">0.11</td>
+<td align="center">0.03</td>
+<td align="center">-0.05</td>
+<td align="center">0.08</td>
+<td align="center">-0.17</td>
+<td align="center">0.33</td>
+<td align="center">1</td>
+<td align="center">0.22</td>
+<td align="center">-0.02</td>
+<td align="center">0.02</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>big5_open</strong></td>
+<td align="center">0</td>
+<td align="center">0.06</td>
+<td align="center">0.09</td>
+<td align="center">0.18</td>
+<td align="center">-0.16</td>
+<td align="center">0.27</td>
+<td align="center">0.22</td>
+<td align="center">1</td>
+<td align="center">-0.09</td>
+<td align="center">-0.05</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>riskA</strong></td>
+<td align="center">-0.06</td>
+<td align="center">-0.12</td>
+<td align="center">-0.15</td>
+<td align="center">-0.01</td>
+<td align="center">-0.01</td>
+<td align="center">-0.04</td>
+<td align="center">-0.02</td>
+<td align="center">-0.09</td>
+<td align="center">1</td>
+<td align="center">0.23</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>riskB</strong></td>
+<td align="center">0.02</td>
+<td align="center">-0.07</td>
+<td align="center">-0.12</td>
+<td align="center">-0.02</td>
+<td align="center">0</td>
+<td align="center">0.01</td>
+<td align="center">0.02</td>
+<td align="center">-0.05</td>
+<td align="center">0.23</td>
+<td align="center">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="rmd-source-code">IyAgPHNwYW4gc3R5bGU9ImNvbG9yOiNFNzhBQzMiPlNhbXBsZSBBbmFseXNlczwvc3Bhbj4gey50YWJzZXR9CgojIyBIZWxwZXIKYGBge3IgaGVscGVyfQpzb3VyY2UoIjBfaGVscGVycy5SIikKYGBgCgojIyBMb2FkIGRhdGEKYGBge3IgTG9hZCBkYXRhfQojIyMgSW1wb3J0IGFsbCBkYXRhIHdpdGgga25vd24gYmlydGhvcmRlcgpiaXJ0aG9yZGVyID0gcmVhZFJEUygiZGF0YS9iaXJ0aG9yZGVyLnJkcyIpCgojIyMgSW1wb3J0IGFsbCBkYXRhCmFsbGRhdGEgPSByZWFkUkRTKCJkYXRhL2FsbGRhdGEucmRzIikKCiMjIyBJbXBvcnQgYWxsIHByZWduYW5jeSBkYXRhCnByZWduYW5jeSA9IHJlYWRSRFMoImRhdGEvcHJlZ25hbmN5LnJkcyIpCgpgYGAKCiMjIERhdGEgd3JhbmdsaW5nCmBgYHtyIGRhdGEgd3JhbmdsaW5nfQojIyB3ZSBoYXZlIHRvIGV4Y2x1ZGUgcGVvcGxlIGluIHRoZSBjb250cm9sIGdyb3VwIHdobyBhcmUgcGFydCBvZiB0aGUgYmlydGhvcmRlciBncm91cAppbmRpdmlkdWFscyA9IGJpcnRob3JkZXIkcGlkbGluawptb3RoZXJfYmlydGhkYXRlX3VuaXF1ZV9pbmQgPSBiaXJ0aG9yZGVyJG1vdGhlcl9iaXJ0aGRhdGVfdW5pcXVlCgphbGxkYXRhID0gYWxsZGF0YSAlPiUKICBmaWx0ZXIoIXBpZGxpbmsgJWluJSBpbmRpdmlkdWFscykgJT4lCiAgbXV0YXRlKGNoZWNrID0gaWZlbHNlKCFpcy5uYShnX2ZhY3RvciksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEocmlza0EpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShyaXNrQiksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShiaWc1X2V4dCksIDEsIDApKSkpLAogICAgICAgICBncm91cCA9ICJjb250cm9sIiwKICAgICAgICAgc2V4LnggPSAoaWZlbHNlKGlzLm5hKHNleC54KSwgc2V4LnksIHNleC54KSksCiAgICAgICAgIG1hbGUgPSBmYWN0b3Ioc2V4LnggPT0gMSksCiAgICAgICAgIG1hbGUgPSBpZmVsc2Uoc2V4LnggPiAzLCBOQSwgbWFsZSksCiAgICAgICAgIGFnZSA9IGlmZWxzZShhZ2U+MTEyLCBOQSwgYWdlKSkgJT4lCiAgZmlsdGVyKGNoZWNrID09IDEpCgpwcmVnbmFuY3kgPSBwcmVnbmFuY3kgJT4lCiAgZmlsdGVyKCFtb3RoZXJfYmlydGhkYXRlX3VuaXF1ZSAlaW4lIG1vdGhlcl9iaXJ0aGRhdGVfdW5pcXVlX2luZCkgJT4lCiAgbXV0YXRlKGdyb3VwID0gImNvbnRyb2wiLAogICAgICAgICBtYWxlID0gZmFjdG9yKGdlbmRlciA9PSAxKSwKICAgICAgICAgbWFsZSA9IGlmZWxzZShnZW5kZXIgPiAzLCBOQSwgbWFsZSkpICU+JQogIGdyb3VwX2J5KG1vdGhlcl9waWRsaW5rKSAlPiUKICBtdXRhdGUobnVtYmVyX3NpYmxpbmdzID0gbigpKSAlPiUKICB1bmdyb3VwCgpiaXJ0aG9yZGVyID0gYmlydGhvcmRlciAlPiUKICBtdXRhdGUobWFsZSA9IGZhY3RvcihnZW5kZXIgPT0gMSksIAogICAgICAgICBtYWxlID0gKGlmZWxzZShnZW5kZXIgPiAzLCBOQSwgbWFsZSkpKSAlPiUKICBncm91cF9ieShtb3RoZXJfcGlkbGluaykgJT4lCiAgbXV0YXRlKG51bWJlcl9zaWJsaW5ncyA9IG4oKSkgJT4lCiAgdW5ncm91cAoKZGZfcHJlZ25hbmN5ID0gYmluZF9yb3dzKHByZWduYW5jeSwgYmlydGhvcmRlcikKZGYgPSBiaW5kX3Jvd3MoYWxsZGF0YSwgYmlydGhvcmRlcikKCmBgYAoKIyMgQmlydGggb3JkZXIgYW5kIHNpYnNoaXAgc2l6ZSB7LmFjdGl2ZSAudGFic2V0fQoKIyMjIE1hdGVybmFsIGJpcnRob3JkZXIKYGBge3IgbWF0ZXJuYWwgYmlydGhvcmRlcn0KZGVzY3JpcHRpdmVzID0gZGZfcHJlZ25hbmN5ICU+JQogIGZpbHRlcighaXMubmEoYmlydGhvcmRlcl91dGVydXNfYWxpdmUpKSAlPiUKICBncm91cF9ieShncm91cCkgJT4lCiAgICBzdW1tYXJpc2UoaW5kaXZpZHVhbHMgPSBuKCksCiAgICAgICAgICAgICAgbW90aGVycyA9IGxlbmd0aCh1bmlxdWUobW90aGVyX3BpZGxpbmspKSwKICAgICAgICAgICAgICBzaWJzaGlwX3NpemVfbWVhbiA9IG1lYW4oc2libGluZ19jb3VudF91dGVydXNfYWxpdmUsIG5hLnJtID0gVCksCiAgICAgICAgICAgICAgc2lic2hpcF9zaXplX2NvbmZpZGVuY2VfbG93ID0gbWVhbihzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSwgbmEucm0gPSBUKSAtIAogICAgICAgICAgICAgICAgKHF0KC45NzUsIG4oKS0xKSpzZChzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSwgbmEucm0gPSBUKS9zcXJ0KG4oKSkpLAogICAgICAgICAgICAgIHNpYnNoaXBfc2l6ZV9jb25maWRlbmNlX2hpZ2ggPSBtZWFuKHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlLCBuYS5ybSA9IFQpICsgCiAgICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgICAgc2lic2hpcF9zaXplX21pbiA9IG1pbihzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSwgbmEucm0gPSBUUlVFKSwKICAgICAgICAgICAgICBzaWJzaGlwX3NpemVfbWF4ID0gbWF4KHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlLCBuYS5ybSA9IFRSVUUpLAogICAgICAgICAgICAgIGJpcnRob3JkZXJfbWVhbiA9IG1lYW4oYmlydGhvcmRlcl91dGVydXNfYWxpdmUsIG5hLnJtID0gVCksCiAgICAgICAgICAgICAgYmlydGhvcmRlcl9zaXplX2NvbmZpZGVuY2VfbG93ID0gbWVhbihiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSwgbmEucm0gPSBUKSAtIAogICAgICAgICAgICAgICAgKHF0KC45NzUsIG4oKS0xKSpzZChiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSwgbmEucm0gPSBUKS9zcXJ0KG4oKSkpLAogICAgICAgICAgICAgIGJpcnRob3JkZXJfc2l6ZV9jb25maWRlbmNlX2hpZ2ggPSBtZWFuKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlLCBuYS5ybSA9IFQpICsgCiAgICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgICAgYmlydGhvcmRlcl9zaXplX21pbiA9IG1pbihiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSwgbmEucm0gPSBUUlVFKSwKICAgICAgICAgICAgICBiaXJ0aG9yZGVyX3NpemVfbWF4ID0gbWF4KGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlLCBuYS5ybSA9IFRSVUUpLAogICAgICAgICAgICAgIG51bWJlcl9zaWJsaW5nc19tZWFuID0gbWVhbihudW1iZXJfc2libGluZ3MpLAogICAgICAgICAgICAgIG51bWJlcl9zaWJsaW5nc19jb25maWRlbmNlX2xvdyA9IG1lYW4obnVtYmVyX3NpYmxpbmdzLCBuYS5ybSA9IFQpIC0KICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QobnVtYmVyX3NpYmxpbmdzLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgICAgbnVtYmVyX3NpYmxpbmdzX2NvbmZpZGVuY2VfaGlnaCA9IG1lYW4obnVtYmVyX3NpYmxpbmdzLCBuYS5ybSA9IFQpICsKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QobnVtYmVyX3NpYmxpbmdzLCBuYS5ybSA9IFQpL3NxcnQobigpKSkpCgpkZXNjcmlwdGl2ZXMKCmRmX3ByZWduYW5jeSAlPiUgCiAgZmlsdGVyKCFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSkpICU+JSAKICB0LnRlc3Qoc2libGluZ19jb3VudF91dGVydXNfYWxpdmUgfiBncm91cCwgZGF0YSA9IC4sIHZhci5lcXVhbCA9IFQpCgpkZl9wcmVnbmFuY3kgJT4lIAogIGZpbHRlcighaXMubmEoYmlydGhvcmRlcl91dGVydXNfYWxpdmUpKSAlPiUgCiAgdC50ZXN0KGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlIH4gZ3JvdXAsIGRhdGEgPSAuLCB2YXIuZXF1YWwgPSBUKQoKZGZfcHJlZ25hbmN5ICU+JSAKICBmaWx0ZXIoIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSkgJT4lIAogIHQudGVzdChudW1iZXJfc2libGluZ3MgfiBncm91cCwgZGF0YSA9IC4sIHZhci5lcXVhbCA9IFQpCgpgYGAKCgojIyMjIEhvdyBtYW55IHNpYmxpbmdzIHdpdGggZGF0YSBkbyB3ZSByZXRhaW4gaW4gZWFjaCBmYW1pbHk/CmBgYHtyfQoKYmlydGhvcmRlciAlPiUgZmlsdGVyKCFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSkpICU+JSBncm91cF9ieShtb3RoZXJfcGlkbGluaykgJT4lIHN1bW1hcmlzZSh3aXRoX2RhdGEgPSBuKCksIGFsbCA9IG1lYW4oc2libGluZ19jb3VudF91dGVydXNfYWxpdmUpKSAtPiBjb3VudHMKcHJlZ25hbmN5ICU+JSBmaWx0ZXIoIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSkgJT4lIGdyb3VwX2J5KG1vdGhlcl9waWRsaW5rKSAlPiUgc3VtbWFyaXNlKHdpdGhfZGF0YSA9IG4oKSwgYWxsID0gbWVhbihzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSkpIC0+IGNvdW50czEKYGBgCgpJbiBvdXIgdGVzdCBzYW1wbGUgZmFtaWxpZXMgd2l0aCBhbiBhdmVyYWdlIHNpemUgb2YgYHIgbWVhbihjb3VudHMkYWxsLG5hLnJtPSBUKWAgc2libGluZ3MsIHdlIHJldGFpbiBgciBtZWFuKGNvdW50cyR3aXRoX2RhdGEpYC4KCkluIHRoZSBvcmlnaW5hbCBzYW1wbGUgZmFtaWxpZXMgd2l0aCBhbiBhdmVyYWdlIHNpemUgb2YgYHIgbWVhbihjb3VudHMxJGFsbCxuYS5ybT0gVClgIHNpYmxpbmdzLCB3ZSByZXRhaW4gYHIgbWVhbihjb3VudHMxJHdpdGhfZGF0YSlgLgoKYGBge3J9CmdncGxvdChjb3VudHMsIGFlcyhhbGwsIHdpdGhfZGF0YSkpICsgZ2VvbV9qaXR0ZXIoYWxwaGEgPSAwLjEpICsgZ2VvbV9zbW9vdGgoKSArIHNjYWxlX3hfY29udGludW91cyhicmVha3M9MToxNSkgKyBzY2FsZV95X2NvbnRpbnVvdXMoYnJlYWtzPTE6MTUpCmBgYAoKIyMjIE1hdGVybmFsIHByZWduYW5jeSBvcmRlcgpgYGB7ciBtYXRlcm5hbCBwcmVnbmFuY3kgb3JkZXJ9CmRlc2NyaXB0aXZlcyA9IGRmX3ByZWduYW5jeSAlPiUKICBmaWx0ZXIoIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcpKSAlPiUKICBncm91cF9ieShncm91cCkgJT4lCiAgc3VtbWFyaXNlKGluZGl2aWR1YWxzID0gbigpLAogICAgICAgICAgICBtb3RoZXJzID0gbGVuZ3RoKHVuaXF1ZShtb3RoZXJfcGlkbGluaykpLAogICAgICAgICAgICBzaWJzaGlwX3NpemVfbWVhbiA9IG1lYW4oc2libGluZ19jb3VudF91dGVydXNfcHJlZywgbmEucm0gPSBUKSwKICAgICAgICAgICAgc2lic2hpcF9zaXplX2NvbmZpZGVuY2VfbG93ID0gbWVhbihzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnLCBuYS5ybSA9IFQpIC0gCiAgICAgICAgICAgICAgKHF0KC45NzUsIG4oKS0xKSpzZChzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIHNpYnNoaXBfc2l6ZV9jb25maWRlbmNlX2hpZ2ggPSBtZWFuKHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcsIG5hLnJtID0gVCkgKyAKICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcsIG5hLnJtID0gVCkvc3FydChuKCkpKSwKICAgICAgICAgICAgc2lic2hpcF9zaXplX21pbiA9IG1pbihzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnLCBuYS5ybSA9IFRSVUUpLAogICAgICAgICAgICBzaWJzaGlwX3NpemVfbWF4ID0gbWF4KHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcsIG5hLnJtID0gVFJVRSksCiAgICAgICAgICAgIGJpcnRob3JkZXJfbWVhbiA9IG1lYW4oYmlydGhvcmRlcl91dGVydXNfcHJlZywgbmEucm0gPSBUKSwKICAgICAgICAgICAgYmlydGhvcmRlcl9zaXplX2NvbmZpZGVuY2VfbG93ID0gbWVhbihiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnLCBuYS5ybSA9IFQpIC0gCiAgICAgICAgICAgICAgKHF0KC45NzUsIG4oKS0xKSpzZChiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIGJpcnRob3JkZXJfc2l6ZV9jb25maWRlbmNlX2hpZ2ggPSBtZWFuKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcsIG5hLnJtID0gVCkgKyAKICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcsIG5hLnJtID0gVCkvc3FydChuKCkpKSwKICAgICAgICAgICAgYmlydGhvcmRlcl9zaXplX21pbiA9IG1pbihiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnLCBuYS5ybSA9IFRSVUUpLAogICAgICAgICAgICBiaXJ0aG9yZGVyX3NpemVfbWF4ID0gbWF4KGJpcnRob3JkZXJfdXRlcnVzX3ByZWcsIG5hLnJtID0gVFJVRSksCiAgICAgICAgICAgIG51bWJlcl9zaWJsaW5nc19tZWFuID0gbWVhbihudW1iZXJfc2libGluZ3MpLAogICAgICAgICAgICBudW1iZXJfc2libGluZ3NfY29uZmlkZW5jZV9sb3cgPSBtZWFuKG51bWJlcl9zaWJsaW5ncywgbmEucm0gPSBUKSAtCiAgICAgICAgICAgICAgKHF0KC45NzUsIG4oKS0xKSpzZChudW1iZXJfc2libGluZ3MsIG5hLnJtID0gVCkvc3FydChuKCkpKSwKICAgICAgICAgICAgbnVtYmVyX3NpYmxpbmdzX2NvbmZpZGVuY2VfaGlnaCA9IG1lYW4obnVtYmVyX3NpYmxpbmdzLCBuYS5ybSA9IFQpICsKICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKG51bWJlcl9zaWJsaW5ncywgbmEucm0gPSBUKS9zcXJ0KG4oKSkpKQoKZGVzY3JpcHRpdmVzCgpkZl9wcmVnbmFuY3kgJT4lIAogIGZpbHRlcighaXMubmEoYmlydGhvcmRlcl91dGVydXNfcHJlZykpICU+JSAKICB0LnRlc3Qoc2libGluZ19jb3VudF91dGVydXNfcHJlZyB+IGdyb3VwLCBkYXRhID0gLiwgdmFyLmVxdWFsID0gVCkKCmRmX3ByZWduYW5jeSAlPiUgCiAgZmlsdGVyKCFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnKSkgJT4lIAogIHQudGVzdChiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnIH4gZ3JvdXAsIGRhdGEgPSAuLCB2YXIuZXF1YWwgPSBUKQoKZGZfcHJlZ25hbmN5ICU+JSAKICBmaWx0ZXIoIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcpKSAlPiUgCiAgdC50ZXN0KG51bWJlcl9zaWJsaW5ncyB+IGdyb3VwLCBkYXRhID0gLiwgdmFyLmVxdWFsID0gVCkKCmBgYAoKCiMjIyMgSG93IG1hbnkgc2libGluZ3Mgd2l0aCBkYXRhIGRvIHdlIHJldGFpbiBpbiBlYWNoIGZhbWlseT8KYGBge3J9CgpiaXJ0aG9yZGVyICU+JSBmaWx0ZXIoIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcpKSAlPiUgZ3JvdXBfYnkobW90aGVyX3BpZGxpbmspICU+JSBzdW1tYXJpc2Uod2l0aF9kYXRhID0gbigpLCBhbGwgPSBtZWFuKHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcpKSAtPiBjb3VudHMKcHJlZ25hbmN5ICU+JSBmaWx0ZXIoIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcpKSAlPiUgZ3JvdXBfYnkobW90aGVyX3BpZGxpbmspICU+JSBzdW1tYXJpc2Uod2l0aF9kYXRhID0gbigpLCBhbGwgPSBtZWFuKHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcpKSAtPiBjb3VudHMxCmBgYAoKSW4gb3VyIHRlc3Qgc2FtcGxlIGZhbWlsaWVzIHdpdGggYW4gYXZlcmFnZSBzaXplIG9mIGByIG1lYW4oY291bnRzJGFsbCxuYS5ybT0gVClgIHNpYmxpbmdzLCB3ZSByZXRhaW4gYHIgbWVhbihjb3VudHMkd2l0aF9kYXRhKWAuCgpJbiB0aGUgb3JpZ2luYWwgc2FtcGxlIGZhbWlsaWVzIHdpdGggYW4gYXZlcmFnZSBzaXplIG9mIGByIG1lYW4oY291bnRzMSRhbGwsbmEucm09IFQpYCBzaWJsaW5ncywgd2UgcmV0YWluIGByIG1lYW4oY291bnRzMSR3aXRoX2RhdGEpYC4KCmBgYHtyfQpnZ3Bsb3QoY291bnRzLCBhZXMoYWxsLCB3aXRoX2RhdGEpKSArIGdlb21faml0dGVyKGFscGhhID0gMC4xKSArIGdlb21fc21vb3RoKCkgKyBzY2FsZV94X2NvbnRpbnVvdXMoYnJlYWtzPTE6MTUpICsgc2NhbGVfeV9jb250aW51b3VzKGJyZWFrcz0xOjE1KQpgYGAKCiMjIyBQYXJlbnRhbCBmdWxsIHNpYmxpbmcgb3JkZXIKYGBge3IgcGFyZW50YWwgZnVsbCBzaWJsaW5nIG9yZGVyfQpkZXNjcmlwdGl2ZXMgPSBkZl9wcmVnbmFuY3kgJT4lCiAgZmlsdGVyKCFpcy5uYShiaXJ0aG9yZGVyX2dlbmVzKSkgJT4lCiAgZ3JvdXBfYnkoZ3JvdXApICU+JQogIHN1bW1hcmlzZShpbmRpdmlkdWFscyA9IG4oKSwKICAgICAgICAgICAgbW90aGVycyA9IGxlbmd0aCh1bmlxdWUobW90aGVyX3BpZGxpbmspKSwKICAgICAgICAgICAgc2lic2hpcF9zaXplX21lYW4gPSBtZWFuKHNpYmxpbmdfY291bnRfZ2VuZXMsIG5hLnJtID0gVCksCiAgICAgICAgICAgIHNpYnNoaXBfc2l6ZV9jb25maWRlbmNlX2xvdyA9IG1lYW4oc2libGluZ19jb3VudF9nZW5lcywgbmEucm0gPSBUKSAtIAogICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2Qoc2libGluZ19jb3VudF9nZW5lcywgbmEucm0gPSBUKS9zcXJ0KG4oKSkpLAogICAgICAgICAgICBzaWJzaGlwX3NpemVfY29uZmlkZW5jZV9oaWdoID0gbWVhbihzaWJsaW5nX2NvdW50X2dlbmVzLCBuYS5ybSA9IFQpICsgCiAgICAgICAgICAgICAgKHF0KC45NzUsIG4oKS0xKSpzZChzaWJsaW5nX2NvdW50X2dlbmVzLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIHNpYnNoaXBfc2l6ZV9taW4gPSBtaW4oc2libGluZ19jb3VudF9nZW5lcywgbmEucm0gPSBUUlVFKSwKICAgICAgICAgICAgc2lic2hpcF9zaXplX21heCA9IG1heChzaWJsaW5nX2NvdW50X2dlbmVzLCBuYS5ybSA9IFRSVUUpLAogICAgICAgICAgICBiaXJ0aG9yZGVyX21lYW4gPSBtZWFuKGJpcnRob3JkZXJfZ2VuZXMsIG5hLnJtID0gVCksCiAgICAgICAgICAgIGJpcnRob3JkZXJfc2l6ZV9jb25maWRlbmNlX2xvdyA9IG1lYW4oYmlydGhvcmRlcl9nZW5lcywgbmEucm0gPSBUKSAtIAogICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QoYmlydGhvcmRlcl9nZW5lcywgbmEucm0gPSBUKS9zcXJ0KG4oKSkpLAogICAgICAgICAgICBiaXJ0aG9yZGVyX3NpemVfY29uZmlkZW5jZV9oaWdoID0gbWVhbihiaXJ0aG9yZGVyX2dlbmVzLCBuYS5ybSA9IFQpICsgCiAgICAgICAgICAgICAgKHF0KC45NzUsIG4oKS0xKSpzZChiaXJ0aG9yZGVyX2dlbmVzLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIGJpcnRob3JkZXJfc2l6ZV9taW4gPSBtaW4oYmlydGhvcmRlcl9nZW5lcywgbmEucm0gPSBUUlVFKSwKICAgICAgICAgICAgYmlydGhvcmRlcl9zaXplX21heCA9IG1heChiaXJ0aG9yZGVyX2dlbmVzLCBuYS5ybSA9IFRSVUUpLAogICAgICAgICAgICBudW1iZXJfc2libGluZ3NfbWVhbiA9IG1lYW4obnVtYmVyX3NpYmxpbmdzKSwKICAgICAgICAgICAgbnVtYmVyX3NpYmxpbmdzX2NvbmZpZGVuY2VfbG93ID0gbWVhbihudW1iZXJfc2libGluZ3MsIG5hLnJtID0gVCkgLQogICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QobnVtYmVyX3NpYmxpbmdzLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIG51bWJlcl9zaWJsaW5nc19jb25maWRlbmNlX2hpZ2ggPSBtZWFuKG51bWJlcl9zaWJsaW5ncywgbmEucm0gPSBUKSArCiAgICAgICAgICAgICAgKHF0KC45NzUsIG4oKS0xKSpzZChudW1iZXJfc2libGluZ3MsIG5hLnJtID0gVCkvc3FydChuKCkpKSkKCmRlc2NyaXB0aXZlcwoKZGZfcHJlZ25hbmN5ICU+JSAKICBmaWx0ZXIoIWlzLm5hKGJpcnRob3JkZXJfZ2VuZXMpKSAlPiUgCiAgdC50ZXN0KHNpYmxpbmdfY291bnRfZ2VuZXMgfiBncm91cCwgZGF0YSA9IC4sIHZhci5lcXVhbCA9IFQpCgpkZl9wcmVnbmFuY3kgJT4lIAogIGZpbHRlcighaXMubmEoYmlydGhvcmRlcl9nZW5lcykpICU+JSAKICB0LnRlc3QoYmlydGhvcmRlcl9nZW5lcyB+IGdyb3VwLCBkYXRhID0gLiwgdmFyLmVxdWFsID0gVCkKCmRmX3ByZWduYW5jeSAlPiUgCiAgZmlsdGVyKCFpcy5uYShiaXJ0aG9yZGVyX2dlbmVzKSkgJT4lIAogIHQudGVzdChudW1iZXJfc2libGluZ3MgfiBncm91cCwgZGF0YSA9IC4sIHZhci5lcXVhbCA9IFQpCgpgYGAKCgojIyMjIEhvdyBtYW55IHNpYmxpbmdzIHdpdGggZGF0YSBkbyB3ZSByZXRhaW4gaW4gZWFjaCBmYW1pbHk/CmBgYHtyfQoKYmlydGhvcmRlciAlPiUgZmlsdGVyKCFpcy5uYShiaXJ0aG9yZGVyX2dlbmVzKSkgJT4lIGdyb3VwX2J5KG1vdGhlcl9waWRsaW5rKSAlPiUgc3VtbWFyaXNlKHdpdGhfZGF0YSA9IG4oKSwgYWxsID0gbWVhbihzaWJsaW5nX2NvdW50X2dlbmVzKSkgLT4gY291bnRzCnByZWduYW5jeSAlPiUgZmlsdGVyKCFpcy5uYShiaXJ0aG9yZGVyX2dlbmVzKSkgJT4lIGdyb3VwX2J5KG1vdGhlcl9waWRsaW5rKSAlPiUgc3VtbWFyaXNlKHdpdGhfZGF0YSA9IG4oKSwgYWxsID0gbWVhbihzaWJsaW5nX2NvdW50X2dlbmVzKSkgLT4gY291bnRzMQpgYGAKCkluIG91ciB0ZXN0IHNhbXBsZSBmYW1pbGllcyB3aXRoIGFuIGF2ZXJhZ2Ugc2l6ZSBvZiBgciBtZWFuKGNvdW50cyRhbGwsbmEucm09IFQpYCBzaWJsaW5ncywgd2UgcmV0YWluIGByIG1lYW4oY291bnRzJHdpdGhfZGF0YSlgLgoKSW4gdGhlIG9yaWdpbmFsIHNhbXBsZSBmYW1pbGllcyB3aXRoIGFuIGF2ZXJhZ2Ugc2l6ZSBvZiBgciBtZWFuKGNvdW50czEkYWxsLG5hLnJtPSBUKWAgc2libGluZ3MsIHdlIHJldGFpbiBgciBtZWFuKGNvdW50czEkd2l0aF9kYXRhKWAuCgpgYGB7cn0KZ2dwbG90KGNvdW50cywgYWVzKGFsbCwgd2l0aF9kYXRhKSkgKyBnZW9tX2ppdHRlcihhbHBoYSA9IDAuMSkgKyBnZW9tX3Ntb290aCgpICsgc2NhbGVfeF9jb250aW51b3VzKGJyZWFrcz0xOjE1KSArIHNjYWxlX3lfY29udGludW91cyhicmVha3M9MToxNSkKYGBgCgojIyBPdXRjb21lIG1lYXN1cmVtZW50cyBhbmQgY292YXJpYXRlcyB7LnRhYnNldH0KIyMjIENvbnRyb2wgZ3JvdXAKYGBge3IgZGF0YSBjb21wYXJpc29ufQojIyBEZXNjcmlwdGl2ZXMKZGVzY3JpcHRpdmVzID0gZGYgJT4lCiAgZ3JvdXBfYnkoZ3JvdXApICU+JQogICAgc3VtbWFyaXNlKG4gPSBuKCksCiAgICAgICAgICAgICAgYWdlX21lYW4gPSBtZWFuKGFnZSwgbmEucm09VFJVRSksCiAgICAgICAgICAgICAgYWdlX2NvbmZpZGVuY2VfbG93ID0gbWVhbihhZ2UsIG5hLnJtID0gVCkgLSAKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QoYWdlLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgICAgYWdlX2NvbmZpZGVuY2VfaGlnaCA9IG1lYW4oYWdlLCBuYS5ybSA9IFQpICsgCiAgICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKGFnZSwgbmEucm0gPSBUKS9zcXJ0KG4oKSkpLAogICAgICAgICAgICAgIGFnZV9taW4gPSBtaW4oYWdlLCBuYS5ybSA9IFRSVUUpLAogICAgICAgICAgICAgIGFnZV9tYXggPSBtYXgoYWdlLCBuYS5ybSA9IFRSVUUpLAogICAgICAgICAgICAgIGdlbmRlciA9IG1lYW4obWFsZSwgbmEucm09VFJVRSkgLSAxKQpkZXNjcmlwdGl2ZXMKCgoKIyMgVHRlc3QKdC50ZXN0KGRmJGFnZSB+IGRmJGdyb3VwLCB2YXIuZXF1YWwgPSBUKQpnZW5kZXIgPSBkZiAlPiUKICBncm91cF9ieShncm91cCkgJT4lCiAgICBzdW1tYXJpc2UoZ2VuZGVyID0gc3VtKG1hbGUgPT0gMSwgbmEucm09VCksCiAgICAgICAgICAgICAgZ2VuZGVyMiA9IHN1bShtYWxlID09MixuYS5ybT1UKSkgJT4lCiAgc2VsZWN0KGdlbmRlciwgZ2VuZGVyMikKY2hpc3EudGVzdChnZW5kZXIpCgojIyBSYXRpbmdzCnJhdGluZ3MgPSBkZiAlPiUKICBncm91cF9ieShncm91cCkgJT4lCiAgc3VtbWFyaXNlKGdfZmFjdG9yX21lYW4gPSBtZWFuKGdfZmFjdG9yLCBuYS5ybT1UKSwKICAgICAgICAgICAgZ19mYWN0b3JfY29uZmlkZW5jZV9sb3c9IG1lYW4oZ19mYWN0b3IsIG5hLnJtID0gVCkgLSAKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QoZ19mYWN0b3IsIG5hLnJtID0gVCkvc3FydChuKCkpKSwKICAgICAgICAgICAgZ19mYWN0b3JfY29uZmlkZW5jZV9oaWdoID0gbWVhbihnX2ZhY3RvciwgbmEucm0gPSBUKSArCiAgICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKGdfZmFjdG9yLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIGJpZzVfZXh0X21lYW4gPSBtZWFuKGJpZzVfZXh0LCBuYS5ybT1UKSwKICAgICAgICAgICAgYmlnNV9leHRfY29uZmlkZW5jZV9sb3c9IG1lYW4oYmlnNV9leHQsIG5hLnJtID0gVCkgLSAKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QoYmlnNV9leHQsIG5hLnJtID0gVCkvc3FydChuKCkpKSwKICAgICAgICAgICAgYmlnNV9leHRfY29uZmlkZW5jZV9oaWdoID0gbWVhbihiaWc1X2V4dCwgbmEucm0gPSBUKSArCiAgICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKGJpZzVfZXh0LCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIGJpZzVfbmV1X21lYW4gPSBtZWFuKGJpZzVfbmV1LCBuYS5ybT1UKSwKICAgICAgICAgICAgYmlnNV9uZXVfY29uZmlkZW5jZV9sb3c9IG1lYW4oYmlnNV9uZXUsIG5hLnJtID0gVCkgLSAKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QoYmlnNV9uZXUsIG5hLnJtID0gVCkvc3FydChuKCkpKSwKICAgICAgICAgICAgYmlnNV9uZXVfY29uZmlkZW5jZV9oaWdoID0gbWVhbihiaWc1X25ldSwgbmEucm0gPSBUKSArCiAgICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKGJpZzVfbmV1LCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIGJpZzVfY29uX21lYW4gPSBtZWFuKGJpZzVfY29uLCBuYS5ybT1UKSwKICAgICAgICAgICAgYmlnNV9jb25fY29uZmlkZW5jZV9sb3c9IG1lYW4oYmlnNV9jb24sIG5hLnJtID0gVCkgLSAKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QoYmlnNV9jb24sIG5hLnJtID0gVCkvc3FydChuKCkpKSwKICAgICAgICAgICAgYmlnNV9jb25fY29uZmlkZW5jZV9oaWdoID0gbWVhbihiaWc1X2NvbiwgbmEucm0gPSBUKSArCiAgICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKGJpZzVfY29uLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIGJpZzVfYWdyZWVfbWVhbiA9IG1lYW4oYmlnNV9hZ3JlZSwgbmEucm09VCksCiAgICAgICAgICAgIGJpZzVfYWdyZWVfY29uZmlkZW5jZV9sb3c9IG1lYW4oYmlnNV9hZ3JlZSwgbmEucm0gPSBUKSAtIAogICAgICAgICAgICAgICAgKHF0KC45NzUsIG4oKS0xKSpzZChiaWc1X2FncmVlLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIGJpZzVfYWdyZWVfY29uZmlkZW5jZV9oaWdoID0gbWVhbihiaWc1X2FncmVlLCBuYS5ybSA9IFQpICsKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QoYmlnNV9hZ3JlZSwgbmEucm0gPSBUKS9zcXJ0KG4oKSkpLAogICAgICAgICAgICBiaWc1X29wZW5fbWVhbiA9IG1lYW4oYmlnNV9vcGVuLCBuYS5ybT1UKSwKICAgICAgICAgICAgYmlnNV9vcGVuX2NvbmZpZGVuY2VfbG93PSBtZWFuKGJpZzVfb3BlbiwgbmEucm0gPSBUKSAtIAogICAgICAgICAgICAgICAgKHF0KC45NzUsIG4oKS0xKSpzZChiaWc1X29wZW4sIG5hLnJtID0gVCkvc3FydChuKCkpKSwKICAgICAgICAgICAgYmlnNV9vcGVuX2NvbmZpZGVuY2VfaGlnaCA9IG1lYW4oYmlnNV9vcGVuLCBuYS5ybSA9IFQpICsKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QoYmlnNV9vcGVuLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIHJpc2tBX21lYW4gPSBtZWFuKHJpc2tBLCBuYS5ybT1UKSwKICAgICAgICAgICAgcmlza0FfY29uZmlkZW5jZV9sb3c9IG1lYW4ocmlza0EsIG5hLnJtID0gVCkgLSAKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2Qocmlza0EsIG5hLnJtID0gVCkvc3FydChuKCkpKSwKICAgICAgICAgICAgcmlza0FfY29uZmlkZW5jZV9oaWdoID0gbWVhbihyaXNrQSwgbmEucm0gPSBUKSArCiAgICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKHJpc2tBLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIHJpc2tCX21lYW4gPSBtZWFuKHJpc2tCLCBuYS5ybT1UKSwKICAgICAgICAgICAgcmlza0JfY29uZmlkZW5jZV9sb3c9IG1lYW4ocmlza0IsIG5hLnJtID0gVCkgLSAKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2Qocmlza0IsIG5hLnJtID0gVCkvc3FydChuKCkpKSwKICAgICAgICAgICAgcmlza0JfY29uZmlkZW5jZV9oaWdoID0gbWVhbihyaXNrQiwgbmEucm0gPSBUKSArCiAgICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKHJpc2tCLCBuYS5ybSA9IFQpL3NxcnQobigpKSkpCnJhdGluZ3MKCnQudGVzdChkZiRnX2ZhY3RvciB+IGRmJGdyb3VwLCB2YXIuZXF1YWwgPSBUKQp0LnRlc3QoZGYkYmlnNV9leHQgfiBkZiRncm91cCwgdmFyLmVxdWFsID0gVCkKdC50ZXN0KGRmJGJpZzVfbmV1IH4gZGYkZ3JvdXAsIHZhci5lcXVhbCA9IFQpCnQudGVzdChkZiRiaWc1X2NvbiB+IGRmJGdyb3VwLCB2YXIuZXF1YWwgPSBUKQp0LnRlc3QoZGYkYmlnNV9hZ3JlZSB+IGRmJGdyb3VwLCB2YXIuZXF1YWwgPSBUKQp0LnRlc3QoZGYkYmlnNV9vcGVuIH4gZGYkZ3JvdXAsIHZhci5lcXVhbCA9IFQpCnQudGVzdChkZiRyaXNrQSB+IGRmJGdyb3VwLCB2YXIuZXF1YWwgPSBUKQp0LnRlc3QoZGYkcmlza0IgfiBkZiRncm91cCwgdmFyLmVxdWFsID0gVCkKCmBgYAoKIyMjIFJlc3RyaWN0ZWQgY29udHJvbCBncm91cApgYGB7cn0KIyMgSW4gb3JkZXIgdG8gY29tcGFyZSBvdXIgdGVzdCBncm91cCB0byBhbiBhbGlrZSBncm91cCBmcm9tIHRoZSBjb250cm9sIHNhbXBsZSB3ZSBoYXZlIHRvIHJlc3RpY3QgYWdlCmNoZWNrX3Rlc3QgPSBkZiAlPiUgZmlsdGVyKGdyb3VwID09ICJ0ZXN0IikgJT4lCiAgYXJyYW5nZShnZW5kZXIpICU+JQogIGdyb3VwX2J5KGFnZSkgJT4lCiAgbXV0YXRlKHJhbmRvbSA9IG1pbl9yYW5rKHBpZGxpbmspLAogICAgICAgICBjaG9vc2UgPSBwYXN0ZTAoYWdlLCAiLSIsIHJhbmRvbSkpCiAgICAgICAgCmNoZWNrX2NvbnRyb2wgPSBkZiAlPiUgZmlsdGVyKGdyb3VwID09ICJjb250cm9sIiwgIWlzLm5hKGdfZmFjdG9yKSwgIWlzLm5hKHJpc2tBKSwKICAgICAgICAgICAgICAgICAgICAgICFpcy5uYShiaWc1X2FncmVlKSwgIWlzLm5hKGJpZzVfZXh0KSwgIWlzLm5hKGJpZzVfY29uKSwKICAgICAgICAgICAgICAgICAgICAgICFpcy5uYShiaWc1X25ldSksICFpcy5uYShiaWc1X29wZW4pKSAlPiUKICBhcnJhbmdlKGdlbmRlcikgJT4lCiAgZ3JvdXBfYnkoYWdlKSAlPiUKICBtdXRhdGUocmFuZG9tID0gbWluX3JhbmsocGlkbGluayksCiAgICAgICAgIGNob29zZSA9IHBhc3RlMChhZ2UsICItIiwgcmFuZG9tKSwKICAgICAgICAgcGlkbGlua19jaG9vc2UgPSBwaWRsaW5rKSAlPiUKICB1bmdyb3VwKCkgJT4lCiAgc2VsZWN0KGNob29zZSwgcGlkbGlua19jaG9vc2UpCgpjaGVjayA9IGxlZnRfam9pbihjaGVja190ZXN0LCBjaGVja19jb250cm9sLCBieSA9ICJjaG9vc2UiKSAlPiUKICB1bmdyb3VwKCkgJT4lIGFycmFuZ2UocGlkbGlua19jaG9vc2UpCgppbmRpdmlkdWFsc19yZXN0cmljdGVkID0gdW5pcXVlKGNoZWNrJHBpZGxpbmtfY2hvb3NlKQoKZGYgPSBkZiAlPiUKICBtdXRhdGUoZ3JvdXAyID0gaWZlbHNlKHBpZGxpbmsgJWluJSBpbmRpdmlkdWFsc19yZXN0cmljdGVkLCAiY29udHJvbF9yZXN0cmljdGVkIiwKICAgICAgICAgICAgICAgICAgICAgICAgIE5BKSwKICAgICAgICAgZ3JvdXAyID0gaWZlbHNlKGdyb3VwPT0idGVzdCIsICJ0ZXN0IiwgZ3JvdXAyKSkKCnRhYmxlKGRmJGdyb3VwMikKIyMgRGVzY3JpcHRpdmVzCmRlc2NyaXB0aXZlc19yZXN0cmljdGVkID0gZGYgJT4lCiAgZ3JvdXBfYnkoZ3JvdXAyKSAlPiUKICAgIHN1bW1hcmlzZShuID0gbigpLAogICAgICAgICAgICAgIGFnZV9tZWFuID0gbWVhbihhZ2UsIG5hLnJtPVRSVUUpLAogICAgICAgICAgICAgIGFnZV9zZCA9IHNkKGFnZSwgbmEucm09VCksCiAgICAgICAgICAgICAgYWdlX2NvbmZpZGVuY2VfbG93ID0gbWVhbihhZ2UsIG5hLnJtID0gVCkgLSAKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QoYWdlLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgICAgYWdlX2NvbmZpZGVuY2VfaGlnaCA9IG1lYW4oYWdlLCBuYS5ybSA9IFQpICsKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QoYWdlLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgICAgYWdlX21pbiA9IG1pbihhZ2UsIG5hLnJtID0gVFJVRSksCiAgICAgICAgICAgICAgYWdlX21heCA9IG1heChhZ2UsIG5hLnJtID0gVFJVRSksCiAgICAgICAgICAgICAgZ2VuZGVyID0gbWVhbihtYWxlLCBuYS5ybT1UUlVFKSAtIDEpICU+JQogIGZpbHRlcighaXMubmEoZ3JvdXAyKSkKZGVzY3JpcHRpdmVzX3Jlc3RyaWN0ZWQKdC50ZXN0KGRmJGFnZSB+IGRmJGdyb3VwMiwgdmFyLmVxdWFsID0gVCkKCmdlbmRlciA9IGRmICU+JQogIGdyb3VwX2J5KGdyb3VwMikgJT4lCiAgICBzdW1tYXJpc2UoZ2VuZGVyID0gc3VtKG1hbGUgPT0gMSwgbmEucm09VCksCiAgICAgICAgICAgICAgZ2VuZGVyMiA9IHN1bShtYWxlID09MixuYS5ybT1UKSkgJT4lCiAgZmlsdGVyKCFpcy5uYShncm91cDIpKSAlPiUKICBzZWxlY3QoZ2VuZGVyLCBnZW5kZXIyKQpjaGlzcS50ZXN0KGdlbmRlcikKCgpyYXRpbmdzX3Jlc3RyaWN0ZWQgPSBkZiAlPiUKICBncm91cF9ieShncm91cDIpICU+JQogICBzdW1tYXJpc2UobiA9IG4oKSwKICAgICAgICAgICAgIGdfZmFjdG9yX21lYW4gPSBtZWFuKGdfZmFjdG9yLCBuYS5ybT1UKSwKICAgICAgICAgICAgZ19mYWN0b3JfY29uZmlkZW5jZV9sb3c9IG1lYW4oZ19mYWN0b3IsIG5hLnJtID0gVCkgLSAKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QoZ19mYWN0b3IsIG5hLnJtID0gVCkvc3FydChuKCkpKSwKICAgICAgICAgICAgZ19mYWN0b3JfY29uZmlkZW5jZV9oaWdoID0gbWVhbihnX2ZhY3RvciwgbmEucm0gPSBUKSArCiAgICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKGdfZmFjdG9yLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIGJpZzVfZXh0X21lYW4gPSBtZWFuKGJpZzVfZXh0LCBuYS5ybT1UKSwKICAgICAgICAgICAgYmlnNV9leHRfY29uZmlkZW5jZV9sb3c9IG1lYW4oYmlnNV9leHQsIG5hLnJtID0gVCkgLSAKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QoYmlnNV9leHQsIG5hLnJtID0gVCkvc3FydChuKCkpKSwKICAgICAgICAgICAgYmlnNV9leHRfY29uZmlkZW5jZV9oaWdoID0gbWVhbihiaWc1X2V4dCwgbmEucm0gPSBUKSArCiAgICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKGJpZzVfZXh0LCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIGJpZzVfbmV1X21lYW4gPSBtZWFuKGJpZzVfbmV1LCBuYS5ybT1UKSwKICAgICAgICAgICAgYmlnNV9uZXVfY29uZmlkZW5jZV9sb3c9IG1lYW4oYmlnNV9uZXUsIG5hLnJtID0gVCkgLSAKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QoYmlnNV9uZXUsIG5hLnJtID0gVCkvc3FydChuKCkpKSwKICAgICAgICAgICAgYmlnNV9uZXVfY29uZmlkZW5jZV9oaWdoID0gbWVhbihiaWc1X25ldSwgbmEucm0gPSBUKSArCiAgICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKGJpZzVfbmV1LCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIGJpZzVfY29uX21lYW4gPSBtZWFuKGJpZzVfY29uLCBuYS5ybT1UKSwKICAgICAgICAgICAgYmlnNV9jb25fY29uZmlkZW5jZV9sb3c9IG1lYW4oYmlnNV9jb24sIG5hLnJtID0gVCkgLSAKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QoYmlnNV9jb24sIG5hLnJtID0gVCkvc3FydChuKCkpKSwKICAgICAgICAgICAgYmlnNV9jb25fY29uZmlkZW5jZV9oaWdoID0gbWVhbihiaWc1X2NvbiwgbmEucm0gPSBUKSArCiAgICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKGJpZzVfY29uLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIGJpZzVfYWdyZWVfbWVhbiA9IG1lYW4oYmlnNV9hZ3JlZSwgbmEucm09VCksCiAgICAgICAgICAgIGJpZzVfYWdyZWVfY29uZmlkZW5jZV9sb3c9IG1lYW4oYmlnNV9hZ3JlZSwgbmEucm0gPSBUKSAtIAogICAgICAgICAgICAgICAgKHF0KC45NzUsIG4oKS0xKSpzZChiaWc1X2FncmVlLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIGJpZzVfYWdyZWVfY29uZmlkZW5jZV9oaWdoID0gbWVhbihiaWc1X2FncmVlLCBuYS5ybSA9IFQpICsKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QoYmlnNV9hZ3JlZSwgbmEucm0gPSBUKS9zcXJ0KG4oKSkpLAogICAgICAgICAgICBiaWc1X29wZW5fbWVhbiA9IG1lYW4oYmlnNV9vcGVuLCBuYS5ybT1UKSwKICAgICAgICAgICAgYmlnNV9vcGVuX2NvbmZpZGVuY2VfbG93PSBtZWFuKGJpZzVfb3BlbiwgbmEucm0gPSBUKSAtIAogICAgICAgICAgICAgICAgKHF0KC45NzUsIG4oKS0xKSpzZChiaWc1X29wZW4sIG5hLnJtID0gVCkvc3FydChuKCkpKSwKICAgICAgICAgICAgYmlnNV9vcGVuX2NvbmZpZGVuY2VfaGlnaCA9IG1lYW4oYmlnNV9vcGVuLCBuYS5ybSA9IFQpICsKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2QoYmlnNV9vcGVuLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIHJpc2tBX21lYW4gPSBtZWFuKHJpc2tBLCBuYS5ybT1UKSwKICAgICAgICAgICAgcmlza0FfY29uZmlkZW5jZV9sb3c9IG1lYW4ocmlza0EsIG5hLnJtID0gVCkgLSAKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2Qocmlza0EsIG5hLnJtID0gVCkvc3FydChuKCkpKSwKICAgICAgICAgICAgcmlza0FfY29uZmlkZW5jZV9oaWdoID0gbWVhbihyaXNrQSwgbmEucm0gPSBUKSArCiAgICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKHJpc2tBLCBuYS5ybSA9IFQpL3NxcnQobigpKSksCiAgICAgICAgICAgIHJpc2tCX21lYW4gPSBtZWFuKHJpc2tCLCBuYS5ybT1UKSwKICAgICAgICAgICAgcmlza0JfY29uZmlkZW5jZV9sb3c9IG1lYW4ocmlza0IsIG5hLnJtID0gVCkgLSAKICAgICAgICAgICAgICAgIChxdCguOTc1LCBuKCktMSkqc2Qocmlza0IsIG5hLnJtID0gVCkvc3FydChuKCkpKSwKICAgICAgICAgICAgcmlza0JfY29uZmlkZW5jZV9oaWdoID0gbWVhbihyaXNrQiwgbmEucm0gPSBUKSArCiAgICAgICAgICAgICAgICAocXQoLjk3NSwgbigpLTEpKnNkKHJpc2tCLCBuYS5ybSA9IFQpL3NxcnQobigpKSkpICU+JQogIGZpbHRlcighaXMubmEoZ3JvdXAyKSkKCnJhdGluZ3NfcmVzdHJpY3RlZAp0LnRlc3QoZGYkZ19mYWN0b3IgfiBkZiRncm91cDIsIHZhci5lcXVhbCA9IFQpCnQudGVzdChkZiRiaWc1X2V4dCB+IGRmJGdyb3VwMiwgdmFyLmVxdWFsID0gVCkKdC50ZXN0KGRmJGJpZzVfbmV1IH4gZGYkZ3JvdXAyLCB2YXIuZXF1YWwgPSBUKQp0LnRlc3QoZGYkYmlnNV9jb24gfiBkZiRncm91cDIsIHZhci5lcXVhbCA9IFQpCnQudGVzdChkZiRiaWc1X2FncmVlIH4gZGYkZ3JvdXAyLCB2YXIuZXF1YWwgPSBUKQp0LnRlc3QoZGYkYmlnNV9vcGVuIH4gZGYkZ3JvdXAyLCB2YXIuZXF1YWwgPSBUKQp0LnRlc3QoZGYkcmlza0EgfiBkZiRncm91cDIsIHZhci5lcXVhbCA9IFQpCnQudGVzdChkZiRyaXNrQiB+IGRmJGdyb3VwMiwgdmFyLmVxdWFsID0gVCkKYGBgCgojIyBJbnRlbGxpZ2VuY2UgZy1mYWN0b3IKYGBge3J9CiMgaXEkd29yZHNfZGVsYXllZCA9IGlxJHdvcmRzX2RlbGF5ZWQvMTAKIyBpcSR3b3Jkc19pbW1lZGlhdGUgPSBpcSR3b3Jkc19pbW1lZGlhdGUvMTAKIyBpcSRhZGFwdGl2ZV9udW1iZXJpbmcgPSBpcSRhZGFwdGl2ZV9udW1iZXJpbmcvMTAwCmZhLnBhcmFsbGVsKGFsbGRhdGEgJT4lIHNlbGVjdChyYXZlbiwgbWF0aCwgY291bnRfYmFja3dhcmRzLCB3b3Jkc19kZWxheWVkLCBhZGFwdGl2ZV9udW1iZXJpbmcpICU+JSBkYXRhLmZyYW1lKCkpCmZhKGFsbGRhdGEgJT4lIHNlbGVjdChyYXZlbiwgbWF0aCwgY291bnRfYmFja3dhcmRzLCB3b3Jkc19kZWxheWVkLCBhZGFwdGl2ZV9udW1iZXJpbmcpICU+JSBkYXRhLmZyYW1lKCksIG5mYWN0b3JzID0gMSkKb21fcmVzdWx0cyA9IG9tZWdhKGFsbGRhdGEgJT4lIHNlbGVjdChyYXZlbiwgbWF0aCwgY291bnRfYmFja3dhcmRzLCB3b3Jkc19kZWxheWVkLCBhZGFwdGl2ZV9udW1iZXJpbmcpICU+JSBkYXRhLmZyYW1lKCksIG5mYWN0b3JzID0gMSwgc2wgPSBGKQpvbV9yZXN1bHRzCm9tZWdhLmRpYWdyYW0ob21fcmVzdWx0cykKCiJnX2ZhY3RvciA9fiByYXZlbiArIG1hdGggKyBjb3VudF9iYWNrd2FyZHMgKyAgd29yZHNfZGVsYXllZCsgYWRhcHRpdmVfbnVtYmVyaW5nIiAlPiUKICBjZmEobWlzc2luZyA9ICJmaW1sIiwgZGF0YSA9IGFsbGRhdGEsIHN0ZC5sdiA9IFQsIHN0ZC5vdiA9IFQpIC0+IGNmYV9nCnN1bW1hcnkoY2ZhX2cpCgojIyBFeHBsYWluZWQgdmFyaWFuY2U6Cgp4ID0gaW5zcGVjdChjZmFfZywgInJzcXVhcmUiKQpzdW0oeCkvNQphbGxkYXRhJGdfZmFjdG9yID0gcHJlZGljdChjZmFfZylbLDFdCmFsbGRhdGEgPSBhbGxkYXRhICU+JQogIG11dGF0ZShnX2ZhY3RvciA9IGlmZWxzZShpcy5uYShyYXZlbiksIE5BLCBnX2ZhY3RvciksCiAgICAgICAgIGdfZmFjdG9yID0gaWZlbHNlKGlzLm5hKG1hdGgpLCBOQSwgZ19mYWN0b3IpLAogICAgICAgICBnX2ZhY3RvciA9IGlmZWxzZShpcy5uYShjb3VudF9iYWNrd2FyZHMpLCBOQSwgZ19mYWN0b3IpLAogICAgICAgICBnX2ZhY3RvciA9IGlmZWxzZShpcy5uYSh3b3Jkc19pbW1lZGlhdGUpLCBOQSwgZ19mYWN0b3IpLAogICAgICAgICBnX2ZhY3RvciA9IGlmZWxzZShpcy5uYSh3b3Jkc19kZWxheWVkKSwgTkEsIGdfZmFjdG9yKSwKICAgICAgICAgZ19mYWN0b3IgPSBpZmVsc2UoaXMubmEoYWRhcHRpdmVfbnVtYmVyaW5nKSwgTkEsIGdfZmFjdG9yKSkKcXBsb3QoYWxsZGF0YSRnX2ZhY3RvcikKCmlxX21lYW5fc2QgPSBhbGxkYXRhICU+JQogIHN1bW1hcmlzZShnX2ZhY3Rvcl9tZWFuID0gbWVhbihnX2ZhY3RvciwgbmEucm0gPSBUKSwKICAgICAgICAgICAgZ19mYWN0b3Jfc2QgPSBzZChnX2ZhY3RvciwgbmEucm0gPVQpLAogICAgICAgICAgICByYXZlbl9tZWFuID0gbWVhbihyYXZlbiwgbmEucm0gPSBUKSwKICAgICAgICAgICAgcmF2ZW5fc2QgPSBzZChyYXZlbiwgbmEucm0gPVQpLAogICAgICAgICAgICBtYXRoX21lYW4gPSBtZWFuKG1hdGgsIG5hLnJtID0gVCksCiAgICAgICAgICAgIG1hdGhfc2QgPSBzZChtYXRoLCBuYS5ybSA9VCksCiAgICAgICAgICAgIGNvdW50X2JhY2t3YXJkc19tZWFuID0gbWVhbihjb3VudF9iYWNrd2FyZHMsIG5hLnJtID0gVCksCiAgICAgICAgICAgIGNvdW50X2JhY2t3YXJkc19zZCA9IHNkKGNvdW50X2JhY2t3YXJkcywgbmEucm0gPVQpLAogICAgICAgICAgICB3b3Jkc19pbW1lZGlhdGVfbWVhbiA9IG1lYW4od29yZHNfaW1tZWRpYXRlLCBuYS5ybSA9IFQpLAogICAgICAgICAgICB3b3Jkc19pbW1lZGlhdGVfc2QgPSBzZCh3b3Jkc19pbW1lZGlhdGUsIG5hLnJtID1UKSwKICAgICAgICAgICAgd29yZHNfZGVsYXllZF9tZWFuID0gbWVhbih3b3Jkc19kZWxheWVkLCBuYS5ybSA9IFQpLAogICAgICAgICAgICB3b3Jkc19kZWxheWVkX3NkID0gc2Qod29yZHNfZGVsYXllZCwgbmEucm0gPVQpLAogICAgICAgICAgICBhZGFwdGl2ZV9udW1iZXJpbmdfbWVhbiA9IG1lYW4oYWRhcHRpdmVfbnVtYmVyaW5nLCBuYS5ybSA9IFQpLAogICAgICAgICAgICBhZGFwdGl2ZV9udW1iZXJpbmdfc2QgPSBzZChhZGFwdGl2ZV9udW1iZXJpbmcsIG5hLnJtID1UKSkKCnJvdW5kKGNvcihhbGxkYXRhICU+JSBzZWxlY3QoZ19mYWN0b3IsIHJhdmVuLCBtYXRoLCBjb3VudF9iYWNrd2FyZHMsIHdvcmRzX2ltbWVkaWF0ZSwgd29yZHNfZGVsYXllZCwgYWRhcHRpdmVfbnVtYmVyaW5nKSwgdXNlID0gInBhaXJ3aXNlLmNvbXBsZXRlLm9icyIpLCAyKQoKZm9ybXI6Om1pc3NpbmduZXNzX3BhdHRlcm5zKGFsbGRhdGEgJT4lIHNlbGVjdChnX2ZhY3RvciwgcmF2ZW4sIG1hdGgsIGNvdW50X2JhY2t3YXJkcywgd29yZHNfaW1tZWRpYXRlLCB3b3Jkc19kZWxheWVkLCBhZGFwdGl2ZV9udW1iZXJpbmcsIGdfZmFjdG9yKSkKYGBgCgojIyBEZXNjcmlwdGl2ZXMKYGBge3IgY29ycmVsYXRpb259Cm1lYW5fc2QgPSBiaXJ0aG9yZGVyICU+JQogIGdyb3VwX2J5KGdyb3VwKSAlPiUKICBzdW1tYXJpc2UoYWdlX21lYW4gPSBtZWFuKGFnZSwgbmEucm09VCksCiAgICAgICAgICAgIGFnZV9zZCA9IHNkKGFnZSwgbmEucm09VCksCiAgICAgICAgICAgIGdfZmFjdG9yX21lYW4gPSBtZWFuKGdfZmFjdG9yLCBuYS5ybT1UKSwKICAgICAgICAgICAgZ19mYWN0b3Jfc2QgPSBzZChnX2ZhY3RvciwgbmEucm09VCksCiAgICAgICAgICAgIGJpZzVfZXh0X21lYW4gPSBtZWFuKGJpZzVfZXh0LCBuYS5ybT1UKSwKICAgICAgICAgICAgYmlnNV9leHRfc2QgPSBzZChiaWc1X2V4dCwgbmEucm09VCksCiAgICAgICAgICAgIGJpZzVfbmV1X21lYW4gPSBtZWFuKGJpZzVfbmV1LCBuYS5ybT1UKSwKICAgICAgICAgICAgYmlnNV9uZXVfc2QgPSBzZChiaWc1X25ldSwgbmEucm09VCksCiAgICAgICAgICAgIGJpZzVfY29uX21lYW4gPSBtZWFuKGJpZzVfY29uLCBuYS5ybT1UKSwKICAgICAgICAgICAgYmlnNV9jb25fc2QgPSBzZChiaWc1X2NvbiwgbmEucm09VCksCiAgICAgICAgICAgIGJpZzVfYWdyZWVfbWVhbiA9IG1lYW4oYmlnNV9hZ3JlZSwgbmEucm09VCksCiAgICAgICAgICAgIGJpZzVfYWdyZWVfc2QgPSBzZChiaWc1X2FncmVlLCBuYS5ybT1UKSwKICAgICAgICAgICAgYmlnNV9vcGVuX21lYW4gPSBtZWFuKGJpZzVfb3BlbiwgbmEucm09VCksCiAgICAgICAgICAgIGJpZzVfb3Blbl9zZCA9IHNkKGJpZzVfb3BlbiwgbmEucm09VCksCiAgICAgICAgICAgIHJpc2tBX21lYW4gPSBtZWFuKHJpc2tBLCBuYS5ybT1UKSwKICAgICAgICAgICAgcmlza0Ffc2QgPSBzZChyaXNrQSwgbmEucm09VCksCiAgICAgICAgICAgIHJpc2tCX21lYW4gPSBtZWFuKHJpc2tCLCBuYS5ybT1UKSwKICAgICAgICAgICAgcmlza0Jfc2QgPSBzZChyaXNrQiwgbmEucm09VCkpCiAgICAgIAptZWFuX3NkCmBgYAoKIyMgQ29ycmVsYXRpb25zCmBgYHtyfQpyb3VuZChjb3IoYmlydGhvcmRlciAlPiUgdW5ncm91cCgpICU+JSBzZWxlY3QoYWdlLCBtYWxlLCBnX2ZhY3RvciwgYmlnNV9leHQsIGJpZzVfbmV1LCBiaWc1X2NvbiwgYmlnNV9hZ3JlZSwgYmlnNV9vcGVuLCByaXNrQSwgcmlza0IpLCB1c2UgPSAicGFpcndpc2UuY29tcGxldGUub2JzIiksIDIpIApgYGAK</div>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -8,3 +8,4 @@ output:
     code_download: true
     css: styles.css
 exclude: ["packrat", "*.rda", "*.pdf", "*.dta", "*.csv", "geo", "*.csl", "*.bibtex", "*.rds", "*.dta", "data"]
+output_dir: "docs"

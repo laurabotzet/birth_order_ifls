@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/FileSaver.min.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+
+.section h2 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h3 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h4 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h5 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h6 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("_test_outcome.Rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Birth Order IFLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+
+<li style="background-color: #66C2A5">
+  <a href="index.html">Overview</a>
+</li>
+<li style="background-color: #FC8D62">
+  <a href="1_data_import.html">Data Wrangling</a>
+</li>
+<li style="background-color: #8DA0CB">
+  <a href="2_Inclusion.html">Data Sampling</a>
+</li>
+<li style="background-color: #E78AC3">
+  <a href="3_sample_analyses.html">Sample Analyses</a>
+</li>
+<li style="background-color: #A6D854">
+  <a href="4_analyses.html">Birth Order Effects</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/laurabotzet/birth_order_ifls">
+    <span class="fa fa-github"></span>
+
+
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<div id="basic-model" class="section level5 tabset">
+<h5>Basic Model</h5>
+<div id="model-summary" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>summary(m1_covariates_only)</code></pre>
+</div>
+<div id="coefficient-plot" class="section level6">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot(allEffects(m1_covariates_only))</code></pre>
+</div>
+</div>
+<div id="add-birth-order-linear" class="section level5 tabset">
+<h5>Add Birth Order Linear</h5>
+<div id="model-summary-1" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>m2_birthorder_linear = update(m1_covariates_only, formula = . ~ . + birth_order)
+summary(m2_birthorder_linear)</code></pre>
+</div>
+<div id="coefficient-plot-1" class="section level6">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot_birthorder(m2_birthorder_linear, separate = FALSE)</code></pre>
+</div>
+</div>
+<div id="add-birth-order-factor" class="section level5 tabset">
+<h5>Add Birth Order Factor</h5>
+<div id="model-summary-2" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>m3_birthorder_nonlinear = update(m1_covariates_only, formula = . ~ . + birth_order_nonlinear)
+summary(m3_birthorder_nonlinear)</code></pre>
+</div>
+<div id="coefficient-plot-2" class="section level6">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot_birthorder(m3_birthorder_nonlinear, separate = FALSE)</code></pre>
+</div>
+</div>
+<div id="add-interaction" class="section level5 tabset">
+<h5>Add Interaction</h5>
+<div id="model-summary-3" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>m4_interaction = update(m3_birthorder_nonlinear, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
+summary(m4_interaction)</code></pre>
+</div>
+<div id="coefficient-plot-3" class="section level6">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot_birthorder(m4_interaction)</code></pre>
+</div>
+</div>
+<div id="model-comparison" class="section level5">
+<h5>Model Comparison</h5>
+<pre class="r"><code>###### Model 1 - Model 2
+anova(m1_covariates_only, m2_birthorder_linear, m3_birthorder_nonlinear, m4_interaction)</code></pre>
+</div>
+
+<div id="rmd-source-code">CiMjIyMjIEJhc2ljIE1vZGVsIHsudGFic2V0fQoKIyMjIyMjIE1vZGVsIFN1bW1hcnkKYGBge3J9CnN1bW1hcnkobTFfY292YXJpYXRlc19vbmx5KQpgYGAKCiMjIyMjIyBDb2VmZmljaWVudCBQbG90CmBgYHtyfQpwbG90KGFsbEVmZmVjdHMobTFfY292YXJpYXRlc19vbmx5KSkKYGBgCgojIyMjIyBBZGQgQmlydGggT3JkZXIgTGluZWFyIHsudGFic2V0fQoKIyMjIyMjIE1vZGVsIFN1bW1hcnkKYGBge3J9Cm0yX2JpcnRob3JkZXJfbGluZWFyID0gdXBkYXRlKG0xX2NvdmFyaWF0ZXNfb25seSwgZm9ybXVsYSA9IC4gfiAuICsgYmlydGhfb3JkZXIpCnN1bW1hcnkobTJfYmlydGhvcmRlcl9saW5lYXIpCmBgYAoKIyMjIyMjIENvZWZmaWNpZW50IFBsb3QKYGBge3J9CnBsb3RfYmlydGhvcmRlcihtMl9iaXJ0aG9yZGVyX2xpbmVhciwgc2VwYXJhdGUgPSBGQUxTRSkKYGBgCgojIyMjIyBBZGQgQmlydGggT3JkZXIgRmFjdG9yIHsudGFic2V0fQoKIyMjIyMjIE1vZGVsIFN1bW1hcnkKYGBge3J9Cm0zX2JpcnRob3JkZXJfbm9ubGluZWFyID0gdXBkYXRlKG0xX2NvdmFyaWF0ZXNfb25seSwgZm9ybXVsYSA9IC4gfiAuICsgYmlydGhfb3JkZXJfbm9ubGluZWFyKQpzdW1tYXJ5KG0zX2JpcnRob3JkZXJfbm9ubGluZWFyKQpgYGAKCiMjIyMjIyBDb2VmZmljaWVudCBQbG90CmBgYHtyfQpwbG90X2JpcnRob3JkZXIobTNfYmlydGhvcmRlcl9ub25saW5lYXIsIHNlcGFyYXRlID0gRkFMU0UpCmBgYAoKIyMjIyMgQWRkIEludGVyYWN0aW9uIHsudGFic2V0fQoKIyMjIyMjIE1vZGVsIFN1bW1hcnkKYGBge3J9Cm00X2ludGVyYWN0aW9uID0gdXBkYXRlKG0zX2JpcnRob3JkZXJfbm9ubGluZWFyLCBmb3JtdWxhID0gLiB+IC4gLSBiaXJ0aF9vcmRlcl9ub25saW5lYXIgLSBzaWJsaW5nX2NvdW50ICsgY291bnRfYmlydGhfb3JkZXIpCnN1bW1hcnkobTRfaW50ZXJhY3Rpb24pCmBgYAoKIyMjIyMjIENvZWZmaWNpZW50IFBsb3QKYGBge3J9CnBsb3RfYmlydGhvcmRlcihtNF9pbnRlcmFjdGlvbikKYGBgCgojIyMjIyBNb2RlbCBDb21wYXJpc29uCmBgYHtyfQojIyMjIyMgTW9kZWwgMSAtIE1vZGVsIDIKYW5vdmEobTFfY292YXJpYXRlc19vbmx5LCBtMl9iaXJ0aG9yZGVyX2xpbmVhciwgbTNfYmlydGhvcmRlcl9ub25saW5lYXIsIG00X2ludGVyYWN0aW9uKQoKCmBgYAoK</div>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

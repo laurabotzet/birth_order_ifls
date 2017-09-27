@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Effects of Birth Order on Intelligence, Personality, and Risk Preference in an Indonesian Sample</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/FileSaver.min.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+
+.section h2 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h3 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h4 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h5 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h6 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("index.Rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Birth Order IFLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+
+<li style="background-color: #66C2A5">
+  <a href="index.html">Overview</a>
+</li>
+<li style="background-color: #FC8D62">
+  <a href="1_data_import.html">Data Wrangling</a>
+</li>
+<li style="background-color: #8DA0CB">
+  <a href="2_Inclusion.html">Data Sampling</a>
+</li>
+<li style="background-color: #E78AC3">
+  <a href="3_sample_analyses.html">Sample Analyses</a>
+</li>
+<li style="background-color: #A6D854">
+  <a href="4_analyses.html">Birth Order Effects</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/laurabotzet/birth_order_ifls">
+    <span class="fa fa-github"></span>
+
+
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><font color="#66C2A5">Effects of Birth Order on Intelligence, Personality, and Risk Preference in an Indonesian Sample</font></h1>
+
+</div>
+
+
+<pre class="r"><code>##NEW
+source(&quot;0_helpers.R&quot;)</code></pre>
+<div class="row">
+<div class="col-md-5">
+<h2 id="supplemental-materials">Supplemental Materials</h2>
+<p>We used these <a href="0_helpers.html">helper functions</a> and this <a href="_test_outcome.html">knitr component</a>. These are the <a href=".Rprofile.html">.Rprofile settings</a></p>
+<ol style="list-style-type: decimal">
+<li>First we <a href="1_data_import.html">wrangled the data</a>.</li>
+<li>Then we <a href="2_inclusion.html">decided which data to keep</a>.</li>
+<li>Then we <a href="3_sample_analyses.html">analyzed our sample and looked at some descriptives</a>.</li>
+<li>Then we <a href="4_analyses.html">analyzed</a> birth order effects (click here for nice graphs of birth order effects).</li>
+</ol>
+<p>More information about the <a href="http://www.rand.org/labor/FLS/IFLS.html">Indonesian Family Life Survey (IFLS)</a>.</p>
+</div>
+<div class="col-md-6 col-md-offset-1">
+<div class="figure">
+<img src="4_analyses_files/figure-html/unnamed-chunk-51-1.png" alt="Interaction effects of sibship size and birth order position on intelligence. Predicted mean scores and 95%-CI from mixed effects models with sibship size, birth order, gender and birth year as fixed effects and maternal identity as random effect are displayed. Intelligence was z-standardized. Numbers in paranthesis show sample size." />
+<p class="caption">Interaction effects of sibship size and birth order position on intelligence. Predicted mean scores and 95%-CI from mixed effects models with sibship size, birth order, gender and birth year as fixed effects and maternal identity as random effect are displayed. Intelligence was z-standardized. Numbers in paranthesis show sample size.</p>
+</div>
+</div>
+</div>
+<div class="clearfix">
+
+</div>
+<div id="authors-abstract-acknowledgements" class="section level2 tabset tabset-sticky">
+<h2>Authors &amp; Abstract &amp; Acknowledgements</h2>
+<div id="authors" class="section level3">
+<h3>Authors</h3>
+<p>Laura J. Botzet &amp; Ruben C. Arslan. Georg-Elias-Müller-Institut für Psychologie, Georg-August-Universität Göttingen</p>
+<p>This supplementary website has been archived on Zenodo.org <a href=""><img src="" alt="DOI" /></a>.</p>
+</div>
+<div id="abstract" class="section level3">
+<h3>Abstract</h3>
+<p>Is it possible to replicate effects of birth order on intelligence, personality, and risk preference cross-culturally? So far, studies on birth order effects focused on samples from western, educated, industrialized, rich, democratic (WEIRD) countries. Based on earlier research we stated three hypotheses: (1) Intelligence declines with increasing birth order position, (2) personality is not related to birth order position and (2) risk preference rises with increasing birth order position. The Indonesian Family Life Survey collected data about intelligence, personality, and risk preference in the year 2014. Based on this data and the maternal pregnancy history we were able to determine birth order position, family membership and independent variables for 4,666 individuals. Analyses were performed using within-family designs in mixed-effects models. In model comparisons we analyzed the effect of birth order on the independent variables. We tested for linear and non-linear birth order effects as well as for possible interactions of birth order and sibship size. In contrast to earlier WEIRD-research we found a linear increase of intelligence with increasing birth order. Birth order had a categorical effect on extraversion and openness but not on neuroticism, conscientiousness, nor aggreeableness. The interaction of birth order and sibship size was significant for one risk preference measurement. We did not replicate results from earlier studies on WEIRD-people. This evidence points towards social mechanisms behind possible birth order effects based on cultural, political and economic circumstances rather than universally valid, biological mechanisms.</p>
+</div>
+<div id="acknowledgements" class="section level3 active">
+<h3>Acknowledgements</h3>
+<div id="package-bibliography" class="section level4 tabset tabset-sticky">
+<h4>Package bibliography</h4>
+<div id="session-info" class="section level5">
+<h5>Session info</h5>
+<pre class="r"><code># Make packrat bibliography
+packrat_bibliography(overwrite_bib = TRUE, silent = TRUE)
+# Turn the .R files into .Rmd files, turn those into .html, remove the .Rmd files
+spin_R_files_to_site_html()
+sessionInfo()</code></pre>
+<p><strong>R version 3.3.3 (2017-03-06)</strong></p>
+<p>**<a href="Platform:**" class="uri">Platform:**</a> x86_64-pc-linux-gnu (64-bit)</p>
+<p><strong>locale:</strong> <em>LC_CTYPE=en_US.UTF-8</em>, <em>LC_NUMERIC=C</em>, <em>LC_TIME=en_US.UTF-8</em>, <em>LC_COLLATE=en_US.UTF-8</em>, <em>LC_MONETARY=en_US.UTF-8</em>, <em>LC_MESSAGES=en_US.UTF-8</em>, <em>LC_PAPER=en_US.UTF-8</em>, <em>LC_NAME=C</em>, <em>LC_ADDRESS=C</em>, <em>LC_TELEPHONE=C</em>, <em>LC_MEASUREMENT=en_US.UTF-8</em> and <em>LC_IDENTIFICATION=C</em></p>
+<p><strong>attached base packages:</strong> <em>stats</em>, <em>graphics</em>, <em>grDevices</em>, <em>utils</em>, <em>datasets</em>, <em>methods</em> and <em>base</em></p>
+<p><strong>other attached packages:</strong> <em>dplyr(v.0.7.2)</em>, <em>tidyr(v.0.7.0)</em>, <em>RColorBrewer(v.1.1-2)</em>, <em>Hmisc(v.4.0-3)</em>, <em>Formula(v.1.2-1)</em>, <em>survival(v.2.40-1)</em>, <em>lattice(v.0.20-35)</em>, <em>lavaan(v.0.5-23.1097)</em>, <em>psych(v.1.7.5)</em>, <em>GPArotation(v.2014.11-1)</em>, <em>haven(v.1.1.0)</em>, <em>devtools(v.1.13.3)</em>, <em>formatR(v.1.5)</em>, <em>cowplot(v.0.8.0)</em>, <em>forcats(v.0.2.0)</em>, <em>lmerTest(v.2.0-33)</em>, <em>lme4(v.1.1-13)</em>, <em>Matrix(v.1.2-10)</em>, <em>data.table(v.1.10.0)</em>, <em>ggplot2(v.2.2.1)</em>, <em>effects(v.3.1-2)</em>, <em>broom(v.0.4.2)</em>, <em>stringr(v.1.2.0)</em>, <em>lubridate(v.1.6.0)</em>, <em>pander(v.0.6.1)</em>, <em>formr(v.0.6.12)</em>, <em>knitr(v.1.17)</em> and <em>rmarkdown(v.1.6)</em></p>
+<p><strong>loaded via a namespace (and not attached):</strong> <em>Rcpp(v.0.12.12)</em>, <em>assertthat(v.0.2.0)</em>, <em>rprojroot(v.1.2)</em>, <em>digest(v.0.6.12)</em>, <em>packrat(v.0.4.8-1)</em>, <em>R6(v.2.2.2)</em>, <em>plyr(v.1.8.4)</em>, <em>backports(v.1.1.0)</em>, <em>acepack(v.1.4.1)</em>, <em>stats4(v.3.3.3)</em>, <em>evaluate(v.0.10.1)</em>, <em>rlang(v.0.1.2)</em>, <em>lazyeval(v.0.2.0)</em>, <em>minqa(v.1.2.4)</em>, <em>nloptr(v.1.0.4)</em>, <em>rpart(v.4.1-10)</em>, <em>pbivnorm(v.0.6.0)</em>, <em>checkmate(v.1.8.3)</em>, <em>splines(v.3.3.3)</em>, <em>foreign(v.0.8-67)</em>, <em>htmlwidgets(v.0.9)</em>, <em>munsell(v.0.4.3)</em>, <em>pkgconfig(v.2.0.1)</em>, <em>base64enc(v.0.1-3)</em>, <em>mnormt(v.1.5-5)</em>, <em>htmltools(v.0.3.6)</em>, <em>nnet(v.7.3-12)</em>, <em>tibble(v.1.3.4)</em>, <em>gridExtra(v.2.2.1)</em>, <em>htmlTable(v.1.9)</em>, <em>quadprog(v.1.5-5)</em>, <em>withr(v.2.0.0)</em>, <em>MASS(v.7.3-45)</em>, <em>grid(v.3.3.3)</em>, <em>nlme(v.3.1-131)</em>, <em>gtable(v.0.2.0)</em>, <em>magrittr(v.1.5)</em>, <em>scales(v.0.5.0)</em>, <em>stringi(v.1.1.5)</em>, <em>reshape2(v.1.4.2)</em>, <em>bindrcpp(v.0.2)</em>, <em>latticeExtra(v.0.6-28)</em>, <em>tools(v.3.3.3)</em>, <em>glue(v.1.1.1)</em>, <em>purrr(v.0.2.3)</em>, <em>parallel(v.3.3.3)</em>, <em>yaml(v.2.1.14)</em>, <em>colorspace(v.1.3-2)</em>, <em>cluster(v.2.0.6)</em>, <em>memoise(v.1.1.0)</em> and <em>bindr(v.0.1)</em></p>
+</div>
+<div id="references" class="section level5 unnumbered active">
+<h5>References</h5>
+<div id="refs" class="references">
+<div id="ref-rmarkdown">
+<p>Allaire, J., Cheng, J., Xie, Y., McPherson, J., Chang, W., Allen, J., … Arslan, R. (2017). <em>rmarkdown: Dynamic documents for R</em> (<em>R package version 1.6</em>). Retrieved from <a href="https://CRAN.R-project.org/package=rmarkdown" class="uri">https://CRAN.R-project.org/package=rmarkdown</a></p>
+</div>
+<div id="ref-formr">
+<p>Arslan, R. (2014). <em>formr: Formr survey framework</em> (<em>R package version 0.6.12</em>).</p>
+</div>
+<div id="ref-gridExtra">
+<p>Auguie, B. (2016). <em>gridExtra: Miscellaneous functions for “grid” graphics</em> (<em>R package version 2.2.1</em>). Retrieved from <a href="https://CRAN.R-project.org/package=gridExtra" class="uri">https://CRAN.R-project.org/package=gridExtra</a></p>
+</div>
+<div id="ref-lme4">
+<p>Bates, D., Mächler, M., Bolker, B., &amp; Walker, S. (2015). Fitting linear mixed-effects models using lme4 (<em>version 1.1-12</em>). <em>Journal of Statistical Software</em>, <em>67</em>, 1–48. doi:<a href="https://doi.org/10.18637/jss.v067.i01">10.18637/jss.v067.i01</a></p>
+</div>
+<div id="ref-GPArotation">
+<p>Bernaards, C. A., &amp; I.Jennrich, R. (2005). Gradient projection algorithms and software for arbitrary rotation criteria in factor analysis (<em>version 2014.11-1</em>). <em>Educational and Psychological Measurement</em>, <em>65</em>, 676–696.</p>
+</div>
+<div id="ref-effects">
+<p>Fox, J. (2003). Effect displays in R for generalised linear models. <em>Journal of Statistical Software</em>, <em>8</em>, 1–27. Retrieved from <a href="http://www.jstatsoft.org/v08/i15/" class="uri">http://www.jstatsoft.org/v08/i15/</a></p>
+</div>
+<div id="ref-lubridate">
+<p>Grolemund, G., &amp; Wickham, H. (2011). Dates and times made easy with lubridate (<em>version 1.6.0</em>). <em>Journal of Statistical Software</em>, <em>40</em>, 1–25. Retrieved from <a href="http://www.jstatsoft.org/v40/i03/" class="uri">http://www.jstatsoft.org/v40/i03/</a></p>
+</div>
+<div id="ref-Hmisc">
+<p>Harrell Jr, F. E., Charles Dupont, &amp; others. (2017). <em>Hmisc: Harrell miscellaneous</em> (<em>R package version 4.0-3</em>). Retrieved from <a href="https://CRAN.R-project.org/package=Hmisc" class="uri">https://CRAN.R-project.org/package=Hmisc</a></p>
+</div>
+<div id="ref-lmerTest">
+<p>Kuznetsova, A., Bruun Brockhoff, P., &amp; Haubo Bojesen Christensen, R. (2016). <em>lmerTest: Tests in linear mixed effects models</em> (<em>R package version 2.0-33</em>). Retrieved from <a href="https://CRAN.R-project.org/package=lmerTest" class="uri">https://CRAN.R-project.org/package=lmerTest</a></p>
+</div>
+<div id="ref-R">
+<p>R Core Team. (2017). <em>R: A language and environment for statistical computing</em> (<em>version 3.3.2</em>). Vienna, Austria: R Foundation for Statistical Computing. Retrieved from <a href="https://www.R-project.org/" class="uri">https://www.R-project.org/</a></p>
+</div>
+<div id="ref-psych">
+<p>Revelle, W. (2017). <em>psych: Procedures for psychological, psychometric, and personality research</em> (<em>R package version 1.7.5</em>). Evanston, Illinois: Northwestern University. Retrieved from <a href="https://CRAN.R-project.org/package=psych" class="uri">https://CRAN.R-project.org/package=psych</a></p>
+</div>
+<div id="ref-lavaan">
+<p>Rosseel, Y. (2012). lavaan: An R package for structural equation modeling (<em>version 0.5-22</em>). <em>Journal of Statistical Software</em>, <em>48</em>, 1–36. Retrieved from <a href="http://www.jstatsoft.org/v48/i02/" class="uri">http://www.jstatsoft.org/v48/i02/</a></p>
+</div>
+<div id="ref-apaTables">
+<p>Stanley, D. (2017). <em>apaTables: Create american psychological association (apa) style tables</em> (<em>R package version 1.5.1</em>). Retrieved from <a href="https://CRAN.R-project.org/package=apaTables" class="uri">https://CRAN.R-project.org/package=apaTables</a></p>
+</div>
+<div id="ref-packrat">
+<p>Ushey, K., McPherson, J., Cheng, J., Atkins, A., &amp; Allaire, J. (2016). <em>packrat: A dependency management system for projects and their R package dependencies</em> (<em>R package version 0.4.8-1</em>). Retrieved from <a href="https://CRAN.R-project.org/package=packrat" class="uri">https://CRAN.R-project.org/package=packrat</a></p>
+</div>
+<div id="ref-ggplot2">
+<p>Wickham, H. (2009). <em>ggplot2: Elegant graphics for data analysis</em> (<em>version 2.2.0</em>). Springer-Verlag New York. Retrieved from <a href="http://ggplot2.org" class="uri">http://ggplot2.org</a></p>
+</div>
+<div id="ref-plyr">
+<p>Wickham, H. (2011). The split-apply-combine strategy for data analysis (<em>version 1.8.4</em>). <em>Journal of Statistical Software</em>, <em>40</em>, 1–29. Retrieved from <a href="http://www.jstatsoft.org/v40/i01/" class="uri">http://www.jstatsoft.org/v40/i01/</a></p>
+</div>
+<div id="ref-stringr">
+<p>Wickham, H. (2017a). <em>stringr: Simple, consistent wrappers for common string operations</em> (<em>R package version 1.2.0</em>). Retrieved from <a href="https://CRAN.R-project.org/package=stringr" class="uri">https://CRAN.R-project.org/package=stringr</a></p>
+</div>
+<div id="ref-forcats">
+<p>Wickham, H. (2017b). <em>forcats: Tools for working with categorical variables (factors)</em> (<em>R package version 0.2.0</em>). Retrieved from <a href="https://CRAN.R-project.org/package=forcats" class="uri">https://CRAN.R-project.org/package=forcats</a></p>
+</div>
+<div id="ref-devtools">
+<p>Wickham, H., &amp; Chang, W. (2017). <em>devtools: Tools to make developing R packages easier</em> (<em>R package version 1.13.3</em>). Retrieved from <a href="https://CRAN.R-project.org/package=devtools" class="uri">https://CRAN.R-project.org/package=devtools</a></p>
+</div>
+<div id="ref-tidyr">
+<p>Wickham, H., &amp; Henry, L. (2017). <em>tidyr: Easily tidy data with ’spread()’ and ’gather()’ functions</em> (<em>R package version 0.7.0</em>). Retrieved from <a href="https://CRAN.R-project.org/package=tidyr" class="uri">https://CRAN.R-project.org/package=tidyr</a></p>
+</div>
+<div id="ref-haven">
+<p>Wickham, H., &amp; Miller, E. (2017). <em>haven: Import and export ’spss’, ’stata’ and ’sas’ files</em> (<em>R package version 1.1.0</em>). Retrieved from <a href="https://CRAN.R-project.org/package=haven" class="uri">https://CRAN.R-project.org/package=haven</a></p>
+</div>
+<div id="ref-dplyr">
+<p>Wickham, H., Francois, R., Henry, L., &amp; Müller, K. (2017). <em>dplyr: A grammar of data manipulation</em> (<em>R package version 0.7.2</em>). Retrieved from <a href="https://CRAN.R-project.org/package=dplyr" class="uri">https://CRAN.R-project.org/package=dplyr</a></p>
+</div>
+<div id="ref-cowplot">
+<p>Wilke, C. O. (2017). <em>cowplot: Streamlined plot theme and plot annotations for ’ggplot2’</em> (<em>R package version 0.8.0</em>). Retrieved from <a href="https://CRAN.R-project.org/package=cowplot" class="uri">https://CRAN.R-project.org/package=cowplot</a></p>
+</div>
+<div id="ref-knitr">
+<p>Xie, Y. (2017a). <em>knitr: A general-purpose package for dynamic report generation in R</em> (<em>R package version 1.17</em>). Retrieved from <a href="https://yihui.name/knitr/" class="uri">https://yihui.name/knitr/</a></p>
+</div>
+<div id="ref-formatR">
+<p>Xie, Y. (2017b). <em>formatR: Format R code automatically</em> (<em>R package version 1.5</em>). Retrieved from <a href="https://CRAN.R-project.org/package=formatR" class="uri">https://CRAN.R-project.org/package=formatR</a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiA8Zm9udCBjb2xvcj0iIzY2QzJBNSI+RWZmZWN0cyBvZiBCaXJ0aCBPcmRlciBvbiBJbnRlbGxpZ2VuY2UsIFBlcnNvbmFsaXR5LCBhbmQgUmlzayBQcmVmZXJlbmNlIGluIGFuIEluZG9uZXNpYW4gU2FtcGxlPC9mb250PgpiaWJsaW9ncmFwaHk6IHBhY2tyYXRfYmlibGlvZ3JhcGh5LmJpYnRleApjc2w6IGFwYS1jdXN0b20tbm8taXNzdWUuY3NsCm5vY2l0ZTogfAogICAgQFIgQHBhY2tyYXQgQHJtYXJrZG93biBAa25pdHIgQGZvcm1yIEBwYW5kZXIgQGx1YnJpZGF0ZSBAc3RyaW5nciBAYnJvb20gQGVmZmVjdHMgQGdncGxvdDIgQHRpZHlyIEBkcGx5ciBAZm9ybWF0UiBAZGV2dG9vbHMgQGhhdmVuIEBHUEFyb3RhdGlvbiBAcHN5Y2ggQGxhdmFhbiBASG1pc2MgQHBseXIgQGFwYVRhYmxlcyBAbG1lNCBAbG1lclRlc3QgQGZvcmNhdHMgQGNvd3Bsb3QgQGdyaWRFeHRyYQotLS0KCgoKYGBge3IgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KIyNORVcKc291cmNlKCIwX2hlbHBlcnMuUiIpCmBgYAoKPGRpdiBjbGFzcz0icm93Ij4KCjxkaXYgY2xhc3M9ImNvbC1tZC01Ij4KCiMjIFN1cHBsZW1lbnRhbCBNYXRlcmlhbHMKV2UgdXNlZCB0aGVzZSBbaGVscGVyIGZ1bmN0aW9uc10oMF9oZWxwZXJzLmh0bWwpIGFuZCAKdGhpcyBba25pdHIgY29tcG9uZW50XShfdGVzdF9vdXRjb21lLmh0bWwpLiBUaGVzZSBhcmUgdGhlIFsuUnByb2ZpbGUgc2V0dGluZ3NdKC5ScHJvZmlsZS5odG1sKQoKMS4gRmlyc3Qgd2UgW3dyYW5nbGVkIHRoZSBkYXRhXSgxX2RhdGFfaW1wb3J0Lmh0bWwpLgoyLiBUaGVuIHdlIFtkZWNpZGVkIHdoaWNoIGRhdGEgdG8ga2VlcF0oMl9pbmNsdXNpb24uaHRtbCkuCjMuIFRoZW4gd2UgW2FuYWx5emVkIG91ciBzYW1wbGUgYW5kIGxvb2tlZCBhdCBzb21lIGRlc2NyaXB0aXZlc10oM19zYW1wbGVfYW5hbHlzZXMuaHRtbCkuCjQuIFRoZW4gd2UgW2FuYWx5emVkXSg0X2FuYWx5c2VzLmh0bWwpIGJpcnRoIG9yZGVyIGVmZmVjdHMgKGNsaWNrIGhlcmUgZm9yIG5pY2UgZ3JhcGhzIG9mIGJpcnRoIG9yZGVyIGVmZmVjdHMpLgoKTW9yZSBpbmZvcm1hdGlvbiBhYm91dCB0aGUgW0luZG9uZXNpYW4gRmFtaWx5IExpZmUgU3VydmV5IChJRkxTKV0oaHR0cDovL3d3dy5yYW5kLm9yZy9sYWJvci9GTFMvSUZMUy5odG1sKS4KCjwvZGl2PgoKPGRpdiBjbGFzcz0iY29sLW1kLTYgY29sLW1kLW9mZnNldC0xIj4KIVtJbnRlcmFjdGlvbiBlZmZlY3RzIG9mIHNpYnNoaXAgc2l6ZSBhbmQgYmlydGggb3JkZXIgcG9zaXRpb24gb24gaW50ZWxsaWdlbmNlLiBQcmVkaWN0ZWQgbWVhbiBzY29yZXMgYW5kIDk1JS1DSSBmcm9tIG1peGVkIGVmZmVjdHMgbW9kZWxzIHdpdGggc2lic2hpcCBzaXplLCBiaXJ0aCBvcmRlciwgZ2VuZGVyIGFuZCBiaXJ0aCB5ZWFyIGFzIGZpeGVkIGVmZmVjdHMgYW5kIG1hdGVybmFsIGlkZW50aXR5IGFzIHJhbmRvbSBlZmZlY3QgYXJlIGRpc3BsYXllZC4gSW50ZWxsaWdlbmNlIHdhcyB6LXN0YW5kYXJkaXplZC4gTnVtYmVycyBpbiBwYXJhbnRoZXNpcyBzaG93IHNhbXBsZSBzaXplLl0oNF9hbmFseXNlc19maWxlcy9maWd1cmUtaHRtbC91bm5hbWVkLWNodW5rLTUxLTEucG5nKQo8L2Rpdj4KCjwvZGl2Pgo8ZGl2IGNsYXNzPSJjbGVhcmZpeCI+PC9kaXY+CgojIyBBdXRob3JzICYgQWJzdHJhY3QgJiBBY2tub3dsZWRnZW1lbnRzIHsudGFic2V0IC50YWJzZXQtc3RpY2t5fQoKIyMjIEF1dGhvcnMKTGF1cmEgSi4gQm90emV0ICYgUnViZW4gQy4gQXJzbGFuLgpHZW9yZy1FbGlhcy1Nw7xsbGVyLUluc3RpdHV0IGbDvHIgUHN5Y2hvbG9naWUsIEdlb3JnLUF1Z3VzdC1Vbml2ZXJzaXTDpHQgR8O2dHRpbmdlbgoKVGhpcyBzdXBwbGVtZW50YXJ5IHdlYnNpdGUgaGFzIGJlZW4gYXJjaGl2ZWQgb24gWmVub2RvLm9yZyBbIVtET0ldKCldKCkuCgoKIyMjIEFic3RyYWN0CgpJcyBpdCBwb3NzaWJsZSB0byByZXBsaWNhdGUgZWZmZWN0cyBvZiBiaXJ0aCBvcmRlciBvbiBpbnRlbGxpZ2VuY2UsIHBlcnNvbmFsaXR5LCBhbmQgcmlzayBwcmVmZXJlbmNlIGNyb3NzLWN1bHR1cmFsbHk/IFNvIGZhciwgc3R1ZGllcyBvbiBiaXJ0aCBvcmRlciBlZmZlY3RzIGZvY3VzZWQgb24gc2FtcGxlcyBmcm9tIHdlc3Rlcm4sIGVkdWNhdGVkLCBpbmR1c3RyaWFsaXplZCwgcmljaCwgZGVtb2NyYXRpYyAoV0VJUkQpIGNvdW50cmllcy4gQmFzZWQgb24gZWFybGllciByZXNlYXJjaCB3ZSBzdGF0ZWQgdGhyZWUgaHlwb3RoZXNlczogKDEpIEludGVsbGlnZW5jZSBkZWNsaW5lcyB3aXRoIGluY3JlYXNpbmcgYmlydGggb3JkZXIgcG9zaXRpb24sICgyKSBwZXJzb25hbGl0eSBpcyBub3QgcmVsYXRlZCB0byBiaXJ0aCBvcmRlciBwb3NpdGlvbiBhbmQgKDIpIHJpc2sgcHJlZmVyZW5jZSByaXNlcyB3aXRoIGluY3JlYXNpbmcgYmlydGggb3JkZXIgcG9zaXRpb24uIFRoZSBJbmRvbmVzaWFuIEZhbWlseSBMaWZlIFN1cnZleSBjb2xsZWN0ZWQgZGF0YSBhYm91dCBpbnRlbGxpZ2VuY2UsIHBlcnNvbmFsaXR5LCBhbmQgcmlzayBwcmVmZXJlbmNlIGluIHRoZSB5ZWFyIDIwMTQuIEJhc2VkIG9uIHRoaXMgZGF0YSBhbmQgdGhlIG1hdGVybmFsIHByZWduYW5jeSBoaXN0b3J5IHdlIHdlcmUgYWJsZSB0byBkZXRlcm1pbmUgYmlydGggb3JkZXIgcG9zaXRpb24sIGZhbWlseSBtZW1iZXJzaGlwIGFuZCBpbmRlcGVuZGVudCB2YXJpYWJsZXMgZm9yIDQsNjY2IGluZGl2aWR1YWxzLiBBbmFseXNlcyB3ZXJlIHBlcmZvcm1lZCB1c2luZyB3aXRoaW4tZmFtaWx5IGRlc2lnbnMgaW4gbWl4ZWQtZWZmZWN0cyBtb2RlbHMuIEluIG1vZGVsIGNvbXBhcmlzb25zIHdlIGFuYWx5emVkIHRoZSBlZmZlY3Qgb2YgYmlydGggb3JkZXIgb24gdGhlIGluZGVwZW5kZW50IHZhcmlhYmxlcy4gV2UgdGVzdGVkIGZvciBsaW5lYXIgYW5kIG5vbi1saW5lYXIgYmlydGggb3JkZXIgZWZmZWN0cyBhcyB3ZWxsIGFzIGZvciBwb3NzaWJsZSBpbnRlcmFjdGlvbnMgb2YgYmlydGggb3JkZXIgYW5kIHNpYnNoaXAgc2l6ZS4gSW4gY29udHJhc3QgdG8gZWFybGllciBXRUlSRC1yZXNlYXJjaCB3ZSBmb3VuZCBhIGxpbmVhciBpbmNyZWFzZSBvZiBpbnRlbGxpZ2VuY2Ugd2l0aCBpbmNyZWFzaW5nIGJpcnRoIG9yZGVyLiBCaXJ0aCBvcmRlciBoYWQgYSBjYXRlZ29yaWNhbCBlZmZlY3Qgb24gZXh0cmF2ZXJzaW9uIGFuZCBvcGVubmVzcyBidXQgbm90IG9uIG5ldXJvdGljaXNtLCBjb25zY2llbnRpb3VzbmVzcywgbm9yIGFnZ3JlZWFibGVuZXNzLiBUaGUgaW50ZXJhY3Rpb24gb2YgYmlydGggb3JkZXIgYW5kIHNpYnNoaXAgc2l6ZSB3YXMgc2lnbmlmaWNhbnQgZm9yIG9uZSByaXNrIHByZWZlcmVuY2UgbWVhc3VyZW1lbnQuIFdlIGRpZCBub3QgcmVwbGljYXRlIHJlc3VsdHMgZnJvbSBlYXJsaWVyIHN0dWRpZXMgb24gV0VJUkQtcGVvcGxlLiBUaGlzIGV2aWRlbmNlIHBvaW50cyB0b3dhcmRzIHNvY2lhbCBtZWNoYW5pc21zIGJlaGluZCBwb3NzaWJsZSBiaXJ0aCBvcmRlciBlZmZlY3RzIGJhc2VkIG9uIGN1bHR1cmFsLCBwb2xpdGljYWwgYW5kIGVjb25vbWljIGNpcmN1bXN0YW5jZXMgcmF0aGVyIHRoYW4gdW5pdmVyc2FsbHkgdmFsaWQsIGJpb2xvZ2ljYWwgbWVjaGFuaXNtcy4KCiMjIyBBY2tub3dsZWRnZW1lbnRzIHsuYWN0aXZlfQoKCiMjIyMgUGFja2FnZSBiaWJsaW9ncmFwaHkgey50YWJzZXQgLnRhYnNldC1zdGlja3l9CgojIyMjIyBTZXNzaW9uIGluZm8KYGBge3Igd2FybmluZz1GQUxTRSxtZXNzYWdlPUZBTFNFfQojIE1ha2UgcGFja3JhdCBiaWJsaW9ncmFwaHkKcGFja3JhdF9iaWJsaW9ncmFwaHkob3ZlcndyaXRlX2JpYiA9IFRSVUUsIHNpbGVudCA9IFRSVUUpCiMgVHVybiB0aGUgLlIgZmlsZXMgaW50byAuUm1kIGZpbGVzLCB0dXJuIHRob3NlIGludG8gLmh0bWwsIHJlbW92ZSB0aGUgLlJtZCBmaWxlcwpzcGluX1JfZmlsZXNfdG9fc2l0ZV9odG1sKCkKc2Vzc2lvbkluZm8oKQpgYGAKCiMjIyMjIFJlZmVyZW5jZXMgey5hY3RpdmV9CgoKCg==</div>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

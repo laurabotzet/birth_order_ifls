@@ -1,12 +1,12 @@
+
 packrat/lib*/
 .Rproj.user
 *.dta
 *.rds
 *.rda
+*.zip
+data/
 figure-html/
-*.png
-*.jpg
 *.pdf
-*.html
 packrat/src/
 .Rhistory

@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Laura Botzet" />
+
+<meta name="date" content="2016-10-26" />
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/FileSaver.min.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+
+.section h2 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h3 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h4 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h5 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h6 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("_3_preliminary_analyses.Rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Birth Order IFLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+
+<li style="background-color: #66C2A5">
+  <a href="index.html">Overview</a>
+</li>
+<li style="background-color: #FC8D62">
+  <a href="1_data_import.html">Data Wrangling</a>
+</li>
+<li style="background-color: #8DA0CB">
+  <a href="2_Inclusion.html">Data Sampling</a>
+</li>
+<li style="background-color: #E78AC3">
+  <a href="3_sample_analyses.html">Sample Analyses</a>
+</li>
+<li style="background-color: #A6D854">
+  <a href="4_analyses.html">Birth Order Effects</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/laurabotzet/birth_order_ifls">
+    <span class="fa fa-github"></span>
+
+
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<div id="preliminary-analyses" class="section level1 tabset">
+<h1>Preliminary Analyses</h1>
+<div id="load-libraries" class="section level2">
+<h2>Load libraries</h2>
+<pre class="r"><code>library(lme4)
+library(lmerTest)
+library(ggplot2)
+library(formr)
+library(effects)
+library(stringr)
+library(forcats)
+library(cowplot)
+library(dplyr)</code></pre>
+</div>
+<div id="helper" class="section level2">
+<h2>helper</h2>
+<pre class="r"><code>apatheme=theme_bw()+
+    theme(panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        panel.border=element_blank(),
+        axis.line=element_line(),
+        text=element_text(family=&#39;Times&#39;, size = 16))
+
+ 
+plot_birthorder = function(model, ylabel = NULL, title = &quot;&quot;, bo_var = &quot;birth_order&quot;, separate = TRUE) {
+  if(inherits(model, &quot;merMod&quot;)) {
+    varnames = names(model@frame)
+  } else {
+    varnames = names(model$model)
+  }
+  outcome = varnames[1]
+  if(is.null(ylabel)) ylabel = outcome
+  library(effects)
+  library(tidyr)
+  emm = allEffects(model)
+  bo_var = names(emm)[names(emm) %contains% bo_var]
+  cemm = as.data.frame(emm[[bo_var]])
+  if (separate != TRUE) {
+    cemm = cemm %&gt;% rename_(&quot;Birth order&quot; = bo_var) %&gt;% mutate(Sibship = &quot;across&quot;)
+  } else {
+    cemm = cemm %&gt;% 
+    separate_(bo_var, into = c(&quot;Birth order&quot;, &quot;Sibship&quot;), sep = &quot;/&quot;)
+    number = spread(as.data.frame(table(model.frame(model)[`bo_var`])), Var1, Freq)
+    n1 = paste0(&quot;1 (&quot;, sum(number$`1/1`), &quot;)&quot;, seperate=&quot;&quot;)
+    n2 = paste0(&quot;2 (&quot;, sum(number$`1/2`, number$`2/2`), &quot;)&quot;, seperate=&quot;&quot;)
+    n3 = paste0(&quot;3 (&quot;, sum(number$`1/3`, number$`2/3`, number$`3/3`), &quot;)&quot;,
+                seperate=&quot;&quot;)
+    n4 = paste0(&quot;4 (&quot;, sum(number$`1/4`, number$`2/4`, number$`3/4`,
+                                        number$`4/4`), &quot;)&quot;, seperate=&quot;&quot;)
+    n5 = paste0(&quot;5 (&quot;, sum(number$`1/5`, number$`2/5`, number$`3/5`,
+                                        number$`4/5`, number$`5/5`), &quot;)&quot;, seperate=&quot;&quot;)
+    n5more = paste0(&quot;5+ (&quot;, sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
+                                            number$`4/5+`, number$`5/5+`, number$`5+/5+`), &quot;)&quot;,
+                    seperate=&quot;&quot;)
+    cemm = cemm %&gt;%
+      mutate(Sibship = recode_factor(Sibship, &quot;1&quot; = `n1`, &quot;2&quot; = `n2`, &quot;3&quot; = `n3`, &quot;4&quot; = `n4`,
+                                     &quot;5&quot; = `n5`, &quot;5+&quot; = `n5more`))
+  }
+    plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
+                   colour = `Sibship`, group = `Sibship`)) + 
+    geom_pointrange(stat = &quot;identity&quot;, position = position_dodge(width = 0.5)) + 
+    geom_line(position = position_dodge(width = 0.5)) +
+    scale_y_continuous(name=ylabel, limits = c(-0.6, 0.5), breaks = c(-0.4, -0.2, 0,
+                                                                  0.2, 0.4)) +
+    labs(title= title) +
+    apatheme +
+    theme(legend.background = element_rect(fill=&quot;gray90&quot;, size=.5, linetype=&quot;dotted&quot;),
+          plot.title = element_text(hjust = 0)) +
+    guides(colour=guide_legend(title = &quot;Sibship&quot;))
+  print(plotx)
+  assign(paste0(&quot;plot_&quot;, outcome, seperate=&quot;&quot;),plotx,.GlobalEnv)
+}</code></pre>
+</div>
+<div id="load-data" class="section level2">
+<h2>Load data</h2>
+<pre class="r"><code>alldata_birthorder = readRDS(&quot;data/alldata_birthorder.rds&quot;)</code></pre>
+</div>
+<div id="data-preperations" class="section level2">
+<h2>Data Preperations</h2>
+<pre class="r"><code>### Variables
+alldata_birthorder = alldata_birthorder %&gt;%
+  mutate(
+    # center birthyear
+    birthyear = byear - mean(byear, na.rm = T),
+    # Sex (1 = male, 2 = female)
+    male = ifelse(sex.x == 1, 1L, 0L),
+    male = ifelse(sex.x &gt; 3, NA_integer_, male),
+    male = factor(male),
+    # mother_pidlink has to be specified
+    mother_pidlink = mother_pidlink.x,
+    # center variables that are used for analysy - but first save old values
+    old_g_factor = g_factor,
+    old_raven = raven,
+    old_math = math,
+    old_count_backwards = count_backwards,
+    old_words_remembered_avg = words_remembered_avg,
+    old_words_immediate = words_immediate,
+    old_words_delayed = words_delayed,
+    old_adaptive_numbering = adaptive_numbering,
+    old_big5_ext = big5_ext,
+    old_big5_con = big5_con,
+    old_big5_agree = big5_agree,
+    old_big5_neu = big5_neu,
+    old_big5_open = big5_open,
+    old_riskA = riskA,
+    old_riskB = riskB,
+    g_factor = (g_factor - mean(g_factor, na.rm=T)) / sd(g_factor, na.rm=T),
+    raven = (raven - mean(raven, na.rm=T)) / sd(raven, na.rm=T),
+    math = (math - mean(math, na.rm=T)) / sd(math, na.rm=T),
+    count_backwards = (count_backwards - mean(count_backwards, na.rm=T)) /
+      sd(count_backwards, na.rm=T),
+    words_remembered_avg = (words_remembered_avg - mean(words_remembered_avg, na.rm=T)) /
+      sd(words_remembered_avg, na.rm=T),
+    words_immediate = (words_immediate - mean(words_immediate, na.rm=T)) /
+      sd(words_immediate, na.rm=T),
+    words_delayed = (words_delayed - mean(words_delayed, na.rm=T)) /
+      sd(words_delayed, na.rm=T),
+    adaptive_numbering = (adaptive_numbering - mean(adaptive_numbering, na.rm=T)) /
+      sd(adaptive_numbering, na.rm=T),
+    big5_ext = (big5_ext - mean(big5_ext, na.rm=T)) / sd(big5_ext, na.rm=T),
+    big5_con = (big5_con - mean(big5_con, na.rm=T)) / sd(big5_con, na.rm=T),
+    big5_agree = (big5_agree - mean(big5_agree, na.rm=T)) / sd(big5_agree, na.rm=T),
+    big5_open = (big5_open - mean(big5_open, na.rm=T)) / sd(big5_open, na.rm=T),
+    big5_neu = (big5_neu - mean(big5_neu, na.rm=T)) / sd(big5_neu, na.rm=T),
+    riskA = (riskA - mean(riskA, na.rm=T)) / sd(riskA, na.rm=T),
+    riskB = (riskB - mean(riskB, na.rm=T)) / sd(riskB, na.rm=T)
+        )
+qplot(alldata_birthorder$g_factor)
+
+### Birthorder and Sibling Count
+alldata_birthorder = alldata_birthorder %&gt;% 
+  mutate(
+# birthorder as factors with levels of 1, 2, 3, 4, 5, 5+
+    birthorder_uterus_alive_factor = as.character(birthorder_uterus_alive),
+    birthorder_uterus_alive_factor = ifelse(birthorder_uterus_alive &gt; 5, &quot;5+&quot;,
+                                            birthorder_uterus_alive_factor),
+    birthorder_uterus_alive_factor = factor(birthorder_uterus_alive_factor, 
+                                            levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+    sibling_count_uterus_alive_factor = as.character(sibling_count_uterus_alive),
+    sibling_count_uterus_alive_factor = ifelse(sibling_count_uterus_alive &gt; 5, &quot;5+&quot;,
+                                               sibling_count_uterus_alive_factor),
+    sibling_count_uterus_alive_factor = factor(sibling_count_uterus_alive_factor, 
+                                               levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+    birthorder_uterus_preg_factor = as.character(birthorder_uterus_preg),
+    birthorder_uterus_preg_factor = ifelse(birthorder_uterus_preg &gt; 5, &quot;5+&quot;,
+                                           birthorder_uterus_preg_factor),
+    birthorder_uterus_preg_factor = factor(birthorder_uterus_preg_factor,
+                                           levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+    sibling_count_uterus_preg_factor = as.character(sibling_count_uterus_preg),
+    sibling_count_uterus_preg_factor = ifelse(sibling_count_uterus_preg &gt; 5, &quot;5+&quot;,
+                                              sibling_count_uterus_preg_factor),
+    sibling_count_uterus_preg_factor = factor(sibling_count_uterus_preg_factor, 
+                                              levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+    birthorder_genes_factor = as.character(birthorder_genes),
+    birthorder_genes_factor = ifelse(birthorder_genes &gt;5 , &quot;5+&quot;, birthorder_genes_factor),
+    birthorder_genes_factor = factor(birthorder_genes_factor, 
+                                     levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+    sibling_count_genes_factor = as.character(sibling_count_genes),
+    sibling_count_genes_factor = ifelse(sibling_count_genes &gt;5 , &quot;5+&quot;,
+                                        sibling_count_genes_factor),
+    sibling_count_genes_factor = factor(sibling_count_genes_factor, 
+                                        levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+    # interaction birthorder * siblingcout for each birthorder
+    count_birthorder_uterus_alive =
+      factor(str_replace(as.character(interaction(birthorder_uterus_alive_factor,                                                              sibling_count_uterus_alive_factor)),
+                        &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/1&quot;,&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;,
+                                                        &quot;1/5+&quot;, &quot;2/5+&quot;, &quot;3/5+&quot;, &quot;4/5+&quot;,
+                                                        &quot;5/5+&quot;, &quot;5+/5+&quot;)),
+    count_birthorder_uterus_preg =
+      factor(str_replace(as.character(interaction(birthorder_uterus_preg_factor,                                                              sibling_count_uterus_preg_factor)), 
+                         &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/1&quot;,&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;,
+                                                        &quot;1/5+&quot;, &quot;2/5+&quot;, &quot;3/5+&quot;, &quot;4/5+&quot;,
+                                                        &quot;5/5+&quot;, &quot;5+/5+&quot;)),
+    count_birthorder_genes =
+      factor(str_replace(as.character(interaction(birthorder_genes_factor,                                                              sibling_count_genes_factor)), &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/1&quot;,&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;,
+                                                        &quot;1/5+&quot;, &quot;2/5+&quot;, &quot;3/5+&quot;, &quot;4/5+&quot;,
+                                                        &quot;5/5+&quot;, &quot;5+/5+&quot;)))</code></pre>
+</div>
+<div id="between-family-analysis-intelligence" class="section level2">
+<h2>Between-family Analysis Intelligence</h2>
+<pre class="r"><code>### Main Test: G-Factor - without covariates
+## Main Test: G-Factor - uterus_alive
+m_g_factor_uterus_alive_no_interaction = lm(g_factor ~ birthorder_uterus_alive_factor + sibling_count_uterus_alive_factor,
+                             data = alldata_birthorder)
+summary(m_g_factor_uterus_alive_no_interaction)
+plot_birthorder(m_g_factor_uterus_alive_no_interaction, 
+                ylabel = &quot;G factor&quot;, title = &quot;G factor&quot;, separate = FALSE)
+
+m_g_factor_uterus_alive = lm(g_factor ~ count_birthorder_uterus_alive,
+                             data = alldata_birthorder)
+anova(m_g_factor_uterus_alive_no_interaction, m_g_factor_uterus_alive)
+anova(m_g_factor_uterus_alive)
+plot_birthorder(m_g_factor_uterus_alive)
+
+## Main Test: G-Factor - uterus_alive with covariates
+m_g_factor_uterus_alive_covariates = lm(g_factor ~ birthorder_uterus_alive_factor  +
+                             sibling_count_uterus_alive_factor 
+                                       + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_g_factor_uterus_alive_covariates)
+m_g_factor_uterus_preg_covariates = lm(g_factor ~ birthorder_uterus_preg_factor  +
+                             sibling_count_uterus_preg_factor 
+                                       + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_g_factor_uterus_alive_covariates)
+m_g_factor_genes_covariates = lm(g_factor ~ birthorder_genes_factor  +
+                             sibling_count_genes_factor 
+                                       + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_g_factor_genes_covariates)
+
+
+m_g_factor_uterus_alive_covariates = lm(g_factor ~ count_birthorder_uterus_alive 
+                                       + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_g_factor_uterus_alive_covariates)
+plot_birthorder(m_g_factor_uterus_alive_covariates)
+
+## Main Test: G-Factor - uterus_preg
+m_g_factor_uterus_preg = lm(g_factor ~ count_birthorder_uterus_preg,
+                            data = alldata_birthorder)
+summary(m_g_factor_uterus_preg)
+plot_birthorder(m_g_factor_uterus_preg)
+
+## Main Test: G-Factor - genes
+m_g_factor_genes = lm(g_factor ~ count_birthorder_genes,
+                            data = alldata_birthorder)
+summary(m_g_factor_genes)
+plot_birthorder(m_g_factor_genes)
+
+## Main Test: G-Factor - genes with covariates
+m_g_factor_genes_covariates = lm(g_factor ~ count_birthorder_genes
+                                + birthyear + male,
+                            data = alldata_birthorder)
+summary(m_g_factor_genes_covariates)
+plot_birthorder(m_g_factor_genes_covariates)
+
+### Sub Tests
+## Raven’s matrices test
+# raven - uterus_alive
+m_raven_uterus_alive = lm(raven ~ count_birthorder_uterus_alive,
+                            data = alldata_birthorder)
+summary(m_raven_uterus_alive)
+plot_birthorder(m_raven_uterus_alive)
+
+# raven - uterus_preg
+m_raven_uterus_preg = lm(raven ~ count_birthorder_uterus_preg,
+                            data = alldata_birthorder)
+summary(m_raven_uterus_preg)
+plot_birthorder(m_raven_uterus_preg)
+
+# raven - genes
+m_raven_genes = lm(raven ~ count_birthorder_genes,
+                            data = alldata_birthorder)
+summary(m_raven_genes)
+plot_birthorder(m_raven_genes)
+
+## Numeracy test
+# math - uterus_alive
+m_math_uterus_alive = lm(math ~ count_birthorder_uterus_alive,
+                            data = alldata_birthorder)
+summary(m_math_uterus_alive)
+plot_birthorder(m_math_uterus_alive)
+
+# math - uterus_preg
+m_math_uterus_preg = lm(math ~ count_birthorder_uterus_preg,
+                            data = alldata_birthorder)
+summary(m_math_uterus_preg)
+plot_birthorder(m_math_uterus_preg)
+
+# math - genes
+m_math_genes = lm(math ~ count_birthorder_genes,
+                            data = alldata_birthorder)
+summary(m_math_genes)
+plot_birthorder(m_math_genes)
+
+## Backwards counting
+# count_backwards - uterus_alive
+m_count_backwards_uterus_alive = lm(count_backwards ~ count_birthorder_uterus_alive,
+                            data = alldata_birthorder)
+summary(m_count_backwards_uterus_alive)
+plot_birthorder(m_count_backwards_uterus_alive)
+
+# count_backwards - uterus_preg
+m_count_backwards_uterus_preg = lm(count_backwards ~ count_birthorder_uterus_preg,
+                            data = alldata_birthorder)
+summary(m_count_backwards_uterus_preg)
+plot_birthorder(m_count_backwards_uterus_preg)
+
+# count_backwards - genes
+m_count_backwards_genes = lm(count_backwards ~ count_birthorder_genes,
+                            data = alldata_birthorder)
+summary(m_count_backwards_genes)
+plot_birthorder(m_count_backwards_genes)
+
+## Word Recall
+# words_remembered_avg - uterus_alive
+m_words_remembered_avg_uterus_alive = lm(words_remembered_avg ~
+                                           count_birthorder_uterus_alive,
+                            data = alldata_birthorder)
+summary(m_words_remembered_avg_uterus_alive)
+plot_birthorder(m_words_remembered_avg_uterus_alive)
+
+# words_remembered_avg - uterus_preg
+m_words_remembered_avg_uterus_preg = lm(words_remembered_avg ~
+                                  count_birthorder_uterus_preg,
+                            data = alldata_birthorder)
+summary(m_words_remembered_avg_uterus_preg)
+plot_birthorder(m_words_remembered_avg_uterus_preg)
+
+# words_remembered_avg - genes
+m_words_remembered_avg_genes = lm(words_remembered_avg ~ 
+                               count_birthorder_genes,
+                            data = alldata_birthorder)
+summary(m_words_remembered_avg_genes)
+plot_birthorder(m_words_remembered_avg_genes)
+
+## Adaptive number series
+# adaptive_numbering - uterus_alive
+m_adaptive_numbering_uterus_alive = lm(adaptive_numbering ~
+                                   count_birthorder_uterus_alive,
+                            data = alldata_birthorder)
+summary(m_adaptive_numbering_uterus_alive)
+plot_birthorder(m_adaptive_numbering_uterus_alive)
+
+# adaptive_numbering - uterus_preg
+m_adaptive_numbering_uterus_preg = lm(adaptive_numbering ~
+                                   count_birthorder_uterus_preg,
+                            data = alldata_birthorder)
+summary(m_adaptive_numbering_uterus_preg)
+plot_birthorder(m_adaptive_numbering_uterus_preg)
+
+# adaptive_numbering - genes
+m_adaptive_numbering_genes = lm(adaptive_numbering ~ 
+                              count_birthorder_genes,
+                            data = alldata_birthorder)
+summary(m_adaptive_numbering_genes)
+plot_birthorder(m_adaptive_numbering_genes)</code></pre>
+<pre class="r"><code>### Personality - without covariates
+## Openness
+# big5_open - uterus_alive
+m_big5_open_uterus_alive = lm(big5_open ~ count_birthorder_uterus_alive,
+                            data = alldata_birthorder)
+summary(m_big5_open_uterus_alive)
+plot_birthorder(m_big5_open_uterus_alive)
+
+m_big5_open_uterus_alive_covariates = lm(big5_open ~ birthorder_uterus_alive_factor  +
+                             sibling_count_uterus_alive_factor +
+                                         birthyear + male,
+                            data = alldata_birthorder)
+anova(m_big5_open_uterus_alive_covariates)
+plot_birthorder(m_big5_open_uterus_alive_covariates)
+
+m_big5_open_uterus_alive_covariates = lm(big5_open ~ count_birthorder_uterus_alive +
+                                         birthyear + male,
+                            data = alldata_birthorder)
+summary(m_big5_open_uterus_alive_covariates)
+plot_birthorder(m_big5_open_uterus_alive_covariates)
+
+# big5_open - uterus_preg
+m_big5_open_uterus_preg = lm(big5_open ~ count_birthorder_uterus_preg,
+                            data = alldata_birthorder)
+summary(m_big5_open_uterus_preg)
+plot_birthorder(m_big5_open_uterus_preg)
+
+# big5_open - genes
+m_big5_open_genes = lm(big5_open ~ count_birthorder_genes,
+                            data = alldata_birthorder)
+summary(m_big5_open_genes)
+plot_birthorder(m_big5_open_genes)
+
+## Extraversion
+# big5_ext - uterus_alive
+m_big5_ext_uterus_alive = lm(big5_ext ~ count_birthorder_uterus_alive ,
+                            data = alldata_birthorder)
+summary(m_big5_ext_uterus_alive)
+plot_birthorder(m_big5_ext_uterus_alive)
+
+m_big5_open_uterus_alive_covariates = lm(big5_open ~ birthorder_uterus_alive_factor  +
+                             sibling_count_uterus_alive_factor +
+                                         birthyear + male,
+                            data = alldata_birthorder)
+anova(m_big5_open_uterus_alive_covariates)
+plot_birthorder(m_big5_open_uterus_alive_covariates)
+
+m_big5_ext_uterus_alive_covariates = lm(big5_ext ~ count_birthorder_uterus_alive +
+                                         birthyear + male,
+                            data = alldata_birthorder)
+summary(m_big5_ext_uterus_alive_covariates)
+plot_birthorder(m_big5_ext_uterus_alive_covariates)
+
+# big5_ext - uterus_preg
+m_big5_ext_uterus_preg = lm(big5_ext ~ count_birthorder_uterus_preg,
+                            data = alldata_birthorder)
+summary(m_big5_ext_uterus_preg)
+plot_birthorder(m_big5_ext_uterus_preg)
+
+# big5_ext - genes
+m_big5_ext_genes = lm(big5_ext ~ count_birthorder_genes,
+                            data = alldata_birthorder)
+summary(m_big5_ext_genes)
+plot_birthorder(m_big5_ext_genes)
+
+## Neuroticism
+# big5_neu - uterus_alive
+m_big5_neu_uterus_alive = lm(big5_neu ~ count_birthorder_uterus_alive,
+                            data = alldata_birthorder)
+summary(m_big5_neu_uterus_alive)
+plot_birthorder(m_big5_neu_uterus_alive)
+
+m_big5_neu_uterus_alive_covariates = lm(big5_neu ~ count_birthorder_uterus_alive +
+                                         birthyear + male,
+                            data = alldata_birthorder)
+summary(m_big5_neu_uterus_alive_covariates)
+plot_birthorder(m_big5_neu_uterus_alive_covariates)
+
+# big5_neu - uterus_preg
+m_big5_neu_uterus_preg = lm(big5_neu ~ count_birthorder_uterus_preg,
+                            data = alldata_birthorder)
+summary(m_big5_neu_uterus_preg)
+plot_birthorder(m_big5_neu_uterus_preg)
+
+# big5_neu - genes
+m_big5_neu_genes = lm(big5_neu ~ count_birthorder_genes,
+                            data = alldata_birthorder)
+summary(m_big5_neu_genes)
+plot_birthorder(m_big5_neu_genes)
+
+## Aggreableness
+# big5_agree - uterus_alive
+m_big5_agree_uterus_alive = lm(big5_agree ~ count_birthorder_uterus_alive,
+                            data = alldata_birthorder)
+summary(m_big5_agree_uterus_alive)
+plot_birthorder(m_big5_agree_uterus_alive)
+
+m_big5_agree_uterus_alive_covariates = lm(big5_agree ~ count_birthorder_uterus_alive +
+                                         birthyear + male,
+                            data = alldata_birthorder)
+summary(m_big5_agree_uterus_alive_covariates)
+plot_birthorder(m_big5_agree_uterus_alive_covariates)
+
+
+# big5_agree - uterus_preg
+m_big5_agree_uterus_preg = lm(big5_agree ~ count_birthorder_uterus_preg,
+                            data = alldata_birthorder)
+summary(m_big5_agree_uterus_preg)
+plot_birthorder(m_big5_agree_uterus_preg)
+
+# big5_agree - genes
+m_big5_agree_genes = lm(big5_agree ~ count_birthorder_genes,
+                            data = alldata_birthorder)
+summary(m_big5_agree_genes)
+plot_birthorder(m_big5_agree_genes)
+
+## Conscientiousness
+# big5_con - uterus_alive
+m_big5_con_uterus_alive = lm(big5_con ~ count_birthorder_uterus_alive,
+                            data = alldata_birthorder)
+summary(m_big5_con_uterus_alive)
+plot_birthorder(m_big5_con_uterus_alive)
+
+m_big5_con_uterus_alive_covariates = lm(big5_con ~ count_birthorder_uterus_alive +
+                                         birthyear + male,
+                            data = alldata_birthorder)
+summary(m_big5_con_uterus_alive_covariates)
+plot_birthorder(m_big5_con_uterus_alive_covariates)
+
+# big5_con - uterus_preg
+m_big5_con_uterus_preg = lm(big5_con ~ count_birthorder_uterus_preg,
+                            data = alldata_birthorder)
+summary(m_big5_con_uterus_preg)
+plot_birthorder(m_big5_con_uterus_preg)
+
+# big5_con - genes
+m_big5_con_genes = lm(big5_con ~ count_birthorder_genes,
+                            data = alldata_birthorder)
+summary(m_big5_con_genes)
+plot_birthorder(m_big5_con_genes)</code></pre>
+</div>
+<div id="risk" class="section level2">
+<h2>Risk</h2>
+<pre class="r"><code>### Risk A
+## Risk A - Uterus alive
+m_riskA_uterus_alive = lm(riskA ~ count_birthorder_uterus_alive,
+                            data = alldata_birthorder)
+summary(m_riskA_uterus_alive)
+plot_birthorder(m_riskA_uterus_alive)
+
+m_riskA_uterus_alive_covariates = lm(riskA ~ count_birthorder_uterus_alive +
+                                         birthyear + male,
+                            data = alldata_birthorder)
+summary(m_riskA_uterus_alive_covariates)
+plot_birthorder(m_riskA_uterus_alive_covariates)
+
+
+## Risk A - Uterus preg
+m_riskA_uterus_preg = lm(riskA ~ count_birthorder_uterus_preg,
+                            data = alldata_birthorder)
+summary(m_riskA_uterus_preg)
+plot_birthorder(m_riskA_uterus_preg)
+
+## Risk A - genes
+m_riskA_genes = lm(riskA ~ count_birthorder_genes,
+                            data = alldata_birthorder)
+summary(m_riskA_genes)
+plot_birthorder(m_riskA_genes)
+
+### Risk B
+## Risk B - Uterus alive
+m_riskB_uterus_alive = lm(riskB ~ count_birthorder_uterus_alive,
+                            data = alldata_birthorder)
+summary(m_riskB_uterus_alive)
+plot_birthorder(m_riskB_uterus_alive)
+
+m_riskB_uterus_alive_covariates = lm(riskB ~ count_birthorder_uterus_alive +
+                                         birthyear + male,
+                            data = alldata_birthorder)
+summary(m_riskB_uterus_alive_covariates)
+plot_birthorder(m_riskB_uterus_alive_covariates)
+
+
+## Risk B - Uterus preg
+m_riskB_uterus_preg = lm(riskB ~ count_birthorder_uterus_preg,
+                            data = alldata_birthorder)
+summary(m_riskB_uterus_preg)
+plot_birthorder(m_riskB_uterus_preg)
+
+## Risk B - genes
+m_riskB_genes = lm(riskB ~ count_birthorder_genes,
+                            data = alldata_birthorder)
+summary(m_riskB_genes)
+plot_birthorder(m_riskB_genes)</code></pre>
+</div>
+<div id="between-family-data" class="section level2">
+<h2>Between Family data</h2>
+<pre class="r"><code>check = alldata_birthorder %&gt;% filter(!is.na(g_factor), !is.na(sibling_count_genes))
+m_g_factor_uterus_alive_no = lm(g_factor ~ birthorder_uterus_alive_factor  +
+                             sibling_count_uterus_alive_factor,
+                             data = alldata_birthorder)
+summary(m_g_factor_uterus_alive_no)
+
+m_g_factor_uterus_preg_no = lm(g_factor ~ birthorder_uterus_preg_factor  +
+                             sibling_count_uterus_preg_factor,
+                             data = alldata_birthorder)
+anova(m_g_factor_uterus_preg_no)
+
+m_g_factor_genes_no = lm(g_factor ~ birthorder_genes_factor  +
+                             sibling_count_genes_factor,
+                             data = alldata_birthorder)
+anova(m_g_factor_genes_no)
+
+m_g_factor_uterus_alive = lm(g_factor ~ birthorder_uterus_alive_factor  +
+                             sibling_count_uterus_alive_factor  + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_g_factor_uterus_alive)
+summary(m_g_factor_uterus_alive)
+plot(allEffects(m_g_factor_uterus_alive))
+
+m_g_factor_uterus_preg = lm(g_factor ~ birthorder_uterus_preg_factor  +
+                             sibling_count_uterus_preg_factor  + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_g_factor_uterus_preg)
+summary(m_g_factor_uterus_preg)
+
+m_g_factor_genes = lm(g_factor ~ birthorder_genes_factor  +
+                             sibling_count_genes_factor  + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_g_factor_genes)
+summary(m_g_factor_genes)
+
+check = alldata_birthorder %&gt;% filter(!is.na(big5_ext), !is.na(sibling_count_genes))
+m_big5_ext_uterus_alive_no = lm(big5_ext ~ birthorder_uterus_alive_factor  +
+                             sibling_count_uterus_alive_factor,
+                             data = alldata_birthorder)
+summary(m_big5_ext_uterus_alive_no)
+anova(m_big5_ext_uterus_alive_no)
+
+m_big5_ext_uterus_preg_no = lm(big5_ext ~ birthorder_uterus_preg_factor  +
+                             sibling_count_uterus_preg_factor,
+                             data = alldata_birthorder)
+summary(m_big5_ext_uterus_preg_no)
+anova(m_big5_ext_uterus_preg_no)
+
+m_big5_ext_genes_no = lm(big5_ext ~ birthorder_genes_factor  +
+                             sibling_count_genes_factor,
+                             data = alldata_birthorder)
+summary(m_big5_ext_genes_no)
+anova(m_big5_ext_genes_no)
+
+
+m_big5_ext_uterus_alive = lm(big5_ext ~ birthorder_uterus_alive_factor  +
+                             sibling_count_uterus_alive_factor  + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_big5_ext_uterus_alive)
+summary(m_big5_ext_uterus_alive)
+
+plot(allEffects(m_big5_ext_uterus_alive))
+
+
+
+m_big5_ext_uterus_preg = lm(big5_ext ~ birthorder_uterus_preg_factor  +
+                             sibling_count_uterus_preg_factor  + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_big5_ext_uterus_preg)
+plot(allEffects(m_big5_ext_uterus_preg))
+
+m_big5_ext_genes = lm(big5_ext ~ birthorder_genes_factor  +
+                             sibling_count_genes_factor  + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_big5_ext_genes)
+plot(allEffects(m_big5_ext_genes))
+
+m_big5_neu_uterus_alive_no = lm(big5_neu ~ birthorder_uterus_alive_factor  +
+                             sibling_count_uterus_alive_factor,
+                             data = alldata_birthorder)
+anova(m_big5_neu_uterus_alive_no)
+summary(m_big5_neu_uterus_alive_no)
+
+m_big5_neu_uterus_preg_no = lm(big5_neu ~ birthorder_uterus_preg_factor  +
+                             sibling_count_uterus_preg_factor,
+                             data = alldata_birthorder)
+anova(m_big5_neu_uterus_preg_no)
+summary(m_big5_neu_uterus_preg_no)
+
+m_big5_neu_genes_no = lm(big5_neu ~ birthorder_genes_factor  +
+                             sibling_count_genes_factor,
+                             data = alldata_birthorder)
+anova(m_big5_neu_genes_no)
+summary(m_big5_neu_genes_no)
+
+
+m_big5_neu_uterus_alive = lm(big5_neu ~ birthorder_uterus_alive_factor  +
+                             sibling_count_uterus_alive_factor + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_big5_neu_uterus_alive)
+summary(m_big5_neu_uterus_alive)
+plot(allEffects(m_big5_neu_uterus_alive))
+
+m_big5_neu_uterus_preg = lm(big5_neu ~ birthorder_uterus_preg_factor  +
+                             sibling_count_uterus_preg_factor + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_big5_neu_uterus_preg)
+summary(m_big5_neu_uterus_preg)
+
+m_big5_neu_genes = lm(big5_neu ~ birthorder_genes_factor  +
+                             sibling_count_genes_factor + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_big5_neu_genes)
+summary(m_big5_neu_genes)
+
+m_big5_con_uterus_alive_no = lm(big5_con ~ birthorder_uterus_alive_factor  +
+                             sibling_count_uterus_alive_factor,
+                             data = alldata_birthorder)
+anova(m_big5_con_uterus_alive_no)
+summary(m_big5_con_uterus_alive_no)
+
+m_big5_con_uterus_preg_no = lm(big5_con ~ birthorder_uterus_preg_factor  +
+                             sibling_count_uterus_preg_factor,
+                             data = alldata_birthorder)
+anova(m_big5_con_uterus_preg_no)
+summary(m_big5_con_uterus_preg_no)
+
+m_big5_con_genes_no = lm(big5_con ~ birthorder_genes_factor  +
+                             sibling_count_genes_factor,
+                             data = alldata_birthorder)
+anova(m_big5_con_genes_no)
+summary(m_big5_con_genes_no)
+
+m_big5_con_uterus_alive = lm(big5_con ~ birthorder_uterus_alive_factor  +
+                             sibling_count_uterus_alive_factor+ birthyear + male,
+                             data = alldata_birthorder)
+anova(m_big5_con_uterus_alive)
+summary(m_big5_con_uterus_alive)
+plot(allEffects(m_big5_con_uterus_alive))
+
+m_big5_con_uterus_preg = lm(big5_con ~ birthorder_uterus_preg_factor  +
+                             sibling_count_uterus_preg_factor+ birthyear + male,
+                             data = alldata_birthorder)
+anova(m_big5_con_uterus_preg)
+summary(m_big5_con_uterus_preg)
+
+m_big5_con_genes = lm(big5_con ~ birthorder_genes_factor  +
+                             sibling_count_genes_factor+ birthyear + male,
+                             data = alldata_birthorder)
+anova(m_big5_con_genes)
+summary(m_big5_con_genes)
+
+m_big5_agree_uterus_alive_no = lm(big5_agree ~ birthorder_uterus_alive_factor  +
+                             sibling_count_uterus_alive_factor,
+                             data = alldata_birthorder)
+anova(m_big5_agree_uterus_alive_no)
+summary(m_big5_agree_uterus_alive_no)
+
+m_big5_agree_uterus_preg_no = lm(big5_agree ~ birthorder_uterus_preg_factor  +
+                             sibling_count_uterus_preg_factor,
+                             data = alldata_birthorder)
+anova(m_big5_agree_uterus_preg_no)
+summary(m_big5_agree_uterus_preg_no)
+
+m_big5_agree_genes_no = lm(big5_agree ~ birthorder_genes_factor  +
+                             sibling_count_genes_factor,
+                             data = alldata_birthorder)
+anova(m_big5_agree_genes_no)
+summary(m_big5_agree_genes_no)
+
+m_big5_agree_uterus_alive = lm(big5_agree ~ birthorder_uterus_alive_factor  +
+                             sibling_count_uterus_alive_factor + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_big5_agree_uterus_alive)
+plot(allEffects(m_big5_agree_uterus_alive))
+
+m_big5_agree_uterus_preg = lm(big5_agree ~ birthorder_uterus_preg_factor  +
+                             sibling_count_uterus_preg_factor + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_big5_agree_uterus_preg)
+
+m_big5_agree_genes = lm(big5_agree ~ birthorder_genes_factor  +
+                             sibling_count_genes_factor + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_big5_agree_genes)
+
+m_big5_open_uterus_alive_no = lm(big5_open ~ birthorder_uterus_alive_factor  + 
+                             sibling_count_uterus_alive_factor,
+                             data = alldata_birthorder)
+summary(m_big5_open_uterus_alive_no)
+
+m_big5_open_uterus_preg_no = lm(big5_open ~ birthorder_uterus_preg_factor  + 
+                             sibling_count_uterus_preg_factor,
+                             data = alldata_birthorder)
+anova(m_big5_open_uterus_preg_no)
+
+m_big5_open_genes_no = lm(big5_open ~ birthorder_genes_factor  + 
+                             sibling_count_genes_factor,
+                             data = alldata_birthorder)
+anova(m_big5_open_genes_no)
+
+m_big5_open_uterus_alive = lm(big5_open ~ birthorder_uterus_alive_factor  + 
+                             sibling_count_uterus_alive_factor + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_big5_open_uterus_alive)
+summary(m_big5_open_uterus_alive)
+plot(allEffects(m_big5_open_uterus_alive))
+
+m_big5_open_uterus_preg = lm(big5_open ~ birthorder_uterus_preg_factor  + 
+                             sibling_count_uterus_preg_factor + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_big5_open_uterus_preg)
+summary(m_big5_open_uterus_preg)
+
+m_big5_open_genes = lm(big5_open ~ birthorder_genes_factor  + 
+                             sibling_count_genes_factor + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_big5_open_genes)
+summary(m_big5_open_genes)
+
+check = alldata_birthorder %&gt;% filter(!is.na(riskA), !is.na(sibling_count_genes))
+
+
+m_riskA_uterus_alive_no = lm(riskA ~ birthorder_uterus_alive_factor  +
+                             sibling_count_uterus_alive_factor,
+                             data = alldata_birthorder)
+anova(m_riskA_uterus_alive_no)
+
+m_riskA_uterus_preg_no = lm(riskA ~ birthorder_uterus_preg_factor  +
+                             sibling_count_uterus_preg_factor,
+                             data = alldata_birthorder)
+anova(m_riskA_uterus_preg_no)
+summary(m_riskA_uterus_preg_no)
+plot(allEffects(m_riskA_uterus_preg_no))
+
+m_riskA_genes_no = lm(riskA ~ birthorder_genes_factor  +
+                             sibling_count_genes_factor,
+                             data = alldata_birthorder)
+anova(m_riskA_genes_no)
+
+m_riskA_uterus_alive = lm(riskA ~ birthorder_uterus_alive_factor  +
+                             sibling_count_uterus_alive_factor  + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_riskA_uterus_alive)
+plot(allEffects(m_riskA_uterus_alive))
+
+m_riskA_uterus_preg = lm(riskA ~ birthorder_uterus_preg_factor  +
+                             sibling_count_uterus_preg_factor  + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_riskA_uterus_preg)
+summary(m_riskA_uterus_preg)
+plot(allEffects(m_riskA_uterus_preg))
+
+m_riskA_genes = lm(riskA ~ birthorder_genes_factor  +
+                             sibling_count_genes_factor  + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_riskA_genes)
+summary(m_riskA_genes)
+plot(allEffects(m_riskA_genes))
+
+check = alldata_birthorder %&gt;% filter(!is.na(riskB), !is.na(sibling_count_genes))
+m_riskB_uterus_alive_no = lm(riskB ~ birthorder_uterus_alive_factor  + 
+                             sibling_count_uterus_alive_factor,
+                             data = alldata_birthorder)
+anova(m_riskB_uterus_alive_no)
+
+m_riskB_uterus_preg_no = lm(riskB ~ birthorder_uterus_preg_factor  + 
+                             sibling_count_uterus_preg_factor,
+                             data = alldata_birthorder)
+anova(m_riskB_uterus_preg_no)
+
+m_riskB_genes_no = lm(riskB ~ birthorder_genes_factor  + 
+                             sibling_count_genes_factor,
+                             data = alldata_birthorder)
+anova(m_riskB_genes_no)
+
+m_riskB_uterus_alive = lm(riskB ~ birthorder_uterus_alive_factor  + 
+                             sibling_count_uterus_alive_factor + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_riskB_uterus_alive)
+plot(allEffects(m_riskB_uterus_alive))
+
+m_riskB_uterus_preg = lm(riskB ~ birthorder_uterus_preg_factor  +
+                             sibling_count_uterus_preg_factor  + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_riskB_uterus_preg)
+plot(allEffects(m_riskB_uterus_preg))
+
+m_riskB_genes = lm(riskB ~ birthorder_genes_factor  +
+                             sibling_count_genes_factor  + birthyear + male,
+                             data = alldata_birthorder)
+anova(m_riskB_genes)
+plot(allEffects(m_riskB_genes))</code></pre>
+</div>
+<div id="intelligence---within-family-analysis" class="section level2">
+<h2>Intelligence - Within Family Analysis</h2>
+<pre class="r"><code>### Main Test: G-Factor
+## Main Test: G-Factor - uterus_alive
+# Without covariates
+lme_g_factor_uterus_alive = lmer(g_factor ~ count_birthorder_uterus_alive +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_g_factor_uterus_alive)
+
+plot_birthorder(lme_g_factor_uterus_alive)
+# With covariates
+lme_g_factor_uterus_alive_covariates = lmer(g_factor ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_g_factor_uterus_alive_covariates)
+plot_birthorder(lme_g_factor_uterus_alive_covariates)
+
+## Main Test: G-Factor - uterus_preg
+# Without covariates
+lme_g_factor_uterus_preg = lmer(g_factor ~ count_birthorder_uterus_preg +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_g_factor_uterus_preg)
+plot_birthorder(lme_g_factor_uterus_preg)
+# With covariates
+lme_g_factor_uterus_preg_covariates = lmer(g_factor ~ count_birthorder_uterus_preg +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_g_factor_uterus_preg_covariates)
+plot_birthorder(lme_g_factor_uterus_preg_covariates)
+
+## Main Test: G-Factor - genes
+# Without covariates
+lme_g_factor_genes = lmer(g_factor ~ count_birthorder_genes +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_g_factor_genes)
+plot_birthorder(lme_g_factor_genes)
+# With covariates
+lme_g_factor_genes_covariates = lmer(g_factor ~ count_birthorder_genes +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_g_factor_genes_covariates)
+plot_birthorder(lme_g_factor_genes_covariates)
+anova(lme_g_factor_genes_covariates)
+
+### Raven
+## Raven - uterus_alive
+# Without covariates
+lme_raven_uterus_alive = lmer(raven ~ count_birthorder_uterus_alive +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_raven_uterus_alive)
+plot_birthorder(lme_raven_uterus_alive)
+# With covariates
+lme_raven_uterus_alive_covariates = lmer(raven ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_raven_uterus_alive_covariates)
+plot_birthorder(lme_raven_uterus_alive_covariates)
+
+## Raven - uterus_preg
+# Without covariates
+lme_raven_uterus_preg = lmer(raven ~ count_birthorder_uterus_preg +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_raven_uterus_preg)
+plot_birthorder(lme_raven_uterus_preg)
+# With covariates
+lme_raven_uterus_preg_covariates = lmer(raven ~ count_birthorder_uterus_preg +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_raven_uterus_preg_covariates)
+plot_birthorder(lme_raven_uterus_preg_covariates)
+
+## Raven - genes
+# Without covariates
+lme_raven_genes = lmer(raven ~ count_birthorder_genes +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_raven_genes)
+plot_birthorder(lme_raven_genes)
+# With covariates
+lme_raven_genes_covariates = lmer(raven ~ count_birthorder_genes +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_raven_genes_covariates)
+plot_birthorder(lme_raven_genes_covariates)
+
+### math
+## math - uterus_alive
+# Without covariates
+lme_math_uterus_alive = lmer(math ~ count_birthorder_uterus_alive +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_math_uterus_alive)
+plot_birthorder(lme_math_uterus_alive)
+# With covariates
+lme_math_uterus_alive_covariates = lmer(math ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_math_uterus_alive_covariates)
+plot_birthorder(lme_math_uterus_alive_covariates)
+
+## math - uterus_preg
+# Without covariates
+lme_math_uterus_preg = lmer(math ~ count_birthorder_uterus_preg +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_math_uterus_preg)
+plot_birthorder(lme_math_uterus_preg)
+# With covariates
+lme_math_uterus_preg_covariates = lmer(math ~ count_birthorder_uterus_preg +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_math_uterus_preg_covariates)
+plot_birthorder(lme_math_uterus_preg_covariates)
+
+## math - genes
+# Without covariates
+lme_math_genes = lmer(math ~ count_birthorder_genes +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_math_genes)
+plot_birthorder(lme_math_genes)
+# With covariates
+lme_math_genes_covariates = lmer(math ~ count_birthorder_genes +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_math_genes_covariates)
+plot_birthorder(lme_math_genes_covariates)
+
+
+### count_backwards
+## count_backwards - uterus_alive
+# Without covariates
+lme_count_backwards_uterus_alive = lmer(count_backwards ~ count_birthorder_uterus_alive +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_count_backwards_uterus_alive)
+plot_birthorder(lme_count_backwards_uterus_alive)
+# With covariates
+lme_count_backwards_uterus_alive_covariates = lmer(count_backwards ~
+                                                    count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_count_backwards_uterus_alive_covariates)
+plot_birthorder(lme_count_backwards_uterus_alive_covariates)
+
+## count_backwards - uterus_preg
+# Without covariates
+lme_count_backwards_uterus_preg = lmer(count_backwards ~ count_birthorder_uterus_preg +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_count_backwards_uterus_preg)
+plot_birthorder(lme_count_backwards_uterus_preg)
+# With covariates
+lme_count_backwards_uterus_preg_covariates = lmer(count_backwards ~
+                                                   count_birthorder_uterus_preg +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_count_backwards_uterus_preg_covariates)
+plot_birthorder(lme_count_backwards_uterus_preg_covariates)
+
+## count_backwards - genes
+# Without covariates
+lme_count_backwards_genes = lmer(count_backwards ~ count_birthorder_genes +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_count_backwards_genes)
+plot_birthorder(lme_count_backwards_genes)
+# With covariates
+lme_count_backwards_genes_covariates = lmer(count_backwards ~ count_birthorder_genes +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_count_backwards_genes_covariates)
+plot_birthorder(lme_count_backwards_genes_covariates)
+
+
+### words_remembered_avg
+## words_remembered_avg - uterus_alive
+# Without covariates
+lme_words_remembered_avg_uterus_alive = lmer(words_remembered_avg ~
+                                               count_birthorder_uterus_alive +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_words_remembered_avg_uterus_alive)
+plot_birthorder(lme_words_remembered_avg_uterus_alive)
+# With covariates
+lme_words_remembered_avg_uterus_alive_covariates = lmer(words_remembered_avg ~
+                                                    count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_words_remembered_avg_uterus_alive_covariates)
+plot_birthorder(lme_words_remembered_avg_uterus_alive_covariates)
+
+## words_remembered_avg - uterus_preg
+# Without covariates
+lme_words_remembered_avg_uterus_preg = lmer(words_remembered_avg ~
+                                              count_birthorder_uterus_preg +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_words_remembered_avg_uterus_preg)
+plot_birthorder(lme_words_remembered_avg_uterus_preg)
+# With covariates
+lme_words_remembered_avg_uterus_preg_covariates = lmer(words_remembered_avg ~
+                                                   count_birthorder_uterus_preg +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_words_remembered_avg_uterus_preg_covariates)
+plot_birthorder(lme_words_remembered_avg_uterus_preg_covariates)
+
+## words_remembered_avg - genes
+# Without covariates
+lme_words_remembered_avg_genes = lmer(words_remembered_avg ~ count_birthorder_genes +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_words_remembered_avg_genes)
+plot_birthorder(lme_words_remembered_avg_genes)
+# With covariates
+lme_words_remembered_avg_genes_covariates = lmer(words_remembered_avg ~
+                                                  count_birthorder_genes +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_words_remembered_avg_genes_covariates)
+plot_birthorder(lme_words_remembered_avg_genes_covariates)
+
+### adaptive_numbering
+## adaptive_numbering - uterus_alive
+# Without covariates
+lme_adaptive_numbering_uterus_alive = lmer(adaptive_numbering ~
+                                             count_birthorder_uterus_alive +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_adaptive_numbering_uterus_alive)
+plot_birthorder(lme_adaptive_numbering_uterus_alive)
+# With covariates
+lme_adaptive_numbering_uterus_alive_covariates = lmer(adaptive_numbering ~
+                                                       count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_adaptive_numbering_uterus_alive_covariates)
+plot_birthorder(lme_adaptive_numbering_uterus_alive_covariates)
+
+## adaptive_numbering - uterus_preg
+# Without covariates
+lme_adaptive_numbering_uterus_preg = lmer(adaptive_numbering ~
+                                            count_birthorder_uterus_preg +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_adaptive_numbering_uterus_preg)
+plot_birthorder(lme_adaptive_numbering_uterus_preg)
+# With covariates
+lme_adaptive_numbering_uterus_preg_covariates = lmer(adaptive_numbering ~
+                                                      count_birthorder_uterus_preg +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_adaptive_numbering_uterus_preg_covariates)
+plot_birthorder(lme_adaptive_numbering_uterus_preg_covariates)
+
+## adaptive_numbering - genes
+# Without covariates
+lme_adaptive_numbering_genes = lmer(adaptive_numbering ~ count_birthorder_genes +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_adaptive_numbering_genes)
+plot_birthorder(lme_adaptive_numbering_genes)
+# With covariates
+lme_adaptive_numbering_genes_covariates = lmer(adaptive_numbering ~ 
+                                                count_birthorder_genes +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_adaptive_numbering_genes_covariates)
+plot_birthorder(lme_adaptive_numbering_genes_covariates)</code></pre>
+</div>
+<div id="personality---within-family-analysis" class="section level2">
+<h2>Personality - Within Family Analysis</h2>
+<pre class="r"><code>### big5_open
+## big5_open - uterus_alive
+# Without covariates
+lme_big5_open_uterus_alive = lmer(big5_open ~ count_birthorder_uterus_alive +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_big5_open_uterus_alive)
+plot_birthorder(lme_big5_open_uterus_alive)
+# With covariates
+lme_big5_open_uterus_alive_covariates = lmer(big5_open ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_big5_open_uterus_alive_covariates)
+plot_birthorder(lme_big5_open_uterus_alive_covariates)
+
+## big5_open - uterus_preg
+# Without covariates
+lme_big5_open_uterus_preg = lmer(big5_open ~ count_birthorder_uterus_preg +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_big5_open_uterus_preg)
+plot_birthorder(lme_big5_open_uterus_preg)
+# With covariates
+lme_big5_open_uterus_preg_covariates = lmer(big5_open ~ count_birthorder_uterus_preg +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_big5_open_uterus_preg_covariates)
+plot_birthorder(lme_big5_open_uterus_preg_covariates)
+
+## big5_open - genes
+# Without covariates
+lme_big5_open_genes = lmer(big5_open ~ count_birthorder_genes +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_big5_open_genes)
+plot_birthorder(lme_big5_open_genes)
+# With covariates
+lme_big5_open_genes_covariates = lmer(big5_open ~ count_birthorder_genes +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_big5_open_genes_covariates)
+plot_birthorder(lme_big5_open_genes_covariates)
+
+### big5_ext
+## big5_ext - uterus_alive
+# Without covariates
+lme_big5_ext_uterus_alive = lmer(big5_ext ~ count_birthorder_uterus_alive +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_big5_ext_uterus_alive)
+plot_birthorder(lme_big5_ext_uterus_alive)
+# With covariates
+lme_big5_ext_uterus_alive_covariates = lmer(big5_ext ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_big5_ext_uterus_alive_covariates)
+plot_birthorder(lme_big5_ext_uterus_alive_covariates)
+
+## big5_ext - uterus_preg
+# Without covariates
+lme_big5_ext_uterus_preg = lmer(big5_ext ~ count_birthorder_uterus_preg +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_big5_ext_uterus_preg)
+plot_birthorder(lme_big5_ext_uterus_preg)
+# With covariates
+lme_big5_ext_uterus_preg_covariates = lmer(big5_ext ~ count_birthorder_uterus_preg +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_big5_ext_uterus_preg_covariates)
+plot_birthorder(lme_big5_ext_uterus_preg_covariates)
+
+## big5_ext - genes
+# Without covariates
+lme_big5_ext_genes = lmer(big5_ext ~ count_birthorder_genes +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_big5_ext_genes)
+plot_birthorder(lme_big5_ext_genes)
+# With covariates
+lme_big5_ext_genes_covariates = lmer(big5_ext ~ count_birthorder_genes +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_big5_ext_genes_covariates)
+plot_birthorder(lme_big5_ext_genes_covariates)
+
+### big5_neu
+## big5_neu - uterus_alive
+# Without covariates
+lme_big5_neu_uterus_alive = lmer(big5_neu ~ count_birthorder_uterus_alive +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_big5_neu_uterus_alive)
+plot_birthorder(lme_big5_neu_uterus_alive)
+# With covariates
+lme_big5_neu_uterus_alive_covariates = lmer(big5_neu ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_big5_neu_uterus_alive_covariates)
+plot_birthorder(lme_big5_neu_uterus_alive_covariates)
+
+## big5_neu - uterus_preg
+# Without covariates
+lme_big5_neu_uterus_preg = lmer(big5_neu ~ count_birthorder_uterus_preg +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_big5_neu_uterus_preg)
+plot_birthorder(lme_big5_neu_uterus_preg)
+# With covariates
+lme_big5_neu_uterus_preg_covariates = lmer(big5_neu ~ count_birthorder_uterus_preg +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_big5_neu_uterus_preg_covariates)
+plot_birthorder(lme_big5_neu_uterus_preg_covariates)
+
+## big5_neu - genes
+# Without covariates
+lme_big5_neu_genes = lmer(big5_neu ~ count_birthorder_genes +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_big5_neu_genes)
+plot_birthorder(lme_big5_neu_genes)
+# With covariates
+lme_big5_neu_genes_covariates = lmer(big5_neu ~ count_birthorder_genes +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_big5_neu_genes_covariates)
+plot_birthorder(lme_big5_neu_genes_covariates)
+
+### big5_agree
+## big5_agree - uterus_alive
+# Without covariates
+lme_big5_agree_uterus_alive = lmer(big5_agree ~ count_birthorder_uterus_alive +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_big5_agree_uterus_alive)
+plot_birthorder(lme_big5_agree_uterus_alive)
+# With covariates
+lme_big5_agree_uterus_alive_covariates = lmer(big5_agree ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_big5_agree_uterus_alive_covariates)
+plot_birthorder(lme_big5_agree_uterus_alive_covariates)
+
+## big5_agree - uterus_preg
+# Without covariates
+lme_big5_agree_uterus_preg = lmer(big5_agree ~ count_birthorder_uterus_preg +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_big5_agree_uterus_preg)
+plot_birthorder(lme_big5_agree_uterus_preg)
+# With covariates
+lme_big5_agree_uterus_preg_covariates = lmer(big5_agree ~ count_birthorder_uterus_preg +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_big5_agree_uterus_preg_covariates)
+plot_birthorder(lme_big5_agree_uterus_preg_covariates)
+
+## big5_agree - genes
+# Without covariates
+lme_big5_agree_genes = lmer(big5_agree ~ count_birthorder_genes +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_big5_agree_genes)
+plot_birthorder(lme_big5_agree_genes)
+# With covariates
+lme_big5_agree_genes_covariates = lmer(big5_agree ~ count_birthorder_genes +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_big5_agree_genes_covariates)
+plot_birthorder(lme_big5_agree_genes_covariates)
+
+
+### big5_con
+## big5_con - uterus_alive
+# Without covariates
+lme_big5_con_uterus_alive = lmer(big5_con ~ count_birthorder_uterus_alive +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_big5_con_uterus_alive)
+plot_birthorder(lme_big5_con_uterus_alive)
+# With covariates
+lme_big5_con_uterus_alive_covariates = lmer(big5_con ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_big5_con_uterus_alive_covariates)
+plot_birthorder(lme_big5_con_uterus_alive_covariates)
+
+## big5_con - uterus_preg
+# Without covariates
+lme_big5_con_uterus_preg = lmer(big5_con ~ count_birthorder_uterus_preg +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_big5_con_uterus_preg)
+plot_birthorder(lme_big5_con_uterus_preg)
+# With covariates
+lme_big5_con_uterus_preg_covariates = lmer(big5_con ~ count_birthorder_uterus_preg +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_big5_con_uterus_preg_covariates)
+plot_birthorder(lme_big5_con_uterus_preg_covariates)
+
+## big5_con - genes
+# Without covariates
+lme_big5_con_genes = lmer(big5_con ~ count_birthorder_genes +
+                                   (1 | mother_pidlink), data = alldata_birthorder)
+summary(lme_big5_con_genes)
+plot_birthorder(lme_big5_con_genes)
+# With covariates
+lme_big5_con_genes_covariates = lmer(big5_con ~ count_birthorder_genes +
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder)
+summary(lme_big5_con_genes_covariates)
+plot_birthorder(lme_big5_con_genes_covariates)</code></pre>
+</div>
+<div id="within-family-data" class="section level2">
+<h2>Within Family data</h2>
+<pre class="r"><code>lme_g_factor_uterus_alive_no = lmer(g_factor ~ birthorder_uterus_alive_factor +
+                                 sibling_count_uterus_alive_factor + 
+                                             (1 | mother_pidlink),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_g_factor_uterus_alive_no, ddf = &quot;kenw&quot;)
+summary(lme_g_factor_uterus_alive_no, ddf = &quot;kenw&quot;)
+
+lme_g_factor_uterus_preg_no = lmer(g_factor ~ birthorder_uterus_preg_factor +
+                                 sibling_count_uterus_preg_factor + 
+                                             (1 | mother_pidlink),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_g_factor_uterus_preg_no, ddf = &quot;kenw&quot;)
+
+lme_g_factor_genes_no = lmer(g_factor ~ birthorder_genes_factor +
+                                 sibling_count_genes_factor + 
+                                             (1 | marriage_id),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_g_factor_genes_no, ddf = &quot;kenw&quot;)
+
+
+lme_g_factor_uterus_alive = lmer(g_factor ~ birthorder_uterus_alive_factor +
+                                 sibling_count_uterus_alive_factor + 
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+
+anova(lme_g_factor_uterus_alive, ddf=&quot;kenw&quot;)
+summary(lme_g_factor_uterus_alive, ddf=&quot;kenw&quot;)
+
+lme_g_factor_uterus_preg = lmer(g_factor ~ birthorder_uterus_preg_factor +
+                                 sibling_count_uterus_preg_factor + 
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+
+anova(lme_g_factor_uterus_preg, ddf=&quot;kenw&quot;)
+
+lme_g_factor_genes = lmer(g_factor ~ birthorder_genes_factor +
+                                 sibling_count_genes_factor + 
+                                             (1 | marriage_id) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+
+anova(lme_g_factor_genes, ddf=&quot;kenw&quot;)
+
+lme_big5_ext_uterus_alive_no = lmer(big5_ext ~ birthorder_uterus_alive_factor +
+                                 sibling_count_uterus_alive_factor + 
+                                             (1 | mother_pidlink),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_ext_uterus_alive_no, ddf=&quot;kenw&quot;)
+summary(lme_big5_ext_uterus_alive_no, ddf=&quot;kenw&quot;)
+
+lme_big5_ext_uterus_preg_no = lmer(big5_ext ~ birthorder_uterus_preg_factor +
+                                 sibling_count_uterus_preg_factor + 
+                                             (1 | mother_pidlink),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_ext_uterus_preg_no, ddf=&quot;kenw&quot;)
+
+lme_big5_ext_genes_no = lmer(big5_ext ~ birthorder_genes_factor +
+                                 sibling_count_genes_factor + 
+                                             (1 | marriage_id),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_ext_genes_no, ddf=&quot;kenw&quot;)
+
+
+lme_big5_ext_uterus_alive = lmer(big5_ext ~ birthorder_uterus_alive_factor +
+                                 sibling_count_uterus_alive_factor + 
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_ext_uterus_alive, ddf=&quot;kenw&quot;)
+summary(lme_big5_ext_uterus_alive, ddf=&quot;kenw&quot;)
+
+lme_big5_ext_uterus_preg = lmer(big5_ext ~ birthorder_uterus_preg_factor +
+                                 sibling_count_uterus_preg_factor + 
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_ext_uterus_preg, ddf=&quot;kenw&quot;)
+
+lme_big5_ext_genes = lmer(big5_ext ~ birthorder_genes_factor +
+                                 sibling_count_genes_factor + 
+                                             (1 | marriage_id) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_ext_genes, ddf=&quot;kenw&quot;)
+
+lme_big5_neu_uterus_alive_no = lmer(big5_neu ~ birthorder_uterus_alive_factor +
+                                 sibling_count_uterus_alive_factor + 
+                                             (1 | mother_pidlink),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_neu_uterus_alive_no, dff = &quot;kenw&quot;)
+
+lme_big5_neu_uterus_preg_no = lmer(big5_neu ~ birthorder_uterus_preg_factor +
+                                 sibling_count_uterus_preg_factor + 
+                                             (1 | mother_pidlink),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_neu_uterus_preg_no, dff = &quot;kenw&quot;)
+
+lme_big5_neu_genes_no = lmer(big5_neu ~ birthorder_genes_factor +
+                                 sibling_count_genes_factor + 
+                                             (1 | marriage_id),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_neu_genes_no, dff = &quot;kenw&quot;)
+
+lme_big5_neu_uterus_alive = lmer(big5_neu ~ birthorder_uterus_alive_factor +
+                                 sibling_count_uterus_alive_factor + 
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_neu_uterus_alive, dff = &quot;kenw&quot;)
+
+lme_big5_neu_uterus_preg = lmer(big5_neu ~ birthorder_uterus_preg_factor +
+                                 sibling_count_uterus_preg_factor + 
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_neu_uterus_preg, dff = &quot;kenw&quot;)
+
+lme_big5_neu_genes = lmer(big5_neu ~ birthorder_genes_factor +
+                                 sibling_count_genes_factor + 
+                                             (1 | marriage_id) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_neu_genes, dff = &quot;kenw&quot;)
+
+
+lme_big5_con_uterus_alive_no = lmer(big5_con ~ birthorder_uterus_alive_factor +
+                                 sibling_count_uterus_alive_factor + 
+                                             (1 | mother_pidlink),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_con_uterus_alive_no, ddf = &quot;kenw&quot;)
+summary(lme_big5_con_uterus_alive_no, ddf = &quot;kenw&quot;)
+
+lme_big5_con_uterus_preg_no = lmer(big5_con ~ birthorder_uterus_preg_factor +
+                                 sibling_count_uterus_preg_factor + 
+                                             (1 | mother_pidlink),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_con_uterus_preg_no, ddf = &quot;kenw&quot;)
+
+lme_big5_con_genes_no = lmer(big5_con ~ birthorder_genes_factor +
+                                 sibling_count_genes_factor + 
+                                             (1 | marriage_id),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_con_genes_no, ddf = &quot;kenw&quot;)
+
+
+
+lme_big5_con_uterus_alive = lmer(big5_con ~ birthorder_uterus_alive_factor +
+                                 sibling_count_uterus_alive_factor + 
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_con_uterus_alive, ddf =&quot;kenw&quot;)
+plot(allEffects(lme_big5_con_uterus_alive))
+
+lme_big5_con_uterus_preg = lmer(big5_con ~ birthorder_uterus_preg_factor +
+                                 sibling_count_uterus_preg_factor + 
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_con_uterus_preg, ddf =&quot;kenw&quot;)
+
+lme_big5_con_genes = lmer(big5_con ~ birthorder_genes_factor +
+                                 sibling_count_genes_factor + 
+                                            (1 | marriage_id) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_con_genes, ddf =&quot;kenw&quot;)
+
+lme_big5_agree_uterus_alive_no = lmer(big5_agree ~ birthorder_uterus_alive_factor +
+                                 sibling_count_uterus_alive_factor + 
+                                             (1 | mother_pidlink),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_agree_uterus_alive_no, ddf = &quot;kenw&quot;)
+
+lme_big5_agree_uterus_preg_no = lmer(big5_agree ~ birthorder_uterus_preg_factor +
+                                 sibling_count_uterus_preg_factor + 
+                                             (1 | mother_pidlink),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_agree_uterus_preg_no, ddf = &quot;kenw&quot;)
+
+lme_big5_agree_genes_no = lmer(big5_agree ~ birthorder_genes_factor +
+                                 sibling_count_genes_factor + 
+                                             (1 | marriage_id),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_agree_genes_no, ddf = &quot;kenw&quot;)
+
+lme_big5_agree_uterus_alive = lmer(big5_agree ~ birthorder_uterus_alive_factor +
+                                 sibling_count_uterus_alive_factor + 
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_agree_uterus_alive, ddf =&quot;kenw&quot;)
+
+lme_big5_agree_uterus_preg = lmer(big5_agree ~ birthorder_uterus_preg_factor +
+                                 sibling_count_uterus_preg_factor + 
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_agree_uterus_preg, ddf =&quot;kenw&quot;)
+
+lme_big5_agree_genes = lmer(big5_agree ~ birthorder_genes_factor +
+                                 sibling_count_genes_factor +
+                                             (1 | marriage_id) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_agree_genes, ddf =&quot;kenw&quot;)
+
+lme_big5_open_uterus_alive_no = lmer(big5_open ~ birthorder_uterus_alive_factor +
+                                 sibling_count_uterus_alive_factor + 
+                                             (1 | mother_pidlink),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_open_uterus_alive_no, ddf= &quot;kenw&quot;)
+summary(lme_big5_open_uterus_alive_no, ddf= &quot;kenw&quot;)
+
+lme_big5_open_uterus_preg_no = lmer(big5_open ~ birthorder_uterus_preg_factor +
+                                 sibling_count_uterus_preg_factor + 
+                                             (1 | mother_pidlink),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_open_uterus_preg_no, ddf= &quot;kenw&quot;)
+
+lme_big5_open_genes_no = lmer(big5_open ~ birthorder_genes_factor +
+                                 sibling_count_genes_factor + 
+                                            (1 | marriage_id),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_open_genes_no, ddf= &quot;kenw&quot;)
+
+lme_big5_open_uterus_alive = lmer(big5_open ~ birthorder_uterus_alive_factor +
+                                 sibling_count_uterus_alive_factor + 
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_open_uterus_alive, ddf = &quot;kenw&quot;)
+summary(lme_big5_open_uterus_alive, ddf = &quot;kenw&quot;)
+
+lme_big5_open_uterus_preg = lmer(big5_open ~ birthorder_uterus_preg_factor +
+                                 sibling_count_uterus_preg_factor + 
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_open_uterus_preg, ddf = &quot;kenw&quot;)
+
+lme_big5_open_genes = lmer(big5_open ~ birthorder_genes_factor +
+                                 sibling_count_genes_factor + 
+                                             (1 | marriage_id) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_big5_open_genes, ddf = &quot;kenw&quot;)
+
+lme_riskA_uterus_alive_no = lmer(riskA ~ birthorder_uterus_alive_factor +
+                                 sibling_count_uterus_alive_factor + 
+                                             (1 | mother_pidlink),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_riskA_uterus_alive_no, ddf=&quot;kenw&quot;)
+
+lme_riskA_uterus_preg_no = lmer(riskA ~ birthorder_uterus_preg_factor +
+                                 sibling_count_uterus_preg_factor + 
+                                             (1 | mother_pidlink),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_riskA_uterus_preg_no, ddf=&quot;kenw&quot;)
+
+lme_riskA_genes_no = lmer(riskA ~ birthorder_genes_factor +
+                                 sibling_count_genes_factor + 
+                                             (1 | marriage_id),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_riskA_genes_no, ddf=&quot;kenw&quot;)
+
+lme_riskA_uterus_alive = lmer(riskA ~ birthorder_uterus_alive_factor +
+                                 sibling_count_uterus_alive_factor + 
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_riskA_uterus_alive, ddf=&quot;kenw&quot;)
+
+lme_riskA_uterus_preg = lmer(riskA ~ birthorder_uterus_preg_factor +
+                                 sibling_count_uterus_preg_factor + 
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_riskA_uterus_preg, ddf=&quot;kenw&quot;)
+summary(lme_riskA_uterus_preg, ddf=&quot;kenw&quot;)
+
+lme_riskA_genes = lmer(riskA ~ birthorder_genes_factor +
+                                 sibling_count_genes_factor + 
+                                             (1 | marriage_id) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_riskA_genes, ddf=&quot;kenw&quot;)
+
+
+lme_riskB_uterus_alive_no = lmer(riskB ~ birthorder_uterus_alive_factor +
+                                 sibling_count_uterus_alive_factor + 
+                                             (1 | mother_pidlink),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_riskB_uterus_alive_no, ddf=&quot;kenw&quot;)
+
+lme_riskB_uterus_preg_no = lmer(riskB ~ birthorder_uterus_preg_factor +
+                                 sibling_count_uterus_preg_factor + 
+                                             (1 | mother_pidlink),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_riskB_uterus_preg_no, ddf=&quot;kenw&quot;)
+summary(lme_riskB_uterus_preg_no, ddf=&quot;kenw&quot;)
+
+lme_riskB_genes_no = lmer(riskB ~ birthorder_genes_factor +
+                                 sibling_count_genes_factor + 
+                                             (1 | mother_pidlink),
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_riskB_genes_no, ddf=&quot;kenw&quot;)
+
+lme_riskB_uterus_alive = lmer(riskB ~ birthorder_uterus_alive_factor +
+                                 sibling_count_uterus_alive_factor + 
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_riskB_uterus_alive, ddf=&quot;kenw&quot; )
+
+lme_riskB_uterus_preg = lmer(riskB ~ birthorder_uterus_preg_factor +
+                                 sibling_count_uterus_preg_factor + 
+                                             (1 | mother_pidlink) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_riskB_uterus_preg, ddf=&quot;kenw&quot;)
+
+lme_riskB_genes = lmer(riskB ~ birthorder_genes_factor +
+                                 sibling_count_genes_factor + 
+                                             (1 | marriage_id) + birthyear + male,
+                                           data = alldata_birthorder, REML = FALSE)
+anova(lme_riskB_genes, ddf=&quot;kenw&quot;)</code></pre>
+</div>
+<div id="plots" class="section level2">
+<h2>plots</h2>
+<pre class="r"><code>### Between
+## Intelligence
+m_g_factor_uterus_alive = lm(g_factor ~ count_birthorder_uterus_alive + birthyear + male,
+                             data = alldata_birthorder) %&gt;% plot_birthorder(&quot;Intelligence&quot;, &quot;a&quot;)
+
+## Personality
+#Extraversion
+m_big5_ext_uterus_alive = lm(big5_ext ~ count_birthorder_uterus_alive + birthyear + male,
+                             data = alldata_birthorder) %&gt;% plot_birthorder(&quot;Extraversion&quot;, &quot;b&quot;)
+
+# Neuroticism
+m_big5_neu_uterus_alive = lm(big5_neu ~ count_birthorder_uterus_alive + birthyear + male,
+                             data = alldata_birthorder) %&gt;% plot_birthorder(&quot;Neuroticism&quot;, &quot;c&quot;)
+
+#Conscientiuosness
+m_big5_con_uterus_alive = lm(big5_con ~ count_birthorder_uterus_alive + birthyear + male,
+                             data = alldata_birthorder) %&gt;%
+  plot_birthorder(&quot;Cosncientiousness&quot;, &quot;d&quot;)
+
+#Agreeableness
+m_big5_agree_uterus_alive = lm(big5_agree ~ count_birthorder_uterus_alive + birthyear +
+                                 male, data = alldata_birthorder) %&gt;%
+  plot_birthorder(&quot;Agreeableness&quot;, &quot;e&quot;)
+
+#Openness
+m_big5_open_uterus_alive = lm(big5_open ~ count_birthorder_uterus_alive + birthyear + male,
+                             data = alldata_birthorder) %&gt;% 
+  plot_birthorder(&quot;Openness&quot;, &quot;f&quot;)
+
+##Risk
+#Risk A
+m_riskA_uterus_alive = lm(riskA ~ count_birthorder_uterus_alive + birthyear + male,
+                             data = alldata_birthorder) %&gt;% plot_birthorder(&quot;Risk A&quot;, &quot;g&quot;)
+
+
+# Risk B
+m_riskB_uterus_alive = lm(riskB ~ count_birthorder_uterus_alive + birthyear + male,
+                             data = alldata_birthorder) %&gt;% plot_birthorder(&quot;Risk B&quot;, &quot;h&quot;)
+
+
+library(grid)
+library(gridExtra)
+plots = grid.arrange(plot_g_factor, plot_big5_ext, plot_big5_neu, plot_big5_con, plot_big5_agree,
+             plot_big5_open, plot_riskA, plot_riskB,
+             ncol = 2)
+
+### Within
+## Intelligence
+lm_g_factor_uterus_alive = lmer(g_factor ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink) + birthyear + male,
+                             data = alldata_birthorder) %&gt;% plot_birthorder(&quot;Intelligence&quot;, &quot;a&quot;)
+
+## Personality
+#Extraversion
+lm_big5_ext_uterus_alive = lmer(big5_ext ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink) + birthyear + male,
+                             data = alldata_birthorder) %&gt;% plot_birthorder(&quot;Extraversion&quot;, &quot;b&quot;)
+
+# Neuroticism
+lm_big5_neu_uterus_alive = lmer(big5_neu ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink)  + birthyear + male,
+                             data = alldata_birthorder) %&gt;% plot_birthorder(&quot;Neuroticism&quot;, &quot;c&quot;)
+
+#Conscientiuosness
+lm_big5_con_uterus_alive = lmer(big5_con ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink)  + birthyear + male,
+                             data = alldata_birthorder) %&gt;%
+  plot_birthorder(&quot;Cosncientiousness&quot;, &quot;d&quot;)
+
+#Agreeableness
+lm_big5_agree_uterus_alive = lmer(big5_agree ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink)  + birthyear +
+                                 male, data = alldata_birthorder) %&gt;%
+  plot_birthorder(&quot;Agreeableness&quot;, &quot;e&quot;)
+
+#Openness
+lm_big5_open_uterus_alive = lmer(big5_open ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink)  + birthyear + male,
+                             data = alldata_birthorder) %&gt;% 
+  plot_birthorder(&quot;Openness&quot;, &quot;f&quot;)
+
+##Risk
+#Risk A
+lm_riskA_uterus_alive = lmer(riskA ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink)  + birthyear + male,
+                             data = alldata_birthorder) %&gt;% plot_birthorder(&quot;Risk A&quot;, &quot;g&quot;)
+
+
+# Risk B
+lm_riskB_uterus_alive = lmer(riskB ~ count_birthorder_uterus_alive +
+                                             (1 | mother_pidlink)  + birthyear + male,
+                             data = alldata_birthorder) %&gt;% plot_birthorder(&quot;Risk B&quot;, &quot;h&quot;)
+
+
+plots = grid.arrange(plot_g_factor, plot_big5_ext, plot_big5_neu, plot_big5_con, plot_big5_agree,
+             plot_big5_open, plot_riskA, plot_riskB,
+             ncol = 2)</code></pre>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCmF1dGhvcjogIkxhdXJhIEJvdHpldCIKZGF0ZTogIjEwLzI2LzIwMTYiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgbGliX2RpcjogbGlicmFyeQogICAgY29kZV9mb2xkaW5nOiAiaGlkZSIKICAgIHNlbGZfY29udGFpbmVkOiBGQUxTRQotLS0KCiMgUHJlbGltaW5hcnkgQW5hbHlzZXMgey50YWJzZXR9CgojIyBMb2FkIGxpYnJhcmllcwpgYGB7ciBsaWJyYXJpZXN9CmxpYnJhcnkobG1lNCkKbGlicmFyeShsbWVyVGVzdCkKbGlicmFyeShnZ3Bsb3QyKQpsaWJyYXJ5KGZvcm1yKQpsaWJyYXJ5KGVmZmVjdHMpCmxpYnJhcnkoc3RyaW5ncikKbGlicmFyeShmb3JjYXRzKQpsaWJyYXJ5KGNvd3Bsb3QpCmxpYnJhcnkoZHBseXIpCmBgYAoKIyMgaGVscGVyCmBgYHtyIGhlbHBlcn0KYXBhdGhlbWU9dGhlbWVfYncoKSsKICAgIHRoZW1lKHBhbmVsLmdyaWQubWFqb3I9ZWxlbWVudF9ibGFuaygpLAogICAgICAgIHBhbmVsLmdyaWQubWlub3I9ZWxlbWVudF9ibGFuaygpLAogICAgICAgIHBhbmVsLmJvcmRlcj1lbGVtZW50X2JsYW5rKCksCiAgICAgICAgYXhpcy5saW5lPWVsZW1lbnRfbGluZSgpLAogICAgICAgIHRleHQ9ZWxlbWVudF90ZXh0KGZhbWlseT0nVGltZXMnLCBzaXplID0gMTYpKQoKIApwbG90X2JpcnRob3JkZXIgPSBmdW5jdGlvbihtb2RlbCwgeWxhYmVsID0gTlVMTCwgdGl0bGUgPSAiIiwgYm9fdmFyID0gImJpcnRoX29yZGVyIiwgc2VwYXJhdGUgPSBUUlVFKSB7CiAgaWYoaW5oZXJpdHMobW9kZWwsICJtZXJNb2QiKSkgewogICAgdmFybmFtZXMgPSBuYW1lcyhtb2RlbEBmcmFtZSkKICB9IGVsc2UgewogICAgdmFybmFtZXMgPSBuYW1lcyhtb2RlbCRtb2RlbCkKICB9CiAgb3V0Y29tZSA9IHZhcm5hbWVzWzFdCiAgaWYoaXMubnVsbCh5bGFiZWwpKSB5bGFiZWwgPSBvdXRjb21lCiAgbGlicmFyeShlZmZlY3RzKQogIGxpYnJhcnkodGlkeXIpCiAgZW1tID0gYWxsRWZmZWN0cyhtb2RlbCkKICBib192YXIgPSBuYW1lcyhlbW0pW25hbWVzKGVtbSkgJWNvbnRhaW5zJSBib192YXJdCiAgY2VtbSA9IGFzLmRhdGEuZnJhbWUoZW1tW1tib192YXJdXSkKICBpZiAoc2VwYXJhdGUgIT0gVFJVRSkgewogICAgY2VtbSA9IGNlbW0gJT4lIHJlbmFtZV8oIkJpcnRoIG9yZGVyIiA9IGJvX3ZhcikgJT4lIG11dGF0ZShTaWJzaGlwID0gImFjcm9zcyIpCiAgfSBlbHNlIHsKICAgIGNlbW0gPSBjZW1tICU+JSAKICAgIHNlcGFyYXRlXyhib192YXIsIGludG8gPSBjKCJCaXJ0aCBvcmRlciIsICJTaWJzaGlwIiksIHNlcCA9ICIvIikKICAgIG51bWJlciA9IHNwcmVhZChhcy5kYXRhLmZyYW1lKHRhYmxlKG1vZGVsLmZyYW1lKG1vZGVsKVtgYm9fdmFyYF0pKSwgVmFyMSwgRnJlcSkKICAgIG4xID0gcGFzdGUwKCIxICgiLCBzdW0obnVtYmVyJGAxLzFgKSwgIikiLCBzZXBlcmF0ZT0iIikKICAgIG4yID0gcGFzdGUwKCIyICgiLCBzdW0obnVtYmVyJGAxLzJgLCBudW1iZXIkYDIvMmApLCAiKSIsIHNlcGVyYXRlPSIiKQogICAgbjMgPSBwYXN0ZTAoIjMgKCIsIHN1bShudW1iZXIkYDEvM2AsIG51bWJlciRgMi8zYCwgbnVtYmVyJGAzLzNgKSwgIikiLAogICAgICAgICAgICAgICAgc2VwZXJhdGU9IiIpCiAgICBuNCA9IHBhc3RlMCgiNCAoIiwgc3VtKG51bWJlciRgMS80YCwgbnVtYmVyJGAyLzRgLCBudW1iZXIkYDMvNGAsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBudW1iZXIkYDQvNGApLCAiKSIsIHNlcGVyYXRlPSIiKQogICAgbjUgPSBwYXN0ZTAoIjUgKCIsIHN1bShudW1iZXIkYDEvNWAsIG51bWJlciRgMi81YCwgbnVtYmVyJGAzLzVgLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbnVtYmVyJGA0LzVgLCBudW1iZXIkYDUvNWApLCAiKSIsIHNlcGVyYXRlPSIiKQogICAgbjVtb3JlID0gcGFzdGUwKCI1KyAoIiwgc3VtKG51bWJlciRgMS81K2AsIG51bWJlciRgMi81K2AsIG51bWJlciRgMy81K2AsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbnVtYmVyJGA0LzUrYCwgbnVtYmVyJGA1LzUrYCwgbnVtYmVyJGA1Ky81K2ApLCAiKSIsCiAgICAgICAgICAgICAgICAgICAgc2VwZXJhdGU9IiIpCiAgICBjZW1tID0gY2VtbSAlPiUKICAgICAgbXV0YXRlKFNpYnNoaXAgPSByZWNvZGVfZmFjdG9yKFNpYnNoaXAsICIxIiA9IGBuMWAsICIyIiA9IGBuMmAsICIzIiA9IGBuM2AsICI0IiA9IGBuNGAsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiNSIgPSBgbjVgLCAiNSsiID0gYG41bW9yZWApKQogIH0KICAgIHBsb3R4ID0gZ2dwbG90KGNlbW0sIGFlcyhgQmlydGggb3JkZXJgLCB5ID0gZml0LCB5bWF4ID0gdXBwZXIsIHltaW4gPSBsb3dlciwKICAgICAgICAgICAgICAgICAgIGNvbG91ciA9IGBTaWJzaGlwYCwgZ3JvdXAgPSBgU2lic2hpcGApKSArIAogICAgZ2VvbV9wb2ludHJhbmdlKHN0YXQgPSAiaWRlbnRpdHkiLCBwb3NpdGlvbiA9IHBvc2l0aW9uX2RvZGdlKHdpZHRoID0gMC41KSkgKyAKICAgIGdlb21fbGluZShwb3NpdGlvbiA9IHBvc2l0aW9uX2RvZGdlKHdpZHRoID0gMC41KSkgKwogICAgc2NhbGVfeV9jb250aW51b3VzKG5hbWU9eWxhYmVsLCBsaW1pdHMgPSBjKC0wLjYsIDAuNSksIGJyZWFrcyA9IGMoLTAuNCwgLTAuMiwgMCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMC4yLCAwLjQpKSArCiAgICBsYWJzKHRpdGxlPSB0aXRsZSkgKwogICAgYXBhdGhlbWUgKwogICAgdGhlbWUobGVnZW5kLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbD0iZ3JheTkwIiwgc2l6ZT0uNSwgbGluZXR5cGU9ImRvdHRlZCIpLAogICAgICAgICAgcGxvdC50aXRsZSA9IGVsZW1lbnRfdGV4dChoanVzdCA9IDApKSArCiAgICBndWlkZXMoY29sb3VyPWd1aWRlX2xlZ2VuZCh0aXRsZSA9ICJTaWJzaGlwIikpCiAgcHJpbnQocGxvdHgpCiAgYXNzaWduKHBhc3RlMCgicGxvdF8iLCBvdXRjb21lLCBzZXBlcmF0ZT0iIikscGxvdHgsLkdsb2JhbEVudikKfQoKYGBgCgoKIyMgTG9hZCBkYXRhCmBgYHtyIGxvYWQgZGF0YX0KYWxsZGF0YV9iaXJ0aG9yZGVyID0gcmVhZFJEUygiZGF0YS9hbGxkYXRhX2JpcnRob3JkZXIucmRzIikKCmBgYAoKCgojIyBEYXRhIFByZXBlcmF0aW9ucwpgYGB7ciBkYXRhIHByZXBlcmF0aW9uc30KIyMjIFZhcmlhYmxlcwphbGxkYXRhX2JpcnRob3JkZXIgPSBhbGxkYXRhX2JpcnRob3JkZXIgJT4lCiAgbXV0YXRlKAogICAgIyBjZW50ZXIgYmlydGh5ZWFyCiAgICBiaXJ0aHllYXIgPSBieWVhciAtIG1lYW4oYnllYXIsIG5hLnJtID0gVCksCiAgICAjIFNleCAoMSA9IG1hbGUsIDIgPSBmZW1hbGUpCiAgICBtYWxlID0gaWZlbHNlKHNleC54ID09IDEsIDFMLCAwTCksCiAgICBtYWxlID0gaWZlbHNlKHNleC54ID4gMywgTkFfaW50ZWdlcl8sIG1hbGUpLAogICAgbWFsZSA9IGZhY3RvcihtYWxlKSwKICAgICMgbW90aGVyX3BpZGxpbmsgaGFzIHRvIGJlIHNwZWNpZmllZAogICAgbW90aGVyX3BpZGxpbmsgPSBtb3RoZXJfcGlkbGluay54LAogICAgIyBjZW50ZXIgdmFyaWFibGVzIHRoYXQgYXJlIHVzZWQgZm9yIGFuYWx5c3kgLSBidXQgZmlyc3Qgc2F2ZSBvbGQgdmFsdWVzCiAgICBvbGRfZ19mYWN0b3IgPSBnX2ZhY3RvciwKICAgIG9sZF9yYXZlbiA9IHJhdmVuLAogICAgb2xkX21hdGggPSBtYXRoLAogICAgb2xkX2NvdW50X2JhY2t3YXJkcyA9IGNvdW50X2JhY2t3YXJkcywKICAgIG9sZF93b3Jkc19yZW1lbWJlcmVkX2F2ZyA9IHdvcmRzX3JlbWVtYmVyZWRfYXZnLAogICAgb2xkX3dvcmRzX2ltbWVkaWF0ZSA9IHdvcmRzX2ltbWVkaWF0ZSwKICAgIG9sZF93b3Jkc19kZWxheWVkID0gd29yZHNfZGVsYXllZCwKICAgIG9sZF9hZGFwdGl2ZV9udW1iZXJpbmcgPSBhZGFwdGl2ZV9udW1iZXJpbmcsCiAgICBvbGRfYmlnNV9leHQgPSBiaWc1X2V4dCwKICAgIG9sZF9iaWc1X2NvbiA9IGJpZzVfY29uLAogICAgb2xkX2JpZzVfYWdyZWUgPSBiaWc1X2FncmVlLAogICAgb2xkX2JpZzVfbmV1ID0gYmlnNV9uZXUsCiAgICBvbGRfYmlnNV9vcGVuID0gYmlnNV9vcGVuLAogICAgb2xkX3Jpc2tBID0gcmlza0EsCiAgICBvbGRfcmlza0IgPSByaXNrQiwKICAgIGdfZmFjdG9yID0gKGdfZmFjdG9yIC0gbWVhbihnX2ZhY3RvciwgbmEucm09VCkpIC8gc2QoZ19mYWN0b3IsIG5hLnJtPVQpLAogICAgcmF2ZW4gPSAocmF2ZW4gLSBtZWFuKHJhdmVuLCBuYS5ybT1UKSkgLyBzZChyYXZlbiwgbmEucm09VCksCiAgICBtYXRoID0gKG1hdGggLSBtZWFuKG1hdGgsIG5hLnJtPVQpKSAvIHNkKG1hdGgsIG5hLnJtPVQpLAogICAgY291bnRfYmFja3dhcmRzID0gKGNvdW50X2JhY2t3YXJkcyAtIG1lYW4oY291bnRfYmFja3dhcmRzLCBuYS5ybT1UKSkgLwogICAgICBzZChjb3VudF9iYWNrd2FyZHMsIG5hLnJtPVQpLAogICAgd29yZHNfcmVtZW1iZXJlZF9hdmcgPSAod29yZHNfcmVtZW1iZXJlZF9hdmcgLSBtZWFuKHdvcmRzX3JlbWVtYmVyZWRfYXZnLCBuYS5ybT1UKSkgLwogICAgICBzZCh3b3Jkc19yZW1lbWJlcmVkX2F2ZywgbmEucm09VCksCiAgICB3b3Jkc19pbW1lZGlhdGUgPSAod29yZHNfaW1tZWRpYXRlIC0gbWVhbih3b3Jkc19pbW1lZGlhdGUsIG5hLnJtPVQpKSAvCiAgICAgIHNkKHdvcmRzX2ltbWVkaWF0ZSwgbmEucm09VCksCiAgICB3b3Jkc19kZWxheWVkID0gKHdvcmRzX2RlbGF5ZWQgLSBtZWFuKHdvcmRzX2RlbGF5ZWQsIG5hLnJtPVQpKSAvCiAgICAgIHNkKHdvcmRzX2RlbGF5ZWQsIG5hLnJtPVQpLAogICAgYWRhcHRpdmVfbnVtYmVyaW5nID0gKGFkYXB0aXZlX251bWJlcmluZyAtIG1lYW4oYWRhcHRpdmVfbnVtYmVyaW5nLCBuYS5ybT1UKSkgLwogICAgICBzZChhZGFwdGl2ZV9udW1iZXJpbmcsIG5hLnJtPVQpLAogICAgYmlnNV9leHQgPSAoYmlnNV9leHQgLSBtZWFuKGJpZzVfZXh0LCBuYS5ybT1UKSkgLyBzZChiaWc1X2V4dCwgbmEucm09VCksCiAgICBiaWc1X2NvbiA9IChiaWc1X2NvbiAtIG1lYW4oYmlnNV9jb24sIG5hLnJtPVQpKSAvIHNkKGJpZzVfY29uLCBuYS5ybT1UKSwKICAgIGJpZzVfYWdyZWUgPSAoYmlnNV9hZ3JlZSAtIG1lYW4oYmlnNV9hZ3JlZSwgbmEucm09VCkpIC8gc2QoYmlnNV9hZ3JlZSwgbmEucm09VCksCiAgICBiaWc1X29wZW4gPSAoYmlnNV9vcGVuIC0gbWVhbihiaWc1X29wZW4sIG5hLnJtPVQpKSAvIHNkKGJpZzVfb3BlbiwgbmEucm09VCksCiAgICBiaWc1X25ldSA9IChiaWc1X25ldSAtIG1lYW4oYmlnNV9uZXUsIG5hLnJtPVQpKSAvIHNkKGJpZzVfbmV1LCBuYS5ybT1UKSwKICAgIHJpc2tBID0gKHJpc2tBIC0gbWVhbihyaXNrQSwgbmEucm09VCkpIC8gc2Qocmlza0EsIG5hLnJtPVQpLAogICAgcmlza0IgPSAocmlza0IgLSBtZWFuKHJpc2tCLCBuYS5ybT1UKSkgLyBzZChyaXNrQiwgbmEucm09VCkKICAgICAgICApCnFwbG90KGFsbGRhdGFfYmlydGhvcmRlciRnX2ZhY3RvcikKCiMjIyBCaXJ0aG9yZGVyIGFuZCBTaWJsaW5nIENvdW50CmFsbGRhdGFfYmlydGhvcmRlciA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUgCiAgbXV0YXRlKAojIGJpcnRob3JkZXIgYXMgZmFjdG9ycyB3aXRoIGxldmVscyBvZiAxLCAyLCAzLCA0LCA1LCA1KwogICAgYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSwKICAgIGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciA9IGlmZWxzZShiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSA+IDUsICI1KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yKSwKICAgIGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciA9IGZhY3RvcihiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoc2libGluZ19jb3VudF91dGVydXNfYWxpdmUpLAogICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yID0gaWZlbHNlKHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlID4gNSwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IpLAogICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMSIsIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgIGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcpLAogICAgYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgPSBpZmVsc2UoYmlydGhvcmRlcl91dGVydXNfcHJlZyA+IDUsICI1KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciksCiAgICBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciA9IGZhY3RvcihiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnKSwKICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yID0gaWZlbHNlKHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcgPiA1LCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IpLAogICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IgPSBmYWN0b3Ioc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMSIsIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfZ2VuZXMpLAogICAgYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgPSBpZmVsc2UoYmlydGhvcmRlcl9nZW5lcyA+NSAsICI1KyIsIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gZmFjdG9yKGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihzaWJsaW5nX2NvdW50X2dlbmVzKSwKICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yID0gaWZlbHNlKHNpYmxpbmdfY291bnRfZ2VuZXMgPjUgLCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IpLAogICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgPSBmYWN0b3Ioc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMSIsIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgICMgaW50ZXJhY3Rpb24gYmlydGhvcmRlciAqIHNpYmxpbmdjb3V0IGZvciBlYWNoIGJpcnRob3JkZXIKICAgIGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IpKSwKICAgICAgICAgICAgICAgICAgICAgICAgIlxcLiIsICIvIiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSAgIGMoIjEvMSIsIjEvMiIsIjIvMiIsICIxLzMiLCAgIjIvMyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjMvMyIsICIxLzQiLCAiMi80IiwgIjMvNCIsICI0LzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUiLCAiMi81IiwgIjMvNSIsICI0LzUiLCAiNS81IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81KyIsICIyLzUrIiwgIjMvNSsiLCAiNC81KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjUvNSsiLCAiNSsvNSsiKSksCiAgICBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yKSksIAogICAgICAgICAgICAgICAgICAgICAgICAgIlxcLiIsICIvIiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSAgIGMoIjEvMSIsIjEvMiIsIjIvMiIsICIxLzMiLCAgIjIvMyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjMvMyIsICIxLzQiLCAiMi80IiwgIjMvNCIsICI0LzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUiLCAiMi81IiwgIjMvNSIsICI0LzUiLCAiNS81IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81KyIsICIyLzUrIiwgIjMvNSsiLCAiNC81KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjUvNSsiLCAiNSsvNSsiKSksCiAgICBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yKSksICJcXC4iLCAiLyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gICBjKCIxLzEiLCIxLzIiLCIyLzIiLCAiMS8zIiwgICIyLzMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIzLzMiLCAiMS80IiwgIjIvNCIsICIzLzQiLCAiNC80IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81IiwgIjIvNSIsICIzLzUiLCAiNC81IiwgIjUvNSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSsiLCAiMi81KyIsICIzLzUrIiwgIjQvNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI1LzUrIiwgIjUrLzUrIikpKQoKCgpgYGAKCgojIyBCZXR3ZWVuLWZhbWlseSBBbmFseXNpcyBJbnRlbGxpZ2VuY2UKCmBgYHtyIEJldHdlZW4tZmFtaWx5IEFuYWx5c2lzIEludGVsbGlnZW5jZX0KIyMjIE1haW4gVGVzdDogRy1GYWN0b3IgLSB3aXRob3V0IGNvdmFyaWF0ZXMKIyMgTWFpbiBUZXN0OiBHLUZhY3RvciAtIHV0ZXJ1c19hbGl2ZQptX2dfZmFjdG9yX3V0ZXJ1c19hbGl2ZV9ub19pbnRlcmFjdGlvbiA9IGxtKGdfZmFjdG9yIH4gYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yICsgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobV9nX2ZhY3Rvcl91dGVydXNfYWxpdmVfbm9faW50ZXJhY3Rpb24pCnBsb3RfYmlydGhvcmRlcihtX2dfZmFjdG9yX3V0ZXJ1c19hbGl2ZV9ub19pbnRlcmFjdGlvbiwgCiAgICAgICAgICAgICAgICB5bGFiZWwgPSAiRyBmYWN0b3IiLCB0aXRsZSA9ICJHIGZhY3RvciIsIHNlcGFyYXRlID0gRkFMU0UpCgptX2dfZmFjdG9yX3V0ZXJ1c19hbGl2ZSA9IGxtKGdfZmFjdG9yIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKYW5vdmEobV9nX2ZhY3Rvcl91dGVydXNfYWxpdmVfbm9faW50ZXJhY3Rpb24sIG1fZ19mYWN0b3JfdXRlcnVzX2FsaXZlKQphbm92YShtX2dfZmFjdG9yX3V0ZXJ1c19hbGl2ZSkKcGxvdF9iaXJ0aG9yZGVyKG1fZ19mYWN0b3JfdXRlcnVzX2FsaXZlKQoKIyMgTWFpbiBUZXN0OiBHLUZhY3RvciAtIHV0ZXJ1c19hbGl2ZSB3aXRoIGNvdmFyaWF0ZXMKbV9nX2ZhY3Rvcl91dGVydXNfYWxpdmVfY292YXJpYXRlcyA9IGxtKGdfZmFjdG9yIH4gYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yICArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKYW5vdmEobV9nX2ZhY3Rvcl91dGVydXNfYWxpdmVfY292YXJpYXRlcykKbV9nX2ZhY3Rvcl91dGVydXNfcHJlZ19jb3ZhcmlhdGVzID0gbG0oZ19mYWN0b3IgfiBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciAgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKYW5vdmEobV9nX2ZhY3Rvcl91dGVydXNfYWxpdmVfY292YXJpYXRlcykKbV9nX2ZhY3Rvcl9nZW5lc19jb3ZhcmlhdGVzID0gbG0oZ19mYWN0b3IgfiBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciAgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKYW5vdmEobV9nX2ZhY3Rvcl9nZW5lc19jb3ZhcmlhdGVzKQoKCm1fZ19mYWN0b3JfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMgPSBsbShnX2ZhY3RvciB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKYW5vdmEobV9nX2ZhY3Rvcl91dGVydXNfYWxpdmVfY292YXJpYXRlcykKcGxvdF9iaXJ0aG9yZGVyKG1fZ19mYWN0b3JfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCgojIyBNYWluIFRlc3Q6IEctRmFjdG9yIC0gdXRlcnVzX3ByZWcKbV9nX2ZhY3Rvcl91dGVydXNfcHJlZyA9IGxtKGdfZmFjdG9yIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfcHJlZywKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobV9nX2ZhY3Rvcl91dGVydXNfcHJlZykKcGxvdF9iaXJ0aG9yZGVyKG1fZ19mYWN0b3JfdXRlcnVzX3ByZWcpCgojIyBNYWluIFRlc3Q6IEctRmFjdG9yIC0gZ2VuZXMKbV9nX2ZhY3Rvcl9nZW5lcyA9IGxtKGdfZmFjdG9yIH4gY291bnRfYmlydGhvcmRlcl9nZW5lcywKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobV9nX2ZhY3Rvcl9nZW5lcykKcGxvdF9iaXJ0aG9yZGVyKG1fZ19mYWN0b3JfZ2VuZXMpCgojIyBNYWluIFRlc3Q6IEctRmFjdG9yIC0gZ2VuZXMgd2l0aCBjb3ZhcmlhdGVzCm1fZ19mYWN0b3JfZ2VuZXNfY292YXJpYXRlcyA9IGxtKGdfZmFjdG9yIH4gY291bnRfYmlydGhvcmRlcl9nZW5lcwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobV9nX2ZhY3Rvcl9nZW5lc19jb3ZhcmlhdGVzKQpwbG90X2JpcnRob3JkZXIobV9nX2ZhY3Rvcl9nZW5lc19jb3ZhcmlhdGVzKQoKIyMjIFN1YiBUZXN0cwojIyBSYXZlbuKAmXMgbWF0cmljZXMgdGVzdAojIHJhdmVuIC0gdXRlcnVzX2FsaXZlCm1fcmF2ZW5fdXRlcnVzX2FsaXZlID0gbG0ocmF2ZW4gfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobV9yYXZlbl91dGVydXNfYWxpdmUpCnBsb3RfYmlydGhvcmRlcihtX3JhdmVuX3V0ZXJ1c19hbGl2ZSkKCiMgcmF2ZW4gLSB1dGVydXNfcHJlZwptX3JhdmVuX3V0ZXJ1c19wcmVnID0gbG0ocmF2ZW4gfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX3JhdmVuX3V0ZXJ1c19wcmVnKQpwbG90X2JpcnRob3JkZXIobV9yYXZlbl91dGVydXNfcHJlZykKCiMgcmF2ZW4gLSBnZW5lcwptX3JhdmVuX2dlbmVzID0gbG0ocmF2ZW4gfiBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX3JhdmVuX2dlbmVzKQpwbG90X2JpcnRob3JkZXIobV9yYXZlbl9nZW5lcykKCiMjIE51bWVyYWN5IHRlc3QKIyBtYXRoIC0gdXRlcnVzX2FsaXZlCm1fbWF0aF91dGVydXNfYWxpdmUgPSBsbShtYXRoIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fbWF0aF91dGVydXNfYWxpdmUpCnBsb3RfYmlydGhvcmRlcihtX21hdGhfdXRlcnVzX2FsaXZlKQoKIyBtYXRoIC0gdXRlcnVzX3ByZWcKbV9tYXRoX3V0ZXJ1c19wcmVnID0gbG0obWF0aCB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX3ByZWcsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fbWF0aF91dGVydXNfcHJlZykKcGxvdF9iaXJ0aG9yZGVyKG1fbWF0aF91dGVydXNfcHJlZykKCiMgbWF0aCAtIGdlbmVzCm1fbWF0aF9nZW5lcyA9IGxtKG1hdGggfiBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX21hdGhfZ2VuZXMpCnBsb3RfYmlydGhvcmRlcihtX21hdGhfZ2VuZXMpCgojIyBCYWNrd2FyZHMgY291bnRpbmcKIyBjb3VudF9iYWNrd2FyZHMgLSB1dGVydXNfYWxpdmUKbV9jb3VudF9iYWNrd2FyZHNfdXRlcnVzX2FsaXZlID0gbG0oY291bnRfYmFja3dhcmRzIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fY291bnRfYmFja3dhcmRzX3V0ZXJ1c19hbGl2ZSkKcGxvdF9iaXJ0aG9yZGVyKG1fY291bnRfYmFja3dhcmRzX3V0ZXJ1c19hbGl2ZSkKCiMgY291bnRfYmFja3dhcmRzIC0gdXRlcnVzX3ByZWcKbV9jb3VudF9iYWNrd2FyZHNfdXRlcnVzX3ByZWcgPSBsbShjb3VudF9iYWNrd2FyZHMgfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX2NvdW50X2JhY2t3YXJkc191dGVydXNfcHJlZykKcGxvdF9iaXJ0aG9yZGVyKG1fY291bnRfYmFja3dhcmRzX3V0ZXJ1c19wcmVnKQoKIyBjb3VudF9iYWNrd2FyZHMgLSBnZW5lcwptX2NvdW50X2JhY2t3YXJkc19nZW5lcyA9IGxtKGNvdW50X2JhY2t3YXJkcyB+IGNvdW50X2JpcnRob3JkZXJfZ2VuZXMsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fY291bnRfYmFja3dhcmRzX2dlbmVzKQpwbG90X2JpcnRob3JkZXIobV9jb3VudF9iYWNrd2FyZHNfZ2VuZXMpCgojIyBXb3JkIFJlY2FsbAojIHdvcmRzX3JlbWVtYmVyZWRfYXZnIC0gdXRlcnVzX2FsaXZlCm1fd29yZHNfcmVtZW1iZXJlZF9hdmdfdXRlcnVzX2FsaXZlID0gbG0od29yZHNfcmVtZW1iZXJlZF9hdmcgfgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fd29yZHNfcmVtZW1iZXJlZF9hdmdfdXRlcnVzX2FsaXZlKQpwbG90X2JpcnRob3JkZXIobV93b3Jkc19yZW1lbWJlcmVkX2F2Z191dGVydXNfYWxpdmUpCgojIHdvcmRzX3JlbWVtYmVyZWRfYXZnIC0gdXRlcnVzX3ByZWcKbV93b3Jkc19yZW1lbWJlcmVkX2F2Z191dGVydXNfcHJlZyA9IGxtKHdvcmRzX3JlbWVtYmVyZWRfYXZnIH4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX3ByZWcsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fd29yZHNfcmVtZW1iZXJlZF9hdmdfdXRlcnVzX3ByZWcpCnBsb3RfYmlydGhvcmRlcihtX3dvcmRzX3JlbWVtYmVyZWRfYXZnX3V0ZXJ1c19wcmVnKQoKIyB3b3Jkc19yZW1lbWJlcmVkX2F2ZyAtIGdlbmVzCm1fd29yZHNfcmVtZW1iZXJlZF9hdmdfZ2VuZXMgPSBsbSh3b3Jkc19yZW1lbWJlcmVkX2F2ZyB+IAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY291bnRfYmlydGhvcmRlcl9nZW5lcywKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobV93b3Jkc19yZW1lbWJlcmVkX2F2Z19nZW5lcykKcGxvdF9iaXJ0aG9yZGVyKG1fd29yZHNfcmVtZW1iZXJlZF9hdmdfZ2VuZXMpCgojIyBBZGFwdGl2ZSBudW1iZXIgc2VyaWVzCiMgYWRhcHRpdmVfbnVtYmVyaW5nIC0gdXRlcnVzX2FsaXZlCm1fYWRhcHRpdmVfbnVtYmVyaW5nX3V0ZXJ1c19hbGl2ZSA9IGxtKGFkYXB0aXZlX251bWJlcmluZyB+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fYWRhcHRpdmVfbnVtYmVyaW5nX3V0ZXJ1c19hbGl2ZSkKcGxvdF9iaXJ0aG9yZGVyKG1fYWRhcHRpdmVfbnVtYmVyaW5nX3V0ZXJ1c19hbGl2ZSkKCiMgYWRhcHRpdmVfbnVtYmVyaW5nIC0gdXRlcnVzX3ByZWcKbV9hZGFwdGl2ZV9udW1iZXJpbmdfdXRlcnVzX3ByZWcgPSBsbShhZGFwdGl2ZV9udW1iZXJpbmcgfgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX3ByZWcsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fYWRhcHRpdmVfbnVtYmVyaW5nX3V0ZXJ1c19wcmVnKQpwbG90X2JpcnRob3JkZXIobV9hZGFwdGl2ZV9udW1iZXJpbmdfdXRlcnVzX3ByZWcpCgojIGFkYXB0aXZlX251bWJlcmluZyAtIGdlbmVzCm1fYWRhcHRpdmVfbnVtYmVyaW5nX2dlbmVzID0gbG0oYWRhcHRpdmVfbnVtYmVyaW5nIH4gCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvdW50X2JpcnRob3JkZXJfZ2VuZXMsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fYWRhcHRpdmVfbnVtYmVyaW5nX2dlbmVzKQpwbG90X2JpcnRob3JkZXIobV9hZGFwdGl2ZV9udW1iZXJpbmdfZ2VuZXMpCgpgYGAKCgpgYGB7ciBCZXR3ZWVuLWZhbWlseSBBbmFseXNpcyBQZXJzb25hbGl0eX0KIyMjIFBlcnNvbmFsaXR5IC0gd2l0aG91dCBjb3ZhcmlhdGVzCiMjIE9wZW5uZXNzCiMgYmlnNV9vcGVuIC0gdXRlcnVzX2FsaXZlCm1fYmlnNV9vcGVuX3V0ZXJ1c19hbGl2ZSA9IGxtKGJpZzVfb3BlbiB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX2JpZzVfb3Blbl91dGVydXNfYWxpdmUpCnBsb3RfYmlydGhvcmRlcihtX2JpZzVfb3Blbl91dGVydXNfYWxpdmUpCgptX2JpZzVfb3Blbl91dGVydXNfYWxpdmVfY292YXJpYXRlcyA9IGxtKGJpZzVfb3BlbiB+IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciAgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fYmlnNV9vcGVuX3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzKQpwbG90X2JpcnRob3JkZXIobV9iaWc1X29wZW5fdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCgptX2JpZzVfb3Blbl91dGVydXNfYWxpdmVfY292YXJpYXRlcyA9IGxtKGJpZzVfb3BlbiB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX2JpZzVfb3Blbl91dGVydXNfYWxpdmVfY292YXJpYXRlcykKcGxvdF9iaXJ0aG9yZGVyKG1fYmlnNV9vcGVuX3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzKQoKIyBiaWc1X29wZW4gLSB1dGVydXNfcHJlZwptX2JpZzVfb3Blbl91dGVydXNfcHJlZyA9IGxtKGJpZzVfb3BlbiB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX3ByZWcsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fYmlnNV9vcGVuX3V0ZXJ1c19wcmVnKQpwbG90X2JpcnRob3JkZXIobV9iaWc1X29wZW5fdXRlcnVzX3ByZWcpCgojIGJpZzVfb3BlbiAtIGdlbmVzCm1fYmlnNV9vcGVuX2dlbmVzID0gbG0oYmlnNV9vcGVuIH4gY291bnRfYmlydGhvcmRlcl9nZW5lcywKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobV9iaWc1X29wZW5fZ2VuZXMpCnBsb3RfYmlydGhvcmRlcihtX2JpZzVfb3Blbl9nZW5lcykKCiMjIEV4dHJhdmVyc2lvbgojIGJpZzVfZXh0IC0gdXRlcnVzX2FsaXZlCm1fYmlnNV9leHRfdXRlcnVzX2FsaXZlID0gbG0oYmlnNV9leHQgfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSAsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fYmlnNV9leHRfdXRlcnVzX2FsaXZlKQpwbG90X2JpcnRob3JkZXIobV9iaWc1X2V4dF91dGVydXNfYWxpdmUpCgptX2JpZzVfb3Blbl91dGVydXNfYWxpdmVfY292YXJpYXRlcyA9IGxtKGJpZzVfb3BlbiB+IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciAgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fYmlnNV9vcGVuX3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzKQpwbG90X2JpcnRob3JkZXIobV9iaWc1X29wZW5fdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCgptX2JpZzVfZXh0X3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzID0gbG0oYmlnNV9leHQgfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobV9iaWc1X2V4dF91dGVydXNfYWxpdmVfY292YXJpYXRlcykKcGxvdF9iaXJ0aG9yZGVyKG1fYmlnNV9leHRfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCgojIGJpZzVfZXh0IC0gdXRlcnVzX3ByZWcKbV9iaWc1X2V4dF91dGVydXNfcHJlZyA9IGxtKGJpZzVfZXh0IH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfcHJlZywKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobV9iaWc1X2V4dF91dGVydXNfcHJlZykKcGxvdF9iaXJ0aG9yZGVyKG1fYmlnNV9leHRfdXRlcnVzX3ByZWcpCgojIGJpZzVfZXh0IC0gZ2VuZXMKbV9iaWc1X2V4dF9nZW5lcyA9IGxtKGJpZzVfZXh0IH4gY291bnRfYmlydGhvcmRlcl9nZW5lcywKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobV9iaWc1X2V4dF9nZW5lcykKcGxvdF9iaXJ0aG9yZGVyKG1fYmlnNV9leHRfZ2VuZXMpCgojIyBOZXVyb3RpY2lzbQojIGJpZzVfbmV1IC0gdXRlcnVzX2FsaXZlCm1fYmlnNV9uZXVfdXRlcnVzX2FsaXZlID0gbG0oYmlnNV9uZXUgfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobV9iaWc1X25ldV91dGVydXNfYWxpdmUpCnBsb3RfYmlydGhvcmRlcihtX2JpZzVfbmV1X3V0ZXJ1c19hbGl2ZSkKCm1fYmlnNV9uZXVfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMgPSBsbShiaWc1X25ldSB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX2JpZzVfbmV1X3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzKQpwbG90X2JpcnRob3JkZXIobV9iaWc1X25ldV91dGVydXNfYWxpdmVfY292YXJpYXRlcykKCiMgYmlnNV9uZXUgLSB1dGVydXNfcHJlZwptX2JpZzVfbmV1X3V0ZXJ1c19wcmVnID0gbG0oYmlnNV9uZXUgfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX2JpZzVfbmV1X3V0ZXJ1c19wcmVnKQpwbG90X2JpcnRob3JkZXIobV9iaWc1X25ldV91dGVydXNfcHJlZykKCiMgYmlnNV9uZXUgLSBnZW5lcwptX2JpZzVfbmV1X2dlbmVzID0gbG0oYmlnNV9uZXUgfiBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX2JpZzVfbmV1X2dlbmVzKQpwbG90X2JpcnRob3JkZXIobV9iaWc1X25ldV9nZW5lcykKCiMjIEFnZ3JlYWJsZW5lc3MKIyBiaWc1X2FncmVlIC0gdXRlcnVzX2FsaXZlCm1fYmlnNV9hZ3JlZV91dGVydXNfYWxpdmUgPSBsbShiaWc1X2FncmVlIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fYmlnNV9hZ3JlZV91dGVydXNfYWxpdmUpCnBsb3RfYmlydGhvcmRlcihtX2JpZzVfYWdyZWVfdXRlcnVzX2FsaXZlKQoKbV9iaWc1X2FncmVlX3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzID0gbG0oYmlnNV9hZ3JlZSB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX2JpZzVfYWdyZWVfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCnBsb3RfYmlydGhvcmRlcihtX2JpZzVfYWdyZWVfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCgoKIyBiaWc1X2FncmVlIC0gdXRlcnVzX3ByZWcKbV9iaWc1X2FncmVlX3V0ZXJ1c19wcmVnID0gbG0oYmlnNV9hZ3JlZSB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX3ByZWcsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fYmlnNV9hZ3JlZV91dGVydXNfcHJlZykKcGxvdF9iaXJ0aG9yZGVyKG1fYmlnNV9hZ3JlZV91dGVydXNfcHJlZykKCiMgYmlnNV9hZ3JlZSAtIGdlbmVzCm1fYmlnNV9hZ3JlZV9nZW5lcyA9IGxtKGJpZzVfYWdyZWUgfiBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX2JpZzVfYWdyZWVfZ2VuZXMpCnBsb3RfYmlydGhvcmRlcihtX2JpZzVfYWdyZWVfZ2VuZXMpCgojIyBDb25zY2llbnRpb3VzbmVzcwojIGJpZzVfY29uIC0gdXRlcnVzX2FsaXZlCm1fYmlnNV9jb25fdXRlcnVzX2FsaXZlID0gbG0oYmlnNV9jb24gfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobV9iaWc1X2Nvbl91dGVydXNfYWxpdmUpCnBsb3RfYmlydGhvcmRlcihtX2JpZzVfY29uX3V0ZXJ1c19hbGl2ZSkKCm1fYmlnNV9jb25fdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMgPSBsbShiaWc1X2NvbiB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX2JpZzVfY29uX3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzKQpwbG90X2JpcnRob3JkZXIobV9iaWc1X2Nvbl91dGVydXNfYWxpdmVfY292YXJpYXRlcykKCiMgYmlnNV9jb24gLSB1dGVydXNfcHJlZwptX2JpZzVfY29uX3V0ZXJ1c19wcmVnID0gbG0oYmlnNV9jb24gfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX2JpZzVfY29uX3V0ZXJ1c19wcmVnKQpwbG90X2JpcnRob3JkZXIobV9iaWc1X2Nvbl91dGVydXNfcHJlZykKCiMgYmlnNV9jb24gLSBnZW5lcwptX2JpZzVfY29uX2dlbmVzID0gbG0oYmlnNV9jb24gfiBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX2JpZzVfY29uX2dlbmVzKQpwbG90X2JpcnRob3JkZXIobV9iaWc1X2Nvbl9nZW5lcykKCmBgYAoKIyMgUmlzawpgYGB7ciBCZXR3ZWVuLWZhbWlseSBBbmFseXNpcyBSc2lrIFByZWZlcmVuY2V9CiMjIyBSaXNrIEEKIyMgUmlzayBBIC0gVXRlcnVzIGFsaXZlCm1fcmlza0FfdXRlcnVzX2FsaXZlID0gbG0ocmlza0EgfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobV9yaXNrQV91dGVydXNfYWxpdmUpCnBsb3RfYmlydGhvcmRlcihtX3Jpc2tBX3V0ZXJ1c19hbGl2ZSkKCm1fcmlza0FfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMgPSBsbShyaXNrQSB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX3Jpc2tBX3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzKQpwbG90X2JpcnRob3JkZXIobV9yaXNrQV91dGVydXNfYWxpdmVfY292YXJpYXRlcykKCgojIyBSaXNrIEEgLSBVdGVydXMgcHJlZwptX3Jpc2tBX3V0ZXJ1c19wcmVnID0gbG0ocmlza0EgfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX3Jpc2tBX3V0ZXJ1c19wcmVnKQpwbG90X2JpcnRob3JkZXIobV9yaXNrQV91dGVydXNfcHJlZykKCiMjIFJpc2sgQSAtIGdlbmVzCm1fcmlza0FfZ2VuZXMgPSBsbShyaXNrQSB+IGNvdW50X2JpcnRob3JkZXJfZ2VuZXMsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fcmlza0FfZ2VuZXMpCnBsb3RfYmlydGhvcmRlcihtX3Jpc2tBX2dlbmVzKQoKIyMjIFJpc2sgQgojIyBSaXNrIEIgLSBVdGVydXMgYWxpdmUKbV9yaXNrQl91dGVydXNfYWxpdmUgPSBsbShyaXNrQiB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX3Jpc2tCX3V0ZXJ1c19hbGl2ZSkKcGxvdF9iaXJ0aG9yZGVyKG1fcmlza0JfdXRlcnVzX2FsaXZlKQoKbV9yaXNrQl91dGVydXNfYWxpdmVfY292YXJpYXRlcyA9IGxtKHJpc2tCIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fcmlza0JfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCnBsb3RfYmlydGhvcmRlcihtX3Jpc2tCX3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzKQoKCiMjIFJpc2sgQiAtIFV0ZXJ1cyBwcmVnCm1fcmlza0JfdXRlcnVzX3ByZWcgPSBsbShyaXNrQiB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX3ByZWcsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fcmlza0JfdXRlcnVzX3ByZWcpCnBsb3RfYmlydGhvcmRlcihtX3Jpc2tCX3V0ZXJ1c19wcmVnKQoKIyMgUmlzayBCIC0gZ2VuZXMKbV9yaXNrQl9nZW5lcyA9IGxtKHJpc2tCIH4gY291bnRfYmlydGhvcmRlcl9nZW5lcywKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobV9yaXNrQl9nZW5lcykKcGxvdF9iaXJ0aG9yZGVyKG1fcmlza0JfZ2VuZXMpCmBgYAoKCgoKIyMgQmV0d2VlbiBGYW1pbHkgZGF0YQpgYGB7ciBiZXR3ZWVuIGZhbWlseSBkYXRhfQpjaGVjayA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUgZmlsdGVyKCFpcy5uYShnX2ZhY3RvciksICFpcy5uYShzaWJsaW5nX2NvdW50X2dlbmVzKSkKbV9nX2ZhY3Rvcl91dGVydXNfYWxpdmVfbm8gPSBsbShnX2ZhY3RvciB+IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciAgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fZ19mYWN0b3JfdXRlcnVzX2FsaXZlX25vKQoKbV9nX2ZhY3Rvcl91dGVydXNfcHJlZ19ubyA9IGxtKGdfZmFjdG9yIH4gYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQphbm92YShtX2dfZmFjdG9yX3V0ZXJ1c19wcmVnX25vKQoKbV9nX2ZhY3Rvcl9nZW5lc19ubyA9IGxtKGdfZmFjdG9yIH4gYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQphbm92YShtX2dfZmFjdG9yX2dlbmVzX25vKQoKbV9nX2ZhY3Rvcl91dGVydXNfYWxpdmUgPSBsbShnX2ZhY3RvciB+IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciAgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciAgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fZ19mYWN0b3JfdXRlcnVzX2FsaXZlKQpzdW1tYXJ5KG1fZ19mYWN0b3JfdXRlcnVzX2FsaXZlKQpwbG90KGFsbEVmZmVjdHMobV9nX2ZhY3Rvcl91dGVydXNfYWxpdmUpKQoKbV9nX2ZhY3Rvcl91dGVydXNfcHJlZyA9IGxtKGdfZmFjdG9yIH4gYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciAgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fZ19mYWN0b3JfdXRlcnVzX3ByZWcpCnN1bW1hcnkobV9nX2ZhY3Rvcl91dGVydXNfcHJlZykKCm1fZ19mYWN0b3JfZ2VuZXMgPSBsbShnX2ZhY3RvciB+IGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yICArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQphbm92YShtX2dfZmFjdG9yX2dlbmVzKQpzdW1tYXJ5KG1fZ19mYWN0b3JfZ2VuZXMpCgpjaGVjayA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUgZmlsdGVyKCFpcy5uYShiaWc1X2V4dCksICFpcy5uYShzaWJsaW5nX2NvdW50X2dlbmVzKSkKbV9iaWc1X2V4dF91dGVydXNfYWxpdmVfbm8gPSBsbShiaWc1X2V4dCB+IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciAgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fYmlnNV9leHRfdXRlcnVzX2FsaXZlX25vKQphbm92YShtX2JpZzVfZXh0X3V0ZXJ1c19hbGl2ZV9ubykKCm1fYmlnNV9leHRfdXRlcnVzX3ByZWdfbm8gPSBsbShiaWc1X2V4dCB+IGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yICArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX2JpZzVfZXh0X3V0ZXJ1c19wcmVnX25vKQphbm92YShtX2JpZzVfZXh0X3V0ZXJ1c19wcmVnX25vKQoKbV9iaWc1X2V4dF9nZW5lc19ubyA9IGxtKGJpZzVfZXh0IH4gYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KG1fYmlnNV9leHRfZ2VuZXNfbm8pCmFub3ZhKG1fYmlnNV9leHRfZ2VuZXNfbm8pCgoKbV9iaWc1X2V4dF91dGVydXNfYWxpdmUgPSBsbShiaWc1X2V4dCB+IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciAgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciAgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fYmlnNV9leHRfdXRlcnVzX2FsaXZlKQpzdW1tYXJ5KG1fYmlnNV9leHRfdXRlcnVzX2FsaXZlKQoKcGxvdChhbGxFZmZlY3RzKG1fYmlnNV9leHRfdXRlcnVzX2FsaXZlKSkKCgoKbV9iaWc1X2V4dF91dGVydXNfcHJlZyA9IGxtKGJpZzVfZXh0IH4gYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciAgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fYmlnNV9leHRfdXRlcnVzX3ByZWcpCnBsb3QoYWxsRWZmZWN0cyhtX2JpZzVfZXh0X3V0ZXJ1c19wcmVnKSkKCm1fYmlnNV9leHRfZ2VuZXMgPSBsbShiaWc1X2V4dCB+IGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yICArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQphbm92YShtX2JpZzVfZXh0X2dlbmVzKQpwbG90KGFsbEVmZmVjdHMobV9iaWc1X2V4dF9nZW5lcykpCgptX2JpZzVfbmV1X3V0ZXJ1c19hbGl2ZV9ubyA9IGxtKGJpZzVfbmV1IH4gYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yICArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fYmlnNV9uZXVfdXRlcnVzX2FsaXZlX25vKQpzdW1tYXJ5KG1fYmlnNV9uZXVfdXRlcnVzX2FsaXZlX25vKQoKbV9iaWc1X25ldV91dGVydXNfcHJlZ19ubyA9IGxtKGJpZzVfbmV1IH4gYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQphbm92YShtX2JpZzVfbmV1X3V0ZXJ1c19wcmVnX25vKQpzdW1tYXJ5KG1fYmlnNV9uZXVfdXRlcnVzX3ByZWdfbm8pCgptX2JpZzVfbmV1X2dlbmVzX25vID0gbG0oYmlnNV9uZXUgfiBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciAgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fYmlnNV9uZXVfZ2VuZXNfbm8pCnN1bW1hcnkobV9iaWc1X25ldV9nZW5lc19ubykKCgptX2JpZzVfbmV1X3V0ZXJ1c19hbGl2ZSA9IGxtKGJpZzVfbmV1IH4gYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yICArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQphbm92YShtX2JpZzVfbmV1X3V0ZXJ1c19hbGl2ZSkKc3VtbWFyeShtX2JpZzVfbmV1X3V0ZXJ1c19hbGl2ZSkKcGxvdChhbGxFZmZlY3RzKG1fYmlnNV9uZXVfdXRlcnVzX2FsaXZlKSkKCm1fYmlnNV9uZXVfdXRlcnVzX3ByZWcgPSBsbShiaWc1X25ldSB+IGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yICArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fYmlnNV9uZXVfdXRlcnVzX3ByZWcpCnN1bW1hcnkobV9iaWc1X25ldV91dGVydXNfcHJlZykKCm1fYmlnNV9uZXVfZ2VuZXMgPSBsbShiaWc1X25ldSB+IGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yICArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fYmlnNV9uZXVfZ2VuZXMpCnN1bW1hcnkobV9iaWc1X25ldV9nZW5lcykKCm1fYmlnNV9jb25fdXRlcnVzX2FsaXZlX25vID0gbG0oYmlnNV9jb24gfiBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IgICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKYW5vdmEobV9iaWc1X2Nvbl91dGVydXNfYWxpdmVfbm8pCnN1bW1hcnkobV9iaWc1X2Nvbl91dGVydXNfYWxpdmVfbm8pCgptX2JpZzVfY29uX3V0ZXJ1c19wcmVnX25vID0gbG0oYmlnNV9jb24gfiBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciAgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fYmlnNV9jb25fdXRlcnVzX3ByZWdfbm8pCnN1bW1hcnkobV9iaWc1X2Nvbl91dGVydXNfcHJlZ19ubykKCm1fYmlnNV9jb25fZ2VuZXNfbm8gPSBsbShiaWc1X2NvbiB+IGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yICArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKYW5vdmEobV9iaWc1X2Nvbl9nZW5lc19ubykKc3VtbWFyeShtX2JpZzVfY29uX2dlbmVzX25vKQoKbV9iaWc1X2Nvbl91dGVydXNfYWxpdmUgPSBsbShiaWc1X2NvbiB+IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciAgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvcisgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQphbm92YShtX2JpZzVfY29uX3V0ZXJ1c19hbGl2ZSkKc3VtbWFyeShtX2JpZzVfY29uX3V0ZXJ1c19hbGl2ZSkKcGxvdChhbGxFZmZlY3RzKG1fYmlnNV9jb25fdXRlcnVzX2FsaXZlKSkKCm1fYmlnNV9jb25fdXRlcnVzX3ByZWcgPSBsbShiaWc1X2NvbiB+IGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yICArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IrIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKYW5vdmEobV9iaWc1X2Nvbl91dGVydXNfcHJlZykKc3VtbWFyeShtX2JpZzVfY29uX3V0ZXJ1c19wcmVnKQoKbV9iaWc1X2Nvbl9nZW5lcyA9IGxtKGJpZzVfY29uIH4gYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvcisgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQphbm92YShtX2JpZzVfY29uX2dlbmVzKQpzdW1tYXJ5KG1fYmlnNV9jb25fZ2VuZXMpCgptX2JpZzVfYWdyZWVfdXRlcnVzX2FsaXZlX25vID0gbG0oYmlnNV9hZ3JlZSB+IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciAgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQphbm92YShtX2JpZzVfYWdyZWVfdXRlcnVzX2FsaXZlX25vKQpzdW1tYXJ5KG1fYmlnNV9hZ3JlZV91dGVydXNfYWxpdmVfbm8pCgptX2JpZzVfYWdyZWVfdXRlcnVzX3ByZWdfbm8gPSBsbShiaWc1X2FncmVlIH4gYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQphbm92YShtX2JpZzVfYWdyZWVfdXRlcnVzX3ByZWdfbm8pCnN1bW1hcnkobV9iaWc1X2FncmVlX3V0ZXJ1c19wcmVnX25vKQoKbV9iaWc1X2FncmVlX2dlbmVzX25vID0gbG0oYmlnNV9hZ3JlZSB+IGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yICArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKYW5vdmEobV9iaWc1X2FncmVlX2dlbmVzX25vKQpzdW1tYXJ5KG1fYmlnNV9hZ3JlZV9nZW5lc19ubykKCm1fYmlnNV9hZ3JlZV91dGVydXNfYWxpdmUgPSBsbShiaWc1X2FncmVlIH4gYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yICArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQphbm92YShtX2JpZzVfYWdyZWVfdXRlcnVzX2FsaXZlKQpwbG90KGFsbEVmZmVjdHMobV9iaWc1X2FncmVlX3V0ZXJ1c19hbGl2ZSkpCgptX2JpZzVfYWdyZWVfdXRlcnVzX3ByZWcgPSBsbShiaWc1X2FncmVlIH4gYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKYW5vdmEobV9iaWc1X2FncmVlX3V0ZXJ1c19wcmVnKQoKbV9iaWc1X2FncmVlX2dlbmVzID0gbG0oYmlnNV9hZ3JlZSB+IGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yICArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fYmlnNV9hZ3JlZV9nZW5lcykKCm1fYmlnNV9vcGVuX3V0ZXJ1c19hbGl2ZV9ubyA9IGxtKGJpZzVfb3BlbiB+IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciAgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShtX2JpZzVfb3Blbl91dGVydXNfYWxpdmVfbm8pCgptX2JpZzVfb3Blbl91dGVydXNfcHJlZ19ubyA9IGxtKGJpZzVfb3BlbiB+IGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yICArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fYmlnNV9vcGVuX3V0ZXJ1c19wcmVnX25vKQoKbV9iaWc1X29wZW5fZ2VuZXNfbm8gPSBsbShiaWc1X29wZW4gfiBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciAgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQphbm92YShtX2JpZzVfb3Blbl9nZW5lc19ubykKCm1fYmlnNV9vcGVuX3V0ZXJ1c19hbGl2ZSA9IGxtKGJpZzVfb3BlbiB+IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciAgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fYmlnNV9vcGVuX3V0ZXJ1c19hbGl2ZSkKc3VtbWFyeShtX2JpZzVfb3Blbl91dGVydXNfYWxpdmUpCnBsb3QoYWxsRWZmZWN0cyhtX2JpZzVfb3Blbl91dGVydXNfYWxpdmUpKQoKbV9iaWc1X29wZW5fdXRlcnVzX3ByZWcgPSBsbShiaWc1X29wZW4gfiBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciAgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKYW5vdmEobV9iaWc1X29wZW5fdXRlcnVzX3ByZWcpCnN1bW1hcnkobV9iaWc1X29wZW5fdXRlcnVzX3ByZWcpCgptX2JpZzVfb3Blbl9nZW5lcyA9IGxtKGJpZzVfb3BlbiB+IGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yICArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQphbm92YShtX2JpZzVfb3Blbl9nZW5lcykKc3VtbWFyeShtX2JpZzVfb3Blbl9nZW5lcykKCmNoZWNrID0gYWxsZGF0YV9iaXJ0aG9yZGVyICU+JSBmaWx0ZXIoIWlzLm5hKHJpc2tBKSwgIWlzLm5hKHNpYmxpbmdfY291bnRfZ2VuZXMpKQoKCm1fcmlza0FfdXRlcnVzX2FsaXZlX25vID0gbG0ocmlza0EgfiBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IgICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKYW5vdmEobV9yaXNrQV91dGVydXNfYWxpdmVfbm8pCgptX3Jpc2tBX3V0ZXJ1c19wcmVnX25vID0gbG0ocmlza0EgfiBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciAgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fcmlza0FfdXRlcnVzX3ByZWdfbm8pCnN1bW1hcnkobV9yaXNrQV91dGVydXNfcHJlZ19ubykKcGxvdChhbGxFZmZlY3RzKG1fcmlza0FfdXRlcnVzX3ByZWdfbm8pKQoKbV9yaXNrQV9nZW5lc19ubyA9IGxtKHJpc2tBIH4gYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQphbm92YShtX3Jpc2tBX2dlbmVzX25vKQoKbV9yaXNrQV91dGVydXNfYWxpdmUgPSBsbShyaXNrQSB+IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciAgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciAgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fcmlza0FfdXRlcnVzX2FsaXZlKQpwbG90KGFsbEVmZmVjdHMobV9yaXNrQV91dGVydXNfYWxpdmUpKQoKbV9yaXNrQV91dGVydXNfcHJlZyA9IGxtKHJpc2tBIH4gYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciAgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fcmlza0FfdXRlcnVzX3ByZWcpCnN1bW1hcnkobV9yaXNrQV91dGVydXNfcHJlZykKcGxvdChhbGxFZmZlY3RzKG1fcmlza0FfdXRlcnVzX3ByZWcpKQoKbV9yaXNrQV9nZW5lcyA9IGxtKHJpc2tBIH4gYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciAgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fcmlza0FfZ2VuZXMpCnN1bW1hcnkobV9yaXNrQV9nZW5lcykKcGxvdChhbGxFZmZlY3RzKG1fcmlza0FfZ2VuZXMpKQoKY2hlY2sgPSBhbGxkYXRhX2JpcnRob3JkZXIgJT4lIGZpbHRlcighaXMubmEocmlza0IpLCAhaXMubmEoc2libGluZ19jb3VudF9nZW5lcykpCm1fcmlza0JfdXRlcnVzX2FsaXZlX25vID0gbG0ocmlza0IgfiBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IgICsgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fcmlza0JfdXRlcnVzX2FsaXZlX25vKQoKbV9yaXNrQl91dGVydXNfcHJlZ19ubyA9IGxtKHJpc2tCIH4gYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgICsgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKYW5vdmEobV9yaXNrQl91dGVydXNfcHJlZ19ubykKCm1fcmlza0JfZ2VuZXNfbm8gPSBsbShyaXNrQiB+IGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yICArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fcmlza0JfZ2VuZXNfbm8pCgptX3Jpc2tCX3V0ZXJ1c19hbGl2ZSA9IGxtKHJpc2tCIH4gYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yICArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKYW5vdmEobV9yaXNrQl91dGVydXNfYWxpdmUpCnBsb3QoYWxsRWZmZWN0cyhtX3Jpc2tCX3V0ZXJ1c19hbGl2ZSkpCgptX3Jpc2tCX3V0ZXJ1c19wcmVnID0gbG0ocmlza0IgfiBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciAgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yICArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKYW5vdmEobV9yaXNrQl91dGVydXNfcHJlZykKcGxvdChhbGxFZmZlY3RzKG1fcmlza0JfdXRlcnVzX3ByZWcpKQoKbV9yaXNrQl9nZW5lcyA9IGxtKHJpc2tCIH4gYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciAgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCmFub3ZhKG1fcmlza0JfZ2VuZXMpCnBsb3QoYWxsRWZmZWN0cyhtX3Jpc2tCX2dlbmVzKSkKCgogIApgYGAKCgoKIyMgSW50ZWxsaWdlbmNlIC0gV2l0aGluIEZhbWlseSBBbmFseXNpcwpgYGB7ciBJbnRlbGxpZ2VuY2UgLSBXaXRoaW4gRmFtaWx5IEFuYWx5c2lzfQojIyMgTWFpbiBUZXN0OiBHLUZhY3RvcgojIyBNYWluIFRlc3Q6IEctRmFjdG9yIC0gdXRlcnVzX2FsaXZlCiMgV2l0aG91dCBjb3ZhcmlhdGVzCmxtZV9nX2ZhY3Rvcl91dGVydXNfYWxpdmUgPSBsbWVyKGdfZmFjdG9yIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLCBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9nX2ZhY3Rvcl91dGVydXNfYWxpdmUpCgpwbG90X2JpcnRob3JkZXIobG1lX2dfZmFjdG9yX3V0ZXJ1c19hbGl2ZSkKIyBXaXRoIGNvdmFyaWF0ZXMKbG1lX2dfZmFjdG9yX3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzID0gbG1lcihnX2ZhY3RvciB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluaykgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfZ19mYWN0b3JfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCnBsb3RfYmlydGhvcmRlcihsbWVfZ19mYWN0b3JfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCgojIyBNYWluIFRlc3Q6IEctRmFjdG9yIC0gdXRlcnVzX3ByZWcKIyBXaXRob3V0IGNvdmFyaWF0ZXMKbG1lX2dfZmFjdG9yX3V0ZXJ1c19wcmVnID0gbG1lcihnX2ZhY3RvciB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX3ByZWcgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLCBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9nX2ZhY3Rvcl91dGVydXNfcHJlZykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9nX2ZhY3Rvcl91dGVydXNfcHJlZykKIyBXaXRoIGNvdmFyaWF0ZXMKbG1lX2dfZmFjdG9yX3V0ZXJ1c19wcmVnX2NvdmFyaWF0ZXMgPSBsbWVyKGdfZmFjdG9yIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfcHJlZyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2dfZmFjdG9yX3V0ZXJ1c19wcmVnX2NvdmFyaWF0ZXMpCnBsb3RfYmlydGhvcmRlcihsbWVfZ19mYWN0b3JfdXRlcnVzX3ByZWdfY292YXJpYXRlcykKCiMjIE1haW4gVGVzdDogRy1GYWN0b3IgLSBnZW5lcwojIFdpdGhvdXQgY292YXJpYXRlcwpsbWVfZ19mYWN0b3JfZ2VuZXMgPSBsbWVyKGdfZmFjdG9yIH4gY291bnRfYmlydGhvcmRlcl9nZW5lcyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluayksIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2dfZmFjdG9yX2dlbmVzKQpwbG90X2JpcnRob3JkZXIobG1lX2dfZmFjdG9yX2dlbmVzKQojIFdpdGggY292YXJpYXRlcwpsbWVfZ19mYWN0b3JfZ2VuZXNfY292YXJpYXRlcyA9IGxtZXIoZ19mYWN0b3IgfiBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluaykgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfZ19mYWN0b3JfZ2VuZXNfY292YXJpYXRlcykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9nX2ZhY3Rvcl9nZW5lc19jb3ZhcmlhdGVzKQphbm92YShsbWVfZ19mYWN0b3JfZ2VuZXNfY292YXJpYXRlcykKCiMjIyBSYXZlbgojIyBSYXZlbiAtIHV0ZXJ1c19hbGl2ZQojIFdpdGhvdXQgY292YXJpYXRlcwpsbWVfcmF2ZW5fdXRlcnVzX2FsaXZlID0gbG1lcihyYXZlbiB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfcmF2ZW5fdXRlcnVzX2FsaXZlKQpwbG90X2JpcnRob3JkZXIobG1lX3JhdmVuX3V0ZXJ1c19hbGl2ZSkKIyBXaXRoIGNvdmFyaWF0ZXMKbG1lX3JhdmVuX3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzID0gbG1lcihyYXZlbiB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluaykgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfcmF2ZW5fdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCnBsb3RfYmlydGhvcmRlcihsbWVfcmF2ZW5fdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCgojIyBSYXZlbiAtIHV0ZXJ1c19wcmVnCiMgV2l0aG91dCBjb3ZhcmlhdGVzCmxtZV9yYXZlbl91dGVydXNfcHJlZyA9IGxtZXIocmF2ZW4gfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfcmF2ZW5fdXRlcnVzX3ByZWcpCnBsb3RfYmlydGhvcmRlcihsbWVfcmF2ZW5fdXRlcnVzX3ByZWcpCiMgV2l0aCBjb3ZhcmlhdGVzCmxtZV9yYXZlbl91dGVydXNfcHJlZ19jb3ZhcmlhdGVzID0gbG1lcihyYXZlbiB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX3ByZWcgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9yYXZlbl91dGVydXNfcHJlZ19jb3ZhcmlhdGVzKQpwbG90X2JpcnRob3JkZXIobG1lX3JhdmVuX3V0ZXJ1c19wcmVnX2NvdmFyaWF0ZXMpCgojIyBSYXZlbiAtIGdlbmVzCiMgV2l0aG91dCBjb3ZhcmlhdGVzCmxtZV9yYXZlbl9nZW5lcyA9IGxtZXIocmF2ZW4gfiBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfcmF2ZW5fZ2VuZXMpCnBsb3RfYmlydGhvcmRlcihsbWVfcmF2ZW5fZ2VuZXMpCiMgV2l0aCBjb3ZhcmlhdGVzCmxtZV9yYXZlbl9nZW5lc19jb3ZhcmlhdGVzID0gbG1lcihyYXZlbiB+IGNvdW50X2JpcnRob3JkZXJfZ2VuZXMgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9yYXZlbl9nZW5lc19jb3ZhcmlhdGVzKQpwbG90X2JpcnRob3JkZXIobG1lX3JhdmVuX2dlbmVzX2NvdmFyaWF0ZXMpCgojIyMgbWF0aAojIyBtYXRoIC0gdXRlcnVzX2FsaXZlCiMgV2l0aG91dCBjb3ZhcmlhdGVzCmxtZV9tYXRoX3V0ZXJ1c19hbGl2ZSA9IGxtZXIobWF0aCB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfbWF0aF91dGVydXNfYWxpdmUpCnBsb3RfYmlydGhvcmRlcihsbWVfbWF0aF91dGVydXNfYWxpdmUpCiMgV2l0aCBjb3ZhcmlhdGVzCmxtZV9tYXRoX3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzID0gbG1lcihtYXRoIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9tYXRoX3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzKQpwbG90X2JpcnRob3JkZXIobG1lX21hdGhfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCgojIyBtYXRoIC0gdXRlcnVzX3ByZWcKIyBXaXRob3V0IGNvdmFyaWF0ZXMKbG1lX21hdGhfdXRlcnVzX3ByZWcgPSBsbWVyKG1hdGggfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfbWF0aF91dGVydXNfcHJlZykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9tYXRoX3V0ZXJ1c19wcmVnKQojIFdpdGggY292YXJpYXRlcwpsbWVfbWF0aF91dGVydXNfcHJlZ19jb3ZhcmlhdGVzID0gbG1lcihtYXRoIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfcHJlZyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX21hdGhfdXRlcnVzX3ByZWdfY292YXJpYXRlcykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9tYXRoX3V0ZXJ1c19wcmVnX2NvdmFyaWF0ZXMpCgojIyBtYXRoIC0gZ2VuZXMKIyBXaXRob3V0IGNvdmFyaWF0ZXMKbG1lX21hdGhfZ2VuZXMgPSBsbWVyKG1hdGggfiBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfbWF0aF9nZW5lcykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9tYXRoX2dlbmVzKQojIFdpdGggY292YXJpYXRlcwpsbWVfbWF0aF9nZW5lc19jb3ZhcmlhdGVzID0gbG1lcihtYXRoIH4gY291bnRfYmlydGhvcmRlcl9nZW5lcyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX21hdGhfZ2VuZXNfY292YXJpYXRlcykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9tYXRoX2dlbmVzX2NvdmFyaWF0ZXMpCgoKIyMjIGNvdW50X2JhY2t3YXJkcwojIyBjb3VudF9iYWNrd2FyZHMgLSB1dGVydXNfYWxpdmUKIyBXaXRob3V0IGNvdmFyaWF0ZXMKbG1lX2NvdW50X2JhY2t3YXJkc191dGVydXNfYWxpdmUgPSBsbWVyKGNvdW50X2JhY2t3YXJkcyB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfY291bnRfYmFja3dhcmRzX3V0ZXJ1c19hbGl2ZSkKcGxvdF9iaXJ0aG9yZGVyKGxtZV9jb3VudF9iYWNrd2FyZHNfdXRlcnVzX2FsaXZlKQojIFdpdGggY292YXJpYXRlcwpsbWVfY291bnRfYmFja3dhcmRzX3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzID0gbG1lcihjb3VudF9iYWNrd2FyZHMgfgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9jb3VudF9iYWNrd2FyZHNfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCnBsb3RfYmlydGhvcmRlcihsbWVfY291bnRfYmFja3dhcmRzX3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzKQoKIyMgY291bnRfYmFja3dhcmRzIC0gdXRlcnVzX3ByZWcKIyBXaXRob3V0IGNvdmFyaWF0ZXMKbG1lX2NvdW50X2JhY2t3YXJkc191dGVydXNfcHJlZyA9IGxtZXIoY291bnRfYmFja3dhcmRzIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfcHJlZyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluayksIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2NvdW50X2JhY2t3YXJkc191dGVydXNfcHJlZykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9jb3VudF9iYWNrd2FyZHNfdXRlcnVzX3ByZWcpCiMgV2l0aCBjb3ZhcmlhdGVzCmxtZV9jb3VudF9iYWNrd2FyZHNfdXRlcnVzX3ByZWdfY292YXJpYXRlcyA9IGxtZXIoY291bnRfYmFja3dhcmRzIH4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY291bnRfYmlydGhvcmRlcl91dGVydXNfcHJlZyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2NvdW50X2JhY2t3YXJkc191dGVydXNfcHJlZ19jb3ZhcmlhdGVzKQpwbG90X2JpcnRob3JkZXIobG1lX2NvdW50X2JhY2t3YXJkc191dGVydXNfcHJlZ19jb3ZhcmlhdGVzKQoKIyMgY291bnRfYmFja3dhcmRzIC0gZ2VuZXMKIyBXaXRob3V0IGNvdmFyaWF0ZXMKbG1lX2NvdW50X2JhY2t3YXJkc19nZW5lcyA9IGxtZXIoY291bnRfYmFja3dhcmRzIH4gY291bnRfYmlydGhvcmRlcl9nZW5lcyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluayksIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2NvdW50X2JhY2t3YXJkc19nZW5lcykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9jb3VudF9iYWNrd2FyZHNfZ2VuZXMpCiMgV2l0aCBjb3ZhcmlhdGVzCmxtZV9jb3VudF9iYWNrd2FyZHNfZ2VuZXNfY292YXJpYXRlcyA9IGxtZXIoY291bnRfYmFja3dhcmRzIH4gY291bnRfYmlydGhvcmRlcl9nZW5lcyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2NvdW50X2JhY2t3YXJkc19nZW5lc19jb3ZhcmlhdGVzKQpwbG90X2JpcnRob3JkZXIobG1lX2NvdW50X2JhY2t3YXJkc19nZW5lc19jb3ZhcmlhdGVzKQoKCiMjIyB3b3Jkc19yZW1lbWJlcmVkX2F2ZwojIyB3b3Jkc19yZW1lbWJlcmVkX2F2ZyAtIHV0ZXJ1c19hbGl2ZQojIFdpdGhvdXQgY292YXJpYXRlcwpsbWVfd29yZHNfcmVtZW1iZXJlZF9hdmdfdXRlcnVzX2FsaXZlID0gbG1lcih3b3Jkc19yZW1lbWJlcmVkX2F2ZyB+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLCBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV93b3Jkc19yZW1lbWJlcmVkX2F2Z191dGVydXNfYWxpdmUpCnBsb3RfYmlydGhvcmRlcihsbWVfd29yZHNfcmVtZW1iZXJlZF9hdmdfdXRlcnVzX2FsaXZlKQojIFdpdGggY292YXJpYXRlcwpsbWVfd29yZHNfcmVtZW1iZXJlZF9hdmdfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMgPSBsbWVyKHdvcmRzX3JlbWVtYmVyZWRfYXZnIH4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluaykgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfd29yZHNfcmVtZW1iZXJlZF9hdmdfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCnBsb3RfYmlydGhvcmRlcihsbWVfd29yZHNfcmVtZW1iZXJlZF9hdmdfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCgojIyB3b3Jkc19yZW1lbWJlcmVkX2F2ZyAtIHV0ZXJ1c19wcmVnCiMgV2l0aG91dCBjb3ZhcmlhdGVzCmxtZV93b3Jkc19yZW1lbWJlcmVkX2F2Z191dGVydXNfcHJlZyA9IGxtZXIod29yZHNfcmVtZW1iZXJlZF9hdmcgfgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY291bnRfYmlydGhvcmRlcl91dGVydXNfcHJlZyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluayksIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX3dvcmRzX3JlbWVtYmVyZWRfYXZnX3V0ZXJ1c19wcmVnKQpwbG90X2JpcnRob3JkZXIobG1lX3dvcmRzX3JlbWVtYmVyZWRfYXZnX3V0ZXJ1c19wcmVnKQojIFdpdGggY292YXJpYXRlcwpsbWVfd29yZHNfcmVtZW1iZXJlZF9hdmdfdXRlcnVzX3ByZWdfY292YXJpYXRlcyA9IGxtZXIod29yZHNfcmVtZW1iZXJlZF9hdmcgfgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluaykgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfd29yZHNfcmVtZW1iZXJlZF9hdmdfdXRlcnVzX3ByZWdfY292YXJpYXRlcykKcGxvdF9iaXJ0aG9yZGVyKGxtZV93b3Jkc19yZW1lbWJlcmVkX2F2Z191dGVydXNfcHJlZ19jb3ZhcmlhdGVzKQoKIyMgd29yZHNfcmVtZW1iZXJlZF9hdmcgLSBnZW5lcwojIFdpdGhvdXQgY292YXJpYXRlcwpsbWVfd29yZHNfcmVtZW1iZXJlZF9hdmdfZ2VuZXMgPSBsbWVyKHdvcmRzX3JlbWVtYmVyZWRfYXZnIH4gY291bnRfYmlydGhvcmRlcl9nZW5lcyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluayksIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX3dvcmRzX3JlbWVtYmVyZWRfYXZnX2dlbmVzKQpwbG90X2JpcnRob3JkZXIobG1lX3dvcmRzX3JlbWVtYmVyZWRfYXZnX2dlbmVzKQojIFdpdGggY292YXJpYXRlcwpsbWVfd29yZHNfcmVtZW1iZXJlZF9hdmdfZ2VuZXNfY292YXJpYXRlcyA9IGxtZXIod29yZHNfcmVtZW1iZXJlZF9hdmcgfgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvdW50X2JpcnRob3JkZXJfZ2VuZXMgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV93b3Jkc19yZW1lbWJlcmVkX2F2Z19nZW5lc19jb3ZhcmlhdGVzKQpwbG90X2JpcnRob3JkZXIobG1lX3dvcmRzX3JlbWVtYmVyZWRfYXZnX2dlbmVzX2NvdmFyaWF0ZXMpCgojIyMgYWRhcHRpdmVfbnVtYmVyaW5nCiMjIGFkYXB0aXZlX251bWJlcmluZyAtIHV0ZXJ1c19hbGl2ZQojIFdpdGhvdXQgY292YXJpYXRlcwpsbWVfYWRhcHRpdmVfbnVtYmVyaW5nX3V0ZXJ1c19hbGl2ZSA9IGxtZXIoYWRhcHRpdmVfbnVtYmVyaW5nIH4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLCBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9hZGFwdGl2ZV9udW1iZXJpbmdfdXRlcnVzX2FsaXZlKQpwbG90X2JpcnRob3JkZXIobG1lX2FkYXB0aXZlX251bWJlcmluZ191dGVydXNfYWxpdmUpCiMgV2l0aCBjb3ZhcmlhdGVzCmxtZV9hZGFwdGl2ZV9udW1iZXJpbmdfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMgPSBsbWVyKGFkYXB0aXZlX251bWJlcmluZyB+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2FkYXB0aXZlX251bWJlcmluZ191dGVydXNfYWxpdmVfY292YXJpYXRlcykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9hZGFwdGl2ZV9udW1iZXJpbmdfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCgojIyBhZGFwdGl2ZV9udW1iZXJpbmcgLSB1dGVydXNfcHJlZwojIFdpdGhvdXQgY292YXJpYXRlcwpsbWVfYWRhcHRpdmVfbnVtYmVyaW5nX3V0ZXJ1c19wcmVnID0gbG1lcihhZGFwdGl2ZV9udW1iZXJpbmcgfgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX3ByZWcgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLCBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9hZGFwdGl2ZV9udW1iZXJpbmdfdXRlcnVzX3ByZWcpCnBsb3RfYmlydGhvcmRlcihsbWVfYWRhcHRpdmVfbnVtYmVyaW5nX3V0ZXJ1c19wcmVnKQojIFdpdGggY292YXJpYXRlcwpsbWVfYWRhcHRpdmVfbnVtYmVyaW5nX3V0ZXJ1c19wcmVnX2NvdmFyaWF0ZXMgPSBsbWVyKGFkYXB0aXZlX251bWJlcmluZyB+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX3ByZWcgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9hZGFwdGl2ZV9udW1iZXJpbmdfdXRlcnVzX3ByZWdfY292YXJpYXRlcykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9hZGFwdGl2ZV9udW1iZXJpbmdfdXRlcnVzX3ByZWdfY292YXJpYXRlcykKCiMjIGFkYXB0aXZlX251bWJlcmluZyAtIGdlbmVzCiMgV2l0aG91dCBjb3ZhcmlhdGVzCmxtZV9hZGFwdGl2ZV9udW1iZXJpbmdfZ2VuZXMgPSBsbWVyKGFkYXB0aXZlX251bWJlcmluZyB+IGNvdW50X2JpcnRob3JkZXJfZ2VuZXMgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLCBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9hZGFwdGl2ZV9udW1iZXJpbmdfZ2VuZXMpCnBsb3RfYmlydGhvcmRlcihsbWVfYWRhcHRpdmVfbnVtYmVyaW5nX2dlbmVzKQojIFdpdGggY292YXJpYXRlcwpsbWVfYWRhcHRpdmVfbnVtYmVyaW5nX2dlbmVzX2NvdmFyaWF0ZXMgPSBsbWVyKGFkYXB0aXZlX251bWJlcmluZyB+IAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluaykgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfYWRhcHRpdmVfbnVtYmVyaW5nX2dlbmVzX2NvdmFyaWF0ZXMpCnBsb3RfYmlydGhvcmRlcihsbWVfYWRhcHRpdmVfbnVtYmVyaW5nX2dlbmVzX2NvdmFyaWF0ZXMpCgpgYGAKCiMjIFBlcnNvbmFsaXR5IC0gV2l0aGluIEZhbWlseSBBbmFseXNpcwpgYGB7ciBQZXJzb25hbGl0eSAtIFdpdGhpbiBGYW1pbHkgQW5hbHlzaXN9CiMjIyBiaWc1X29wZW4KIyMgYmlnNV9vcGVuIC0gdXRlcnVzX2FsaXZlCiMgV2l0aG91dCBjb3ZhcmlhdGVzCmxtZV9iaWc1X29wZW5fdXRlcnVzX2FsaXZlID0gbG1lcihiaWc1X29wZW4gfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluayksIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2JpZzVfb3Blbl91dGVydXNfYWxpdmUpCnBsb3RfYmlydGhvcmRlcihsbWVfYmlnNV9vcGVuX3V0ZXJ1c19hbGl2ZSkKIyBXaXRoIGNvdmFyaWF0ZXMKbG1lX2JpZzVfb3Blbl91dGVydXNfYWxpdmVfY292YXJpYXRlcyA9IGxtZXIoYmlnNV9vcGVuIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9iaWc1X29wZW5fdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCnBsb3RfYmlydGhvcmRlcihsbWVfYmlnNV9vcGVuX3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzKQoKIyMgYmlnNV9vcGVuIC0gdXRlcnVzX3ByZWcKIyBXaXRob3V0IGNvdmFyaWF0ZXMKbG1lX2JpZzVfb3Blbl91dGVydXNfcHJlZyA9IGxtZXIoYmlnNV9vcGVuIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfcHJlZyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluayksIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2JpZzVfb3Blbl91dGVydXNfcHJlZykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9iaWc1X29wZW5fdXRlcnVzX3ByZWcpCiMgV2l0aCBjb3ZhcmlhdGVzCmxtZV9iaWc1X29wZW5fdXRlcnVzX3ByZWdfY292YXJpYXRlcyA9IGxtZXIoYmlnNV9vcGVuIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfcHJlZyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2JpZzVfb3Blbl91dGVydXNfcHJlZ19jb3ZhcmlhdGVzKQpwbG90X2JpcnRob3JkZXIobG1lX2JpZzVfb3Blbl91dGVydXNfcHJlZ19jb3ZhcmlhdGVzKQoKIyMgYmlnNV9vcGVuIC0gZ2VuZXMKIyBXaXRob3V0IGNvdmFyaWF0ZXMKbG1lX2JpZzVfb3Blbl9nZW5lcyA9IGxtZXIoYmlnNV9vcGVuIH4gY291bnRfYmlydGhvcmRlcl9nZW5lcyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluayksIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2JpZzVfb3Blbl9nZW5lcykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9iaWc1X29wZW5fZ2VuZXMpCiMgV2l0aCBjb3ZhcmlhdGVzCmxtZV9iaWc1X29wZW5fZ2VuZXNfY292YXJpYXRlcyA9IGxtZXIoYmlnNV9vcGVuIH4gY291bnRfYmlydGhvcmRlcl9nZW5lcyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2JpZzVfb3Blbl9nZW5lc19jb3ZhcmlhdGVzKQpwbG90X2JpcnRob3JkZXIobG1lX2JpZzVfb3Blbl9nZW5lc19jb3ZhcmlhdGVzKQoKIyMjIGJpZzVfZXh0CiMjIGJpZzVfZXh0IC0gdXRlcnVzX2FsaXZlCiMgV2l0aG91dCBjb3ZhcmlhdGVzCmxtZV9iaWc1X2V4dF91dGVydXNfYWxpdmUgPSBsbWVyKGJpZzVfZXh0IH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLCBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9iaWc1X2V4dF91dGVydXNfYWxpdmUpCnBsb3RfYmlydGhvcmRlcihsbWVfYmlnNV9leHRfdXRlcnVzX2FsaXZlKQojIFdpdGggY292YXJpYXRlcwpsbWVfYmlnNV9leHRfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMgPSBsbWVyKGJpZzVfZXh0IH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9iaWc1X2V4dF91dGVydXNfYWxpdmVfY292YXJpYXRlcykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9iaWc1X2V4dF91dGVydXNfYWxpdmVfY292YXJpYXRlcykKCiMjIGJpZzVfZXh0IC0gdXRlcnVzX3ByZWcKIyBXaXRob3V0IGNvdmFyaWF0ZXMKbG1lX2JpZzVfZXh0X3V0ZXJ1c19wcmVnID0gbG1lcihiaWc1X2V4dCB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX3ByZWcgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLCBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9iaWc1X2V4dF91dGVydXNfcHJlZykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9iaWc1X2V4dF91dGVydXNfcHJlZykKIyBXaXRoIGNvdmFyaWF0ZXMKbG1lX2JpZzVfZXh0X3V0ZXJ1c19wcmVnX2NvdmFyaWF0ZXMgPSBsbWVyKGJpZzVfZXh0IH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfcHJlZyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2JpZzVfZXh0X3V0ZXJ1c19wcmVnX2NvdmFyaWF0ZXMpCnBsb3RfYmlydGhvcmRlcihsbWVfYmlnNV9leHRfdXRlcnVzX3ByZWdfY292YXJpYXRlcykKCiMjIGJpZzVfZXh0IC0gZ2VuZXMKIyBXaXRob3V0IGNvdmFyaWF0ZXMKbG1lX2JpZzVfZXh0X2dlbmVzID0gbG1lcihiaWc1X2V4dCB+IGNvdW50X2JpcnRob3JkZXJfZ2VuZXMgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLCBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9iaWc1X2V4dF9nZW5lcykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9iaWc1X2V4dF9nZW5lcykKIyBXaXRoIGNvdmFyaWF0ZXMKbG1lX2JpZzVfZXh0X2dlbmVzX2NvdmFyaWF0ZXMgPSBsbWVyKGJpZzVfZXh0IH4gY291bnRfYmlydGhvcmRlcl9nZW5lcyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2JpZzVfZXh0X2dlbmVzX2NvdmFyaWF0ZXMpCnBsb3RfYmlydGhvcmRlcihsbWVfYmlnNV9leHRfZ2VuZXNfY292YXJpYXRlcykKCiMjIyBiaWc1X25ldQojIyBiaWc1X25ldSAtIHV0ZXJ1c19hbGl2ZQojIFdpdGhvdXQgY292YXJpYXRlcwpsbWVfYmlnNV9uZXVfdXRlcnVzX2FsaXZlID0gbG1lcihiaWc1X25ldSB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfYmlnNV9uZXVfdXRlcnVzX2FsaXZlKQpwbG90X2JpcnRob3JkZXIobG1lX2JpZzVfbmV1X3V0ZXJ1c19hbGl2ZSkKIyBXaXRoIGNvdmFyaWF0ZXMKbG1lX2JpZzVfbmV1X3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzID0gbG1lcihiaWc1X25ldSB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluaykgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfYmlnNV9uZXVfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCnBsb3RfYmlydGhvcmRlcihsbWVfYmlnNV9uZXVfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCgojIyBiaWc1X25ldSAtIHV0ZXJ1c19wcmVnCiMgV2l0aG91dCBjb3ZhcmlhdGVzCmxtZV9iaWc1X25ldV91dGVydXNfcHJlZyA9IGxtZXIoYmlnNV9uZXUgfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfYmlnNV9uZXVfdXRlcnVzX3ByZWcpCnBsb3RfYmlydGhvcmRlcihsbWVfYmlnNV9uZXVfdXRlcnVzX3ByZWcpCiMgV2l0aCBjb3ZhcmlhdGVzCmxtZV9iaWc1X25ldV91dGVydXNfcHJlZ19jb3ZhcmlhdGVzID0gbG1lcihiaWc1X25ldSB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX3ByZWcgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9iaWc1X25ldV91dGVydXNfcHJlZ19jb3ZhcmlhdGVzKQpwbG90X2JpcnRob3JkZXIobG1lX2JpZzVfbmV1X3V0ZXJ1c19wcmVnX2NvdmFyaWF0ZXMpCgojIyBiaWc1X25ldSAtIGdlbmVzCiMgV2l0aG91dCBjb3ZhcmlhdGVzCmxtZV9iaWc1X25ldV9nZW5lcyA9IGxtZXIoYmlnNV9uZXUgfiBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfYmlnNV9uZXVfZ2VuZXMpCnBsb3RfYmlydGhvcmRlcihsbWVfYmlnNV9uZXVfZ2VuZXMpCiMgV2l0aCBjb3ZhcmlhdGVzCmxtZV9iaWc1X25ldV9nZW5lc19jb3ZhcmlhdGVzID0gbG1lcihiaWc1X25ldSB+IGNvdW50X2JpcnRob3JkZXJfZ2VuZXMgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9iaWc1X25ldV9nZW5lc19jb3ZhcmlhdGVzKQpwbG90X2JpcnRob3JkZXIobG1lX2JpZzVfbmV1X2dlbmVzX2NvdmFyaWF0ZXMpCgojIyMgYmlnNV9hZ3JlZQojIyBiaWc1X2FncmVlIC0gdXRlcnVzX2FsaXZlCiMgV2l0aG91dCBjb3ZhcmlhdGVzCmxtZV9iaWc1X2FncmVlX3V0ZXJ1c19hbGl2ZSA9IGxtZXIoYmlnNV9hZ3JlZSB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfYmlnNV9hZ3JlZV91dGVydXNfYWxpdmUpCnBsb3RfYmlydGhvcmRlcihsbWVfYmlnNV9hZ3JlZV91dGVydXNfYWxpdmUpCiMgV2l0aCBjb3ZhcmlhdGVzCmxtZV9iaWc1X2FncmVlX3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzID0gbG1lcihiaWc1X2FncmVlIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9iaWc1X2FncmVlX3V0ZXJ1c19hbGl2ZV9jb3ZhcmlhdGVzKQpwbG90X2JpcnRob3JkZXIobG1lX2JpZzVfYWdyZWVfdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMpCgojIyBiaWc1X2FncmVlIC0gdXRlcnVzX3ByZWcKIyBXaXRob3V0IGNvdmFyaWF0ZXMKbG1lX2JpZzVfYWdyZWVfdXRlcnVzX3ByZWcgPSBsbWVyKGJpZzVfYWdyZWUgfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfYmlnNV9hZ3JlZV91dGVydXNfcHJlZykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9iaWc1X2FncmVlX3V0ZXJ1c19wcmVnKQojIFdpdGggY292YXJpYXRlcwpsbWVfYmlnNV9hZ3JlZV91dGVydXNfcHJlZ19jb3ZhcmlhdGVzID0gbG1lcihiaWc1X2FncmVlIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfcHJlZyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2JpZzVfYWdyZWVfdXRlcnVzX3ByZWdfY292YXJpYXRlcykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9iaWc1X2FncmVlX3V0ZXJ1c19wcmVnX2NvdmFyaWF0ZXMpCgojIyBiaWc1X2FncmVlIC0gZ2VuZXMKIyBXaXRob3V0IGNvdmFyaWF0ZXMKbG1lX2JpZzVfYWdyZWVfZ2VuZXMgPSBsbWVyKGJpZzVfYWdyZWUgfiBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikKc3VtbWFyeShsbWVfYmlnNV9hZ3JlZV9nZW5lcykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9iaWc1X2FncmVlX2dlbmVzKQojIFdpdGggY292YXJpYXRlcwpsbWVfYmlnNV9hZ3JlZV9nZW5lc19jb3ZhcmlhdGVzID0gbG1lcihiaWc1X2FncmVlIH4gY291bnRfYmlydGhvcmRlcl9nZW5lcyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2JpZzVfYWdyZWVfZ2VuZXNfY292YXJpYXRlcykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9iaWc1X2FncmVlX2dlbmVzX2NvdmFyaWF0ZXMpCgoKIyMjIGJpZzVfY29uCiMjIGJpZzVfY29uIC0gdXRlcnVzX2FsaXZlCiMgV2l0aG91dCBjb3ZhcmlhdGVzCmxtZV9iaWc1X2Nvbl91dGVydXNfYWxpdmUgPSBsbWVyKGJpZzVfY29uIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLCBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9iaWc1X2Nvbl91dGVydXNfYWxpdmUpCnBsb3RfYmlydGhvcmRlcihsbWVfYmlnNV9jb25fdXRlcnVzX2FsaXZlKQojIFdpdGggY292YXJpYXRlcwpsbWVfYmlnNV9jb25fdXRlcnVzX2FsaXZlX2NvdmFyaWF0ZXMgPSBsbWVyKGJpZzVfY29uIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9iaWc1X2Nvbl91dGVydXNfYWxpdmVfY292YXJpYXRlcykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9iaWc1X2Nvbl91dGVydXNfYWxpdmVfY292YXJpYXRlcykKCiMjIGJpZzVfY29uIC0gdXRlcnVzX3ByZWcKIyBXaXRob3V0IGNvdmFyaWF0ZXMKbG1lX2JpZzVfY29uX3V0ZXJ1c19wcmVnID0gbG1lcihiaWc1X2NvbiB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX3ByZWcgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLCBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9iaWc1X2Nvbl91dGVydXNfcHJlZykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9iaWc1X2Nvbl91dGVydXNfcHJlZykKIyBXaXRoIGNvdmFyaWF0ZXMKbG1lX2JpZzVfY29uX3V0ZXJ1c19wcmVnX2NvdmFyaWF0ZXMgPSBsbWVyKGJpZzVfY29uIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfcHJlZyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2JpZzVfY29uX3V0ZXJ1c19wcmVnX2NvdmFyaWF0ZXMpCnBsb3RfYmlydGhvcmRlcihsbWVfYmlnNV9jb25fdXRlcnVzX3ByZWdfY292YXJpYXRlcykKCiMjIGJpZzVfY29uIC0gZ2VuZXMKIyBXaXRob3V0IGNvdmFyaWF0ZXMKbG1lX2JpZzVfY29uX2dlbmVzID0gbG1lcihiaWc1X2NvbiB+IGNvdW50X2JpcnRob3JkZXJfZ2VuZXMgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLCBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKQpzdW1tYXJ5KGxtZV9iaWc1X2Nvbl9nZW5lcykKcGxvdF9iaXJ0aG9yZGVyKGxtZV9iaWc1X2Nvbl9nZW5lcykKIyBXaXRoIGNvdmFyaWF0ZXMKbG1lX2JpZzVfY29uX2dlbmVzX2NvdmFyaWF0ZXMgPSBsbWVyKGJpZzVfY29uIH4gY291bnRfYmlydGhvcmRlcl9nZW5lcyArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpCnN1bW1hcnkobG1lX2JpZzVfY29uX2dlbmVzX2NvdmFyaWF0ZXMpCnBsb3RfYmlydGhvcmRlcihsbWVfYmlnNV9jb25fZ2VuZXNfY292YXJpYXRlcykKYGBgCgoKIyMgV2l0aGluIEZhbWlseSBkYXRhCmBgYHtyIHdpdGhpbiBmYW1pbHkgZGF0YX0KbG1lX2dfZmFjdG9yX3V0ZXJ1c19hbGl2ZV9ubyA9IGxtZXIoZ19mYWN0b3IgfiBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyLCBSRU1MID0gRkFMU0UpCmFub3ZhKGxtZV9nX2ZhY3Rvcl91dGVydXNfYWxpdmVfbm8sIGRkZiA9ICJrZW53IikKc3VtbWFyeShsbWVfZ19mYWN0b3JfdXRlcnVzX2FsaXZlX25vLCBkZGYgPSAia2VudyIpCgpsbWVfZ19mYWN0b3JfdXRlcnVzX3ByZWdfbm8gPSBsbWVyKGdfZmFjdG9yIH4gYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX2dfZmFjdG9yX3V0ZXJ1c19wcmVnX25vLCBkZGYgPSAia2VudyIpCgpsbWVfZ19mYWN0b3JfZ2VuZXNfbm8gPSBsbWVyKGdfZmFjdG9yIH4gYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1hcnJpYWdlX2lkKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX2dfZmFjdG9yX2dlbmVzX25vLCBkZGYgPSAia2VudyIpCgoKbG1lX2dfZmFjdG9yX3V0ZXJ1c19hbGl2ZSA9IGxtZXIoZ19mYWN0b3IgfiBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluaykgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlciwgUkVNTCA9IEZBTFNFKQoKYW5vdmEobG1lX2dfZmFjdG9yX3V0ZXJ1c19hbGl2ZSwgZGRmPSJrZW53IikKc3VtbWFyeShsbWVfZ19mYWN0b3JfdXRlcnVzX2FsaXZlLCBkZGY9ImtlbnciKQoKbG1lX2dfZmFjdG9yX3V0ZXJ1c19wcmVnID0gbG1lcihnX2ZhY3RvciB+IGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluaykgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlciwgUkVNTCA9IEZBTFNFKQoKYW5vdmEobG1lX2dfZmFjdG9yX3V0ZXJ1c19wcmVnLCBkZGY9ImtlbnciKQoKbG1lX2dfZmFjdG9yX2dlbmVzID0gbG1lcihnX2ZhY3RvciB+IGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtYXJyaWFnZV9pZCkgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlciwgUkVNTCA9IEZBTFNFKQoKYW5vdmEobG1lX2dfZmFjdG9yX2dlbmVzLCBkZGY9ImtlbnciKQoKbG1lX2JpZzVfZXh0X3V0ZXJ1c19hbGl2ZV9ubyA9IGxtZXIoYmlnNV9leHQgfiBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyLCBSRU1MID0gRkFMU0UpCmFub3ZhKGxtZV9iaWc1X2V4dF91dGVydXNfYWxpdmVfbm8sIGRkZj0ia2VudyIpCnN1bW1hcnkobG1lX2JpZzVfZXh0X3V0ZXJ1c19hbGl2ZV9ubywgZGRmPSJrZW53IikKCmxtZV9iaWc1X2V4dF91dGVydXNfcHJlZ19ubyA9IGxtZXIoYmlnNV9leHQgfiBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yICsgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlciwgUkVNTCA9IEZBTFNFKQphbm92YShsbWVfYmlnNV9leHRfdXRlcnVzX3ByZWdfbm8sIGRkZj0ia2VudyIpCgpsbWVfYmlnNV9leHRfZ2VuZXNfbm8gPSBsbWVyKGJpZzVfZXh0IH4gYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1hcnJpYWdlX2lkKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX2JpZzVfZXh0X2dlbmVzX25vLCBkZGY9ImtlbnciKQoKCmxtZV9iaWc1X2V4dF91dGVydXNfYWxpdmUgPSBsbWVyKGJpZzVfZXh0IH4gYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yICsgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX2JpZzVfZXh0X3V0ZXJ1c19hbGl2ZSwgZGRmPSJrZW53IikKc3VtbWFyeShsbWVfYmlnNV9leHRfdXRlcnVzX2FsaXZlLCBkZGY9ImtlbnciKQoKbG1lX2JpZzVfZXh0X3V0ZXJ1c19wcmVnID0gbG1lcihiaWc1X2V4dCB+IGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluaykgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlciwgUkVNTCA9IEZBTFNFKQphbm92YShsbWVfYmlnNV9leHRfdXRlcnVzX3ByZWcsIGRkZj0ia2VudyIpCgpsbWVfYmlnNV9leHRfZ2VuZXMgPSBsbWVyKGJpZzVfZXh0IH4gYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1hcnJpYWdlX2lkKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyLCBSRU1MID0gRkFMU0UpCmFub3ZhKGxtZV9iaWc1X2V4dF9nZW5lcywgZGRmPSJrZW53IikKCmxtZV9iaWc1X25ldV91dGVydXNfYWxpdmVfbm8gPSBsbWVyKGJpZzVfbmV1IH4gYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yICsgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlciwgUkVNTCA9IEZBTFNFKQphbm92YShsbWVfYmlnNV9uZXVfdXRlcnVzX2FsaXZlX25vLCBkZmYgPSAia2VudyIpCgpsbWVfYmlnNV9uZXVfdXRlcnVzX3ByZWdfbm8gPSBsbWVyKGJpZzVfbmV1IH4gYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX2JpZzVfbmV1X3V0ZXJ1c19wcmVnX25vLCBkZmYgPSAia2VudyIpCgpsbWVfYmlnNV9uZXVfZ2VuZXNfbm8gPSBsbWVyKGJpZzVfbmV1IH4gYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1hcnJpYWdlX2lkKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX2JpZzVfbmV1X2dlbmVzX25vLCBkZmYgPSAia2VudyIpCgpsbWVfYmlnNV9uZXVfdXRlcnVzX2FsaXZlID0gbG1lcihiaWc1X25ldSB+IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyLCBSRU1MID0gRkFMU0UpCmFub3ZhKGxtZV9iaWc1X25ldV91dGVydXNfYWxpdmUsIGRmZiA9ICJrZW53IikKCmxtZV9iaWc1X25ldV91dGVydXNfcHJlZyA9IGxtZXIoYmlnNV9uZXUgfiBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yICsgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX2JpZzVfbmV1X3V0ZXJ1c19wcmVnLCBkZmYgPSAia2VudyIpCgpsbWVfYmlnNV9uZXVfZ2VuZXMgPSBsbWVyKGJpZzVfbmV1IH4gYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1hcnJpYWdlX2lkKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyLCBSRU1MID0gRkFMU0UpCmFub3ZhKGxtZV9iaWc1X25ldV9nZW5lcywgZGZmID0gImtlbnciKQoKCmxtZV9iaWc1X2Nvbl91dGVydXNfYWxpdmVfbm8gPSBsbWVyKGJpZzVfY29uIH4gYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yICsgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlciwgUkVNTCA9IEZBTFNFKQphbm92YShsbWVfYmlnNV9jb25fdXRlcnVzX2FsaXZlX25vLCBkZGYgPSAia2VudyIpCnN1bW1hcnkobG1lX2JpZzVfY29uX3V0ZXJ1c19hbGl2ZV9ubywgZGRmID0gImtlbnciKQoKbG1lX2JpZzVfY29uX3V0ZXJ1c19wcmVnX25vID0gbG1lcihiaWc1X2NvbiB+IGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyLCBSRU1MID0gRkFMU0UpCmFub3ZhKGxtZV9iaWc1X2Nvbl91dGVydXNfcHJlZ19ubywgZGRmID0gImtlbnciKQoKbG1lX2JpZzVfY29uX2dlbmVzX25vID0gbG1lcihiaWc1X2NvbiB+IGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtYXJyaWFnZV9pZCksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyLCBSRU1MID0gRkFMU0UpCmFub3ZhKGxtZV9iaWc1X2Nvbl9nZW5lc19ubywgZGRmID0gImtlbnciKQoKCgpsbWVfYmlnNV9jb25fdXRlcnVzX2FsaXZlID0gbG1lcihiaWc1X2NvbiB+IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyLCBSRU1MID0gRkFMU0UpCmFub3ZhKGxtZV9iaWc1X2Nvbl91dGVydXNfYWxpdmUsIGRkZiA9ImtlbnciKQpwbG90KGFsbEVmZmVjdHMobG1lX2JpZzVfY29uX3V0ZXJ1c19hbGl2ZSkpCgpsbWVfYmlnNV9jb25fdXRlcnVzX3ByZWcgPSBsbWVyKGJpZzVfY29uIH4gYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyLCBSRU1MID0gRkFMU0UpCmFub3ZhKGxtZV9iaWc1X2Nvbl91dGVydXNfcHJlZywgZGRmID0ia2VudyIpCgpsbWVfYmlnNV9jb25fZ2VuZXMgPSBsbWVyKGJpZzVfY29uIH4gYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbWFycmlhZ2VfaWQpICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX2JpZzVfY29uX2dlbmVzLCBkZGYgPSJrZW53IikKCmxtZV9iaWc1X2FncmVlX3V0ZXJ1c19hbGl2ZV9ubyA9IGxtZXIoYmlnNV9hZ3JlZSB+IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX2JpZzVfYWdyZWVfdXRlcnVzX2FsaXZlX25vLCBkZGYgPSAia2VudyIpCgpsbWVfYmlnNV9hZ3JlZV91dGVydXNfcHJlZ19ubyA9IGxtZXIoYmlnNV9hZ3JlZSB+IGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyLCBSRU1MID0gRkFMU0UpCmFub3ZhKGxtZV9iaWc1X2FncmVlX3V0ZXJ1c19wcmVnX25vLCBkZGYgPSAia2VudyIpCgpsbWVfYmlnNV9hZ3JlZV9nZW5lc19ubyA9IGxtZXIoYmlnNV9hZ3JlZSB+IGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtYXJyaWFnZV9pZCksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyLCBSRU1MID0gRkFMU0UpCmFub3ZhKGxtZV9iaWc1X2FncmVlX2dlbmVzX25vLCBkZGYgPSAia2VudyIpCgpsbWVfYmlnNV9hZ3JlZV91dGVydXNfYWxpdmUgPSBsbWVyKGJpZzVfYWdyZWUgfiBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluaykgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlciwgUkVNTCA9IEZBTFNFKQphbm92YShsbWVfYmlnNV9hZ3JlZV91dGVydXNfYWxpdmUsIGRkZiA9ImtlbnciKQoKbG1lX2JpZzVfYWdyZWVfdXRlcnVzX3ByZWcgPSBsbWVyKGJpZzVfYWdyZWUgfiBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yICsgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX2JpZzVfYWdyZWVfdXRlcnVzX3ByZWcsIGRkZiA9ImtlbnciKQoKbG1lX2JpZzVfYWdyZWVfZ2VuZXMgPSBsbWVyKGJpZzVfYWdyZWUgfiBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtYXJyaWFnZV9pZCkgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlciwgUkVNTCA9IEZBTFNFKQphbm92YShsbWVfYmlnNV9hZ3JlZV9nZW5lcywgZGRmID0ia2VudyIpCgpsbWVfYmlnNV9vcGVuX3V0ZXJ1c19hbGl2ZV9ubyA9IGxtZXIoYmlnNV9vcGVuIH4gYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yICsgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlciwgUkVNTCA9IEZBTFNFKQphbm92YShsbWVfYmlnNV9vcGVuX3V0ZXJ1c19hbGl2ZV9ubywgZGRmPSAia2VudyIpCnN1bW1hcnkobG1lX2JpZzVfb3Blbl91dGVydXNfYWxpdmVfbm8sIGRkZj0gImtlbnciKQoKbG1lX2JpZzVfb3Blbl91dGVydXNfcHJlZ19ubyA9IGxtZXIoYmlnNV9vcGVuIH4gYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX2JpZzVfb3Blbl91dGVydXNfcHJlZ19ubywgZGRmPSAia2VudyIpCgpsbWVfYmlnNV9vcGVuX2dlbmVzX25vID0gbG1lcihiaWc1X29wZW4gfiBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yICsgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtYXJyaWFnZV9pZCksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyLCBSRU1MID0gRkFMU0UpCmFub3ZhKGxtZV9iaWc1X29wZW5fZ2VuZXNfbm8sIGRkZj0gImtlbnciKQoKbG1lX2JpZzVfb3Blbl91dGVydXNfYWxpdmUgPSBsbWVyKGJpZzVfb3BlbiB+IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyLCBSRU1MID0gRkFMU0UpCmFub3ZhKGxtZV9iaWc1X29wZW5fdXRlcnVzX2FsaXZlLCBkZGYgPSAia2VudyIpCnN1bW1hcnkobG1lX2JpZzVfb3Blbl91dGVydXNfYWxpdmUsIGRkZiA9ICJrZW53IikKCmxtZV9iaWc1X29wZW5fdXRlcnVzX3ByZWcgPSBsbWVyKGJpZzVfb3BlbiB+IGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluaykgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlciwgUkVNTCA9IEZBTFNFKQphbm92YShsbWVfYmlnNV9vcGVuX3V0ZXJ1c19wcmVnLCBkZGYgPSAia2VudyIpCgpsbWVfYmlnNV9vcGVuX2dlbmVzID0gbG1lcihiaWc1X29wZW4gfiBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yICsgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbWFycmlhZ2VfaWQpICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX2JpZzVfb3Blbl9nZW5lcywgZGRmID0gImtlbnciKQoKbG1lX3Jpc2tBX3V0ZXJ1c19hbGl2ZV9ubyA9IGxtZXIocmlza0EgfiBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyLCBSRU1MID0gRkFMU0UpCmFub3ZhKGxtZV9yaXNrQV91dGVydXNfYWxpdmVfbm8sIGRkZj0ia2VudyIpCgpsbWVfcmlza0FfdXRlcnVzX3ByZWdfbm8gPSBsbWVyKHJpc2tBIH4gYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX3Jpc2tBX3V0ZXJ1c19wcmVnX25vLCBkZGY9ImtlbnciKQoKbG1lX3Jpc2tBX2dlbmVzX25vID0gbG1lcihyaXNrQSB+IGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtYXJyaWFnZV9pZCksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyLCBSRU1MID0gRkFMU0UpCmFub3ZhKGxtZV9yaXNrQV9nZW5lc19ubywgZGRmPSJrZW53IikKCmxtZV9yaXNrQV91dGVydXNfYWxpdmUgPSBsbWVyKHJpc2tBIH4gYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yICsgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX3Jpc2tBX3V0ZXJ1c19hbGl2ZSwgZGRmPSJrZW53IikKCmxtZV9yaXNrQV91dGVydXNfcHJlZyA9IGxtZXIocmlza0EgfiBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yICsgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX3Jpc2tBX3V0ZXJ1c19wcmVnLCBkZGY9ImtlbnciKQpzdW1tYXJ5KGxtZV9yaXNrQV91dGVydXNfcHJlZywgZGRmPSJrZW53IikKCmxtZV9yaXNrQV9nZW5lcyA9IGxtZXIocmlza0EgfiBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yICsgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbWFycmlhZ2VfaWQpICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX3Jpc2tBX2dlbmVzLCBkZGY9ImtlbnciKQoKCmxtZV9yaXNrQl91dGVydXNfYWxpdmVfbm8gPSBsbWVyKHJpc2tCIH4gYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yICsgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlciwgUkVNTCA9IEZBTFNFKQphbm92YShsbWVfcmlza0JfdXRlcnVzX2FsaXZlX25vLCBkZGY9ImtlbnciKQoKbG1lX3Jpc2tCX3V0ZXJ1c19wcmVnX25vID0gbG1lcihyaXNrQiB+IGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyLCBSRU1MID0gRkFMU0UpCmFub3ZhKGxtZV9yaXNrQl91dGVydXNfcHJlZ19ubywgZGRmPSJrZW53IikKc3VtbWFyeShsbWVfcmlza0JfdXRlcnVzX3ByZWdfbm8sIGRkZj0ia2VudyIpCgpsbWVfcmlza0JfZ2VuZXNfbm8gPSBsbWVyKHJpc2tCIH4gYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciArIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX3Jpc2tCX2dlbmVzX25vLCBkZGY9ImtlbnciKQoKbG1lX3Jpc2tCX3V0ZXJ1c19hbGl2ZSA9IGxtZXIocmlza0IgfiBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluaykgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlciwgUkVNTCA9IEZBTFNFKQphbm92YShsbWVfcmlza0JfdXRlcnVzX2FsaXZlLCBkZGY9ImtlbnciICkKCmxtZV9yaXNrQl91dGVydXNfcHJlZyA9IGxtZXIocmlza0IgfiBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yICsgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIsIFJFTUwgPSBGQUxTRSkKYW5vdmEobG1lX3Jpc2tCX3V0ZXJ1c19wcmVnLCBkZGY9ImtlbnciKQoKbG1lX3Jpc2tCX2dlbmVzID0gbG1lcihyaXNrQiB+IGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgKyAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtYXJyaWFnZV9pZCkgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlciwgUkVNTCA9IEZBTFNFKQphbm92YShsbWVfcmlza0JfZ2VuZXMsIGRkZj0ia2VudyIpCgoKYGBgCgoKIyMgcGxvdHMKYGBge3IgcGxvdHN9CgojIyMgQmV0d2VlbgojIyBJbnRlbGxpZ2VuY2UKbV9nX2ZhY3Rvcl91dGVydXNfYWxpdmUgPSBsbShnX2ZhY3RvciB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKSAlPiUgcGxvdF9iaXJ0aG9yZGVyKCJJbnRlbGxpZ2VuY2UiLCAiYSIpCgojIyBQZXJzb25hbGl0eQojRXh0cmF2ZXJzaW9uCm1fYmlnNV9leHRfdXRlcnVzX2FsaXZlID0gbG0oYmlnNV9leHQgfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikgJT4lIHBsb3RfYmlydGhvcmRlcigiRXh0cmF2ZXJzaW9uIiwgImIiKQoKIyBOZXVyb3RpY2lzbQptX2JpZzVfbmV1X3V0ZXJ1c19hbGl2ZSA9IGxtKGJpZzVfbmV1IH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpICU+JSBwbG90X2JpcnRob3JkZXIoIk5ldXJvdGljaXNtIiwgImMiKQoKI0NvbnNjaWVudGl1b3NuZXNzCm1fYmlnNV9jb25fdXRlcnVzX2FsaXZlID0gbG0oYmlnNV9jb24gfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikgJT4lCiAgcGxvdF9iaXJ0aG9yZGVyKCJDb3NuY2llbnRpb3VzbmVzcyIsICJkIikKCiNBZ3JlZWFibGVuZXNzCm1fYmlnNV9hZ3JlZV91dGVydXNfYWxpdmUgPSBsbShiaWc1X2FncmVlIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUgKyBiaXJ0aHllYXIgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBtYWxlLCBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKSAlPiUKICBwbG90X2JpcnRob3JkZXIoIkFncmVlYWJsZW5lc3MiLCAiZSIpCgojT3Blbm5lc3MKbV9iaWc1X29wZW5fdXRlcnVzX2FsaXZlID0gbG0oYmlnNV9vcGVuIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpICU+JSAKICBwbG90X2JpcnRob3JkZXIoIk9wZW5uZXNzIiwgImYiKQoKIyNSaXNrCiNSaXNrIEEKbV9yaXNrQV91dGVydXNfYWxpdmUgPSBsbShyaXNrQSB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKSAlPiUgcGxvdF9iaXJ0aG9yZGVyKCJSaXNrIEEiLCAiZyIpCgoKIyBSaXNrIEIKbV9yaXNrQl91dGVydXNfYWxpdmUgPSBsbShyaXNrQiB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKSAlPiUgcGxvdF9iaXJ0aG9yZGVyKCJSaXNrIEIiLCAiaCIpCgoKbGlicmFyeShncmlkKQpsaWJyYXJ5KGdyaWRFeHRyYSkKcGxvdHMgPSBncmlkLmFycmFuZ2UocGxvdF9nX2ZhY3RvciwgcGxvdF9iaWc1X2V4dCwgcGxvdF9iaWc1X25ldSwgcGxvdF9iaWc1X2NvbiwgcGxvdF9iaWc1X2FncmVlLAogICAgICAgICAgICAgcGxvdF9iaWc1X29wZW4sIHBsb3Rfcmlza0EsIHBsb3Rfcmlza0IsCiAgICAgICAgICAgICBuY29sID0gMikKCiMjIyBXaXRoaW4KIyMgSW50ZWxsaWdlbmNlCmxtX2dfZmFjdG9yX3V0ZXJ1c19hbGl2ZSA9IGxtZXIoZ19mYWN0b3IgfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKSAlPiUgcGxvdF9iaXJ0aG9yZGVyKCJJbnRlbGxpZ2VuY2UiLCAiYSIpCgojIyBQZXJzb25hbGl0eQojRXh0cmF2ZXJzaW9uCmxtX2JpZzVfZXh0X3V0ZXJ1c19hbGl2ZSA9IGxtZXIoYmlnNV9leHQgfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKSAlPiUgcGxvdF9iaXJ0aG9yZGVyKCJFeHRyYXZlcnNpb24iLCAiYiIpCgojIE5ldXJvdGljaXNtCmxtX2JpZzVfbmV1X3V0ZXJ1c19hbGl2ZSA9IGxtZXIoYmlnNV9uZXUgfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikgJT4lIHBsb3RfYmlydGhvcmRlcigiTmV1cm90aWNpc20iLCAiYyIpCgojQ29uc2NpZW50aXVvc25lc3MKbG1fYmlnNV9jb25fdXRlcnVzX2FsaXZlID0gbG1lcihiaWc1X2NvbiB+IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlICsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluaykgICsgYmlydGh5ZWFyICsgbWFsZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhID0gYWxsZGF0YV9iaXJ0aG9yZGVyKSAlPiUKICBwbG90X2JpcnRob3JkZXIoIkNvc25jaWVudGlvdXNuZXNzIiwgImQiKQoKI0FncmVlYWJsZW5lc3MKbG1fYmlnNV9hZ3JlZV91dGVydXNfYWxpdmUgPSBsbWVyKGJpZzVfYWdyZWUgfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICArIGJpcnRoeWVhciArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG1hbGUsIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpICU+JQogIHBsb3RfYmlydGhvcmRlcigiQWdyZWVhYmxlbmVzcyIsICJlIikKCiNPcGVubmVzcwpsbV9iaWc1X29wZW5fdXRlcnVzX2FsaXZlID0gbG1lcihiaWc1X29wZW4gfiBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSArCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspICArIGJpcnRoeWVhciArIG1hbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGFsbGRhdGFfYmlydGhvcmRlcikgJT4lIAogIHBsb3RfYmlydGhvcmRlcigiT3Blbm5lc3MiLCAiZiIpCgojI1Jpc2sKI1Jpc2sgQQpsbV9yaXNrQV91dGVydXNfYWxpdmUgPSBsbWVyKHJpc2tBIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSAgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpICU+JSBwbG90X2JpcnRob3JkZXIoIlJpc2sgQSIsICJnIikKCgojIFJpc2sgQgpsbV9yaXNrQl91dGVydXNfYWxpdmUgPSBsbWVyKHJpc2tCIH4gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUgKwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSAgKyBiaXJ0aHllYXIgKyBtYWxlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBhbGxkYXRhX2JpcnRob3JkZXIpICU+JSBwbG90X2JpcnRob3JkZXIoIlJpc2sgQiIsICJoIikKCgpwbG90cyA9IGdyaWQuYXJyYW5nZShwbG90X2dfZmFjdG9yLCBwbG90X2JpZzVfZXh0LCBwbG90X2JpZzVfbmV1LCBwbG90X2JpZzVfY29uLCBwbG90X2JpZzVfYWdyZWUsCiAgICAgICAgICAgICBwbG90X2JpZzVfb3BlbiwgcGxvdF9yaXNrQSwgcGxvdF9yaXNrQiwKICAgICAgICAgICAgIG5jb2wgPSAyKQpgYGAK</div>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

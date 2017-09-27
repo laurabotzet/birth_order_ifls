@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/FileSaver.min.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+
+.section h2 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h3 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h4 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h5 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h6 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("plots for paper.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Birth Order IFLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+
+<li style="background-color: #66C2A5">
+  <a href="index.html">Overview</a>
+</li>
+<li style="background-color: #FC8D62">
+  <a href="1_data_import.html">Data Wrangling</a>
+</li>
+<li style="background-color: #8DA0CB">
+  <a href="2_Inclusion.html">Data Sampling</a>
+</li>
+<li style="background-color: #E78AC3">
+  <a href="3_sample_analyses.html">Sample Analyses</a>
+</li>
+<li style="background-color: #A6D854">
+  <a href="4_analyses.html">Birth Order Effects</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/laurabotzet/birth_order_ifls">
+    <span class="fa fa-github"></span>
+
+
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<pre class="r"><code>m2_birthorder_linear = update(g_factor_m1, formula = . ~ . + birth_order)
+
+plot_birthorder = function(model, ylabel = NULL, title = &quot;&quot;, bo_var = &quot;birth_order&quot;, separate = TRUE) {
+  if(inherits(model, &quot;merMod&quot;)) {
+    varnames = names(model@frame)
+  } else {
+    varnames = names(model$model)
+  }
+  outcome = varnames[1]
+  if(is.null(ylabel)) ylabel = outcome
+  library(effects)
+  library(tidyr)
+  emm = allEffects(model)
+  bo_var = names(emm)[names(emm) %contains% bo_var]
+  cemm = as.data.frame(emm[[bo_var]])
+  if (separate != TRUE) {
+    cemm = cemm %&gt;% rename_(&quot;Birth order&quot; = bo_var) %&gt;% mutate(Sibship = &quot;across&quot;)
+  } else {
+    cemm = cemm %&gt;%
+      separate_(bo_var, into = c(&quot;Birth order&quot;, &quot;Sibship&quot;), sep = &quot;/&quot;)
+    number = spread(as.data.frame(table(model.frame(model)[`bo_var`])), Var1, Freq)
+    n2 = paste0(&quot;2 (&quot;, sum(number$`1/2`, number$`2/2`), &quot;)&quot;, seperate=&quot;&quot;)
+    n3 = paste0(&quot;3 (&quot;, sum(number$`1/3`, number$`2/3`, number$`3/3`), &quot;)&quot;,
+                seperate=&quot;&quot;)
+    n4 = paste0(&quot;4 (&quot;, sum(number$`1/4`, number$`2/4`, number$`3/4`,
+                           number$`4/4`), &quot;)&quot;, seperate=&quot;&quot;)
+    n5 = paste0(&quot;5 (&quot;, sum(number$`1/5`, number$`2/5`, number$`3/5`,
+                           number$`4/5`, number$`5/5`), &quot;)&quot;, seperate=&quot;&quot;)
+    n5more = paste0(&quot;5+ (&quot;, sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
+                                number$`4/5+`, number$`5/5+`, number$`5+/5+`), &quot;)&quot;,
+                    seperate=&quot;&quot;)
+    cemm = cemm %&gt;%
+      mutate(Sibship = recode_factor(Sibship, &quot;2&quot; = `n2`, &quot;3&quot; = `n3`, &quot;4&quot; = `n4`,
+                                     &quot;5&quot; = `n5`, &quot;5+&quot; = `n5more`))
+  }
+  plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
+                           colour = `Sibship`, group = `Sibship`)) +
+    geom_smooth(stat = &quot;identity&quot;, fill = c(brewer.pal(8, &quot;Set2&quot;)[c(7)])) +
+    scale_y_continuous(&quot;Intelligence&quot;, limits = c(-0.5, 0.5), breaks = c(-0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5)) +
+    scale_x_continuous(&quot;Maternal birth order&quot;, breaks = c(0, 2, 4, 6, 8, 10, 12, 14)) +
+    apatheme +
+    scale_colour_manual(values = rev(brewer.pal(7,&quot;Set2&quot;))) +
+    scale_fill_manual(values = rev(brewer.pal(7,&quot;Set2&quot;))) +
+    theme(legend.position=&quot;none&quot;)
+  print(plotx)
+  assign(paste0(&quot;plot_&quot;, outcome, seperate=&quot;&quot;),plotx,.GlobalEnv)
+}
+
+plot = plot_birthorder(m2_birthorder_linear, separate = FALSE)
+
+m3_birthorder_nonlinear = update(big5_ext_m1, formula = . ~ . + birth_order_nonlinear)
+
+plot_birthorder = function(model, ylabel = NULL, title = &quot;&quot;, bo_var = &quot;birth_order&quot;, separate = TRUE) {
+  if(inherits(model, &quot;merMod&quot;)) {
+    varnames = names(model@frame)
+  } else {
+    varnames = names(model$model)
+  }
+  outcome = varnames[1]
+  if(is.null(ylabel)) ylabel = outcome
+  library(effects)
+  library(tidyr)
+  emm = allEffects(model)
+  bo_var = names(emm)[names(emm) %contains% bo_var]
+  cemm = as.data.frame(emm[[bo_var]])
+  if (separate != TRUE) {
+    cemm = cemm %&gt;% rename_(&quot;Birth order&quot; = bo_var) %&gt;% mutate(Sibship = &quot;across&quot;)
+  } else {
+    cemm = cemm %&gt;%
+      separate_(bo_var, into = c(&quot;Birth order&quot;, &quot;Sibship&quot;), sep = &quot;/&quot;)
+    number = spread(as.data.frame(table(model.frame(model)[`bo_var`])), Var1, Freq)
+    n2 = paste0(&quot;2 (&quot;, sum(number$`1/2`, number$`2/2`), &quot;)&quot;, seperate=&quot;&quot;)
+    n3 = paste0(&quot;3 (&quot;, sum(number$`1/3`, number$`2/3`, number$`3/3`), &quot;)&quot;,
+                seperate=&quot;&quot;)
+    n4 = paste0(&quot;4 (&quot;, sum(number$`1/4`, number$`2/4`, number$`3/4`,
+                           number$`4/4`), &quot;)&quot;, seperate=&quot;&quot;)
+    n5 = paste0(&quot;5 (&quot;, sum(number$`1/5`, number$`2/5`, number$`3/5`,
+                           number$`4/5`, number$`5/5`), &quot;)&quot;, seperate=&quot;&quot;)
+    n5more = paste0(&quot;5+ (&quot;, sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
+                                number$`4/5+`, number$`5/5+`, number$`5+/5+`), &quot;)&quot;,
+                    seperate=&quot;&quot;)
+    cemm = cemm %&gt;%
+      mutate(Sibship = recode_factor(Sibship, &quot;2&quot; = `n2`, &quot;3&quot; = `n3`, &quot;4&quot; = `n4`,
+                                     &quot;5&quot; = `n5`, &quot;5+&quot; = `n5more`))
+  }
+  plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
+                           colour = `Sibship`, group = `Sibship`)) +
+    geom_pointrange(stat = &quot;identity&quot;, fill = c(brewer.pal(8, &quot;Set2&quot;)[c(7)])) +
+    geom_line() +
+    scale_y_continuous(&quot;Extraversion&quot;, limits = c(-0.5, 0.5), breaks = c(-0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5)) +
+    scale_x_discrete(&quot;Maternal birth order&quot;) +
+    apatheme +
+    scale_colour_manual(values = rev(brewer.pal(7,&quot;Set2&quot;))) +
+    scale_fill_manual(values = rev(brewer.pal(7,&quot;Set2&quot;))) +
+    theme(legend.position=&quot;none&quot;)
+  print(plotx)
+  assign(paste0(&quot;plot_&quot;, outcome, seperate=&quot;&quot;),plotx,.GlobalEnv)
+}
+
+plot = plot_birthorder(m3_birthorder_nonlinear, separate = FALSE)
+
+
+m3_birthorder_nonlinear = update(big5_open_m1, formula = . ~ . + birth_order_nonlinear)
+
+plot_birthorder = function(model, ylabel = NULL, title = &quot;&quot;, bo_var = &quot;birth_order&quot;, separate = TRUE) {
+  if(inherits(model, &quot;merMod&quot;)) {
+    varnames = names(model@frame)
+  } else {
+    varnames = names(model$model)
+  }
+  outcome = varnames[1]
+  if(is.null(ylabel)) ylabel = outcome
+  library(effects)
+  library(tidyr)
+  emm = allEffects(model)
+  bo_var = names(emm)[names(emm) %contains% bo_var]
+  cemm = as.data.frame(emm[[bo_var]])
+  if (separate != TRUE) {
+    cemm = cemm %&gt;% rename_(&quot;Birth order&quot; = bo_var) %&gt;% mutate(Sibship = &quot;across&quot;)
+  } else {
+    cemm = cemm %&gt;%
+      separate_(bo_var, into = c(&quot;Birth order&quot;, &quot;Sibship&quot;), sep = &quot;/&quot;)
+    number = spread(as.data.frame(table(model.frame(model)[`bo_var`])), Var1, Freq)
+    n2 = paste0(&quot;2 (&quot;, sum(number$`1/2`, number$`2/2`), &quot;)&quot;, seperate=&quot;&quot;)
+    n3 = paste0(&quot;3 (&quot;, sum(number$`1/3`, number$`2/3`, number$`3/3`), &quot;)&quot;,
+                seperate=&quot;&quot;)
+    n4 = paste0(&quot;4 (&quot;, sum(number$`1/4`, number$`2/4`, number$`3/4`,
+                           number$`4/4`), &quot;)&quot;, seperate=&quot;&quot;)
+    n5 = paste0(&quot;5 (&quot;, sum(number$`1/5`, number$`2/5`, number$`3/5`,
+                           number$`4/5`, number$`5/5`), &quot;)&quot;, seperate=&quot;&quot;)
+    n5more = paste0(&quot;5+ (&quot;, sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
+                                number$`4/5+`, number$`5/5+`, number$`5+/5+`), &quot;)&quot;,
+                    seperate=&quot;&quot;)
+    cemm = cemm %&gt;%
+      mutate(Sibship = recode_factor(Sibship, &quot;2&quot; = `n2`, &quot;3&quot; = `n3`, &quot;4&quot; = `n4`,
+                                     &quot;5&quot; = `n5`, &quot;5+&quot; = `n5more`))
+  }
+  plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
+                           colour = `Sibship`, group = `Sibship`)) +
+    geom_pointrange(stat = &quot;identity&quot;, fill = c(brewer.pal(8, &quot;Set2&quot;)[c(7)])) +
+    geom_line() +
+    scale_y_continuous(&quot;Openness&quot;, limits = c(-0.5, 0.5), breaks = c(-0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5)) +
+    scale_x_discrete(&quot;Maternal birth order&quot;) +
+    apatheme +
+    scale_colour_manual(values = rev(brewer.pal(7,&quot;Set2&quot;))) +
+    scale_fill_manual(values = rev(brewer.pal(7,&quot;Set2&quot;))) +
+    theme(legend.position=&quot;none&quot;)
+  print(plotx)
+  assign(paste0(&quot;plot_&quot;, outcome, seperate=&quot;&quot;),plotx,.GlobalEnv)
+}
+
+plot = plot_birthorder(m3_birthorder_nonlinear, separate = FALSE)
+
+library(grid)
+library(gridExtra)
+
+### Within
+## Intelligence
+g_factor_m1 = lmer(g_factor ~ birthyear + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder %&gt;%
+                     rename(sibling_count = sibling_count_uterus_alive_factor,
+                            birth_order_nonlinear = birthorder_uterus_alive_factor,
+                            birth_order = birthorder_uterus_alive,
+                            count_birth_order = count_birthorder_uterus_alive))
+
+m4_interaction = update(g_factor_m1, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
+
+
+plot_g_factor = plot_birthorder(m4_interaction, &quot;Intelligence&quot;, &quot;a&quot;)
+
+
+## Personality
+#Extraversion
+big5_ext_m1 = lmer(big5_ext ~ birthyear + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder %&gt;%
+                     rename(sibling_count = sibling_count_uterus_alive_factor,
+                            birth_order_nonlinear = birthorder_uterus_alive_factor,
+                            birth_order = birthorder_uterus_alive,
+                            count_birth_order = count_birthorder_uterus_alive))
+m4_interaction = update(big5_ext_m1, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
+
+plot_big5_ext = plot_birthorder(m4_interaction, &quot;Extraversion&quot;, &quot;b&quot;)
+
+# Neuroticism
+big5_neu_m1 = lmer(big5_neu ~ birthyear + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder %&gt;%
+                     rename(sibling_count = sibling_count_uterus_alive_factor,
+                            birth_order_nonlinear = birthorder_uterus_alive_factor,
+                            birth_order = birthorder_uterus_alive,
+                            count_birth_order = count_birthorder_uterus_alive))
+m4_interaction = update(big5_neu_m1, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
+
+plot_big5_neu = plot_birthorder(m4_interaction, &quot;Neuroticism&quot;, &quot;c&quot;)
+
+#Conscientiuosness
+big5_con_m1 = lmer(big5_con ~ birthyear + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder %&gt;%
+                     rename(sibling_count = sibling_count_uterus_alive_factor,
+                            birth_order_nonlinear = birthorder_uterus_alive_factor,
+                            birth_order = birthorder_uterus_alive,
+                            count_birth_order = count_birthorder_uterus_alive))
+m4_interaction = update(big5_con_m1, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
+
+plot_big5_con = plot_birthorder(m4_interaction, &quot;Conscientiousness&quot;, &quot;d&quot;)
+
+#Agreeableness
+big5_agree_m1 = lmer(big5_agree ~ birthyear + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder %&gt;%
+                     rename(sibling_count = sibling_count_uterus_alive_factor,
+                            birth_order_nonlinear = birthorder_uterus_alive_factor,
+                            birth_order = birthorder_uterus_alive,
+                            count_birth_order = count_birthorder_uterus_alive))
+m4_interaction = update(big5_agree_m1, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
+
+plot_big5_agree = plot_birthorder(m4_interaction, &quot;Agreeableness&quot;, &quot;e&quot;)
+
+#Openness
+big5_open_m1 = lmer(big5_open ~ birthyear + male + sibling_count + (1 | mother_pidlink),
+                     data = birthorder %&gt;%
+                       rename(sibling_count = sibling_count_uterus_alive_factor,
+                              birth_order_nonlinear = birthorder_uterus_alive_factor,
+                              birth_order = birthorder_uterus_alive,
+                              count_birth_order = count_birthorder_uterus_alive))
+m4_interaction = update(big5_open_m1, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
+
+plot_big5_open = plot_birthorder(m4_interaction, &quot;Openness&quot;, &quot;f&quot;)
+
+##Risk
+#Risk A
+riskA_m1 = lmer(riskA ~ birthyear + male + sibling_count + (1 | mother_pidlink),
+                     data = birthorder %&gt;%
+                       rename(sibling_count = sibling_count_uterus_alive_factor,
+                              birth_order_nonlinear = birthorder_uterus_alive_factor,
+                              birth_order = birthorder_uterus_alive,
+                              count_birth_order = count_birthorder_uterus_alive))
+m4_interaction = update(riskA_m1, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
+
+plot_riskA = plot_birthorder(m4_interaction, &quot;Risk A&quot;, &quot;g&quot;)
+
+
+# Risk B
+riskB_m1 = lmer(riskB ~ birthyear + male + sibling_count + (1 | mother_pidlink),
+                     data = birthorder %&gt;%
+                       rename(sibling_count = sibling_count_uterus_alive_factor,
+                              birth_order_nonlinear = birthorder_uterus_alive_factor,
+                              birth_order = birthorder_uterus_alive,
+                              count_birth_order = count_birthorder_uterus_alive))
+m4_interaction = update(riskB_m1, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
+
+plot_riskB = plot_birthorder(m4_interaction, &quot;Risk B&quot;, &quot;h&quot;)
+
+
+
+plots = grid.arrange(plot_g_factor, plot_big5_ext, plot_big5_neu, plot_big5_con, plot_big5_agree,
+                     plot_big5_open, plot_riskA, plot_riskB,
+                     ncol = 2)</code></pre>
+
+<div id="rmd-source-code">LS0tCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgY29kZV9mb2xkaW5nOiAnc2hvdycKLS0tCgoKCmBgYHtyIH0KbTJfYmlydGhvcmRlcl9saW5lYXIgPSB1cGRhdGUoZ19mYWN0b3JfbTEsIGZvcm11bGEgPSAuIH4gLiArIGJpcnRoX29yZGVyKQoKcGxvdF9iaXJ0aG9yZGVyID0gZnVuY3Rpb24obW9kZWwsIHlsYWJlbCA9IE5VTEwsIHRpdGxlID0gIiIsIGJvX3ZhciA9ICJiaXJ0aF9vcmRlciIsIHNlcGFyYXRlID0gVFJVRSkgewogIGlmKGluaGVyaXRzKG1vZGVsLCAibWVyTW9kIikpIHsKICAgIHZhcm5hbWVzID0gbmFtZXMobW9kZWxAZnJhbWUpCiAgfSBlbHNlIHsKICAgIHZhcm5hbWVzID0gbmFtZXMobW9kZWwkbW9kZWwpCiAgfQogIG91dGNvbWUgPSB2YXJuYW1lc1sxXQogIGlmKGlzLm51bGwoeWxhYmVsKSkgeWxhYmVsID0gb3V0Y29tZQogIGxpYnJhcnkoZWZmZWN0cykKICBsaWJyYXJ5KHRpZHlyKQogIGVtbSA9IGFsbEVmZmVjdHMobW9kZWwpCiAgYm9fdmFyID0gbmFtZXMoZW1tKVtuYW1lcyhlbW0pICVjb250YWlucyUgYm9fdmFyXQogIGNlbW0gPSBhcy5kYXRhLmZyYW1lKGVtbVtbYm9fdmFyXV0pCiAgaWYgKHNlcGFyYXRlICE9IFRSVUUpIHsKICAgIGNlbW0gPSBjZW1tICU+JSByZW5hbWVfKCJCaXJ0aCBvcmRlciIgPSBib192YXIpICU+JSBtdXRhdGUoU2lic2hpcCA9ICJhY3Jvc3MiKQogIH0gZWxzZSB7CiAgICBjZW1tID0gY2VtbSAlPiUKICAgICAgc2VwYXJhdGVfKGJvX3ZhciwgaW50byA9IGMoIkJpcnRoIG9yZGVyIiwgIlNpYnNoaXAiKSwgc2VwID0gIi8iKQogICAgbnVtYmVyID0gc3ByZWFkKGFzLmRhdGEuZnJhbWUodGFibGUobW9kZWwuZnJhbWUobW9kZWwpW2Bib192YXJgXSkpLCBWYXIxLCBGcmVxKQogICAgbjIgPSBwYXN0ZTAoIjIgKCIsIHN1bShudW1iZXIkYDEvMmAsIG51bWJlciRgMi8yYCksICIpIiwgc2VwZXJhdGU9IiIpCiAgICBuMyA9IHBhc3RlMCgiMyAoIiwgc3VtKG51bWJlciRgMS8zYCwgbnVtYmVyJGAyLzNgLCBudW1iZXIkYDMvM2ApLCAiKSIsCiAgICAgICAgICAgICAgICBzZXBlcmF0ZT0iIikKICAgIG40ID0gcGFzdGUwKCI0ICgiLCBzdW0obnVtYmVyJGAxLzRgLCBudW1iZXIkYDIvNGAsIG51bWJlciRgMy80YCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgbnVtYmVyJGA0LzRgKSwgIikiLCBzZXBlcmF0ZT0iIikKICAgIG41ID0gcGFzdGUwKCI1ICgiLCBzdW0obnVtYmVyJGAxLzVgLCBudW1iZXIkYDIvNWAsIG51bWJlciRgMy81YCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgbnVtYmVyJGA0LzVgLCBudW1iZXIkYDUvNWApLCAiKSIsIHNlcGVyYXRlPSIiKQogICAgbjVtb3JlID0gcGFzdGUwKCI1KyAoIiwgc3VtKG51bWJlciRgMS81K2AsIG51bWJlciRgMi81K2AsIG51bWJlciRgMy81K2AsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbnVtYmVyJGA0LzUrYCwgbnVtYmVyJGA1LzUrYCwgbnVtYmVyJGA1Ky81K2ApLCAiKSIsCiAgICAgICAgICAgICAgICAgICAgc2VwZXJhdGU9IiIpCiAgICBjZW1tID0gY2VtbSAlPiUKICAgICAgbXV0YXRlKFNpYnNoaXAgPSByZWNvZGVfZmFjdG9yKFNpYnNoaXAsICIyIiA9IGBuMmAsICIzIiA9IGBuM2AsICI0IiA9IGBuNGAsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiNSIgPSBgbjVgLCAiNSsiID0gYG41bW9yZWApKQogIH0KICBwbG90eCA9IGdncGxvdChjZW1tLCBhZXMoYEJpcnRoIG9yZGVyYCwgeSA9IGZpdCwgeW1heCA9IHVwcGVyLCB5bWluID0gbG93ZXIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvbG91ciA9IGBTaWJzaGlwYCwgZ3JvdXAgPSBgU2lic2hpcGApKSArCiAgICBnZW9tX3Ntb290aChzdGF0ID0gImlkZW50aXR5IiwgZmlsbCA9IGMoYnJld2VyLnBhbCg4LCAiU2V0MiIpW2MoNyldKSkgKwogICAgc2NhbGVfeV9jb250aW51b3VzKCJJbnRlbGxpZ2VuY2UiLCBsaW1pdHMgPSBjKC0wLjUsIDAuNSksIGJyZWFrcyA9IGMoLTAuNSwgLTAuNCwgLTAuMywgLTAuMiwgLTAuMSwgMCwgMC4xLCAwLjIsIDAuMywgMC40LCAwLjUpKSArCiAgICBzY2FsZV94X2NvbnRpbnVvdXMoIk1hdGVybmFsIGJpcnRoIG9yZGVyIiwgYnJlYWtzID0gYygwLCAyLCA0LCA2LCA4LCAxMCwgMTIsIDE0KSkgKwogICAgYXBhdGhlbWUgKwogICAgc2NhbGVfY29sb3VyX21hbnVhbCh2YWx1ZXMgPSByZXYoYnJld2VyLnBhbCg3LCJTZXQyIikpKSArCiAgICBzY2FsZV9maWxsX21hbnVhbCh2YWx1ZXMgPSByZXYoYnJld2VyLnBhbCg3LCJTZXQyIikpKSArCiAgICB0aGVtZShsZWdlbmQucG9zaXRpb249Im5vbmUiKQogIHByaW50KHBsb3R4KQogIGFzc2lnbihwYXN0ZTAoInBsb3RfIiwgb3V0Y29tZSwgc2VwZXJhdGU9IiIpLHBsb3R4LC5HbG9iYWxFbnYpCn0KCnBsb3QgPSBwbG90X2JpcnRob3JkZXIobTJfYmlydGhvcmRlcl9saW5lYXIsIHNlcGFyYXRlID0gRkFMU0UpCgptM19iaXJ0aG9yZGVyX25vbmxpbmVhciA9IHVwZGF0ZShiaWc1X2V4dF9tMSwgZm9ybXVsYSA9IC4gfiAuICsgYmlydGhfb3JkZXJfbm9ubGluZWFyKQoKcGxvdF9iaXJ0aG9yZGVyID0gZnVuY3Rpb24obW9kZWwsIHlsYWJlbCA9IE5VTEwsIHRpdGxlID0gIiIsIGJvX3ZhciA9ICJiaXJ0aF9vcmRlciIsIHNlcGFyYXRlID0gVFJVRSkgewogIGlmKGluaGVyaXRzKG1vZGVsLCAibWVyTW9kIikpIHsKICAgIHZhcm5hbWVzID0gbmFtZXMobW9kZWxAZnJhbWUpCiAgfSBlbHNlIHsKICAgIHZhcm5hbWVzID0gbmFtZXMobW9kZWwkbW9kZWwpCiAgfQogIG91dGNvbWUgPSB2YXJuYW1lc1sxXQogIGlmKGlzLm51bGwoeWxhYmVsKSkgeWxhYmVsID0gb3V0Y29tZQogIGxpYnJhcnkoZWZmZWN0cykKICBsaWJyYXJ5KHRpZHlyKQogIGVtbSA9IGFsbEVmZmVjdHMobW9kZWwpCiAgYm9fdmFyID0gbmFtZXMoZW1tKVtuYW1lcyhlbW0pICVjb250YWlucyUgYm9fdmFyXQogIGNlbW0gPSBhcy5kYXRhLmZyYW1lKGVtbVtbYm9fdmFyXV0pCiAgaWYgKHNlcGFyYXRlICE9IFRSVUUpIHsKICAgIGNlbW0gPSBjZW1tICU+JSByZW5hbWVfKCJCaXJ0aCBvcmRlciIgPSBib192YXIpICU+JSBtdXRhdGUoU2lic2hpcCA9ICJhY3Jvc3MiKQogIH0gZWxzZSB7CiAgICBjZW1tID0gY2VtbSAlPiUKICAgICAgc2VwYXJhdGVfKGJvX3ZhciwgaW50byA9IGMoIkJpcnRoIG9yZGVyIiwgIlNpYnNoaXAiKSwgc2VwID0gIi8iKQogICAgbnVtYmVyID0gc3ByZWFkKGFzLmRhdGEuZnJhbWUodGFibGUobW9kZWwuZnJhbWUobW9kZWwpW2Bib192YXJgXSkpLCBWYXIxLCBGcmVxKQogICAgbjIgPSBwYXN0ZTAoIjIgKCIsIHN1bShudW1iZXIkYDEvMmAsIG51bWJlciRgMi8yYCksICIpIiwgc2VwZXJhdGU9IiIpCiAgICBuMyA9IHBhc3RlMCgiMyAoIiwgc3VtKG51bWJlciRgMS8zYCwgbnVtYmVyJGAyLzNgLCBudW1iZXIkYDMvM2ApLCAiKSIsCiAgICAgICAgICAgICAgICBzZXBlcmF0ZT0iIikKICAgIG40ID0gcGFzdGUwKCI0ICgiLCBzdW0obnVtYmVyJGAxLzRgLCBudW1iZXIkYDIvNGAsIG51bWJlciRgMy80YCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgbnVtYmVyJGA0LzRgKSwgIikiLCBzZXBlcmF0ZT0iIikKICAgIG41ID0gcGFzdGUwKCI1ICgiLCBzdW0obnVtYmVyJGAxLzVgLCBudW1iZXIkYDIvNWAsIG51bWJlciRgMy81YCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgbnVtYmVyJGA0LzVgLCBudW1iZXIkYDUvNWApLCAiKSIsIHNlcGVyYXRlPSIiKQogICAgbjVtb3JlID0gcGFzdGUwKCI1KyAoIiwgc3VtKG51bWJlciRgMS81K2AsIG51bWJlciRgMi81K2AsIG51bWJlciRgMy81K2AsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbnVtYmVyJGA0LzUrYCwgbnVtYmVyJGA1LzUrYCwgbnVtYmVyJGA1Ky81K2ApLCAiKSIsCiAgICAgICAgICAgICAgICAgICAgc2VwZXJhdGU9IiIpCiAgICBjZW1tID0gY2VtbSAlPiUKICAgICAgbXV0YXRlKFNpYnNoaXAgPSByZWNvZGVfZmFjdG9yKFNpYnNoaXAsICIyIiA9IGBuMmAsICIzIiA9IGBuM2AsICI0IiA9IGBuNGAsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiNSIgPSBgbjVgLCAiNSsiID0gYG41bW9yZWApKQogIH0KICBwbG90eCA9IGdncGxvdChjZW1tLCBhZXMoYEJpcnRoIG9yZGVyYCwgeSA9IGZpdCwgeW1heCA9IHVwcGVyLCB5bWluID0gbG93ZXIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvbG91ciA9IGBTaWJzaGlwYCwgZ3JvdXAgPSBgU2lic2hpcGApKSArCiAgICBnZW9tX3BvaW50cmFuZ2Uoc3RhdCA9ICJpZGVudGl0eSIsIGZpbGwgPSBjKGJyZXdlci5wYWwoOCwgIlNldDIiKVtjKDcpXSkpICsKICAgIGdlb21fbGluZSgpICsKICAgIHNjYWxlX3lfY29udGludW91cygiRXh0cmF2ZXJzaW9uIiwgbGltaXRzID0gYygtMC41LCAwLjUpLCBicmVha3MgPSBjKC0wLjUsIC0wLjQsIC0wLjMsIC0wLjIsIC0wLjEsIDAsIDAuMSwgMC4yLCAwLjMsIDAuNCwgMC41KSkgKwogICAgc2NhbGVfeF9kaXNjcmV0ZSgiTWF0ZXJuYWwgYmlydGggb3JkZXIiKSArCiAgICBhcGF0aGVtZSArCiAgICBzY2FsZV9jb2xvdXJfbWFudWFsKHZhbHVlcyA9IHJldihicmV3ZXIucGFsKDcsIlNldDIiKSkpICsKICAgIHNjYWxlX2ZpbGxfbWFudWFsKHZhbHVlcyA9IHJldihicmV3ZXIucGFsKDcsIlNldDIiKSkpICsKICAgIHRoZW1lKGxlZ2VuZC5wb3NpdGlvbj0ibm9uZSIpCiAgcHJpbnQocGxvdHgpCiAgYXNzaWduKHBhc3RlMCgicGxvdF8iLCBvdXRjb21lLCBzZXBlcmF0ZT0iIikscGxvdHgsLkdsb2JhbEVudikKfQoKcGxvdCA9IHBsb3RfYmlydGhvcmRlcihtM19iaXJ0aG9yZGVyX25vbmxpbmVhciwgc2VwYXJhdGUgPSBGQUxTRSkKCgptM19iaXJ0aG9yZGVyX25vbmxpbmVhciA9IHVwZGF0ZShiaWc1X29wZW5fbTEsIGZvcm11bGEgPSAuIH4gLiArIGJpcnRoX29yZGVyX25vbmxpbmVhcikKCnBsb3RfYmlydGhvcmRlciA9IGZ1bmN0aW9uKG1vZGVsLCB5bGFiZWwgPSBOVUxMLCB0aXRsZSA9ICIiLCBib192YXIgPSAiYmlydGhfb3JkZXIiLCBzZXBhcmF0ZSA9IFRSVUUpIHsKICBpZihpbmhlcml0cyhtb2RlbCwgIm1lck1vZCIpKSB7CiAgICB2YXJuYW1lcyA9IG5hbWVzKG1vZGVsQGZyYW1lKQogIH0gZWxzZSB7CiAgICB2YXJuYW1lcyA9IG5hbWVzKG1vZGVsJG1vZGVsKQogIH0KICBvdXRjb21lID0gdmFybmFtZXNbMV0KICBpZihpcy5udWxsKHlsYWJlbCkpIHlsYWJlbCA9IG91dGNvbWUKICBsaWJyYXJ5KGVmZmVjdHMpCiAgbGlicmFyeSh0aWR5cikKICBlbW0gPSBhbGxFZmZlY3RzKG1vZGVsKQogIGJvX3ZhciA9IG5hbWVzKGVtbSlbbmFtZXMoZW1tKSAlY29udGFpbnMlIGJvX3Zhcl0KICBjZW1tID0gYXMuZGF0YS5mcmFtZShlbW1bW2JvX3Zhcl1dKQogIGlmIChzZXBhcmF0ZSAhPSBUUlVFKSB7CiAgICBjZW1tID0gY2VtbSAlPiUgcmVuYW1lXygiQmlydGggb3JkZXIiID0gYm9fdmFyKSAlPiUgbXV0YXRlKFNpYnNoaXAgPSAiYWNyb3NzIikKICB9IGVsc2UgewogICAgY2VtbSA9IGNlbW0gJT4lCiAgICAgIHNlcGFyYXRlXyhib192YXIsIGludG8gPSBjKCJCaXJ0aCBvcmRlciIsICJTaWJzaGlwIiksIHNlcCA9ICIvIikKICAgIG51bWJlciA9IHNwcmVhZChhcy5kYXRhLmZyYW1lKHRhYmxlKG1vZGVsLmZyYW1lKG1vZGVsKVtgYm9fdmFyYF0pKSwgVmFyMSwgRnJlcSkKICAgIG4yID0gcGFzdGUwKCIyICgiLCBzdW0obnVtYmVyJGAxLzJgLCBudW1iZXIkYDIvMmApLCAiKSIsIHNlcGVyYXRlPSIiKQogICAgbjMgPSBwYXN0ZTAoIjMgKCIsIHN1bShudW1iZXIkYDEvM2AsIG51bWJlciRgMi8zYCwgbnVtYmVyJGAzLzNgKSwgIikiLAogICAgICAgICAgICAgICAgc2VwZXJhdGU9IiIpCiAgICBuNCA9IHBhc3RlMCgiNCAoIiwgc3VtKG51bWJlciRgMS80YCwgbnVtYmVyJGAyLzRgLCBudW1iZXIkYDMvNGAsCiAgICAgICAgICAgICAgICAgICAgICAgICAgIG51bWJlciRgNC80YCksICIpIiwgc2VwZXJhdGU9IiIpCiAgICBuNSA9IHBhc3RlMCgiNSAoIiwgc3VtKG51bWJlciRgMS81YCwgbnVtYmVyJGAyLzVgLCBudW1iZXIkYDMvNWAsCiAgICAgICAgICAgICAgICAgICAgICAgICAgIG51bWJlciRgNC81YCwgbnVtYmVyJGA1LzVgKSwgIikiLCBzZXBlcmF0ZT0iIikKICAgIG41bW9yZSA9IHBhc3RlMCgiNSsgKCIsIHN1bShudW1iZXIkYDEvNStgLCBudW1iZXIkYDIvNStgLCBudW1iZXIkYDMvNStgLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG51bWJlciRgNC81K2AsIG51bWJlciRgNS81K2AsIG51bWJlciRgNSsvNStgKSwgIikiLAogICAgICAgICAgICAgICAgICAgIHNlcGVyYXRlPSIiKQogICAgY2VtbSA9IGNlbW0gJT4lCiAgICAgIG11dGF0ZShTaWJzaGlwID0gcmVjb2RlX2ZhY3RvcihTaWJzaGlwLCAiMiIgPSBgbjJgLCAiMyIgPSBgbjNgLCAiNCIgPSBgbjRgLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjUiID0gYG41YCwgIjUrIiA9IGBuNW1vcmVgKSkKICB9CiAgcGxvdHggPSBnZ3Bsb3QoY2VtbSwgYWVzKGBCaXJ0aCBvcmRlcmAsIHkgPSBmaXQsIHltYXggPSB1cHBlciwgeW1pbiA9IGxvd2VyLAogICAgICAgICAgICAgICAgICAgICAgICAgICBjb2xvdXIgPSBgU2lic2hpcGAsIGdyb3VwID0gYFNpYnNoaXBgKSkgKwogICAgZ2VvbV9wb2ludHJhbmdlKHN0YXQgPSAiaWRlbnRpdHkiLCBmaWxsID0gYyhicmV3ZXIucGFsKDgsICJTZXQyIilbYyg3KV0pKSArCiAgICBnZW9tX2xpbmUoKSArCiAgICBzY2FsZV95X2NvbnRpbnVvdXMoIk9wZW5uZXNzIiwgbGltaXRzID0gYygtMC41LCAwLjUpLCBicmVha3MgPSBjKC0wLjUsIC0wLjQsIC0wLjMsIC0wLjIsIC0wLjEsIDAsIDAuMSwgMC4yLCAwLjMsIDAuNCwgMC41KSkgKwogICAgc2NhbGVfeF9kaXNjcmV0ZSgiTWF0ZXJuYWwgYmlydGggb3JkZXIiKSArCiAgICBhcGF0aGVtZSArCiAgICBzY2FsZV9jb2xvdXJfbWFudWFsKHZhbHVlcyA9IHJldihicmV3ZXIucGFsKDcsIlNldDIiKSkpICsKICAgIHNjYWxlX2ZpbGxfbWFudWFsKHZhbHVlcyA9IHJldihicmV3ZXIucGFsKDcsIlNldDIiKSkpICsKICAgIHRoZW1lKGxlZ2VuZC5wb3NpdGlvbj0ibm9uZSIpCiAgcHJpbnQocGxvdHgpCiAgYXNzaWduKHBhc3RlMCgicGxvdF8iLCBvdXRjb21lLCBzZXBlcmF0ZT0iIikscGxvdHgsLkdsb2JhbEVudikKfQoKcGxvdCA9IHBsb3RfYmlydGhvcmRlcihtM19iaXJ0aG9yZGVyX25vbmxpbmVhciwgc2VwYXJhdGUgPSBGQUxTRSkKCmxpYnJhcnkoZ3JpZCkKbGlicmFyeShncmlkRXh0cmEpCgojIyMgV2l0aGluCiMjIEludGVsbGlnZW5jZQpnX2ZhY3Rvcl9tMSA9IGxtZXIoZ19mYWN0b3IgfiBiaXJ0aHllYXIgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIgJT4lCiAgICAgICAgICAgICAgICAgICAgIHJlbmFtZShzaWJsaW5nX2NvdW50ID0gc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhfb3JkZXJfbm9ubGluZWFyID0gYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhfb3JkZXIgPSBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvdW50X2JpcnRoX29yZGVyID0gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUpKQoKbTRfaW50ZXJhY3Rpb24gPSB1cGRhdGUoZ19mYWN0b3JfbTEsIGZvcm11bGEgPSAuIH4gLiAtIGJpcnRoX29yZGVyX25vbmxpbmVhciAtIHNpYmxpbmdfY291bnQgKyBjb3VudF9iaXJ0aF9vcmRlcikKCgpwbG90X2dfZmFjdG9yID0gcGxvdF9iaXJ0aG9yZGVyKG00X2ludGVyYWN0aW9uLCAiSW50ZWxsaWdlbmNlIiwgImEiKQoKCiMjIFBlcnNvbmFsaXR5CiNFeHRyYXZlcnNpb24KYmlnNV9leHRfbTEgPSBsbWVyKGJpZzVfZXh0IH4gYmlydGh5ZWFyICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyICU+JQogICAgICAgICAgICAgICAgICAgICByZW5hbWUoc2libGluZ19jb3VudCA9IHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRoX29yZGVyX25vbmxpbmVhciA9IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRoX29yZGVyID0gYmlydGhvcmRlcl91dGVydXNfYWxpdmUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb3VudF9iaXJ0aF9vcmRlciA9IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSkKbTRfaW50ZXJhY3Rpb24gPSB1cGRhdGUoYmlnNV9leHRfbTEsIGZvcm11bGEgPSAuIH4gLiAtIGJpcnRoX29yZGVyX25vbmxpbmVhciAtIHNpYmxpbmdfY291bnQgKyBjb3VudF9iaXJ0aF9vcmRlcikKCnBsb3RfYmlnNV9leHQgPSBwbG90X2JpcnRob3JkZXIobTRfaW50ZXJhY3Rpb24sICJFeHRyYXZlcnNpb24iLCAiYiIpCgojIE5ldXJvdGljaXNtCmJpZzVfbmV1X20xID0gbG1lcihiaWc1X25ldSB+IGJpcnRoeWVhciArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlciAlPiUKICAgICAgICAgICAgICAgICAgICAgcmVuYW1lKHNpYmxpbmdfY291bnQgPSBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aF9vcmRlcl9ub25saW5lYXIgPSBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aF9vcmRlciA9IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgY291bnRfYmlydGhfb3JkZXIgPSBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSkpCm00X2ludGVyYWN0aW9uID0gdXBkYXRlKGJpZzVfbmV1X20xLCBmb3JtdWxhID0gLiB+IC4gLSBiaXJ0aF9vcmRlcl9ub25saW5lYXIgLSBzaWJsaW5nX2NvdW50ICsgY291bnRfYmlydGhfb3JkZXIpCgpwbG90X2JpZzVfbmV1ID0gcGxvdF9iaXJ0aG9yZGVyKG00X2ludGVyYWN0aW9uLCAiTmV1cm90aWNpc20iLCAiYyIpCgojQ29uc2NpZW50aXVvc25lc3MKYmlnNV9jb25fbTEgPSBsbWVyKGJpZzVfY29uIH4gYmlydGh5ZWFyICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyICU+JQogICAgICAgICAgICAgICAgICAgICByZW5hbWUoc2libGluZ19jb3VudCA9IHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRoX29yZGVyX25vbmxpbmVhciA9IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRoX29yZGVyID0gYmlydGhvcmRlcl91dGVydXNfYWxpdmUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb3VudF9iaXJ0aF9vcmRlciA9IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSkKbTRfaW50ZXJhY3Rpb24gPSB1cGRhdGUoYmlnNV9jb25fbTEsIGZvcm11bGEgPSAuIH4gLiAtIGJpcnRoX29yZGVyX25vbmxpbmVhciAtIHNpYmxpbmdfY291bnQgKyBjb3VudF9iaXJ0aF9vcmRlcikKCnBsb3RfYmlnNV9jb24gPSBwbG90X2JpcnRob3JkZXIobTRfaW50ZXJhY3Rpb24sICJDb25zY2llbnRpb3VzbmVzcyIsICJkIikKCiNBZ3JlZWFibGVuZXNzCmJpZzVfYWdyZWVfbTEgPSBsbWVyKGJpZzVfYWdyZWUgfiBiaXJ0aHllYXIgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIgJT4lCiAgICAgICAgICAgICAgICAgICAgIHJlbmFtZShzaWJsaW5nX2NvdW50ID0gc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhfb3JkZXJfbm9ubGluZWFyID0gYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhfb3JkZXIgPSBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvdW50X2JpcnRoX29yZGVyID0gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUpKQptNF9pbnRlcmFjdGlvbiA9IHVwZGF0ZShiaWc1X2FncmVlX20xLCBmb3JtdWxhID0gLiB+IC4gLSBiaXJ0aF9vcmRlcl9ub25saW5lYXIgLSBzaWJsaW5nX2NvdW50ICsgY291bnRfYmlydGhfb3JkZXIpCgpwbG90X2JpZzVfYWdyZWUgPSBwbG90X2JpcnRob3JkZXIobTRfaW50ZXJhY3Rpb24sICJBZ3JlZWFibGVuZXNzIiwgImUiKQoKI09wZW5uZXNzCmJpZzVfb3Blbl9tMSA9IGxtZXIoYmlnNV9vcGVuIH4gYmlydGh5ZWFyICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIgJT4lCiAgICAgICAgICAgICAgICAgICAgICAgcmVuYW1lKHNpYmxpbmdfY291bnQgPSBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRoX29yZGVyX25vbmxpbmVhciA9IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhfb3JkZXIgPSBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY291bnRfYmlydGhfb3JkZXIgPSBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSkpCm00X2ludGVyYWN0aW9uID0gdXBkYXRlKGJpZzVfb3Blbl9tMSwgZm9ybXVsYSA9IC4gfiAuIC0gYmlydGhfb3JkZXJfbm9ubGluZWFyIC0gc2libGluZ19jb3VudCArIGNvdW50X2JpcnRoX29yZGVyKQoKcGxvdF9iaWc1X29wZW4gPSBwbG90X2JpcnRob3JkZXIobTRfaW50ZXJhY3Rpb24sICJPcGVubmVzcyIsICJmIikKCiMjUmlzawojUmlzayBBCnJpc2tBX20xID0gbG1lcihyaXNrQSB+IGJpcnRoeWVhciArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyICU+JQogICAgICAgICAgICAgICAgICAgICAgIHJlbmFtZShzaWJsaW5nX2NvdW50ID0gc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aF9vcmRlcl9ub25saW5lYXIgPSBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRoX29yZGVyID0gYmlydGhvcmRlcl91dGVydXNfYWxpdmUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvdW50X2JpcnRoX29yZGVyID0gY291bnRfYmlydGhvcmRlcl91dGVydXNfYWxpdmUpKQptNF9pbnRlcmFjdGlvbiA9IHVwZGF0ZShyaXNrQV9tMSwgZm9ybXVsYSA9IC4gfiAuIC0gYmlydGhfb3JkZXJfbm9ubGluZWFyIC0gc2libGluZ19jb3VudCArIGNvdW50X2JpcnRoX29yZGVyKQoKcGxvdF9yaXNrQSA9IHBsb3RfYmlydGhvcmRlcihtNF9pbnRlcmFjdGlvbiwgIlJpc2sgQSIsICJnIikKCgojIFJpc2sgQgpyaXNrQl9tMSA9IGxtZXIocmlza0IgfiBiaXJ0aHllYXIgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlciAlPiUKICAgICAgICAgICAgICAgICAgICAgICByZW5hbWUoc2libGluZ19jb3VudCA9IHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhfb3JkZXJfbm9ubGluZWFyID0gYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aF9vcmRlciA9IGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb3VudF9iaXJ0aF9vcmRlciA9IGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSkKbTRfaW50ZXJhY3Rpb24gPSB1cGRhdGUocmlza0JfbTEsIGZvcm11bGEgPSAuIH4gLiAtIGJpcnRoX29yZGVyX25vbmxpbmVhciAtIHNpYmxpbmdfY291bnQgKyBjb3VudF9iaXJ0aF9vcmRlcikKCnBsb3Rfcmlza0IgPSBwbG90X2JpcnRob3JkZXIobTRfaW50ZXJhY3Rpb24sICJSaXNrIEIiLCAiaCIpCgoKCnBsb3RzID0gZ3JpZC5hcnJhbmdlKHBsb3RfZ19mYWN0b3IsIHBsb3RfYmlnNV9leHQsIHBsb3RfYmlnNV9uZXUsIHBsb3RfYmlnNV9jb24sIHBsb3RfYmlnNV9hZ3JlZSwKICAgICAgICAgICAgICAgICAgICAgcGxvdF9iaWc1X29wZW4sIHBsb3Rfcmlza0EsIHBsb3Rfcmlza0IsCiAgICAgICAgICAgICAgICAgICAgIG5jb2wgPSAyKQpgYGAK</div>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

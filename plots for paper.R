@@ -1,3 +1,10 @@
+apatheme=theme_bw()+
+  theme(panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        panel.border=element_blank(),
+        axis.line=element_line(),
+        text=element_text(family='Arial', size = 35))
+
 m2_birthorder_linear = update(g_factor_m1, formula = . ~ . + birth_order)
 
 plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_order", separate = TRUE) {
@@ -34,19 +41,20 @@ plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_ord
                                      "5" = `n5`, "5+" = `n5more`))
   }
   plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
-                           colour = `Sibship`, group = `Sibship`)) +
-    geom_smooth(stat = "identity", fill = c(brewer.pal(8, "Set2")[c(7)])) +
-    scale_y_continuous("Intelligence", limits = c(-0.5, 0.5), breaks = c(-0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5)) +
-    scale_x_continuous("Maternal birth order", breaks = c(0, 2, 4, 6, 8, 10, 12, 14)) +
+                           colour = "#8DA0CB", group = `Sibship`)) +
+    geom_smooth(stat = "identity", fill = "#8DA0CB") +
+    scale_y_continuous((expression(paste("Intelligenz"))), limits = c(-0.5, 0.5), breaks = c(-0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5)) +
+    scale_x_continuous("Geburtenposition", breaks = c(0, 2, 4, 6, 8, 10, 12, 14)) +
     apatheme +
-    scale_colour_manual(values = rev(brewer.pal(7,"Set2"))) +
-    scale_fill_manual(values = rev(brewer.pal(7,"Set2"))) +
+    scale_colour_manual(values = "#8DA0CB") +
+    scale_fill_manual(values = "#8DA0CB") +
     theme(legend.position="none")
   print(plotx)
   assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)
 }
 
 plot = plot_birthorder(m2_birthorder_linear, separate = FALSE)
+plot
 
 m3_birthorder_nonlinear = update(big5_ext_m1, formula = . ~ . + birth_order_nonlinear)
 
@@ -85,13 +93,13 @@ plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_ord
   }
   plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
                            colour = `Sibship`, group = `Sibship`)) +
-    geom_pointrange(stat = "identity", fill = c(brewer.pal(8, "Set2")[c(7)])) +
-    geom_line() +
+    geom_pointrange(stat = "identity", fill = c(brewer.pal(8, "Set2")[c(7)]),  size=2) +
+    geom_line(size=2) +
     scale_y_continuous("Extraversion", limits = c(-0.5, 0.5), breaks = c(-0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5)) +
-    scale_x_discrete("Maternal birth order") +
+    scale_x_discrete("Geburtenposition") +
     apatheme +
-    scale_colour_manual(values = rev(brewer.pal(7,"Set2"))) +
-    scale_fill_manual(values = rev(brewer.pal(7,"Set2"))) +
+    scale_colour_manual(values = "#66C2A5") +
+    scale_fill_manual(values ="#66C2A5") +
     theme(legend.position="none")
   print(plotx)
   assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)

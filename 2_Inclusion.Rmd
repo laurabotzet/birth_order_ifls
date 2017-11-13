@@ -212,6 +212,30 @@ n_birthorder
 
 ```
 
+#### Educational Attainment
+```{r}
+alldata_birthorder = alldata_birthorder %>%
+  mutate(used_ea = ifelse(!is.na(highest_education), 1, 0)
+
+n_birthorder = alldata_birthorder %>%
+  summarise(Maternal_Birth_Order = sum(!is.na(birthorder_uterus_alive) & any_multiple_birth != 1 &
+                                         sibling_count_uterus_alive != 1 & alive != 3 & birth_year <= 2000 &
+                                         used_ea == 1,
+                                       na.rm = T),
+            Maternal_Pregnancy_Order = sum(!is.na(birthorder_uterus_preg) & any_multiple_birth != 1 &
+                                             sibling_count_uterus_preg != 1 & alive != 3 & birth_year <= 2000 &
+                                         used_ea == 1,
+                                           na.rm = T),
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(birthorder_genes) & any_multiple_birth != 1 &
+                                                      sibling_count_genes != 1 & alive != 3 & birth_year <= 2000 &
+                                                      used_ea == 1,
+                                                    na.rm = T))
+n_birthorder
+
+
+```
+
+
 ### Save Data
 ```{r data wrangling}
 ## We only want to include people in the birthorder group that are no children of a family with mutiple births, no only children and people who actually have iq, personality, etc. data

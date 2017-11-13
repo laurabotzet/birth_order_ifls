@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -21,10 +21,9 @@
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
-<script src="site_libs/navigation-1.1/FileSaver.min.js"></script>
 <script src="site_libs/navigation-1.1/sourceembed.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -34,10 +33,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlightingOnLoad(); }, 0);
+  }
 }
 </script>
 
@@ -254,6 +255,9 @@ $(document).ready(function () {
 <pre><code>## The following object is masked from &#39;package:base&#39;:
 ## 
 ##     date</code></pre>
+<pre><code>## Loading required package: carData</code></pre>
+<pre><code>## lattice theme set by effectsTheme()
+## See ?effectsTheme for details.</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;data.table&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:lubridate&#39;:
@@ -277,17 +281,17 @@ $(document).ready(function () {
 ## 
 ##     ggsave</code></pre>
 <pre><code>## 
-## Attaching package: &#39;haven&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:forcats&#39;:
-## 
-##     as_factor</code></pre>
-<pre><code>## 
 ## Attaching package: &#39;psych&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:ggplot2&#39;:
 ## 
 ##     %+%, alpha</code></pre>
-<pre><code>## This is lavaan 0.5-22</code></pre>
+<pre><code>## This is lavaan 0.5-23.1097</code></pre>
 <pre><code>## lavaan is BETA software! Please report any bugs.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lavaan&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     cor2cov</code></pre>
 <pre><code>## Loading required package: lattice</code></pre>
 <pre><code>## Loading required package: survival</code></pre>
 <pre><code>## Loading required package: Formula</code></pre>
@@ -304,10 +308,6 @@ $(document).ready(function () {
 <pre><code>## The following object is masked from &#39;package:Matrix&#39;:
 ## 
 ##     expand</code></pre>
-<pre><code>## ------------------------------------------------------------------------------------------------------------</code></pre>
-<pre><code>## data.table + dplyr code now lives in dtplyr.
-## Please library(dtplyr)!</code></pre>
-<pre><code>## ------------------------------------------------------------------------------------------------------------</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:Hmisc&#39;:
@@ -336,11 +336,12 @@ $(document).ready(function () {
 ## All Individuals living in the household
 bk_ar1 = read_dta(&quot;data/hh14_all_dta/bk_ar1.dta&quot;) # Book K, Section ar
 # compute father pidlink
-bk_ar1 = left_join(bk_ar1, bk_ar1 %&gt;% select(hhid14_9, pid14, pidlink) %&gt;% rename(ar10 = pid14, father_pidlink = pidlink), by = c(&quot;hhid14_9&quot;, &quot;ar10&quot;))
-# compute mother pidlink
-bk_ar1 = left_join(bk_ar1, bk_ar1 %&gt;% select(hhid14_9, pid14, pidlink) %&gt;% rename(ar11 = pid14, mother_pidlink = pidlink), by = c(&quot;hhid14_9&quot;, &quot;ar11&quot;))
-
-### Informations from IFLS wave 5 to link data to earlier waves:
+bk_ar1 = left_join(bk_ar1, bk_ar1 %&gt;% select(hhid14_9, pid14, pidlink) %&gt;% rename(ar10 = pid14, father_pidlink = pidlink), by = c(&quot;hhid14_9&quot;, &quot;ar10&quot;))</code></pre>
+<pre><code>## Warning: Column `ar10` has different attributes on LHS and RHS of join</code></pre>
+<pre class="r"><code># compute mother pidlink
+bk_ar1 = left_join(bk_ar1, bk_ar1 %&gt;% select(hhid14_9, pid14, pidlink) %&gt;% rename(ar11 = pid14, mother_pidlink = pidlink), by = c(&quot;hhid14_9&quot;, &quot;ar11&quot;))</code></pre>
+<pre><code>## Warning: Column `ar11` has different attributes on LHS and RHS of join</code></pre>
+<pre class="r"><code>### Informations from IFLS wave 5 to link data to earlier waves:
 ptrack = read_dta(&quot;data/hh14_all_dta/ptrack.dta&quot;) # Traking informations
 
 ### Pregnancy Informations from mother
@@ -388,7 +389,10 @@ b3b_co1 = read_dta(&quot;data/hh14_all_dta/b3b_co1.dta&quot;) # Book 3b, Section
 b3b_psn = read_dta(&quot;data/hh14_all_dta/b3b_psn.dta&quot;) # Book 3b, Section psn
 
 ### Risk taking
-b3a_si = read_dta(&quot;data/hh14_all_dta/b3a_si.dta&quot;) # Book 3b, Section si</code></pre>
+b3a_si = read_dta(&quot;data/hh14_all_dta/b3a_si.dta&quot;) # Book 3a, Section si
+
+### Educational Attainment
+b3a_dl1 = read_dta(&quot;data/hh14_all_dta/b3a_dl1.dta&quot;) # Book 3a, Section dl1</code></pre>
 </div>
 <div id="birth-order-information" class="section level2 tabset">
 <h2>Birth order information</h2>
@@ -408,9 +412,19 @@ w1_pregnancy = w1_pregnancy %&gt;%
           ch09yr = as.numeric(str_c(&quot;19&quot;, ch09yr)))
 
 ## Combine data
-pregnancy = bind_rows(w1 = w1_pregnancy, w2 = w2_pregnancy, w3 = w3_pregnancy, w4 = w4_pregnancy, w5 = w5_pregnancy, .id = &quot;wave&quot;)
+pregnancy = bind_rows(w1 = w1_pregnancy, w2 = w2_pregnancy, w3 = w3_pregnancy, w4 = w4_pregnancy, w5 = w5_pregnancy, .id = &quot;wave&quot;)</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
 
-## Rename Variables
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes</code></pre>
+<pre class="r"><code>## Rename Variables
 pregnancy = pregnancy %&gt;% rename(chron_order_birth = ch05, lifebirths = ch06, multiple_birth = ch06a, gender = ch08,
                                  birth_day = ch09day, birth_month = ch09mth, birth_year = ch09yr, 
                                  mother_pidlink = pidlink, alive = ch25) # pregnancy$lifebirths values: 1 = still pregnant, 2 = livebirth, 3 = still birth, 4 = misscarriage
@@ -558,9 +572,8 @@ w1_marriage = w1_marriage %&gt;% select(pidlink, kw05a, kw05b, kw13a, kw13b, kw0
 # In the first wave the year is named wrong
 w1_marriage = w1_marriage %&gt;%
   mutate(kw05a = ifelse(kw05a &lt;= 93, as.numeric(str_c(&quot;19&quot;, w1_marriage$kw05a)), kw05a),
-         kw13a = ifelse(kw13a &lt;=93 , as.numeric(str_c(&quot;19&quot;, w1_marriage$kw13a)), kw13a))</code></pre>
-<pre><code>## Warning in ifelse(structure(c(NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, : NAs durch Umwandlung erzeugt</code></pre>
-<pre class="r"><code># And the column names are wrong...
+         kw13a = ifelse(kw13a &lt;=93 , as.numeric(str_c(&quot;19&quot;, w1_marriage$kw13a)), kw13a))
+# And the column names are wrong...
 w1_marriage = w1_marriage %&gt;% rename(kw10mth = kw05b, kw10yr = kw05a, kw18mth = kw13b, kw18yr = kw13a, kw11 = kw06, kw19 = kw14age)
 
 ## Select additional marriage information (age of respondent)
@@ -590,9 +603,19 @@ w5_marriage = left_join(w5_marriage, w5_marriage_additional, by = &quot;pidlink&
   mutate(wave = as.numeric(&quot;2014&quot;))
 
 ## Combine marriage informations
-marriage = bind_rows(w1_marriage, w2_marriage, w3_marriage, w4_marriage, w5_marriage)
+marriage = bind_rows(w1_marriage, w2_marriage, w3_marriage, w4_marriage, w5_marriage)</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
 
-# Rename columns
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes</code></pre>
+<pre class="r"><code># Rename columns
 marriage = marriage %&gt;% rename(start_year = kw10yr, start_month = kw10mth, end_year = kw18yr, end_month = kw18mth, start_age = kw11, end_age = kw19, birth_year = dob_yr, birth_age = age)
 
 
@@ -721,289 +744,30 @@ pregnancy = left_join(pregnancy, pregnancy3, by = &quot;mother_birthdate&quot;) 
 <pre class="r"><code>### Graphs
 ## Biological Birthorder - Uterus_Pregnancies
 ggplot(pregnancy, aes(x=sibling_count_uterus_preg, y=birthorder_uterus_preg)) + geom_jitter(alpha = 0.1)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <p><img src="1_data_import_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <pre class="r"><code>## Biological Birthorder - Uterus_Births
 ggplot(pregnancy, aes(x=sibling_count_uterus_alive, y=birthorder_uterus_alive)) + geom_jitter(alpha = 0.1)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## Warning: Removed 5314 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <p><img src="1_data_import_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
 <pre class="r"><code>## Biological Birthorder - Full Sibling Order
 ggplot(pregnancy, aes(x=sibling_count_genes, y=birthorder_genes)) + geom_jitter(alpha = 0.1)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## Warning: Removed 5957 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <p><img src="1_data_import_files/figure-html/unnamed-chunk-2-3.png" width="672" /></p>
 <pre class="r"><code>## Bio: Uterus_preg vs. Uterus_Births
 ggplot(pregnancy, aes(x=birthorder_uterus_preg, y=birthorder_uterus_alive)) + geom_jitter(alpha = 0.1)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## Warning: Removed 5314 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <p><img src="1_data_import_files/figure-html/unnamed-chunk-2-4.png" width="672" /></p>
 <pre class="r"><code># The birth_order_alive is always lower, which makes sense, becaus not live births (miscarriage, still births are excluded)
 
 ## Bio: Uterus_preg vs. Genes
 ggplot(pregnancy, aes(x=birthorder_uterus_preg, y=birthorder_genes)) + geom_jitter(alpha = 0.1)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## Warning: Removed 5957 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <p><img src="1_data_import_files/figure-html/unnamed-chunk-2-5.png" width="672" /></p>
 <pre class="r"><code># The birth_order_alive is always lower, which makes sense, becaus not live births (miscarriage, still births are excluded)
 
 ## Bio: Uterus_alive vs. Genes
 ggplot(pregnancy, aes(x=birthorder_uterus_alive, y=birthorder_genes))  + geom_jitter(alpha = 0.1)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## Warning: Removed 5957 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <p><img src="1_data_import_files/figure-html/unnamed-chunk-2-6.png" width="672" /></p>
 <pre class="r"><code># The birth_order_alive is always lower, which makes sense, becaus not live births (miscarriage, still births are excluded)
 
@@ -1286,52 +1050,8 @@ psych::alpha(data.frame(answered_raven_items))</code></pre>
 <pre class="r"><code>iq$raven = rowMeans( answered_raven_items, na.rm = T)
 iq$raven[! iq$result %in% 1:2] = NA
 qplot(iq$raven)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 5049 rows containing non-finite values (stat_bin).
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
+<pre><code>## Warning: Removed 5049 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/select%20IQ%20data-1.png" width="672" /></p>
 <pre class="r"><code>##Math Test
 answered_math_items = iq %&gt;% select(ek18_ans:ek22_ans)
@@ -1372,52 +1092,8 @@ psych::alpha(data.frame(answered_math_items))</code></pre>
 <pre class="r"><code>iq$math = rowMeans( answered_math_items, na.rm = T)
 iq$math[! iq$result %in% 1:2] = NA
 qplot(iq$math)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 5049 rows containing non-finite values (stat_bin).
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
+<pre><code>## Warning: Removed 5049 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/select%20IQ%20data-2.png" width="672" /></p>
 <pre class="r"><code>##Counting Items
 # Create Right/Wrong Scores for the counting items
@@ -1464,104 +1140,16 @@ psych::alpha(data.frame(answered_counting_items))</code></pre>
 ## co04eright 0.30 0.70 0.20</code></pre>
 <pre class="r"><code>iq$count_backwards = rowSums( answered_counting_items, na.rm = T) / 5
 qplot(iq$count_backwards)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <p><img src="1_data_import_files/figure-html/select%20IQ%20data-3.png" width="672" /></p>
 <pre class="r"><code>## Word Memory
 iq$words_immediate = iq$co07count
 iq$words_delayed = iq$co10count
 qplot(iq$words_immediate, iq$words_delayed, geom = &quot;jitter&quot;)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## Warning: Removed 4917 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <p><img src="1_data_import_files/figure-html/select%20IQ%20data-4.png" width="672" /></p>
 <pre class="r"><code>answered_word_items = iq %&gt;% select(co07count,co10count)
 psych::alpha(data.frame(answered_word_items))</code></pre>
-<pre><code>## Warning in matrix(unlist(drop.item), ncol = 8, byrow = TRUE): Datenlänge [12] ist kein Teiler oder Vielfaches
-## der Anzahl der Spalten [8]</code></pre>
 <pre><code>## 
 ## Reliability analysis   
 ## Call: psych::alpha(x = data.frame(answered_word_items))
@@ -1573,9 +1161,9 @@ psych::alpha(data.frame(answered_word_items))</code></pre>
 ## 0.87 0.87 0.87 
 ## 
 ##  Reliability if an item is dropped:
-##           raw_alpha std.alpha G6(smc) average_r  S/N alpha se
-## co07count      0.77      0.77     0.6      0.77   NA       NA
-## co10count      0.60      0.77      NA        NA 0.77   0.0046
+##           raw_alpha std.alpha G6(smc) average_r S/N alpha se
+## co07count      0.77      0.77     0.6      0.77  NA       NA
+## co10count      0.77      0.77     0.6      0.77  NA       NA
 ## 
 ##  Item statistics 
 ##               n raw.r std.r r.cor r.drop mean  sd
@@ -1583,102 +1171,14 @@ psych::alpha(data.frame(answered_word_items))</code></pre>
 ## co10count 31471  0.94  0.94  0.83   0.77  4.2 1.9</code></pre>
 <pre class="r"><code>iq$words_remembered_avg = rowMeans( answered_word_items, na.rm = T)
 qplot(iq$words_remembered_avg)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 4917 rows containing non-finite values (stat_bin).
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
+<pre><code>## Warning: Removed 4917 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/select%20IQ%20data-5.png" width="672" /></p>
 <pre class="r"><code>##Adaptive Numbering
 iq$adaptive_numbering = iq$w_abil
 qplot(iq$adaptive_numbering)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 4979 rows containing non-finite values (stat_bin).
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
+<pre><code>## Warning: Removed 4979 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/select%20IQ%20data-6.png" width="672" /></p>
 <pre class="r"><code>## Correlation of all Iq-Tests
 round(cor(iq %&gt;% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = &quot;pairwise.complete.obs&quot;), 2)</code></pre>
@@ -1810,7 +1310,7 @@ formr::missingness_patterns(iq %&gt;% select(raven, math, count_backwards, words
 &quot;g_factor =~ raven + math + count_backwards +  words_delayed+ adaptive_numbering&quot; %&gt;%
   cfa(missing = &quot;fiml&quot;, data = iq, std.lv = T, std.ov = T) -&gt; cfa_g
 summary(cfa_g)</code></pre>
-<pre><code>## lavaan (0.5-22) converged normally after  17 iterations
+<pre><code>## lavaan (0.5-23.1097) converged normally after  17 iterations
 ## 
 ##   Number of observations                         36388
 ## 
@@ -1861,52 +1361,8 @@ iq = iq %&gt;%
          g_factor = ifelse(is.na(words_delayed), NA, g_factor),
          g_factor = ifelse(is.na(adaptive_numbering), NA, g_factor))
 qplot(iq$g_factor)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 5388 rows containing non-finite values (stat_bin).
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
+<pre><code>## Warning: Removed 5388 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/select%20IQ%20data-7.png" width="672" /></p>
 </div>
 <div id="personality" class="section level2">
@@ -1951,50 +1407,7 @@ psych::alpha(data.frame(extraversion), check.keys = T)</code></pre>
 ## e3           0.00 0.03 0.05 0.64 0.28    0</code></pre>
 <pre class="r"><code>pers$big5_ext = rowMeans(extraversion)
 qplot(pers$big5_ext)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <p><img src="1_data_import_files/figure-html/select%20pesonality%20data-1.png" width="672" /></p>
 <pre class="r"><code>##conscientiousness
 pers$c2r_reversed = 6 - pers$c2r
@@ -2029,50 +1442,7 @@ psych::alpha(data.frame(conscientiousness), check.keys = T)</code></pre>
 ## c3           0.01 0.12 0.08 0.63 0.15    0</code></pre>
 <pre class="r"><code>pers$big5_con = rowMeans(conscientiousness)
 qplot(pers$big5_con)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <p><img src="1_data_import_files/figure-html/select%20pesonality%20data-2.png" width="672" /></p>
 <pre class="r"><code>##Openness
 openness = pers %&gt;% select(o1, o2, o3)
@@ -2106,50 +1476,7 @@ psych::alpha(data.frame(openness), check.keys = T)</code></pre>
 ## o3 0.01 0.10 0.05 0.61 0.23    0</code></pre>
 <pre class="r"><code>pers$big5_open = rowMeans(openness)
 qplot(pers$big5_open)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <p><img src="1_data_import_files/figure-html/select%20pesonality%20data-3.png" width="672" /></p>
 <pre class="r"><code>## Neuroticism
 pers$n1r_reversed = 6 - pers$n1r
@@ -2157,100 +1484,14 @@ pers$n2r_reversed = 6 - pers$n2r
 neuroticism = pers %&gt;% select(n1r_reversed, n2r_reversed, n3)
 pers$big5_neu = rowMeans(neuroticism)
 qplot(pers$big5_neu)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <p><img src="1_data_import_files/figure-html/select%20pesonality%20data-4.png" width="672" /></p>
 <pre class="r"><code>##Agreeableness
 pers$a3r_reversed = 6- pers$a3r
 agreeableness= pers %&gt;% select(a1, a2, a3r_reversed)
 pers$big5_agree = rowMeans(agreeableness)
 qplot(pers$big5_agree)</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <p><img src="1_data_import_files/figure-html/select%20pesonality%20data-5.png" width="672" /></p>
 </div>
 <div id="risk-preference" class="section level2">
@@ -2279,52 +1520,8 @@ risk$riskA = ifelse(risk$si01 == 1 &amp; risk$si02 == 1, 5,
              ifelse(risk$si01 == 2 &amp; risk$si03 == 2 &amp; risk$si05 == 2, 1,
              NA)))))
 qplot(risk$riskA[risk$riskA != 5])</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 3882 rows containing non-finite values (stat_bin).
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
+<pre><code>## Warning: Removed 3882 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/select%20risk%20taking%20data-1.png" width="672" /></p>
 <pre class="r"><code>## calculate a risk score for risk game B 
 # (5 = gamble averse, Ordinalskala : 1 = risk loving, 4 = risk averse)
@@ -2335,56 +1532,10 @@ risk$riskB = ifelse(risk$si11 == 2 &amp; risk$si12 == 1, 5,
              ifelse(risk$si11 == 1 &amp; risk$si13 == 2 &amp; risk$si15 == 2, 1,
              NA)))))
 qplot(risk$riskB[risk$riskB !=5])</code></pre>
-<pre><code>## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning in structure(NULL, class = &quot;waiver&quot;): Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre><code>## Warning: Removed 2084 rows containing non-finite values (stat_bin).
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.
-
-## Warning: Calling &#39;structure(NULL, *)&#39; is deprecated, as NULL cannot have attributes.
-##   Consider &#39;structure(list(), *)&#39; instead.</code></pre>
+<pre><code>## Warning: Removed 2084 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="1_data_import_files/figure-html/select%20risk%20taking%20data-2.png" width="672" /></p>
 <pre class="r"><code>psych::alpha(data.frame(risk %&gt;% select(riskA, riskB)), check.keys = T)</code></pre>
-<pre><code>## Warning in matrix(unlist(drop.item), ncol = 8, byrow = TRUE): Datenlänge [12] ist kein Teiler oder Vielfaches
-## der Anzahl der Spalten [8]</code></pre>
 <pre><code>## 
 ## Reliability analysis   
 ## Call: psych::alpha(x = data.frame(risk %&gt;% select(riskA, riskB)), check.keys = T)
@@ -2397,8 +1548,8 @@ qplot(risk$riskB[risk$riskB !=5])</code></pre>
 ## 
 ##  Reliability if an item is dropped:
 ##       raw_alpha std.alpha G6(smc) average_r S/N alpha se
-## riskA      0.20       0.2    0.04       0.2  NA       NA
-## riskB      0.04       0.2      NA        NA 0.2   0.0025
+## riskA       0.2       0.2    0.04       0.2  NA       NA
+## riskB       0.2       0.2    0.04       0.2  NA       NA
 ## 
 ##  Item statistics 
 ##           n raw.r std.r r.cor r.drop mean   sd
@@ -2410,16 +1561,54 @@ qplot(risk$riskB[risk$riskB !=5])</code></pre>
 ## riskA 0.19 0.12 0.11 0.24 0.33 0.12
 ## riskB 0.04 0.02 0.11 0.70 0.13 0.07</code></pre>
 </div>
+<div id="educational-attainment" class="section level2">
+<h2>Educational Attainment</h2>
+<pre class="r"><code># Select, rename and mutate data
+ea = b3a_dl1 %&gt;%
+  select(pidlink, dl04, dl06, dl07, dl07a, dl07aa) %&gt;%
+  rename(pidlink = pidlink, attended_school = dl04, highest_education = dl06, highest_grade=dl07,
+         currently_attending_school = dl07a, hours_in_class = dl07aa) %&gt;%
+  mutate(attended_school = as.factor(ifelse(attended_school == 8, NA,
+                                            ifelse(attended_school == 1, &quot;yes&quot;,
+                                                   ifelse(attended_school == 3, &quot;no&quot;, attended_school)))),
+         highest_education = as.factor(ifelse(highest_education == 2 | highest_education == 72,
+                                                     &quot;Elementary&quot;,
+                                                     ifelse(highest_education == 3 | highest_education == 4 |
+                                                              highest_education == 73, &quot;Junior High&quot;,
+                                                            ifelse(highest_education == 5 |
+                                                                     highest_education == 6 |
+                                                                     highest_education == 74,
+                                                                   &quot;Senior High&quot;,
+                                                                   ifelse(highest_education == 60 |
+                                                                            highest_education == 61 |
+                                                                            highest_education == 62 |
+                                                                            highest_education == 63 |
+                                                                            highest_education == 13,
+                                                                          &quot;University&quot;,
+                                                                          ifelse(highest_education == 98, NA,
+                                                                                 &quot;Other&quot;)))))),
+         highest_grade = ifelse(highest_grade == 98, NA,
+                                ifelse(highest_grade == 99, NA, highest_grade)),
+         currently_attending_school = as.factor(ifelse(currently_attending_school == 1, &quot;yes&quot;,
+                                                       ifelse(currently_attending_school == 3, &quot;no&quot;, NA))),
+         hours_in_class = ifelse(hours_in_class == 99, NA,
+                                 ifelse(hours_in_class == 98, NA, hours_in_class)))</code></pre>
+</div>
 <div id="merge-data" class="section level2">
 <h2>Merge data</h2>
 <pre class="r"><code>### Merge all data for people with birthorder informations
-alldata_birthorder = left_join(alldata_pregnancy, iq, by = &quot;pidlink&quot;)
-alldata_birthorder = left_join(alldata_birthorder, pers, by = &quot;pidlink&quot;)
-alldata_birthorder = left_join(alldata_birthorder, risk, by = &quot;pidlink&quot;)
-
-alldata = left_join(individuals_unchanged, iq, by = &quot;pidlink&quot;)
-alldata = left_join(alldata, pers, by = &quot;pidlink&quot;)
-alldata = left_join(alldata, risk, by = &quot;pidlink&quot;)
+alldata_birthorder = left_join(alldata_pregnancy, iq, by = &quot;pidlink&quot;)</code></pre>
+<pre><code>## Warning: Column `pidlink` has different attributes on LHS and RHS of join</code></pre>
+<pre class="r"><code>alldata_birthorder = left_join(alldata_birthorder, pers, by = &quot;pidlink&quot;)
+alldata_birthorder = left_join(alldata_birthorder, risk, by = &quot;pidlink&quot;)</code></pre>
+<pre><code>## Warning: Column `pidlink` has different attributes on LHS and RHS of join</code></pre>
+<pre class="r"><code>alldata_birthorder = left_join(alldata_birthorder, ea, by = &quot;pidlink&quot;)</code></pre>
+<pre><code>## Warning: Column `pidlink` has different attributes on LHS and RHS of join</code></pre>
+<pre class="r"><code>alldata = left_join(individuals_unchanged, iq, by = &quot;pidlink&quot;)
+alldata = left_join(alldata, pers, by = &quot;pidlink&quot;)</code></pre>
+<pre><code>## Warning: Column `pidlink` has different attributes on LHS and RHS of join</code></pre>
+<pre class="r"><code>alldata = left_join(alldata, risk, by = &quot;pidlink&quot;)
+alldata = left_join(alldata, ea, by = &quot;pidlink&quot;)
 
 
 ### Which values are missing?
@@ -2695,7 +1884,7 @@ saveRDS(pregnancy, file = &quot;data/pregnancy.rds&quot;)</code></pre>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgY29kZV9mb2xkaW5nOiAic2hvdyIKLS0tCgojICA8c3BhbiBzdHlsZT0iY29sb3I6I0ZDOEQ2MiI+RGF0YSBXcmFuZ2xpbmc8L3NwYW4+IHsudGFic2V0fQoKIyMgSGVscGVyCmBgYHtyIGhlbHBlcn0Kc291cmNlKCIwX2hlbHBlcnMuUiIpCmBgYAoKCiMjIEltcG9ydCBkYXRhIHsuYWN0aXZlfQoKQWxsIGRhdGEgaXMgcmV0cmlldmVkIGZyb20gdGhlIFtSQU5EIGZvdW5kYXRpb11uKGh0dHA6Ly93d3cucmFuZC5vcmcvbGFib3IvRkxTL0lGTFMuaHRtbCkgCmBgYHtyIEltcG9ydCBkYXRhfQojIyMgSW5mb3JtYXRpb25zIGFib3V0IGluZGl2aWR1YWxzIGxpdmluZyBpbiB0aGUgaG91c2Vob2xkIGluIDIwMTQvMjAxNQojIyBBbGwgSW5kaXZpZHVhbHMgbGl2aW5nIGluIHRoZSBob3VzZWhvbGQKYmtfYXIxID0gcmVhZF9kdGEoImRhdGEvaGgxNF9hbGxfZHRhL2JrX2FyMS5kdGEiKSAjIEJvb2sgSywgU2VjdGlvbiBhcgojIGNvbXB1dGUgZmF0aGVyIHBpZGxpbmsKYmtfYXIxID0gbGVmdF9qb2luKGJrX2FyMSwgYmtfYXIxICU+JSBzZWxlY3QoaGhpZDE0XzksIHBpZDE0LCBwaWRsaW5rKSAlPiUgcmVuYW1lKGFyMTAgPSBwaWQxNCwgZmF0aGVyX3BpZGxpbmsgPSBwaWRsaW5rKSwgYnkgPSBjKCJoaGlkMTRfOSIsICJhcjEwIikpCiMgY29tcHV0ZSBtb3RoZXIgcGlkbGluawpia19hcjEgPSBsZWZ0X2pvaW4oYmtfYXIxLCBia19hcjEgJT4lIHNlbGVjdChoaGlkMTRfOSwgcGlkMTQsIHBpZGxpbmspICU+JSByZW5hbWUoYXIxMSA9IHBpZDE0LCBtb3RoZXJfcGlkbGluayA9IHBpZGxpbmspLCBieSA9IGMoImhoaWQxNF85IiwgImFyMTEiKSkKCiMjIyBJbmZvcm1hdGlvbnMgZnJvbSBJRkxTIHdhdmUgNSB0byBsaW5rIGRhdGEgdG8gZWFybGllciB3YXZlczoKcHRyYWNrID0gcmVhZF9kdGEoImRhdGEvaGgxNF9hbGxfZHRhL3B0cmFjay5kdGEiKSAjIFRyYWtpbmcgaW5mb3JtYXRpb25zCgojIyMgUHJlZ25hbmN5IEluZm9ybWF0aW9ucyBmcm9tIG1vdGhlcgojIyBXYXZlIDUgLSAyMDE0Cnc1X3ByZWduYW5jeSA9IHJlYWRfZHRhKCJkYXRhL2hoMTRfYWxsX2R0YS9iNF9jaDEuZHRhIikgIyBCb29rIDQsIFNlY3Rpb24gY2gKIyMgV2F2ZSA0IC0gMjAwNwp3NF9wcmVnbmFuY3kgPSByZWFkX2R0YSgiZGF0YS9oaDA3X2FsbF9kdGEvYjRfY2gxLmR0YSIpICMgQm9vayA0LCBTZWN0aW9uIGNoCiMjIFdhdmUgMyAtIDIwMDAKdzNfcHJlZ25hbmN5ID0gcmVhZF9kdGEoImRhdGEvaGgwMF9hbGxfZHRhL2I0X2NoMS5kdGEiKSAjIEJvb2sgNCwgU2VjdGlvbiBjaAojIyBXYXZlIDIgLSAxOTk3CncyX3ByZWduYW5jeSA9IHJlYWRfZHRhKCJkYXRhL2hoOTdkdGEvYjRfY2gxLmR0YSIpICMgQm9vayA0LCBTZWN0aW9uIGNoCiMjIFdhdmUgMSAtIDE5OTMKdzFfcHJlZ25hbmN5ID0gcmVhZF9kdGEoImRhdGEvaGg5M2R0YS9idWs0Y2gxLmR0YSIpICMgQm9vayA0LCBTZWN0aW9uIGNoCgojIyMgTWFycmlhZ2UgaW5mb3JtYXRpb24gZnJvbSBtb3RoZXIKIyMgV2F2ZSA1IC0gMjAxNAp3NV9tYXJyaWFnZT0gcmVhZF9kdGEoImRhdGEvaGgxNF9hbGxfZHRhL2I0X2t3My5kdGEiKSAjIEJvb2sgNCwgU2VjdGlvbiBrdzMKIyMgV2F2ZSA0IC0gMjAwNwp3NF9tYXJyaWFnZSA9IHJlYWRfZHRhKCJkYXRhL2hoMDdfYWxsX2R0YS9iNF9rdzIuZHRhIikgIyBCb29rIDQsIFNlY3Rpb24ga3cyCiMjIFdhdmUgMyAtIDIwMDAKdzNfbWFycmlhZ2UgPSByZWFkX2R0YSgiZGF0YS9oaDAwX2FsbF9kdGEvYjRfa3czLmR0YSIpICMgQm9vayA0LCBTZWN0aW9uIGt3MwojIyBXYXZlIDIgLSAxOTk3CncyX21hcnJpYWdlID0gcmVhZF9kdGEoImRhdGEvaGg5N2R0YS9iNF9rdzIuZHRhIikgIyBCb29rIDQsIFNlY3Rpb24ga3cyCiMjIFdhdmUgMSAtIDE5OTMKdzFfbWFycmlhZ2UgPSByZWFkX2R0YSgiZGF0YS9oaDkzZHRhL2J1azRrdzIuZHRhIikgIyBCb29rIDQsIFNlY3Rpb24ga3cyCgojIyBBZGRpdGlvbmFsIG1hcnJpYWdlIGluZm9ybWF0aW9uIGZyb20gbW90aGVyCiMgV2F2ZSA1IC0gMjAxNAp3NV9tYXJyaWFnZV9hZGRpdGlvbmFsID0gcmVhZF9kdGEoImRhdGEvaGgxNF9hbGxfZHRhL2I0X2Nvdi5kdGEiKSAjIEJvb2sgNCwgU2VjdGlvbiBjb3YKIyBXYXZlIDQgLSAyMDA3Cnc0X21hcnJpYWdlX2FkZGl0aW9uYWwgPSByZWFkX2R0YSgiZGF0YS9oaDA3X2FsbF9kdGEvYjRfY292LmR0YSIpICMgQm9vayA0LCBTZWN0aW9uIGNvdgojIFdhdmUgMyAtIDIwMDAKdzNfbWFycmlhZ2VfYWRkaXRpb25hbCA9IHJlYWRfZHRhKCJkYXRhL2hoMDBfYWxsX2R0YS9iNF9jb3YuZHRhIikgIyBCb29rIDQsIFNlY3Rpb24gY292CiMgV2F2ZSAyIC0gMTk5Nwp3Ml9tYXJyaWFnZV9hZGRpdGlvbmFsID0gcmVhZF9kdGEoImRhdGEvaGg5N2R0YS9iNF9jb3YuZHRhIikgIyBCb29rIDQsIFNlY3Rpb24gY292CiMgV2F2ZSAxIC0gMTk5Mwp3MV9tYXJyaWFnZV9hZGRpdGlvbmFsID0gcmVhZF9kdGEoImRhdGEvaGg5M2R0YS9idWtrYXIyLmR0YSIpICMgQm9vayBLLCBTZWN0aW9uIGFyLCBob3VzZWhvbGQgcm9hc3RlcgoKIyMjIElRIEluZm9ybWF0aW9uCmVrX2VrMiA9IHJlYWRfZHRhKCJkYXRhL2hoMTRfYWxsX2R0YS9la19lazIuZHRhIikgIyBCb29rIGVrMgojIGFkZGl0aW9uYWwgaW5mb3JtYXRpb24gKGNvdW50aW5nIGJhY2t3YXJkcywgYWRhcHRpdmUgdGVzdGluZykgZm9yIGFkdWx0cwpiM2JfY29iID0gcmVhZF9kdGEoImRhdGEvaGgxNF9hbGxfZHRhL2IzYl9jb2IuZHRhIikgIyBCb29rIDNiLCBTZWN0aW9uIGNvYgpiM2JfY28xID0gcmVhZF9kdGEoImRhdGEvaGgxNF9hbGxfZHRhL2IzYl9jbzEuZHRhIikgIyBCb29rIDNiLCBTZWN0aW9uIGNvMQojIyMgUGVyc29uYWxpdHkgSW5mb3JtYXRpb24gKG9ubHkgZm9yIGFkdWx0cykKYjNiX3BzbiA9IHJlYWRfZHRhKCJkYXRhL2hoMTRfYWxsX2R0YS9iM2JfcHNuLmR0YSIpICMgQm9vayAzYiwgU2VjdGlvbiBwc24KCiMjIyBSaXNrIHRha2luZwpiM2Ffc2kgPSByZWFkX2R0YSgiZGF0YS9oaDE0X2FsbF9kdGEvYjNhX3NpLmR0YSIpICMgQm9vayAzYiwgU2VjdGlvbiBzaQoKYGBgCgojIyBCaXJ0aCBvcmRlciBpbmZvcm1hdGlvbiB7LnRhYnNldH0KIyMjIEluZm9ybWF0aW9uIGFib3V0IHByZWduYW5jeQpgYGB7cn0KIyMgU2VsZWN0IGRhdGEKdzVfcHJlZ25hbmN5ID0gdzVfcHJlZ25hbmN5ICU+JSBzZWxlY3QocGlkbGluaywgY2gwNSwgY2gwNiwgY2gwNmEsIGNoMDgsIGNoMDlkYXksIGNoMDltdGgsIGNoMDl5ciwgY2gyNSkKdzRfcHJlZ25hbmN5ID0gdzRfcHJlZ25hbmN5ICU+JSBzZWxlY3QocGlkbGluaywgY2gwNSwgY2gwNiwgY2gwNmEsIGNoMDgsIGNoMDlkYXksIGNoMDltdGgsIGNoMDl5ciwgY2gyNSkKdzNfcHJlZ25hbmN5ID0gdzNfcHJlZ25hbmN5ICU+JSBzZWxlY3QocGlkbGluaywgY2gwNSwgY2gwNiwgY2gwNmEsIGNoMDgsIGNoMDlkYXksIGNoMDltdGgsIGNoMDl5ciwgY2gyNSkKdzJfcHJlZ25hbmN5ID0gdzJfcHJlZ25hbmN5ICU+JSBzZWxlY3QocGlkbGluaywgY2gwNSwgY2gwNiwgY2gwNmEsIGNoMDgsIGNoMDlkYXksIGNoMDltdGgsIGNoMDl5ciwgY2gyNSkKdzFfcHJlZ25hbmN5ID0gdzFfcHJlZ25hbmN5ICU+JSAKICBncm91cF9ieShwaWRsaW5rLCBjaDA0KSAlPiUgbXV0YXRlKGNoMDZhID0gaWZfZWxzZSghaXMubmEocGlkbGluaykgJiAhaXMubmEoY2gwNCksIGlmX2Vsc2UoIG4oKSA+IDEsIDEsIDMpLCA5KSkgJT4lCiAgdW5ncm91cCgpICU+JSAKICBzZWxlY3QocGlkbGluaywgY2gwNSwgY2gwNiwgY2gwNmEsIGNoMDgsIGNoMDlkYXksIGNoMDltdGgsIGNoMDl5ciwgY2gyNSkgJT4lIAojIEluIHRoZSBmaXJzdCB3YXZlIHRoZSB5ZWFyIGlzIG5hbWVkIHdyb25nCiAgbXV0YXRlKGNoMDl5ciA9IGlmZWxzZShjaDA5eXIgPD0gOTMsIGNoMDl5ciwgTkEpLAogICAgICAgICAgY2gwOXlyID0gYXMubnVtZXJpYyhzdHJfYygiMTkiLCBjaDA5eXIpKSkKCiMjIENvbWJpbmUgZGF0YQpwcmVnbmFuY3kgPSBiaW5kX3Jvd3ModzEgPSB3MV9wcmVnbmFuY3ksIHcyID0gdzJfcHJlZ25hbmN5LCB3MyA9IHczX3ByZWduYW5jeSwgdzQgPSB3NF9wcmVnbmFuY3ksIHc1ID0gdzVfcHJlZ25hbmN5LCAuaWQgPSAid2F2ZSIpCgojIyBSZW5hbWUgVmFyaWFibGVzCnByZWduYW5jeSA9IHByZWduYW5jeSAlPiUgcmVuYW1lKGNocm9uX29yZGVyX2JpcnRoID0gY2gwNSwgbGlmZWJpcnRocyA9IGNoMDYsIG11bHRpcGxlX2JpcnRoID0gY2gwNmEsIGdlbmRlciA9IGNoMDgsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRoX2RheSA9IGNoMDlkYXksIGJpcnRoX21vbnRoID0gY2gwOW10aCwgYmlydGhfeWVhciA9IGNoMDl5ciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG1vdGhlcl9waWRsaW5rID0gcGlkbGluaywgYWxpdmUgPSBjaDI1KSAjIHByZWduYW5jeSRsaWZlYmlydGhzIHZhbHVlczogMSA9IHN0aWxsIHByZWduYW50LCAyID0gbGl2ZWJpcnRoLCAzID0gc3RpbGwgYmlydGgsIDQgPSBtaXNzY2FycmlhZ2UKCiMjIFNldCB2YWx1ZXMgYXMgTkEgdGhhdCBhcmUgbWlzc2luZwpwcmVnbmFuY3kgPSBwcmVnbmFuY3kgJT4lCiAgbXV0YXRlKGJpcnRoX2RheSA9IGlmZWxzZShiaXJ0aF9kYXk+MzEsIE5BLCBiaXJ0aF9kYXkpLAogICAgICAgICBiaXJ0aF9tb250aCA9IGlmZWxzZShiaXJ0aF9tb250aD4xMiwgTkEsIGJpcnRoX21vbnRoKSwKICAgICAgICAgYmlydGhfeWVhciA9IGlmZWxzZShiaXJ0aF95ZWFyPjIwMTYsIE5BLCBiaXJ0aF95ZWFyKSwKICAgICAgICAgYmlydGhfZGF5ID0gaWZlbHNlKGlzLm5hbihiaXJ0aF9kYXkpLCBOQSwgYmlydGhfZGF5KSwKICAgICAgICAgYmlydGhfbW9udGggPSBpZmVsc2UoaXMubmFuKGJpcnRoX21vbnRoKSwgTkEsIGJpcnRoX21vbnRoKSwKICAgICAgICAgYmlydGhfeWVhciA9IGlmZWxzZShpcy5uYW4oYmlydGhfeWVhciksIE5BLCBiaXJ0aF95ZWFyKSwKICAgICAgICAgbXVsdGlwbGVfYmlydGggPSBpZmVsc2UobXVsdGlwbGVfYmlydGggPT0gOSwgTkEsIG11bHRpcGxlX2JpcnRoKSwKICAgICAgICAgbXVsdGlwbGVfYmlydGggPSBpZmVsc2UoaXMubmFuKG11bHRpcGxlX2JpcnRoKSwgTkEsIG11bHRpcGxlX2JpcnRoKSkKCnByZWduYW5jeSRtb250aCA9IHBhc3RlMChwcmVnbmFuY3kkYmlydGhfeWVhciwiLSIsIGlmZWxzZShpcy5uYShwcmVnbmFuY3kkYmlydGhfbW9udGgpLCAiMDEiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcGFkX21vbnRoKHByZWduYW5jeSRiaXJ0aF9tb250aCkpKQoKcHJlZ25hbmN5ID0gcHJlZ25hbmN5ICU+JQogIG11dGF0ZShiaXJ0aGRhdGUgPSBhbGxfYXZhaWxhYmxlX2luZm9fYmlydGhfZGF0ZShiaXJ0aF95ZWFyLCBiaXJ0aF9tb250aCwgYmlydGhfZGF5KSwKICAgICAgICAgbW90aGVyX2JpcnRoZGF0ZSA9IHN0cl9jKG1vdGhlcl9waWRsaW5rLCAiLSIsIGJpcnRoZGF0ZSkpCgoKcHJlZ25hbmN5ID0gcHJlZ25hbmN5ICU+JSAKICBtdXRhdGUod2F2ZV9kdXAgPSA2IC0gc3RyX3N1Yih3YXZlLCAyLCAzKSAlPiUgYXMubnVtZXJpYygpKSAlPiUgIyBmcm9tIG1vc3QgcmVjZW50IHdhdmUgdG8gb2xkZXN0CiAgYXJyYW5nZSh3YXZlX2R1cCkgJT4lICMgdXNlIG1vc3QgcmVjZW50IHdhdmUgKGJlY2F1c2UgdGhlc2Ugd2lsbCBoYXZlIHByZWduYW5jeSBvdXRjb21lcykKICBncm91cF9ieShtb3RoZXJfYmlydGhkYXRlKSAlPiUgCiAgbXV0YXRlKGR1cGVkX2luX2VhcmxpZXJfd2F2ZSA9IG1pbl9yYW5rKHdhdmVfZHVwKSkgJT4lIAogIGZpbHRlcihkdXBlZF9pbl9lYXJsaWVyX3dhdmUgPT0gMSkgJT4lIAogIHVuZ3JvdXAoKSAjIGVsaW1pbmF0ZSBkdXBlcyBhY3Jvc3Mgd2F2ZXMgKHNhbWUgbW90aGVyX2JpcnRoZGF0ZSksIGtlZXAgbXVsdCBiaXJ0aHMKCnggPSAodW5pcXVlKHByZWduYW5jeSRtb3RoZXJfcGlkbGluaykpCgojI3JlbW92ZSBhbGwgd2l0aCBtaXNzaW5nIGJpcnRoZGF0ZS9taXNjYXJyaWFnZSBkYXRlCnRhYmxlKGlzLm5hKHByZWduYW5jeSRiaXJ0aGRhdGUpKQpwcmVnbmFuY3kgPSBwcmVnbmFuY3kgJT4lCiAgZmlsdGVyKCFpcy5uYShiaXJ0aGRhdGUpKQoKCiMgZm9yIHdoYXRldmVyIHJlYXNvbiB0aGVyZSBhcmUgc29tZSBtdWx0aXBsZSBiaXJ0aHMgd2l0aCBqdXN0IG9uZSByb3cgaW4gdGhlIGRhdGEgCnByZWduYW5jeSAlPiUgZ3JvdXBfYnkobW90aGVyX2JpcnRoZGF0ZSkgJT4lIG11dGF0ZShtdWx0ID0gbigpKSAlPiUgY3Jvc3N0YWJzKH4gbXVsdCArIG11bHRpcGxlX2JpcnRoLCBkYXRhID0gLikKCiMjIEZvcm0gdmFyaWFibGUgZm9yIGFueSBtdWx0aXBsZSBiaXJ0aCBpbiBmYW1pbHkKcHJlZ25hbmN5ID0gcHJlZ25hbmN5ICU+JSBncm91cF9ieShtb3RoZXJfcGlkbGluaykgJT4lIG11dGF0ZShhbnlfbXVsdGlwbGVfYmlydGggPSBpZl9lbHNlKGFueShtdWx0aXBsZV9iaXJ0aCA9PSAxKSwgMSwgMCkpCnByb3AudGFibGUodGFibGUocHJlZ25hbmN5JG11bHRpcGxlX2JpcnRoKSkKcHJvcC50YWJsZSh0YWJsZShwcmVnbmFuY3kkYW55X211bHRpcGxlX2JpcnRoKSkKYGBgCgojIyMgSW5mb3JtYXRpb24gYWJvdXQgbWFycmlhZ2UgaGlzdG9yeQpgYGB7ciBtYXJyaWFnZSBoaXN0b3J5fQojIyBTZWxlY3QgbWFycmlhZ2UgZGF0YQp3NV9tYXJyaWFnZSA9IHc1X21hcnJpYWdlICU+JSBzZWxlY3QocGlkbGluaywga3cxMG10aCwga3cxMHlyLCBrdzE4bXRoLCBrdzE4eXIsIGt3MTEsIGt3MTkpCnc0X21hcnJpYWdlID0gdzRfbWFycmlhZ2UgJT4lIHNlbGVjdChwaWRsaW5rLCBrdzEwbXRoLCBrdzEweXIsIGt3MThtdGgsIGt3MTh5ciwga3cxMSwga3cxOSkKdzNfbWFycmlhZ2UgPSB3M19tYXJyaWFnZSAlPiUgc2VsZWN0KHBpZGxpbmssIGt3MTBtdGgsIGt3MTB5ciwga3cxOG10aCwga3cxOHlyLCBrdzExLCBrdzE5KQp3Ml9tYXJyaWFnZSA9IHcyX21hcnJpYWdlICU+JSBzZWxlY3QocGlkbGluaywga3cxMG10aCwga3cxMHlyLCBrdzE4bXRoLCBrdzE4eXIsIGt3MTEsIGt3MTkpCncxX21hcnJpYWdlID0gdzFfbWFycmlhZ2UgJT4lIHNlbGVjdChwaWRsaW5rLCBrdzA1YSwga3cwNWIsIGt3MTNhLCBrdzEzYiwga3cwNiwga3cxNGFnZSkKIyBJbiB0aGUgZmlyc3Qgd2F2ZSB0aGUgeWVhciBpcyBuYW1lZCB3cm9uZwp3MV9tYXJyaWFnZSA9IHcxX21hcnJpYWdlICU+JQogIG11dGF0ZShrdzA1YSA9IGlmZWxzZShrdzA1YSA8PSA5MywgYXMubnVtZXJpYyhzdHJfYygiMTkiLCB3MV9tYXJyaWFnZSRrdzA1YSkpLCBrdzA1YSksCiAgICAgICAgIGt3MTNhID0gaWZlbHNlKGt3MTNhIDw9OTMgLCBhcy5udW1lcmljKHN0cl9jKCIxOSIsIHcxX21hcnJpYWdlJGt3MTNhKSksIGt3MTNhKSkKIyBBbmQgdGhlIGNvbHVtbiBuYW1lcyBhcmUgd3JvbmcuLi4KdzFfbWFycmlhZ2UgPSB3MV9tYXJyaWFnZSAlPiUgcmVuYW1lKGt3MTBtdGggPSBrdzA1Yiwga3cxMHlyID0ga3cwNWEsIGt3MThtdGggPSBrdzEzYiwga3cxOHlyID0ga3cxM2EsIGt3MTEgPSBrdzA2LCBrdzE5ID0ga3cxNGFnZSkKCiMjIFNlbGVjdCBhZGRpdGlvbmFsIG1hcnJpYWdlIGluZm9ybWF0aW9uIChhZ2Ugb2YgcmVzcG9uZGVudCkKdzVfbWFycmlhZ2VfYWRkaXRpb25hbCA9IHc1X21hcnJpYWdlX2FkZGl0aW9uYWwgJT4lIHNlbGVjdChwaWRsaW5rLCBhZ2UsIGRvYl95cikKdzRfbWFycmlhZ2VfYWRkaXRpb25hbCA9IHc0X21hcnJpYWdlX2FkZGl0aW9uYWwgJT4lIHNlbGVjdChwaWRsaW5rLCBhZ2UsIGRvYl95cikKdzNfbWFycmlhZ2VfYWRkaXRpb25hbCA9IHczX21hcnJpYWdlX2FkZGl0aW9uYWwgJT4lIHNlbGVjdChwaWRsaW5rLCBhZ2UsIGRvYl95cikKdzJfbWFycmlhZ2VfYWRkaXRpb25hbCA9IHcyX21hcnJpYWdlX2FkZGl0aW9uYWwgJT4lIHNlbGVjdChwaWRsaW5rLCBhZ2UsIGRvYl95cikKdzFfbWFycmlhZ2VfYWRkaXRpb25hbCA9IHcxX21hcnJpYWdlX2FkZGl0aW9uYWwgJT4lIHNlbGVjdChwaWRsaW5rLCBhcjA5eXIsIGFyMDh5cikKIyBJbiB0aGUgZmlyc3Qgd2F2ZSB0aGUgeWVhciBpcyBuYW1lZCB3cm9uZwp3MV9tYXJyaWFnZV9hZGRpdGlvbmFsID0gdzFfbWFycmlhZ2VfYWRkaXRpb25hbCAlPiUKICBtdXRhdGUoYXIwOHlyID0gaWZlbHNlKGFyMDh5ciA8PSA5MywgCiAgICAgICAgICAgICAgICAgICAgICAgICBhcy5udW1lcmljKHN0cl9jKCIxOSIsIHcxX21hcnJpYWdlX2FkZGl0aW9uYWwkYXIwOHlyKSksCiAgICAgICAgICAgICAgICAgICAgICAgICBhcjA4eXIpKQojIEFuZCB0aGUgY29sdW1uIG5hbWVzIGFyZSB3cm9uZy4uLgp3MV9tYXJyaWFnZV9hZGRpdGlvbmFsID0gdzFfbWFycmlhZ2VfYWRkaXRpb25hbCAlPiUgcmVuYW1lKGFnZSA9IGFyMDl5ciwgZG9iX3lyID0gYXIwOHlyKQoKIyMgQ29tYmluZSBtYXJyaWFnZSBpbmZvcm1hdGlvbiBhbmQgYWRkaXRpb25hbCBtYXJyaWFnZSBpbmZvcm1hdGlvbjoKdzFfbWFycmlhZ2UgPSBsZWZ0X2pvaW4odzFfbWFycmlhZ2UsIHcxX21hcnJpYWdlX2FkZGl0aW9uYWwsIGJ5ID0gInBpZGxpbmsiKSAlPiUKICBtdXRhdGUod2F2ZSA9IGFzLm51bWVyaWMoIjE5OTMiKSkKdzJfbWFycmlhZ2UgPSBsZWZ0X2pvaW4odzJfbWFycmlhZ2UsIHcyX21hcnJpYWdlX2FkZGl0aW9uYWwsIGJ5ID0gInBpZGxpbmsiKSAlPiUKICBtdXRhdGUod2F2ZSA9IGFzLm51bWVyaWMoIjE5OTciKSkKdzNfbWFycmlhZ2UgPSBsZWZ0X2pvaW4odzNfbWFycmlhZ2UsIHczX21hcnJpYWdlX2FkZGl0aW9uYWwsIGJ5ID0gInBpZGxpbmsiKSAgJT4lCiAgbXV0YXRlKHdhdmUgPSBhcy5udW1lcmljKCIyMDAwIikpCnc0X21hcnJpYWdlID0gbGVmdF9qb2luKHc0X21hcnJpYWdlLCB3NF9tYXJyaWFnZV9hZGRpdGlvbmFsLCBieSA9ICJwaWRsaW5rIikgJT4lCiAgbXV0YXRlKHdhdmUgPSBhcy5udW1lcmljKCIyMDA3IikpCnc1X21hcnJpYWdlID0gbGVmdF9qb2luKHc1X21hcnJpYWdlLCB3NV9tYXJyaWFnZV9hZGRpdGlvbmFsLCBieSA9ICJwaWRsaW5rIikgJT4lCiAgbXV0YXRlKHdhdmUgPSBhcy5udW1lcmljKCIyMDE0IikpCgojIyBDb21iaW5lIG1hcnJpYWdlIGluZm9ybWF0aW9ucwptYXJyaWFnZSA9IGJpbmRfcm93cyh3MV9tYXJyaWFnZSwgdzJfbWFycmlhZ2UsIHczX21hcnJpYWdlLCB3NF9tYXJyaWFnZSwgdzVfbWFycmlhZ2UpCgojIFJlbmFtZSBjb2x1bW5zCm1hcnJpYWdlID0gbWFycmlhZ2UgJT4lIHJlbmFtZShzdGFydF95ZWFyID0ga3cxMHlyLCBzdGFydF9tb250aCA9IGt3MTBtdGgsIGVuZF95ZWFyID0ga3cxOHlyLCBlbmRfbW9udGggPSBrdzE4bXRoLCBzdGFydF9hZ2UgPSBrdzExLCBlbmRfYWdlID0ga3cxOSwgYmlydGhfeWVhciA9IGRvYl95ciwgYmlydGhfYWdlID0gYWdlKQoKCiMgU2V0IHZhbHVlcyBhcyBOQSB0aGF0IGFyZSBtaXNzaW5nCm1hcnJpYWdlJHN0YXJ0X3llYXJbIG1hcnJpYWdlJHN0YXJ0X3llYXI8MTkwMF0gPSBOQQptYXJyaWFnZSRzdGFydF95ZWFyWyBtYXJyaWFnZSRzdGFydF95ZWFyPjIwMTZdID0gTkEKbWFycmlhZ2Ukc3RhcnRfeWVhclsgaXMubmFuKG1hcnJpYWdlJHN0YXJ0X3llYXIpXSA9IE5BCm1hcnJpYWdlJGVuZF95ZWFyWyBtYXJyaWFnZSRlbmRfeWVhcjwxOTAwXSA9IE5BCm1hcnJpYWdlJGVuZF95ZWFyWyBtYXJyaWFnZSRlbmRfeWVhcj4yMDE2XSA9IE5BCm1hcnJpYWdlJGVuZF95ZWFyWyBpcy5uYW4obWFycmlhZ2UkZW5kX3llYXIpXSA9IE5BCm1hcnJpYWdlJHN0YXJ0X21vbnRoIFttYXJyaWFnZSRzdGFydF9tb250aD4xMl0gPSBOQQptYXJyaWFnZSRzdGFydF9tb250aCBbaXMubmFuKG1hcnJpYWdlJHN0YXJ0X21vbnRoKV0gPSBOQQptYXJyaWFnZSRlbmRfbW9udGggW21hcnJpYWdlJGVuZF9tb250aD4xMl0gPSBOQQptYXJyaWFnZSRlbmRfbW9udGggW2lzLm5hbihtYXJyaWFnZSRlbmRfbW9udGgpXSA9IE5BCm1hcnJpYWdlJHN0YXJ0X2FnZSBbbWFycmlhZ2Ukc3RhcnRfYWdlID4gOTddID0gTkEKbWFycmlhZ2Ukc3RhcnRfYWdlIFtpcy5uYW4obWFycmlhZ2Ukc3RhcnRfYWdlKV0gPSBOQQptYXJyaWFnZSRlbmRfYWdlIFttYXJyaWFnZSRlbmRfYWdlID4gOTddID0gTkEKbWFycmlhZ2UkZW5kX2FnZSBbaXMubmFuKG1hcnJpYWdlJGVuZF9hZ2UpXSA9IE5BCm1hcnJpYWdlJGJpcnRoX3llYXJbIG1hcnJpYWdlJGJpcnRoX3llYXI8MTkwMF0gPSBOQQptYXJyaWFnZSRiaXJ0aF95ZWFyWyBtYXJyaWFnZSRiaXJ0aF95ZWFyPjIwMTZdID0gTkEKbWFycmlhZ2UkYmlydGhfeWVhclsgaXMubmFuKG1hcnJpYWdlJGJpcnRoX3llYXIpXSA9IE5BCm1hcnJpYWdlJGJpcnRoX2FnZSBbbWFycmlhZ2UkYmlydGhfYWdlID4gOTddID0gTkEKbWFycmlhZ2UkYmlydGhfYWdlIFtpcy5uYW4obWFycmlhZ2UkYmlydGhfYWdlKV0gPSBOQQoKIyMgUmVjb25zdHJ1Y3QgbWFycmlhZ2Ugc3RhcnQgeWVhciBhbmQgZW5kIHllYXIgZm9yIG1hcnJpYWdlcyB3aXRoIG1pc3NpbmcgeWVhcgptYXJyaWFnZSA9IG1hcnJpYWdlICU+JQogIG11dGF0ZShiaXJ0aF95ZWFyID0gaWZlbHNlKGlzLm5hKGJpcnRoX3llYXIpLCB3YXZlIC0gYmlydGhfYWdlLCBiaXJ0aF95ZWFyKSwKICAgICAgICAgc3RhcnRfeWVhciA9IGlmZWxzZShpcy5uYShzdGFydF95ZWFyKSwgYmlydGhfeWVhciArIHN0YXJ0X2FnZSwgc3RhcnRfeWVhciksCiAgICAgICAgIGVuZF95ZWFyID0gaWZlbHNlKGlzLm5hKGVuZF95ZWFyKSwgYmlydGhfeWVhciArIGVuZF9hZ2UsIGVuZF95ZWFyKSkKCgptYXJyaWFnZSA9IG1hcnJpYWdlICU+JSBhcnJhbmdlKHBpZGxpbmssIHN0YXJ0X3llYXIsIHN0YXJ0X21vbnRoLCBzdGFydF9hZ2UsIGVuZF95ZWFyLCBlbmRfbW9udGgsIGVuZF9hZ2UpCgptYXJyaWFnZSA9IG1hcnJpYWdlICU+JSBmaWx0ZXIoIWR1cGxpY2F0ZWQoY2JpbmQocGlkbGluaywgc3RhcnRfeWVhciwgc3RhcnRfbW9udGgpKSB8IGlzLm5hKHN0YXJ0X3llYXIpIHwgaXMubmEoc3RhcnRfbW9udGgpKSAjIG5vYm9keSBnZXRzIG1hcnJpZWQgdHdpY2Ugb24gdGhlIHNhbWUgZGF5LCByaWdodD8gc28gdGhlc2UgYXJlIGR1cGVzLgoKIyMgQ2FsY3VsYXRlIGRhdGUgZm9yIGJlZ2lubmluZyBvZiBtYXJyaWFnZToKbWFycmlhZ2UgPSBtYXJyaWFnZSAlPiUgCiAgdW5ncm91cCgpICU+JQogIG11dGF0ZShzdGFydF9zdHJpbmcgPSBzdHJfYyhzdGFydF95ZWFyLCAiLSIsIGlmZWxzZShpcy5uYShzdGFydF9tb250aCksICIwMSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHBhZF9tb250aChzdGFydF9tb250aCkpLCAiLTAxIiksCiAgICAgICAgZW5kX3N0cmluZyA9IHN0cl9jKGVuZF95ZWFyLCAiLSIsIGlmZWxzZShpcy5uYShlbmRfbW9udGgpLCAiMTIiLCBwYWRfbW9udGgoZW5kX21vbnRoKSksICItMDEiKSwKICAgICAgICBzdGFydCA9IHltZChzdGFydF9zdHJpbmcpLAogICAgICAgIGVuZCA9IHltZChlbmRfc3RyaW5nKSArIG1vbnRocygxKSAtIGRheXMoMSkpCgojIyBDb3VudCBudW1iZXIgb2YgbWFycmlhZ2VzCm1hcnJpYWdlID0gbWFycmlhZ2UgJT4lCiAgYXJyYW5nZShwaWRsaW5rLCBzdGFydCwgZW5kKSAlPiUKICBncm91cF9ieShwaWRsaW5rKSAlPiUKICBtdXRhdGUobnVtYmVyX21hcnJpYWdlcyA9IG4oKSwKICAgICAgICAgb3JkZXJfbWFycmlhZ2UgPSByb3dfbnVtYmVyKCksCiAgICAgICAgIG1hcnJpYWdlX2lkID0gcGFzdGUwKHBpZGxpbmssICJfIiwgYXMuY2hhcmFjdGVyKG9yZGVyX21hcnJpYWdlKSwgIl8iLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhcy5jaGFyYWN0ZXIoc3RhcnQpLCAiLyIsYXMuY2hhcmFjdGVyKGVuZCkpKQoKIyMjIE1hcnJpYWdlIFRpbWVsaW5lCm1pbmltdW1fc3RhcnQgPSBtaW4oeW1kKHN0cl9jKHByZWduYW5jeSRtb250aCwgIi0wMSIpKSwgbmEucm0gPSBUKQptYXhpbXVtX2VuZCA9IG1heCh5bWQoc3RyX2MocHJlZ25hbmN5JG1vbnRoLCAiLTAxIikpLCBuYS5ybSA9IFQpCm1hcnJpYWdlX3RpbWVsaW5lID0gbWFycmlhZ2UgJT4lCiAgICBtdXRhdGUoaW1wbGllZF9zdGFydCA9IGFzLkRhdGUoaWZlbHNlKGlzLm5hKHN0YXJ0KSwgbWluaW11bV9zdGFydCAsIHN0YXJ0KSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBvcmlnaW49IjE5NzAtMDEtMDEiKSwKICAgICAgICAgICBpbXBsaWVkX2VuZCA9IGFzLkRhdGUoaWZlbHNlKGlzLm5hKGVuZCksIG1heGltdW1fZW5kICwgZW5kKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgb3JpZ2luPSIxOTcwLTAxLTAxIikpICU+JQogIGZpbHRlcihpbXBsaWVkX3N0YXJ0IDwgaW1wbGllZF9lbmQpCgptYXJyaWFnZV90aW1lbGluZSA9IG1hcnJpYWdlX3RpbWVsaW5lICU+JQogICAgcm93d2lzZSgpICU+JQogICAgZG8oZGF0YS5mcmFtZSgKICAgICAgICBtYXJyaWFnZV9pZD0uJG1hcnJpYWdlX2lkLCAKICAgICAgICBtb3RoZXJfcGlkbGluayA9IC4kcGlkbGluaywKICAgICAgICBvcmRlcl9tYXJyaWFnZSA9IC4kb3JkZXJfbWFycmlhZ2UsCiAgICAgICAgc3RhcnQgPSAuJHN0YXJ0LAogICAgICAgIGVuZCA9IC4kZW5kLAogICAgICAgIG1vbnRoID0gc2VxKC4kaW1wbGllZF9zdGFydCwuJGltcGxpZWRfZW5kLCBieT0iMSBtb250aCIpICkpCgojIG5vIGR1cGxpY2F0ZSBtb3RoZXJfaWQgLSBtb250aCBjb21iaW5hdGlvbnMgKG5vIHR3byBtYXJyaWFnZXMgYXQgdGhlIHNhbWUgdGltZSkKbWFycmlhZ2VfdGltZWxpbmUgPSBtYXJyaWFnZV90aW1lbGluZSAlPiUgCiAgYXJyYW5nZShtb3RoZXJfcGlkbGluaywgc3RhcnQsIGVuZCkgJT4lIAogIGRpc3RpbmN0KG1vdGhlcl9waWRsaW5rLCBtb250aCwgLmtlZXBfYWxsID0gVFJVRSkKCm1hcnJpYWdlX3RpbWVsaW5lJG1vbnRoID0gc3RyaW5ncjo6c3RyX3N1Yihhcy5jaGFyYWN0ZXIobWFycmlhZ2VfdGltZWxpbmUkbW9udGgpLDEsNykKCnByZWduYW5jeSA9IHByZWduYW5jeSAlPiUgbGVmdF9qb2luKG1hcnJpYWdlX3RpbWVsaW5lLCBieSA9IGMoIm1vdGhlcl9waWRsaW5rIiwgIm1vbnRoIikpICU+JSB1bmdyb3VwKCkKYGBgCgoKIyMjIEJpcnRoIG9yZGVyIGNhbGN1bGF0aW9ucyB7LnRhYnNldH0KYGBge3IgVXRlcnVzIGJpcnRob3JkZXIgYW5kIG1hdGVybmFsIHNpYmxpbmcgY291bnR9CiMjIyMgTWF0ZXJuYWwgUHJlZ25hbmN5IE9yZGVyCnByZWduYW5jeTEgPSBwcmVnbmFuY3kgJT4lCiAgZ3JvdXBfYnkobW90aGVyX3BpZGxpbmspICU+JQogIG11dGF0ZShiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnID0gbWluX3JhbmsoYmlydGhkYXRlKSwKICAgICAgICAgIyBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnID0gaWZlbHNlKGFueV9tdWx0aXBsZV9iaXJ0aCA9PSAxLCBOQSwgYmlydGhvcmRlcl91dGVydXNfcHJlZyksCiAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcgPSBzdW0oIWlzLm5hKGJpcnRoZGF0ZSkpCiAgICAgICAgICMgLHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcgPSBpZmVsc2UoYW55X211bHRpcGxlX2JpcnRoID09IDEsIE5BLCBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnKQogICAgICAgICApICU+JQogIHVuZ3JvdXAoKQoKIyMjIyBNYXRlcm5hbCBCaXJ0aCBPcmRlcgpwcmVnbmFuY3kyID0gcHJlZ25hbmN5ICU+JQogIGZpbHRlcihsaWZlYmlydGhzID09IDIpICU+JQogIGdyb3VwX2J5KG1vdGhlcl9waWRsaW5rKSAlPiUKICAgIG11dGF0ZShiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSA9IG1pbl9yYW5rKGJpcnRoZGF0ZSksCiAgICAgICAgICAgIyBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSA9IGlmZWxzZShhbnlfbXVsdGlwbGVfYmlydGggPT0gMSwgTkEsIGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSwKICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSA9IHN1bSghaXMubmEoYmlydGhkYXRlKSkKICAgICAgICAgICAjICxzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSA9IGlmZWxzZShhbnlfbXVsdGlwbGVfYmlydGggPT0gMSwgTkEsIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlKQogICAgICAgICAgICkgJT4lCiAgdW5ncm91cCgpCgpwcmVnbmFuY3kyID0gcHJlZ25hbmN5MiAlPiUgc2VsZWN0KG1vdGhlcl9iaXJ0aGRhdGUsIGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlLCBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSkgJT4lIGRpc3RpbmN0KCkKCiMjIyMgUGFyZW50YWwgRnVsbCBTaWJsaW5nIEJpcnRob3JkZXIKcHJlZ25hbmN5MyA9IHByZWduYW5jeSAlPiUKICBmaWx0ZXIobGlmZWJpcnRocyA9PSAyKSAlPiUKICBncm91cF9ieShtYXJyaWFnZV9pZCkgJT4lCiAgICBtdXRhdGUoYmlydGhvcmRlcl9nZW5lcyA9IG1pbl9yYW5rKGJpcnRoZGF0ZSksCiAgICAgICAgICAgYmlydGhvcmRlcl9nZW5lcyA9IGlmZWxzZShpcy5uYShtYXJyaWFnZV9pZCksIE5BLCBiaXJ0aG9yZGVyX2dlbmVzKSwKICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzID0gaWZlbHNlKGlzLm5hKG1hcnJpYWdlX2lkKSwgTkEsIHN1bSghaXMubmEobWFycmlhZ2VfaWQpKSkpICU+JQogIHVuZ3JvdXAoKQoKcHJlZ25hbmN5MyA9IHByZWduYW5jeTMgJT4lIHNlbGVjdChtb3RoZXJfYmlydGhkYXRlLCBiaXJ0aG9yZGVyX2dlbmVzLCBzaWJsaW5nX2NvdW50X2dlbmVzKSAlPiUgZGlzdGluY3QoKQoKCiMjIyBDb21iaW5lIGJpcnRob3JkZXIgZGF0YQpwcmVnbmFuY3kgPSBsZWZ0X2pvaW4ocHJlZ25hbmN5MSwgcHJlZ25hbmN5MiwgYnk9Im1vdGhlcl9iaXJ0aGRhdGUiKSAlPiUgdW5ncm91cCgpCnByZWduYW5jeSA9IGxlZnRfam9pbihwcmVnbmFuY3ksIHByZWduYW5jeTMsIGJ5ID0gIm1vdGhlcl9iaXJ0aGRhdGUiKSAlPiUgdW5ncm91cCgpCmBgYAoKCiMjIyBCaXJ0aCBvcmRlciBncmFwaHMKYGBge3J9CiMjIyBHcmFwaHMKIyMgQmlvbG9naWNhbCBCaXJ0aG9yZGVyIC0gVXRlcnVzX1ByZWduYW5jaWVzCmdncGxvdChwcmVnbmFuY3ksIGFlcyh4PXNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcsIHk9YmlydGhvcmRlcl91dGVydXNfcHJlZykpICsgZ2VvbV9qaXR0ZXIoYWxwaGEgPSAwLjEpCgojIyBCaW9sb2dpY2FsIEJpcnRob3JkZXIgLSBVdGVydXNfQmlydGhzCmdncGxvdChwcmVnbmFuY3ksIGFlcyh4PXNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlLCB5PWJpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSkgKyBnZW9tX2ppdHRlcihhbHBoYSA9IDAuMSkKCiMjIEJpb2xvZ2ljYWwgQmlydGhvcmRlciAtIEZ1bGwgU2libGluZyBPcmRlcgpnZ3Bsb3QocHJlZ25hbmN5LCBhZXMoeD1zaWJsaW5nX2NvdW50X2dlbmVzLCB5PWJpcnRob3JkZXJfZ2VuZXMpKSArIGdlb21faml0dGVyKGFscGhhID0gMC4xKQoKIyMgQmlvOiBVdGVydXNfcHJlZyB2cy4gVXRlcnVzX0JpcnRocwpnZ3Bsb3QocHJlZ25hbmN5LCBhZXMoeD1iaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnLCB5PWJpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSkgKyBnZW9tX2ppdHRlcihhbHBoYSA9IDAuMSkKIyBUaGUgYmlydGhfb3JkZXJfYWxpdmUgaXMgYWx3YXlzIGxvd2VyLCB3aGljaCBtYWtlcyBzZW5zZSwgYmVjYXVzIG5vdCBsaXZlIGJpcnRocyAobWlzY2FycmlhZ2UsIHN0aWxsIGJpcnRocyBhcmUgZXhjbHVkZWQpCgojIyBCaW86IFV0ZXJ1c19wcmVnIHZzLiBHZW5lcwpnZ3Bsb3QocHJlZ25hbmN5LCBhZXMoeD1iaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnLCB5PWJpcnRob3JkZXJfZ2VuZXMpKSArIGdlb21faml0dGVyKGFscGhhID0gMC4xKQojIFRoZSBiaXJ0aF9vcmRlcl9hbGl2ZSBpcyBhbHdheXMgbG93ZXIsIHdoaWNoIG1ha2VzIHNlbnNlLCBiZWNhdXMgbm90IGxpdmUgYmlydGhzIChtaXNjYXJyaWFnZSwgc3RpbGwgYmlydGhzIGFyZSBleGNsdWRlZCkKCiMjIEJpbzogVXRlcnVzX2FsaXZlIHZzLiBHZW5lcwpnZ3Bsb3QocHJlZ25hbmN5LCBhZXMoeD1iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSwgeT1iaXJ0aG9yZGVyX2dlbmVzKSkgICsgZ2VvbV9qaXR0ZXIoYWxwaGEgPSAwLjEpCiMgVGhlIGJpcnRoX29yZGVyX2FsaXZlIGlzIGFsd2F5cyBsb3dlciwgd2hpY2ggbWFrZXMgc2Vuc2UsIGJlY2F1cyBub3QgbGl2ZSBiaXJ0aHMgKG1pc2NhcnJpYWdlLCBzdGlsbCBiaXJ0aHMgYXJlIGV4Y2x1ZGVkKQoKcHJlZ25hbmN5ICU+JSBzZWxlY3QoYmlydGhvcmRlcl91dGVydXNfYWxpdmUsIGJpcnRob3JkZXJfdXRlcnVzX3ByZWcsIGJpcnRob3JkZXJfZ2VuZXMpICU+JSBuYS5vbWl0KCkgJT4lIGNvcigpCnByZWduYW5jeSAlPiUgc2VsZWN0KGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlLCBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnLCBiaXJ0aG9yZGVyX2dlbmVzKSAlPiUgbWlzc2luZ25lc3NfcGF0dGVybnMoKQpwcmVnbmFuY3kgJT4lIHNlbGVjdChzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSwgc2libGluZ19jb3VudF91dGVydXNfcHJlZywgc2libGluZ19jb3VudF9nZW5lcykgJT4lIG1pc3NpbmduZXNzX3BhdHRlcm5zKCkKYGBgCgojIyBTZWxlY3QgaW5kaXZpZHVhbCBkYXRhIGZyb20gSUZMUyA1CmBgYHtyIHNlbGVjdCBpbmRpdmlkdWFsIGRhdGF9CiMjIyBJbmRpdmlkdWFscwppbmRpdmlkdWFscyA9IGJrX2FyMSAlPiUgc2VsZWN0KGhoaWQxNF85LCBwaWRsaW5rLCBmYXRoZXJfcGlkbGluaywgbW90aGVyX3BpZGxpbmssIGFyMDFhLCBhcjAyYiwgYXIxMCwgYXIxMSwgYXIwNywgYXIwOGRheSwgYXIwOG10aCwgYXIwOHlyLCBhcjA5LCBhcjE4ZXlyLCBhcjE4ZW10aCkKI1JlbmFtZSB2YXJpYWJsZXMgdG8gbWFrZSBpdCBlYXNpZXIKaW5kaXZpZHVhbHMgPSByZW5hbWUoaW5kaXZpZHVhbHMsIHJlbGF0aW9uX3RvX0hIX2hlYWQgPSBhcjAyYiwgZmF0aGVySUQgPSBhcjEwLCBtb3RoZXJJRCA9IGFyMTEsIHNleCA9IGFyMDcsIGFnZSA9IGFyMDksIHN0YXR1cyA9IGFyMDFhLCBkZWF0aF95ciA9IGFyMThleXIsIGRlYXRoX21vbnRoID0gYXIxOGVtdGgpIAojIFJlbW92ZSBkdXBsaWNhdHMgKHNvbWUgcGVvcGxlIGFyZSBtZW50aW9uZWQgaW4gdHdvIGhvdXNlaG9sZHMsIGUuZy4gYmVjYXVzZSB0aGV5IG1vdmVkIGluIHRoZSBsYXN0IDEyIG1vbnRocykKaW5kaXZpZHVhbHMgPSBpbmRpdmlkdWFscyAlPiUgZGlzdGluY3QocGlkbGluaywgLmtlZXBfYWxsID0gVFJVRSkKaW5kaXZpZHVhbHNfdW5jaGFuZ2VkID0gaW5kaXZpZHVhbHMKCiMjIHBlb3BsZSB3aG9zZSBwYXJlbnRzIGNhbiBub3QgYmUgaWRlbnRpZmllZCBoYXZlIHRvIGJlIG1hcmtlZCBhcyBOQToKaW5kaXZpZHVhbHMkZmF0aGVySURbIGluZGl2aWR1YWxzJGZhdGhlcklEPjUwXSA9IE5BCmluZGl2aWR1YWxzJG1vdGhlcklEWyBpbmRpdmlkdWFscyRtb3RoZXJJRD41MF0gPSBOQQoKCiMjIENyZWF0ZSBkYXRlIG9mIGJpcnRoCiNTZXQgYWxsIHZhcmlhYmxlcyBtaXNzaW5nIHRoYXQgaGF2ZSBub3QgYmVlbiByZXBvcnRlZDoKaW5kaXZpZHVhbHMkYXIwOGRheVsgaW5kaXZpZHVhbHMkYXIwOGRheT4zMV0gPSBOQQppbmRpdmlkdWFscyRhcjA4bXRoWyBpbmRpdmlkdWFscyRhcjA4bXRoPjEyXSA9IE5BCmluZGl2aWR1YWxzJGFyMDh5clsgaW5kaXZpZHVhbHMkYXIwOHlyPjIwMTZdID0gTkEKaW5kaXZpZHVhbHMkYXIwOGRheVsgaXMubmFuKGluZGl2aWR1YWxzJGFyMDhkYXkpIF0gPSBOQQppbmRpdmlkdWFscyRhcjA4bXRoWyBpcy5uYW4oaW5kaXZpZHVhbHMkYXIwOG10aCkgXSA9IE5BCmluZGl2aWR1YWxzJGFyMDh5clsgaXMubmFuKGluZGl2aWR1YWxzJGFyMDh5cildID0gTkEKaW5kaXZpZHVhbHMkZGVhdGhfbW9udGhbIGluZGl2aWR1YWxzJGRlYXRoX21vbnRoPjEyXSA9IE5BCmluZGl2aWR1YWxzJGRlYXRoX3lyWyBpbmRpdmlkdWFscyRkZWF0aF95cj4yMDE2XSA9IE5BCmluZGl2aWR1YWxzJGRlYXRoX21vbnRoWyBpcy5uYW4oaW5kaXZpZHVhbHMkZGVhdGhfbW9udGgpIF0gPSBOQQppbmRpdmlkdWFscyRkZWF0aF95clsgaXMubmFuKGluZGl2aWR1YWxzJGRlYXRoX3lyKV0gPSBOQQoKIyMgQ3JlYXRlIHZhcmlhYmxlIHRoYXQgY29udGFpbnMgcGlkbGluayBvZiBtb3RoZXIgYW5kIGJpcnRoZGF0ZSBvZiBjaGlsZDoKaW5kaXZpZHVhbHMgPSBpbmRpdmlkdWFscyAlPiUKICAgIG11dGF0ZShiaXJ0aGRhdGUgPSBhbGxfYXZhaWxhYmxlX2luZm9fYmlydGhfZGF0ZShhcjA4eXIsIGFyMDhtdGgsIGFyMDhkYXkpLAogICAgICAgICAgIG1vdGhlcl9iaXJ0aGRhdGUgPSBzdHJfYyhtb3RoZXJfcGlkbGluaywgIi0iLCBiaXJ0aGRhdGUpKSAjIG1vdGhlcl9waWRsaW5rLVlZWVktTU07IGlzIE5BIGlmIGJpcnRoX3llYXIgaXMgbWlzc2luZwoKIyNSZW1vdmUgYWxsIHdpdGggbWlzc2luZyBtb3RoZXJfYmlydGhkYXRlCmluZGl2aWR1YWxzID0gaW5kaXZpZHVhbHMgJT4lCiAgZmlsdGVyKCFpcy5uYShtb3RoZXJfYmlydGhkYXRlKSkKCgojIyBDb21iaW5lIGluZm9ybWF0aW9uIGZyb20gcHJlZ25hbmN5IGhpc3RvcnkgYW5kIGluZGl2aWR1YWwgZmlsZXMKcHJlZ25hbmN5ID0gcHJlZ25hbmN5ICU+JQogIGdyb3VwX2J5KG1vdGhlcl9iaXJ0aGRhdGUpICU+JQogIG11dGF0ZSh0d2luX29yZGVyID0gcm93X251bWJlcihiaXJ0aGRhdGUpLAogICAgICAgICBtb3RoZXJfYmlydGhkYXRlX3VuaXF1ZSA9IHBhc3RlMChtb3RoZXJfYmlydGhkYXRlLCAiLSIsIHR3aW5fb3JkZXIpKSAlPiUKICB1bmdyb3VwKCkKCmluZGl2aWR1YWxzID0gaW5kaXZpZHVhbHMgJT4lCiAgZ3JvdXBfYnkobW90aGVyX2JpcnRoZGF0ZSkgJT4lCiAgbXV0YXRlKHR3aW5fb3JkZXIgPSByb3dfbnVtYmVyKGJpcnRoZGF0ZSksCiAgICAgICAgIG1vdGhlcl9iaXJ0aGRhdGVfdW5pcXVlID0gcGFzdGUwKG1vdGhlcl9iaXJ0aGRhdGUsICItIiwgdHdpbl9vcmRlcikpICU+JQogIHVuZ3JvdXAoKSAlPiUKICBzZWxlY3QobW90aGVyX2JpcnRoZGF0ZV91bmlxdWUsIHBpZGxpbmssIHNleCwgYWdlKQoKCnByZWduYW5jeV9taXNzaW5nID0gcHJlZ25hbmN5ICU+JQogIG11dGF0ZShtaXNzaW5nID0gaWZlbHNlKCEobW90aGVyX2JpcnRoZGF0ZV91bmlxdWUgJWluJSBpbmRpdmlkdWFscyRtb3RoZXJfYmlydGhkYXRlX3VuaXF1ZSksCiAgICAgICAgICAgICAgICAgICAgICAgICAgMSwgMCkpICU+JQogIGZpbHRlcihtaXNzaW5nID09IDEpCgojIHByZXZlbnQgdGhhdCB0d2lucyBleGlzdCA0IHRpbWVzIGJlY2F1c2UgdGhleSBhcHBlYXIgdHdpY2UgaW4gcHJlZ25hbmN5IGFuZCB0d2ljZSBpbiBpbmRpdmlkdWFscywgYnkgZWxpbWluYXRpbmcgZHVwZXMgZnJvbSBwcmVnbmFuY3kKcHJlZ25hbmN5X25vdF9taXNzaW5nID0gcHJlZ25hbmN5ICU+JQogIG11dGF0ZShtaXNzaW5nID0gaWZlbHNlKCEobW90aGVyX2JpcnRoZGF0ZV91bmlxdWUgJWluJSBpbmRpdmlkdWFscyRtb3RoZXJfYmlydGhkYXRlX3VuaXF1ZSksCiAgICAgICAgICAgICAgICAgICAgICAgICAgMSwgMCkpICU+JQogIGZpbHRlcihtaXNzaW5nID09IDApICAgICAgICAgIAoKYWxsZGF0YV9wcmVnbmFuY3kgPSBsZWZ0X2pvaW4ocHJlZ25hbmN5X25vdF9taXNzaW5nLCBpbmRpdmlkdWFscywKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYnkgPSAibW90aGVyX2JpcnRoZGF0ZV91bmlxdWUiKQoKYWxsZGF0YV9wcmVnbmFuY3kgPSBiaW5kX3Jvd3MoYWxsZGF0YV9wcmVnbmFuY3ksIHByZWduYW5jeV9taXNzaW5nKQoKcHJvcC50YWJsZSh0YWJsZShhbGxkYXRhX3ByZWduYW5jeSRtdWx0aXBsZV9iaXJ0aCkpCnByb3AudGFibGUodGFibGUoYWxsZGF0YV9wcmVnbmFuY3kkYW55X211bHRpcGxlX2JpcnRoKSkKYGBgCgoKIyMgSW50ZWxsaWdlbmNlIHsudGFic2V0fQpgYGB7ciBzZWxlY3QgSVEgZGF0YX0KIyMjIElRIEluZm9ybWF0aW9ucwojI2VrMiAoPjE0eXJzKQppcTIuMSA9IGVrX2VrMiAlPiUgc2VsZWN0KGhoaWQxNF85LCBwaWRsaW5rLCBhZ2UsIHNleCwgZWt0eXBlLCByZXNwdHlwZSwgcmVzdWx0LCByZWFzb24sIGVrMV9hbnMsIGVrMl9hbnMsIGVrM19hbnMsIGVrNF9hbnMsIGVrNV9hbnMsIGVrNl9hbnMsIGVrN19hbnMsIGVrOF9hbnMsIGVrOV9hbnMsIGVrMTBfYW5zLCBlazExX2FucywgZWsxMl9hbnMsIGVrMTNfYW5zLCBlazE0X2FucywgZWsxNV9hbnMsIGVrMTZfYW5zLCBlazE3X2FucywgZWsxOF9hbnMsIGVrMTlfYW5zLCBlazIwX2FucywgZWsyMV9hbnMsIGVrMjJfYW5zKQoKCiMjYWRkaXRpb25hbCBpbmZvcm1hdGlvbnMgZm9yIGFkdWx0czogY291bnRpbmcgYmFja3dhcmRzCmlxMi4yID0gYjNiX2NvMSAlPiUgc2VsZWN0KGhoaWQxNF85LCBwaWRsaW5rLCBjbzA0YSwgY28wNGIsIGNvMDRjLCBjbzA0ZCwgY28wNGUsIGNvMDdjb3VudCwgY28xMGNvdW50KQojI2FkZGl0aW9uYWwgaW5mb3JtYXRpb25zIGZvciBhZHVsdHM6IGFkYXB0aXZlIG51bWJlciB0ZXN0CmlxMi4zID0gYjNiX2NvYiAlPiUgc2VsZWN0KGhoaWQxNF85LCBwaWRsaW5rLCB3X2FiaWwsIGNvYjE4LCBjb2IxOWIpCgojIyBwdXQgYWxsIHRoZSBpbmZvcm1hdGlvbnMgZm9yIHBhcnRpY2lwYW50cyA+PSAxNSB0b2dldGhlcgppcTIgPSBmdWxsX2pvaW4oaXEyLjEsIGlxMi4yLCBieSA9ICJwaWRsaW5rIikKaXEyID0gZnVsbF9qb2luKGlxMiwgaXEyLjMsIGJ5ID0gInBpZGxpbmsiKQppcSA9IGlxMgppcSA8LSBwbHlyOjpyZW5hbWUoaXEsIGMoImFnZSI9IklRYWdlIikpIAoKIyMjIGNhbGN1bGF0ZSBpcSBzY29yZXMKIyNSYXZlbiBUZXN0CmFuc3dlcmVkX3JhdmVuX2l0ZW1zID0gaXEgJT4lIHNlbGVjdChlazFfYW5zOmVrNl9hbnMsIGVrMTFfYW5zLCBlazEyX2FucykKcHN5Y2g6OmFscGhhKGRhdGEuZnJhbWUoYW5zd2VyZWRfcmF2ZW5faXRlbXMpKQppcSRyYXZlbiA9IHJvd01lYW5zKCBhbnN3ZXJlZF9yYXZlbl9pdGVtcywgbmEucm0gPSBUKQppcSRyYXZlblshIGlxJHJlc3VsdCAlaW4lIDE6Ml0gPSBOQQpxcGxvdChpcSRyYXZlbikKCiMjTWF0aCBUZXN0CmFuc3dlcmVkX21hdGhfaXRlbXMgPSBpcSAlPiUgc2VsZWN0KGVrMThfYW5zOmVrMjJfYW5zKQpwc3ljaDo6YWxwaGEoZGF0YS5mcmFtZShhbnN3ZXJlZF9tYXRoX2l0ZW1zKSkKaXEkbWF0aCA9IHJvd01lYW5zKCBhbnN3ZXJlZF9tYXRoX2l0ZW1zLCBuYS5ybSA9IFQpCmlxJG1hdGhbISBpcSRyZXN1bHQgJWluJSAxOjJdID0gTkEKcXBsb3QoaXEkbWF0aCkKCiMjQ291bnRpbmcgSXRlbXMKIyBDcmVhdGUgUmlnaHQvV3JvbmcgU2NvcmVzIGZvciB0aGUgY291bnRpbmcgaXRlbXMKaXEkY28wNGFyaWdodCA9IGFzLm51bWVyaWMoaXEkY28wNGEgPT0gOTMpCmlxJGNvMDRicmlnaHQgPSBhcy5udW1lcmljKGlxJGNvMDRiID09IGlxJGNvMDRhLTcpCmlxJGNvMDRjcmlnaHQgPSBhcy5udW1lcmljKGlxJGNvMDRjID09IGlxJGNvMDRiLTcpCmlxJGNvMDRkcmlnaHQgPSBhcy5udW1lcmljKGlxJGNvMDRkID09IGlxJGNvMDRjLTcpCmlxJGNvMDRlcmlnaHQgPSBhcy5udW1lcmljKGlxJGNvMDRlID09IGlxJGNvMDRkLTcpCgphbnN3ZXJlZF9jb3VudGluZ19pdGVtcyA9IGlxICU+JSBzZWxlY3QoY28wNGFyaWdodDpjbzA0ZXJpZ2h0KQpwc3ljaDo6YWxwaGEoZGF0YS5mcmFtZShhbnN3ZXJlZF9jb3VudGluZ19pdGVtcykpCmlxJGNvdW50X2JhY2t3YXJkcyA9IHJvd1N1bXMoIGFuc3dlcmVkX2NvdW50aW5nX2l0ZW1zLCBuYS5ybSA9IFQpIC8gNQpxcGxvdChpcSRjb3VudF9iYWNrd2FyZHMpCgojIyBXb3JkIE1lbW9yeQppcSR3b3Jkc19pbW1lZGlhdGUgPSBpcSRjbzA3Y291bnQKaXEkd29yZHNfZGVsYXllZCA9IGlxJGNvMTBjb3VudApxcGxvdChpcSR3b3Jkc19pbW1lZGlhdGUsIGlxJHdvcmRzX2RlbGF5ZWQsIGdlb20gPSAiaml0dGVyIikKYW5zd2VyZWRfd29yZF9pdGVtcyA9IGlxICU+JSBzZWxlY3QoY28wN2NvdW50LGNvMTBjb3VudCkKcHN5Y2g6OmFscGhhKGRhdGEuZnJhbWUoYW5zd2VyZWRfd29yZF9pdGVtcykpCmlxJHdvcmRzX3JlbWVtYmVyZWRfYXZnID0gcm93TWVhbnMoIGFuc3dlcmVkX3dvcmRfaXRlbXMsIG5hLnJtID0gVCkKcXBsb3QoaXEkd29yZHNfcmVtZW1iZXJlZF9hdmcpCgojI0FkYXB0aXZlIE51bWJlcmluZwppcSRhZGFwdGl2ZV9udW1iZXJpbmcgPSBpcSR3X2FiaWwKcXBsb3QoaXEkYWRhcHRpdmVfbnVtYmVyaW5nKQoKIyMgQ29ycmVsYXRpb24gb2YgYWxsIElxLVRlc3RzCnJvdW5kKGNvcihpcSAlPiUgc2VsZWN0KHJhdmVuLCBtYXRoLCBjb3VudF9iYWNrd2FyZHMsIHdvcmRzX2ltbWVkaWF0ZSwgd29yZHNfZGVsYXllZCwgYWRhcHRpdmVfbnVtYmVyaW5nKSwgdXNlID0gInBhaXJ3aXNlLmNvbXBsZXRlLm9icyIpLCAyKQoKIyNNaXNzaW5nbmVzc19QYXR0ZXJucwpmb3Jtcjo6bWlzc2luZ25lc3NfcGF0dGVybnMoaXEgJT4lIHNlbGVjdChyYXZlbiwgbWF0aCwgY291bnRfYmFja3dhcmRzLCB3b3Jkc19pbW1lZGlhdGUsIHdvcmRzX2RlbGF5ZWQsIGFkYXB0aXZlX251bWJlcmluZykpCgojI2dfZmFjdG9yCiJnX2ZhY3RvciA9fiByYXZlbiArIG1hdGggKyBjb3VudF9iYWNrd2FyZHMgKyAgd29yZHNfZGVsYXllZCsgYWRhcHRpdmVfbnVtYmVyaW5nIiAlPiUKICBjZmEobWlzc2luZyA9ICJmaW1sIiwgZGF0YSA9IGlxLCBzdGQubHYgPSBULCBzdGQub3YgPSBUKSAtPiBjZmFfZwpzdW1tYXJ5KGNmYV9nKQoKaXEkZ19mYWN0b3IgPSBwcmVkaWN0KGNmYV9nKVssMV0KaXEgPSBpcSAlPiUKICBtdXRhdGUoZ19mYWN0b3IgPSBpZmVsc2UoaXMubmEocmF2ZW4pLCBOQSwgZ19mYWN0b3IpLAogICAgICAgICBnX2ZhY3RvciA9IGlmZWxzZShpcy5uYShtYXRoKSwgTkEsIGdfZmFjdG9yKSwKICAgICAgICAgZ19mYWN0b3IgPSBpZmVsc2UoaXMubmEoY291bnRfYmFja3dhcmRzKSwgTkEsIGdfZmFjdG9yKSwKICAgICAgICAgZ19mYWN0b3IgPSBpZmVsc2UoaXMubmEod29yZHNfaW1tZWRpYXRlKSwgTkEsIGdfZmFjdG9yKSwKICAgICAgICAgZ19mYWN0b3IgPSBpZmVsc2UoaXMubmEod29yZHNfZGVsYXllZCksIE5BLCBnX2ZhY3RvciksCiAgICAgICAgIGdfZmFjdG9yID0gaWZlbHNlKGlzLm5hKGFkYXB0aXZlX251bWJlcmluZyksIE5BLCBnX2ZhY3RvcikpCnFwbG90KGlxJGdfZmFjdG9yKQpgYGAKCgoKIyMgUGVyc29uYWxpdHkKYGBge3Igc2VsZWN0IHBlc29uYWxpdHkgZGF0YX0KIyMjIFBlcnNvbmFsaXR5CiMjUmVhcnJhbmdlIHBlcnNvbmFsaXR5IGRhdGEgc28gdGhhdCBldmVyeSBpbmRpdmlkdWFsIGhhcyBvbmx5IG9uZSByb3cKcGVycyA9IHNwcmVhZChiM2JfcHNuLCBwc250eXBlLCBwc24wMSkKIyNuYW1lIGNvbHVtbnMKY29sbmFtZXMocGVycykgPC0gYygiaGhpZDE0XzkiLCAicGlkMTQiLCAiaGhpZDE0IiwgInBpZGxpbmsiLCAidmVyc2lvbiIsICJtb2R1bGUiLCAiZTEiLCAiYzEiLCAibzEiLCAiZTJyIiwgIm4xciIsICJhMSIsICJuMnIiLCAibzIiLCAiYzJyIiwgIm8zIiwgImEyIiwgImMzIiwgImUzIiwgImEzciIsICJuMyIpCnBlcnMgPSBwZXJzICU+JSBzZWxlY3QoaGhpZDE0XzksIHBpZGxpbmssIGUxLCBjMSwgbzEsIGUyciwgbjFyLCBhMSwgbjJyLCBvMiwgYzJyLCBvMywgYTIsIGMzLCBlMywgYTNyLCBuMykKCiMjRXh0cmF2ZXJzaW9uCnBlcnMkZTJyX3JldmVyc2VkID0gNiAtIHBlcnMkZTJyCmV4dHJhdmVyc2lvbiA9IHBlcnMgJT4lIHNlbGVjdChlMSwgZTJyX3JldmVyc2VkLCBlMykKcHN5Y2g6OmFscGhhKGRhdGEuZnJhbWUoZXh0cmF2ZXJzaW9uKSwgY2hlY2sua2V5cyA9IFQpCnBlcnMkYmlnNV9leHQgPSByb3dNZWFucyhleHRyYXZlcnNpb24pCnFwbG90KHBlcnMkYmlnNV9leHQpCgojI2NvbnNjaWVudGlvdXNuZXNzCnBlcnMkYzJyX3JldmVyc2VkID0gNiAtIHBlcnMkYzJyCmNvbnNjaWVudGlvdXNuZXNzID0gcGVycyAlPiUgc2VsZWN0KGMxLCBjMnJfcmV2ZXJzZWQsIGMzKQpwc3ljaDo6YWxwaGEoZGF0YS5mcmFtZShjb25zY2llbnRpb3VzbmVzcyksIGNoZWNrLmtleXMgPSBUKQpwZXJzJGJpZzVfY29uID0gcm93TWVhbnMoY29uc2NpZW50aW91c25lc3MpCnFwbG90KHBlcnMkYmlnNV9jb24pCgojI09wZW5uZXNzCm9wZW5uZXNzID0gcGVycyAlPiUgc2VsZWN0KG8xLCBvMiwgbzMpCnBzeWNoOjphbHBoYShkYXRhLmZyYW1lKG9wZW5uZXNzKSwgY2hlY2sua2V5cyA9IFQpCnBlcnMkYmlnNV9vcGVuID0gcm93TWVhbnMob3Blbm5lc3MpCnFwbG90KHBlcnMkYmlnNV9vcGVuKQoKIyMgTmV1cm90aWNpc20KcGVycyRuMXJfcmV2ZXJzZWQgPSA2IC0gcGVycyRuMXIKcGVycyRuMnJfcmV2ZXJzZWQgPSA2IC0gcGVycyRuMnIKbmV1cm90aWNpc20gPSBwZXJzICU+JSBzZWxlY3QobjFyX3JldmVyc2VkLCBuMnJfcmV2ZXJzZWQsIG4zKQpwZXJzJGJpZzVfbmV1ID0gcm93TWVhbnMobmV1cm90aWNpc20pCnFwbG90KHBlcnMkYmlnNV9uZXUpCgojI0FncmVlYWJsZW5lc3MKcGVycyRhM3JfcmV2ZXJzZWQgPSA2LSBwZXJzJGEzcgphZ3JlZWFibGVuZXNzPSBwZXJzICU+JSBzZWxlY3QoYTEsIGEyLCBhM3JfcmV2ZXJzZWQpCnBlcnMkYmlnNV9hZ3JlZSA9IHJvd01lYW5zKGFncmVlYWJsZW5lc3MpCnFwbG90KHBlcnMkYmlnNV9hZ3JlZSkKYGBgCgoKIyMgUmlzayBwcmVmZXJlbmNlCmBgYHtyIHNlbGVjdCByaXNrIHRha2luZyBkYXRhfQojIyNSaXNrdGFraW5nCnJpc2sgPSBiM2Ffc2kgJT4lIHNlbGVjdChoaGlkMTRfOSwgcGlkbGluaywgcmFuZG9tX3NpLCBzaTAxLCBzaTAyLCBzaTAzLCBzaTA0LCBzaTA1LCBzaTExLCBzaTEyLCBzaTEzLCBzaTE0LCBzaTE1KQoKIyMgOCBtZWFucyB0aGV5IGRpZG50IGtub3cgd2hpY2ggYW5zd2VyIHRoZXkgd291bGQgY2hvb3NlCnJpc2skc2kwMVsgcmlzayRzaTAxID09IDhdID0gTkEKcmlzayRzaTAyWyByaXNrJHNpMDIgPT0gOF0gPSBOQQpyaXNrJHNpMDNbIHJpc2skc2kwMyA9PSA4XSA9IE5BCnJpc2skc2kwNFsgcmlzayRzaTA0ID09IDhdID0gTkEKcmlzayRzaTA1WyByaXNrJHNpMDUgPT0gOF0gPSBOQQpyaXNrJHNpMTFbIHJpc2skc2kxMSA9PSA4XSA9IE5BCnJpc2skc2kxMlsgcmlzayRzaTEyID09IDhdID0gTkEKcmlzayRzaTEzWyByaXNrJHNpMTMgPT0gOF0gPSBOQQpyaXNrJHNpMTRbIHJpc2skc2kxNCA9PSA4XSA9IE5BCnJpc2skc2kxNVsgcmlzayRzaTE1ID09IDhdID0gTkEKCiMjIGNhbGN1bGF0ZSBhIHJpc2sgc2NvcmUgZm9yIHJpc2sgZ2FtZSBBIAojICg1ID0gZ2FtYmxlIGF2ZXJzZSwgT3JkaW5hbHNrYWxhIDogMSA9IHJpc2sgbG92aW5nLCA0ID0gcmlzayBhdmVyc2UpCnJpc2skcmlza0EgPSBpZmVsc2UocmlzayRzaTAxID09IDEgJiByaXNrJHNpMDIgPT0gMSwgNSwKICAgICAgICAgICAgIGlmZWxzZShyaXNrJHNpMDEgPT0gMiAmIHJpc2skc2kwMyA9PSAxICYgcmlzayRzaTA0ID09IDEsIDQsCiAgICAgICAgICAgICBpZmVsc2UocmlzayRzaTAxID09IDIgJiByaXNrJHNpMDMgPT0gMSAmIHJpc2skc2kwNCA9PSAyLCAzLAogICAgICAgICAgICAgaWZlbHNlKHJpc2skc2kwMSA9PSAyICYgcmlzayRzaTAzID09IDIgJiByaXNrJHNpMDUgPT0gMSwgMiwKICAgICAgICAgICAgIGlmZWxzZShyaXNrJHNpMDEgPT0gMiAmIHJpc2skc2kwMyA9PSAyICYgcmlzayRzaTA1ID09IDIsIDEsCiAgICAgICAgICAgICBOQSkpKSkpCnFwbG90KHJpc2skcmlza0FbcmlzayRyaXNrQSAhPSA1XSkKCiMjIGNhbGN1bGF0ZSBhIHJpc2sgc2NvcmUgZm9yIHJpc2sgZ2FtZSBCIAojICg1ID0gZ2FtYmxlIGF2ZXJzZSwgT3JkaW5hbHNrYWxhIDogMSA9IHJpc2sgbG92aW5nLCA0ID0gcmlzayBhdmVyc2UpCnJpc2skcmlza0IgPSBpZmVsc2UocmlzayRzaTExID09IDIgJiByaXNrJHNpMTIgPT0gMSwgNSwKICAgICAgICAgICAgIGlmZWxzZShyaXNrJHNpMTEgPT0gMSAmIHJpc2skc2kxMyA9PSAxICYgcmlzayRzaTE0ID09IDEsIDQsCiAgICAgICAgICAgICBpZmVsc2UocmlzayRzaTExID09IDEgJiByaXNrJHNpMTMgPT0gMSAmIHJpc2skc2kxNCA9PSAyLCAzLAogICAgICAgICAgICAgaWZlbHNlKHJpc2skc2kxMSA9PSAxICYgcmlzayRzaTEzID09IDIgJiByaXNrJHNpMTUgPT0gMSwgMiwKICAgICAgICAgICAgIGlmZWxzZShyaXNrJHNpMTEgPT0gMSAmIHJpc2skc2kxMyA9PSAyICYgcmlzayRzaTE1ID09IDIsIDEsCiAgICAgICAgICAgICBOQSkpKSkpCnFwbG90KHJpc2skcmlza0JbcmlzayRyaXNrQiAhPTVdKQoKcHN5Y2g6OmFscGhhKGRhdGEuZnJhbWUocmlzayAlPiUgc2VsZWN0KHJpc2tBLCByaXNrQikpLCBjaGVjay5rZXlzID0gVCkKCgpgYGAKCgojIyBNZXJnZSBkYXRhCgpgYGB7ciBtZXJnZSBkYXRhfQojIyMgTWVyZ2UgYWxsIGRhdGEgZm9yIHBlb3BsZSB3aXRoIGJpcnRob3JkZXIgaW5mb3JtYXRpb25zCmFsbGRhdGFfYmlydGhvcmRlciA9IGxlZnRfam9pbihhbGxkYXRhX3ByZWduYW5jeSwgaXEsIGJ5ID0gInBpZGxpbmsiKQphbGxkYXRhX2JpcnRob3JkZXIgPSBsZWZ0X2pvaW4oYWxsZGF0YV9iaXJ0aG9yZGVyLCBwZXJzLCBieSA9ICJwaWRsaW5rIikKYWxsZGF0YV9iaXJ0aG9yZGVyID0gbGVmdF9qb2luKGFsbGRhdGFfYmlydGhvcmRlciwgcmlzaywgYnkgPSAicGlkbGluayIpCgphbGxkYXRhID0gbGVmdF9qb2luKGluZGl2aWR1YWxzX3VuY2hhbmdlZCwgaXEsIGJ5ID0gInBpZGxpbmsiKQphbGxkYXRhID0gbGVmdF9qb2luKGFsbGRhdGEsIHBlcnMsIGJ5ID0gInBpZGxpbmsiKQphbGxkYXRhID0gbGVmdF9qb2luKGFsbGRhdGEsIHJpc2ssIGJ5ID0gInBpZGxpbmsiKQoKCiMjIyBXaGljaCB2YWx1ZXMgYXJlIG1pc3Npbmc/CiMjIEFsbCBkYXRhCmZvcm1yOjptaXNzaW5nbmVzc19wYXR0ZXJucyhhbGxkYXRhX2JpcnRob3JkZXIgJT4lIHNlbGVjdChyYXZlbiwgbWF0aCwgY291bnRfYmFja3dhcmRzLCB3b3Jkc19pbW1lZGlhdGUsIHdvcmRzX2RlbGF5ZWQsIGFkYXB0aXZlX251bWJlcmluZywgYmlnNV9leHQsIHJpc2tBLCByaXNrQikpCiMjIEludGVsbGlnZW5jZQpmb3Jtcjo6bWlzc2luZ25lc3NfcGF0dGVybnMoYWxsZGF0YV9iaXJ0aG9yZGVyICU+JSBzZWxlY3QocmF2ZW4sIG1hdGgsIGNvdW50X2JhY2t3YXJkcywgd29yZHNfaW1tZWRpYXRlLCB3b3Jkc19kZWxheWVkLCBhZGFwdGl2ZV9udW1iZXJpbmcpKQojI1BlcnNvbmFsaXR5CmZvcm1yOjptaXNzaW5nbmVzc19wYXR0ZXJucyhhbGxkYXRhX2JpcnRob3JkZXIgJT4lIHNlbGVjdChiaWc1X2V4dCwgYmlnNV9jb24sIGJpZzVfb3BlbiwgYmlnNV9uZXUsIGJpZzVfYWdyZWUpKQojI1Jpc2sKZm9ybXI6Om1pc3NpbmduZXNzX3BhdHRlcm5zKGFsbGRhdGFfYmlydGhvcmRlciAlPiUgc2VsZWN0KHJpc2tBLCByaXNrQikpCmBgYAoKIyMgU2F2ZSBkYXRhCgpmb3IgZnV0dXJlIGFuYWx5c2VzCgpgYGB7ciBzYXZlIGRhdGF9CmFsbGRhdGFfYmlydGhvcmRlciA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUgdW5ncm91cCgpCmFsbGRhdGEgPSBhbGxkYXRhICU+JSB1bmdyb3VwKCkKcHJlZ25hbmN5ID0gcHJlZ25hbmN5ICU+JSB1bmdyb3VwKCkKCnNhdmVSRFMoYWxsZGF0YV9iaXJ0aG9yZGVyLCBmaWxlID0gImRhdGEvYWxsZGF0YV9iaXJ0aG9yZGVyLnJkcyIpCnNhdmVSRFMoYWxsZGF0YSwgZmlsZSA9ICJkYXRhL2FsbGRhdGEucmRzIikKc2F2ZVJEUyhwcmVnbmFuY3ksIGZpbGUgPSAiZGF0YS9wcmVnbmFuY3kucmRzIikKYGBgCg==</div>
+<div id="rmd-source-code">LS0tCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgY29kZV9mb2xkaW5nOiAic2hvdyIKZWRpdG9yX29wdGlvbnM6IAogIGNodW5rX291dHB1dF90eXBlOiBjb25zb2xlCi0tLQoKIyAgPHNwYW4gc3R5bGU9ImNvbG9yOiNGQzhENjIiPkRhdGEgV3JhbmdsaW5nPC9zcGFuPiB7LnRhYnNldH0KCiMjIEhlbHBlcgpgYGB7ciBoZWxwZXJ9CnNvdXJjZSgiMF9oZWxwZXJzLlIiKQpgYGAKCgojIyBJbXBvcnQgZGF0YSB7LmFjdGl2ZX0KCkFsbCBkYXRhIGlzIHJldHJpZXZlZCBmcm9tIHRoZSBbUkFORCBmb3VuZGF0aW9dbihodHRwOi8vd3d3LnJhbmQub3JnL2xhYm9yL0ZMUy9JRkxTLmh0bWwpIApgYGB7ciBJbXBvcnQgZGF0YX0KIyMjIEluZm9ybWF0aW9ucyBhYm91dCBpbmRpdmlkdWFscyBsaXZpbmcgaW4gdGhlIGhvdXNlaG9sZCBpbiAyMDE0LzIwMTUKIyMgQWxsIEluZGl2aWR1YWxzIGxpdmluZyBpbiB0aGUgaG91c2Vob2xkCmJrX2FyMSA9IHJlYWRfZHRhKCJkYXRhL2hoMTRfYWxsX2R0YS9ia19hcjEuZHRhIikgIyBCb29rIEssIFNlY3Rpb24gYXIKIyBjb21wdXRlIGZhdGhlciBwaWRsaW5rCmJrX2FyMSA9IGxlZnRfam9pbihia19hcjEsIGJrX2FyMSAlPiUgc2VsZWN0KGhoaWQxNF85LCBwaWQxNCwgcGlkbGluaykgJT4lIHJlbmFtZShhcjEwID0gcGlkMTQsIGZhdGhlcl9waWRsaW5rID0gcGlkbGluayksIGJ5ID0gYygiaGhpZDE0XzkiLCAiYXIxMCIpKQojIGNvbXB1dGUgbW90aGVyIHBpZGxpbmsKYmtfYXIxID0gbGVmdF9qb2luKGJrX2FyMSwgYmtfYXIxICU+JSBzZWxlY3QoaGhpZDE0XzksIHBpZDE0LCBwaWRsaW5rKSAlPiUgcmVuYW1lKGFyMTEgPSBwaWQxNCwgbW90aGVyX3BpZGxpbmsgPSBwaWRsaW5rKSwgYnkgPSBjKCJoaGlkMTRfOSIsICJhcjExIikpCgojIyMgSW5mb3JtYXRpb25zIGZyb20gSUZMUyB3YXZlIDUgdG8gbGluayBkYXRhIHRvIGVhcmxpZXIgd2F2ZXM6CnB0cmFjayA9IHJlYWRfZHRhKCJkYXRhL2hoMTRfYWxsX2R0YS9wdHJhY2suZHRhIikgIyBUcmFraW5nIGluZm9ybWF0aW9ucwoKIyMjIFByZWduYW5jeSBJbmZvcm1hdGlvbnMgZnJvbSBtb3RoZXIKIyMgV2F2ZSA1IC0gMjAxNAp3NV9wcmVnbmFuY3kgPSByZWFkX2R0YSgiZGF0YS9oaDE0X2FsbF9kdGEvYjRfY2gxLmR0YSIpICMgQm9vayA0LCBTZWN0aW9uIGNoCiMjIFdhdmUgNCAtIDIwMDcKdzRfcHJlZ25hbmN5ID0gcmVhZF9kdGEoImRhdGEvaGgwN19hbGxfZHRhL2I0X2NoMS5kdGEiKSAjIEJvb2sgNCwgU2VjdGlvbiBjaAojIyBXYXZlIDMgLSAyMDAwCnczX3ByZWduYW5jeSA9IHJlYWRfZHRhKCJkYXRhL2hoMDBfYWxsX2R0YS9iNF9jaDEuZHRhIikgIyBCb29rIDQsIFNlY3Rpb24gY2gKIyMgV2F2ZSAyIC0gMTk5Nwp3Ml9wcmVnbmFuY3kgPSByZWFkX2R0YSgiZGF0YS9oaDk3ZHRhL2I0X2NoMS5kdGEiKSAjIEJvb2sgNCwgU2VjdGlvbiBjaAojIyBXYXZlIDEgLSAxOTkzCncxX3ByZWduYW5jeSA9IHJlYWRfZHRhKCJkYXRhL2hoOTNkdGEvYnVrNGNoMS5kdGEiKSAjIEJvb2sgNCwgU2VjdGlvbiBjaAoKIyMjIE1hcnJpYWdlIGluZm9ybWF0aW9uIGZyb20gbW90aGVyCiMjIFdhdmUgNSAtIDIwMTQKdzVfbWFycmlhZ2U9IHJlYWRfZHRhKCJkYXRhL2hoMTRfYWxsX2R0YS9iNF9rdzMuZHRhIikgIyBCb29rIDQsIFNlY3Rpb24ga3czCiMjIFdhdmUgNCAtIDIwMDcKdzRfbWFycmlhZ2UgPSByZWFkX2R0YSgiZGF0YS9oaDA3X2FsbF9kdGEvYjRfa3cyLmR0YSIpICMgQm9vayA0LCBTZWN0aW9uIGt3MgojIyBXYXZlIDMgLSAyMDAwCnczX21hcnJpYWdlID0gcmVhZF9kdGEoImRhdGEvaGgwMF9hbGxfZHRhL2I0X2t3My5kdGEiKSAjIEJvb2sgNCwgU2VjdGlvbiBrdzMKIyMgV2F2ZSAyIC0gMTk5Nwp3Ml9tYXJyaWFnZSA9IHJlYWRfZHRhKCJkYXRhL2hoOTdkdGEvYjRfa3cyLmR0YSIpICMgQm9vayA0LCBTZWN0aW9uIGt3MgojIyBXYXZlIDEgLSAxOTkzCncxX21hcnJpYWdlID0gcmVhZF9kdGEoImRhdGEvaGg5M2R0YS9idWs0a3cyLmR0YSIpICMgQm9vayA0LCBTZWN0aW9uIGt3MgoKIyMgQWRkaXRpb25hbCBtYXJyaWFnZSBpbmZvcm1hdGlvbiBmcm9tIG1vdGhlcgojIFdhdmUgNSAtIDIwMTQKdzVfbWFycmlhZ2VfYWRkaXRpb25hbCA9IHJlYWRfZHRhKCJkYXRhL2hoMTRfYWxsX2R0YS9iNF9jb3YuZHRhIikgIyBCb29rIDQsIFNlY3Rpb24gY292CiMgV2F2ZSA0IC0gMjAwNwp3NF9tYXJyaWFnZV9hZGRpdGlvbmFsID0gcmVhZF9kdGEoImRhdGEvaGgwN19hbGxfZHRhL2I0X2Nvdi5kdGEiKSAjIEJvb2sgNCwgU2VjdGlvbiBjb3YKIyBXYXZlIDMgLSAyMDAwCnczX21hcnJpYWdlX2FkZGl0aW9uYWwgPSByZWFkX2R0YSgiZGF0YS9oaDAwX2FsbF9kdGEvYjRfY292LmR0YSIpICMgQm9vayA0LCBTZWN0aW9uIGNvdgojIFdhdmUgMiAtIDE5OTcKdzJfbWFycmlhZ2VfYWRkaXRpb25hbCA9IHJlYWRfZHRhKCJkYXRhL2hoOTdkdGEvYjRfY292LmR0YSIpICMgQm9vayA0LCBTZWN0aW9uIGNvdgojIFdhdmUgMSAtIDE5OTMKdzFfbWFycmlhZ2VfYWRkaXRpb25hbCA9IHJlYWRfZHRhKCJkYXRhL2hoOTNkdGEvYnVra2FyMi5kdGEiKSAjIEJvb2sgSywgU2VjdGlvbiBhciwgaG91c2Vob2xkIHJvYXN0ZXIKCiMjIyBJUSBJbmZvcm1hdGlvbgpla19lazIgPSByZWFkX2R0YSgiZGF0YS9oaDE0X2FsbF9kdGEvZWtfZWsyLmR0YSIpICMgQm9vayBlazIKIyBhZGRpdGlvbmFsIGluZm9ybWF0aW9uIChjb3VudGluZyBiYWNrd2FyZHMsIGFkYXB0aXZlIHRlc3RpbmcpIGZvciBhZHVsdHMKYjNiX2NvYiA9IHJlYWRfZHRhKCJkYXRhL2hoMTRfYWxsX2R0YS9iM2JfY29iLmR0YSIpICMgQm9vayAzYiwgU2VjdGlvbiBjb2IKYjNiX2NvMSA9IHJlYWRfZHRhKCJkYXRhL2hoMTRfYWxsX2R0YS9iM2JfY28xLmR0YSIpICMgQm9vayAzYiwgU2VjdGlvbiBjbzEKIyMjIFBlcnNvbmFsaXR5IEluZm9ybWF0aW9uIChvbmx5IGZvciBhZHVsdHMpCmIzYl9wc24gPSByZWFkX2R0YSgiZGF0YS9oaDE0X2FsbF9kdGEvYjNiX3Bzbi5kdGEiKSAjIEJvb2sgM2IsIFNlY3Rpb24gcHNuCgojIyMgUmlzayB0YWtpbmcKYjNhX3NpID0gcmVhZF9kdGEoImRhdGEvaGgxNF9hbGxfZHRhL2IzYV9zaS5kdGEiKSAjIEJvb2sgM2EsIFNlY3Rpb24gc2kKCiMjIyBFZHVjYXRpb25hbCBBdHRhaW5tZW50CmIzYV9kbDEgPSByZWFkX2R0YSgiZGF0YS9oaDE0X2FsbF9kdGEvYjNhX2RsMS5kdGEiKSAjIEJvb2sgM2EsIFNlY3Rpb24gZGwxCgpgYGAKCiMjIEJpcnRoIG9yZGVyIGluZm9ybWF0aW9uIHsudGFic2V0fQojIyMgSW5mb3JtYXRpb24gYWJvdXQgcHJlZ25hbmN5CmBgYHtyfQojIyBTZWxlY3QgZGF0YQp3NV9wcmVnbmFuY3kgPSB3NV9wcmVnbmFuY3kgJT4lIHNlbGVjdChwaWRsaW5rLCBjaDA1LCBjaDA2LCBjaDA2YSwgY2gwOCwgY2gwOWRheSwgY2gwOW10aCwgY2gwOXlyLCBjaDI1KQp3NF9wcmVnbmFuY3kgPSB3NF9wcmVnbmFuY3kgJT4lIHNlbGVjdChwaWRsaW5rLCBjaDA1LCBjaDA2LCBjaDA2YSwgY2gwOCwgY2gwOWRheSwgY2gwOW10aCwgY2gwOXlyLCBjaDI1KQp3M19wcmVnbmFuY3kgPSB3M19wcmVnbmFuY3kgJT4lIHNlbGVjdChwaWRsaW5rLCBjaDA1LCBjaDA2LCBjaDA2YSwgY2gwOCwgY2gwOWRheSwgY2gwOW10aCwgY2gwOXlyLCBjaDI1KQp3Ml9wcmVnbmFuY3kgPSB3Ml9wcmVnbmFuY3kgJT4lIHNlbGVjdChwaWRsaW5rLCBjaDA1LCBjaDA2LCBjaDA2YSwgY2gwOCwgY2gwOWRheSwgY2gwOW10aCwgY2gwOXlyLCBjaDI1KQp3MV9wcmVnbmFuY3kgPSB3MV9wcmVnbmFuY3kgJT4lIAogIGdyb3VwX2J5KHBpZGxpbmssIGNoMDQpICU+JSBtdXRhdGUoY2gwNmEgPSBpZl9lbHNlKCFpcy5uYShwaWRsaW5rKSAmICFpcy5uYShjaDA0KSwgaWZfZWxzZSggbigpID4gMSwgMSwgMyksIDkpKSAlPiUKICB1bmdyb3VwKCkgJT4lIAogIHNlbGVjdChwaWRsaW5rLCBjaDA1LCBjaDA2LCBjaDA2YSwgY2gwOCwgY2gwOWRheSwgY2gwOW10aCwgY2gwOXlyLCBjaDI1KSAlPiUgCiMgSW4gdGhlIGZpcnN0IHdhdmUgdGhlIHllYXIgaXMgbmFtZWQgd3JvbmcKICBtdXRhdGUoY2gwOXlyID0gaWZlbHNlKGNoMDl5ciA8PSA5MywgY2gwOXlyLCBOQSksCiAgICAgICAgICBjaDA5eXIgPSBhcy5udW1lcmljKHN0cl9jKCIxOSIsIGNoMDl5cikpKQoKIyMgQ29tYmluZSBkYXRhCnByZWduYW5jeSA9IGJpbmRfcm93cyh3MSA9IHcxX3ByZWduYW5jeSwgdzIgPSB3Ml9wcmVnbmFuY3ksIHczID0gdzNfcHJlZ25hbmN5LCB3NCA9IHc0X3ByZWduYW5jeSwgdzUgPSB3NV9wcmVnbmFuY3ksIC5pZCA9ICJ3YXZlIikKCiMjIFJlbmFtZSBWYXJpYWJsZXMKcHJlZ25hbmN5ID0gcHJlZ25hbmN5ICU+JSByZW5hbWUoY2hyb25fb3JkZXJfYmlydGggPSBjaDA1LCBsaWZlYmlydGhzID0gY2gwNiwgbXVsdGlwbGVfYmlydGggPSBjaDA2YSwgZ2VuZGVyID0gY2gwOCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhfZGF5ID0gY2gwOWRheSwgYmlydGhfbW9udGggPSBjaDA5bXRoLCBiaXJ0aF95ZWFyID0gY2gwOXlyLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbW90aGVyX3BpZGxpbmsgPSBwaWRsaW5rLCBhbGl2ZSA9IGNoMjUpICMgcHJlZ25hbmN5JGxpZmViaXJ0aHMgdmFsdWVzOiAxID0gc3RpbGwgcHJlZ25hbnQsIDIgPSBsaXZlYmlydGgsIDMgPSBzdGlsbCBiaXJ0aCwgNCA9IG1pc3NjYXJyaWFnZQoKIyMgU2V0IHZhbHVlcyBhcyBOQSB0aGF0IGFyZSBtaXNzaW5nCnByZWduYW5jeSA9IHByZWduYW5jeSAlPiUKICBtdXRhdGUoYmlydGhfZGF5ID0gaWZlbHNlKGJpcnRoX2RheT4zMSwgTkEsIGJpcnRoX2RheSksCiAgICAgICAgIGJpcnRoX21vbnRoID0gaWZlbHNlKGJpcnRoX21vbnRoPjEyLCBOQSwgYmlydGhfbW9udGgpLAogICAgICAgICBiaXJ0aF95ZWFyID0gaWZlbHNlKGJpcnRoX3llYXI+MjAxNiwgTkEsIGJpcnRoX3llYXIpLAogICAgICAgICBiaXJ0aF9kYXkgPSBpZmVsc2UoaXMubmFuKGJpcnRoX2RheSksIE5BLCBiaXJ0aF9kYXkpLAogICAgICAgICBiaXJ0aF9tb250aCA9IGlmZWxzZShpcy5uYW4oYmlydGhfbW9udGgpLCBOQSwgYmlydGhfbW9udGgpLAogICAgICAgICBiaXJ0aF95ZWFyID0gaWZlbHNlKGlzLm5hbihiaXJ0aF95ZWFyKSwgTkEsIGJpcnRoX3llYXIpLAogICAgICAgICBtdWx0aXBsZV9iaXJ0aCA9IGlmZWxzZShtdWx0aXBsZV9iaXJ0aCA9PSA5LCBOQSwgbXVsdGlwbGVfYmlydGgpLAogICAgICAgICBtdWx0aXBsZV9iaXJ0aCA9IGlmZWxzZShpcy5uYW4obXVsdGlwbGVfYmlydGgpLCBOQSwgbXVsdGlwbGVfYmlydGgpKQoKcHJlZ25hbmN5JG1vbnRoID0gcGFzdGUwKHByZWduYW5jeSRiaXJ0aF95ZWFyLCItIiwgaWZlbHNlKGlzLm5hKHByZWduYW5jeSRiaXJ0aF9tb250aCksICIwMSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwYWRfbW9udGgocHJlZ25hbmN5JGJpcnRoX21vbnRoKSkpCgpwcmVnbmFuY3kgPSBwcmVnbmFuY3kgJT4lCiAgbXV0YXRlKGJpcnRoZGF0ZSA9IGFsbF9hdmFpbGFibGVfaW5mb19iaXJ0aF9kYXRlKGJpcnRoX3llYXIsIGJpcnRoX21vbnRoLCBiaXJ0aF9kYXkpLAogICAgICAgICBtb3RoZXJfYmlydGhkYXRlID0gc3RyX2MobW90aGVyX3BpZGxpbmssICItIiwgYmlydGhkYXRlKSkKCgpwcmVnbmFuY3kgPSBwcmVnbmFuY3kgJT4lIAogIG11dGF0ZSh3YXZlX2R1cCA9IDYgLSBzdHJfc3ViKHdhdmUsIDIsIDMpICU+JSBhcy5udW1lcmljKCkpICU+JSAjIGZyb20gbW9zdCByZWNlbnQgd2F2ZSB0byBvbGRlc3QKICBhcnJhbmdlKHdhdmVfZHVwKSAlPiUgIyB1c2UgbW9zdCByZWNlbnQgd2F2ZSAoYmVjYXVzZSB0aGVzZSB3aWxsIGhhdmUgcHJlZ25hbmN5IG91dGNvbWVzKQogIGdyb3VwX2J5KG1vdGhlcl9iaXJ0aGRhdGUpICU+JSAKICBtdXRhdGUoZHVwZWRfaW5fZWFybGllcl93YXZlID0gbWluX3Jhbmsod2F2ZV9kdXApKSAlPiUgCiAgZmlsdGVyKGR1cGVkX2luX2VhcmxpZXJfd2F2ZSA9PSAxKSAlPiUgCiAgdW5ncm91cCgpICMgZWxpbWluYXRlIGR1cGVzIGFjcm9zcyB3YXZlcyAoc2FtZSBtb3RoZXJfYmlydGhkYXRlKSwga2VlcCBtdWx0IGJpcnRocwoKeCA9ICh1bmlxdWUocHJlZ25hbmN5JG1vdGhlcl9waWRsaW5rKSkKCiMjcmVtb3ZlIGFsbCB3aXRoIG1pc3NpbmcgYmlydGhkYXRlL21pc2NhcnJpYWdlIGRhdGUKdGFibGUoaXMubmEocHJlZ25hbmN5JGJpcnRoZGF0ZSkpCnByZWduYW5jeSA9IHByZWduYW5jeSAlPiUKICBmaWx0ZXIoIWlzLm5hKGJpcnRoZGF0ZSkpCgoKIyBmb3Igd2hhdGV2ZXIgcmVhc29uIHRoZXJlIGFyZSBzb21lIG11bHRpcGxlIGJpcnRocyB3aXRoIGp1c3Qgb25lIHJvdyBpbiB0aGUgZGF0YSAKcHJlZ25hbmN5ICU+JSBncm91cF9ieShtb3RoZXJfYmlydGhkYXRlKSAlPiUgbXV0YXRlKG11bHQgPSBuKCkpICU+JSBjcm9zc3RhYnMofiBtdWx0ICsgbXVsdGlwbGVfYmlydGgsIGRhdGEgPSAuKQoKIyMgRm9ybSB2YXJpYWJsZSBmb3IgYW55IG11bHRpcGxlIGJpcnRoIGluIGZhbWlseQpwcmVnbmFuY3kgPSBwcmVnbmFuY3kgJT4lIGdyb3VwX2J5KG1vdGhlcl9waWRsaW5rKSAlPiUgbXV0YXRlKGFueV9tdWx0aXBsZV9iaXJ0aCA9IGlmX2Vsc2UoYW55KG11bHRpcGxlX2JpcnRoID09IDEpLCAxLCAwKSkKcHJvcC50YWJsZSh0YWJsZShwcmVnbmFuY3kkbXVsdGlwbGVfYmlydGgpKQpwcm9wLnRhYmxlKHRhYmxlKHByZWduYW5jeSRhbnlfbXVsdGlwbGVfYmlydGgpKQpgYGAKCiMjIyBJbmZvcm1hdGlvbiBhYm91dCBtYXJyaWFnZSBoaXN0b3J5CmBgYHtyIG1hcnJpYWdlIGhpc3Rvcnl9CiMjIFNlbGVjdCBtYXJyaWFnZSBkYXRhCnc1X21hcnJpYWdlID0gdzVfbWFycmlhZ2UgJT4lIHNlbGVjdChwaWRsaW5rLCBrdzEwbXRoLCBrdzEweXIsIGt3MThtdGgsIGt3MTh5ciwga3cxMSwga3cxOSkKdzRfbWFycmlhZ2UgPSB3NF9tYXJyaWFnZSAlPiUgc2VsZWN0KHBpZGxpbmssIGt3MTBtdGgsIGt3MTB5ciwga3cxOG10aCwga3cxOHlyLCBrdzExLCBrdzE5KQp3M19tYXJyaWFnZSA9IHczX21hcnJpYWdlICU+JSBzZWxlY3QocGlkbGluaywga3cxMG10aCwga3cxMHlyLCBrdzE4bXRoLCBrdzE4eXIsIGt3MTEsIGt3MTkpCncyX21hcnJpYWdlID0gdzJfbWFycmlhZ2UgJT4lIHNlbGVjdChwaWRsaW5rLCBrdzEwbXRoLCBrdzEweXIsIGt3MThtdGgsIGt3MTh5ciwga3cxMSwga3cxOSkKdzFfbWFycmlhZ2UgPSB3MV9tYXJyaWFnZSAlPiUgc2VsZWN0KHBpZGxpbmssIGt3MDVhLCBrdzA1Yiwga3cxM2EsIGt3MTNiLCBrdzA2LCBrdzE0YWdlKQojIEluIHRoZSBmaXJzdCB3YXZlIHRoZSB5ZWFyIGlzIG5hbWVkIHdyb25nCncxX21hcnJpYWdlID0gdzFfbWFycmlhZ2UgJT4lCiAgbXV0YXRlKGt3MDVhID0gaWZlbHNlKGt3MDVhIDw9IDkzLCBhcy5udW1lcmljKHN0cl9jKCIxOSIsIHcxX21hcnJpYWdlJGt3MDVhKSksIGt3MDVhKSwKICAgICAgICAga3cxM2EgPSBpZmVsc2Uoa3cxM2EgPD05MyAsIGFzLm51bWVyaWMoc3RyX2MoIjE5IiwgdzFfbWFycmlhZ2Uka3cxM2EpKSwga3cxM2EpKQojIEFuZCB0aGUgY29sdW1uIG5hbWVzIGFyZSB3cm9uZy4uLgp3MV9tYXJyaWFnZSA9IHcxX21hcnJpYWdlICU+JSByZW5hbWUoa3cxMG10aCA9IGt3MDViLCBrdzEweXIgPSBrdzA1YSwga3cxOG10aCA9IGt3MTNiLCBrdzE4eXIgPSBrdzEzYSwga3cxMSA9IGt3MDYsIGt3MTkgPSBrdzE0YWdlKQoKIyMgU2VsZWN0IGFkZGl0aW9uYWwgbWFycmlhZ2UgaW5mb3JtYXRpb24gKGFnZSBvZiByZXNwb25kZW50KQp3NV9tYXJyaWFnZV9hZGRpdGlvbmFsID0gdzVfbWFycmlhZ2VfYWRkaXRpb25hbCAlPiUgc2VsZWN0KHBpZGxpbmssIGFnZSwgZG9iX3lyKQp3NF9tYXJyaWFnZV9hZGRpdGlvbmFsID0gdzRfbWFycmlhZ2VfYWRkaXRpb25hbCAlPiUgc2VsZWN0KHBpZGxpbmssIGFnZSwgZG9iX3lyKQp3M19tYXJyaWFnZV9hZGRpdGlvbmFsID0gdzNfbWFycmlhZ2VfYWRkaXRpb25hbCAlPiUgc2VsZWN0KHBpZGxpbmssIGFnZSwgZG9iX3lyKQp3Ml9tYXJyaWFnZV9hZGRpdGlvbmFsID0gdzJfbWFycmlhZ2VfYWRkaXRpb25hbCAlPiUgc2VsZWN0KHBpZGxpbmssIGFnZSwgZG9iX3lyKQp3MV9tYXJyaWFnZV9hZGRpdGlvbmFsID0gdzFfbWFycmlhZ2VfYWRkaXRpb25hbCAlPiUgc2VsZWN0KHBpZGxpbmssIGFyMDl5ciwgYXIwOHlyKQojIEluIHRoZSBmaXJzdCB3YXZlIHRoZSB5ZWFyIGlzIG5hbWVkIHdyb25nCncxX21hcnJpYWdlX2FkZGl0aW9uYWwgPSB3MV9tYXJyaWFnZV9hZGRpdGlvbmFsICU+JQogIG11dGF0ZShhcjA4eXIgPSBpZmVsc2UoYXIwOHlyIDw9IDkzLCAKICAgICAgICAgICAgICAgICAgICAgICAgIGFzLm51bWVyaWMoc3RyX2MoIjE5IiwgdzFfbWFycmlhZ2VfYWRkaXRpb25hbCRhcjA4eXIpKSwKICAgICAgICAgICAgICAgICAgICAgICAgIGFyMDh5cikpCiMgQW5kIHRoZSBjb2x1bW4gbmFtZXMgYXJlIHdyb25nLi4uCncxX21hcnJpYWdlX2FkZGl0aW9uYWwgPSB3MV9tYXJyaWFnZV9hZGRpdGlvbmFsICU+JSByZW5hbWUoYWdlID0gYXIwOXlyLCBkb2JfeXIgPSBhcjA4eXIpCgojIyBDb21iaW5lIG1hcnJpYWdlIGluZm9ybWF0aW9uIGFuZCBhZGRpdGlvbmFsIG1hcnJpYWdlIGluZm9ybWF0aW9uOgp3MV9tYXJyaWFnZSA9IGxlZnRfam9pbih3MV9tYXJyaWFnZSwgdzFfbWFycmlhZ2VfYWRkaXRpb25hbCwgYnkgPSAicGlkbGluayIpICU+JQogIG11dGF0ZSh3YXZlID0gYXMubnVtZXJpYygiMTk5MyIpKQp3Ml9tYXJyaWFnZSA9IGxlZnRfam9pbih3Ml9tYXJyaWFnZSwgdzJfbWFycmlhZ2VfYWRkaXRpb25hbCwgYnkgPSAicGlkbGluayIpICU+JQogIG11dGF0ZSh3YXZlID0gYXMubnVtZXJpYygiMTk5NyIpKQp3M19tYXJyaWFnZSA9IGxlZnRfam9pbih3M19tYXJyaWFnZSwgdzNfbWFycmlhZ2VfYWRkaXRpb25hbCwgYnkgPSAicGlkbGluayIpICAlPiUKICBtdXRhdGUod2F2ZSA9IGFzLm51bWVyaWMoIjIwMDAiKSkKdzRfbWFycmlhZ2UgPSBsZWZ0X2pvaW4odzRfbWFycmlhZ2UsIHc0X21hcnJpYWdlX2FkZGl0aW9uYWwsIGJ5ID0gInBpZGxpbmsiKSAlPiUKICBtdXRhdGUod2F2ZSA9IGFzLm51bWVyaWMoIjIwMDciKSkKdzVfbWFycmlhZ2UgPSBsZWZ0X2pvaW4odzVfbWFycmlhZ2UsIHc1X21hcnJpYWdlX2FkZGl0aW9uYWwsIGJ5ID0gInBpZGxpbmsiKSAlPiUKICBtdXRhdGUod2F2ZSA9IGFzLm51bWVyaWMoIjIwMTQiKSkKCiMjIENvbWJpbmUgbWFycmlhZ2UgaW5mb3JtYXRpb25zCm1hcnJpYWdlID0gYmluZF9yb3dzKHcxX21hcnJpYWdlLCB3Ml9tYXJyaWFnZSwgdzNfbWFycmlhZ2UsIHc0X21hcnJpYWdlLCB3NV9tYXJyaWFnZSkKCiMgUmVuYW1lIGNvbHVtbnMKbWFycmlhZ2UgPSBtYXJyaWFnZSAlPiUgcmVuYW1lKHN0YXJ0X3llYXIgPSBrdzEweXIsIHN0YXJ0X21vbnRoID0ga3cxMG10aCwgZW5kX3llYXIgPSBrdzE4eXIsIGVuZF9tb250aCA9IGt3MThtdGgsIHN0YXJ0X2FnZSA9IGt3MTEsIGVuZF9hZ2UgPSBrdzE5LCBiaXJ0aF95ZWFyID0gZG9iX3lyLCBiaXJ0aF9hZ2UgPSBhZ2UpCgoKIyBTZXQgdmFsdWVzIGFzIE5BIHRoYXQgYXJlIG1pc3NpbmcKbWFycmlhZ2Ukc3RhcnRfeWVhclsgbWFycmlhZ2Ukc3RhcnRfeWVhcjwxOTAwXSA9IE5BCm1hcnJpYWdlJHN0YXJ0X3llYXJbIG1hcnJpYWdlJHN0YXJ0X3llYXI+MjAxNl0gPSBOQQptYXJyaWFnZSRzdGFydF95ZWFyWyBpcy5uYW4obWFycmlhZ2Ukc3RhcnRfeWVhcildID0gTkEKbWFycmlhZ2UkZW5kX3llYXJbIG1hcnJpYWdlJGVuZF95ZWFyPDE5MDBdID0gTkEKbWFycmlhZ2UkZW5kX3llYXJbIG1hcnJpYWdlJGVuZF95ZWFyPjIwMTZdID0gTkEKbWFycmlhZ2UkZW5kX3llYXJbIGlzLm5hbihtYXJyaWFnZSRlbmRfeWVhcildID0gTkEKbWFycmlhZ2Ukc3RhcnRfbW9udGggW21hcnJpYWdlJHN0YXJ0X21vbnRoPjEyXSA9IE5BCm1hcnJpYWdlJHN0YXJ0X21vbnRoIFtpcy5uYW4obWFycmlhZ2Ukc3RhcnRfbW9udGgpXSA9IE5BCm1hcnJpYWdlJGVuZF9tb250aCBbbWFycmlhZ2UkZW5kX21vbnRoPjEyXSA9IE5BCm1hcnJpYWdlJGVuZF9tb250aCBbaXMubmFuKG1hcnJpYWdlJGVuZF9tb250aCldID0gTkEKbWFycmlhZ2Ukc3RhcnRfYWdlIFttYXJyaWFnZSRzdGFydF9hZ2UgPiA5N10gPSBOQQptYXJyaWFnZSRzdGFydF9hZ2UgW2lzLm5hbihtYXJyaWFnZSRzdGFydF9hZ2UpXSA9IE5BCm1hcnJpYWdlJGVuZF9hZ2UgW21hcnJpYWdlJGVuZF9hZ2UgPiA5N10gPSBOQQptYXJyaWFnZSRlbmRfYWdlIFtpcy5uYW4obWFycmlhZ2UkZW5kX2FnZSldID0gTkEKbWFycmlhZ2UkYmlydGhfeWVhclsgbWFycmlhZ2UkYmlydGhfeWVhcjwxOTAwXSA9IE5BCm1hcnJpYWdlJGJpcnRoX3llYXJbIG1hcnJpYWdlJGJpcnRoX3llYXI+MjAxNl0gPSBOQQptYXJyaWFnZSRiaXJ0aF95ZWFyWyBpcy5uYW4obWFycmlhZ2UkYmlydGhfeWVhcildID0gTkEKbWFycmlhZ2UkYmlydGhfYWdlIFttYXJyaWFnZSRiaXJ0aF9hZ2UgPiA5N10gPSBOQQptYXJyaWFnZSRiaXJ0aF9hZ2UgW2lzLm5hbihtYXJyaWFnZSRiaXJ0aF9hZ2UpXSA9IE5BCgojIyBSZWNvbnN0cnVjdCBtYXJyaWFnZSBzdGFydCB5ZWFyIGFuZCBlbmQgeWVhciBmb3IgbWFycmlhZ2VzIHdpdGggbWlzc2luZyB5ZWFyCm1hcnJpYWdlID0gbWFycmlhZ2UgJT4lCiAgbXV0YXRlKGJpcnRoX3llYXIgPSBpZmVsc2UoaXMubmEoYmlydGhfeWVhciksIHdhdmUgLSBiaXJ0aF9hZ2UsIGJpcnRoX3llYXIpLAogICAgICAgICBzdGFydF95ZWFyID0gaWZlbHNlKGlzLm5hKHN0YXJ0X3llYXIpLCBiaXJ0aF95ZWFyICsgc3RhcnRfYWdlLCBzdGFydF95ZWFyKSwKICAgICAgICAgZW5kX3llYXIgPSBpZmVsc2UoaXMubmEoZW5kX3llYXIpLCBiaXJ0aF95ZWFyICsgZW5kX2FnZSwgZW5kX3llYXIpKQoKCm1hcnJpYWdlID0gbWFycmlhZ2UgJT4lIGFycmFuZ2UocGlkbGluaywgc3RhcnRfeWVhciwgc3RhcnRfbW9udGgsIHN0YXJ0X2FnZSwgZW5kX3llYXIsIGVuZF9tb250aCwgZW5kX2FnZSkKCm1hcnJpYWdlID0gbWFycmlhZ2UgJT4lIGZpbHRlcighZHVwbGljYXRlZChjYmluZChwaWRsaW5rLCBzdGFydF95ZWFyLCBzdGFydF9tb250aCkpIHwgaXMubmEoc3RhcnRfeWVhcikgfCBpcy5uYShzdGFydF9tb250aCkpICMgbm9ib2R5IGdldHMgbWFycmllZCB0d2ljZSBvbiB0aGUgc2FtZSBkYXksIHJpZ2h0PyBzbyB0aGVzZSBhcmUgZHVwZXMuCgojIyBDYWxjdWxhdGUgZGF0ZSBmb3IgYmVnaW5uaW5nIG9mIG1hcnJpYWdlOgptYXJyaWFnZSA9IG1hcnJpYWdlICU+JSAKICB1bmdyb3VwKCkgJT4lCiAgbXV0YXRlKHN0YXJ0X3N0cmluZyA9IHN0cl9jKHN0YXJ0X3llYXIsICItIiwgaWZlbHNlKGlzLm5hKHN0YXJ0X21vbnRoKSwgIjAxIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcGFkX21vbnRoKHN0YXJ0X21vbnRoKSksICItMDEiKSwKICAgICAgICBlbmRfc3RyaW5nID0gc3RyX2MoZW5kX3llYXIsICItIiwgaWZlbHNlKGlzLm5hKGVuZF9tb250aCksICIxMiIsIHBhZF9tb250aChlbmRfbW9udGgpKSwgIi0wMSIpLAogICAgICAgIHN0YXJ0ID0geW1kKHN0YXJ0X3N0cmluZyksCiAgICAgICAgZW5kID0geW1kKGVuZF9zdHJpbmcpICsgbW9udGhzKDEpIC0gZGF5cygxKSkKCiMjIENvdW50IG51bWJlciBvZiBtYXJyaWFnZXMKbWFycmlhZ2UgPSBtYXJyaWFnZSAlPiUKICBhcnJhbmdlKHBpZGxpbmssIHN0YXJ0LCBlbmQpICU+JQogIGdyb3VwX2J5KHBpZGxpbmspICU+JQogIG11dGF0ZShudW1iZXJfbWFycmlhZ2VzID0gbigpLAogICAgICAgICBvcmRlcl9tYXJyaWFnZSA9IHJvd19udW1iZXIoKSwKICAgICAgICAgbWFycmlhZ2VfaWQgPSBwYXN0ZTAocGlkbGluaywgIl8iLCBhcy5jaGFyYWN0ZXIob3JkZXJfbWFycmlhZ2UpLCAiXyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFzLmNoYXJhY3RlcihzdGFydCksICIvIixhcy5jaGFyYWN0ZXIoZW5kKSkpCgojIyMgTWFycmlhZ2UgVGltZWxpbmUKbWluaW11bV9zdGFydCA9IG1pbih5bWQoc3RyX2MocHJlZ25hbmN5JG1vbnRoLCAiLTAxIikpLCBuYS5ybSA9IFQpCm1heGltdW1fZW5kID0gbWF4KHltZChzdHJfYyhwcmVnbmFuY3kkbW9udGgsICItMDEiKSksIG5hLnJtID0gVCkKbWFycmlhZ2VfdGltZWxpbmUgPSBtYXJyaWFnZSAlPiUKICAgIG11dGF0ZShpbXBsaWVkX3N0YXJ0ID0gYXMuRGF0ZShpZmVsc2UoaXMubmEoc3RhcnQpLCBtaW5pbXVtX3N0YXJ0ICwgc3RhcnQpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG9yaWdpbj0iMTk3MC0wMS0wMSIpLAogICAgICAgICAgIGltcGxpZWRfZW5kID0gYXMuRGF0ZShpZmVsc2UoaXMubmEoZW5kKSwgbWF4aW11bV9lbmQgLCBlbmQpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBvcmlnaW49IjE5NzAtMDEtMDEiKSkgJT4lCiAgZmlsdGVyKGltcGxpZWRfc3RhcnQgPCBpbXBsaWVkX2VuZCkKCm1hcnJpYWdlX3RpbWVsaW5lID0gbWFycmlhZ2VfdGltZWxpbmUgJT4lCiAgICByb3d3aXNlKCkgJT4lCiAgICBkbyhkYXRhLmZyYW1lKAogICAgICAgIG1hcnJpYWdlX2lkPS4kbWFycmlhZ2VfaWQsIAogICAgICAgIG1vdGhlcl9waWRsaW5rID0gLiRwaWRsaW5rLAogICAgICAgIG9yZGVyX21hcnJpYWdlID0gLiRvcmRlcl9tYXJyaWFnZSwKICAgICAgICBzdGFydCA9IC4kc3RhcnQsCiAgICAgICAgZW5kID0gLiRlbmQsCiAgICAgICAgbW9udGggPSBzZXEoLiRpbXBsaWVkX3N0YXJ0LC4kaW1wbGllZF9lbmQsIGJ5PSIxIG1vbnRoIikgKSkKCiMgbm8gZHVwbGljYXRlIG1vdGhlcl9pZCAtIG1vbnRoIGNvbWJpbmF0aW9ucyAobm8gdHdvIG1hcnJpYWdlcyBhdCB0aGUgc2FtZSB0aW1lKQptYXJyaWFnZV90aW1lbGluZSA9IG1hcnJpYWdlX3RpbWVsaW5lICU+JSAKICBhcnJhbmdlKG1vdGhlcl9waWRsaW5rLCBzdGFydCwgZW5kKSAlPiUgCiAgZGlzdGluY3QobW90aGVyX3BpZGxpbmssIG1vbnRoLCAua2VlcF9hbGwgPSBUUlVFKQoKbWFycmlhZ2VfdGltZWxpbmUkbW9udGggPSBzdHJpbmdyOjpzdHJfc3ViKGFzLmNoYXJhY3RlcihtYXJyaWFnZV90aW1lbGluZSRtb250aCksMSw3KQoKcHJlZ25hbmN5ID0gcHJlZ25hbmN5ICU+JSBsZWZ0X2pvaW4obWFycmlhZ2VfdGltZWxpbmUsIGJ5ID0gYygibW90aGVyX3BpZGxpbmsiLCAibW9udGgiKSkgJT4lIHVuZ3JvdXAoKQpgYGAKCgojIyMgQmlydGggb3JkZXIgY2FsY3VsYXRpb25zIHsudGFic2V0fQpgYGB7ciBVdGVydXMgYmlydGhvcmRlciBhbmQgbWF0ZXJuYWwgc2libGluZyBjb3VudH0KIyMjIyBNYXRlcm5hbCBQcmVnbmFuY3kgT3JkZXIKcHJlZ25hbmN5MSA9IHByZWduYW5jeSAlPiUKICBncm91cF9ieShtb3RoZXJfcGlkbGluaykgJT4lCiAgbXV0YXRlKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcgPSBtaW5fcmFuayhiaXJ0aGRhdGUpLAogICAgICAgICAjIGJpcnRob3JkZXJfdXRlcnVzX3ByZWcgPSBpZmVsc2UoYW55X211bHRpcGxlX2JpcnRoID09IDEsIE5BLCBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnKSwKICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZyA9IHN1bSghaXMubmEoYmlydGhkYXRlKSkKICAgICAgICAgIyAsc2libGluZ19jb3VudF91dGVydXNfcHJlZyA9IGlmZWxzZShhbnlfbXVsdGlwbGVfYmlydGggPT0gMSwgTkEsIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcpCiAgICAgICAgICkgJT4lCiAgdW5ncm91cCgpCgojIyMjIE1hdGVybmFsIEJpcnRoIE9yZGVyCnByZWduYW5jeTIgPSBwcmVnbmFuY3kgJT4lCiAgZmlsdGVyKGxpZmViaXJ0aHMgPT0gMikgJT4lCiAgZ3JvdXBfYnkobW90aGVyX3BpZGxpbmspICU+JQogICAgbXV0YXRlKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlID0gbWluX3JhbmsoYmlydGhkYXRlKSwKICAgICAgICAgICAjIGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlID0gaWZlbHNlKGFueV9tdWx0aXBsZV9iaXJ0aCA9PSAxLCBOQSwgYmlydGhvcmRlcl91dGVydXNfYWxpdmUpLAogICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlID0gc3VtKCFpcy5uYShiaXJ0aGRhdGUpKQogICAgICAgICAgICMgLHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlID0gaWZlbHNlKGFueV9tdWx0aXBsZV9iaXJ0aCA9PSAxLCBOQSwgc2libGluZ19jb3VudF91dGVydXNfYWxpdmUpCiAgICAgICAgICAgKSAlPiUKICB1bmdyb3VwKCkKCnByZWduYW5jeTIgPSBwcmVnbmFuY3kyICU+JSBzZWxlY3QobW90aGVyX2JpcnRoZGF0ZSwgYmlydGhvcmRlcl91dGVydXNfYWxpdmUsIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlKSAlPiUgZGlzdGluY3QoKQoKIyMjIyBQYXJlbnRhbCBGdWxsIFNpYmxpbmcgQmlydGhvcmRlcgpwcmVnbmFuY3kzID0gcHJlZ25hbmN5ICU+JQogIGZpbHRlcihsaWZlYmlydGhzID09IDIpICU+JQogIGdyb3VwX2J5KG1hcnJpYWdlX2lkKSAlPiUKICAgIG11dGF0ZShiaXJ0aG9yZGVyX2dlbmVzID0gbWluX3JhbmsoYmlydGhkYXRlKSwKICAgICAgICAgICBiaXJ0aG9yZGVyX2dlbmVzID0gaWZlbHNlKGlzLm5hKG1hcnJpYWdlX2lkKSwgTkEsIGJpcnRob3JkZXJfZ2VuZXMpLAogICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXMgPSBpZmVsc2UoaXMubmEobWFycmlhZ2VfaWQpLCBOQSwgc3VtKCFpcy5uYShtYXJyaWFnZV9pZCkpKSkgJT4lCiAgdW5ncm91cCgpCgpwcmVnbmFuY3kzID0gcHJlZ25hbmN5MyAlPiUgc2VsZWN0KG1vdGhlcl9iaXJ0aGRhdGUsIGJpcnRob3JkZXJfZ2VuZXMsIHNpYmxpbmdfY291bnRfZ2VuZXMpICU+JSBkaXN0aW5jdCgpCgoKIyMjIENvbWJpbmUgYmlydGhvcmRlciBkYXRhCnByZWduYW5jeSA9IGxlZnRfam9pbihwcmVnbmFuY3kxLCBwcmVnbmFuY3kyLCBieT0ibW90aGVyX2JpcnRoZGF0ZSIpICU+JSB1bmdyb3VwKCkKcHJlZ25hbmN5ID0gbGVmdF9qb2luKHByZWduYW5jeSwgcHJlZ25hbmN5MywgYnkgPSAibW90aGVyX2JpcnRoZGF0ZSIpICU+JSB1bmdyb3VwKCkKYGBgCgoKIyMjIEJpcnRoIG9yZGVyIGdyYXBocwpgYGB7cn0KIyMjIEdyYXBocwojIyBCaW9sb2dpY2FsIEJpcnRob3JkZXIgLSBVdGVydXNfUHJlZ25hbmNpZXMKZ2dwbG90KHByZWduYW5jeSwgYWVzKHg9c2libGluZ19jb3VudF91dGVydXNfcHJlZywgeT1iaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnKSkgKyBnZW9tX2ppdHRlcihhbHBoYSA9IDAuMSkKCiMjIEJpb2xvZ2ljYWwgQmlydGhvcmRlciAtIFV0ZXJ1c19CaXJ0aHMKZ2dwbG90KHByZWduYW5jeSwgYWVzKHg9c2libGluZ19jb3VudF91dGVydXNfYWxpdmUsIHk9YmlydGhvcmRlcl91dGVydXNfYWxpdmUpKSArIGdlb21faml0dGVyKGFscGhhID0gMC4xKQoKIyMgQmlvbG9naWNhbCBCaXJ0aG9yZGVyIC0gRnVsbCBTaWJsaW5nIE9yZGVyCmdncGxvdChwcmVnbmFuY3ksIGFlcyh4PXNpYmxpbmdfY291bnRfZ2VuZXMsIHk9YmlydGhvcmRlcl9nZW5lcykpICsgZ2VvbV9qaXR0ZXIoYWxwaGEgPSAwLjEpCgojIyBCaW86IFV0ZXJ1c19wcmVnIHZzLiBVdGVydXNfQmlydGhzCmdncGxvdChwcmVnbmFuY3ksIGFlcyh4PWJpcnRob3JkZXJfdXRlcnVzX3ByZWcsIHk9YmlydGhvcmRlcl91dGVydXNfYWxpdmUpKSArIGdlb21faml0dGVyKGFscGhhID0gMC4xKQojIFRoZSBiaXJ0aF9vcmRlcl9hbGl2ZSBpcyBhbHdheXMgbG93ZXIsIHdoaWNoIG1ha2VzIHNlbnNlLCBiZWNhdXMgbm90IGxpdmUgYmlydGhzIChtaXNjYXJyaWFnZSwgc3RpbGwgYmlydGhzIGFyZSBleGNsdWRlZCkKCiMjIEJpbzogVXRlcnVzX3ByZWcgdnMuIEdlbmVzCmdncGxvdChwcmVnbmFuY3ksIGFlcyh4PWJpcnRob3JkZXJfdXRlcnVzX3ByZWcsIHk9YmlydGhvcmRlcl9nZW5lcykpICsgZ2VvbV9qaXR0ZXIoYWxwaGEgPSAwLjEpCiMgVGhlIGJpcnRoX29yZGVyX2FsaXZlIGlzIGFsd2F5cyBsb3dlciwgd2hpY2ggbWFrZXMgc2Vuc2UsIGJlY2F1cyBub3QgbGl2ZSBiaXJ0aHMgKG1pc2NhcnJpYWdlLCBzdGlsbCBiaXJ0aHMgYXJlIGV4Y2x1ZGVkKQoKIyMgQmlvOiBVdGVydXNfYWxpdmUgdnMuIEdlbmVzCmdncGxvdChwcmVnbmFuY3ksIGFlcyh4PWJpcnRob3JkZXJfdXRlcnVzX2FsaXZlLCB5PWJpcnRob3JkZXJfZ2VuZXMpKSAgKyBnZW9tX2ppdHRlcihhbHBoYSA9IDAuMSkKIyBUaGUgYmlydGhfb3JkZXJfYWxpdmUgaXMgYWx3YXlzIGxvd2VyLCB3aGljaCBtYWtlcyBzZW5zZSwgYmVjYXVzIG5vdCBsaXZlIGJpcnRocyAobWlzY2FycmlhZ2UsIHN0aWxsIGJpcnRocyBhcmUgZXhjbHVkZWQpCgpwcmVnbmFuY3kgJT4lIHNlbGVjdChiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSwgYmlydGhvcmRlcl91dGVydXNfcHJlZywgYmlydGhvcmRlcl9nZW5lcykgJT4lIG5hLm9taXQoKSAlPiUgY29yKCkKcHJlZ25hbmN5ICU+JSBzZWxlY3QoYmlydGhvcmRlcl91dGVydXNfYWxpdmUsIGJpcnRob3JkZXJfdXRlcnVzX3ByZWcsIGJpcnRob3JkZXJfZ2VuZXMpICU+JSBtaXNzaW5nbmVzc19wYXR0ZXJucygpCnByZWduYW5jeSAlPiUgc2VsZWN0KHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlLCBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnLCBzaWJsaW5nX2NvdW50X2dlbmVzKSAlPiUgbWlzc2luZ25lc3NfcGF0dGVybnMoKQpgYGAKCiMjIFNlbGVjdCBpbmRpdmlkdWFsIGRhdGEgZnJvbSBJRkxTIDUKYGBge3Igc2VsZWN0IGluZGl2aWR1YWwgZGF0YX0KIyMjIEluZGl2aWR1YWxzCmluZGl2aWR1YWxzID0gYmtfYXIxICU+JSBzZWxlY3QoaGhpZDE0XzksIHBpZGxpbmssIGZhdGhlcl9waWRsaW5rLCBtb3RoZXJfcGlkbGluaywgYXIwMWEsIGFyMDJiLCBhcjEwLCBhcjExLCBhcjA3LCBhcjA4ZGF5LCBhcjA4bXRoLCBhcjA4eXIsIGFyMDksIGFyMThleXIsIGFyMThlbXRoKQojUmVuYW1lIHZhcmlhYmxlcyB0byBtYWtlIGl0IGVhc2llcgppbmRpdmlkdWFscyA9IHJlbmFtZShpbmRpdmlkdWFscywgcmVsYXRpb25fdG9fSEhfaGVhZCA9IGFyMDJiLCBmYXRoZXJJRCA9IGFyMTAsIG1vdGhlcklEID0gYXIxMSwgc2V4ID0gYXIwNywgYWdlID0gYXIwOSwgc3RhdHVzID0gYXIwMWEsIGRlYXRoX3lyID0gYXIxOGV5ciwgZGVhdGhfbW9udGggPSBhcjE4ZW10aCkgCiMgUmVtb3ZlIGR1cGxpY2F0cyAoc29tZSBwZW9wbGUgYXJlIG1lbnRpb25lZCBpbiB0d28gaG91c2Vob2xkcywgZS5nLiBiZWNhdXNlIHRoZXkgbW92ZWQgaW4gdGhlIGxhc3QgMTIgbW9udGhzKQppbmRpdmlkdWFscyA9IGluZGl2aWR1YWxzICU+JSBkaXN0aW5jdChwaWRsaW5rLCAua2VlcF9hbGwgPSBUUlVFKQppbmRpdmlkdWFsc191bmNoYW5nZWQgPSBpbmRpdmlkdWFscwoKIyMgcGVvcGxlIHdob3NlIHBhcmVudHMgY2FuIG5vdCBiZSBpZGVudGlmaWVkIGhhdmUgdG8gYmUgbWFya2VkIGFzIE5BOgppbmRpdmlkdWFscyRmYXRoZXJJRFsgaW5kaXZpZHVhbHMkZmF0aGVySUQ+NTBdID0gTkEKaW5kaXZpZHVhbHMkbW90aGVySURbIGluZGl2aWR1YWxzJG1vdGhlcklEPjUwXSA9IE5BCgoKIyMgQ3JlYXRlIGRhdGUgb2YgYmlydGgKI1NldCBhbGwgdmFyaWFibGVzIG1pc3NpbmcgdGhhdCBoYXZlIG5vdCBiZWVuIHJlcG9ydGVkOgppbmRpdmlkdWFscyRhcjA4ZGF5WyBpbmRpdmlkdWFscyRhcjA4ZGF5PjMxXSA9IE5BCmluZGl2aWR1YWxzJGFyMDhtdGhbIGluZGl2aWR1YWxzJGFyMDhtdGg+MTJdID0gTkEKaW5kaXZpZHVhbHMkYXIwOHlyWyBpbmRpdmlkdWFscyRhcjA4eXI+MjAxNl0gPSBOQQppbmRpdmlkdWFscyRhcjA4ZGF5WyBpcy5uYW4oaW5kaXZpZHVhbHMkYXIwOGRheSkgXSA9IE5BCmluZGl2aWR1YWxzJGFyMDhtdGhbIGlzLm5hbihpbmRpdmlkdWFscyRhcjA4bXRoKSBdID0gTkEKaW5kaXZpZHVhbHMkYXIwOHlyWyBpcy5uYW4oaW5kaXZpZHVhbHMkYXIwOHlyKV0gPSBOQQppbmRpdmlkdWFscyRkZWF0aF9tb250aFsgaW5kaXZpZHVhbHMkZGVhdGhfbW9udGg+MTJdID0gTkEKaW5kaXZpZHVhbHMkZGVhdGhfeXJbIGluZGl2aWR1YWxzJGRlYXRoX3lyPjIwMTZdID0gTkEKaW5kaXZpZHVhbHMkZGVhdGhfbW9udGhbIGlzLm5hbihpbmRpdmlkdWFscyRkZWF0aF9tb250aCkgXSA9IE5BCmluZGl2aWR1YWxzJGRlYXRoX3lyWyBpcy5uYW4oaW5kaXZpZHVhbHMkZGVhdGhfeXIpXSA9IE5BCgojIyBDcmVhdGUgdmFyaWFibGUgdGhhdCBjb250YWlucyBwaWRsaW5rIG9mIG1vdGhlciBhbmQgYmlydGhkYXRlIG9mIGNoaWxkOgppbmRpdmlkdWFscyA9IGluZGl2aWR1YWxzICU+JQogICAgbXV0YXRlKGJpcnRoZGF0ZSA9IGFsbF9hdmFpbGFibGVfaW5mb19iaXJ0aF9kYXRlKGFyMDh5ciwgYXIwOG10aCwgYXIwOGRheSksCiAgICAgICAgICAgbW90aGVyX2JpcnRoZGF0ZSA9IHN0cl9jKG1vdGhlcl9waWRsaW5rLCAiLSIsIGJpcnRoZGF0ZSkpICMgbW90aGVyX3BpZGxpbmstWVlZWS1NTTsgaXMgTkEgaWYgYmlydGhfeWVhciBpcyBtaXNzaW5nCgojI1JlbW92ZSBhbGwgd2l0aCBtaXNzaW5nIG1vdGhlcl9iaXJ0aGRhdGUKaW5kaXZpZHVhbHMgPSBpbmRpdmlkdWFscyAlPiUKICBmaWx0ZXIoIWlzLm5hKG1vdGhlcl9iaXJ0aGRhdGUpKQoKCiMjIENvbWJpbmUgaW5mb3JtYXRpb24gZnJvbSBwcmVnbmFuY3kgaGlzdG9yeSBhbmQgaW5kaXZpZHVhbCBmaWxlcwpwcmVnbmFuY3kgPSBwcmVnbmFuY3kgJT4lCiAgZ3JvdXBfYnkobW90aGVyX2JpcnRoZGF0ZSkgJT4lCiAgbXV0YXRlKHR3aW5fb3JkZXIgPSByb3dfbnVtYmVyKGJpcnRoZGF0ZSksCiAgICAgICAgIG1vdGhlcl9iaXJ0aGRhdGVfdW5pcXVlID0gcGFzdGUwKG1vdGhlcl9iaXJ0aGRhdGUsICItIiwgdHdpbl9vcmRlcikpICU+JQogIHVuZ3JvdXAoKQoKaW5kaXZpZHVhbHMgPSBpbmRpdmlkdWFscyAlPiUKICBncm91cF9ieShtb3RoZXJfYmlydGhkYXRlKSAlPiUKICBtdXRhdGUodHdpbl9vcmRlciA9IHJvd19udW1iZXIoYmlydGhkYXRlKSwKICAgICAgICAgbW90aGVyX2JpcnRoZGF0ZV91bmlxdWUgPSBwYXN0ZTAobW90aGVyX2JpcnRoZGF0ZSwgIi0iLCB0d2luX29yZGVyKSkgJT4lCiAgdW5ncm91cCgpICU+JQogIHNlbGVjdChtb3RoZXJfYmlydGhkYXRlX3VuaXF1ZSwgcGlkbGluaywgc2V4LCBhZ2UpCgoKcHJlZ25hbmN5X21pc3NpbmcgPSBwcmVnbmFuY3kgJT4lCiAgbXV0YXRlKG1pc3NpbmcgPSBpZmVsc2UoIShtb3RoZXJfYmlydGhkYXRlX3VuaXF1ZSAlaW4lIGluZGl2aWR1YWxzJG1vdGhlcl9iaXJ0aGRhdGVfdW5pcXVlKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAxLCAwKSkgJT4lCiAgZmlsdGVyKG1pc3NpbmcgPT0gMSkKCiMgcHJldmVudCB0aGF0IHR3aW5zIGV4aXN0IDQgdGltZXMgYmVjYXVzZSB0aGV5IGFwcGVhciB0d2ljZSBpbiBwcmVnbmFuY3kgYW5kIHR3aWNlIGluIGluZGl2aWR1YWxzLCBieSBlbGltaW5hdGluZyBkdXBlcyBmcm9tIHByZWduYW5jeQpwcmVnbmFuY3lfbm90X21pc3NpbmcgPSBwcmVnbmFuY3kgJT4lCiAgbXV0YXRlKG1pc3NpbmcgPSBpZmVsc2UoIShtb3RoZXJfYmlydGhkYXRlX3VuaXF1ZSAlaW4lIGluZGl2aWR1YWxzJG1vdGhlcl9iaXJ0aGRhdGVfdW5pcXVlKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAxLCAwKSkgJT4lCiAgZmlsdGVyKG1pc3NpbmcgPT0gMCkgICAgICAgICAgCgphbGxkYXRhX3ByZWduYW5jeSA9IGxlZnRfam9pbihwcmVnbmFuY3lfbm90X21pc3NpbmcsIGluZGl2aWR1YWxzLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICBieSA9ICJtb3RoZXJfYmlydGhkYXRlX3VuaXF1ZSIpCgphbGxkYXRhX3ByZWduYW5jeSA9IGJpbmRfcm93cyhhbGxkYXRhX3ByZWduYW5jeSwgcHJlZ25hbmN5X21pc3NpbmcpCgpwcm9wLnRhYmxlKHRhYmxlKGFsbGRhdGFfcHJlZ25hbmN5JG11bHRpcGxlX2JpcnRoKSkKcHJvcC50YWJsZSh0YWJsZShhbGxkYXRhX3ByZWduYW5jeSRhbnlfbXVsdGlwbGVfYmlydGgpKQpgYGAKCgojIyBJbnRlbGxpZ2VuY2Ugey50YWJzZXR9CmBgYHtyIHNlbGVjdCBJUSBkYXRhfQojIyMgSVEgSW5mb3JtYXRpb25zCiMjZWsyICg+MTR5cnMpCmlxMi4xID0gZWtfZWsyICU+JSBzZWxlY3QoaGhpZDE0XzksIHBpZGxpbmssIGFnZSwgc2V4LCBla3R5cGUsIHJlc3B0eXBlLCByZXN1bHQsIHJlYXNvbiwgZWsxX2FucywgZWsyX2FucywgZWszX2FucywgZWs0X2FucywgZWs1X2FucywgZWs2X2FucywgZWs3X2FucywgZWs4X2FucywgZWs5X2FucywgZWsxMF9hbnMsIGVrMTFfYW5zLCBlazEyX2FucywgZWsxM19hbnMsIGVrMTRfYW5zLCBlazE1X2FucywgZWsxNl9hbnMsIGVrMTdfYW5zLCBlazE4X2FucywgZWsxOV9hbnMsIGVrMjBfYW5zLCBlazIxX2FucywgZWsyMl9hbnMpCgoKIyNhZGRpdGlvbmFsIGluZm9ybWF0aW9ucyBmb3IgYWR1bHRzOiBjb3VudGluZyBiYWNrd2FyZHMKaXEyLjIgPSBiM2JfY28xICU+JSBzZWxlY3QoaGhpZDE0XzksIHBpZGxpbmssIGNvMDRhLCBjbzA0YiwgY28wNGMsIGNvMDRkLCBjbzA0ZSwgY28wN2NvdW50LCBjbzEwY291bnQpCiMjYWRkaXRpb25hbCBpbmZvcm1hdGlvbnMgZm9yIGFkdWx0czogYWRhcHRpdmUgbnVtYmVyIHRlc3QKaXEyLjMgPSBiM2JfY29iICU+JSBzZWxlY3QoaGhpZDE0XzksIHBpZGxpbmssIHdfYWJpbCwgY29iMTgsIGNvYjE5YikKCiMjIHB1dCBhbGwgdGhlIGluZm9ybWF0aW9ucyBmb3IgcGFydGljaXBhbnRzID49IDE1IHRvZ2V0aGVyCmlxMiA9IGZ1bGxfam9pbihpcTIuMSwgaXEyLjIsIGJ5ID0gInBpZGxpbmsiKQppcTIgPSBmdWxsX2pvaW4oaXEyLCBpcTIuMywgYnkgPSAicGlkbGluayIpCmlxID0gaXEyCmlxIDwtIHBseXI6OnJlbmFtZShpcSwgYygiYWdlIj0iSVFhZ2UiKSkgCgojIyMgY2FsY3VsYXRlIGlxIHNjb3JlcwojI1JhdmVuIFRlc3QKYW5zd2VyZWRfcmF2ZW5faXRlbXMgPSBpcSAlPiUgc2VsZWN0KGVrMV9hbnM6ZWs2X2FucywgZWsxMV9hbnMsIGVrMTJfYW5zKQpwc3ljaDo6YWxwaGEoZGF0YS5mcmFtZShhbnN3ZXJlZF9yYXZlbl9pdGVtcykpCmlxJHJhdmVuID0gcm93TWVhbnMoIGFuc3dlcmVkX3JhdmVuX2l0ZW1zLCBuYS5ybSA9IFQpCmlxJHJhdmVuWyEgaXEkcmVzdWx0ICVpbiUgMToyXSA9IE5BCnFwbG90KGlxJHJhdmVuKQoKIyNNYXRoIFRlc3QKYW5zd2VyZWRfbWF0aF9pdGVtcyA9IGlxICU+JSBzZWxlY3QoZWsxOF9hbnM6ZWsyMl9hbnMpCnBzeWNoOjphbHBoYShkYXRhLmZyYW1lKGFuc3dlcmVkX21hdGhfaXRlbXMpKQppcSRtYXRoID0gcm93TWVhbnMoIGFuc3dlcmVkX21hdGhfaXRlbXMsIG5hLnJtID0gVCkKaXEkbWF0aFshIGlxJHJlc3VsdCAlaW4lIDE6Ml0gPSBOQQpxcGxvdChpcSRtYXRoKQoKIyNDb3VudGluZyBJdGVtcwojIENyZWF0ZSBSaWdodC9Xcm9uZyBTY29yZXMgZm9yIHRoZSBjb3VudGluZyBpdGVtcwppcSRjbzA0YXJpZ2h0ID0gYXMubnVtZXJpYyhpcSRjbzA0YSA9PSA5MykKaXEkY28wNGJyaWdodCA9IGFzLm51bWVyaWMoaXEkY28wNGIgPT0gaXEkY28wNGEtNykKaXEkY28wNGNyaWdodCA9IGFzLm51bWVyaWMoaXEkY28wNGMgPT0gaXEkY28wNGItNykKaXEkY28wNGRyaWdodCA9IGFzLm51bWVyaWMoaXEkY28wNGQgPT0gaXEkY28wNGMtNykKaXEkY28wNGVyaWdodCA9IGFzLm51bWVyaWMoaXEkY28wNGUgPT0gaXEkY28wNGQtNykKCmFuc3dlcmVkX2NvdW50aW5nX2l0ZW1zID0gaXEgJT4lIHNlbGVjdChjbzA0YXJpZ2h0OmNvMDRlcmlnaHQpCnBzeWNoOjphbHBoYShkYXRhLmZyYW1lKGFuc3dlcmVkX2NvdW50aW5nX2l0ZW1zKSkKaXEkY291bnRfYmFja3dhcmRzID0gcm93U3VtcyggYW5zd2VyZWRfY291bnRpbmdfaXRlbXMsIG5hLnJtID0gVCkgLyA1CnFwbG90KGlxJGNvdW50X2JhY2t3YXJkcykKCiMjIFdvcmQgTWVtb3J5CmlxJHdvcmRzX2ltbWVkaWF0ZSA9IGlxJGNvMDdjb3VudAppcSR3b3Jkc19kZWxheWVkID0gaXEkY28xMGNvdW50CnFwbG90KGlxJHdvcmRzX2ltbWVkaWF0ZSwgaXEkd29yZHNfZGVsYXllZCwgZ2VvbSA9ICJqaXR0ZXIiKQphbnN3ZXJlZF93b3JkX2l0ZW1zID0gaXEgJT4lIHNlbGVjdChjbzA3Y291bnQsY28xMGNvdW50KQpwc3ljaDo6YWxwaGEoZGF0YS5mcmFtZShhbnN3ZXJlZF93b3JkX2l0ZW1zKSkKaXEkd29yZHNfcmVtZW1iZXJlZF9hdmcgPSByb3dNZWFucyggYW5zd2VyZWRfd29yZF9pdGVtcywgbmEucm0gPSBUKQpxcGxvdChpcSR3b3Jkc19yZW1lbWJlcmVkX2F2ZykKCiMjQWRhcHRpdmUgTnVtYmVyaW5nCmlxJGFkYXB0aXZlX251bWJlcmluZyA9IGlxJHdfYWJpbApxcGxvdChpcSRhZGFwdGl2ZV9udW1iZXJpbmcpCgojIyBDb3JyZWxhdGlvbiBvZiBhbGwgSXEtVGVzdHMKcm91bmQoY29yKGlxICU+JSBzZWxlY3QocmF2ZW4sIG1hdGgsIGNvdW50X2JhY2t3YXJkcywgd29yZHNfaW1tZWRpYXRlLCB3b3Jkc19kZWxheWVkLCBhZGFwdGl2ZV9udW1iZXJpbmcpLCB1c2UgPSAicGFpcndpc2UuY29tcGxldGUub2JzIiksIDIpCgojI01pc3NpbmduZXNzX1BhdHRlcm5zCmZvcm1yOjptaXNzaW5nbmVzc19wYXR0ZXJucyhpcSAlPiUgc2VsZWN0KHJhdmVuLCBtYXRoLCBjb3VudF9iYWNrd2FyZHMsIHdvcmRzX2ltbWVkaWF0ZSwgd29yZHNfZGVsYXllZCwgYWRhcHRpdmVfbnVtYmVyaW5nKSkKCiMjZ19mYWN0b3IKImdfZmFjdG9yID1+IHJhdmVuICsgbWF0aCArIGNvdW50X2JhY2t3YXJkcyArICB3b3Jkc19kZWxheWVkKyBhZGFwdGl2ZV9udW1iZXJpbmciICU+JQogIGNmYShtaXNzaW5nID0gImZpbWwiLCBkYXRhID0gaXEsIHN0ZC5sdiA9IFQsIHN0ZC5vdiA9IFQpIC0+IGNmYV9nCnN1bW1hcnkoY2ZhX2cpCgppcSRnX2ZhY3RvciA9IHByZWRpY3QoY2ZhX2cpWywxXQppcSA9IGlxICU+JQogIG11dGF0ZShnX2ZhY3RvciA9IGlmZWxzZShpcy5uYShyYXZlbiksIE5BLCBnX2ZhY3RvciksCiAgICAgICAgIGdfZmFjdG9yID0gaWZlbHNlKGlzLm5hKG1hdGgpLCBOQSwgZ19mYWN0b3IpLAogICAgICAgICBnX2ZhY3RvciA9IGlmZWxzZShpcy5uYShjb3VudF9iYWNrd2FyZHMpLCBOQSwgZ19mYWN0b3IpLAogICAgICAgICBnX2ZhY3RvciA9IGlmZWxzZShpcy5uYSh3b3Jkc19pbW1lZGlhdGUpLCBOQSwgZ19mYWN0b3IpLAogICAgICAgICBnX2ZhY3RvciA9IGlmZWxzZShpcy5uYSh3b3Jkc19kZWxheWVkKSwgTkEsIGdfZmFjdG9yKSwKICAgICAgICAgZ19mYWN0b3IgPSBpZmVsc2UoaXMubmEoYWRhcHRpdmVfbnVtYmVyaW5nKSwgTkEsIGdfZmFjdG9yKSkKcXBsb3QoaXEkZ19mYWN0b3IpCmBgYAoKCgojIyBQZXJzb25hbGl0eQpgYGB7ciBzZWxlY3QgcGVzb25hbGl0eSBkYXRhfQojIyMgUGVyc29uYWxpdHkKIyNSZWFycmFuZ2UgcGVyc29uYWxpdHkgZGF0YSBzbyB0aGF0IGV2ZXJ5IGluZGl2aWR1YWwgaGFzIG9ubHkgb25lIHJvdwpwZXJzID0gc3ByZWFkKGIzYl9wc24sIHBzbnR5cGUsIHBzbjAxKQojI25hbWUgY29sdW1ucwpjb2xuYW1lcyhwZXJzKSA8LSBjKCJoaGlkMTRfOSIsICJwaWQxNCIsICJoaGlkMTQiLCAicGlkbGluayIsICJ2ZXJzaW9uIiwgIm1vZHVsZSIsICJlMSIsICJjMSIsICJvMSIsICJlMnIiLCAibjFyIiwgImExIiwgIm4yciIsICJvMiIsICJjMnIiLCAibzMiLCAiYTIiLCAiYzMiLCAiZTMiLCAiYTNyIiwgIm4zIikKcGVycyA9IHBlcnMgJT4lIHNlbGVjdChoaGlkMTRfOSwgcGlkbGluaywgZTEsIGMxLCBvMSwgZTJyLCBuMXIsIGExLCBuMnIsIG8yLCBjMnIsIG8zLCBhMiwgYzMsIGUzLCBhM3IsIG4zKQoKIyNFeHRyYXZlcnNpb24KcGVycyRlMnJfcmV2ZXJzZWQgPSA2IC0gcGVycyRlMnIKZXh0cmF2ZXJzaW9uID0gcGVycyAlPiUgc2VsZWN0KGUxLCBlMnJfcmV2ZXJzZWQsIGUzKQpwc3ljaDo6YWxwaGEoZGF0YS5mcmFtZShleHRyYXZlcnNpb24pLCBjaGVjay5rZXlzID0gVCkKcGVycyRiaWc1X2V4dCA9IHJvd01lYW5zKGV4dHJhdmVyc2lvbikKcXBsb3QocGVycyRiaWc1X2V4dCkKCiMjY29uc2NpZW50aW91c25lc3MKcGVycyRjMnJfcmV2ZXJzZWQgPSA2IC0gcGVycyRjMnIKY29uc2NpZW50aW91c25lc3MgPSBwZXJzICU+JSBzZWxlY3QoYzEsIGMycl9yZXZlcnNlZCwgYzMpCnBzeWNoOjphbHBoYShkYXRhLmZyYW1lKGNvbnNjaWVudGlvdXNuZXNzKSwgY2hlY2sua2V5cyA9IFQpCnBlcnMkYmlnNV9jb24gPSByb3dNZWFucyhjb25zY2llbnRpb3VzbmVzcykKcXBsb3QocGVycyRiaWc1X2NvbikKCiMjT3Blbm5lc3MKb3Blbm5lc3MgPSBwZXJzICU+JSBzZWxlY3QobzEsIG8yLCBvMykKcHN5Y2g6OmFscGhhKGRhdGEuZnJhbWUob3Blbm5lc3MpLCBjaGVjay5rZXlzID0gVCkKcGVycyRiaWc1X29wZW4gPSByb3dNZWFucyhvcGVubmVzcykKcXBsb3QocGVycyRiaWc1X29wZW4pCgojIyBOZXVyb3RpY2lzbQpwZXJzJG4xcl9yZXZlcnNlZCA9IDYgLSBwZXJzJG4xcgpwZXJzJG4ycl9yZXZlcnNlZCA9IDYgLSBwZXJzJG4ycgpuZXVyb3RpY2lzbSA9IHBlcnMgJT4lIHNlbGVjdChuMXJfcmV2ZXJzZWQsIG4ycl9yZXZlcnNlZCwgbjMpCnBlcnMkYmlnNV9uZXUgPSByb3dNZWFucyhuZXVyb3RpY2lzbSkKcXBsb3QocGVycyRiaWc1X25ldSkKCiMjQWdyZWVhYmxlbmVzcwpwZXJzJGEzcl9yZXZlcnNlZCA9IDYtIHBlcnMkYTNyCmFncmVlYWJsZW5lc3M9IHBlcnMgJT4lIHNlbGVjdChhMSwgYTIsIGEzcl9yZXZlcnNlZCkKcGVycyRiaWc1X2FncmVlID0gcm93TWVhbnMoYWdyZWVhYmxlbmVzcykKcXBsb3QocGVycyRiaWc1X2FncmVlKQpgYGAKCgojIyBSaXNrIHByZWZlcmVuY2UKYGBge3Igc2VsZWN0IHJpc2sgdGFraW5nIGRhdGF9CiMjI1Jpc2t0YWtpbmcKcmlzayA9IGIzYV9zaSAlPiUgc2VsZWN0KGhoaWQxNF85LCBwaWRsaW5rLCByYW5kb21fc2ksIHNpMDEsIHNpMDIsIHNpMDMsIHNpMDQsIHNpMDUsIHNpMTEsIHNpMTIsIHNpMTMsIHNpMTQsIHNpMTUpCgojIyA4IG1lYW5zIHRoZXkgZGlkbnQga25vdyB3aGljaCBhbnN3ZXIgdGhleSB3b3VsZCBjaG9vc2UKcmlzayRzaTAxWyByaXNrJHNpMDEgPT0gOF0gPSBOQQpyaXNrJHNpMDJbIHJpc2skc2kwMiA9PSA4XSA9IE5BCnJpc2skc2kwM1sgcmlzayRzaTAzID09IDhdID0gTkEKcmlzayRzaTA0WyByaXNrJHNpMDQgPT0gOF0gPSBOQQpyaXNrJHNpMDVbIHJpc2skc2kwNSA9PSA4XSA9IE5BCnJpc2skc2kxMVsgcmlzayRzaTExID09IDhdID0gTkEKcmlzayRzaTEyWyByaXNrJHNpMTIgPT0gOF0gPSBOQQpyaXNrJHNpMTNbIHJpc2skc2kxMyA9PSA4XSA9IE5BCnJpc2skc2kxNFsgcmlzayRzaTE0ID09IDhdID0gTkEKcmlzayRzaTE1WyByaXNrJHNpMTUgPT0gOF0gPSBOQQoKIyMgY2FsY3VsYXRlIGEgcmlzayBzY29yZSBmb3IgcmlzayBnYW1lIEEgCiMgKDUgPSBnYW1ibGUgYXZlcnNlLCBPcmRpbmFsc2thbGEgOiAxID0gcmlzayBsb3ZpbmcsIDQgPSByaXNrIGF2ZXJzZSkKcmlzayRyaXNrQSA9IGlmZWxzZShyaXNrJHNpMDEgPT0gMSAmIHJpc2skc2kwMiA9PSAxLCA1LAogICAgICAgICAgICAgaWZlbHNlKHJpc2skc2kwMSA9PSAyICYgcmlzayRzaTAzID09IDEgJiByaXNrJHNpMDQgPT0gMSwgNCwKICAgICAgICAgICAgIGlmZWxzZShyaXNrJHNpMDEgPT0gMiAmIHJpc2skc2kwMyA9PSAxICYgcmlzayRzaTA0ID09IDIsIDMsCiAgICAgICAgICAgICBpZmVsc2UocmlzayRzaTAxID09IDIgJiByaXNrJHNpMDMgPT0gMiAmIHJpc2skc2kwNSA9PSAxLCAyLAogICAgICAgICAgICAgaWZlbHNlKHJpc2skc2kwMSA9PSAyICYgcmlzayRzaTAzID09IDIgJiByaXNrJHNpMDUgPT0gMiwgMSwKICAgICAgICAgICAgIE5BKSkpKSkKcXBsb3QocmlzayRyaXNrQVtyaXNrJHJpc2tBICE9IDVdKQoKIyMgY2FsY3VsYXRlIGEgcmlzayBzY29yZSBmb3IgcmlzayBnYW1lIEIgCiMgKDUgPSBnYW1ibGUgYXZlcnNlLCBPcmRpbmFsc2thbGEgOiAxID0gcmlzayBsb3ZpbmcsIDQgPSByaXNrIGF2ZXJzZSkKcmlzayRyaXNrQiA9IGlmZWxzZShyaXNrJHNpMTEgPT0gMiAmIHJpc2skc2kxMiA9PSAxLCA1LAogICAgICAgICAgICAgaWZlbHNlKHJpc2skc2kxMSA9PSAxICYgcmlzayRzaTEzID09IDEgJiByaXNrJHNpMTQgPT0gMSwgNCwKICAgICAgICAgICAgIGlmZWxzZShyaXNrJHNpMTEgPT0gMSAmIHJpc2skc2kxMyA9PSAxICYgcmlzayRzaTE0ID09IDIsIDMsCiAgICAgICAgICAgICBpZmVsc2UocmlzayRzaTExID09IDEgJiByaXNrJHNpMTMgPT0gMiAmIHJpc2skc2kxNSA9PSAxLCAyLAogICAgICAgICAgICAgaWZlbHNlKHJpc2skc2kxMSA9PSAxICYgcmlzayRzaTEzID09IDIgJiByaXNrJHNpMTUgPT0gMiwgMSwKICAgICAgICAgICAgIE5BKSkpKSkKcXBsb3QocmlzayRyaXNrQltyaXNrJHJpc2tCICE9NV0pCgpwc3ljaDo6YWxwaGEoZGF0YS5mcmFtZShyaXNrICU+JSBzZWxlY3Qocmlza0EsIHJpc2tCKSksIGNoZWNrLmtleXMgPSBUKQoKCmBgYAoKIyMgRWR1Y2F0aW9uYWwgQXR0YWlubWVudApgYGB7ciBzZWxlY3QgZWR1Y2F0aW9uYWwgYXR0YWlubWVudCBkYXRhfQojIFNlbGVjdCwgcmVuYW1lIGFuZCBtdXRhdGUgZGF0YQplYSA9IGIzYV9kbDEgJT4lCiAgc2VsZWN0KHBpZGxpbmssIGRsMDQsIGRsMDYsIGRsMDcsIGRsMDdhLCBkbDA3YWEpICU+JQogIHJlbmFtZShwaWRsaW5rID0gcGlkbGluaywgYXR0ZW5kZWRfc2Nob29sID0gZGwwNCwgaGlnaGVzdF9lZHVjYXRpb24gPSBkbDA2LCBoaWdoZXN0X2dyYWRlPWRsMDcsCiAgICAgICAgIGN1cnJlbnRseV9hdHRlbmRpbmdfc2Nob29sID0gZGwwN2EsIGhvdXJzX2luX2NsYXNzID0gZGwwN2FhKSAlPiUKICBtdXRhdGUoYXR0ZW5kZWRfc2Nob29sID0gYXMuZmFjdG9yKGlmZWxzZShhdHRlbmRlZF9zY2hvb2wgPT0gOCwgTkEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKGF0dGVuZGVkX3NjaG9vbCA9PSAxLCAieWVzIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKGF0dGVuZGVkX3NjaG9vbCA9PSAzLCAibm8iLCBhdHRlbmRlZF9zY2hvb2wpKSkpLAogICAgICAgICBoaWdoZXN0X2VkdWNhdGlvbiA9IGFzLmZhY3RvcihpZmVsc2UoaGlnaGVzdF9lZHVjYXRpb24gPT0gMiB8IGhpZ2hlc3RfZWR1Y2F0aW9uID09IDcyLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJFbGVtZW50YXJ5IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoaGlnaGVzdF9lZHVjYXRpb24gPT0gMyB8IGhpZ2hlc3RfZWR1Y2F0aW9uID09IDQgfAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGhpZ2hlc3RfZWR1Y2F0aW9uID09IDczLCAiSnVuaW9yIEhpZ2giLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoaGlnaGVzdF9lZHVjYXRpb24gPT0gNSB8CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGhpZ2hlc3RfZWR1Y2F0aW9uID09IDYgfAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBoaWdoZXN0X2VkdWNhdGlvbiA9PSA3NCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJTZW5pb3IgSGlnaCIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoaGlnaGVzdF9lZHVjYXRpb24gPT0gNjAgfAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaGlnaGVzdF9lZHVjYXRpb24gPT0gNjEgfAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaGlnaGVzdF9lZHVjYXRpb24gPT0gNjIgfAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaGlnaGVzdF9lZHVjYXRpb24gPT0gNjMgfAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaGlnaGVzdF9lZHVjYXRpb24gPT0gMTMsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIlVuaXZlcnNpdHkiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZShoaWdoZXN0X2VkdWNhdGlvbiA9PSA5OCwgTkEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJPdGhlciIpKSkpKSksCiAgICAgICAgIGhpZ2hlc3RfZ3JhZGUgPSBpZmVsc2UoaGlnaGVzdF9ncmFkZSA9PSA5OCwgTkEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKGhpZ2hlc3RfZ3JhZGUgPT0gOTksIE5BLCBoaWdoZXN0X2dyYWRlKSksCiAgICAgICAgIGN1cnJlbnRseV9hdHRlbmRpbmdfc2Nob29sID0gYXMuZmFjdG9yKGlmZWxzZShjdXJyZW50bHlfYXR0ZW5kaW5nX3NjaG9vbCA9PSAxLCAieWVzIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZShjdXJyZW50bHlfYXR0ZW5kaW5nX3NjaG9vbCA9PSAzLCAibm8iLCBOQSkpKSwKICAgICAgICAgaG91cnNfaW5fY2xhc3MgPSBpZmVsc2UoaG91cnNfaW5fY2xhc3MgPT0gOTksIE5BLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoaG91cnNfaW5fY2xhc3MgPT0gOTgsIE5BLCBob3Vyc19pbl9jbGFzcykpKQpgYGAKCgojIyBNZXJnZSBkYXRhCgpgYGB7ciBtZXJnZSBkYXRhfQojIyMgTWVyZ2UgYWxsIGRhdGEgZm9yIHBlb3BsZSB3aXRoIGJpcnRob3JkZXIgaW5mb3JtYXRpb25zCmFsbGRhdGFfYmlydGhvcmRlciA9IGxlZnRfam9pbihhbGxkYXRhX3ByZWduYW5jeSwgaXEsIGJ5ID0gInBpZGxpbmsiKQphbGxkYXRhX2JpcnRob3JkZXIgPSBsZWZ0X2pvaW4oYWxsZGF0YV9iaXJ0aG9yZGVyLCBwZXJzLCBieSA9ICJwaWRsaW5rIikKYWxsZGF0YV9iaXJ0aG9yZGVyID0gbGVmdF9qb2luKGFsbGRhdGFfYmlydGhvcmRlciwgcmlzaywgYnkgPSAicGlkbGluayIpCmFsbGRhdGFfYmlydGhvcmRlciA9IGxlZnRfam9pbihhbGxkYXRhX2JpcnRob3JkZXIsIGVhLCBieSA9ICJwaWRsaW5rIikKCmFsbGRhdGEgPSBsZWZ0X2pvaW4oaW5kaXZpZHVhbHNfdW5jaGFuZ2VkLCBpcSwgYnkgPSAicGlkbGluayIpCmFsbGRhdGEgPSBsZWZ0X2pvaW4oYWxsZGF0YSwgcGVycywgYnkgPSAicGlkbGluayIpCmFsbGRhdGEgPSBsZWZ0X2pvaW4oYWxsZGF0YSwgcmlzaywgYnkgPSAicGlkbGluayIpCmFsbGRhdGEgPSBsZWZ0X2pvaW4oYWxsZGF0YSwgZWEsIGJ5ID0gInBpZGxpbmsiKQoKCiMjIyBXaGljaCB2YWx1ZXMgYXJlIG1pc3Npbmc/CiMjIEFsbCBkYXRhCmZvcm1yOjptaXNzaW5nbmVzc19wYXR0ZXJucyhhbGxkYXRhX2JpcnRob3JkZXIgJT4lIHNlbGVjdChyYXZlbiwgbWF0aCwgY291bnRfYmFja3dhcmRzLCB3b3Jkc19pbW1lZGlhdGUsIHdvcmRzX2RlbGF5ZWQsIGFkYXB0aXZlX251bWJlcmluZywgYmlnNV9leHQsIHJpc2tBLCByaXNrQikpCiMjIEludGVsbGlnZW5jZQpmb3Jtcjo6bWlzc2luZ25lc3NfcGF0dGVybnMoYWxsZGF0YV9iaXJ0aG9yZGVyICU+JSBzZWxlY3QocmF2ZW4sIG1hdGgsIGNvdW50X2JhY2t3YXJkcywgd29yZHNfaW1tZWRpYXRlLCB3b3Jkc19kZWxheWVkLCBhZGFwdGl2ZV9udW1iZXJpbmcpKQojI1BlcnNvbmFsaXR5CmZvcm1yOjptaXNzaW5nbmVzc19wYXR0ZXJucyhhbGxkYXRhX2JpcnRob3JkZXIgJT4lIHNlbGVjdChiaWc1X2V4dCwgYmlnNV9jb24sIGJpZzVfb3BlbiwgYmlnNV9uZXUsIGJpZzVfYWdyZWUpKQojI1Jpc2sKZm9ybXI6Om1pc3NpbmduZXNzX3BhdHRlcm5zKGFsbGRhdGFfYmlydGhvcmRlciAlPiUgc2VsZWN0KHJpc2tBLCByaXNrQikpCmBgYAoKIyMgU2F2ZSBkYXRhCgpmb3IgZnV0dXJlIGFuYWx5c2VzCgpgYGB7ciBzYXZlIGRhdGF9CmFsbGRhdGFfYmlydGhvcmRlciA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUgdW5ncm91cCgpCmFsbGRhdGEgPSBhbGxkYXRhICU+JSB1bmdyb3VwKCkKcHJlZ25hbmN5ID0gcHJlZ25hbmN5ICU+JSB1bmdyb3VwKCkKCnNhdmVSRFMoYWxsZGF0YV9iaXJ0aG9yZGVyLCBmaWxlID0gImRhdGEvYWxsZGF0YV9iaXJ0aG9yZGVyLnJkcyIpCnNhdmVSRFMoYWxsZGF0YSwgZmlsZSA9ICJkYXRhL2FsbGRhdGEucmRzIikKc2F2ZVJEUyhwcmVnbmFuY3ksIGZpbGUgPSAiZGF0YS9wcmVnbmFuY3kucmRzIikKYGBgCg==</div>
 
 
 
@@ -2719,7 +1908,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

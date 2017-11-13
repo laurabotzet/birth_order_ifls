@@ -2,6 +2,8 @@
 output:
   html_document:
     code_folding: "show"
+editor_options: 
+  chunk_output_type: console
 ---
 
 #  <span style="color:#FC8D62">Data Wrangling</span> {.tabset}
@@ -72,7 +74,10 @@ b3b_co1 = read_dta("data/hh14_all_dta/b3b_co1.dta") # Book 3b, Section co1
 b3b_psn = read_dta("data/hh14_all_dta/b3b_psn.dta") # Book 3b, Section psn
 
 ### Risk taking
-b3a_si = read_dta("data/hh14_all_dta/b3a_si.dta") # Book 3b, Section si
+b3a_si = read_dta("data/hh14_all_dta/b3a_si.dta") # Book 3a, Section si
+
+### Educational Attainment
+b3a_dl1 = read_dta("data/hh14_all_dta/b3a_dl1.dta") # Book 3a, Section dl1
 
 ```
 
@@ -588,6 +593,40 @@ psych::alpha(data.frame(risk %>% select(riskA, riskB)), check.keys = T)
 
 ```
 
+## Educational Attainment
+```{r select educational attainment data}
+# Select, rename and mutate data
+ea = b3a_dl1 %>%
+  select(pidlink, dl04, dl06, dl07, dl07a, dl07aa) %>%
+  rename(pidlink = pidlink, attended_school = dl04, highest_education = dl06, highest_grade=dl07,
+         currently_attending_school = dl07a, hours_in_class = dl07aa) %>%
+  mutate(attended_school = as.factor(ifelse(attended_school == 8, NA,
+                                            ifelse(attended_school == 1, "yes",
+                                                   ifelse(attended_school == 3, "no", attended_school)))),
+         highest_education = as.factor(ifelse(highest_education == 2 | highest_education == 72,
+                                                     "Elementary",
+                                                     ifelse(highest_education == 3 | highest_education == 4 |
+                                                              highest_education == 73, "Junior High",
+                                                            ifelse(highest_education == 5 |
+                                                                     highest_education == 6 |
+                                                                     highest_education == 74,
+                                                                   "Senior High",
+                                                                   ifelse(highest_education == 60 |
+                                                                            highest_education == 61 |
+                                                                            highest_education == 62 |
+                                                                            highest_education == 63 |
+                                                                            highest_education == 13,
+                                                                          "University",
+                                                                          ifelse(highest_education == 98, NA,
+                                                                                 "Other")))))),
+         highest_grade = ifelse(highest_grade == 98, NA,
+                                ifelse(highest_grade == 99, NA, highest_grade)),
+         currently_attending_school = as.factor(ifelse(currently_attending_school == 1, "yes",
+                                                       ifelse(currently_attending_school == 3, "no", NA))),
+         hours_in_class = ifelse(hours_in_class == 99, NA,
+                                 ifelse(hours_in_class == 98, NA, hours_in_class)))
+```
+
 
 ## Merge data
 
@@ -596,10 +635,12 @@ psych::alpha(data.frame(risk %>% select(riskA, riskB)), check.keys = T)
 alldata_birthorder = left_join(alldata_pregnancy, iq, by = "pidlink")
 alldata_birthorder = left_join(alldata_birthorder, pers, by = "pidlink")
 alldata_birthorder = left_join(alldata_birthorder, risk, by = "pidlink")
+alldata_birthorder = left_join(alldata_birthorder, ea, by = "pidlink")
 
 alldata = left_join(individuals_unchanged, iq, by = "pidlink")
 alldata = left_join(alldata, pers, by = "pidlink")
 alldata = left_join(alldata, risk, by = "pidlink")
+alldata = left_join(alldata, ea, by = "pidlink")
 
 
 ### Which values are missing?

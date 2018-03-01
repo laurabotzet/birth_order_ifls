@@ -215,7 +215,7 @@ n_birthorder
 #### Educational Attainment
 ```{r}
 alldata_birthorder = alldata_birthorder %>%
-  mutate(used_ea = ifelse(!is.na(highest_education), 1, 0)
+  mutate(used_ea = ifelse(!is.na(highest_education), 1, 0))
 
 n_birthorder = alldata_birthorder %>%
   summarise(Maternal_Birth_Order = sum(!is.na(birthorder_uterus_alive) & any_multiple_birth != 1 &

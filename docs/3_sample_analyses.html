@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -21,10 +21,9 @@
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
-<script src="site_libs/navigation-1.1/FileSaver.min.js"></script>
 <script src="site_libs/navigation-1.1/sourceembed.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -34,10 +33,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlightingOnLoad(); }, 0);
+  }
 }
 </script>
 
@@ -254,6 +255,9 @@ $(document).ready(function () {
 <pre><code>## The following object is masked from &#39;package:base&#39;:
 ## 
 ##     date</code></pre>
+<pre><code>## Loading required package: carData</code></pre>
+<pre><code>## lattice theme set by effectsTheme()
+## See ?effectsTheme for details.</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;data.table&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:lubridate&#39;:
@@ -277,17 +281,17 @@ $(document).ready(function () {
 ## 
 ##     ggsave</code></pre>
 <pre><code>## 
-## Attaching package: &#39;haven&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:forcats&#39;:
-## 
-##     as_factor</code></pre>
-<pre><code>## 
 ## Attaching package: &#39;psych&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:ggplot2&#39;:
 ## 
 ##     %+%, alpha</code></pre>
 <pre><code>## This is lavaan 0.5-23.1097</code></pre>
 <pre><code>## lavaan is BETA software! Please report any bugs.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lavaan&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     cor2cov</code></pre>
 <pre><code>## Loading required package: lattice</code></pre>
 <pre><code>## Loading required package: survival</code></pre>
 <pre><code>## Loading required package: Formula</code></pre>
@@ -304,10 +308,6 @@ $(document).ready(function () {
 <pre><code>## The following object is masked from &#39;package:Matrix&#39;:
 ## 
 ##     expand</code></pre>
-<pre><code>## ------------------------------------------------------------------------------------------------------------</code></pre>
-<pre><code>## data.table + dplyr code now lives in dtplyr.
-## Please library(dtplyr)!</code></pre>
-<pre><code>## ------------------------------------------------------------------------------------------------------------</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:Hmisc&#39;:
@@ -375,8 +375,308 @@ birthorder = birthorder %&gt;%
   mutate(number_siblings = n()) %&gt;%
   ungroup
 
-df_pregnancy = bind_rows(pregnancy, birthorder)
-df = bind_rows(alldata, birthorder)</code></pre>
+df_pregnancy = bind_rows(pregnancy, birthorder)</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes</code></pre>
+<pre class="r"><code>df = bind_rows(alldata, birthorder)</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes
+
+## Warning in bind_rows_(x, .id): Vectorizing &#39;labelled&#39; elements may not preserve their attributes</code></pre>
 </div>
 <div id="birth-order-and-sibship-size" class="section level2 active tabset">
 <h2>Birth order and sibship size</h2>
@@ -453,7 +753,7 @@ descriptives</code></pre>
 <td align="center">38874</td>
 <td align="center">15179</td>
 <td align="center">4.381</td>
-<td align="center">4.350</td>
+<td align="center">4.35</td>
 <td align="center">4.411</td>
 <td align="center">1</td>
 <td align="center">22</td>
@@ -489,13 +789,15 @@ descriptives</code></pre>
 <pre class="r"><code>df_pregnancy %&gt;% 
   filter(!is.na(birthorder_uterus_alive)) %&gt;% 
   t.test(sibling_count_uterus_alive ~ group, data = ., var.equal = T)</code></pre>
-<table style="width:90%;">
+<table>
 <caption>Two Sample t-test: <code>sibling_count_uterus_alive</code> by <code>group</code></caption>
 <colgroup>
-<col width="23%" />
-<col width="8%" />
-<col width="25%" />
-<col width="33%" />
+<col width="14%" />
+<col width="7%" />
+<col width="17%" />
+<col width="21%" />
+<col width="21%" />
+<col width="17%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -503,6 +805,8 @@ descriptives</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -511,19 +815,23 @@ descriptives</code></pre>
 <td align="center">43531</td>
 <td align="center">0.000002974 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">4.381</td>
+<td align="center">4.164</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>df_pregnancy %&gt;% 
   filter(!is.na(birthorder_uterus_alive)) %&gt;% 
   t.test(birthorder_uterus_alive ~ group, data = ., var.equal = T)</code></pre>
-<table style="width:88%;">
+<table>
 <caption>Two Sample t-test: <code>birthorder_uterus_alive</code> by <code>group</code></caption>
 <colgroup>
-<col width="23%" />
-<col width="8%" />
+<col width="15%" />
+<col width="7%" />
+<col width="16%" />
 <col width="22%" />
-<col width="33%" />
+<col width="21%" />
+<col width="17%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -531,6 +839,8 @@ descriptives</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -539,19 +849,23 @@ descriptives</code></pre>
 <td align="center">43531</td>
 <td align="center">0.0000151 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">2.687</td>
+<td align="center">2.545</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>df_pregnancy %&gt;% 
   filter(!is.na(birthorder_uterus_alive)) %&gt;% 
   t.test(number_siblings ~ group, data = ., var.equal = T)</code></pre>
-<table style="width:79%;">
+<table>
 <caption>Two Sample t-test: <code>number_siblings</code> by <code>group</code></caption>
 <colgroup>
+<col width="16%" />
+<col width="7%" />
+<col width="9%" />
+<col width="24%" />
 <col width="23%" />
-<col width="8%" />
-<col width="13%" />
-<col width="33%" />
+<col width="19%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -559,6 +873,8 @@ descriptives</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -567,6 +883,8 @@ descriptives</code></pre>
 <td align="center">43531</td>
 <td align="center">0 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">4.598</td>
+<td align="center">1.983</td>
 </tr>
 </tbody>
 </table>
@@ -672,11 +990,11 @@ descriptives</code></pre>
 <td align="center">4666</td>
 <td align="center">3022</td>
 <td align="center">4.305</td>
-<td align="center">4.240</td>
-<td align="center">4.370</td>
+<td align="center">4.24</td>
+<td align="center">4.37</td>
 <td align="center">2</td>
 <td align="center">19</td>
-<td align="center">2.640</td>
+<td align="center">2.64</td>
 <td align="center">2.584</td>
 <td align="center">2.696</td>
 <td align="center">1</td>
@@ -690,13 +1008,15 @@ descriptives</code></pre>
 <pre class="r"><code>df_pregnancy %&gt;% 
   filter(!is.na(birthorder_uterus_preg)) %&gt;% 
   t.test(sibling_count_uterus_preg ~ group, data = ., var.equal = T)</code></pre>
-<table style="width:88%;">
+<table>
 <caption>Two Sample t-test: <code>sibling_count_uterus_preg</code> by <code>group</code></caption>
 <colgroup>
-<col width="23%" />
-<col width="8%" />
+<col width="15%" />
+<col width="7%" />
+<col width="16%" />
 <col width="22%" />
-<col width="33%" />
+<col width="21%" />
+<col width="17%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -704,6 +1024,8 @@ descriptives</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -712,19 +1034,23 @@ descriptives</code></pre>
 <td align="center">48851</td>
 <td align="center">1.768e-39 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">4.994</td>
+<td align="center">4.305</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>df_pregnancy %&gt;% 
   filter(!is.na(birthorder_uterus_preg)) %&gt;% 
   t.test(birthorder_uterus_preg ~ group, data = ., var.equal = T)</code></pre>
-<table style="width:88%;">
+<table>
 <caption>Two Sample t-test: <code>birthorder_uterus_preg</code> by <code>group</code></caption>
 <colgroup>
-<col width="23%" />
-<col width="8%" />
+<col width="15%" />
+<col width="7%" />
+<col width="16%" />
 <col width="22%" />
-<col width="33%" />
+<col width="21%" />
+<col width="17%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -732,6 +1058,8 @@ descriptives</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -740,19 +1068,23 @@ descriptives</code></pre>
 <td align="center">48851</td>
 <td align="center">5.239e-21 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">2.988</td>
+<td align="center">2.64</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>df_pregnancy %&gt;% 
   filter(!is.na(birthorder_uterus_preg)) %&gt;% 
   t.test(number_siblings ~ group, data = ., var.equal = T)</code></pre>
-<table style="width:79%;">
+<table>
 <caption>Two Sample t-test: <code>number_siblings</code> by <code>group</code></caption>
 <colgroup>
+<col width="16%" />
+<col width="7%" />
+<col width="9%" />
+<col width="24%" />
 <col width="23%" />
-<col width="8%" />
-<col width="13%" />
-<col width="33%" />
+<col width="19%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -760,6 +1092,8 @@ descriptives</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -768,6 +1102,8 @@ descriptives</code></pre>
 <td align="center">48851</td>
 <td align="center">0 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">4.749</td>
+<td align="center">1.982</td>
 </tr>
 </tbody>
 </table>
@@ -860,12 +1196,12 @@ descriptives</code></pre>
 <td align="center">1</td>
 <td align="center">22</td>
 <td align="center">2.601</td>
-<td align="center">2.580</td>
+<td align="center">2.58</td>
 <td align="center">2.622</td>
 <td align="center">1</td>
 <td align="center">22</td>
 <td align="center">4.615</td>
-<td align="center">4.580</td>
+<td align="center">4.58</td>
 <td align="center">4.649</td>
 </tr>
 <tr class="even">
@@ -891,13 +1227,15 @@ descriptives</code></pre>
 <pre class="r"><code>df_pregnancy %&gt;% 
   filter(!is.na(birthorder_genes)) %&gt;% 
   t.test(sibling_count_genes ~ group, data = ., var.equal = T)</code></pre>
-<table style="width:83%;">
+<table>
 <caption>Two Sample t-test: <code>sibling_count_genes</code> by <code>group</code></caption>
 <colgroup>
-<col width="23%" />
-<col width="8%" />
+<col width="15%" />
+<col width="7%" />
+<col width="13%" />
+<col width="22%" />
+<col width="22%" />
 <col width="18%" />
-<col width="33%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -905,6 +1243,8 @@ descriptives</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -913,19 +1253,23 @@ descriptives</code></pre>
 <td align="center">42805</td>
 <td align="center">0.007365 * *</td>
 <td align="center">two.sided</td>
+<td align="center">4.206</td>
+<td align="center">4.083</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>df_pregnancy %&gt;% 
   filter(!is.na(birthorder_genes)) %&gt;% 
   t.test(birthorder_genes ~ group, data = ., var.equal = T)</code></pre>
-<table style="width:88%;">
+<table>
 <caption>Two Sample t-test: <code>birthorder_genes</code> by <code>group</code></caption>
 <colgroup>
-<col width="23%" />
-<col width="8%" />
+<col width="15%" />
+<col width="7%" />
+<col width="16%" />
 <col width="22%" />
-<col width="33%" />
+<col width="21%" />
+<col width="17%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -933,6 +1277,8 @@ descriptives</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -941,19 +1287,23 @@ descriptives</code></pre>
 <td align="center">42805</td>
 <td align="center">0.0005184 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">2.601</td>
+<td align="center">2.489</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>df_pregnancy %&gt;% 
   filter(!is.na(birthorder_genes)) %&gt;% 
   t.test(number_siblings ~ group, data = ., var.equal = T)</code></pre>
-<table style="width:79%;">
+<table>
 <caption>Two Sample t-test: <code>number_siblings</code> by <code>group</code></caption>
 <colgroup>
+<col width="16%" />
+<col width="7%" />
+<col width="9%" />
+<col width="24%" />
 <col width="23%" />
-<col width="8%" />
-<col width="13%" />
-<col width="33%" />
+<col width="19%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -961,6 +1311,8 @@ descriptives</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -969,6 +1321,8 @@ descriptives</code></pre>
 <td align="center">42805</td>
 <td align="center">0 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">4.615</td>
+<td align="center">1.993</td>
 </tr>
 </tbody>
 </table>
@@ -1001,16 +1355,16 @@ descriptives = df %&gt;%
               age_max = max(age, na.rm = TRUE),
               gender = mean(male, na.rm=TRUE) - 1)
 descriptives</code></pre>
-<table>
+<table style="width:100%;">
 <colgroup>
-<col width="8%" />
-<col width="6%" />
-<col width="11%" />
+<col width="9%" />
+<col width="7%" />
+<col width="10%" />
+<col width="20%" />
 <col width="21%" />
-<col width="22%" />
-<col width="10%" />
-<col width="10%" />
-<col width="10%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1049,13 +1403,15 @@ descriptives</code></pre>
 </table>
 <pre class="r"><code>## Ttest
 t.test(df$age ~ df$group, var.equal = T)</code></pre>
-<table style="width:79%;">
+<table>
 <caption>Two Sample t-test: <code>df$age</code> by <code>df$group</code></caption>
 <colgroup>
+<col width="16%" />
+<col width="7%" />
+<col width="9%" />
+<col width="24%" />
 <col width="23%" />
-<col width="8%" />
-<col width="13%" />
-<col width="33%" />
+<col width="19%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1063,6 +1419,8 @@ t.test(df$age ~ df$group, var.equal = T)</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -1071,6 +1429,8 @@ t.test(df$age ~ df$group, var.equal = T)</code></pre>
 <td align="center">31587</td>
 <td align="center">0 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">39.42</td>
+<td align="center">25.07</td>
 </tr>
 </tbody>
 </table>
@@ -1080,12 +1440,12 @@ t.test(df$age ~ df$group, var.equal = T)</code></pre>
               gender2 = sum(male ==2,na.rm=T)) %&gt;%
   select(gender, gender2)
 chisq.test(gender)</code></pre>
-<table style="width:43%;">
+<table style="width:46%;">
 <caption>Pearson’s Chi-squared test with Yates’ continuity correction: <code>gender</code></caption>
 <colgroup>
 <col width="23%" />
 <col width="6%" />
-<col width="12%" />
+<col width="15%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1211,12 +1571,12 @@ ratings</code></pre>
 <td align="center">0.07636</td>
 <td align="center">3.432</td>
 <td align="center">3.424</td>
-<td align="center">3.440</td>
+<td align="center">3.44</td>
 <td align="center">2.574</td>
 <td align="center">2.568</td>
-<td align="center">2.580</td>
+<td align="center">2.58</td>
 <td align="center">3.827</td>
-<td align="center">3.820</td>
+<td align="center">3.82</td>
 <td align="center">3.833</td>
 <td align="center">3.909</td>
 <td align="center">3.903</td>
@@ -1233,9 +1593,9 @@ ratings</code></pre>
 </tr>
 <tr class="even">
 <td align="center">test</td>
-<td align="center">0.66562</td>
+<td align="center">0.6656</td>
 <td align="center">0.6475</td>
-<td align="center">0.68374</td>
+<td align="center">0.6837</td>
 <td align="center">3.504</td>
 <td align="center">3.484</td>
 <td align="center">3.523</td>
@@ -1253,7 +1613,7 @@ ratings</code></pre>
 <td align="center">3.835</td>
 <td align="center">3.288</td>
 <td align="center">3.247</td>
-<td align="center">3.330</td>
+<td align="center">3.33</td>
 <td align="center">3.796</td>
 <td align="center">3.773</td>
 <td align="center">3.82</td>
@@ -1261,13 +1621,15 @@ ratings</code></pre>
 </tbody>
 </table>
 <pre class="r"><code>t.test(df$g_factor ~ df$group, var.equal = T)</code></pre>
-<table style="width:79%;">
+<table>
 <caption>Two Sample t-test: <code>df$g_factor</code> by <code>df$group</code></caption>
 <colgroup>
+<col width="16%" />
+<col width="7%" />
+<col width="9%" />
+<col width="24%" />
 <col width="23%" />
-<col width="8%" />
-<col width="13%" />
-<col width="33%" />
+<col width="19%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1275,6 +1637,8 @@ ratings</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -1283,17 +1647,21 @@ ratings</code></pre>
 <td align="center">30998</td>
 <td align="center">0 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">0.06673</td>
+<td align="center">0.6656</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>t.test(df$big5_ext ~ df$group, var.equal = T)</code></pre>
-<table style="width:97%;">
+<table>
 <caption>Two Sample t-test: <code>df$big5_ext</code> by <code>df$group</code></caption>
 <colgroup>
-<col width="23%" />
-<col width="8%" />
-<col width="31%" />
-<col width="33%" />
+<col width="14%" />
+<col width="6%" />
+<col width="21%" />
+<col width="21%" />
+<col width="20%" />
+<col width="16%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1301,6 +1669,8 @@ ratings</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -1309,17 +1679,21 @@ ratings</code></pre>
 <td align="center">31444</td>
 <td align="center">0.00000000001107 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">3.432</td>
+<td align="center">3.504</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>t.test(df$big5_neu ~ df$group, var.equal = T)</code></pre>
-<table style="width:96%;">
+<table>
 <caption>Two Sample t-test: <code>df$big5_neu</code> by <code>df$group</code></caption>
 <colgroup>
-<col width="23%" />
-<col width="8%" />
-<col width="30%" />
-<col width="33%" />
+<col width="14%" />
+<col width="6%" />
+<col width="20%" />
+<col width="21%" />
+<col width="20%" />
+<col width="16%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1327,6 +1701,8 @@ ratings</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -1335,17 +1711,21 @@ ratings</code></pre>
 <td align="center">31444</td>
 <td align="center">0.0000000002139 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">2.574</td>
+<td align="center">2.626</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>t.test(df$big5_con ~ df$group, var.equal = T)</code></pre>
-<table style="width:88%;">
+<table>
 <caption>Two Sample t-test: <code>df$big5_con</code> by <code>df$group</code></caption>
 <colgroup>
-<col width="23%" />
-<col width="8%" />
+<col width="15%" />
+<col width="7%" />
+<col width="16%" />
 <col width="22%" />
-<col width="33%" />
+<col width="21%" />
+<col width="17%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1353,6 +1733,8 @@ ratings</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -1361,17 +1743,21 @@ ratings</code></pre>
 <td align="center">31444</td>
 <td align="center">2.198e-20 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">3.827</td>
+<td align="center">3.746</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>t.test(df$big5_agree ~ df$group, var.equal = T)</code></pre>
-<table style="width:96%;">
+<table>
 <caption>Two Sample t-test: <code>df$big5_agree</code> by <code>df$group</code></caption>
 <colgroup>
-<col width="23%" />
-<col width="8%" />
-<col width="30%" />
-<col width="33%" />
+<col width="14%" />
+<col width="6%" />
+<col width="20%" />
+<col width="21%" />
+<col width="20%" />
+<col width="16%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1379,6 +1765,8 @@ ratings</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -1387,17 +1775,21 @@ ratings</code></pre>
 <td align="center">31444</td>
 <td align="center">0.0000000001389 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">3.909</td>
+<td align="center">3.857</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>t.test(df$big5_open ~ df$group, var.equal = T)</code></pre>
-<table style="width:88%;">
+<table>
 <caption>Two Sample t-test: <code>df$big5_open</code> by <code>df$group</code></caption>
 <colgroup>
-<col width="23%" />
-<col width="8%" />
+<col width="15%" />
+<col width="7%" />
+<col width="16%" />
 <col width="22%" />
-<col width="33%" />
+<col width="21%" />
+<col width="17%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1405,6 +1797,8 @@ ratings</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -1413,17 +1807,21 @@ ratings</code></pre>
 <td align="center">31444</td>
 <td align="center">1.968e-36 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">3.684</td>
+<td align="center">3.818</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>t.test(df$riskA ~ df$group, var.equal = T)</code></pre>
-<table style="width:92%;">
+<table>
 <caption>Two Sample t-test: <code>df$riskA</code> by <code>df$group</code></caption>
 <colgroup>
-<col width="23%" />
-<col width="8%" />
-<col width="26%" />
-<col width="33%" />
+<col width="14%" />
+<col width="6%" />
+<col width="18%" />
+<col width="21%" />
+<col width="20%" />
+<col width="17%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1431,6 +1829,8 @@ ratings</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -1439,17 +1839,21 @@ ratings</code></pre>
 <td align="center">27778</td>
 <td align="center">0.0000000876 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">3.424</td>
+<td align="center">3.288</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>t.test(df$riskB ~ df$group, var.equal = T)</code></pre>
-<table style="width:89%;">
+<table>
 <caption>Two Sample t-test: <code>df$riskB</code> by <code>df$group</code></caption>
 <colgroup>
-<col width="23%" />
-<col width="8%" />
-<col width="23%" />
-<col width="33%" />
+<col width="15%" />
+<col width="7%" />
+<col width="16%" />
+<col width="22%" />
+<col width="21%" />
+<col width="17%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1457,6 +1861,8 @@ ratings</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -1465,6 +1871,8 @@ ratings</code></pre>
 <td align="center">29576</td>
 <td align="center">0.00000168 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">3.861</td>
+<td align="center">3.796</td>
 </tr>
 </tbody>
 </table>
@@ -1533,10 +1941,10 @@ descriptives_restricted = df %&gt;%
               gender = mean(male, na.rm=TRUE) - 1) %&gt;%
   filter(!is.na(group2))
 descriptives_restricted</code></pre>
-<table>
+<table style="width:100%;">
 <colgroup>
-<col width="16%" />
-<col width="4%" />
+<col width="17%" />
+<col width="5%" />
 <col width="9%" />
 <col width="7%" />
 <col width="17%" />
@@ -1576,7 +1984,7 @@ descriptives_restricted</code></pre>
 <td align="center">25.07</td>
 <td align="center">7.972</td>
 <td align="center">24.84</td>
-<td align="center">25.30</td>
+<td align="center">25.3</td>
 <td align="center">14</td>
 <td align="center">51</td>
 <td align="center">0.4844</td>
@@ -1584,13 +1992,15 @@ descriptives_restricted</code></pre>
 </tbody>
 </table>
 <pre class="r"><code>t.test(df$age ~ df$group2, var.equal = T)</code></pre>
-<table style="width:78%;">
+<table>
 <caption>Two Sample t-test: <code>df$age</code> by <code>df$group2</code></caption>
 <colgroup>
-<col width="23%" />
+<col width="16%" />
 <col width="6%" />
-<col width="13%" />
-<col width="33%" />
+<col width="9%" />
+<col width="24%" />
+<col width="20%" />
+<col width="20%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1598,6 +2008,8 @@ descriptives_restricted</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control_restricted</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -1606,6 +2018,8 @@ descriptives_restricted</code></pre>
 <td align="center">9278</td>
 <td align="center">0.4922</td>
 <td align="center">two.sided</td>
+<td align="center">25.18</td>
+<td align="center">25.07</td>
 </tr>
 </tbody>
 </table>
@@ -1616,12 +2030,12 @@ descriptives_restricted</code></pre>
   filter(!is.na(group2)) %&gt;%
   select(gender, gender2)
 chisq.test(gender)</code></pre>
-<table style="width:43%;">
+<table style="width:46%;">
 <caption>Pearson’s Chi-squared test with Yates’ continuity correction: <code>gender</code></caption>
 <colgroup>
 <col width="23%" />
 <col width="6%" />
-<col width="12%" />
+<col width="15%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1684,10 +2098,10 @@ chisq.test(gender)</code></pre>
   filter(!is.na(group2))
 
 ratings_restricted</code></pre>
-<table style="width:100%;">
+<table>
 <colgroup>
 <col width="3%" />
-<col width="0%" />
+<col width="1%" />
 <col width="2%" />
 <col width="4%" />
 <col width="4%" />
@@ -1703,7 +2117,7 @@ ratings_restricted</code></pre>
 <col width="3%" />
 <col width="4%" />
 <col width="5%" />
-<col width="3%" />
+<col width="2%" />
 <col width="4%" />
 <col width="4%" />
 <col width="2%" />
@@ -1749,27 +2163,27 @@ ratings_restricted</code></pre>
 <td align="center">4614</td>
 <td align="center">0.4107</td>
 <td align="center">0.3914</td>
-<td align="center">0.4300</td>
+<td align="center">0.43</td>
 <td align="center">3.479</td>
 <td align="center">3.459</td>
 <td align="center">3.499</td>
 <td align="center">2.615</td>
-<td align="center">2.600</td>
-<td align="center">2.630</td>
+<td align="center">2.6</td>
+<td align="center">2.63</td>
 <td align="center">3.756</td>
-<td align="center">3.740</td>
+<td align="center">3.74</td>
 <td align="center">3.773</td>
 <td align="center">3.844</td>
 <td align="center">3.829</td>
-<td align="center">3.860</td>
-<td align="center">3.760</td>
+<td align="center">3.86</td>
+<td align="center">3.76</td>
 <td align="center">3.742</td>
 <td align="center">3.778</td>
 <td align="center">3.373</td>
 <td align="center">3.331</td>
 <td align="center">3.414</td>
 <td align="center">3.823</td>
-<td align="center">3.800</td>
+<td align="center">3.8</td>
 <td align="center">3.846</td>
 </tr>
 <tr class="even">
@@ -1795,21 +2209,23 @@ ratings_restricted</code></pre>
 <td align="center">3.835</td>
 <td align="center">3.288</td>
 <td align="center">3.247</td>
-<td align="center">3.330</td>
+<td align="center">3.33</td>
 <td align="center">3.796</td>
 <td align="center">3.773</td>
-<td align="center">3.820</td>
+<td align="center">3.82</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>t.test(df$g_factor ~ df$group2, var.equal = T)</code></pre>
-<table style="width:86%;">
+<table>
 <caption>Two Sample t-test: <code>df$g_factor</code> by <code>df$group2</code></caption>
 <colgroup>
-<col width="23%" />
+<col width="15%" />
 <col width="6%" />
+<col width="16%" />
 <col width="22%" />
-<col width="33%" />
+<col width="19%" />
+<col width="19%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1817,6 +2233,8 @@ ratings_restricted</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control_restricted</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -1825,17 +2243,21 @@ ratings_restricted</code></pre>
 <td align="center">9241</td>
 <td align="center">1.145e-77 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">0.4107</td>
+<td align="center">0.6656</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>t.test(df$big5_ext ~ df$group2, var.equal = T)</code></pre>
-<table style="width:78%;">
+<table>
 <caption>Two Sample t-test: <code>df$big5_ext</code> by <code>df$group2</code></caption>
 <colgroup>
-<col width="23%" />
+<col width="16%" />
 <col width="6%" />
-<col width="13%" />
-<col width="33%" />
+<col width="9%" />
+<col width="24%" />
+<col width="20%" />
+<col width="20%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1843,6 +2265,8 @@ ratings_restricted</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control_restricted</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -1851,17 +2275,21 @@ ratings_restricted</code></pre>
 <td align="center">9267</td>
 <td align="center">0.08722</td>
 <td align="center">two.sided</td>
+<td align="center">3.479</td>
+<td align="center">3.504</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>t.test(df$big5_neu ~ df$group2, var.equal = T)</code></pre>
-<table style="width:78%;">
+<table>
 <caption>Two Sample t-test: <code>df$big5_neu</code> by <code>df$group2</code></caption>
 <colgroup>
-<col width="23%" />
+<col width="16%" />
 <col width="6%" />
-<col width="13%" />
-<col width="33%" />
+<col width="9%" />
+<col width="24%" />
+<col width="20%" />
+<col width="20%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1869,6 +2297,8 @@ ratings_restricted</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control_restricted</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -1877,17 +2307,21 @@ ratings_restricted</code></pre>
 <td align="center">9267</td>
 <td align="center">0.2695</td>
 <td align="center">two.sided</td>
+<td align="center">2.615</td>
+<td align="center">2.626</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>t.test(df$big5_con ~ df$group2, var.equal = T)</code></pre>
-<table style="width:78%;">
+<table>
 <caption>Two Sample t-test: <code>df$big5_con</code> by <code>df$group2</code></caption>
 <colgroup>
-<col width="23%" />
+<col width="16%" />
 <col width="6%" />
-<col width="13%" />
-<col width="33%" />
+<col width="9%" />
+<col width="24%" />
+<col width="20%" />
+<col width="20%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1895,6 +2329,8 @@ ratings_restricted</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control_restricted</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -1903,17 +2339,21 @@ ratings_restricted</code></pre>
 <td align="center">9267</td>
 <td align="center">0.3732</td>
 <td align="center">two.sided</td>
+<td align="center">3.756</td>
+<td align="center">3.746</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>t.test(df$big5_agree ~ df$group2, var.equal = T)</code></pre>
-<table style="width:78%;">
+<table>
 <caption>Two Sample t-test: <code>df$big5_agree</code> by <code>df$group2</code></caption>
 <colgroup>
-<col width="23%" />
+<col width="16%" />
 <col width="6%" />
-<col width="13%" />
-<col width="33%" />
+<col width="9%" />
+<col width="24%" />
+<col width="20%" />
+<col width="20%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1921,6 +2361,8 @@ ratings_restricted</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control_restricted</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -1929,17 +2371,21 @@ ratings_restricted</code></pre>
 <td align="center">9267</td>
 <td align="center">0.2334</td>
 <td align="center">two.sided</td>
+<td align="center">3.844</td>
+<td align="center">3.857</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>t.test(df$big5_open ~ df$group2, var.equal = T)</code></pre>
-<table style="width:89%;">
+<table>
 <caption>Two Sample t-test: <code>df$big5_open</code> by <code>df$group2</code></caption>
 <colgroup>
-<col width="23%" />
+<col width="15%" />
 <col width="6%" />
-<col width="25%" />
-<col width="33%" />
+<col width="18%" />
+<col width="22%" />
+<col width="18%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1947,6 +2393,8 @@ ratings_restricted</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control_restricted</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -1955,17 +2403,21 @@ ratings_restricted</code></pre>
 <td align="center">9267</td>
 <td align="center">0.000006542 * * *</td>
 <td align="center">two.sided</td>
+<td align="center">3.76</td>
+<td align="center">3.818</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>t.test(df$riskA ~ df$group2, var.equal = T)</code></pre>
-<table style="width:82%;">
+<table style="width:100%;">
 <caption>Two Sample t-test: <code>df$riskA</code> by <code>df$group2</code></caption>
 <colgroup>
-<col width="23%" />
+<col width="16%" />
 <col width="6%" />
-<col width="18%" />
-<col width="33%" />
+<col width="14%" />
+<col width="23%" />
+<col width="19%" />
+<col width="19%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1973,6 +2425,8 @@ ratings_restricted</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control_restricted</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -1981,17 +2435,21 @@ ratings_restricted</code></pre>
 <td align="center">8808</td>
 <td align="center">0.006027 * *</td>
 <td align="center">two.sided</td>
+<td align="center">3.373</td>
+<td align="center">3.288</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>t.test(df$riskB ~ df$group2, var.equal = T)</code></pre>
-<table style="width:78%;">
+<table>
 <caption>Two Sample t-test: <code>df$riskB</code> by <code>df$group2</code></caption>
 <colgroup>
-<col width="23%" />
+<col width="16%" />
 <col width="6%" />
-<col width="13%" />
-<col width="33%" />
+<col width="9%" />
+<col width="24%" />
+<col width="20%" />
+<col width="20%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1999,6 +2457,8 @@ ratings_restricted</code></pre>
 <th align="center">df</th>
 <th align="center">P value</th>
 <th align="center">Alternative hypothesis</th>
+<th align="center">mean in group control_restricted</th>
+<th align="center">mean in group test</th>
 </tr>
 </thead>
 <tbody>
@@ -2007,6 +2467,8 @@ ratings_restricted</code></pre>
 <td align="center">8781</td>
 <td align="center">0.1234</td>
 <td align="center">two.sided</td>
+<td align="center">3.823</td>
+<td align="center">3.796</td>
 </tr>
 </tbody>
 </table>
@@ -2029,7 +2491,7 @@ fa.parallel(alldata %&gt;% select(raven, math, count_backwards, words_delayed, a
 ## raven              0.65 0.43 0.57   1
 ## math               0.52 0.27 0.73   1
 ## count_backwards    0.52 0.27 0.73   1
-## words_delayed      0.55 0.31 0.69   1
+## words_delayed      0.56 0.31 0.69   1
 ## adaptive_numbering 0.68 0.46 0.54   1
 ## 
 ##                 MR1
@@ -2045,23 +2507,22 @@ fa.parallel(alldata %&gt;% select(raven, math, count_backwards, words_delayed, a
 ## The root mean square of the residuals (RMSR) is  0.03 
 ## The df corrected root mean square of the residuals is  0.04 
 ## 
-## The harmonic number of observations is  26531 with the empirical chi square  418.3  with prob &lt;  3.4e-88 
-## The total number of observations was  26927  with Likelihood Chi Square =  478.7  with prob &lt;  3.2e-101 
+## The harmonic number of observations is  26531 with the empirical chi square  416.3  with prob &lt;  9e-88 
+## The total number of observations was  26927  with Likelihood Chi Square =  480.1  with prob &lt;  1.6e-101 
 ## 
 ## Tucker Lewis Index of factoring reliability =  0.959
-## RMSEA index =  0.004  and the 90 % confidence intervals are  0.004 0.064
-## BIC =  427.7
+## RMSEA index =  0.059  and the 90 % confidence intervals are  0.055 0.064
+## BIC =  429.1
 ## Fit based upon off diagonal values = 0.99
 ## Measures of factor score adequacy             
-##                                                 MR1
-## Correlation of scores with factors             0.86
-## Multiple R square of scores with factors       0.74
-## Minimum correlation of possible factor scores  0.47</code></pre>
+##                                                    MR1
+## Correlation of (regression) scores with factors   0.86
+## Multiple R square of scores with factors          0.74
+## Minimum correlation of possible factor scores     0.47</code></pre>
 <pre class="r"><code>om_results = omega(alldata %&gt;% select(raven, math, count_backwards, words_delayed, adaptive_numbering) %&gt;% data.frame(), nfactors = 1, sl = F)</code></pre>
 <pre><code>## Omega_h for 1 factor is not meaningful, just omega_t</code></pre>
 <pre><code>## Warning in schmid(m, nfactors, fm, digits, rotate = rotate, n.obs = n.obs, : Omega_h and Omega_asymptotic are
 ## not meaningful with one factor</code></pre>
-<pre><code>## Warning in cov2cor(t(w) %*% r %*% w): diag(.) had 0 or NA entries; non-finite result is doubtful</code></pre>
 <pre class="r"><code>om_results</code></pre>
 <pre><code>## Omega 
 ## Call: omega(m = alldata %&gt;% select(raven, math, count_backwards, words_delayed, 
@@ -2077,32 +2538,32 @@ fa.parallel(alldata %&gt;% select(raven, math, count_backwards, words_delayed, a
 ## raven              0.65      0.43 0.57  1
 ## math               0.52      0.27 0.73  1
 ## count_backwards    0.52      0.27 0.73  1
-## words_delayed      0.55      0.31 0.69  1
+## words_delayed      0.56      0.31 0.69  1
 ## adaptive_numbering 0.68      0.46 0.54  1
 ## 
 ## With eigenvalues of:
 ##   g F1* 
 ## 1.7 0.0 
 ## 
-## general/max  Inf   max/min =   NaN
+## general/max  3.127e+16   max/min =   1
 ## mean percent general =  1    with sd =  0 and cv of  0 
 ## Explained Common Variance of the general factor =  1 
 ## 
 ## The degrees of freedom are 5  and the fit is  0.02 
-## The number of observations was  26927  with Chi Square =  478.7  with prob &lt;  3.2e-101
+## The number of observations was  26927  with Chi Square =  480.1  with prob &lt;  1.6e-101
 ## The root mean square of the residuals is  0.03 
 ## The df corrected root mean square of the residuals is  0.04
-## RMSEA index =  0.004  and the 90 % confidence intervals are  0.004 0.064
-## BIC =  427.7
+## RMSEA index =  0.059  and the 10 % confidence intervals are  0.055 0.064
+## BIC =  429.1
 ## 
 ## Compare this with the adequacy of just a general factor and no group factors
 ## The degrees of freedom for just the general factor are 5  and the fit is  0.02 
-## The number of observations was  26927  with Chi Square =  478.7  with prob &lt;  3.2e-101
+## The number of observations was  26927  with Chi Square =  480.1  with prob &lt;  1.6e-101
 ## The root mean square of the residuals is  0.03 
 ## The df corrected root mean square of the residuals is  0.04 
 ## 
-## RMSEA index =  0.004  and the 90 % confidence intervals are  0.004 0.064
-## BIC =  427.7 
+## RMSEA index =  0.059  and the 10 % confidence intervals are  0.055 0.064
+## BIC =  429.1 
 ## 
 ## Measures of factor score adequacy             
 ##                                                  g F1*
@@ -2199,20 +2660,18 @@ qplot(alldata$g_factor)</code></pre>
             adaptive_numbering_sd = sd(adaptive_numbering, na.rm =T))
 
 round(cor(alldata %&gt;% select(g_factor, raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = &quot;pairwise.complete.obs&quot;), 2)</code></pre>
-<table>
+<table style="width:100%;">
 <colgroup>
-<col width="20%" />
+<col width="11%" />
 <col width="8%" />
-<col width="6%" />
-<col width="5%" />
-<col width="14%" />
-<col width="14%" />
-<col width="13%" />
+<col width="7%" />
+<col width="18%" />
+<col width="18%" />
 <col width="16%" />
+<col width="20%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th align="center"> </th>
 <th align="center">g_factor</th>
 <th align="center">raven</th>
 <th align="center">math</th>
@@ -2224,7 +2683,6 @@ round(cor(alldata %&gt;% select(g_factor, raven, math, count_backwards, words_im
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center"><strong>g_factor</strong></td>
 <td align="center">1</td>
 <td align="center">0.77</td>
 <td align="center">0.61</td>
@@ -2234,7 +2692,6 @@ round(cor(alldata %&gt;% select(g_factor, raven, math, count_backwards, words_im
 <td align="center">0.79</td>
 </tr>
 <tr class="even">
-<td align="center"><strong>raven</strong></td>
 <td align="center">0.77</td>
 <td align="center">1</td>
 <td align="center">0.38</td>
@@ -2244,7 +2701,6 @@ round(cor(alldata %&gt;% select(g_factor, raven, math, count_backwards, words_im
 <td align="center">0.44</td>
 </tr>
 <tr class="odd">
-<td align="center"><strong>math</strong></td>
 <td align="center">0.61</td>
 <td align="center">0.38</td>
 <td align="center">1</td>
@@ -2254,7 +2710,6 @@ round(cor(alldata %&gt;% select(g_factor, raven, math, count_backwards, words_im
 <td align="center">0.33</td>
 </tr>
 <tr class="even">
-<td align="center"><strong>count_backwards</strong></td>
 <td align="center">0.6</td>
 <td align="center">0.31</td>
 <td align="center">0.23</td>
@@ -2264,7 +2719,6 @@ round(cor(alldata %&gt;% select(g_factor, raven, math, count_backwards, words_im
 <td align="center">0.4</td>
 </tr>
 <tr class="odd">
-<td align="center"><strong>words_immediate</strong></td>
 <td align="center">0.61</td>
 <td align="center">0.38</td>
 <td align="center">0.3</td>
@@ -2274,7 +2728,6 @@ round(cor(alldata %&gt;% select(g_factor, raven, math, count_backwards, words_im
 <td align="center">0.4</td>
 </tr>
 <tr class="even">
-<td align="center"><strong>words_delayed</strong></td>
 <td align="center">0.64</td>
 <td align="center">0.36</td>
 <td align="center">0.3</td>
@@ -2284,7 +2737,6 @@ round(cor(alldata %&gt;% select(g_factor, raven, math, count_backwards, words_im
 <td align="center">0.37</td>
 </tr>
 <tr class="odd">
-<td align="center"><strong>adaptive_numbering</strong></td>
 <td align="center">0.79</td>
 <td align="center">0.44</td>
 <td align="center">0.33</td>
@@ -2304,10 +2756,10 @@ round(cor(alldata %&gt;% select(g_factor, raven, math, count_backwards, words_im
 ##      5    words_immediate      120
 ##      6      words_delayed      120
 ##      7    count_backwards        4</code></pre>
-<table style="width:42%;">
+<table style="width:46%;">
 <colgroup>
-<col width="19%" />
-<col width="9%" />
+<col width="22%" />
+<col width="11%" />
 <col width="12%" />
 </colgroup>
 <thead>
@@ -2453,23 +2905,21 @@ mean_sd</code></pre>
 <div id="correlations" class="section level2">
 <h2>Correlations</h2>
 <pre class="r"><code>round(cor(birthorder %&gt;% ungroup() %&gt;% select(age, male, g_factor, big5_ext, big5_neu, big5_con, big5_agree, big5_open, riskA, riskB), use = &quot;pairwise.complete.obs&quot;), 2) </code></pre>
-<table>
+<table style="width:100%;">
 <colgroup>
-<col width="14%" />
-<col width="5%" />
-<col width="6%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="11%" />
+<col width="7%" />
+<col width="7%" />
 <col width="10%" />
-<col width="6%" />
-<col width="6%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="12%" />
+<col width="11%" />
+<col width="7%" />
+<col width="7%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th align="center"> </th>
 <th align="center">age</th>
 <th align="center">male</th>
 <th align="center">g_factor</th>
@@ -2484,7 +2934,6 @@ mean_sd</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center"><strong>age</strong></td>
 <td align="center">1</td>
 <td align="center">-0.05</td>
 <td align="center">-0.11</td>
@@ -2497,7 +2946,6 @@ mean_sd</code></pre>
 <td align="center">0.02</td>
 </tr>
 <tr class="even">
-<td align="center"><strong>male</strong></td>
 <td align="center">-0.05</td>
 <td align="center">1</td>
 <td align="center">-0.02</td>
@@ -2510,7 +2958,6 @@ mean_sd</code></pre>
 <td align="center">-0.07</td>
 </tr>
 <tr class="odd">
-<td align="center"><strong>g_factor</strong></td>
 <td align="center">-0.11</td>
 <td align="center">-0.02</td>
 <td align="center">1</td>
@@ -2523,7 +2970,6 @@ mean_sd</code></pre>
 <td align="center">-0.12</td>
 </tr>
 <tr class="even">
-<td align="center"><strong>big5_ext</strong></td>
 <td align="center">-0.01</td>
 <td align="center">-0.13</td>
 <td align="center">0.07</td>
@@ -2536,7 +2982,6 @@ mean_sd</code></pre>
 <td align="center">-0.02</td>
 </tr>
 <tr class="odd">
-<td align="center"><strong>big5_neu</strong></td>
 <td align="center">-0.13</td>
 <td align="center">0.03</td>
 <td align="center">0.05</td>
@@ -2549,7 +2994,6 @@ mean_sd</code></pre>
 <td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="center"><strong>big5_con</strong></td>
 <td align="center">0.25</td>
 <td align="center">0</td>
 <td align="center">-0.02</td>
@@ -2562,7 +3006,6 @@ mean_sd</code></pre>
 <td align="center">0.01</td>
 </tr>
 <tr class="odd">
-<td align="center"><strong>big5_agree</strong></td>
 <td align="center">0.11</td>
 <td align="center">0.03</td>
 <td align="center">-0.05</td>
@@ -2575,7 +3018,6 @@ mean_sd</code></pre>
 <td align="center">0.02</td>
 </tr>
 <tr class="even">
-<td align="center"><strong>big5_open</strong></td>
 <td align="center">0</td>
 <td align="center">0.06</td>
 <td align="center">0.09</td>
@@ -2588,7 +3030,6 @@ mean_sd</code></pre>
 <td align="center">-0.05</td>
 </tr>
 <tr class="odd">
-<td align="center"><strong>riskA</strong></td>
 <td align="center">-0.06</td>
 <td align="center">-0.12</td>
 <td align="center">-0.15</td>
@@ -2601,7 +3042,6 @@ mean_sd</code></pre>
 <td align="center">0.23</td>
 </tr>
 <tr class="even">
-<td align="center"><strong>riskB</strong></td>
 <td align="center">0.02</td>
 <td align="center">-0.07</td>
 <td align="center">-0.12</td>
@@ -2642,7 +3082,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

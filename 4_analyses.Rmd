@@ -686,3 +686,19 @@ riskB_parental_m1 = lmer(riskB ~ birthyear + male + sibling_count + (1 | marriag
          ))
 compare_models_markdown(riskB_parental_m1)
 ```
+
+## Educational Attainment {.active .tabset}
+### Highest Education {.tabset}
+
+#### Maternal birth order {.tabset}
+
+```{r}
+highes_education_m1 = lmer(as.numeric(highest_education) ~ birthyear + male + sibling_count +
+                             (1 | mother_pidlink),
+                           data = birthorder %>%
+                     rename(sibling_count = sibling_count_uterus_alive_factor,
+                            birth_order_nonlinear = birthorder_uterus_alive_factor,
+                            birth_order = birthorder_uterus_alive,
+                            count_birth_order = count_birthorder_uterus_alive))
+compare_models_markdown(g_factor_m1)
+```

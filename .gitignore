@@ -6,7 +6,6 @@ packrat/lib*/
 *.rda
 *.zip
 data/
-figure-html/
 *.pdf
 packrat/src/
 .Rhistory

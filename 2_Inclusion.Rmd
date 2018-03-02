@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # <span style="color:#8DA0CB">Data Sampling</span> {.tabset}
 
 ## Helper
@@ -100,7 +105,8 @@ n_birthorder
 ### All people in the birthorder data file that have ANY g-factor, personality or risk values have to be marked
 alldata_birthorder = alldata_birthorder %>%
   mutate(used_any = ifelse(!is.na(g_factor) | !is.na(big5_ext) | !is.na(big5_open) | !is.na(big5_agree) |
-                             !is.na(big5_neu) | !is.na(big5_con) | !is.na(riskA) | !is.na(riskB), 1, 0))
+                             !is.na(big5_neu) | !is.na(big5_con) | !is.na(riskA) | !is.na(riskB) |
+                             is.na(highest_education), 1, 0))
 
 n_birthorder = alldata_birthorder %>%
   summarise(Maternal_Birth_Order = sum(!is.na(birthorder_uterus_alive) & any_multiple_birth != 1 &
@@ -214,6 +220,9 @@ n_birthorder
 
 #### Educational Attainment
 ```{r}
+### All people in the birthorder data file that have educational attainment measurements
+missingness_patterns(alldata_birthorder %>% select(highest_education))
+
 alldata_birthorder = alldata_birthorder %>%
   mutate(used_ea = ifelse(!is.na(highest_education), 1, 0))
 
@@ -232,7 +241,6 @@ n_birthorder = alldata_birthorder %>%
                                                     na.rm = T))
 n_birthorder
 
-
 ```
 
 
@@ -246,7 +254,8 @@ birthorder = alldata_birthorder %>%
   mutate(check = ifelse(!is.na(g_factor), 1,
                         ifelse(!is.na(riskA), 1,
                                ifelse(!is.na(riskB), 1,
-                                      ifelse(!is.na(big5_ext), 1, 0)))),
+                                      ifelse(!is.na(big5_ext), 1,
+                                             ifelse(!is.na(highest_education), 1, 0))))),
          group = "test",
          # if only child, we have to set birthorder and siblingcount as NA
          birthorder_uterus_alive = ifelse(sibling_count_uterus_alive == 1, NA, birthorder_uterus_alive),

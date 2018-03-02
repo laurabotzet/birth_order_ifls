@@ -16,7 +16,7 @@ source("0_helpers.R")
 
 ## Import data {.active}
 
-All data is retrieved from the [RAND foundatio]n(http://www.rand.org/labor/FLS/IFLS.html) 
+All data is retrieved from the [RAND foundation](http://www.rand.org/labor/FLS/IFLS.html) 
 ```{r Import data}
 ### Informations about individuals living in the household in 2014/2015
 ## All Individuals living in the household
@@ -598,15 +598,18 @@ psych::alpha(data.frame(risk %>% select(riskA, riskB)), check.keys = T)
 # Select, rename and mutate data
 ea = b3a_dl1 %>%
   select(pidlink, dl04, dl06, dl07, dl07a, dl07aa) %>%
-  rename(pidlink = pidlink, attended_school = dl04, highest_education = dl06, highest_grade=dl07,
-         currently_attending_school = dl07a, hours_in_class = dl07aa) %>%
+  rename(pidlink = pidlink, attended_school = dl04, highest_education = dl06,
+         highest_grade=dl07, currently_attending_school = dl07a, hours_in_class = dl07aa) %>%
   mutate(attended_school = as.factor(ifelse(attended_school == 8, NA,
                                             ifelse(attended_school == 1, "yes",
-                                                   ifelse(attended_school == 3, "no", attended_school)))),
+                                                   ifelse(attended_school == 3, "no",
+                                                          attended_school)))),
          highest_education = as.factor(ifelse(highest_education == 2 | highest_education == 72,
                                                      "Elementary",
-                                                     ifelse(highest_education == 3 | highest_education == 4 |
-                                                              highest_education == 73, "Junior High",
+                                                     ifelse(highest_education == 3 |
+                                                              highest_education == 4 |
+                                                              highest_education == 73,
+                                                            "Junior High",
                                                             ifelse(highest_education == 5 |
                                                                      highest_education == 6 |
                                                                      highest_education == 74,
@@ -619,6 +622,7 @@ ea = b3a_dl1 %>%
                                                                           "University",
                                                                           ifelse(highest_education == 98, NA,
                                                                                  "Other")))))),
+         highest_education = factor(highest_education,levels(highest_education)[c(1, 2, 4, 5, 3)]),
          highest_grade = ifelse(highest_grade == 98, NA,
                                 ifelse(highest_grade == 99, NA, highest_grade)),
          currently_attending_school = as.factor(ifelse(currently_attending_school == 1, "yes",

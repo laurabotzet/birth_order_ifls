@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 #  <span style="color:#E78AC3">Sample Analyses</span> {.tabset}
 
 ## Helper
@@ -319,6 +324,17 @@ t.test(df$big5_open ~ df$group, var.equal = T)
 t.test(df$riskA ~ df$group, var.equal = T)
 t.test(df$riskB ~ df$group, var.equal = T)
 
+## Educational Attainment
+educational_attainment = df %>%
+  group_by(group, highest_education) %>%
+  summarise(count = length(highest_education))
+
+educational_attainment = spread(educational_attainment, highest_education, count)
+
+educational_attainment
+
+ggplot(data=df, aes(x=highest_education, fill=group)) +
+  geom_histogram(stat="count", binwidth=.5, position="dodge")
 ```
 
 ### Restricted control group
@@ -432,6 +448,20 @@ t.test(df$big5_agree ~ df$group2, var.equal = T)
 t.test(df$big5_open ~ df$group2, var.equal = T)
 t.test(df$riskA ~ df$group2, var.equal = T)
 t.test(df$riskB ~ df$group2, var.equal = T)
+
+
+## Educational Attainment
+educational_attainment = df %>%
+  group_by(group2, highest_education) %>%
+  summarise(count = length(highest_education))
+
+educational_attainment = spread(educational_attainment, highest_education, count) %>%
+  filter(!is.na(group2))
+
+educational_attainment
+
+ggplot(data=df %>% filter(!is.na(group2)), aes(x=highest_education, fill=group2)) +
+  geom_histogram(stat="count", binwidth=.5, position="dodge")
 ```
 
 ## Intelligence g-factor

@@ -17,4 +17,4 @@ StripTrailingWhitespace: Yes
 LineEndingConversion: Posix
 
 BuildType: Website
-WebsitePath: _site
+WebsitePath: docs

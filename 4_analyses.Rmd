@@ -687,18 +687,159 @@ riskB_parental_m1 = lmer(riskB ~ birthyear + male + sibling_count + (1 | marriag
 compare_models_markdown(riskB_parental_m1)
 ```
 
-## Educational Attainment {.active .tabset}
+## Educational Attainment {.tabset}
 ### Highest Education {.tabset}
 
 #### Maternal birth order {.tabset}
 
 ```{r}
-highes_education_m1 = lmer(as.numeric(highest_education) ~ birthyear + male + sibling_count +
+birthorder = birthorder %>%
+  mutate(highest_education = ifelse(highest_education == "Other", NA, highest_education),
+         highest_education = as.numeric(highest_education))
+
+highest_education_m1 = lmer(highest_education ~ birthyear + male + sibling_count +
                              (1 | mother_pidlink),
                            data = birthorder %>%
                      rename(sibling_count = sibling_count_uterus_alive_factor,
                             birth_order_nonlinear = birthorder_uterus_alive_factor,
                             birth_order = birthorder_uterus_alive,
                             count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(g_factor_m1)
+```
+
+
+##### Basic Model {.tabset}
+
+###### Model Summary
+```{r}
+summary(highest_education_m1)
+```
+
+###### Coefficient Plot
+```{r}
+plot(allEffects(highest_education_m1))
+```
+
+##### Add Birth Order Linear {.tabset}
+
+###### Model Summary
+```{r}
+m2_birthorder_linear = update(highest_education_m1, formula = . ~ . + birth_order)
+summary(m2_birthorder_linear)
+```
+
+###### Coefficient Plot
+```{r}
+plot_birthorder_educational_attainment(m2_birthorder_linear, separate = FALSE)
+```
+
+##### Add Birth Order Factor {.tabset}
+
+###### Model Summary
+```{r}
+m3_birthorder_nonlinear = update(highest_education_m1, formula = . ~ . + birth_order_nonlinear)
+summary(m3_birthorder_nonlinear)
+```
+
+###### Coefficient Plot
+```{r}
+plot_birthorder_educational_attainment(m3_birthorder_nonlinear, separate = FALSE)
+```
+
+##### Add Interaction {.tabset}
+
+###### Model Summary
+```{r}
+m4_interaction = update(highest_education_m1, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
+summary(m4_interaction)
+```
+
+###### Coefficient Plot
+```{r}
+plot_birthorder_educational_attainment(m4_interaction)
+```
+
+##### Model Comparison
+```{r}
+###### Model 1 - Model 2
+anova(highest_education_m1, m2_birthorder_linear, m3_birthorder_nonlinear, m4_interaction)
+
+
+```
+
+### Highest Grade Completed {.tabset}
+
+#### Maternal birth order {.tabset}
+
+```{r}
+birthorder = birthorder %>%
+  mutate(highest_education = ifelse(highest_education == "Other", NA, highest_education),
+         highest_education = as.numeric(highest_education))
+
+highest_grade_m1 = lmer(highest_grade ~ birthyear + male + sibling_count +
+                             (1 | mother_pidlink),
+                           data = birthorder %>%
+                     rename(sibling_count = sibling_count_uterus_alive_factor,
+                            birth_order_nonlinear = birthorder_uterus_alive_factor,
+                            birth_order = birthorder_uterus_alive,
+                            count_birth_order = count_birthorder_uterus_alive))
+```
+
+
+##### Basic Model {.tabset}
+
+###### Model Summary
+```{r}
+summary(highest_grade_m1)
+```
+
+###### Coefficient Plot
+```{r}
+plot(allEffects(highest_grade_m1))
+```
+
+##### Add Birth Order Linear {.tabset}
+
+###### Model Summary
+```{r}
+m2_birthorder_linear = update(highest_grade_m1, formula = . ~ . + birth_order)
+summary(m2_birthorder_linear)
+```
+
+###### Coefficient Plot
+```{r}
+plot_birthorder_grade(m2_birthorder_linear, separate = FALSE)
+```
+
+##### Add Birth Order Factor {.tabset}
+
+###### Model Summary
+```{r}
+m3_birthorder_nonlinear = update(highest_grade_m1, formula = . ~ . + birth_order_nonlinear)
+summary(m3_birthorder_nonlinear)
+```
+
+###### Coefficient Plot
+```{r}
+plot_birthorder_grade(m3_birthorder_nonlinear, separate = FALSE)
+```
+
+##### Add Interaction {.tabset}
+
+###### Model Summary
+```{r}
+m4_interaction = update(highest_grade_m1, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
+summary(m4_interaction)
+```
+
+###### Coefficient Plot
+```{r}
+plot_birthorder_grade(m4_interaction)
+```
+
+##### Model Comparison
+```{r}
+###### Model 1 - Model 2
+anova(highest_grade_m1, m2_birthorder_linear, m3_birthorder_nonlinear, m4_interaction)
+
+
 ```

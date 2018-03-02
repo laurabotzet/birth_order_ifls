@@ -31,7 +31,7 @@ More information about the [Indonesian Family Life Survey (IFLS)](http://www.ran
 </div>
 
 <div class="col-md-6 col-md-offset-1">
-![Interaction effects of sibship size and birth order position on intelligence. Predicted mean scores and 95%-CI from mixed effects models with sibship size, birth order, gender and birth year as fixed effects and maternal identity as random effect are displayed. Intelligence was z-standardized. Numbers in paranthesis show sample size.](4_analyses_files/figure-html/unnamed-chunk-51-1.png)
+![Interaction effects of sibship size and birth order position on intelligence. Predicted mean scores and 95%-CI from mixed effects models with sibship size, birth order, gender and birth year as fixed effects and maternal identity as random effect are displayed. Intelligence was z-standardized. Numbers in paranthesis show sample size.](4_analyses_files/figure-html/unnamed-chunk-52-1.png)
 </div>
 
 </div>

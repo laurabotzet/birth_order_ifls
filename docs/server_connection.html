@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlightingOnLoad(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+
+.section h2 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h3 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h4 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h5 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h6 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("server_connection.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Birth Order IFLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+
+<li style="background-color: #66C2A5">
+  <a href="index.html">Overview</a>
+</li>
+<li style="background-color: #FC8D62">
+  <a href="1_data_import.html">Data Wrangling</a>
+</li>
+<li style="background-color: #8DA0CB">
+  <a href="2_Inclusion.html">Data Sampling</a>
+</li>
+<li style="background-color: #E78AC3">
+  <a href="3_sample_analyses.html">Sample Analyses</a>
+</li>
+<li style="background-color: #A6D854">
+  <a href="4_analyses.html">Birth Order Effects</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/laurabotzet/birth_order_ifls">
+    <span class="fa fa-github"></span>
+
+
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<pre class="r"><code>library(&quot;future&quot;) # this is the package we use to flexibly scale our processing
+library(&quot;listenv&quot;) # this is a helper package that allows us to assign the results to a list even if they come in at different times
+
+## Set up access to remote login node
+login &lt;- tweak(remote, workers = &quot;laurabotzet@opencpu.psych.bio.uni-goettingen.de&quot;) # Your username goes before the @
+
+options(future.makeNodePSOCK.rshcmd = &quot;ssh&quot;)
+login &lt;- makeClusterPSOCK(dryrun = F, verbose =T,
+        workers = &quot;laurabotzet@opencpu.psych.bio.uni-goettingen.de&quot;) # Your username goes before the @
+plan(login) # this tells the future package that we want to use a remote server for running our future operations
+
+# but maybe the reason we want to shift to a server is not that we want to run a simple sequential operation there.
+# maybe we want to take advantage of parallelisation and run the operation in parallel on multiple cores
+## Specify future topology
+## login node -&gt; { cluster nodes } -&gt; { multiple cores }
+plan(list(
+  login,
+  multicore,
+  sequential
+))
+# demo(&quot;mandelbrot&quot;, package = &quot;future&quot;, ask = FALSE)
+
+## (a) This will be evaluated on the cluster login computer
+x %&lt;-% { # this operator binds the result of the promise/future to x
+  thost &lt;- Sys.info()[[&quot;nodename&quot;]]
+  tpid &lt;- Sys.getpid()
+  y &lt;- listenv()
+  for (task in 1:4) {
+    ## (b) This will be evaluated on a different core
+    y[[task]] %&lt;-% {
+      mhost &lt;- Sys.info()[[&quot;nodename&quot;]]
+      mpid &lt;- Sys.getpid()
+      z &lt;- listenv()
+      for (jj in 1:2) {
+        ## (c) this will be evaluated sequentially on the same core
+        z[[jj]] %&lt;-% data.frame(task = task,
+                                top.host = thost, top.pid = tpid,
+                                mid.host = mhost, mid.pid = mpid,
+                                host = Sys.info()[[&quot;nodename&quot;]],
+                                pid = Sys.getpid())
+      }
+      Reduce(rbind, z)
+    }
+  }
+  Reduce(rbind, y)
+}
+
+print(x)</code></pre>
+
+<div id="rmd-source-code">LS0tDQpvdXRwdXQ6DQogIGh0bWxfZG9jdW1lbnQ6DQogICAgY29kZV9mb2xkaW5nOiAnc2hvdycNCi0tLQ0KDQoNCg0KYGBge3IgfQ0KbGlicmFyeSgiZnV0dXJlIikgIyB0aGlzIGlzIHRoZSBwYWNrYWdlIHdlIHVzZSB0byBmbGV4aWJseSBzY2FsZSBvdXIgcHJvY2Vzc2luZw0KbGlicmFyeSgibGlzdGVudiIpICMgdGhpcyBpcyBhIGhlbHBlciBwYWNrYWdlIHRoYXQgYWxsb3dzIHVzIHRvIGFzc2lnbiB0aGUgcmVzdWx0cyB0byBhIGxpc3QgZXZlbiBpZiB0aGV5IGNvbWUgaW4gYXQgZGlmZmVyZW50IHRpbWVzDQoNCiMjIFNldCB1cCBhY2Nlc3MgdG8gcmVtb3RlIGxvZ2luIG5vZGUNCmxvZ2luIDwtIHR3ZWFrKHJlbW90ZSwgd29ya2VycyA9ICJsYXVyYWJvdHpldEBvcGVuY3B1LnBzeWNoLmJpby51bmktZ29ldHRpbmdlbi5kZSIpICMgWW91ciB1c2VybmFtZSBnb2VzIGJlZm9yZSB0aGUgQA0KDQpvcHRpb25zKGZ1dHVyZS5tYWtlTm9kZVBTT0NLLnJzaGNtZCA9ICJzc2giKQ0KbG9naW4gPC0gbWFrZUNsdXN0ZXJQU09DSyhkcnlydW4gPSBGLCB2ZXJib3NlID1ULA0KICAgICAgICB3b3JrZXJzID0gImxhdXJhYm90emV0QG9wZW5jcHUucHN5Y2guYmlvLnVuaS1nb2V0dGluZ2VuLmRlIikgIyBZb3VyIHVzZXJuYW1lIGdvZXMgYmVmb3JlIHRoZSBADQpwbGFuKGxvZ2luKSAjIHRoaXMgdGVsbHMgdGhlIGZ1dHVyZSBwYWNrYWdlIHRoYXQgd2Ugd2FudCB0byB1c2UgYSByZW1vdGUgc2VydmVyIGZvciBydW5uaW5nIG91ciBmdXR1cmUgb3BlcmF0aW9ucw0KDQojIGJ1dCBtYXliZSB0aGUgcmVhc29uIHdlIHdhbnQgdG8gc2hpZnQgdG8gYSBzZXJ2ZXIgaXMgbm90IHRoYXQgd2Ugd2FudCB0byBydW4gYSBzaW1wbGUgc2VxdWVudGlhbCBvcGVyYXRpb24gdGhlcmUuDQojIG1heWJlIHdlIHdhbnQgdG8gdGFrZSBhZHZhbnRhZ2Ugb2YgcGFyYWxsZWxpc2F0aW9uIGFuZCBydW4gdGhlIG9wZXJhdGlvbiBpbiBwYXJhbGxlbCBvbiBtdWx0aXBsZSBjb3Jlcw0KIyMgU3BlY2lmeSBmdXR1cmUgdG9wb2xvZ3kNCiMjIGxvZ2luIG5vZGUgLT4geyBjbHVzdGVyIG5vZGVzIH0gLT4geyBtdWx0aXBsZSBjb3JlcyB9DQpwbGFuKGxpc3QoDQogIGxvZ2luLA0KICBtdWx0aWNvcmUsDQogIHNlcXVlbnRpYWwNCikpDQojIGRlbW8oIm1hbmRlbGJyb3QiLCBwYWNrYWdlID0gImZ1dHVyZSIsIGFzayA9IEZBTFNFKQ0KDQojIyAoYSkgVGhpcyB3aWxsIGJlIGV2YWx1YXRlZCBvbiB0aGUgY2x1c3RlciBsb2dpbiBjb21wdXRlcg0KeCAlPC0lIHsgIyB0aGlzIG9wZXJhdG9yIGJpbmRzIHRoZSByZXN1bHQgb2YgdGhlIHByb21pc2UvZnV0dXJlIHRvIHgNCiAgdGhvc3QgPC0gU3lzLmluZm8oKVtbIm5vZGVuYW1lIl1dDQogIHRwaWQgPC0gU3lzLmdldHBpZCgpDQogIHkgPC0gbGlzdGVudigpDQogIGZvciAodGFzayBpbiAxOjQpIHsNCiAgICAjIyAoYikgVGhpcyB3aWxsIGJlIGV2YWx1YXRlZCBvbiBhIGRpZmZlcmVudCBjb3JlDQogICAgeVtbdGFza11dICU8LSUgew0KICAgICAgbWhvc3QgPC0gU3lzLmluZm8oKVtbIm5vZGVuYW1lIl1dDQogICAgICBtcGlkIDwtIFN5cy5nZXRwaWQoKQ0KICAgICAgeiA8LSBsaXN0ZW52KCkNCiAgICAgIGZvciAoamogaW4gMToyKSB7DQogICAgICAgICMjIChjKSB0aGlzIHdpbGwgYmUgZXZhbHVhdGVkIHNlcXVlbnRpYWxseSBvbiB0aGUgc2FtZSBjb3JlDQogICAgICAgIHpbW2pqXV0gJTwtJSBkYXRhLmZyYW1lKHRhc2sgPSB0YXNrLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0b3AuaG9zdCA9IHRob3N0LCB0b3AucGlkID0gdHBpZCwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbWlkLmhvc3QgPSBtaG9zdCwgbWlkLnBpZCA9IG1waWQsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGhvc3QgPSBTeXMuaW5mbygpW1sibm9kZW5hbWUiXV0sDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHBpZCA9IFN5cy5nZXRwaWQoKSkNCiAgICAgIH0NCiAgICAgIFJlZHVjZShyYmluZCwgeikNCiAgICB9DQogIH0NCiAgUmVkdWNlKHJiaW5kLCB5KQ0KfQ0KDQpwcmludCh4KQ0KYGBgDQo=</div>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

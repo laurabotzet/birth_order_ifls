@@ -180,8 +180,8 @@ plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_ord
                            colour = `Sibship`, group = `Sibship`)) +
     geom_pointrange(stat = "identity", position = position_dodge(width = 0.5)) +
     geom_line(position = position_dodge(width = 0.5)) +
-    scale_y_continuous(name=ylabel, limits = c(-0.8, 0.5), breaks = c(-0.6, -0.4, -0.2, 0,
-                                                                      0.2, 0.4)) +
+    scale_y_continuous(name=ylabel, limits = c(-0.8, 0.8), breaks = c(-0.8, -0.6, -0.4, -0.2, 0,
+                                                                      0.2, 0.4, 0.6, 0.8)) +
     labs(title= title) +
     apatheme +
     theme(legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),

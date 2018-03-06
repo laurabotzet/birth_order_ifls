@@ -326,14 +326,18 @@ t.test(df$riskB ~ df$group, var.equal = T)
 
 ## Educational Attainment
 educational_attainment = df %>%
-  group_by(group, highest_education) %>%
-  summarise(count = length(highest_education))
-
-educational_attainment = spread(educational_attainment, highest_education, count)
+  group_by(group) %>%
+  summarise(years_of_education_mean = mean(years_of_education, na.rm=T),
+            years_of_education_confidence_low= mean(years_of_education, na.rm = T) - 
+                (qt(.975, n()-1)*sd(years_of_education, na.rm = T)/sqrt(n())),
+            years_of_education_high = mean(years_of_education, na.rm = T) +
+                (qt(.975, n()-1)*sd(years_of_education, na.rm = T)/sqrt(n())))
 
 educational_attainment
 
-ggplot(data=df, aes(x=highest_education, fill=group)) +
+t.test(df$years_of_education ~ df$group, var.equal = T)
+
+ggplot(data=df, aes(x=years_of_education, fill=group)) +
   geom_histogram(stat="count", binwidth=.5, position="dodge")
 ```
 
@@ -452,15 +456,18 @@ t.test(df$riskB ~ df$group2, var.equal = T)
 
 ## Educational Attainment
 educational_attainment = df %>%
-  group_by(group2, highest_education) %>%
-  summarise(count = length(highest_education))
-
-educational_attainment = spread(educational_attainment, highest_education, count) %>%
-  filter(!is.na(group2))
+  group_by(group2) %>%
+  summarise(years_of_education_mean = mean(years_of_education, na.rm=T),
+            years_of_education_confidence_low= mean(years_of_education, na.rm = T) - 
+                (qt(.975, n()-1)*sd(years_of_education, na.rm = T)/sqrt(n())),
+            years_of_education_high = mean(years_of_education, na.rm = T) +
+                (qt(.975, n()-1)*sd(years_of_education, na.rm = T)/sqrt(n())))
 
 educational_attainment
 
-ggplot(data=df %>% filter(!is.na(group2)), aes(x=highest_education, fill=group2)) +
+t.test(df$years_of_education ~ df$group2, var.equal = T)
+
+ggplot(data=df %>% filter(!is.na(group2)), aes(x=years_of_education, fill=group2)) +
   geom_histogram(stat="count", binwidth=.5, position="dodge")
 ```
 

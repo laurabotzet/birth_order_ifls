@@ -619,16 +619,46 @@ ea = b3a_dl1 %>%
                                                                             highest_education == 62 |
                                                                             highest_education == 63 |
                                                                             highest_education == 13,
-                                                                          "University",
-                                                                          ifelse(highest_education == 98, NA,
-                                                                                 "Other")))))),
-         highest_education = factor(highest_education,levels(highest_education)[c(1, 2, 4, 5, 3)]),
+                                                                          "University", NA))))),#"other" = NA
          highest_grade = ifelse(highest_grade == 98, NA,
                                 ifelse(highest_grade == 99, NA, highest_grade)),
          currently_attending_school = as.factor(ifelse(currently_attending_school == 1, "yes",
                                                        ifelse(currently_attending_school == 3, "no", NA))),
          hours_in_class = ifelse(hours_in_class == 99, NA,
                                  ifelse(hours_in_class == 98, NA, hours_in_class)))
+
+## Create variable that includes years of education (highest_education.highest_grade) as a numeric variable
+ea = ea %>%
+  mutate(years_of_education_factor = as.factor(str_c(highest_education, ".", highest_grade)),
+         years_of_education = as.numeric(ifelse(attended_school == "no", 0,
+                                         ifelse(years_of_education_factor == "Elementary.0", 0.5,
+                                         ifelse(years_of_education_factor == "Elementary.1", 1,
+                                         ifelse(years_of_education_factor == "Elementary.2", 2,
+                                         ifelse(years_of_education_factor == "Elementary.3", 3,
+                                         ifelse(years_of_education_factor == "Elementary.4", 4,
+                                         ifelse(years_of_education_factor == "Elementary.5", 5,
+                                         ifelse(years_of_education_factor == "Elementary.6", NA,
+                                         ifelse(years_of_education_factor == "Elementary.7", 6,
+                                         ifelse(years_of_education_factor == "Junior High.0", 6.5,
+                                         ifelse(years_of_education_factor == "Junior High.1", 7,
+                                         ifelse(years_of_education_factor == "Junior High.2", 8,
+                                         ifelse(years_of_education_factor == "Junior High.3", NA,
+                                         ifelse(years_of_education_factor == "Junior High.7", 9,
+                                         ifelse(years_of_education_factor == "Senior High.0", 9.5,
+                                         ifelse(years_of_education_factor == "Senior High.1", 10,
+                                         ifelse(years_of_education_factor == "Senior High.2", 11,
+                                         ifelse(years_of_education_factor == "Senior High.3", NA,
+                                         ifelse(years_of_education_factor == "Senior High.7", 12,
+                                         ifelse(years_of_education_factor == "University.0", 12.5,
+                                         ifelse(years_of_education_factor == "University.1", 13,
+                                         ifelse(years_of_education_factor == "University.2", 14,
+                                         ifelse(years_of_education_factor == "University.3", 15,
+                                         ifelse(years_of_education_factor == "University.4", 16,
+                                         ifelse(years_of_education_factor == "University.5", 17,
+                                         ifelse(years_of_education_factor == "University.6", NA,
+                                         ifelse(years_of_education_factor == "University.7", 18,
+                                                NA)))))))))))))))))))))))))))))
+qplot(ea$years_of_education)
 ```
 
 

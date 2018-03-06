@@ -1,11 +1,24 @@
-name: "birth-order-ifls"
+name: birth-order-ifls
 output:
   html_document:
-    self_contained: false
     theme: paper
-    code_folding: "hide"
-    df_print: "tibble"
-    code_download: true
+    code_folding: hide
+    df_print: tibble
+    code_download: yes
     css: styles.css
-exclude: ["packrat", "*.rda", "*.pdf", "*.dta", "*.csv", "geo", "*.csl", "*.bibtex", "*.rds", "*.dta", "data"]
-output_dir: "docs"
+    lib_dir: site_libs
+    self_contained: no
+exclude:
+- packrat
+- '*.rda'
+- '*.pdf'
+- '*.dta'
+- '*.csv'
+- geo
+- '*.csl'
+- '*.bibtex'
+- '*.rds'
+- '*.dta'
+- data
+output_dir: docs
+

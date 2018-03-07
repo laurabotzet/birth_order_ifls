@@ -7,5 +7,6 @@ packrat/lib*/
 *.zip
 data/
 *.pdf
+*.zip
 packrat/src/
 .Rhistory

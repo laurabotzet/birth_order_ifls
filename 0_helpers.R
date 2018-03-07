@@ -143,7 +143,7 @@ apatheme=theme_bw()+
         axis.line=element_line())
 
 #' function used to do all birth order effect plots
-plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_order", separate = TRUE) {
+plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_order", separate = TRUE, ylimits = NULL) {
   if(inherits(model, "merMod")) {
     varnames = names(model@frame)
   } else {
@@ -180,15 +180,15 @@ plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_ord
                            colour = `Sibship`, group = `Sibship`)) +
     geom_pointrange(stat = "identity", position = position_dodge(width = 0.5)) +
     geom_line(position = position_dodge(width = 0.5)) +
-    scale_y_continuous(name=ylabel, limits = c(-0.8, 0.8), breaks = c(-0.8, -0.6, -0.4, -0.2, 0,
-                                                                      0.2, 0.4, 0.6, 0.8)) +
+    scale_y_continuous(name = ylabel) +
     labs(title= title) +
     apatheme +
     theme(legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),
           plot.title = element_text(hjust = 0)) +
     guides(colour=guide_legend(title = "Sibship")) +
     scale_fill_brewer(palette = "Set2") +
-    scale_colour_brewer(palette = "Set2")
+    scale_colour_brewer(palette = "Set2") +
+    coord_cartesian(ylim = ylimits)
   print(plotx)
   assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)
 }
@@ -293,7 +293,7 @@ plot_birthorder_01 = function(model, ylabel = NULL, title = "", bo_var = "birth_
 
 
 #' functions used to compare models
-compare_models_markdown = function(m1_covariates_only) {
+compare_models_markdown = function(m1_covariates_only, ylimits = NULL) {
   formr::asis_knit_child('_test_outcome.Rmd')
   }
 

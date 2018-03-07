@@ -1,0 +1,72 @@
+---
+title: "Untitled"
+author: "Ruben Arslan"
+date: "28 September 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+
+n_imputations.mitml = function(imps) {
+  imps$iter$m
+}
+n_imputations.mids = function(imps) {
+  imps$m
+}
+n_imputations.amelia = function(imps) {
+  length(imps$imputations)
+}
+n_imputations = function(imps) { UseMethod("n_imputations") }
+
+complete.mitml = mitml::mitmlComplete
+complete.amelia = function(imps, action = "long") {
+  if (action == "long") {
+    dplyr::bind_rows(imps$imputations, .id = "m")
+  } else if (is.numeric(action)) {
+    imps$imputations[[action]]
+  }
+}
+complete.mids = mice::complete
+complete = function(...) { UseMethod("complete") }
+
+library(mice)
+library(miceadds)
+library(mitml)
+
+
+miss_frac(diary_lim)
+codebook::md_pattern(diary_lim)
+```
+
+```{r}
+diary_i = mice(diary_lim, m = 10)
+
+saveRDS(diary_i, file="diary_i_norm_nolaglead.rdata")
+
+
+plot(diary_i, c("risk_taking", "good_mood"))
+# check densities of imputed/real
+densityplot(diary_i, ~ risk_taking)
+densityplot(diary_i, ~ good_mood)
+
+densityplot(diary_i, ~ lag_risk_taking)
+densityplot(diary_i, ~ menstruation_labelled)
+densityplot(diary_i, ~ premenstrual_phase_fab)
+densityplot(diary_i, ~ fertile_fab)
+lm(risk_taking~ lag_risk_taking, diary_lim)
+lm(risk_taking~ lag_risk_taking, complete(diary_i,1))
+```
+
+analyse beispiel
+```{r}
+library(lme4)
+fit <- with(mids2mitml.list(diary_i), lmer(risk_taking ~ (menstruation_labelled + premenstrual_phase_fab + fertile_fab) * hormonal_contraception + (1 | short), subset = included_d == TRUE))
+mitml::testEstimates(fit, var.comp = T)
+fit[[1]] # fuer plots
+```

@@ -26,7 +26,7 @@ summary(m2_birthorder_linear)
 
 ###### Coefficient Plot
 ```{r}
-plot_birthorder(m2_birthorder_linear, separate = FALSE)
+plot_birthorder(m2_birthorder_linear, separate = FALSE, ylimits = ylimits)
 ```
 
 ##### Add Birth Order Factor {.tabset}
@@ -39,7 +39,7 @@ summary(m3_birthorder_nonlinear)
 
 ###### Coefficient Plot
 ```{r}
-plot_birthorder(m3_birthorder_nonlinear, separate = FALSE)
+plot_birthorder(m3_birthorder_nonlinear, separate = FALSE, ylimits = ylimits)
 ```
 
 ##### Add Interaction {.tabset}
@@ -52,7 +52,7 @@ summary(m4_interaction)
 
 ###### Coefficient Plot
 ```{r}
-plot_birthorder(m4_interaction)
+plot_birthorder(m4_interaction, ylimits = ylimits)
 ```
 
 ##### Model Comparison

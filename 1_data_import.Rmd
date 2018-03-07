@@ -73,7 +73,7 @@ b3b_co1 = read_dta("data/hh14_all_dta/b3b_co1.dta") # Book 3b, Section co1
 # additional information from earlier waves
 bek_ek2 = read_dta("data/hh07_all_dta/bek_ek2.dta") # Intelligence information from wave 4 (2007)
 bek00 = read_dta("data/hh00_all_dta/bek.dta") # Intelligence information from wave 3 (2000)
-bek97 = read_dta("data/hh97dta/bek.dta") #Intelligence information from wave 2 (1997)
+# bek97 = read_dta("data/hh97dta/bek.dta") #Intelligence information from wave 2 (1997)
 
 
 ### Personality Information (only for adults)

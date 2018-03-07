@@ -70,6 +70,12 @@ ek_ek2 = read_dta("data/hh14_all_dta/ek_ek2.dta") # Book ek2
 # additional information (counting backwards, adaptive testing) for adults
 b3b_cob = read_dta("data/hh14_all_dta/b3b_cob.dta") # Book 3b, Section cob
 b3b_co1 = read_dta("data/hh14_all_dta/b3b_co1.dta") # Book 3b, Section co1
+# additional information from earlier waves
+bek_ek2 = read_dta("data/hh07_all_dta/bek_ek2.dta") # Intelligence information from wave 4 (2007)
+bek00 = read_dta("data/hh00_all_dta/bek.dta") # Intelligence information from wave 3 (2000)
+bek97 = read_dta("data/hh97dta/bek.dta") #Intelligence information from wave 2 (1997)
+
+
 ### Personality Information (only for adults)
 b3b_psn = read_dta("data/hh14_all_dta/b3b_psn.dta") # Book 3b, Section psn
 
@@ -79,6 +85,15 @@ b3a_si = read_dta("data/hh14_all_dta/b3a_si.dta") # Book 3a, Section si
 ### Educational Attainment
 b3a_dl1 = read_dta("data/hh14_all_dta/b3a_dl1.dta") # Book 3a, Section dl1
 
+### EBTANAS/UAN/UN Score
+b3a_dl3 = read_dta("data/hh14_all_dta/b3a_dl3.dta") # Book 3a, Section dl3
+b3a_dl4 = read_dta("data/hh14_all_dta/b3a_dl4.dta") # Book 3a, Section dl4
+
+### Job Information
+b3a_tk2 = read_dta("data/hh14_all_dta/b3a_tk2.dta") # Book 3a, Section tk2
+
+### Smoking behavior
+b3b_km = read_dta("data/hh14_all_dta/b3b_km.dta") # Book 3b, Section km
 ```
 
 ## Birth order information {.tabset}
@@ -661,6 +676,160 @@ ea = ea %>%
 qplot(ea$years_of_education)
 ```
 
+## EBTANAS/UAN/UN Score
+```{r EBTANAS/UAN/UN Score}
+EBTANAS_long = b3a_dl3 %>%
+  select(pidlink, "Level_of_schooling" = dl3type, "Type_of_test" = dl16c1, "Indonesia_score" = dl16db,
+         "English_score" = dl16dc, "Math_score" = dl16dd, "Total_score" = dl16e) %>%
+  mutate(Level_of_schooling = ifelse(Level_of_schooling == 1, "Elementary",
+                                     ifelse(Level_of_schooling == 2, "Junior High",
+                                            ifelse(Level_of_schooling == 3, "Senior High", NA))),
+         Type_of_test = ifelse(Type_of_test == 1, "EBTANAS",
+                               ifelse(Type_of_test == 2, "UAN/UN", NA))) %>%
+  filter(!is.na(Indonesia_score) | !is.na(English_score) | !is.na(Math_score) | !is.na(Total_score))
+  # remove people with no EBTANAS Information
+
+#Wrangle Data
+EBTANAS_Elemenatry = EBTANAS_long %>%
+  filter(Level_of_schooling == "Elementary") %>%
+  rename("Indonesia_score_elementary" = Indonesia_score, "English_score_elementary" = English_score,
+         "Math_score_elemenatry" = Math_score, "Total_score_elemenatry" = Total_score,
+         "Type_of_test_elementary" = Type_of_test) %>%
+  select(-Level_of_schooling)
+
+EBTANAS_Junior_High = EBTANAS_long %>%
+  filter(Level_of_schooling == "Junior High") %>%
+  rename("Indonesia_score_Junior_High" = Indonesia_score, "English_score_Junior_High" = English_score,
+         "Math_score_Junior_High" = Math_score, "Total_score_Junior_High" = Total_score,
+         "Type_of_test_Junior_High" = Type_of_test)%>%
+  select(-Level_of_schooling)
+
+EBTANAS_Senior_High = EBTANAS_long %>%
+  filter(Level_of_schooling == "Senior High") %>%
+  rename("Indonesia_score_Senior_High" = Indonesia_score, "English_score_Senior_High" = English_score,
+         "Math_score_Senior_High" = Math_score, "Total_score_Senior_High" = Total_score,
+         "Type_of_test_Senior_High" = Type_of_test)%>%
+  select(-Level_of_schooling)
+
+EBTANAS = full_join(EBTANAS_Elemenatry, EBTANAS_Junior_High, by = "pidlink")
+EBTANAS = full_join(EBTANAS, EBTANAS_Senior_High, by = "pidlink") 
+
+table(is.na(EBTANAS$Total_score_elemenatry))
+table(is.na(EBTANAS$Total_score_Junior_High))
+table(is.na(EBTANAS$Total_score_Senior_High))
+
+EBTANAS = EBTANAS %>%
+  mutate(Total_score_highest = Total_score_elemenatry,
+         Total_score_highest = ifelse(!is.na(Total_score_Senior_High), Total_score_Senior_High,
+                                      ifelse(!is.na(Total_score_Junior_High), Total_score_Junior_High,
+                                             Total_score_highest)),
+         Total_score_highest_type = ifelse(!is.na(Total_score_Senior_High), "Senior High",
+                                      ifelse(!is.na(Total_score_Junior_High), "Junior High",
+                                             ifelse(!is.na(Total_score_elemenatry), "Elementary",
+                                                           NA))),
+         Math_score_highest = Math_score_elemenatry,
+         Math_score_highest = ifelse(!is.na(Math_score_Senior_High), Math_score_Senior_High,
+                                      ifelse(!is.na(Math_score_Junior_High), Math_score_Junior_High,
+                                             Math_score_highest)),
+         Math_score_highest_type = ifelse(!is.na(Math_score_Senior_High), "Senior High",
+                                      ifelse(!is.na(Math_score_Junior_High), "Junior High",
+                                             ifelse(!is.na(Math_score_elemenatry), "Elementary",
+                                                           NA))))
+table(is.na(EBTANAS$Total_score_highest))
+table(is.na(EBTANAS$Math_score_highest))
+table(EBTANAS$Total_score_highest_type)
+table(EBTANAS$Math_score_highest_type)
+
+qplot(EBTANAS$Total_score_highest)
+qplot(EBTANAS$Math_score_highest)
+
+## Working while still in school
+child_labour = b3a_dl4 %>%
+  select(pidlink, "Level_of_schooling" = dl4type, "Worked" = dl15, "Missed_school" = dl14a) %>%
+  mutate(Level_of_schooling = ifelse(Level_of_schooling == 1, "Elementary",
+                                     ifelse(Level_of_schooling == 2, "JuniorHigh",
+                                            ifelse(Level_of_schooling == 3, "SeniorHigh",
+                                                   ifelse(Level_of_schooling == 4, "University", NA)))),
+         Worked = ifelse(Worked == 1, 1,
+                         ifelse(Worked == 3, 0, NA)),
+         Missed_school = ifelse(Missed_school == 1, 1,
+                         ifelse(Missed_school == 3, 0, NA)))
+
+# Wrangle Data
+child_labour_work = child_labour %>%
+  select(pidlink, Level_of_schooling, Worked) %>%
+  spread(., Level_of_schooling, Worked) %>%
+  rename("Elementary_worked" = Elementary, "Junior_high_worked" = JuniorHigh, 
+         "Senior_high_worked" = SeniorHigh, "University_worked" = University) %>%
+  mutate(total_worked = ifelse(Elementary_worked == 1 | Junior_high_worked == 1 |
+                                 Senior_high_worked == 1 | University_worked == 1, 1, 0),
+         total_worked  = ifelse(is.na(total_worked), 0, total_worked))
+
+child_labour_missed = child_labour %>%
+  select(pidlink, Level_of_schooling, Missed_school) %>%
+  spread(., Level_of_schooling, Missed_school) %>%
+  rename("Elementary_missed" = Elementary, "Junior_high_missed" = JuniorHigh, 
+         "Senior_high_missed" = SeniorHigh, "University_missed" = University) %>%
+  mutate(total_missed = ifelse(Elementary_missed == 1 | Junior_high_missed == 1 |
+                                 Senior_high_missed == 1 | University_missed == 1, 1, 0),
+         total_missed = ifelse(is.na(total_missed), 0, total_missed))
+
+child_labour = full_join(child_labour_work, child_labour_missed, by = "pidlink")
+table(child_labour$total_missed)
+table(child_labour$total_worked)
+``` 
+
+## Job Information
+```{r}
+job = b3a_tk2 %>% select(pidlink, "Category" = tk24a, "Sector" = tk19ab, "wage_last_month" = tk25a1,
+                         "wage_last_year" = tk25a2) %>%
+  mutate(Category = ifelse(Category == 1 | Category == 2 | Category == 3, "Self-employed",
+                           ifelse(Category == 4, "Government worker",
+                                  ifelse(Category == 5, "Private worker",
+                                         ifelse(Category == 7, "Casual worker in agriculture",
+                                                ifelse(Category == 8, "Casual worker not in agriculture",
+                                                       ifelse(Category == 6, "Unpaid family worker",
+                                                              NA)))))),
+         Self_employed = ifelse(Category == "Self-employed", 1,
+                                ifelse(is.na(Category), NA, 0)),
+         Sector = ifelse(Sector == 1, "Agriculture, forestry, fishing and hunting",
+                  ifelse(Sector == 2, "Mining and quarrying",
+                  ifelse(Sector == 3, "Manufacturing",
+                  ifelse(Sector == 4, "Electricity, gas, water",
+                  ifelse(Sector == 5, "Construction",
+                  ifelse(Sector == 6, "Wholesale, retail, restaurants and hotels",
+                  ifelse(Sector == 7, "Transportation, storage and communications",
+                  ifelse(Sector == 8, "Finance, insurance, real estate and business services",
+                  ifelse(Sector == 9, "Social services",
+                  ifelse(Sector == 10, "Activities that cannot be classified", NA)))))))))),
+         wage_last_month = ifelse(wage_last_month == 8, NA, wage_last_month),
+         wage_last_year = ifelse(wage_last_year == 8, NA, wage_last_year))
+
+table(job$Category)
+table(job$Sector)
+qplot(job$wage_last_month)
+summary(job$wage_last_month)
+x = job %>% filter(wage_last_month < 5000000)
+qplot(x$wage_last_month)
+
+qplot(job$wage_last_year)
+summary(job$wage_last_year)
+x = job %>% filter(wage_last_year < 50000000)
+qplot(x$wage_last_year)
+```
+
+## Health Information - Smoking Behavior
+```{r}
+smoking = b3b_km %>%
+  select(pidlink, "ever_smoked" = km01a, "still_smoking" = km04, "amount" = km08,
+         "money_spent_smoking" = km09, "age_first_smoke" = km10) %>%
+  mutate(ever_smoked = ifelse(ever_smoked == 1, 1, 0),
+         still_smoking = ifelse(still_smoking == 1, 1, 0),
+         still_smoking = ifelse(is.na(still_smoking), 0, still_smoking),
+         amount = ifelse(amount == 8, NA,
+                         ifelse(amount == 98, NA, amount)),
+         amount_still_smokers = ifelse(still_smoking == 1, amount, NA))
+```
 
 ## Merge data
 
@@ -670,11 +839,20 @@ alldata_birthorder = left_join(alldata_pregnancy, iq, by = "pidlink")
 alldata_birthorder = left_join(alldata_birthorder, pers, by = "pidlink")
 alldata_birthorder = left_join(alldata_birthorder, risk, by = "pidlink")
 alldata_birthorder = left_join(alldata_birthorder, ea, by = "pidlink")
+alldata_birthorder = left_join(alldata_birthorder, EBTANAS, by = "pidlink")
+alldata_birthorder = left_join(alldata_birthorder, child_labour, by = "pidlink")
+alldata_birthorder = left_join(alldata_birthorder, job, by = "pidlink")
+alldata_birthorder = left_join(alldata_birthorder, smoking, by = "pidlink")
+
 
 alldata = left_join(individuals_unchanged, iq, by = "pidlink")
 alldata = left_join(alldata, pers, by = "pidlink")
 alldata = left_join(alldata, risk, by = "pidlink")
 alldata = left_join(alldata, ea, by = "pidlink")
+alldata = left_join(alldata, EBTANAS, by = "pidlink")
+alldata = left_join(alldata, child_labour, by = "pidlink")
+alldata = left_join(alldata, job, by = "pidlink")
+alldata = left_join(alldata, smoking, by = "pidlink")
 
 
 ### Which values are missing?
@@ -696,8 +874,10 @@ for future analyses
 alldata_birthorder = alldata_birthorder %>% ungroup()
 alldata = alldata %>% ungroup()
 pregnancy = pregnancy %>% ungroup()
+iq = iq %>% ungroup()
 
 saveRDS(alldata_birthorder, file = "data/alldata_birthorder.rds")
 saveRDS(alldata, file = "data/alldata.rds")
 saveRDS(pregnancy, file = "data/pregnancy.rds")
+saveRDS(iq, file = "data/iq.rds")
 ```

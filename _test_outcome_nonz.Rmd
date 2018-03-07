@@ -59,7 +59,5 @@ plot_birthorder_nonz(m4_interaction)
 ```{r}
 ###### Model 1 - Model 2
 anova(m1_covariates_only, m2_birthorder_linear, m3_birthorder_nonlinear, m4_interaction)
-
-
 ```
 

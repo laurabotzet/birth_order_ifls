@@ -542,12 +542,13 @@ mean_sd = birthorder %>%
             riskA_mean = mean(riskA, na.rm=T),
             riskA_sd = sd(riskA, na.rm=T),
             riskB_mean = mean(riskB, na.rm=T),
-            riskB_sd = sd(riskB, na.rm=T))
+            riskB_sd = sd(riskB, na.rm=T),
+            years_of_education_mean = mean(years_of_education, na.rm=T),
+            years_of_education_sd = sd(years_of_education, na.rm=T))
       
 mean_sd
 ```
 
 ## Correlations
 ```{r}
-round(cor(birthorder %>% ungroup() %>% select(age, male, g_factor, big5_ext, big5_neu, big5_con, big5_agree, big5_open, riskA, riskB), use = "pairwise.complete.obs"), 2) 
-```
+round(cor(birthorder %>% ungroup() %>% select(age, male, g_factor, big5_ext, big5_neu, big5_con, big5_agree, big5_open, riskA, riskB, years_of_education), use = "pairwise.complete.obs"), 2) 

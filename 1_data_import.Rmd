@@ -27,7 +27,7 @@ bk_ar1 = left_join(bk_ar1, bk_ar1 %>% select(hhid14_9, pid14, pidlink) %>% renam
 bk_ar1 = left_join(bk_ar1, bk_ar1 %>% select(hhid14_9, pid14, pidlink) %>% rename(ar11 = pid14, mother_pidlink = pidlink), by = c("hhid14_9", "ar11"))
 
 ### Informations from IFLS wave 5 to link data to earlier waves:
-ptrack = read_dta("data/hh14_all_dta/ptrack.dta") # Traking informations
+ptrack = read_dta("data/hh14_all_dta/ptrack.dta") # Tracking informations
 
 ### Pregnancy Informations from mother
 ## Wave 5 - 2014
@@ -399,9 +399,11 @@ individuals = individuals %>%
            mother_birthdate = str_c(mother_pidlink, "-", birthdate)) # mother_pidlink-YYYY-MM; is NA if birth_year is missing
 
 ##Remove all with missing mother_birthdate
-individuals = individuals %>%
-  filter(!is.na(mother_birthdate))
-
+# individuals = individuals %>%
+#   filter(!is.na(mother_birthdate))
+individuals = individuals %>% group_by(mother_pidlink) %>% 
+  mutate(birthorder_naive = if_else(!is.na(mother_pidlink), min_rank(birthdate), NA_integer_),
+         sibling_count_naive = if_else(!is.na(mother_pidlink), n(), NA_integer_))
 
 ## Combine information from pregnancy history and individual files
 pregnancy = pregnancy %>%
@@ -409,33 +411,54 @@ pregnancy = pregnancy %>%
   mutate(twin_order = row_number(birthdate),
          mother_birthdate_unique = paste0(mother_birthdate, "-", twin_order)) %>%
   ungroup()
-
-individuals = individuals %>%
-  group_by(mother_birthdate) %>%
-  mutate(twin_order = row_number(birthdate),
-         mother_birthdate_unique = paste0(mother_birthdate, "-", twin_order)) %>%
-  ungroup() %>%
-  select(mother_birthdate_unique, pidlink, sex, age)
-
-
-pregnancy_missing = pregnancy %>%
-  mutate(missing = ifelse(!(mother_birthdate_unique %in% individuals$mother_birthdate_unique),
-                          1, 0)) %>%
-  filter(missing == 1)
+# 
+# individuals = individuals %>%
+#   group_by(mother_birthdate) %>%
+#   mutate(twin_order = row_number(birthdate),
+#          mother_birthdate_unique = paste0(mother_birthdate, "-", twin_order)) %>%
+#   ungroup() %>%
+#   select(mother_birthdate_unique, pidlink, sex, age)
+# 
+# 
+# pregnancy_missing = pregnancy %>%
+#   mutate(missing = ifelse(!(mother_birthdate_unique %in% individuals$mother_birthdate_unique),
+#                           1, 0)) %>%
+#   filter(missing == 1)
 
 # prevent that twins exist 4 times because they appear twice in pregnancy and twice in individuals, by eliminating dupes from pregnancy
-pregnancy_not_missing = pregnancy %>%
-  mutate(missing = ifelse(!(mother_birthdate_unique %in% individuals$mother_birthdate_unique),
-                          1, 0)) %>%
-  filter(missing == 0)          
+# pregnancy_not_missing = pregnancy %>%
+#   mutate(missing = ifelse(!(mother_birthdate_unique %in% individuals$mother_birthdate_unique),
+#                           1, 0)) %>%
+#   filter(missing == 0)          
 
-alldata_pregnancy = left_join(pregnancy_not_missing, individuals,
-                              by = "mother_birthdate_unique")
+alldata_pregnancy = full_join(pregnancy, individuals,
+                              by = c("mother_pidlink", "birthdate", "mother_birthdate")) %>% 
+  distinct(mother_pidlink, birthdate, pidlink, .keep_all = TRUE)
 
-alldata_pregnancy = bind_rows(alldata_pregnancy, pregnancy_missing)
+# alldata_pregnancy = bind_rows(alldata_pregnancy, pregnancy_missing)
 
 prop.table(table(alldata_pregnancy$multiple_birth))
 prop.table(table(alldata_pregnancy$any_multiple_birth))
+
+cor.test(alldata_pregnancy$birthorder_uterus_alive, alldata_pregnancy$birthorder_naive)
+prop.table(table(alldata_pregnancy$birthorder_uterus_alive == alldata_pregnancy$birthorder_naive))
+ggplot(alldata_pregnancy, aes(x=birthorder_uterus_alive, y=birthorder_naive)) + geom_jitter(alpha = 0.1)
+# The birth_order_alive is always lower, which makes sense, becaus not live births (miscarriage, still births are excluded)
+
+cor.test(alldata_pregnancy$sibling_count_uterus_alive, alldata_pregnancy$sibling_count_naive)
+prop.table(table(alldata_pregnancy$sibling_count_uterus_alive == alldata_pregnancy$sibling_count_naive))
+ggplot(alldata_pregnancy, aes(x=sibling_count_uterus_alive, y=sibling_count_naive)) + geom_jitter(alpha = 0.1)
+crosstabs(~ sibling_count_uterus_alive + sibling_count_naive, alldata_pregnancy)
+crosstabs(~ is.na(sibling_count_uterus_alive) + is.na(sibling_count_naive), alldata_pregnancy)
+
+alldata_pregnancy = alldata_pregnancy %>% group_by(mother_pidlink) %>% 
+  mutate(birthorder_naive2 = if_else(!is.na(mother_pidlink), min_rank(birthdate), NA_integer_),
+         sibling_count_naive2 = if_else(!is.na(mother_pidlink), n(), NA_integer_))
+
+cor.test(alldata_pregnancy$sibling_count_naive2, alldata_pregnancy$sibling_count_naive)
+cor.test(alldata_pregnancy$birthorder_naive2, alldata_pregnancy$birthorder_naive)
+cor.test(alldata_pregnancy$birthorder_naive2, alldata_pregnancy$birthorder_uterus_alive)
+cor.test(alldata_pregnancy$sibling_count_naive2, alldata_pregnancy$sibling_count_uterus_alive)
 ```
 
 
@@ -857,6 +880,8 @@ alldata = left_join(alldata, smoking, by = "pidlink")
 
 ### Which values are missing?
 ## All data
+alldata_birthorder = alldata_birthorder %>% mutate(old_enough = if_else(age>15, 1, NA_real_))
+
 formr::missingness_patterns(alldata_birthorder %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, big5_ext, riskA, riskB))
 ## Intelligence
 formr::missingness_patterns(alldata_birthorder %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering))
@@ -864,6 +889,12 @@ formr::missingness_patterns(alldata_birthorder %>% select(raven, math, count_bac
 formr::missingness_patterns(alldata_birthorder %>% select(big5_ext, big5_con, big5_open, big5_neu, big5_agree))
 ##Risk
 formr::missingness_patterns(alldata_birthorder %>% select(riskA, riskB))
+
+## Nec. vars
+formr::missingness_patterns(alldata_birthorder %>% 
+   select(mother_pidlink, birthorder_naive2, raven, big5_ext, riskA, age,old_enough))
+formr::missingness_patterns(alldata_birthorder %>% 
+   select(mother_pidlink, birthorder_uterus_alive, raven, big5_ext, riskA, age,old_enough))
 ```
 
 ## Save data

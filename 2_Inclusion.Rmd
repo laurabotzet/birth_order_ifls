@@ -16,6 +16,7 @@ source("0_helpers.R")
 alldata_birthorder = readRDS("data/alldata_birthorder.rds")
 ```
 
+
 ## Birthorder {.active}
 
 ### Total
@@ -263,7 +264,7 @@ n_birthorder
 alldata_birthorder = alldata_birthorder %>%
   mutate(age = ifelse(!is.na(IQage), IQage, age)) %>%
   select(-ends_with("_ans"), -starts_with("co0"), -co10count, -starts_with("cob"), -matches("[a-z][0-9]r?"),
-         -matches("[a-z][0-9]r_reversed"), -matches("si[0-9]"), -sex.y, -duped_in_earlier_wave, -missing,
+         -matches("[a-z][0-9]r_reversed"), -matches("si[0-9]"), -sex.y, -duped_in_earlier_wave,
          -IQage, starts_with("big5_")) %>%
   rename(sex = sex.x)
 

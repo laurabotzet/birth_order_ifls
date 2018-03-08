@@ -66,14 +66,16 @@ w2_marriage_additional = read_dta("data/hh97dta/b4_cov.dta") # Book 4, Section c
 w1_marriage_additional = read_dta("data/hh93dta/bukkar2.dta") # Book K, Section ar, household roaster
 
 ### IQ Information
-ek_ek2 = read_dta("data/hh14_all_dta/ek_ek2.dta") # Book ek2
+ek_ek2 = read_dta("data/hh14_all_dta/ek_ek2.dta") # Book ek2: >15 years
+ek_ek1 = read_dta("data/hh14_all_dta/ek_ek1.dta") # Book ek1: <15 years
 # additional information (counting backwards, adaptive testing) for adults
 b3b_cob = read_dta("data/hh14_all_dta/b3b_cob.dta") # Book 3b, Section cob
 b3b_co1 = read_dta("data/hh14_all_dta/b3b_co1.dta") # Book 3b, Section co1
 # additional information from earlier waves
-bek_ek2 = read_dta("data/hh07_all_dta/bek_ek2.dta") # Intelligence information from wave 4 (2007)
+bek_ek1 = read_dta("data/hh07_all_dta/bek_ek1.dta") # Intelligence information from wave 4 (2007): 7-14
+bek_ek2 = read_dta("data/hh07_all_dta/bek_ek2.dta") # Intelligence info from wave 4 (2007): 15 - 24
 bek00 = read_dta("data/hh00_all_dta/bek.dta") # Intelligence information from wave 3 (2000)
-# bek97 = read_dta("data/hh97dta/bek.dta") #Intelligence information from wave 2 (1997)
+bek97 = read_dta("data/hh97dta/bek.dta") #Intelligence information from wave 2 (1997)
 
 
 ### Personality Information (only for adults)
@@ -468,6 +470,21 @@ cor.test(alldata_pregnancy$sibling_count_naive2, alldata_pregnancy$sibling_count
 ##ek2 (>14yrs)
 iq2.1 = ek_ek2 %>% select(hhid14_9, pidlink, age, sex, ektype, resptype, result, reason, ek1_ans, ek2_ans, ek3_ans, ek4_ans, ek5_ans, ek6_ans, ek7_ans, ek8_ans, ek9_ans, ek10_ans, ek11_ans, ek12_ans, ek13_ans, ek14_ans, ek15_ans, ek16_ans, ek17_ans, ek18_ans, ek19_ans, ek20_ans, ek21_ans, ek22_ans)
 
+##ek2 (>14yrs)
+iq3.1 = ek_ek1 %>% select(hhid14_9, pidlink, age, sex, ektype, resptype, result, reason, ek1_ans, ek2_ans, ek3_ans, ek4_ans, ek5_ans, ek6_ans, ek7_ans, ek8_ans, ek9_ans, ek10_ans, ek11_ans, ek12_ans, ek13_ans, ek14_ans, ek15_ans, ek16_ans, ek17_ans, ek18_ans, ek19_ans, ek20_ans, ek21_ans, ek22_ans)
+
+answered_raven_items = iq3.1 %>% select(ek1_ans:ek12_ans)
+psych::alpha(data.frame(answered_raven_items))
+iq3.1$raven_young_2014 = rowMeans( answered_raven_items, na.rm = T)
+qplot(iq3.1$raven_young_2014)
+
+answered_math_items = iq3.1 %>% select(ek13_ans:ek17_ans)
+psych::alpha(data.frame(answered_math_items))
+iq3.1$math_young_2014 = rowMeans( answered_math_items, na.rm = T)
+qplot(iq3.1$math_young_2014)
+
+iq3.1 = iq3.1 %>% select(pidlink, age, ektype, raven_young_2014, math_young_2014)
+
 
 ##additional informations for adults: counting backwards
 iq2.2 = b3b_co1 %>% select(hhid14_9, pidlink, co04a, co04b, co04c, co04d, co04e, co07count, co10count)
@@ -479,6 +496,7 @@ iq2 = full_join(iq2.1, iq2.2, by = "pidlink")
 iq2 = full_join(iq2, iq2.3, by = "pidlink")
 iq = iq2
 iq <- plyr::rename(iq, c("age"="IQage")) 
+iq = full_join(iq, iq3.1, by = "pidlink")
 
 ### calculate iq scores
 ##Raven Test
@@ -521,14 +539,92 @@ qplot(iq$words_remembered_avg)
 iq$adaptive_numbering = iq$w_abil
 qplot(iq$adaptive_numbering)
 
+```
+
+### IQ-Tests earlier waves
+```{r}
+## Wave 4 - 2007
+### Data
+iq2007_ek1= bek_ek1 %>%
+  select(pidlink, ektype, "age_2007" = age, matches("ek[0-9]x"), matches("ek[0-9][0-9]x"))
+iq2007_ek2= bek_ek2 %>%
+  select(pidlink, ektype, "age_2007" = age, matches("ek[0-9]x"), matches("ek[0-9][0-9]x")) %>%
+  filter(!(pidlink %in% iq2007_ek1$pidlink)) # this is not good! fix it
+iq2007 = bind_rows(iq2007_ek1, iq2007_ek2) 
+
+### Raven
+iq2007 = iq2007 %>%
+  mutate(ek1x = ifelse(ek1x == 1, 1,
+                       ifelse(ek1x == 6, NA, 0)),
+         ek2x = ifelse(ek2x == 1,  1,
+                       ifelse(ek2x == 6, NA, 0)),
+         ek3x = ifelse(ek3x == 1,  1,
+                       ifelse(ek3x == 6, NA, 0)),
+         ek4x = ifelse(ek4x == 1,  1,
+                       ifelse(ek4x == 6, NA, 0)),
+         ek5x = ifelse(ek5x == 1,  1,
+                       ifelse(ek5x == 6, NA, 0)),
+         ek6x = ifelse(ek6x == 1,  1,
+                       ifelse(ek6x == 6, NA, 0)),
+         ek7x = ifelse(ek7x == 1,  1,
+                       ifelse(ek7x == 6, NA, 0)),
+         ek8x = ifelse(ek8x == 1,  1,
+                       ifelse(ek8x == 6, NA, 0)),
+         ek9x = ifelse(ek9x == 1,  1,
+                       ifelse(ek9x == 6, NA, 0)),
+         ek10x = ifelse(ek10x == 1, 1,
+                       ifelse(ek10x == 6, NA, 0)),
+         ek11x = ifelse(ek11x == 1,  1,
+                       ifelse(ek11x == 6, NA, 0)),
+         ek12x = ifelse(ek12x == 1,  1,
+                       ifelse(ek12x == 6, NA, 0)))
+
+answered_raven_items = iq2007 %>% select(ek1x:ek12x)
+psych::alpha(data.frame(answered_raven_items))
+iq2007$raven2007 = rowMeans(answered_raven_items, na.rm = T)
+qplot(iq2007$raven2007)
+
+##Math Test
+iq2007 = iq2007 %>%
+  mutate(ek13x = ifelse(ek13x == 1, 1,
+                       ifelse(ek13x == 6, NA, 0)),
+         ek14x = ifelse(ek14x == 1,  1,
+                       ifelse(ek14x == 6, NA, 0)),
+         ek15x = ifelse(ek15x == 1,  1,
+                       ifelse(ek15x == 6, NA, 0)),
+         ek16x = ifelse(ek16x == 1,  1,
+                       ifelse(ek16x == 6, NA, 0)),
+         ek17x = ifelse(ek17x == 1,  1,
+                       ifelse(ek17x == 6, NA, 0)),
+         ek18x = ifelse(ek18x == 1,  1,
+                       ifelse(ek18x == 6, NA, 0)),
+         ek19x = ifelse(ek19x == 1,  1,
+                       ifelse(ek19x == 6, NA, 0)),
+         ek20x = ifelse(ek20x == 1,  1,
+                       ifelse(ek20x == 6, NA, 0)),
+         ek21x = ifelse(ek21x == 1,  1,
+                       ifelse(ek21x == 6, NA, 0)),
+         ek22x = ifelse(ek22x == 1, 1,
+                       ifelse(ek22x == 6, NA, 0)))
+
+answered_math_items = iq2007 %>% select(ek13x:ek22x)
+iq2007$math2007 = rowMeans( answered_math_items, na.rm = T)
+
+iq2007 = iq2007 %>% select(pidlink, age_2007, raven2007, math2007)
+
+iq = full_join(iq, iq2007, by = "pidlink")
+```
+
+```{r}
+## IQ Tests 
 ## Correlation of all Iq-Tests
-round(cor(iq %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+round(cor(iq %>% select(raven, math, raven_young_2014, math_young_2014, count_backwards, words_immediate, words_delayed, adaptive_numbering, raven2007, math2007), use = "pairwise.complete.obs"), 2)
 
 ##Missingness_Patterns
-formr::missingness_patterns(iq %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering))
+formr::missingness_patterns(iq %>% select(raven, math, raven_young_2014, math_young_2014, count_backwards, words_immediate, words_delayed, adaptive_numbering, raven2007, math2007))
 
 ##g_factor
-"g_factor =~ raven + math + count_backwards +  words_delayed+ adaptive_numbering" %>%
+"g_factor =~ raven + math + count_backwards +  words_delayed + adaptive_numbering" %>%
   cfa(missing = "fiml", data = iq, std.lv = T, std.ov = T) -> cfa_g
 summary(cfa_g)
 
@@ -541,8 +637,9 @@ iq = iq %>%
          g_factor = ifelse(is.na(words_delayed), NA, g_factor),
          g_factor = ifelse(is.na(adaptive_numbering), NA, g_factor))
 qplot(iq$g_factor)
-```
 
+iq = iq %>% rename(IQ_age = age)
+```
 
 
 ## Personality
@@ -794,8 +891,7 @@ child_labour_missed = child_labour %>%
   rename("Elementary_missed" = Elementary, "Junior_high_missed" = JuniorHigh, 
          "Senior_high_missed" = SeniorHigh, "University_missed" = University) %>%
   mutate(total_missed = ifelse(Elementary_missed == 1 | Junior_high_missed == 1 |
-                                 Senior_high_missed == 1 | University_missed == 1, 1, 0),
-         total_missed = ifelse(is.na(total_missed), 0, total_missed))
+                                 Senior_high_missed == 1 | University_missed == 1, 1, 0))
 
 child_labour = full_join(child_labour_work, child_labour_missed, by = "pidlink")
 table(child_labour$total_missed)
@@ -848,7 +944,6 @@ smoking = b3b_km %>%
          "money_spent_smoking" = km09, "age_first_smoke" = km10) %>%
   mutate(ever_smoked = ifelse(ever_smoked == 1, 1, 0),
          still_smoking = ifelse(still_smoking == 1, 1, 0),
-         still_smoking = ifelse(is.na(still_smoking), 0, still_smoking),
          amount = ifelse(amount == 8, NA,
                          ifelse(amount == 98, NA, amount)),
          amount_still_smokers = ifelse(still_smoking == 1, amount, NA))

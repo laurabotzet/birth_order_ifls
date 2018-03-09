@@ -466,25 +466,27 @@ cor.test(alldata_pregnancy$sibling_count_naive2, alldata_pregnancy$sibling_count
 
 ## Intelligence {.tabset}
 ```{r select IQ data}
-### IQ Informations
-##ek2 (>14yrs)
+### IQ Informations from wave 5 (2014)
+##ek2 (>14yrs, includes only individuals, that are 15 years or older)
 iq2.1 = ek_ek2 %>% select(hhid14_9, pidlink, age, sex, ektype, resptype, result, reason, ek1_ans, ek2_ans, ek3_ans, ek4_ans, ek5_ans, ek6_ans, ek7_ans, ek8_ans, ek9_ans, ek10_ans, ek11_ans, ek12_ans, ek13_ans, ek14_ans, ek15_ans, ek16_ans, ek17_ans, ek18_ans, ek19_ans, ek20_ans, ek21_ans, ek22_ans)
 
-##ek2 (>14yrs)
+##ek2 (<14yrs, includes all individuals, that are younger than 15 years old)
 iq3.1 = ek_ek1 %>% select(hhid14_9, pidlink, age, sex, ektype, resptype, result, reason, ek1_ans, ek2_ans, ek3_ans, ek4_ans, ek5_ans, ek6_ans, ek7_ans, ek8_ans, ek9_ans, ek10_ans, ek11_ans, ek12_ans, ek13_ans, ek14_ans, ek15_ans, ek16_ans, ek17_ans, ek18_ans, ek19_ans, ek20_ans, ek21_ans, ek22_ans)
 
+#### Raven Test (wave 2015, younger than 15 years)
 answered_raven_items = iq3.1 %>% select(ek1_ans:ek12_ans)
 psych::alpha(data.frame(answered_raven_items))
-iq3.1$raven_young_2014 = rowMeans( answered_raven_items, na.rm = T)
-qplot(iq3.1$raven_young_2014)
+iq3.1$raven_2015_young = rowMeans( answered_raven_items, na.rm = T)
+qplot(iq3.1$raven_2015_young)
 
+#### Math Test (wave 2015, younger than 15 years)
 answered_math_items = iq3.1 %>% select(ek13_ans:ek17_ans)
 psych::alpha(data.frame(answered_math_items))
-iq3.1$math_young_2014 = rowMeans( answered_math_items, na.rm = T)
-qplot(iq3.1$math_young_2014)
+iq3.1$math_2015_young = rowMeans( answered_math_items, na.rm = T)
+qplot(iq3.1$math_2015_young)
 
-iq3.1 = iq3.1 %>% select(pidlink, age, ektype, raven_young_2014, math_young_2014)
-
+iq3.1 = iq3.1 %>% select(pidlink, age_2015_young = age, sex_2015_young = sex,
+                         raven_2015_young, math_2015_young)
 
 ##additional informations for adults: counting backwards
 iq2.2 = b3b_co1 %>% select(hhid14_9, pidlink, co04a, co04b, co04c, co04d, co04e, co07count, co10count)
@@ -495,23 +497,24 @@ iq2.3 = b3b_cob %>% select(hhid14_9, pidlink, w_abil, cob18, cob19b)
 iq2 = full_join(iq2.1, iq2.2, by = "pidlink")
 iq2 = full_join(iq2, iq2.3, by = "pidlink")
 iq = iq2
-iq <- plyr::rename(iq, c("age"="IQage")) 
+iq = iq %>% rename(age_2015_old = age, sex_2015_old = sex)
 iq = full_join(iq, iq3.1, by = "pidlink")
 
 ### calculate iq scores
-##Raven Test
+##Raven Test (wave 2015, older than 14 years)
 answered_raven_items = iq %>% select(ek1_ans:ek6_ans, ek11_ans, ek12_ans)
 psych::alpha(data.frame(answered_raven_items))
-iq$raven = rowMeans( answered_raven_items, na.rm = T)
-iq$raven[! iq$result %in% 1:2] = NA
-qplot(iq$raven)
+iq$raven_2015_old = rowMeans( answered_raven_items, na.rm = T)
+iq$raven_2015_old[! iq$result %in% 1:2] = NA
+qplot(iq$raven_2015_old)
 
-##Math Test
+##Math Test (wave 2015, older than 14 years)
 answered_math_items = iq %>% select(ek18_ans:ek22_ans)
 psych::alpha(data.frame(answered_math_items))
-iq$math = rowMeans( answered_math_items, na.rm = T)
-iq$math[! iq$result %in% 1:2] = NA
-qplot(iq$math)
+iq$math_2015_old = rowMeans( answered_math_items, na.rm = T)
+iq$math_2015_old[! iq$result %in% 1:2] = NA
+qplot(iq$math_2015_old)
+
 
 ##Counting Items
 # Create Right/Wrong Scores for the counting items
@@ -523,7 +526,7 @@ iq$co04eright = as.numeric(iq$co04e == iq$co04d-7)
 
 answered_counting_items = iq %>% select(co04aright:co04eright)
 psych::alpha(data.frame(answered_counting_items))
-iq$count_backwards = rowSums( answered_counting_items, na.rm = T) / 5
+iq$count_backwards = rowMeans( answered_counting_items, na.rm = T)
 qplot(iq$count_backwards)
 
 ## Word Memory
@@ -538,18 +541,34 @@ qplot(iq$words_remembered_avg)
 ##Adaptive Numbering
 iq$adaptive_numbering = iq$w_abil
 qplot(iq$adaptive_numbering)
-
 ```
 
 ### IQ-Tests earlier waves
 ```{r}
 ## Wave 4 - 2007
 ### Data
-iq2007_ek1= bek_ek1 %>%
-  select(pidlink, ektype, "age_2007" = age, matches("ek[0-9]x"), matches("ek[0-9][0-9]x"))
 iq2007_ek2= bek_ek2 %>%
-  select(pidlink, ektype, "age_2007" = age, matches("ek[0-9]x"), matches("ek[0-9][0-9]x")) %>%
-  filter(!(pidlink %in% iq2007_ek1$pidlink)) # this is not good! fix it
+  select(pidlink, ektype, "age_2007" = age, matches("ek[0-9]x"),
+         matches("ek[0-9][0-9]x"))
+
+iq2007_ek1= bek_ek1 %>%
+  select(pidlink, ektype, "age_2007" = age, matches("ek[0-9]x"),
+         matches("ek[0-9][0-9]x")) %>%
+  filter(!(pidlink %in% iq2007_ek2$pidlink))
+
+# some people answered both versions of the test
+# (depending on whether they had seen test ek1 already in 2000)
+# In order to deal with them i form an additional dataset that includes the information from
+# the people that repeated the first test and their score on the first test in 2007
+# that means they have already seen the test 7 years before...
+# i merge this data later in the same column as the other scores in 2007 in the first test
+# check with Ruben, if that is the right way to go...
+
+iq2007_ek1_repeater = bek_ek1 %>%
+  select(pidlink, ektype, "age_2007" = age, matches("ek[0-9]x"),
+         matches("ek[0-9][0-9]x")) %>%
+  filter((pidlink %in% iq2007_ek2$pidlink))
+
 iq2007 = bind_rows(iq2007_ek1, iq2007_ek2) 
 
 ### Raven
@@ -582,7 +601,12 @@ iq2007 = iq2007 %>%
 answered_raven_items = iq2007 %>% select(ek1x:ek12x)
 psych::alpha(data.frame(answered_raven_items))
 iq2007$raven2007 = rowMeans(answered_raven_items, na.rm = T)
-qplot(iq2007$raven2007)
+iq2007 = iq2007 %>%
+  mutate(raven_2007_young = ifelse(ektype == 1, raven2007, NA),
+         raven_2007_old = ifelse(ektype == 2, raven2007, NA))
+qplot(iq2007$raven_2007_young)
+qplot(iq2007$raven_2007_old)
+
 
 ##Math Test
 iq2007 = iq2007 %>%
@@ -609,36 +633,112 @@ iq2007 = iq2007 %>%
 
 answered_math_items = iq2007 %>% select(ek13x:ek22x)
 iq2007$math2007 = rowMeans( answered_math_items, na.rm = T)
+iq2007 = iq2007 %>%
+  mutate(math_2007_young = ifelse(ektype == 1, math2007, NA),
+         math_2007_old = ifelse(ektype == 2, math2007, NA))
+qplot(iq2007$math_2007_young)
+qplot(iq2007$math_2007_old)
 
-iq2007 = iq2007 %>% select(pidlink, age_2007, raven2007, math2007)
 
-iq = full_join(iq, iq2007, by = "pidlink")
+iq2007 = iq2007 %>% select(pidlink, age_2007, raven_2007_young, raven_2007_old,
+                           math_2007_young, math_2007_old)
+
+##Do the same for the repeater
+### Raven
+iq2007_ek1_repeater = iq2007_ek1_repeater %>%
+  mutate(ek1x = ifelse(ek1x == 1, 1,
+                       ifelse(ek1x == 6, NA, 0)),
+         ek2x = ifelse(ek2x == 1,  1,
+                       ifelse(ek2x == 6, NA, 0)),
+         ek3x = ifelse(ek3x == 1,  1,
+                       ifelse(ek3x == 6, NA, 0)),
+         ek4x = ifelse(ek4x == 1,  1,
+                       ifelse(ek4x == 6, NA, 0)),
+         ek5x = ifelse(ek5x == 1,  1,
+                       ifelse(ek5x == 6, NA, 0)),
+         ek6x = ifelse(ek6x == 1,  1,
+                       ifelse(ek6x == 6, NA, 0)),
+         ek7x = ifelse(ek7x == 1,  1,
+                       ifelse(ek7x == 6, NA, 0)),
+         ek8x = ifelse(ek8x == 1,  1,
+                       ifelse(ek8x == 6, NA, 0)),
+         ek9x = ifelse(ek9x == 1,  1,
+                       ifelse(ek9x == 6, NA, 0)),
+         ek10x = ifelse(ek10x == 1, 1,
+                       ifelse(ek10x == 6, NA, 0)),
+         ek11x = ifelse(ek11x == 1,  1,
+                       ifelse(ek11x == 6, NA, 0)),
+         ek12x = ifelse(ek12x == 1,  1,
+                       ifelse(ek12x == 6, NA, 0)))
+
+answered_raven_items = iq2007_ek1_repeater %>% select(ek1x:ek12x)
+psych::alpha(data.frame(answered_raven_items))
+iq2007_ek1_repeater$raven_2007_young_repeater = rowMeans(answered_raven_items, na.rm = T)
+qplot(iq2007_ek1_repeater$raven_2007_young_repeater)
+
+
+##Math Test
+iq2007_ek1_repeater = iq2007_ek1_repeater %>%
+  mutate(ek13x = ifelse(ek13x == 1, 1,
+                       ifelse(ek13x == 6, NA, 0)),
+         ek14x = ifelse(ek14x == 1,  1,
+                       ifelse(ek14x == 6, NA, 0)),
+         ek15x = ifelse(ek15x == 1,  1,
+                       ifelse(ek15x == 6, NA, 0)),
+         ek16x = ifelse(ek16x == 1,  1,
+                       ifelse(ek16x == 6, NA, 0)),
+         ek17x = ifelse(ek17x == 1,  1,
+                       ifelse(ek17x == 6, NA, 0)),
+         ek18x = ifelse(ek18x == 1,  1,
+                       ifelse(ek18x == 6, NA, 0)),
+         ek19x = ifelse(ek19x == 1,  1,
+                       ifelse(ek19x == 6, NA, 0)),
+         ek20x = ifelse(ek20x == 1,  1,
+                       ifelse(ek20x == 6, NA, 0)),
+         ek21x = ifelse(ek21x == 1,  1,
+                       ifelse(ek21x == 6, NA, 0)),
+         ek22x = ifelse(ek22x == 1, 1,
+                       ifelse(ek22x == 6, NA, 0)))
+
+answered_math_items = iq2007_ek1_repeater %>% select(ek13x:ek22x)
+iq2007_ek1_repeater$math_2007_young_repeater = rowMeans( answered_math_items, na.rm = T)
+qplot(iq2007_ek1_repeater$math_2007_young_repeater)
+
+iq2007_ek1_repeater = iq2007_ek1_repeater %>% select(pidlink, raven_2007_young_repeater,
+                                                     math_2007_young_repeater)
+
+iq2007_all = left_join(iq2007, iq2007_ek1_repeater, by = "pidlink")
+
+# Now we instert raven and math scores from the repeaters as raven and math scores young
+# Treat them like all the others.
+crosstabs(is.na(iq2007_all$raven_2007_young) + is.na(iq2007_all$raven_2007_young_repeater))
+
+iq2007_all = iq2007_all %>%
+  mutate(raven_2007_young = ifelse(!is.na(raven_2007_young_repeater),
+                                   raven_2007_young_repeater, raven_2007_young),
+         math_2007_young = ifelse(!is.na(math_2007_young_repeater),
+                                  math_2007_young_repeater, math_2007_young))
+
+iq2007_all = iq2007_all %>% select(pidlink, age_2007, raven_2007_old, raven_2007_young,
+                                   math_2007_young, math_2007_old)
+iq = full_join(iq, iq2007_all, by = "pidlink")
 ```
 
 ```{r}
 ## IQ Tests 
 ## Correlation of all Iq-Tests
-round(cor(iq %>% select(raven, math, raven_young_2014, math_young_2014, count_backwards, words_immediate, words_delayed, adaptive_numbering, raven2007, math2007), use = "pairwise.complete.obs"), 2)
+round(cor(iq %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, count_backwards, words_immediate, words_delayed, adaptive_numbering, raven_2007_old, math_2007_young), use = "pairwise.complete.obs"), 2)
 
 ##Missingness_Patterns
-formr::missingness_patterns(iq %>% select(raven, math, raven_young_2014, math_young_2014, count_backwards, words_immediate, words_delayed, adaptive_numbering, raven2007, math2007))
+formr::missingness_patterns(iq %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, count_backwards, words_immediate, words_delayed, adaptive_numbering, raven_2007_old, math_2007_young))
 
 ##g_factor
-"g_factor =~ raven + math + count_backwards +  words_delayed + adaptive_numbering" %>%
+"g_factor =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed + adaptive_numbering" %>%
   cfa(missing = "fiml", data = iq, std.lv = T, std.ov = T) -> cfa_g
 summary(cfa_g)
 
 iq$g_factor = predict(cfa_g)[,1]
-iq = iq %>%
-  mutate(g_factor = ifelse(is.na(raven), NA, g_factor),
-         g_factor = ifelse(is.na(math), NA, g_factor),
-         g_factor = ifelse(is.na(count_backwards), NA, g_factor),
-         g_factor = ifelse(is.na(words_immediate), NA, g_factor),
-         g_factor = ifelse(is.na(words_delayed), NA, g_factor),
-         g_factor = ifelse(is.na(adaptive_numbering), NA, g_factor))
 qplot(iq$g_factor)
-
-iq = iq %>% rename(IQ_age = age)
 ```
 
 
@@ -973,23 +1073,6 @@ alldata = left_join(alldata, job, by = "pidlink")
 alldata = left_join(alldata, smoking, by = "pidlink")
 
 
-### Which values are missing?
-## All data
-alldata_birthorder = alldata_birthorder %>% mutate(old_enough = if_else(age>15, 1, NA_real_))
-
-formr::missingness_patterns(alldata_birthorder %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, big5_ext, riskA, riskB))
-## Intelligence
-formr::missingness_patterns(alldata_birthorder %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering))
-##Personality
-formr::missingness_patterns(alldata_birthorder %>% select(big5_ext, big5_con, big5_open, big5_neu, big5_agree))
-##Risk
-formr::missingness_patterns(alldata_birthorder %>% select(riskA, riskB))
-
-## Nec. vars
-formr::missingness_patterns(alldata_birthorder %>% 
-   select(mother_pidlink, birthorder_naive2, raven, big5_ext, riskA, age,old_enough))
-formr::missingness_patterns(alldata_birthorder %>% 
-   select(mother_pidlink, birthorder_uterus_alive, raven, big5_ext, riskA, age,old_enough))
 ```
 
 ## Save data
@@ -1001,7 +1084,9 @@ alldata_birthorder = alldata_birthorder %>% ungroup()
 alldata = alldata %>% ungroup()
 pregnancy = pregnancy %>% ungroup()
 iq = iq %>% ungroup()
+hdataset = alldata_birthorder
 
+saveRDS(hdataset, file = "data/hdataset.rds")
 saveRDS(alldata_birthorder, file = "data/alldata_birthorder.rds")
 saveRDS(alldata, file = "data/alldata.rds")
 saveRDS(pregnancy, file = "data/pregnancy.rds")

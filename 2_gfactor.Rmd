@@ -1,0 +1,115 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# <span style="color:#8DA0CB">Data Sampling</span> {.tabset}
+
+## Helper
+```{r helper}
+source("0_helpers.R")
+```
+
+## Load data
+```{r Load data}
+### Import alldata used for birthorder
+hdataset = readRDS("data/hdataset.rds")
+```
+
+### Data Wrangling
+```{r data wrangling}
+## For the imputation we want to clean the dataset and get rid of all uninteresting data
+hdataset = hdataset %>%
+  select(-ends_with("_ans"), -starts_with("co0"), -co10count, -starts_with("cob"), -matches("[a-z][0-9]r?"),
+         -matches("[a-z][0-9]r_reversed"), -matches("si[0-9]"), -duped_in_earlier_wave,
+         starts_with("big5_"))
+```
+
+## Intelligence: old g-factor
+```{r}
+fa.parallel(hdataset %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
+fa(hdataset %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1)
+om_results = omega(hdataset %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1, sl = F)
+om_results
+omega.diagram(om_results)
+
+"g_factor =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed+ adaptive_numbering" %>%
+  cfa(missing = "fiml", data = hdataset, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+## Explained variance:
+
+x = inspect(cfa_g, "rsquare")
+hdataset$g_factor = predict(cfa_g)[,1]
+qplot(hdataset$g_factor)
+
+iq_mean_sd = hdataset %>%
+  summarise(g_factor_mean = mean(g_factor, na.rm = T),
+            g_factor_sd = sd(g_factor, na.rm =T),
+            raven_mean = mean(raven, na.rm = T),
+            raven_sd = sd(raven, na.rm =T),
+            math_mean = mean(math, na.rm = T),
+            math_sd = sd(math, na.rm =T),
+            count_backwards_mean = mean(count_backwards, na.rm = T),
+            count_backwards_sd = sd(count_backwards, na.rm =T),
+            words_immediate_mean = mean(words_immediate, na.rm = T),
+            words_immediate_sd = sd(words_immediate, na.rm =T),
+            words_delayed_mean = mean(words_delayed, na.rm = T),
+            words_delayed_sd = sd(words_delayed, na.rm =T),
+            adaptive_numbering_mean = mean(adaptive_numbering, na.rm = T),
+            adaptive_numbering_sd = sd(adaptive_numbering, na.rm =T))
+
+round(cor(hdataset %>% select(g_factor, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+
+formr::missingness_patterns(hdataset %>% select(g_factor, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor))
+```
+
+## Intelligence: new g-factor
+```{r}
+fa.parallel(hdataset %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
+fa(hdataset %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1)
+om_results = omega(hdataset %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1, sl = F)
+om_results
+omega.diagram(om_results)
+
+"g_factor_new =~ raven_2015_old + math_2015_old + raven_2015_young + math_2015_young + count_backwards +  words_delayed+ adaptive_numbering" %>%
+  cfa(missing = "fiml", data = hdataset, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+## Explained variance:
+
+x = inspect(cfa_g, "rsquare")
+hdataset$g_factor_new = predict(cfa_g)[,1]
+qplot(hdataset$g_factor_new)
+
+round(cor(hdataset %>% select(g_factor, g_factor_new, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+
+table(is.na(hdataset$g_factor), is.na(hdataset$g_factor_new))
+
+formr::missingness_patterns(hdataset %>% select(g_factor, g_factor_new, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor))
+```
+
+## Intelligence: crazy, definitly wrong g-factor (using all iqdata)
+```{r}
+fa.parallel(hdataset %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
+fa(hdataset %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1)
+om_results = omega(hdataset %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1, sl = F)
+om_results
+omega.diagram(om_results)
+
+"g_factor_crazy =~ raven_2015_old + math_2015_old + raven_2015_young + math_2015_young + raven_2007_old + math_2007_old + raven_2007_young + math_2007_young + count_backwards +  words_delayed+ adaptive_numbering" %>%
+  cfa(missing = "fiml", data = hdataset, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+## Explained variance:
+
+x = inspect(cfa_g, "rsquare")
+hdataset$g_factor_crazy = predict(cfa_g)[,1]
+qplot(hdataset$g_factor_crazy)
+
+round(cor(hdataset %>% select(g_factor_crazy, g_factor, g_factor_new, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+
+table(is.na(hdataset$g_factor_new), is.na(hdataset$g_factor_new))
+
+formr::missingness_patterns(hdataset %>% select(g_factor_crazy, g_factor, g_factor_new, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor))
+```

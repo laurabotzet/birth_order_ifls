@@ -116,6 +116,7 @@ w1_pregnancy = w1_pregnancy %>%
 
 ## Combine data
 pregnancy = bind_rows(w1 = w1_pregnancy, w2 = w2_pregnancy, w3 = w3_pregnancy, w4 = w4_pregnancy, w5 = w5_pregnancy, .id = "wave")
+pregnancy = codebook::rescue_attributes(pregnancy, w5_pregnancy)
 
 ## Rename Variables
 pregnancy = pregnancy %>% rename(chron_order_birth = ch05, lifebirths = ch06, multiple_birth = ch06a, gender = ch08,
@@ -136,29 +137,39 @@ pregnancy = pregnancy %>%
 pregnancy$month = paste0(pregnancy$birth_year,"-", ifelse(is.na(pregnancy$birth_month), "01",
                                                           pad_month(pregnancy$birth_month)))
 
-pregnancy = pregnancy %>%
+pregnancy = pregnancy %>% 
   mutate(birthdate = all_available_info_birth_date(birth_year, birth_month, birth_day),
-         mother_birthdate = str_c(mother_pidlink, "-", birthdate))
-
+         mother_birthdate = str_c(mother_pidlink, "-", birthdate),
+         mother_birthorder = paste0(mother_pidlink , "-", chron_order_birth))
 
 pregnancy = pregnancy %>% 
-  mutate(wave_dup = 6 - str_sub(wave, 2, 3) %>% as.numeric()) %>% # from most recent wave to oldest
-  arrange(wave_dup) %>% # use most recent wave (because these will have pregnancy outcomes)
+  mutate(wave = str_sub(wave, 2, 3) %>% as.numeric()) %>% # from most recent wave to oldest
+  arrange(desc(wave)) %>% # use most recent wave (because these will have pregnancy outcomes)
   group_by(mother_birthdate) %>% 
-  mutate(duped_in_earlier_wave = min_rank(wave_dup)) %>% 
-  filter(duped_in_earlier_wave == 1) %>% 
+  mutate(birthdate_duped_in_earlier_wave = min_rank(wave)) %>% 
+  group_by(mother_birthorder) %>% 
+  mutate(birthorder_duped_in_earlier_wave = min_rank(wave))
+# these are pregnancy that changes status (i.e. ongoing in wave 2, miscarried/born by wave 3)
+crosstabs(~ birthdate_duped_in_earlier_wave + birthorder_duped_in_earlier_wave + is.na(birthdate), pregnancy)
+
+# unfortunately, sometimes chron_order_birth is inconsistent with birthdates
+# to eliminate duplicates from the pregnancy file (because pregnancies changed statuses)
+# now, for those where we don't know the birthdate, we keep only unique birth orders
+# for those, where we know the birthdate, we keep only unique birthdates (as this is higher q information)
+pregnancy = pregnancy %>% 
+  filter((is.na(birthdate) && birthorder_duped_in_earlier_wave == 1) | birthdate_duped_in_earlier_wave == 1) %>% 
   ungroup() # eliminate dupes across waves (same mother_birthdate), keep mult births
+crosstabs(~ birthdate_duped_in_earlier_wave + birthorder_duped_in_earlier_wave + is.na(birthdate), pregnancy)
 
 x = (unique(pregnancy$mother_pidlink))
 
 ##remove all with missing birthdate/miscarriage date
 table(is.na(pregnancy$birthdate))
-pregnancy = pregnancy %>%
-  filter(!is.na(birthdate))
 
-
-# for whatever reason there are some multiple births with just one row in the data 
-pregnancy %>% group_by(mother_birthdate) %>% mutate(mult = n()) %>% crosstabs(~ mult + multiple_birth, data = .)
+# for whatever reason there are some multiple births with just one row in the data, but number are low enough
+# that we consider some errors in the records the likely reason
+pregnancy %>% filter(!is.na(birthdate)) %>% group_by(mother_birthdate)  %>% 
+  mutate(mult = n()) %>% crosstabs(~ mult + multiple_birth + is.na(birth_month), data = .)
 
 ## Form variable for any multiple birth in family
 pregnancy = pregnancy %>% group_by(mother_pidlink) %>% mutate(any_multiple_birth = if_else(any(multiple_birth == 1), 1, 0))
@@ -291,6 +302,7 @@ marriage_timeline = marriage_timeline %>%
 
 marriage_timeline$month = stringr::str_sub(as.character(marriage_timeline$month),1,7)
 
+# we assume that fathers are those to whom mothers were married in the birth month
 pregnancy = pregnancy %>% left_join(marriage_timeline, by = c("mother_pidlink", "month")) %>% ungroup()
 ```
 
@@ -301,11 +313,22 @@ pregnancy = pregnancy %>% left_join(marriage_timeline, by = c("mother_pidlink", 
 pregnancy1 = pregnancy %>%
   group_by(mother_pidlink) %>%
   mutate(birthorder_uterus_preg = min_rank(birthdate),
+         birthorder_uterus_preg2 = ifelse(is.na(birthorder_uterus_preg), chron_order_birth, 
+                                          ifelse(chron_order_birth > birthorder_uterus_preg, 
+                                                  chron_order_birth, birthorder_uterus_preg)),
          # birthorder_uterus_preg = ifelse(any_multiple_birth == 1, NA, birthorder_uterus_preg),
-         sibling_count_uterus_preg = sum(!is.na(birthdate))
+         sibling_count_uterus_preg = sum(!is.na(birthdate)),
+         sibling_count_uterus_preg2 = ifelse(is.na(sibling_count_uterus_preg), max(chron_order_birth, na.rm = T),
+                                             ifelse(max(chron_order_birth, na.rm = T) > sibling_count_uterus_preg,
+                                                     max(chron_order_birth, na.rm = T), sibling_count_uterus_preg))
          # ,sibling_count_uterus_preg = ifelse(any_multiple_birth == 1, NA, sibling_count_uterus_preg)
          ) %>%
   ungroup()
+cor.test(pregnancy1$birthorder_uterus_preg, pregnancy1$birthorder_uterus_preg2)
+cor.test(pregnancy1$sibling_count_uterus_preg, pregnancy1$sibling_count_uterus_preg)
+crosstabs(~ is.na(birthorder_uterus_preg) + is.na(birthorder_uterus_preg2) + is.na(birthdate), pregnancy1)
+crosstabs(~ is.na(sibling_count_uterus_preg) + is.na(sibling_count_uterus_preg2) + is.na(birthdate), pregnancy1)
+# our birthdate based birthorder estimates are extremely consistent with chron_order_birth
 
 #### Maternal Birth Order
 pregnancy2 = pregnancy %>%
@@ -332,7 +355,19 @@ pregnancy3 = pregnancy %>%
 pregnancy3 = pregnancy3 %>% select(mother_birthdate, birthorder_genes, sibling_count_genes) %>% distinct()
 
 
+# remove dupes because of missings and twins
+pregnancy1 <- pregnancy1 %>% select(-birthorder_uterus_preg2, -sibling_count_uterus_preg2) %>% 
+  filter(!is.na(birthdate)) %>% 
+  distinct(mother_birthdate, .keep_all = TRUE)
+
+pregnancy2 <- pregnancy2 %>%
+  distinct(mother_birthdate, .keep_all = TRUE)
+
 ### Combine birthorder data
+table(duplicated(pregnancy1$mother_birthdate))
+table(duplicated(pregnancy2$mother_birthdate))
+table(duplicated(pregnancy3$mother_birthdate))
+
 pregnancy = left_join(pregnancy1, pregnancy2, by="mother_birthdate") %>% ungroup()
 pregnancy = left_join(pregnancy, pregnancy3, by = "mother_birthdate") %>% ungroup()
 ```
@@ -356,14 +391,16 @@ ggplot(pregnancy, aes(x=birthorder_uterus_preg, y=birthorder_uterus_alive)) + ge
 
 ## Bio: Uterus_preg vs. Genes
 ggplot(pregnancy, aes(x=birthorder_uterus_preg, y=birthorder_genes)) + geom_jitter(alpha = 0.1)
-# The birth_order_alive is always lower, which makes sense, becaus not live births (miscarriage, still births are excluded)
+# The birthorder_genes is always lower, which makes sense, because different/unknown fathers are excluded
 
 ## Bio: Uterus_alive vs. Genes
 ggplot(pregnancy, aes(x=birthorder_uterus_alive, y=birthorder_genes))  + geom_jitter(alpha = 0.1)
-# The birth_order_alive is always lower, which makes sense, becaus not live births (miscarriage, still births are excluded)
+# children with the same father includes only live births
 
-pregnancy %>% select(birthorder_uterus_alive, birthorder_uterus_preg, birthorder_genes) %>% na.omit() %>% cor()
-pregnancy %>% select(birthorder_uterus_alive, birthorder_uterus_preg, birthorder_genes) %>% missingness_patterns()
+# chron order birth does not correlate perfectly, unsurprising given that we found chron orders sometimes started
+# from 1 in new waves even though previous births were recorded
+pregnancy %>% select(chron_order_birth, birthorder_uterus_alive, birthorder_uterus_preg, birthorder_genes) %>% na.omit() %>% cor()
+pregnancy %>% select(chron_order_birth, birthorder_uterus_alive, birthorder_uterus_preg, birthorder_genes) %>% missingness_patterns()
 pregnancy %>% select(sibling_count_uterus_alive, sibling_count_uterus_preg, sibling_count_genes) %>% missingness_patterns()
 ```
 
@@ -400,19 +437,15 @@ individuals = individuals %>%
     mutate(birthdate = all_available_info_birth_date(ar08yr, ar08mth, ar08day),
            mother_birthdate = str_c(mother_pidlink, "-", birthdate)) # mother_pidlink-YYYY-MM; is NA if birth_year is missing
 
+individuals = individuals %>% group_by(mother_pidlink) %>% 
+  mutate(birthorder_naive_ind = if_else(!is.na(mother_pidlink), min_rank(birthdate), NA_integer_),
+         sibling_count_naive_ind = if_else(!is.na(mother_pidlink), n(), NA_integer_)) %>% 
+  ungroup()
+
 ##Remove all with missing mother_birthdate
 # individuals = individuals %>%
 #   filter(!is.na(mother_birthdate))
-individuals = individuals %>% group_by(mother_pidlink) %>% 
-  mutate(birthorder_naive = if_else(!is.na(mother_pidlink), min_rank(birthdate), NA_integer_),
-         sibling_count_naive = if_else(!is.na(mother_pidlink), n(), NA_integer_))
 
-## Combine information from pregnancy history and individual files
-pregnancy = pregnancy %>%
-  group_by(mother_birthdate) %>%
-  mutate(twin_order = row_number(birthdate),
-         mother_birthdate_unique = paste0(mother_birthdate, "-", twin_order)) %>%
-  ungroup()
 # 
 # individuals = individuals %>%
 #   group_by(mother_birthdate) %>%
@@ -437,30 +470,49 @@ alldata_pregnancy = full_join(pregnancy, individuals,
                               by = c("mother_pidlink", "birthdate", "mother_birthdate")) %>% 
   distinct(mother_pidlink, birthdate, pidlink, .keep_all = TRUE)
 
+alldata_pregnancy = alldata_pregnancy %>% group_by(mother_pidlink) %>% 
+  mutate(birthorder_naive = min_rank(if_else(!is.na(mother_pidlink), birthdate, NA_character_)),
+         sibling_count_naive = if_else(!is.na(mother_pidlink), n(), NA_integer_)) %>% 
+  # filter(is.na(lifebirths) | lifebirths == 2) %>% 
+  # mutate(birthorder_naive3 = if_else(!is.na(mother_pidlink) & (is.na(lifebirths) | lifebirths == 2), min_rank(birthdate), NA_integer_),
+  #        sibling_count_naive3 = if_else(!is.na(mother_pidlink) & (is.na(lifebirths) | lifebirths == 2), sum(is.na(lifebirths) | lifebirths == 2), NA_integer_)) %>% 
+  ungroup()
+
 # alldata_pregnancy = bind_rows(alldata_pregnancy, pregnancy_missing)
 
 prop.table(table(alldata_pregnancy$multiple_birth))
 prop.table(table(alldata_pregnancy$any_multiple_birth))
 
-cor.test(alldata_pregnancy$birthorder_uterus_alive, alldata_pregnancy$birthorder_naive)
+alldata_pregnancy %>% select(birthorder_naive,birthorder_naive_ind,chron_order_birth, birthorder_uterus_alive, birthorder_uterus_preg, birthorder_genes) %>% cor(use='pairwise.complete.obs') %>% round(2)
+alldata_pregnancy %>% select(birthorder_naive, chron_order_birth, birthorder_uterus_alive, birthorder_uterus_preg, birthorder_genes) %>% codebook::md_pattern()
+alldata_pregnancy %>% select(sibling_count_naive, sibling_count_uterus_alive, sibling_count_uterus_preg, sibling_count_genes) %>% cor(use='pairwise.complete.obs') %>% round(2)
+
+qplot(data=alldata_pregnancy,sibling_count_naive) + facet_wrap(~ is.na(sibling_count_uterus_preg))
+qplot(data=alldata_pregnancy,birthorder_naive) + facet_wrap(~ is.na(sibling_count_uterus_preg))
+
+# prop.table(table(alldata_pregnancy$birthorder_uterus_alive == alldata_pregnancy$birthorder_naive3))
 prop.table(table(alldata_pregnancy$birthorder_uterus_alive == alldata_pregnancy$birthorder_naive))
+prop.table(table(alldata_pregnancy$birthorder_uterus_preg == alldata_pregnancy$birthorder_naive))
 ggplot(alldata_pregnancy, aes(x=birthorder_uterus_alive, y=birthorder_naive)) + geom_jitter(alpha = 0.1)
-# The birth_order_alive is always lower, which makes sense, becaus not live births (miscarriage, still births are excluded)
+# it makes sense that the birth order based on including the pregnancy file is strictly higher, because
+# this includes people who moved away
+ggplot(alldata_pregnancy, aes(x=birthorder_naive_ind, y=birthorder_naive)) + geom_jitter(alpha = 0.1)
+ggplot(alldata_pregnancy, aes(x=sibling_count_naive_ind, y=sibling_count_naive)) + geom_jitter(alpha = 0.1)
+
+alldata_pregnancy %>% filter(birthorder_naive != birthorder_uterus_alive) %>% select(birthorder_naive,birthorder_naive_ind, birthorder_uterus_alive, sibling_count_uterus_alive, mother_pidlink, birthdate, mother_birthdate) %>% View()
+
+# alldata_pregnancy %>% filter(mother_pidlink == "001060007") %>% select(birthorder_naive,birthorder_naive_ind, birthorder_uterus_alive, sibling_count_naive, sibling_count_uterus_alive, mother_pidlink, birthdate, mother_birthdate) %>% View()
+
 
 cor.test(alldata_pregnancy$sibling_count_uterus_alive, alldata_pregnancy$sibling_count_naive)
-prop.table(table(alldata_pregnancy$sibling_count_uterus_alive == alldata_pregnancy$sibling_count_naive))
+crosstabs(alldata_pregnancy$sibling_count_uterus_alive == alldata_pregnancy$sibling_count_naive_ind)
+crosstabs(alldata_pregnancy$sibling_count_uterus_alive == alldata_pregnancy$sibling_count_naive)
+crosstabs(~ I(sibling_count_uterus_alive == sibling_count_naive_ind) + 
+            I(sibling_count_uterus_alive == sibling_count_naive), alldata_pregnancy)
+crosstabs(alldata_pregnancy$sibling_count_uterus_alive == alldata_pregnancy$sibling_count_naive)
 ggplot(alldata_pregnancy, aes(x=sibling_count_uterus_alive, y=sibling_count_naive)) + geom_jitter(alpha = 0.1)
-crosstabs(~ sibling_count_uterus_alive + sibling_count_naive, alldata_pregnancy)
-crosstabs(~ is.na(sibling_count_uterus_alive) + is.na(sibling_count_naive), alldata_pregnancy)
 
-alldata_pregnancy = alldata_pregnancy %>% group_by(mother_pidlink) %>% 
-  mutate(birthorder_naive2 = if_else(!is.na(mother_pidlink), min_rank(birthdate), NA_integer_),
-         sibling_count_naive2 = if_else(!is.na(mother_pidlink), n(), NA_integer_))
-
-cor.test(alldata_pregnancy$sibling_count_naive2, alldata_pregnancy$sibling_count_naive)
-cor.test(alldata_pregnancy$birthorder_naive2, alldata_pregnancy$birthorder_naive)
-cor.test(alldata_pregnancy$birthorder_naive2, alldata_pregnancy$birthorder_uterus_alive)
-cor.test(alldata_pregnancy$sibling_count_naive2, alldata_pregnancy$sibling_count_uterus_alive)
+crosstabs( ~ I(sibling_count_uterus_alive == sibling_count_naive) + is.na(birthdate), data = alldata_pregnancy)
 ```
 
 
@@ -497,7 +549,11 @@ iq2.3 = b3b_cob %>% select(hhid14_9, pidlink, w_abil, cob18, cob19b)
 iq2 = full_join(iq2.1, iq2.2, by = "pidlink")
 iq2 = full_join(iq2, iq2.3, by = "pidlink")
 iq = iq2
+<<<<<<< HEAD
 iq = iq %>% rename(age_2015_old = age, sex_2015_old = sex)
+=======
+iq <- rename(iq, age = IQage) 
+>>>>>>> 2783301dafb78ad19b264e61581a0c5b386da73e
 iq = full_join(iq, iq3.1, by = "pidlink")
 
 ### calculate iq scores
@@ -526,7 +582,12 @@ iq$co04eright = as.numeric(iq$co04e == iq$co04d-7)
 
 answered_counting_items = iq %>% select(co04aright:co04eright)
 psych::alpha(data.frame(answered_counting_items))
+<<<<<<< HEAD
 iq$count_backwards = rowMeans( answered_counting_items, na.rm = T)
+=======
+iq$count_backwards = rowSums( answered_counting_items, na.rm = T) / 5
+iq$count_backwards[rowSums( is.na(answered_counting_items)) == 5] = NA_real_
+>>>>>>> 2783301dafb78ad19b264e61581a0c5b386da73e
 qplot(iq$count_backwards)
 
 ## Word Memory
@@ -732,13 +793,34 @@ round(cor(iq %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_20
 ##Missingness_Patterns
 formr::missingness_patterns(iq %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, count_backwards, words_immediate, words_delayed, adaptive_numbering, raven_2007_old, math_2007_young))
 
+iq %>% select(raven, math, raven_young_2014, math_young_2014, count_backwards, words_immediate, words_delayed, adaptive_numbering, raven2007, math2007) %>% tidyr::gather() %>% 
+  ggplot(aes(value)) + geom_bar() + facet_wrap(~ key, scales = "free")
 ##g_factor
+<<<<<<< HEAD
 "g_factor =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed + adaptive_numbering" %>%
+=======
+"g_factor =~ raven + math + count_backwards +  words_delayed + adaptive_numbering + raven_young_2014 + math_young_2014 + raven2007 + math2007" %>%
+>>>>>>> 2783301dafb78ad19b264e61581a0c5b386da73e
   cfa(missing = "fiml", data = iq, std.lv = T, std.ov = T) -> cfa_g
 summary(cfa_g)
 
 iq$g_factor = predict(cfa_g)[,1]
 qplot(iq$g_factor)
+<<<<<<< HEAD
+=======
+table(is.na(iq$g_factor))
+# iq = iq %>%
+#   mutate(g_factor = ifelse(is.na(raven), NA, g_factor),
+#          g_factor = ifelse(is.na(math), NA, g_factor),
+#          g_factor = ifelse(is.na(count_backwards), NA, g_factor),
+#          g_factor = ifelse(is.na(words_immediate), NA, g_factor),
+#          g_factor = ifelse(is.na(words_delayed), NA, g_factor),
+#          g_factor = ifelse(is.na(adaptive_numbering), NA, g_factor))
+# qplot(iq$g_factor)
+# table(is.na(iq$g_factor))
+
+iq = iq %>% rename(IQ_age = age.x) %>% select(-age.y)
+>>>>>>> 2783301dafb78ad19b264e61581a0c5b386da73e
 ```
 
 
@@ -1073,6 +1155,33 @@ alldata = left_join(alldata, job, by = "pidlink")
 alldata = left_join(alldata, smoking, by = "pidlink")
 
 
+<<<<<<< HEAD
+=======
+### Which values are missing?
+## All data
+alldata_birthorder = alldata_birthorder %>% mutate(old_enough = if_else(age>15, 1, NA_real_))
+
+formr::missingness_patterns(alldata_birthorder %>% select(raven, math, raven_young_2014, math_young_2014, count_backwards, words_immediate, words_delayed, adaptive_numbering, raven2007, math2007, g_factor))
+
+formr::missingness_patterns(alldata_birthorder %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering, big5_ext, riskA, riskB))
+## Intelligence
+formr::missingness_patterns(alldata_birthorder %>% select(raven, math, count_backwards, words_immediate, words_delayed, adaptive_numbering))
+##Personality
+formr::missingness_patterns(alldata_birthorder %>% select(big5_ext, big5_con, big5_open, big5_neu, big5_agree))
+##Risk
+formr::missingness_patterns(alldata_birthorder %>% select(riskA, riskB))
+
+## Nec. vars
+formr::missingness_patterns(alldata_birthorder %>% 
+   select(mother_pidlink, birthorder_naive, count_backwards, raven, math, words_delayed, adaptive_numbering))
+
+formr::missingness_patterns(alldata_birthorder %>% 
+   select(mother_pidlink, birthorder_naive, raven, big5_ext, riskA, age,old_enough))
+formr::missingness_patterns(alldata_birthorder %>% 
+   select(mother_pidlink, birthorder_uterus_alive, g_factor, big5_ext, riskA, age,old_enough))
+formr::missingness_patterns(alldata_birthorder %>% 
+   select(mother_pidlink, birthorder_uterus_alive, raven, big5_ext, riskA, age,old_enough))
+>>>>>>> 2783301dafb78ad19b264e61581a0c5b386da73e
 ```
 
 ## Save data

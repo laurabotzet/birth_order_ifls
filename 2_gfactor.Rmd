@@ -25,6 +25,13 @@ hdataset = hdataset %>%
          starts_with("big5_"))
 ```
 
+## Test distributions
+```{r}
+hdataset %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, words_delayed, adaptive_numbering) %>% tidyr::gather() %>% 
+  ggplot(aes(value)) + geom_bar() + facet_wrap(~ key, scale = "free")
+```
+
+
 ## Intelligence: old g-factor
 ```{r}
 fa.parallel(hdataset %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
@@ -97,6 +104,65 @@ table(is.na(hdataset$g_factor_crazy), is.na(hdataset$g_factor_new))
 table(is.na(hdataset$g_factor_crazy), is.na(hdataset$birthorder_naive))
 
 formr::missingness_patterns(hdataset %>% select(g_factor_crazy, g_factor, g_factor_new, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor))
+```
+
+
+## Intelligence: crazy, definitly wrong g-factor (using all iqdata)
+```{r}
+formr::missingness_patterns(hdataset %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, words_delayed, adaptive_numbering))
+round(cor(hdataset %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+
+
+fa.parallel(hdataset %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
+fa(hdataset %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1)
+om_results = omega(hdataset %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1, sl = F)
+om_results
+omega.diagram(om_results)
+
+"g_factor_2015 =~ raven_2015_old + math_2015_old + raven_2015_young + math_2015_young + count_backwards +  words_delayed+ adaptive_numbering
+g_factor_2007 =~ raven_2007_old + math_2007_old + raven_2007_young + math_2007_young" %>%
+  cfa(missing = "fiml", data = hdataset, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+"raven_2015_old ~~ age_2015_young + raven_2015_young
+math_2015_old ~~ age_2015_young + math_2015_young
+raven_2007_old ~~ age_2007 + raven_2007_young
+math_2007_old ~~ age_2007 + math_2007_young
+g_factor_2015 =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed+ adaptive_numbering
+g_factor_2007 =~ raven_2007_old + math_2007_old" %>%
+  cfa(missing = "fiml", data = hdataset %>% codebook::zap_attributes(), std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+
+"years_of_education ~ g_factor_2015
+Math_score_Junior_High ~ g_factor_2015
+English_score_Junior_High ~ g_factor_2015
+Indonesia_score_Junior_High ~ g_factor_2015
+g_factor_2015 =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed+ adaptive_numbering
+g_factor_2007 =~ raven_2007_old + math_2007_old" %>%
+  sem(missing = "fiml", data = hdataset %>% codebook::zap_attributes(), std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+"g_factor_2015 =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed+ adaptive_numbering
+g_factor_2007 =~ raven_2007_old + math_2007_old" %>%
+  sem( data = hdataset %>% codebook::zap_attributes(), std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+cor.test(hdataset$g_factor_2015, hdataset$years_of_education)
+
+x = inspect(cfa_g, "rsquare")
+hdataset$g_factor_2015 = predict(cfa_g)[,1]
+hdataset$g_factor_2007 = predict(cfa_g)[,2]
+qplot(hdataset$g_factor_2015,hdataset$g_factor_2007, geom = 'jitter', alpha = I(0.2))
+
+qplot(hdataset$g_factor_2015)
+qplot(hdataset$g_factor_2015,hdataset$g_factor_2007, geom = 'jitter', alpha = I(0.2))
+hdataset %>% filter(g_factor_2015==g_factor_2007, round(g_factor_2007,2)==0) %>% View()
+
+round(cor(hdataset %>% select(g_factor_2015, g_factor_2007, g_factor, g_factor_new, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+
+table(is.na(hdataset$g_factor_crazy), is.na(hdataset$g_factor_new))
+table(is.na(hdataset$g_factor_crazy), is.na(hdataset$birthorder_naive))
 ```
 
 ## Graphical Analyses

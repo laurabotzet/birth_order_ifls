@@ -21,7 +21,7 @@ hdataset = readRDS("data/hdataset.rds")
 ## For the imputation we want to clean the dataset and get rid of all uninteresting data
 hdataset = hdataset %>%
   select(-ends_with("_ans"), -starts_with("co0"), -co10count, -starts_with("cob"), -matches("[a-z][0-9]r?"),
-         -matches("[a-z][0-9]r_reversed"), -matches("si[0-9]"), -duped_in_earlier_wave,
+         -matches("[a-z][0-9]r_reversed"), -matches("si[0-9]"),
          starts_with("big5_"))
 ```
 
@@ -42,22 +42,6 @@ summary(cfa_g)
 x = inspect(cfa_g, "rsquare")
 hdataset$g_factor = predict(cfa_g)[,1]
 qplot(hdataset$g_factor)
-
-iq_mean_sd = hdataset %>%
-  summarise(g_factor_mean = mean(g_factor, na.rm = T),
-            g_factor_sd = sd(g_factor, na.rm =T),
-            raven_mean = mean(raven, na.rm = T),
-            raven_sd = sd(raven, na.rm =T),
-            math_mean = mean(math, na.rm = T),
-            math_sd = sd(math, na.rm =T),
-            count_backwards_mean = mean(count_backwards, na.rm = T),
-            count_backwards_sd = sd(count_backwards, na.rm =T),
-            words_immediate_mean = mean(words_immediate, na.rm = T),
-            words_immediate_sd = sd(words_immediate, na.rm =T),
-            words_delayed_mean = mean(words_delayed, na.rm = T),
-            words_delayed_sd = sd(words_delayed, na.rm =T),
-            adaptive_numbering_mean = mean(adaptive_numbering, na.rm = T),
-            adaptive_numbering_sd = sd(adaptive_numbering, na.rm =T))
 
 round(cor(hdataset %>% select(g_factor, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
 
@@ -109,7 +93,15 @@ qplot(hdataset$g_factor_crazy)
 
 round(cor(hdataset %>% select(g_factor_crazy, g_factor, g_factor_new, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
 
-table(is.na(hdataset$g_factor_new), is.na(hdataset$g_factor_new))
+table(is.na(hdataset$g_factor_crazy), is.na(hdataset$g_factor_new))
+table(is.na(hdataset$g_factor_crazy), is.na(hdataset$birthorder_naive))
 
 formr::missingness_patterns(hdataset %>% select(g_factor_crazy, g_factor, g_factor_new, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor))
 ```
+
+## Graphical Analyses
+```{r}
+ggplot(hdataset, aes(g_factor, g_factor_new)) + geom_jitter()
+ggplot(hdataset, aes(g_factor, g_factor_crazy)) + geom_jitter()
+```
+

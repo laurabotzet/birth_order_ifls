@@ -27,7 +27,7 @@ n_birthorder = alldata_birthorder %>%
   summarise(Maternal_Birth_Order = sum(!is.na(birthorder_uterus_alive)),
             Maternal_Pregnancy_Order = sum(!is.na(birthorder_uterus_preg)),
             Parental_Full_Sibling_Birth_Order = sum(!is.na(birthorder_genes)),
-            Naive_Maternal_Birth_Order = sum(!is.na(birthorder_naive2)))
+            Naive_Maternal_Birth_Order = sum(!is.na(birthorder_naive)))
 n_birthorder
 ```
 
@@ -41,7 +41,7 @@ n_birthorder = alldata_birthorder %>%
                                            na.rm = T),
             Parental_Full_Sibling_Birth_Order = sum(!is.na(birthorder_genes) & any_multiple_birth != 1,
                                                     na.rm = T),
-            Naive_Maternal_Birth_Order = sum(!is.na(birthorder_naive2) & (is.na(any_multiple_birth) | any_multiple_birth != 1),
+            Naive_Maternal_Birth_Order = sum(!is.na(birthorder_naive) & (is.na(any_multiple_birth) | any_multiple_birth != 1),
                                                     na.rm = T))
 n_birthorder
 ```
@@ -58,6 +58,9 @@ n_birthorder = alldata_birthorder %>%
                                            na.rm = T),
             Parental_Full_Sibling_Birth_Order = sum(!is.na(birthorder_genes) & any_multiple_birth != 1 &
                                                       sibling_count_genes != 1,
+                                                    na.rm = T),
+            Naive_Maternal_Birth_Order = sum(!is.na(birthorder_naive) & any_multiple_birth != 1 &
+                                                      sibling_count_naive != 1,
                                                     na.rm = T))
 n_birthorder
 ```
@@ -125,7 +128,7 @@ n_birthorder = alldata_birthorder %>%
                                                       sibling_count_genes != 1 & alive != 3 & birth_year <= 2000 &
                                                       used_any == 1,
                                                     na.rm = T),
-            Naive_Maternal_Birth_Order = sum(!is.na(birthorder_naive2) & (is.na(any_multiple_birth) | any_multiple_birth != 1) &
+            Naive_Maternal_Birth_Order = sum(!is.na(birthorder_naive) & (is.na(any_multiple_birth) | any_multiple_birth != 1) &
                                                       sibling_count_naive2 != 1 & alive != 3 & birth_year <= 2000 &
                                                       used_any == 1,
                                                     na.rm = T)
@@ -159,7 +162,7 @@ n_birthorder
 ```
 
 ```{r}
-missingness_patterns(alldata_birthorder %>% select(g_factor, birthorder_naive2, old_enough, mother_pidlink))
+missingness_patterns(alldata_birthorder %>% select(g_factor, birthorder_naive, old_enough, mother_pidlink))
 ```
 
 #### Personality
@@ -264,7 +267,7 @@ n_birthorder
 alldata_birthorder = alldata_birthorder %>%
   mutate(age = ifelse(!is.na(IQage), IQage, age)) %>%
   select(-ends_with("_ans"), -starts_with("co0"), -co10count, -starts_with("cob"), -matches("[a-z][0-9]r?"),
-         -matches("[a-z][0-9]r_reversed"), -matches("si[0-9]"), -sex.y, -duped_in_earlier_wave,
+         -matches("[a-z][0-9]r_reversed"), -matches("si[0-9]"), -sex.y, -birthdate_duped_in_earlier_wave,
          -IQage, starts_with("big5_")) %>%
   rename(sex = sex.x)
 

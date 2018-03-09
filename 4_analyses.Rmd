@@ -21,8 +21,8 @@ birthorder = readRDS("data/birthorder.rds")
 birthorder = birthorder %>%
   mutate(
     birthyear = birth_year,
-    male = ifelse(sex.x == 1, 1L, 0L),
-    male = ifelse(sex.x > 3, NA_integer_, male),
+    male = ifelse(sex == 1, 1L, 0L),
+    male = ifelse(sex > 3, NA_integer_, male),
     male = factor(male),
     # center variables that are used for analysy - but first save old values
     old_g_factor = g_factor,
@@ -75,15 +75,15 @@ qplot(birthorder$male)
 birthorder = birthorder %>% 
   mutate(
 # birthorder as factors with levels of 1, 2, 3, 4, 5, 5+
-    birthorder_naive2_factor = as.character(birthorder_naive2),
-    birthorder_naive2_factor = ifelse(birthorder_naive2 > 5, "5+",
-                                            birthorder_naive2_factor),
-    birthorder_naive2_factor = factor(birthorder_naive2_factor, 
+    birthorder_naive_factor = as.character(birthorder_naive),
+    birthorder_naive_factor = ifelse(birthorder_naive > 5, "5+",
+                                            birthorder_naive_factor),
+    birthorder_naive_factor = factor(birthorder_naive_factor, 
                                             levels = c("1","2","3","4","5","5+")),
-    sibling_count_naive2_factor = as.character(sibling_count_naive2),
-    sibling_count_naive2_factor = ifelse(sibling_count_naive2 > 5, "5+",
-                                               sibling_count_naive2_factor),
-    sibling_count_naive2_factor = factor(sibling_count_naive2_factor, 
+    sibling_count_naive_factor = as.character(sibling_count_naive),
+    sibling_count_naive_factor = ifelse(sibling_count_naive > 5, "5+",
+                                               sibling_count_naive_factor),
+    sibling_count_naive_factor = factor(sibling_count_naive_factor, 
                                                levels = c("2","3","4","5","5+")),
 
     birthorder_uterus_alive_factor = as.character(birthorder_uterus_alive),
@@ -116,8 +116,8 @@ birthorder = birthorder %>%
     sibling_count_genes_factor = factor(sibling_count_genes_factor, 
                                         levels = c("2","3","4","5","5+")),
     # interaction birthorder * siblingcout for each birthorder
-    count_birthorder_naive2 =
-      factor(str_replace(as.character(interaction(birthorder_naive2_factor,                                                              sibling_count_naive2_factor)),
+    count_birthorder_naive =
+      factor(str_replace(as.character(interaction(birthorder_naive_factor,                                                              sibling_count_naive_factor)),
                         "\\.", "/"),
                                            levels =   c("1/2","2/2", "1/3",  "2/3",
                                                         "3/3", "1/4", "2/4", "3/4", "4/4",
@@ -153,17 +153,17 @@ birthorder = birthorder %>%
 ## Test
 ```{r}
 birthorder = birthorder %>% mutate(birthyear = if_else(is.na(birth_year), ar08yr, birth_year))
-g_factor_m1 = lmer(g_factor ~ birthorder_naive2 + birthyear + male + sibling_count_naive2 + (1 | mother_pidlink), data = birthorder)
+g_factor_m1 = lmer(g_factor ~ birthorder_naive + birthyear + male + sibling_count_naive + (1 | mother_pidlink), data = birthorder)
 summary(g_factor_m1)
 plot(allEffects(g_factor_m1))
-birthorder %>% select(g_factor, birthyear, male, birthorder_naive2_factor, mother_pidlink) %>% missingness_patterns()
+birthorder %>% select(g_factor, birthyear, male, birthorder_naive_factor, mother_pidlink) %>% missingness_patterns()
 
 g_factor_m1 = lmer(g_factor ~ birthyear + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder %>%
-                     rename(sibling_count = sibling_count_naive2_factor,
-                            birth_order_nonlinear = birthorder_naive2_factor,
-                            birth_order = birthorder_naive2,
-                            count_birth_order = count_birthorder_naive2))
+                     rename(sibling_count = sibling_count_naive_factor,
+                            birth_order_nonlinear = birthorder_naive_factor,
+                            birth_order = birthorder_naive,
+                            count_birth_order = count_birthorder_naive))
 compare_models_markdown(g_factor_m1)
 ```
 

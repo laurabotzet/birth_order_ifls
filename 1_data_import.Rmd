@@ -548,6 +548,7 @@ iq2.3 = b3b_cob %>% select(hhid14_9, pidlink, w_abil, cob18, cob19b)
 iq2 = full_join(iq2.1, iq2.2, by = "pidlink")
 iq2 = full_join(iq2, iq2.3, by = "pidlink")
 iq = iq2
+iq <- rename(iq, IQage = age) 
 iq = full_join(iq, iq3.1, by = "pidlink")
 
 ### calculate iq scores
@@ -791,6 +792,18 @@ summary(cfa_g)
 
 iq$g_factor = predict(cfa_g)[,1]
 qplot(iq$g_factor)
+table(is.na(iq$g_factor))
+# iq = iq %>%
+#   mutate(g_factor = ifelse(is.na(raven), NA, g_factor),
+#          g_factor = ifelse(is.na(math), NA, g_factor),
+#          g_factor = ifelse(is.na(count_backwards), NA, g_factor),
+#          g_factor = ifelse(is.na(words_immediate), NA, g_factor),
+#          g_factor = ifelse(is.na(words_delayed), NA, g_factor),
+#          g_factor = ifelse(is.na(adaptive_numbering), NA, g_factor))
+# qplot(iq$g_factor)
+# table(is.na(iq$g_factor))
+
+iq = iq %>% rename(IQ_age = age)
 ```
 
 

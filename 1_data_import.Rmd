@@ -537,7 +537,7 @@ iq3.1$math_2015_young = rowMeans( answered_math_items, na.rm = T)
 qplot(iq3.1$math_2015_young)
 
 iq3.1 = iq3.1 %>% select(pidlink, age_2015_young = age, sex_2015_young = sex,
-                         raven_2015_young, math_2015_young)
+                         raven_2015_young, math_2015_young, reason_2015_young = reason)
 
 ##additional informations for adults: counting backwards
 iq2.2 = b3b_co1 %>% select(hhid14_9, pidlink, co04a, co04b, co04c, co04d, co04e, co07count, co10count)
@@ -548,7 +548,7 @@ iq2.3 = b3b_cob %>% select(hhid14_9, pidlink, w_abil, cob18, cob19b)
 iq2 = full_join(iq2.1, iq2.2, by = "pidlink")
 iq2 = full_join(iq2, iq2.3, by = "pidlink")
 iq = iq2
-iq <- rename(iq, IQage = age) 
+iq <- rename(iq, age_2015_old = age, reason_2015_old = reason, sex_2015_old = sex) 
 iq = full_join(iq, iq3.1, by = "pidlink")
 
 ### calculate iq scores
@@ -556,14 +556,12 @@ iq = full_join(iq, iq3.1, by = "pidlink")
 answered_raven_items = iq %>% select(ek1_ans:ek6_ans, ek11_ans, ek12_ans)
 psych::alpha(data.frame(answered_raven_items))
 iq$raven_2015_old = rowMeans( answered_raven_items, na.rm = T)
-iq$raven_2015_old[! iq$result %in% 1:2] = NA
 qplot(iq$raven_2015_old)
 
 ##Math Test (wave 2015, older than 14 years)
 answered_math_items = iq %>% select(ek18_ans:ek22_ans)
 psych::alpha(data.frame(answered_math_items))
 iq$math_2015_old = rowMeans( answered_math_items, na.rm = T)
-iq$math_2015_old[! iq$result %in% 1:2] = NA
 qplot(iq$math_2015_old)
 
 
@@ -592,6 +590,59 @@ qplot(iq$words_remembered_avg)
 ##Adaptive Numbering
 iq$adaptive_numbering = iq$w_abil
 qplot(iq$adaptive_numbering)
+
+
+# some people have reasons not to answer the test (dead, not contacted), that dont justify
+# giving them zero points for that task. so i set these to NA
+# additionally all participants older than 59 only answered the Raven Test, not the Math 
+# Test
+iq = iq %>%
+  mutate(reason_2015_young = ifelse(reason_2015_young == 1, "refused",
+                   ifelse(reason_2015_young == 2, "cannot read",
+                   ifelse(reason_2015_young == 3, "unable to answer",
+                   ifelse(reason_2015_young == 4, "not enough time",
+                   ifelse(reason_2015_young == 5, "proxy respondent",
+                   ifelse(reason_2015_young == 6, "other",
+                   ifelse(reason_2015_young == 7, "could not be contacted", NA))))))),
+         raven_2015_young = ifelse(is.na(reason_2015_young), raven_2015_young,
+                             ifelse(reason_2015_young == "cannot read"|
+                                    reason_2015_young == "not enough time"|
+                                    reason_2015_young == "proxy respondent"|
+                                    reason_2015_young == "other"|
+                                    reason_2015_young == "could not be contacted", NA,
+                                    raven_2015_young)),
+         math_2015_young = ifelse(is.na(reason_2015_young), math_2015_young,
+                             ifelse(reason_2015_young == "cannot read"|
+                                    reason_2015_young == "not enough time"|
+                                    reason_2015_young == "proxy respondent"|
+                                    reason_2015_young == "other"|
+                                    reason_2015_young == "could not be contacted", NA,
+                                    math_2015_young)),
+         reason_2015_old = ifelse(reason_2015_old == 1, "refused",
+                   ifelse(reason_2015_old == 2, "cannot read",
+                   ifelse(reason_2015_old == 3, "unable to answer",
+                   ifelse(reason_2015_old == 4, "not enough time",
+                   ifelse(reason_2015_old == 5, "proxy respondent",
+                   ifelse(reason_2015_old == 6, "other",
+                   ifelse(reason_2015_old == 7, "could not be contacted", NA))))))),
+         raven_2015_old = ifelse(is.na(reason_2015_old), raven_2015_old,
+                             ifelse(reason_2015_old == "cannot read"|
+                                    reason_2015_old == "not enough time"|
+                                    reason_2015_old == "proxy respondent"|
+                                    reason_2015_old == "other"|
+                                    reason_2015_old == "could not be contacted", NA,
+                                    raven_2015_old)),
+         math_2015_old = ifelse(is.na(reason_2015_old), math_2015_old,
+                             ifelse(reason_2015_old == "cannot read"|
+                                    reason_2015_old == "not enough time"|
+                                    reason_2015_old == "proxy respondent"|
+                                    reason_2015_old == "other"|
+                                    reason_2015_old == "could not be contacted", NA,
+                                    math_2015_old)),
+         math_2015_old = ifelse(age_2015_old >= 60, NA, math_2015_old))
+
+iq %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, count_backwards, words_immediate, words_delayed, adaptive_numbering) %>% tidyr::gather() %>%
+  ggplot(aes(value)) + geom_bar() + facet_wrap(~ key, scales = "free")
 ```
 
 ### IQ-Tests earlier waves
@@ -599,12 +650,12 @@ qplot(iq$adaptive_numbering)
 ## Wave 4 - 2007
 ### Data
 iq2007_ek2= bek_ek2 %>%
-  select(pidlink, ektype, "age_2007" = age, matches("ek[0-9]x"),
-         matches("ek[0-9][0-9]x"))
+  select(pidlink, ektype, reason_2007_old = reason, "age_2007_old" = age,
+         sex_2007_old = sex, matches("ek[0-9]x"), matches("ek[0-9][0-9]x"))
 
 iq2007_ek1= bek_ek1 %>%
-  select(pidlink, ektype, "age_2007" = age, matches("ek[0-9]x"),
-         matches("ek[0-9][0-9]x")) %>%
+  select(pidlink, ektype, reason_2007_young = reason, "age_2007_young" = age,
+         sex_2007_young = sex, matches("ek[0-9]x"), matches("ek[0-9][0-9]x")) %>%
   filter(!(pidlink %in% iq2007_ek2$pidlink))
 
 # some people answered both versions of the test
@@ -616,8 +667,9 @@ iq2007_ek1= bek_ek1 %>%
 # check with Ruben, if that is the right way to go...
 
 iq2007_ek1_repeater = bek_ek1 %>%
-  select(pidlink, ektype, "age_2007" = age, matches("ek[0-9]x"),
-         matches("ek[0-9][0-9]x")) %>%
+  select(pidlink, ektype, reason_2007_young_repeater = reason,
+         "age_2007_young_repeater" = age, sex_2007_young_repeater = sex,
+         matches("ek[0-9]x"), matches("ek[0-9][0-9]x")) %>%
   filter((pidlink %in% iq2007_ek2$pidlink))
 
 iq2007 = bind_rows(iq2007_ek1, iq2007_ek2) 
@@ -691,8 +743,9 @@ qplot(iq2007$math_2007_young)
 qplot(iq2007$math_2007_old)
 
 
-iq2007 = iq2007 %>% select(pidlink, age_2007, raven_2007_young, raven_2007_old,
-                           math_2007_young, math_2007_old)
+iq2007 = iq2007 %>% select(pidlink, age_2007_young, age_2007_old, sex_2007_young,
+                           sex_2007_old, raven_2007_young, raven_2007_old, math_2007_young,
+                           math_2007_old, reason_2007_old, reason_2007_young)
 
 ##Do the same for the repeater
 ### Raven
@@ -755,8 +808,9 @@ answered_math_items = iq2007_ek1_repeater %>% select(ek13x:ek22x)
 iq2007_ek1_repeater$math_2007_young_repeater = rowMeans( answered_math_items, na.rm = T)
 qplot(iq2007_ek1_repeater$math_2007_young_repeater)
 
-iq2007_ek1_repeater = iq2007_ek1_repeater %>% select(pidlink, raven_2007_young_repeater,
-                                                     math_2007_young_repeater)
+iq2007_ek1_repeater = iq2007_ek1_repeater %>%
+  select(pidlink, raven_2007_young_repeater, math_2007_young_repeater,
+         reason_2007_young_repeater, age_2007_young_repeater, sex_2007_young_repeater)
 
 iq2007_all = left_join(iq2007, iq2007_ek1_repeater, by = "pidlink")
 
@@ -768,11 +822,69 @@ iq2007_all = iq2007_all %>%
   mutate(raven_2007_young = ifelse(!is.na(raven_2007_young_repeater),
                                    raven_2007_young_repeater, raven_2007_young),
          math_2007_young = ifelse(!is.na(math_2007_young_repeater),
-                                  math_2007_young_repeater, math_2007_young))
+                                  math_2007_young_repeater, math_2007_young),
+         age_2007_young = ifelse(!is.na(age_2007_young_repeater),
+                                 age_2007_young_repeater, age_2007_young),
+         sex_2007_young = ifelse(!is.na(sex_2007_young_repeater),
+                                 sex_2007_young_repeater, sex_2007_young))
 
-iq2007_all = iq2007_all %>% select(pidlink, age_2007, raven_2007_old, raven_2007_young,
-                                   math_2007_young, math_2007_old)
-iq = full_join(iq, iq2007_all, by = "pidlink")
+iq2007_all = iq2007_all %>% select(pidlink, age_2007_young, age_2007_old, raven_2007_old,
+                                   raven_2007_young, math_2007_young, math_2007_old,
+                                   reason_2007_young, reason_2007_old)
+# some people have reasons not to answer the test (dead, not contacted), that dont justify
+# giving them zero points for that task. so i set these to NA
+# it is important to note that raven and math test were only answered by participants
+# aged 7 - 24
+iq2007_all = iq2007_all %>%
+  mutate(reason_2007_young = ifelse(reason_2007_young == 1, "refused",
+                   ifelse(reason_2007_young == 2, "cannot read",
+                   ifelse(reason_2007_young == 3, "unable to answer",
+                   ifelse(reason_2007_young == 4, "not enough time",
+                   ifelse(reason_2007_young == 5, "proxy respondent",
+                   ifelse(reason_2007_young == 6, "other",
+                   ifelse(reason_2007_young == 7, "could not be contacted", NA))))))),
+         raven_2007_young = ifelse(is.na(reason_2007_young), raven_2007_young,
+                             ifelse(reason_2007_young == "cannot read"|
+                                    reason_2007_young == "not enough time"|
+                                    reason_2007_young == "proxy respondent"|
+                                    reason_2007_young == "other"|
+                                    reason_2007_young == "could not be contacted", NA,
+                                    raven_2007_young)),
+         math_2007_young = ifelse(is.na(reason_2007_young), math_2007_young,
+                             ifelse(reason_2007_young == "cannot read"|
+                                    reason_2007_young == "not enough time"|
+                                    reason_2007_young == "proxy respondent"|
+                                    reason_2007_young == "other"|
+                                    reason_2007_young == "could not be contacted", NA,
+                                    math_2007_young)),
+         reason_2007_old = ifelse(reason_2007_old == 1, "refused",
+                   ifelse(reason_2007_old == 2, "cannot read",
+                   ifelse(reason_2007_old == 3, "unable to answer",
+                   ifelse(reason_2007_old == 4, "not enough time",
+                   ifelse(reason_2007_old == 5, "proxy respondent",
+                   ifelse(reason_2007_old == 6, "other",
+                   ifelse(reason_2007_old == 7, "could not be contacted", NA))))))),
+         raven_2007_old = ifelse(is.na(reason_2007_old), raven_2007_old,
+                             ifelse(reason_2007_old == "cannot read"|
+                                    reason_2007_old == "not enough time"|
+                                    reason_2007_old == "proxy respondent"|
+                                    reason_2007_old == "other"|
+                                    reason_2007_old == "could not be contacted", NA,
+                                    raven_2007_old)),
+         math_2007_old = ifelse(is.na(reason_2007_old), math_2007_old,
+                             ifelse(reason_2007_old == "cannot read"|
+                                    reason_2007_old == "not enough time"|
+                                    reason_2007_old == "proxy respondent"|
+                                    reason_2007_old == "other"|
+                                    reason_2007_old == "could not be contacted", NA,
+                                    math_2007_old)))
+
+iq2007_all %>% select(raven_2007_old, math_2007_old, raven_2007_young, math_2007_young) %>% tidyr::gather() %>%  ggplot(aes(value)) + geom_bar() + facet_wrap(~ key, scales = "free")
+
+iq = full_join(iq, iq2007_all, by = "pidlink") %>%
+  select(-matches("ek[0-9]_ans"), -matches("ek[0-9][0-9]_ans"), -starts_with("hhid"),
+         -ektype, -resptype, -result, -starts_with("reason"), -starts_with("co"),
+         count_backwards, -w_abil)
 ```
 
 ```{r}
@@ -783,27 +895,8 @@ round(cor(iq %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_20
 ##Missingness_Patterns
 formr::missingness_patterns(iq %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, count_backwards, words_immediate, words_delayed, adaptive_numbering, raven_2007_old, math_2007_young))
 
-iq %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, count_backwards, words_immediate, words_delayed, adaptive_numbering) %>% tidyr::gather() %>% 
+iq %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, words_immediate, words_delayed, adaptive_numbering) %>% tidyr::gather() %>%
   ggplot(aes(value)) + geom_bar() + facet_wrap(~ key, scales = "free")
-##g_factor
-"g_factor =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed + adaptive_numbering" %>%
-cfa(missing = "fiml", data = iq, std.lv = T, std.ov = T) -> cfa_g
-summary(cfa_g)
-
-iq$g_factor = predict(cfa_g)[,1]
-qplot(iq$g_factor)
-table(is.na(iq$g_factor))
-# iq = iq %>%
-#   mutate(g_factor = ifelse(is.na(raven), NA, g_factor),
-#          g_factor = ifelse(is.na(math), NA, g_factor),
-#          g_factor = ifelse(is.na(count_backwards), NA, g_factor),
-#          g_factor = ifelse(is.na(words_immediate), NA, g_factor),
-#          g_factor = ifelse(is.na(words_delayed), NA, g_factor),
-#          g_factor = ifelse(is.na(adaptive_numbering), NA, g_factor))
-# qplot(iq$g_factor)
-# table(is.na(iq$g_factor))
-
-iq = iq %>% rename(IQ_age = age)
 ```
 
 
@@ -1148,9 +1241,7 @@ alldata_birthorder = alldata_birthorder %>% ungroup()
 alldata = alldata %>% ungroup()
 pregnancy = pregnancy %>% ungroup()
 iq = iq %>% ungroup()
-hdataset = alldata_birthorder
 
-saveRDS(hdataset, file = "data/hdataset.rds")
 saveRDS(alldata_birthorder, file = "data/alldata_birthorder.rds")
 saveRDS(alldata, file = "data/alldata.rds")
 saveRDS(pregnancy, file = "data/pregnancy.rds")

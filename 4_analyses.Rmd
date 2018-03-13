@@ -17,7 +17,6 @@ birthorder = readRDS("data/alldata_birthorder.rds")
 
 ## Data preparations
 ```{r data preparations}
-
 birthorder <- within(birthorder, {
   g_factor <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
 })
@@ -138,6 +137,22 @@ birthorder <- birthorder %>%
 ```
 
 
+## test
+```{r}
+x = birthorder %>% filter(!is.na(g_factor), !is.na(birthorder_uterus_alive), !is.na(age), !is.na(male), !is.na(sibling_count_uterus_alive), !is.na(mother_pidlink), sibling_count_uterus_alive != 1)
+
+compare = readRDS("data/birthorder.rds")
+
+compare = compare %>% select(pidlink, g_factor_old = g_factor)
+
+x = left_join(x, compare, by = "pidlink")
+
+y = x %>% filter(is.na(g_factor_old))
+skimr::skim(y)
+qplot(x$g_factor, x$g_factor_old)
+```
+
+
 ## Intelligence {.active .tabset}
 ### g-factor {.tabset}
 
@@ -158,820 +173,202 @@ model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pi
 compare_birthorder_specs(model)
 ```
 
-
-#### Maternal birth order {.tabset}
-
-```{r}
-raven_m1 = lmer(raven ~ birthyear + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_uterus_alive_factor,
-                            birth_order_nonlinear = birthorder_uterus_alive_factor,
-                            birth_order = birthorder_uterus_alive,
-                            count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(raven_m1)
-```
-
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-raven_preg_m1 = lmer(raven ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = birthorder %>% 
-  rename(sibling_count = sibling_count_uterus_preg_factor,
-         birth_order_nonlinear = birthorder_uterus_preg_factor,
-         birth_order = birthorder_uterus_preg,
-         count_birth_order = count_birthorder_uterus_preg
-         ))
-compare_models_markdown(raven_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-raven_parental_m1 = lmer(raven ~ birthyear + male + sibling_count + (1 | marriage_id),
-                            data = birthorder %>% 
-  rename(sibling_count = sibling_count_genes_factor,
-         birth_order_nonlinear = birthorder_genes_factor,
-         birth_order = birthorder_genes,
-         count_birth_order = count_birthorder_genes
-         ))
-compare_models_markdown(raven_parental_m1)
-```
-
-
 ### Numeracy {.tabset}
 
-#### Maternal birth order {.tabset}
-
 ```{r}
-math_m1 = lmer(math ~ birthyear + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_uterus_alive_factor,
-                            birth_order_nonlinear = birthorder_uterus_alive_factor,
-                            birth_order = birthorder_uterus_alive,
-                            count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(math_m1)
+birthorder <- birthorder %>% mutate(outcome = math_2015_old)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-math_preg_m1 = lmer(math ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = birthorder %>% 
-  rename(sibling_count = sibling_count_uterus_preg_factor,
-         birth_order_nonlinear = birthorder_uterus_preg_factor,
-         birth_order = birthorder_uterus_preg,
-         count_birth_order = count_birthorder_uterus_preg
-         ))
-compare_models_markdown(math_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-math_parental_m1 = lmer(math ~ birthyear + male + sibling_count + (1 | marriage_id),
-                            data = birthorder %>% 
-  rename(sibling_count = sibling_count_genes_factor,
-         birth_order_nonlinear = birthorder_genes_factor,
-         birth_order = birthorder_genes,
-         count_birth_order = count_birthorder_genes
-         ))
-compare_models_markdown(math_parental_m1)
-```
 
 ### Counting backwards {.tabset}
 
-#### Maternal birth order {.tabset}
-
 ```{r}
-count_backwards_m1 = lmer(count_backwards ~ birthyear + male + sibling_count + (1 | mother_pidlink),
-               data = birthorder %>%
-                 rename(sibling_count = sibling_count_uterus_alive_factor,
-                        birth_order_nonlinear = birthorder_uterus_alive_factor,
-                        birth_order = birthorder_uterus_alive,
-                        count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(count_backwards_m1)
-```
-
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-count_backwards_preg_m1 = lmer(count_backwards ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = birthorder %>% 
-                      rename(sibling_count = sibling_count_uterus_preg_factor,
-                             birth_order_nonlinear = birthorder_uterus_preg_factor,
-                             birth_order = birthorder_uterus_preg,
-                             count_birth_order = count_birthorder_uterus_preg
-                      ))
-compare_models_markdown(count_backwards_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-count_backwards_parental_m1 = lmer(count_backwards ~ birthyear + male + sibling_count + (1 | marriage_id),
-                        data = birthorder %>% 
-                          rename(sibling_count = sibling_count_genes_factor,
-                                 birth_order_nonlinear = birthorder_genes_factor,
-                                 birth_order = birthorder_genes,
-                                 count_birth_order = count_birthorder_genes
-                          ))
-compare_models_markdown(count_backwards_parental_m1)
+birthorder <- birthorder %>% mutate(outcome = count_backwards)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
 ### Immediate word recall {.tabset}
 
-#### Maternal birth order {.tabset}
-
 ```{r}
-words_immediate_m1 = lmer(words_immediate ~ birthyear + male + sibling_count + (1 | mother_pidlink),
-                          data = birthorder %>%
-                            rename(sibling_count = sibling_count_uterus_alive_factor,
-                                   birth_order_nonlinear = birthorder_uterus_alive_factor,
-                                   birth_order = birthorder_uterus_alive,
-                                   count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(words_immediate_m1)
+birthorder <- birthorder %>% mutate(outcome = words_immediate)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
-
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-words_immediate_preg_m1 = lmer(words_immediate ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = birthorder %>% 
-                                 rename(sibling_count = sibling_count_uterus_preg_factor,
-                                        birth_order_nonlinear = birthorder_uterus_preg_factor,
-                                        birth_order = birthorder_uterus_preg,
-                                        count_birth_order = count_birthorder_uterus_preg
-                                 ))
-compare_models_markdown(words_immediate_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-words_immediate_parental_m1 = lmer(words_immediate ~ birthyear + male + sibling_count + (1 | marriage_id),
-                                   data = birthorder %>% 
-                                     rename(sibling_count = sibling_count_genes_factor,
-                                            birth_order_nonlinear = birthorder_genes_factor,
-                                            birth_order = birthorder_genes,
-                                            count_birth_order = count_birthorder_genes
-                                     ))
-compare_models_markdown(words_immediate_parental_m1)
-```
-
 
 ### Delayed word recall {.tabset}
-
-#### Maternal birth order {.tabset}
-
 ```{r}
-words_delayed_m1 = lmer(words_delayed ~ birthyear + male + sibling_count + (1 | mother_pidlink),
-                          data = birthorder %>%
-                            rename(sibling_count = sibling_count_uterus_alive_factor,
-                                   birth_order_nonlinear = birthorder_uterus_alive_factor,
-                                   birth_order = birthorder_uterus_alive,
-                                   count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(words_delayed_m1)
-```
-
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-words_delayed_preg_m1 = lmer(words_delayed ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = birthorder %>% 
-                                 rename(sibling_count = sibling_count_uterus_preg_factor,
-                                        birth_order_nonlinear = birthorder_uterus_preg_factor,
-                                        birth_order = birthorder_uterus_preg,
-                                        count_birth_order = count_birthorder_uterus_preg
-                                 ))
-compare_models_markdown(words_delayed_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-words_delayed_parental_m1 = lmer(words_delayed ~ birthyear + male + sibling_count + (1 | marriage_id),
-                                   data = birthorder %>% 
-                                     rename(sibling_count = sibling_count_genes_factor,
-                                            birth_order_nonlinear = birthorder_genes_factor,
-                                            birth_order = birthorder_genes,
-                                            count_birth_order = count_birthorder_genes
-                                     ))
-compare_models_markdown(words_delayed_parental_m1)
+birthorder <- birthorder %>% mutate(outcome = words_delayed)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
 ### Adaptive Numbering {.tabset}
 
-#### Maternal birth order {.tabset}
-
 ```{r}
-adaptive_numbering_m1 = lmer(adaptive_numbering ~ birthyear + male + sibling_count + (1 | mother_pidlink),
-                          data = birthorder %>%
-                            rename(sibling_count = sibling_count_uterus_alive_factor,
-                                   birth_order_nonlinear = birthorder_uterus_alive_factor,
-                                   birth_order = birthorder_uterus_alive,
-                                   count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(adaptive_numbering_m1)
-```
-
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-adaptive_numbering_preg_m1 = lmer(adaptive_numbering ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = birthorder %>% 
-                                 rename(sibling_count = sibling_count_uterus_preg_factor,
-                                        birth_order_nonlinear = birthorder_uterus_preg_factor,
-                                        birth_order = birthorder_uterus_preg,
-                                        count_birth_order = count_birthorder_uterus_preg
-                                 ))
-compare_models_markdown(adaptive_numbering_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-adaptive_numbering_parental_m1 = lmer(adaptive_numbering ~ birthyear + male + sibling_count + (1 | marriage_id),
-                                   data = birthorder %>% 
-                                     rename(sibling_count = sibling_count_genes_factor,
-                                            birth_order_nonlinear = birthorder_genes_factor,
-                                            birth_order = birthorder_genes,
-                                            count_birth_order = count_birthorder_genes
-                                     ))
-compare_models_markdown(adaptive_numbering_parental_m1)
+birthorder <- birthorder %>% mutate(outcome = adaptive_numbering)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
 ## Personality {.tabset}
 ### Extraversion {.tabset}
 
-#### Maternal birth order {.tabset}
 
 ```{r}
-big5_ext_m1 = lmer(big5_ext ~ birthyear + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_uterus_alive_factor,
-                            birth_order_nonlinear = birthorder_uterus_alive_factor,
-                            birth_order = birthorder_uterus_alive,
-                            count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(big5_ext_m1)
+birthorder <- birthorder %>% mutate(outcome = big5_ext)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-big5_ext_preg_m1 = lmer(big5_ext ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = birthorder %>% 
-  rename(sibling_count = sibling_count_uterus_preg_factor,
-         birth_order_nonlinear = birthorder_uterus_preg_factor,
-         birth_order = birthorder_uterus_preg,
-         count_birth_order = count_birthorder_uterus_preg
-         ))
-compare_models_markdown(big5_ext_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-big5_ext_parental_m1 = lmer(big5_ext ~ birthyear + male + sibling_count + (1 | marriage_id),
-                            data = birthorder %>% 
-  rename(sibling_count = sibling_count_genes_factor,
-         birth_order_nonlinear = birthorder_genes_factor,
-         birth_order = birthorder_genes,
-         count_birth_order = count_birthorder_genes
-         ))
-compare_models_markdown(big5_ext_parental_m1)
-```
 
 ### Neuroticism {.tabset}
 
-#### Maternal birth order {.tabset}
 
 ```{r}
-big5_neu_m1 = lmer(big5_neu ~ birthyear + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_uterus_alive_factor,
-                            birth_order_nonlinear = birthorder_uterus_alive_factor,
-                            birth_order = birthorder_uterus_alive,
-                            count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(big5_neu_m1)
+birthorder <- birthorder %>% mutate(outcome = big5_neu)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-big5_neu_preg_m1 = lmer(big5_neu ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = birthorder %>% 
-  rename(sibling_count = sibling_count_uterus_preg_factor,
-         birth_order_nonlinear = birthorder_uterus_preg_factor,
-         birth_order = birthorder_uterus_preg,
-         count_birth_order = count_birthorder_uterus_preg
-         ))
-compare_models_markdown(big5_neu_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-big5_neu_parental_m1 = lmer(big5_neu ~ birthyear + male + sibling_count + (1 | marriage_id),
-                            data = birthorder %>% 
-  rename(sibling_count = sibling_count_genes_factor,
-         birth_order_nonlinear = birthorder_genes_factor,
-         birth_order = birthorder_genes,
-         count_birth_order = count_birthorder_genes
-         ))
-compare_models_markdown(big5_neu_parental_m1)
-```
 
 ### Conscientiousness {.tabset}
 
-#### Maternal birth order {.tabset}
 
 ```{r}
-big5_con_m1 = lmer(big5_con ~ birthyear + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_uterus_alive_factor,
-                            birth_order_nonlinear = birthorder_uterus_alive_factor,
-                            birth_order = birthorder_uterus_alive,
-                            count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(big5_con_m1)
+birthorder <- birthorder %>% mutate(outcome = big5_con)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-big5_con_preg_m1 = lmer(big5_con ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = birthorder %>% 
-  rename(sibling_count = sibling_count_uterus_preg_factor,
-         birth_order_nonlinear = birthorder_uterus_preg_factor,
-         birth_order = birthorder_uterus_preg,
-         count_birth_order = count_birthorder_uterus_preg
-         ))
-compare_models_markdown(big5_con_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-big5_con_parental_m1 = lmer(big5_con ~ birthyear + male + sibling_count + (1 | marriage_id),
-                            data = birthorder %>% 
-  rename(sibling_count = sibling_count_genes_factor,
-         birth_order_nonlinear = birthorder_genes_factor,
-         birth_order = birthorder_genes,
-         count_birth_order = count_birthorder_genes
-         ))
-compare_models_markdown(big5_con_parental_m1)
-```
 
 ### Agreeableness {.tabset}
 
-#### Maternal birth order {.tabset}
 
 ```{r}
-big5_agree_m1 = lmer(big5_agree ~ birthyear + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_uterus_alive_factor,
-                            birth_order_nonlinear = birthorder_uterus_alive_factor,
-                            birth_order = birthorder_uterus_alive,
-                            count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(big5_agree_m1)
+birthorder <- birthorder %>% mutate(outcome = big5_agree)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-big5_agree_preg_m1 = lmer(big5_agree ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = birthorder %>% 
-  rename(sibling_count = sibling_count_uterus_preg_factor,
-         birth_order_nonlinear = birthorder_uterus_preg_factor,
-         birth_order = birthorder_uterus_preg,
-         count_birth_order = count_birthorder_uterus_preg
-         ))
-compare_models_markdown(big5_agree_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-big5_agree_parental_m1 = lmer(big5_agree ~ birthyear + male + sibling_count + (1 | marriage_id),
-                            data = birthorder %>% 
-  rename(sibling_count = sibling_count_genes_factor,
-         birth_order_nonlinear = birthorder_genes_factor,
-         birth_order = birthorder_genes,
-         count_birth_order = count_birthorder_genes
-         ))
-compare_models_markdown(big5_agree_parental_m1)
-```
 
 ### Openness {.tabset}
 
-#### Maternal birth order {.tabset}
 
 ```{r}
-big5_open_m1 = lmer(big5_open ~ birthyear + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_uterus_alive_factor,
-                            birth_order_nonlinear = birthorder_uterus_alive_factor,
-                            birth_order = birthorder_uterus_alive,
-                            count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(big5_open_m1)
+birthorder <- birthorder %>% mutate(outcome = big5_open)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-big5_open_preg_m1 = lmer(big5_open ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = birthorder %>% 
-  rename(sibling_count = sibling_count_uterus_preg_factor,
-         birth_order_nonlinear = birthorder_uterus_preg_factor,
-         birth_order = birthorder_uterus_preg,
-         count_birth_order = count_birthorder_uterus_preg
-         ))
-compare_models_markdown(big5_open_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-big5_open_parental_m1 = lmer(big5_open ~ birthyear + male + sibling_count + (1 | marriage_id),
-                            data = birthorder %>% 
-  rename(sibling_count = sibling_count_genes_factor,
-         birth_order_nonlinear = birthorder_genes_factor,
-         birth_order = birthorder_genes,
-         count_birth_order = count_birthorder_genes
-         ))
-compare_models_markdown(big5_open_parental_m1)
-```
 
 ## Risk preference {.tabset}
 
 ### Risk A {.tabset}
 
-#### Maternal birth order {.tabset}
 
 ```{r}
-riskA_m1 = lmer(riskA ~ birthyear + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_uterus_alive_factor,
-                            birth_order_nonlinear = birthorder_uterus_alive_factor,
-                            birth_order = birthorder_uterus_alive,
-                            count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(riskA_m1)
-```
-
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-riskA_preg_m1 = lmer(riskA ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = birthorder %>% 
-  rename(sibling_count = sibling_count_uterus_preg_factor,
-         birth_order_nonlinear = birthorder_uterus_preg_factor,
-         birth_order = birthorder_uterus_preg,
-         count_birth_order = count_birthorder_uterus_preg
-         ))
-compare_models_markdown(riskA_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-riskA_parental_m1 = lmer(riskA ~ birthyear + male + sibling_count + (1 | marriage_id),
-                            data = birthorder %>% 
-  rename(sibling_count = sibling_count_genes_factor,
-         birth_order_nonlinear = birthorder_genes_factor,
-         birth_order = birthorder_genes,
-         count_birth_order = count_birthorder_genes
-         ))
-compare_models_markdown(riskA_parental_m1)
+birthorder <- birthorder %>% mutate(outcome = riskA)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
 
 ### Risk B {.tabset}
 
-#### Maternal birth order {.tabset}
 
 ```{r}
-riskB_m1 = lmer(riskB ~ birthyear + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_uterus_alive_factor,
-                            birth_order_nonlinear = birthorder_uterus_alive_factor,
-                            birth_order = birthorder_uterus_alive,
-                            count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(riskB_m1)
+birthorder <- birthorder %>% mutate(outcome = riskB)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-riskB_preg_m1 = lmer(riskB ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = birthorder %>% 
-  rename(sibling_count = sibling_count_uterus_preg_factor,
-         birth_order_nonlinear = birthorder_uterus_preg_factor,
-         birth_order = birthorder_uterus_preg,
-         count_birth_order = count_birthorder_uterus_preg
-         ))
-compare_models_markdown(riskB_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-riskB_parental_m1 = lmer(riskB ~ birthyear + male + sibling_count + (1 | marriage_id),
-                            data = birthorder %>% 
-  rename(sibling_count = sibling_count_genes_factor,
-         birth_order_nonlinear = birthorder_genes_factor,
-         birth_order = birthorder_genes,
-         count_birth_order = count_birthorder_genes
-         ))
-compare_models_markdown(riskB_parental_m1)
-```
 
 ## Educational Attainment {.tabset}
 ### Years of Education - z-standardized {.tabset}
 
-#### Maternal birth order {.tabset}
 
 ```{r}
-years_of_education_z_m1 = lmer(years_of_education_z ~ birthyear + male + sibling_count +
-                                 (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_uterus_alive_factor,
-                            birth_order_nonlinear = birthorder_uterus_alive_factor,
-                            birth_order = birthorder_uterus_alive,
-                            count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(years_of_education_z_m1)
-```
-
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-years_of_education_z_preg_m1 = lmer(years_of_education_z ~ birthyear + male + sibling_count +
-                                      (1 | mother_pidlink), data = birthorder %>% 
-  rename(sibling_count = sibling_count_uterus_preg_factor,
-         birth_order_nonlinear = birthorder_uterus_preg_factor,
-         birth_order = birthorder_uterus_preg,
-         count_birth_order = count_birthorder_uterus_preg
-         ))
-compare_models_markdown(years_of_education_z_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-years_of_education_z_parental_m1 = lmer(years_of_education_z ~ birthyear + male + sibling_count +
-                                         (1 | marriage_id),
-                            data = birthorder %>% 
-  rename(sibling_count = sibling_count_genes_factor,
-         birth_order_nonlinear = birthorder_genes_factor,
-         birth_order = birthorder_genes,
-         count_birth_order = count_birthorder_genes
-         ))
-compare_models_markdown(years_of_education_z_parental_m1)
+birthorder <- birthorder %>% mutate(outcome = years_of_education_z)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
 #### Years of education - non-standardized {.tabset}
 
-#### Maternal birth order {.tabset}
-
 ```{r}
-years_of_education_m1 = lmer(years_of_education ~ birthyear + male + sibling_count +
-                                 (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_uterus_alive_factor,
-                            birth_order_nonlinear = birthorder_uterus_alive_factor,
-                            birth_order = birthorder_uterus_alive,
-                            count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(years_of_education_m1)
+birthorder <- birthorder %>% mutate(outcome = years_of_education)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
-#### Maternal pregnancy order {.tabset}
+### EBTANAS {.tabset}
 
 ```{r}
-years_of_education_preg_m1 = lmer(years_of_education ~ birthyear + male + sibling_count +
-                                      (1 | mother_pidlink), data = birthorder %>% 
-  rename(sibling_count = sibling_count_uterus_preg_factor,
-         birth_order_nonlinear = birthorder_uterus_preg_factor,
-         birth_order = birthorder_uterus_preg,
-         count_birth_order = count_birthorder_uterus_preg
-         ))
-compare_models_markdown(years_of_education_preg_m1)
+birthorder <- birthorder %>% mutate(outcome = Total_score_elemenatry)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
-#### Parental full sibling order {.tabset}
-
-```{r}
-years_of_education_parental_m1 = lmer(years_of_education ~ birthyear + male + sibling_count +
-                                         (1 | marriage_id),
-                            data = birthorder %>% 
-  rename(sibling_count = sibling_count_genes_factor,
-         birth_order_nonlinear = birthorder_genes_factor,
-         birth_order = birthorder_genes,
-         count_birth_order = count_birthorder_genes
-         ))
-compare_models_markdown(years_of_education_parental_m1)
-```
-
-### EBTANAS - z-standardized {.tabset}
-
-#### Maternal birth order {.tabset}
-
-```{r}
-total_score_highest_z_m1 = lmer(Total_score_highest_z ~ birthyear + male + sibling_count +
-                                 (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_uterus_alive_factor,
-                            birth_order_nonlinear = birthorder_uterus_alive_factor,
-                            birth_order = birthorder_uterus_alive,
-                            count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(total_score_highest_z_m1)
-```
-
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-total_score_highest_z_preg_m1 = lmer(Total_score_highest_z ~ birthyear + male +
-                                       sibling_count +
-                                      (1 | mother_pidlink), data = birthorder %>% 
-  rename(sibling_count = sibling_count_uterus_preg_factor,
-         birth_order_nonlinear = birthorder_uterus_preg_factor,
-         birth_order = birthorder_uterus_preg,
-         count_birth_order = count_birthorder_uterus_preg
-         ))
-compare_models_markdown(total_score_highest_z_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-total_score_highest_z_parental_m1 = lmer(Total_score_highest_z ~ birthyear + male + sibling_count +
-                                         (1 | marriage_id),
-                            data = birthorder %>% 
-  rename(sibling_count = sibling_count_genes_factor,
-         birth_order_nonlinear = birthorder_genes_factor,
-         birth_order = birthorder_genes,
-         count_birth_order = count_birthorder_genes
-         ))
-compare_models_markdown(total_score_highest_z_parental_m1)
-```
 
 ## Income last month {.tabset}
 
 ### z-standardized {.tabset}
 
-#### Maternal birth order {.tabset}
-
 ```{r}
-wage_last_month_z_m1 = lmer(wage_last_month_z ~ birthyear + male + sibling_count +
-                                 (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_uterus_alive_factor,
-                            birth_order_nonlinear = birthorder_uterus_alive_factor,
-                            birth_order = birthorder_uterus_alive,
-                            count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(wage_last_month_z_m1)
+birthorder <- birthorder %>% mutate(outcome = wage_last_month_z)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
-
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-wage_last_month_z_preg_m1 = lmer(wage_last_month_z ~ birthyear + male + sibling_count +
-                                      (1 | mother_pidlink), data = birthorder %>% 
-  rename(sibling_count = sibling_count_uterus_preg_factor,
-         birth_order_nonlinear = birthorder_uterus_preg_factor,
-         birth_order = birthorder_uterus_preg,
-         count_birth_order = count_birthorder_uterus_preg
-         ))
-compare_models_markdown(wage_last_month_z_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-wage_last_month_z_parental_m1 = lmer(wage_last_month_z ~ birthyear + male + sibling_count +
-                                         (1 | marriage_id),
-                            data = birthorder %>% 
-  rename(sibling_count = sibling_count_genes_factor,
-         birth_order_nonlinear = birthorder_genes_factor,
-         birth_order = birthorder_genes,
-         count_birth_order = count_birthorder_genes
-         ))
-compare_models_markdown(wage_last_month_z_parental_m1)
-```
-
 
 ## Income last year {.tabset}
 
 ### z-standardized {.tabset}
 
-#### Maternal birth order {.tabset}
-
 ```{r}
-wage_last_year_z_m1 = lmer(wage_last_year_z ~ birthyear + male + sibling_count +
-                                 (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_uterus_alive_factor,
-                            birth_order_nonlinear = birthorder_uterus_alive_factor,
-                            birth_order = birthorder_uterus_alive,
-                            count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(wage_last_year_z_m1)
+birthorder <- birthorder %>% mutate(outcome = wage_last_year_z)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-wage_last_year_z_preg_m1 = lmer(wage_last_year_z ~ birthyear + male + sibling_count +
-                                      (1 | mother_pidlink), data = birthorder %>% 
-  rename(sibling_count = sibling_count_uterus_preg_factor,
-         birth_order_nonlinear = birthorder_uterus_preg_factor,
-         birth_order = birthorder_uterus_preg,
-         count_birth_order = count_birthorder_uterus_preg
-         ))
-compare_models_markdown(wage_last_year_z_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-wage_last_year_z_parental_m1 = lmer(wage_last_year_z ~ birthyear + male + sibling_count +
-                                         (1 | marriage_id),
-                            data = birthorder %>% 
-  rename(sibling_count = sibling_count_genes_factor,
-         birth_order_nonlinear = birthorder_genes_factor,
-         birth_order = birthorder_genes,
-         count_birth_order = count_birthorder_genes
-         ))
-compare_models_markdown(wage_last_year_z_parental_m1)
-```
 
 
 ## Work {.tabset}
 ### Self-Employment - non standardized {.tabset}
 
-#### Maternal birth order {.tabset}
 
 ```{r}
-self_employed_m1 = lmer(Self_employed ~ birthyear + male + sibling_count +
-                                 (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_uterus_alive_factor,
-                            birth_order_nonlinear = birthorder_uterus_alive_factor,
-                            birth_order = birthorder_uterus_alive,
-                            count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(self_employed_m1)
+birthorder <- birthorder %>% mutate(outcome = Self_employed)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-self_employed_preg_m1 = lmer(Self_employed ~ birthyear + male + sibling_count +
-                                      (1 | mother_pidlink), data = birthorder %>% 
-  rename(sibling_count = sibling_count_uterus_preg_factor,
-         birth_order_nonlinear = birthorder_uterus_preg_factor,
-         birth_order = birthorder_uterus_preg,
-         count_birth_order = count_birthorder_uterus_preg
-         ))
-compare_models_markdown(self_employed_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-self_employed_parental_m1 = lmer(Self_employed ~ birthyear + male + sibling_count +
-                                         (1 | marriage_id),
-                            data = birthorder %>% 
-  rename(sibling_count = sibling_count_genes_factor,
-         birth_order_nonlinear = birthorder_genes_factor,
-         birth_order = birthorder_genes,
-         count_birth_order = count_birthorder_genes
-         ))
-compare_models_markdown(self_employed_parental_m1)
-```
 
 ### Child Labour {.tabset}
-
-
-#### Maternal birth order {.tabset}
-
 ```{r}
-total_worked_m1 = lmer(total_worked ~ birthyear + male + sibling_count +
-                                 (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_uterus_alive_factor,
-                            birth_order_nonlinear = birthorder_uterus_alive_factor,
-                            birth_order = birthorder_uterus_alive,
-                            count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(total_worked_m1)
+birthorder <- birthorder %>% mutate(outcome = total_worked)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
-
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-total_worked_m1 = lmer(total_worked ~ birthyear + male + sibling_count +
-                                      (1 | mother_pidlink), data = birthorder %>% 
-  rename(sibling_count = sibling_count_uterus_preg_factor,
-         birth_order_nonlinear = birthorder_uterus_preg_factor,
-         birth_order = birthorder_uterus_preg,
-         count_birth_order = count_birthorder_uterus_preg
-         ))
-compare_models_markdown(total_worked_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-total_worked_m1 = lmer(total_worked ~ birthyear + male + sibling_count +
-                                         (1 | marriage_id),
-                            data = birthorder %>% 
-  rename(sibling_count = sibling_count_genes_factor,
-         birth_order_nonlinear = birthorder_genes_factor,
-         birth_order = birthorder_genes,
-         count_birth_order = count_birthorder_genes
-         ))
-compare_models_markdown(total_worked_m1)
-```
-
 

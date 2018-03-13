@@ -66,6 +66,8 @@ library(RColorBrewer)
 library(tidyr)
 #' tidyverse-style data wrangling. has a lot of naming conflicts, so always load last
 library(dplyr)
+#' make comparisons between different birth orders
+library(coefplot)
 
 
 #' ## Spin R files

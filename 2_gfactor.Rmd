@@ -49,7 +49,7 @@ summary(cfa_g)
 
 x = inspect(cfa_g, "rsquare")
 alldata_birthorder$g_factor = predict(cfa_g)[,1]
-
+cor.test(predict(cfa_g)[,1], alldata_birthorder %>% select(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering) %>% scale() %>% rowMeans())
 qplot(alldata_birthorder$g_factor)
 
 
@@ -147,6 +147,9 @@ g_factor_2015 =~ raven_2015_old + math_2015_old + count_backwards +  words_delay
 g_factor_2007 =~ raven_2007_old + math_2007_old" %>%
   sem(missing = "fiml", data = alldata_birthorder %>% codebook::zap_attributes(), std.lv = T, std.ov = T) -> cfa_g
 summary(cfa_g)
+
+cor.test(predict(cfa_g)[,1], alldata_birthorder %>% select(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering) %>% scale() %>% rowMeans())
+cor.test(predict(cfa_g)[,2], alldata_birthorder %>% select(raven_2007_old, math_2007_old) %>% scale() %>% rowMeans())
 
 "g_factor_2015 =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed+ adaptive_numbering
 g_factor_2007 =~ raven_2007_old + math_2007_old" %>%

@@ -1240,6 +1240,32 @@ alldata = left_join(alldata, smoking, by = "pidlink")
 
 ```
 
+## Fix types
+```{r}
+alldata_birthorder <- alldata_birthorder %>% 
+  mutate_at(vars(age_2015_old, age_2015_young, alive, death_yr, 
+                 English_score_elementary, English_score_Junior_High, English_score_Senior_High,
+                 Indonesia_score_elementary, Indonesia_score_Junior_High, Indonesia_score_Senior_High,
+                 Math_score_elemenatry, Math_score_Junior_High, Math_score_Senior_High, 
+                 ), funs(as.numeric)) %>% 
+  mutate_at(vars(Math_score_highest_type, Total_score_highest_type, mother_pidlink, father_pidlink, marriage_id, pidlink,  random_si,
+                 Sector, Type_of_test_elementary, Type_of_test_Junior_High, Type_of_test_Senior_High, lifebirths, Category
+                 ), funs(as.factor)) %>% 
+  mutate(male = if_else(sex == 1, 1L, 0L),
+         wage_last_month_log = log(wage_last_month+1),
+         wage_last_year_log = log(wage_last_year+1),
+         money_spent_smoking_log = log(money_spent_smoking+1)) %>% 
+  mutate_at(vars(alive, Elementary_missed, Elementary_worked, ever_smoked, Junior_high_missed, Junior_high_worked, Self_employed, total_missed,
+                 Senior_high_missed, Senior_high_worked,
+                 still_smoking, University_missed, University_worked, wave), funs(as.integer)) %>% 
+  mutate_at(vars(birthdate), funs(as.Date)) %>% 
+    select(-motherID, -fatherID, -mother_birthorder, -mother_birthdate, -month, -end, -start, -gender, -sex, -sex_2015_old, -sex_2015_young,
+           -relation_to_HH_head, -years_of_education_factor, -birthdate_duped_in_earlier_wave, -birthorder_duped_in_earlier_wave, -birthorder_naive_ind,
+           -order_marriage, -matches("^si[0-9]+$"),  -matches("^[a-z][0-9]r?$"),  -matches("^[a-z][0-9]r_reversed$"),
+           -ar08day, -ar08mth, -ar08yr, -birth_day, -birth_month, -birth_year, -highest_grade, -wage_last_month, -wage_last_year, -status,
+           -money_spent_smoking)
+```
+
 ## Save data
 
 for future analyses

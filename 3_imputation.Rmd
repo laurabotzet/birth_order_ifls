@@ -20,12 +20,24 @@ source("0_helpers.R")
 ## Data
 ```{r}
 ### Import alldata used for birthorder and g-factors computed
-alldata_birthorder_full = readRDS("data/alldata_birthorder_full.rds")
+alldata_birthorder = readRDS("data/alldata_birthorder.rds")
 
-colnames(alldata_birthorder_full)
+colnames(alldata_birthorder)
+crosstabs(alldata_birthorder$any_multiple_birth)
 ## For the imputation we want to clean the dataset and get rid of all uninteresting data
-alldata_birthorder_full = alldata_birthorder_full %>%
-  select(starts_with("g_factor"))
+alldata_birthorder = alldata_birthorder %>%
+  filter(!is.na(pidlink)) %>% # no individuals who are only known from the pregnancy file
+  filter(is.na(lifebirths) | lifebirths == 2) %>% # remove 7 and 2 individuals who are known as stillbirth or miscarriage but still have PID
+  select(-lifebirths) %>% 
+  filter(!is.na(mother_pidlink)) %>% 
+  select(-father_pidlink) %>% 
+  filter(is.na(any_multiple_birth) | any_multiple_birth != 1) %>% # remove 7 and 2 individuals who are known as stillbirth or miscarriage but still have PID
+  select(-starts_with("age_"), -wave, -any_multiple_birth, -multiple_birth) %>% 
+  mutate(money_spent_smoking_log = if_else(is.na(money_spent_smoking_log) & ever_smoked == 0, 0, money_spent_smoking_log),
+         amount = if_else(is.na(amount) & ever_smoked == 0, 0, amount),
+         amount_still_smokers = if_else(is.na(amount_still_smokers) &  still_smoking == 0, 0, amount_still_smokers),
+         birthyear = lubridate::year(birthdate)) %>% 
+  select(-birthdate, -hhid14_9, -hhid14_9.x, -hhid14_9.y)
 ```
 
 
@@ -45,13 +57,6 @@ n_imputations.amelia = function(imps) {
 n_imputations = function(imps) { UseMethod("n_imputations") }
 
 complete.mitml = mitml::mitmlComplete
-complete.amelia = function(imps, action = "long") {
-  if (action == "long") {
-    dplyr::bind_rows(imps$imputations, .id = "m")
-  } else if (is.numeric(action)) {
-    imps$imputations[[action]]
-  }
-}
 complete.mids = mice::complete
 complete = function(...) { UseMethod("complete") }
 
@@ -60,38 +65,106 @@ library(miceadds)
 library(mitml)
 
 
-miss_frac(alldata_birthorder_full)
-codebook::md_pattern(alldata_birthorder_full)
+sort(round(miss_frac(alldata_birthorder),2))
+skimr::skim(alldata_birthorder)
 ```
 
+test
 ```{r}
-alldata_birthorder_full_i = mice(alldata_birthorder_full, m = 1)
+alldata_birthorder$miss_frac_person = rowMeans(is.na(alldata_birthorder))
+qplot(alldata_birthorder$miss_frac_person)
+alldatasm <-  alldata_birthorder %>% arrange(miss_frac_person) %>% slice(1:1000) %>% codebook::zap_attributes()
 
-alldata_birthorder_full_i %>% select(g_factor, g_factor_new, g_factor_crazy, g_factor_nomiss, g_factor_new_nomiss, g_factor_crazy_nomiss, g_factor_2007, g_factor_2015) %>%
-  tidyr::gather() %>% 
-  ggplot(aes(value)) + geom_histogram() +
-  facet_wrap(~ key, scale = "free")
-
-saveRDS(alldata_birthorder_full_i, file="alldata_birthorder_full_i.rdata")
+alldatasm_i = mice(alldatasm, m = 5, maxit = 20)
 
 
-plot(alldata_birthorder_full_i, c("risk_taking", "good_mood"))
+plot(alldatasm_i, c("riskB", "raven_2015_young", "birthorder_genes", "English_score_Junior_High", "Sector", "money_spent_smoking_log", "years_of_education", "still_smoking"))
+
 # check densities of imputed/real
-densityplot(diary_i, ~ risk_taking)
-densityplot(diary_i, ~ good_mood)
+densityplot(alldatasm_i, ~ riskB)
+densityplot(alldatasm_i, ~ years_of_education)
+densityplot(alldatasm_i, ~ birthorder_genes)
+densityplot(alldatasm_i, ~ g_factor_2015)
 
-densityplot(diary_i, ~ lag_risk_taking)
-densityplot(diary_i, ~ menstruation_labelled)
-densityplot(diary_i, ~ premenstrual_phase_fab)
-densityplot(diary_i, ~ fertile_fab)
-lm(risk_taking~ lag_risk_taking, diary_lim)
-lm(risk_taking~ lag_risk_taking, complete(diary_i,1))
+summary(lm(count_backwards ~ raven_2015_young, alldatasm))
+summary(lm(count_backwards ~ raven_2015_young, complete(alldatasm_i,1)))
+summary(lm(count_backwards ~ raven_2015_old, alldatasm))
+summary(lm(count_backwards ~ raven_2015_old, complete(alldatasm_i,1)))
+
+alldatasm_i <- mids2mitml.list(alldatasm_i)
+
+alldatasm_i <- within(alldatasm_i, {
+  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
+})
+
+alldatasm <- within(alldatasm, {
+  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
+})
+
+
+qplot(alldatasm_i[[1]]$g_factor_2015)
+
+alldatasm %>% {cor.test(.$g_factor_2015, .$years_of_education)}
+alldatasm %>% {cor.test(.$g_factor_2015, .$Math_score_Junior_High)}
+alldatasm_i[[1]] %>% {cor.test(.$g_factor_2015, .$years_of_education)}
+alldatasm_i[[1]] %>% {cor.test(.$g_factor_2015, .$Math_score_Junior_High)}
+```
+
+
+```{r}
+alldata_birthorder <- alldata_birthorder %>% codebook::zap_attributes()
+
+
+
+alldata_birthorder_i = mice(alldata_birthorder, m = 5, maxit = 20)
+
+
+plot(alldata_birthorder_i, c("riskB", "raven_2015_young", "birthorder_genes", "English_score_Junior_High", "Sector", "money_spent_smoking_log", "years_of_education", "still_smoking"))
+
+# check densities of imputed/real
+densityplot(alldata_birthorder_i, ~ riskB)
+densityplot(alldata_birthorder_i, ~ years_of_education)
+densityplot(alldata_birthorder_i, ~ birthorder_genes)
+densityplot(alldata_birthorder_i, ~ g_factor_2015)
+
+summary(lm(count_backwards ~ raven_2015_young, alldata_birthorder))
+summary(lm(count_backwards ~ raven_2015_young, complete(alldata_birthorder_i,1)))
+summary(lm(count_backwards ~ raven_2015_old, alldata_birthorder))
+summary(lm(count_backwards ~ raven_2015_old, complete(alldata_birthorder_i,1)))
+
+alldata_birthorder_i <- mids2mitml.list(alldata_birthorder_i)
+
+alldata_birthorder_i <- within(alldata_birthorder_i, {
+  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
+})
+
+alldata_birthorder <- within(alldata_birthorder, {
+  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
+})
+
+
+qplot(alldata_birthorder_i[[1]]$g_factor_2015)
+
+alldata_birthorder %>% {cor.test(.$g_factor_2015, .$years_of_education)}
+alldata_birthorder %>% {cor.test(.$g_factor_2015, .$Math_score_Junior_High)}
+alldata_birthorder_i[[1]] %>% {cor.test(.$g_factor_2015, .$years_of_education)}
+alldata_birthorder_i[[1]] %>% {cor.test(.$g_factor_2015, .$Math_score_Junior_High)}
+
+
+saveRDS(alldata_birthorder_i, file="alldata_birthorder_i.rdata")
+```
+
+recompute g_factor
+```{r}
+within(alldata_birthorder_i, {
+  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
+})
 ```
 
 analyse beispiel
 ```{r}
 library(lme4)
-fit <- with(mids2mitml.list(diary_i), lmer(risk_taking ~ (menstruation_labelled + premenstrual_phase_fab + fertile_fab) * hormonal_contraception + (1 | short), subset = included_d == TRUE))
+fit <- with(alldata_birthorder_i, lmer(risk_taking ~ (menstruation_labelled + premenstrual_phase_fab + fertile_fab) * hormonal_contraception + (1 | short), subset = included_d == TRUE))
 mitml::testEstimates(fit, var.comp = T)
 fit[[1]] # fuer plots
 ```

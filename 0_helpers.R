@@ -293,16 +293,12 @@ plot_birthorder_01 = function(model, ylabel = NULL, title = "", bo_var = "birth_
 
 
 #' functions used to compare models
-compare_models_markdown = function(m1_covariates_only, ylimits = NULL) {
+compare_models_markdown = function(m2_birthorder_linear, ylimits = NULL) {
   formr::asis_knit_child('_test_outcome.Rmd')
   }
 
-compare_models_markdown_nonz = function(m1_covariates_only) {
-  formr::asis_knit_child('_test_outcome_nonz.Rmd')
-}
-
-compare_models_markdown_01 = function(m1_covariates_only) {
-  formr::asis_knit_child('_test_outcome_01.Rmd')
+compare_birthorder_specs = function(m2_birthorder_linear, ylimits = NULL) {
+  formr::asis_knit_child('_compare_birthorder_specs.Rmd')
 }
 
 pad_month = function(x) { str_pad(x, width = 2, side = "left", pad = "0")}
@@ -345,3 +341,26 @@ older_sibs_alive_and_dependent = function(byear, dyear) {
 }
 
 
+mutate.mitml.list <- function(.data, ...) {
+  r <- lapply(.data, FUN = mutate, ...)
+  class(r) = class(.data)
+  r
+}
+
+select.mitml.list <- function(.data, ...) {
+  r <- lapply(.data, FUN = select, ...)
+  class(r) = class(.data)
+  r
+}
+
+group_by.mitml.list <- function(.data, ...) {
+  r <- lapply(.data, FUN = group_by, ...)
+  class(r) = class(.data)
+  r
+}
+
+summarise.mitml.list <- function(.data, ...) {
+  r <- lapply(.data, FUN = summarise, ...)
+  class(r) = class(.data)
+  r
+}

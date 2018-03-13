@@ -8,6 +8,7 @@ editor_options:
 
 ###### Model Summary
 ```{r}
+m1_covariates_only <- update(m2_birthorder_linear, formula = . ~ . - birth_order)
 summary(m1_covariates_only)
 ```
 
@@ -20,7 +21,6 @@ plot(allEffects(m1_covariates_only))
 
 ###### Model Summary
 ```{r}
-m2_birthorder_linear = update(m1_covariates_only, formula = . ~ . + birth_order)
 summary(m2_birthorder_linear)
 ```
 
@@ -59,7 +59,4 @@ plot_birthorder(m4_interaction, ylimits = ylimits)
 ```{r}
 ###### Model 1 - Model 2
 anova(m1_covariates_only, m2_birthorder_linear, m3_birthorder_nonlinear, m4_interaction)
-
-
 ```
-

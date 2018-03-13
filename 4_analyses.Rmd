@@ -12,64 +12,46 @@ source("0_helpers.R")
 
 ## Load data
 ```{r Load Data}
-birthorder = readRDS("data/birthorder.rds")
+birthorder = readRDS("data/alldata_birthorder.rds")
 ```
 
-## Data preperations
-```{r data preperations}
+## Data preparations
+```{r data preparations}
+
+birthorder <- within(birthorder, {
+  g_factor <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
+})
 ### Variables
 birthorder = birthorder %>%
   mutate(
-    birthyear = birth_year,
-    male = ifelse(sex == 1, 1L, 0L),
-    male = ifelse(sex > 3, NA_integer_, male),
-    male = factor(male),
-    # center variables that are used for analysy - but first save old values
-    old_g_factor = g_factor,
-    old_raven = raven,
-    old_math = math,
-    old_count_backwards = count_backwards,
-    old_words_remembered_avg = words_remembered_avg,
-    old_words_immediate = words_immediate,
-    old_words_delayed = words_delayed,
-    old_adaptive_numbering = adaptive_numbering,
-    old_big5_ext = big5_ext,
-    old_big5_con = big5_con,
-    old_big5_agree = big5_agree,
-    old_big5_neu = big5_neu,
-    old_big5_open = big5_open,
-    old_riskA = riskA,
-    old_riskB = riskB,
-    g_factor = (g_factor - mean(g_factor, na.rm=T)) / sd(g_factor, na.rm=T),
-    raven = (raven - mean(raven, na.rm=T)) / sd(raven, na.rm=T),
-    math = (math - mean(math, na.rm=T)) / sd(math, na.rm=T),
-    count_backwards = (count_backwards - mean(count_backwards, na.rm=T)) /
-      sd(count_backwards, na.rm=T),
-    words_remembered_avg = (words_remembered_avg - mean(words_remembered_avg, na.rm=T)) /
-      sd(words_remembered_avg, na.rm=T),
-    words_immediate = (words_immediate - mean(words_immediate, na.rm=T)) /
-      sd(words_immediate, na.rm=T),
-    words_delayed = (words_delayed - mean(words_delayed, na.rm=T)) /
-      sd(words_delayed, na.rm=T),
-    adaptive_numbering = (adaptive_numbering - mean(adaptive_numbering, na.rm=T)) /
-      sd(adaptive_numbering, na.rm=T),
-    big5_ext = (big5_ext - mean(big5_ext, na.rm=T)) / sd(big5_ext, na.rm=T),
-    big5_con = (big5_con - mean(big5_con, na.rm=T)) / sd(big5_con, na.rm=T),
-    big5_agree = (big5_agree - mean(big5_agree, na.rm=T)) / sd(big5_agree, na.rm=T),
-    big5_open = (big5_open - mean(big5_open, na.rm=T)) / sd(big5_open, na.rm=T),
-    big5_neu = (big5_neu - mean(big5_neu, na.rm=T)) / sd(big5_neu, na.rm=T),
-    riskA = (riskA - mean(riskA, na.rm=T)) / sd(riskA, na.rm=T),
-    riskB = (riskB - mean(riskB, na.rm=T)) / sd(riskB, na.rm=T),
-    years_of_education_z = (years_of_education - mean(years_of_education, na.rm=T)) /
-      sd(years_of_education, na.rm=T),
-    Total_score_highest_z = (Total_score_highest - mean(Total_score_highest, na.rm=T)) /
-      sd(Total_score_highest, na.rm=T),
-    wage_last_month_z = (wage_last_month - mean(wage_last_month, na.rm=T)) /
-      sd(wage_last_month, na.rm=T),
-    wage_last_year_z = (wage_last_year - mean(wage_last_year, na.rm=T)) /
-      sd(wage_last_year, na.rm=T)
-        )
+    # center variables that are used for analysis - but first save old values
+  g_factor = scale(g_factor),
+  raven_2015_old = scale(raven_2015_old),
+  math_2015_old = scale(math_2015_old),
+  count_backwards = scale(count_backwards),
+  raven_2015_young = scale(raven_2015_young),
+  math_2015_young = scale(math_2015_young),
+  words_remembered_avg = scale(words_remembered_avg),
+  words_immediate = scale(words_immediate),
+  words_delayed = scale(words_delayed),
+  adaptive_numbering = scale(adaptive_numbering),
+  riskA = scale(riskA),
+  riskB = scale(riskB),
+  years_of_education_z = scale(years_of_education),
+  Total_score_highest_z = scale(Total_score_highest),
+  wage_last_month_z = scale(wage_last_month_log),
+  wage_last_year_z = scale(wage_last_year_log),
+  big5_ext = scale(big5_ext),
+  big5_con = scale(big5_con),
+  big5_agree = scale(big5_agree),
+  big5_open = scale(big5_open),
+  big5_neu = scale(big5_neu)
+)
+birthorder <- birthorder %>% mutate(
+  birthyear = lubridate::year(birthdate)) %>% 
+  select(-birthdate)
 qplot(birthorder$male)
+qplot(birthorder$g_factor)
 
 ### Birthorder and Sibling Count
 birthorder = birthorder %>% 
@@ -147,73 +129,35 @@ birthorder = birthorder %>%
                                                         "1/5", "2/5", "3/5", "4/5", "5/5",
                                                         "1/5+", "2/5+", "3/5+", "4/5+",
                                                         "5/5+", "5+/5+")))
-```
 
-
-## Test
-```{r}
-birthorder = birthorder %>% mutate(birthyear = if_else(is.na(birth_year), ar08yr, birth_year))
-g_factor_m1 = lmer(g_factor ~ birthorder_naive + birthyear + male + sibling_count_naive + (1 | mother_pidlink), data = birthorder)
-summary(g_factor_m1)
-plot(allEffects(g_factor_m1))
-birthorder %>% select(g_factor, birthyear, male, birthorder_naive_factor, mother_pidlink) %>% missingness_patterns()
-
-g_factor_m1 = lmer(g_factor ~ birthyear + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_naive_factor,
+birthorder <- birthorder %>%
+                     mutate(sibling_count = sibling_count_naive_factor,
                             birth_order_nonlinear = birthorder_naive_factor,
                             birth_order = birthorder_naive,
-                            count_birth_order = count_birthorder_naive))
-compare_models_markdown(g_factor_m1)
+                            count_birth_order = count_birthorder_naive)
 ```
 
-
-## Covariates and birth order
-```{r}
-round(cor(birthorder %>% ungroup() %>% select(birthorder_uterus_alive, birthorder_uterus_preg, birthorder_genes, sibling_count_uterus_alive, sibling_count_uterus_preg, sibling_count_genes), use = "pairwise.complete.obs"), 2) 
-```
 
 ## Intelligence {.active .tabset}
 ### g-factor {.tabset}
 
-#### Maternal birth order {.tabset}
-
 ```{r}
-g_factor_m1 = lmer(g_factor ~ birthyear + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder %>%
-                     rename(sibling_count = sibling_count_uterus_alive_factor,
-                            birth_order_nonlinear = birthorder_uterus_alive_factor,
-                            birth_order = birthorder_uterus_alive,
-                            count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown(g_factor_m1)
+birthorder <- birthorder %>% mutate(outcome = g_factor)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
-#### Maternal pregnancy order {.tabset}
-
-```{r}
-g_factor_preg_m1 = lmer(g_factor ~ birthyear + male + sibling_count + (1 | mother_pidlink), data = birthorder %>% 
-  rename(sibling_count = sibling_count_uterus_preg_factor,
-         birth_order_nonlinear = birthorder_uterus_preg_factor,
-         birth_order = birthorder_uterus_preg,
-         count_birth_order = count_birthorder_uterus_preg
-         ))
-compare_models_markdown(g_factor_preg_m1)
-```
-
-#### Parental full sibling order {.tabset}
-
-```{r}
-g_factor_parental_m1 = lmer(g_factor ~ birthyear + male + sibling_count + (1 | marriage_id),
-                            data = birthorder %>% 
-  rename(sibling_count = sibling_count_genes_factor,
-         birth_order_nonlinear = birthorder_genes_factor,
-         birth_order = birthorder_genes,
-         count_birth_order = count_birthorder_genes
-         ))
-compare_models_markdown(g_factor_parental_m1)
-```
 
 ### Raven {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = raven_2015_old)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
 
 #### Maternal birth order {.tabset}
 
@@ -781,7 +725,7 @@ years_of_education_m1 = lmer(years_of_education ~ birthyear + male + sibling_cou
                             birth_order_nonlinear = birthorder_uterus_alive_factor,
                             birth_order = birthorder_uterus_alive,
                             count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown_nonz(years_of_education_m1)
+compare_models_markdown(years_of_education_m1)
 ```
 
 #### Maternal pregnancy order {.tabset}
@@ -794,7 +738,7 @@ years_of_education_preg_m1 = lmer(years_of_education ~ birthyear + male + siblin
          birth_order = birthorder_uterus_preg,
          count_birth_order = count_birthorder_uterus_preg
          ))
-compare_models_markdown_nonz(years_of_education_preg_m1)
+compare_models_markdown(years_of_education_preg_m1)
 ```
 
 #### Parental full sibling order {.tabset}
@@ -808,7 +752,7 @@ years_of_education_parental_m1 = lmer(years_of_education ~ birthyear + male + si
          birth_order = birthorder_genes,
          count_birth_order = count_birthorder_genes
          ))
-compare_models_markdown_nonz(years_of_education_parental_m1)
+compare_models_markdown(years_of_education_parental_m1)
 ```
 
 ### EBTANAS - z-standardized {.tabset}
@@ -957,7 +901,7 @@ self_employed_m1 = lmer(Self_employed ~ birthyear + male + sibling_count +
                             birth_order_nonlinear = birthorder_uterus_alive_factor,
                             birth_order = birthorder_uterus_alive,
                             count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown_01(self_employed_m1)
+compare_models_markdown(self_employed_m1)
 ```
 
 #### Maternal pregnancy order {.tabset}
@@ -970,7 +914,7 @@ self_employed_preg_m1 = lmer(Self_employed ~ birthyear + male + sibling_count +
          birth_order = birthorder_uterus_preg,
          count_birth_order = count_birthorder_uterus_preg
          ))
-compare_models_markdown_01(self_employed_preg_m1)
+compare_models_markdown(self_employed_preg_m1)
 ```
 
 #### Parental full sibling order {.tabset}
@@ -984,7 +928,7 @@ self_employed_parental_m1 = lmer(Self_employed ~ birthyear + male + sibling_coun
          birth_order = birthorder_genes,
          count_birth_order = count_birthorder_genes
          ))
-compare_models_markdown_01(self_employed_parental_m1)
+compare_models_markdown(self_employed_parental_m1)
 ```
 
 ### Child Labour {.tabset}
@@ -1000,7 +944,7 @@ total_worked_m1 = lmer(total_worked ~ birthyear + male + sibling_count +
                             birth_order_nonlinear = birthorder_uterus_alive_factor,
                             birth_order = birthorder_uterus_alive,
                             count_birth_order = count_birthorder_uterus_alive))
-compare_models_markdown_01(total_worked_m1)
+compare_models_markdown(total_worked_m1)
 ```
 
 #### Maternal pregnancy order {.tabset}
@@ -1013,7 +957,7 @@ total_worked_m1 = lmer(total_worked ~ birthyear + male + sibling_count +
          birth_order = birthorder_uterus_preg,
          count_birth_order = count_birthorder_uterus_preg
          ))
-compare_models_markdown_01(total_worked_m1)
+compare_models_markdown(total_worked_m1)
 ```
 
 #### Parental full sibling order {.tabset}
@@ -1027,7 +971,7 @@ total_worked_m1 = lmer(total_worked ~ birthyear + male + sibling_count +
          birth_order = birthorder_genes,
          count_birth_order = count_birthorder_genes
          ))
-compare_models_markdown_01(total_worked_m1)
+compare_models_markdown(total_worked_m1)
 ```
 
 

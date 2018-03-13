@@ -1,0 +1,57 @@
+#### Naive birth order {.tabset}
+
+```{r}
+outcome_naive_m1 <- update(m2_birthorder_linear, data = birthorder %>%
+                     mutate(sibling_count = sibling_count_naive_factor,
+                            birth_order_nonlinear = birthorder_naive_factor,
+                            birth_order = birthorder_naive,
+                            count_birth_order = count_birthorder_naive) %>% 
+                     filter(sibling_count != "1"))
+compare_models_markdown(outcome_naive_m1)
+```
+
+
+#### Maternal birth order {.tabset}
+
+```{r}
+outcome_uterus_m1 <- update(m2_birthorder_linear, data = birthorder %>%
+                     mutate(sibling_count = sibling_count_uterus_alive_factor,
+                            birth_order_nonlinear = birthorder_uterus_alive_factor,
+                            birth_order = birthorder_uterus_alive,
+                            count_birth_order = count_birthorder_uterus_alive) %>% 
+                     filter(sibling_count != "1"))
+compare_models_markdown(outcome_uterus_m1)
+```
+
+#### Maternal pregnancy order {.tabset}
+
+```{r}
+outcome_preg_m1 <- update(m2_birthorder_linear, data = birthorder %>% 
+  mutate(sibling_count = sibling_count_uterus_preg_factor,
+         birth_order_nonlinear = birthorder_uterus_preg_factor,
+         birth_order = birthorder_uterus_preg,
+         count_birth_order = count_birthorder_uterus_preg
+         ) %>% 
+    filter(sibling_count != "1"))
+compare_models_markdown(outcome_preg_m1)
+```
+
+#### Parental full sibling order {.tabset}
+
+```{r}
+outcome_parental_m1 <- update(m2_birthorder_linear, data = birthorder %>%
+  mutate(sibling_count = sibling_count_genes_factor,
+         birth_order_nonlinear = birthorder_genes_factor,
+         birth_order = birthorder_genes,
+         count_birth_order = count_birthorder_genes
+         ) %>% 
+      filter(sibling_count != "1"))
+compare_models_markdown(outcome_parental_m1)
+```
+
+#### Compare birth order specifications
+```{r}
+library(coefplot)
+multiplot(outcome_naive_m1, outcome_preg_m1, outcome_uterus_m1, outcome_parental_m1, dodgeHeight = 0.6)
+```
+

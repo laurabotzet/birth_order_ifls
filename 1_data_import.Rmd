@@ -609,6 +609,7 @@ iq = iq %>%
                                     reason_2015_young == "not enough time"|
                                     reason_2015_young == "proxy respondent"|
                                     reason_2015_young == "other"|
+                                    reason_2015_young == "refused"|
                                     reason_2015_young == "could not be contacted", NA,
                                     raven_2015_young)),
          math_2015_young = ifelse(is.na(reason_2015_young), math_2015_young,
@@ -616,6 +617,7 @@ iq = iq %>%
                                     reason_2015_young == "not enough time"|
                                     reason_2015_young == "proxy respondent"|
                                     reason_2015_young == "other"|
+                                    reason_2015_young == "refused"|
                                     reason_2015_young == "could not be contacted", NA,
                                     math_2015_young)),
          reason_2015_old = ifelse(reason_2015_old == 1, "refused",
@@ -630,6 +632,7 @@ iq = iq %>%
                                     reason_2015_old == "not enough time"|
                                     reason_2015_old == "proxy respondent"|
                                     reason_2015_old == "other"|
+                                    reason_2015_old == "refused"|
                                     reason_2015_old == "could not be contacted", NA,
                                     raven_2015_old)),
          math_2015_old = ifelse(is.na(reason_2015_old), math_2015_old,
@@ -637,6 +640,7 @@ iq = iq %>%
                                     reason_2015_old == "not enough time"|
                                     reason_2015_old == "proxy respondent"|
                                     reason_2015_old == "other"|
+                                    reason_2015_old == "refused"|
                                     reason_2015_old == "could not be contacted", NA,
                                     math_2015_old)),
          math_2015_old = ifelse(age_2015_old >= 60, NA, math_2015_old))
@@ -848,6 +852,7 @@ iq2007_all = iq2007_all %>%
                                     reason_2007_young == "not enough time"|
                                     reason_2007_young == "proxy respondent"|
                                     reason_2007_young == "other"|
+                                    reason_2007_young == "refused"|
                                     reason_2007_young == "could not be contacted", NA,
                                     raven_2007_young)),
          math_2007_young = ifelse(is.na(reason_2007_young), math_2007_young,
@@ -855,6 +860,7 @@ iq2007_all = iq2007_all %>%
                                     reason_2007_young == "not enough time"|
                                     reason_2007_young == "proxy respondent"|
                                     reason_2007_young == "other"|
+                                    reason_2007_young == "refused"|
                                     reason_2007_young == "could not be contacted", NA,
                                     math_2007_young)),
          reason_2007_old = ifelse(reason_2007_old == 1, "refused",
@@ -869,6 +875,7 @@ iq2007_all = iq2007_all %>%
                                     reason_2007_old == "not enough time"|
                                     reason_2007_old == "proxy respondent"|
                                     reason_2007_old == "other"|
+                                    reason_2007_old == "refused"|
                                     reason_2007_old == "could not be contacted", NA,
                                     raven_2007_old)),
          math_2007_old = ifelse(is.na(reason_2007_old), math_2007_old,
@@ -876,6 +883,7 @@ iq2007_all = iq2007_all %>%
                                     reason_2007_old == "not enough time"|
                                     reason_2007_old == "proxy respondent"|
                                     reason_2007_old == "other"|
+                                    reason_2007_young == "refused"|
                                     reason_2007_old == "could not be contacted", NA,
                                     math_2007_old)))
 

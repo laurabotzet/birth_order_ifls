@@ -299,7 +299,7 @@ g_factor_2007 =~ raven_2007_old + math_2007_old + raven_2007_young + math_2007_y
   cfa(data = alldata_birthorder, std.lv = T, std.ov = T) -> cfa_g
 summary(cfa_g)
 
-alldata_birthorder_full = alldata_birthorder_full %>%
+no_miss = alldata_birthorder_full %>%
   filter(!is.na(raven_2015_old), !is.na(math_2015_old), !is.na(raven_2015_young),
          !is.na(math_2015_young), !is.na(count_backwards), !is.na(words_delayed),
          !is.na(adaptive_numbering), !is.na(raven_2007_old), !is.na(math_2007_old),
@@ -307,10 +307,21 @@ alldata_birthorder_full = alldata_birthorder_full %>%
   mutate(g_factor_2015_nomiss = predict(cfa_g)[,1],
          g_factor_2007_nomiss = predict(cfa_g)[,2])
 
-qplot(alldata_birthorder_full$g_factor_2015_nomiss,
-      alldata_birthorder_full$g_factor_2007_nomiss, geom = 'jitter', alpha = I(0.2))
+qplot(no_miss$g_factor_2015_nomiss,
+      no_miss$g_factor_2007_nomiss, geom = 'jitter', alpha = I(0.2))
+
+no_miss = no_miss %>% select(pidlink, g_factor_2015_nomiss, g_factor_2007_nomiss)
+alldata_birthorder_full = left_join(alldata_birthorder_full, no_miss, by = "pidlink")
 ```
 
+
+## All g-factor
+```{r}
+alldata_birthorder_full %>% select(g_factor, g_factor_new, g_factor_crazy, g_factor_nomiss, g_factor_new_nomiss, g_factor_crazy_nomiss, g_factor_2007, g_factor_2015) %>%
+  tidyr::gather() %>% 
+  ggplot(aes(value)) + geom_histogram() +
+  facet_wrap(~ key, scale = "free")
+```
 
 ## Save data
 

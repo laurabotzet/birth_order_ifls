@@ -3,11 +3,31 @@ title: "Untitled"
 author: "Ruben Arslan"
 date: "28 September 2017"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+## Helper
+```{r helper}
+source("0_helpers.R")
+```
+
+
+## Data
+```{r}
+### Import alldata used for birthorder and g-factors computed
+alldata_birthorder_full = readRDS("data/alldata_birthorder_full.rds")
+
+colnames(alldata_birthorder_full)
+## For the imputation we want to clean the dataset and get rid of all uninteresting data
+alldata_birthorder_full = alldata_birthorder_full %>%
+  select(starts_with("g_factor"))
+```
+
 
 ## R Markdown
 
@@ -40,17 +60,22 @@ library(miceadds)
 library(mitml)
 
 
-miss_frac(diary_lim)
-codebook::md_pattern(diary_lim)
+miss_frac(alldata_birthorder_full)
+codebook::md_pattern(alldata_birthorder_full)
 ```
 
 ```{r}
-diary_i = mice(diary_lim, m = 10)
+alldata_birthorder_full_i = mice(alldata_birthorder_full, m = 1)
 
-saveRDS(diary_i, file="diary_i_norm_nolaglead.rdata")
+alldata_birthorder_full_i %>% select(g_factor, g_factor_new, g_factor_crazy, g_factor_nomiss, g_factor_new_nomiss, g_factor_crazy_nomiss, g_factor_2007, g_factor_2015) %>%
+  tidyr::gather() %>% 
+  ggplot(aes(value)) + geom_histogram() +
+  facet_wrap(~ key, scale = "free")
+
+saveRDS(alldata_birthorder_full_i, file="alldata_birthorder_full_i.rdata")
 
 
-plot(diary_i, c("risk_taking", "good_mood"))
+plot(alldata_birthorder_full_i, c("risk_taking", "good_mood"))
 # check densities of imputed/real
 densityplot(diary_i, ~ risk_taking)
 densityplot(diary_i, ~ good_mood)

@@ -172,9 +172,9 @@ pregnancy %>% filter(!is.na(birthdate)) %>% group_by(mother_birthdate)  %>%
   mutate(mult = n()) %>% crosstabs(~ mult + multiple_birth + is.na(birth_month), data = .)
 
 ## Form variable for any multiple birth in family
-pregnancy = pregnancy %>% group_by(mother_pidlink) %>% mutate(any_multiple_birth = if_else(any(multiple_birth == 1), 1, 0))
-prop.table(table(pregnancy$multiple_birth))
-prop.table(table(pregnancy$any_multiple_birth))
+pregnancy = pregnancy %>% group_by(mother_pidlink) %>% mutate(any_multiple_birth = if_else(any(multiple_birth == 1, na.rm = T), 1, 0))
+prop.table(crosstabs(pregnancy$multiple_birth))
+prop.table(crosstabs(pregnancy$any_multiple_birth))
 ```
 
 ### Information about marriage history
@@ -321,7 +321,7 @@ pregnancy1 = pregnancy %>%
          sibling_count_uterus_preg2 = ifelse(is.na(sibling_count_uterus_preg), max(chron_order_birth, na.rm = T),
                                              ifelse(max(chron_order_birth, na.rm = T) > sibling_count_uterus_preg,
                                                      max(chron_order_birth, na.rm = T), sibling_count_uterus_preg))
-         # ,sibling_count_uterus_preg = ifelse(any_multiple_birth == 1, NA, sibling_count_uterus_preg)
+         # sibling_count_uterus_preg = ifelse(any_multiple_birth == 1, NA, sibling_count_uterus_preg)
          ) %>%
   ungroup()
 cor.test(pregnancy1$birthorder_uterus_preg, pregnancy1$birthorder_uterus_preg2)
@@ -470,6 +470,14 @@ alldata_pregnancy = full_join(pregnancy, individuals,
                               by = c("mother_pidlink", "birthdate", "mother_birthdate")) %>% 
   distinct(mother_pidlink, birthdate, pidlink, .keep_all = TRUE)
 
+alldata_pregnancy = alldata_pregnancy %>% 
+  group_by(mother_pidlink) %>%
+  mutate(any_multiple_birthdate = if_else(any(ifelse(!is.na(birth_month), duplicated(birthdate), NA), na.rm =T), 1, 0))
+
+crosstabs(~alldata_pregnancy$any_multiple_birthdate + alldata_pregnancy$any_multiple_birth)
+
+alldata_pregnancy = alldata_pregnancy %>% mutate(any_multiple_birth = ifelse(any_multiple_birthdate == 1, 1,
+                                                                             any_multiple_birth))
 alldata_pregnancy = alldata_pregnancy %>% group_by(mother_pidlink) %>% 
   mutate(birthorder_naive = min_rank(if_else(!is.na(mother_pidlink), birthdate, NA_character_)),
          sibling_count_naive = if_else(!is.na(mother_pidlink), n(), NA_integer_)) %>% 

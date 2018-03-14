@@ -1,0 +1,352 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# <span style="color:#A6D854">Birth Order Effects</span> {.tabset}
+
+## Helper
+```{r helper}
+source("0_helpers.R")
+```
+
+## Load data
+```{r Load Data}
+birthorder = readRDS("data/imputed_alldata_bo.rds")
+```
+
+## Data preparations
+```{r data preparations}
+### Variables
+birthorder = birthorder %>%
+  mutate(
+    # center variables that are used for analysis
+  raven_2015_old_nonz = raven_2015_old,
+  g_factor = scale(g_factor),
+  raven_2015_old = scale(raven_2015_old),
+  math_2015_old = scale(math_2015_old),
+  count_backwards = scale(count_backwards),
+  raven_2015_young = scale(raven_2015_young),
+  math_2015_young = scale(math_2015_young),
+  words_remembered_avg = scale(words_remembered_avg),
+  words_immediate = scale(words_immediate),
+  words_delayed = scale(words_delayed),
+  adaptive_numbering = scale(adaptive_numbering),
+  riskA = scale(riskA),
+  riskB = scale(riskB),
+  years_of_education_z = scale(years_of_education),
+  Total_score_highest_z = scale(Total_score_highest),
+  wage_last_month_z = scale(wage_last_month_log),
+  wage_last_year_z = scale(wage_last_year_log),
+  big5_ext = scale(big5_ext),
+  big5_con = scale(big5_con),
+  big5_agree = scale(big5_agree),
+  big5_open = scale(big5_open),
+  big5_neu = scale(big5_neu)
+)
+qplot(birthorder$male)
+qplot(birthorder$g_factor)
+
+### Birthorder and Sibling Count
+birthorder = birthorder %>% 
+  mutate(
+# birthorder as factors with levels of 1, 2, 3, 4, 5, 5+
+    birthorder_naive_factor = as.character(birthorder_naive),
+    birthorder_naive_factor = ifelse(birthorder_naive > 5, "5+",
+                                            birthorder_naive_factor),
+    birthorder_naive_factor = factor(birthorder_naive_factor, 
+                                            levels = c("1","2","3","4","5","5+")),
+    sibling_count_naive_factor = as.character(sibling_count_naive),
+    sibling_count_naive_factor = ifelse(sibling_count_naive > 5, "5+",
+                                               sibling_count_naive_factor),
+    sibling_count_naive_factor = factor(sibling_count_naive_factor, 
+                                               levels = c("2","3","4","5","5+")),
+
+    birthorder_uterus_alive_factor = as.character(birthorder_uterus_alive),
+    birthorder_uterus_alive_factor = ifelse(birthorder_uterus_alive > 5, "5+",
+                                            birthorder_uterus_alive_factor),
+    birthorder_uterus_alive_factor = factor(birthorder_uterus_alive_factor, 
+                                            levels = c("1","2","3","4","5","5+")),
+    sibling_count_uterus_alive_factor = as.character(sibling_count_uterus_alive),
+    sibling_count_uterus_alive_factor = ifelse(sibling_count_uterus_alive > 5, "5+",
+                                               sibling_count_uterus_alive_factor),
+    sibling_count_uterus_alive_factor = factor(sibling_count_uterus_alive_factor, 
+                                               levels = c("2","3","4","5","5+")),
+    birthorder_uterus_preg_factor = as.character(birthorder_uterus_preg),
+    birthorder_uterus_preg_factor = ifelse(birthorder_uterus_preg > 5, "5+",
+                                           birthorder_uterus_preg_factor),
+    birthorder_uterus_preg_factor = factor(birthorder_uterus_preg_factor,
+                                           levels = c("1","2","3","4","5","5+")),
+    sibling_count_uterus_preg_factor = as.character(sibling_count_uterus_preg),
+    sibling_count_uterus_preg_factor = ifelse(sibling_count_uterus_preg > 5, "5+",
+                                              sibling_count_uterus_preg_factor),
+    sibling_count_uterus_preg_factor = factor(sibling_count_uterus_preg_factor, 
+                                              levels = c("2","3","4","5","5+")),
+    birthorder_genes_factor = as.character(birthorder_genes),
+    birthorder_genes_factor = ifelse(birthorder_genes >5 , "5+", birthorder_genes_factor),
+    birthorder_genes_factor = factor(birthorder_genes_factor, 
+                                     levels = c("1","2","3","4","5","5+")),
+    sibling_count_genes_factor = as.character(sibling_count_genes),
+    sibling_count_genes_factor = ifelse(sibling_count_genes >5 , "5+",
+                                        sibling_count_genes_factor),
+    sibling_count_genes_factor = factor(sibling_count_genes_factor, 
+                                        levels = c("2","3","4","5","5+")),
+    # interaction birthorder * siblingcout for each birthorder
+    count_birthorder_naive =
+      factor(str_replace(as.character(interaction(birthorder_naive_factor,                                                              sibling_count_naive_factor)),
+                        "\\.", "/"),
+                                           levels =   c("1/2","2/2", "1/3",  "2/3",
+                                                        "3/3", "1/4", "2/4", "3/4", "4/4",
+                                                        "1/5", "2/5", "3/5", "4/5", "5/5",
+                                                        "1/5+", "2/5+", "3/5+", "4/5+",
+                                                        "5/5+", "5+/5+")),
+    count_birthorder_uterus_alive =
+      factor(str_replace(as.character(interaction(birthorder_uterus_alive_factor,                                                              sibling_count_uterus_alive_factor)),
+                        "\\.", "/"),
+                                           levels =   c("1/2","2/2", "1/3",  "2/3",
+                                                        "3/3", "1/4", "2/4", "3/4", "4/4",
+                                                        "1/5", "2/5", "3/5", "4/5", "5/5",
+                                                        "1/5+", "2/5+", "3/5+", "4/5+",
+                                                        "5/5+", "5+/5+")),
+    count_birthorder_uterus_preg =
+      factor(str_replace(as.character(interaction(birthorder_uterus_preg_factor,                                                              sibling_count_uterus_preg_factor)), 
+                         "\\.", "/"),
+                                           levels =   c("1/2","2/2", "1/3",  "2/3",
+                                                        "3/3", "1/4", "2/4", "3/4", "4/4",
+                                                        "1/5", "2/5", "3/5", "4/5", "5/5",
+                                                        "1/5+", "2/5+", "3/5+", "4/5+",
+                                                        "5/5+", "5+/5+")),
+    count_birthorder_genes =
+      factor(str_replace(as.character(interaction(birthorder_genes_factor,                                                              sibling_count_genes_factor)), "\\.", "/"),
+                                           levels =   c("1/2","2/2", "1/3",  "2/3",
+                                                        "3/3", "1/4", "2/4", "3/4", "4/4",
+                                                        "1/5", "2/5", "3/5", "4/5", "5/5",
+                                                        "1/5+", "2/5+", "3/5+", "4/5+",
+                                                        "5/5+", "5+/5+")))
+
+birthorder <- birthorder %>%
+                     mutate(sibling_count = sibling_count_naive_factor,
+                            birth_order_nonlinear = birthorder_naive_factor,
+                            birth_order = birthorder_naive,
+                            count_birth_order = count_birthorder_naive)
+```
+
+## Intelligence {.active .tabset}
+### g-factor {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = g_factor)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+### Raven {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = raven_2015_old)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### Numeracy {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = math_2015_old)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+### Counting backwards {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = count_backwards)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### Immediate word recall {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = words_immediate)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### Delayed word recall {.tabset}
+```{r}
+birthorder <- birthorder %>% mutate(outcome = words_delayed)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### Adaptive Numbering {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = adaptive_numbering)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+## Personality {.tabset}
+### Extraversion {.tabset}
+
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = big5_ext)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+### Neuroticism {.tabset}
+
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = big5_neu)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+### Conscientiousness {.tabset}
+
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = big5_con)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+### Agreeableness {.tabset}
+
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = big5_agree)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+### Openness {.tabset}
+
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = big5_open)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+## Risk preference {.tabset}
+
+### Risk A {.tabset}
+
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = riskA)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+### Risk B {.tabset}
+
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = riskB)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+## Educational Attainment {.tabset}
+### Years of Education - z-standardized {.tabset}
+
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = years_of_education_z)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+#### Years of education - non-standardized {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = years_of_education)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### EBTANAS {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = Total_score_elemenatry)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+## Income last month {.tabset}
+
+### z-standardized {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = wage_last_month_z)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+## Income last year {.tabset}
+
+### z-standardized {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = wage_last_year_z)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+
+## Work {.tabset}
+### Self-Employment - non standardized {.tabset}
+
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = Self_employed)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+### Child Labour {.tabset}
+```{r}
+birthorder <- birthorder %>% mutate(outcome = total_worked)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+

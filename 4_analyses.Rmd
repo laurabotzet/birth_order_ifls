@@ -153,6 +153,8 @@ birthorder = left_join(birthorder, compare, by = "pidlink")
 
 cor.test(birthorder$g_factor_old, birthorder$g_factor)
 ggplot(birthorder, aes(g_factor, g_factor_old, color = as.factor(math_2015_old))) + geom_jitter()
+
+ggplot(birthorder %>% filter(!is.na(g_factor), !is.na(birthorder_uterus_alive)), aes(birthyear, age)) + geom_jitter()
 ```
 
 ## Intelligence {.active .tabset}

@@ -24,6 +24,7 @@ birthorder <- within(birthorder, {
 birthorder = birthorder %>%
   mutate(
     # center variables that are used for analysis - but first save old values
+  raven_2015_old_nonz = raven_2015_old,
   g_factor = scale(g_factor),
   raven_2015_old = scale(raven_2015_old),
   math_2015_old = scale(math_2015_old),
@@ -134,31 +135,42 @@ birthorder <- birthorder %>%
                             birth_order_nonlinear = birthorder_naive_factor,
                             birth_order = birthorder_naive,
                             count_birth_order = count_birthorder_naive)
+
+
+#we need to remove all families that have any multiple births
+birthorder = birthorder %>% filter(any_multiple_birth != 1)
+
+skimr::skim(birthorder)
 ```
 
-
-## test
+## Compare with old g_factor
 ```{r}
-x = birthorder %>% filter(!is.na(g_factor), !is.na(birthorder_uterus_alive), !is.na(age), !is.na(male), !is.na(sibling_count_uterus_alive), !is.na(mother_pidlink), sibling_count_uterus_alive != 1)
-
-compare = readRDS("data/birthorder.rds")
+compare = readRDS("data/birthorder_old.rds")
 
 compare = compare %>% select(pidlink, g_factor_old = g_factor)
 
-x = left_join(x, compare, by = "pidlink")
+birthorder = left_join(birthorder, compare, by = "pidlink")
 
-y = x %>% filter(is.na(g_factor_old))
-skimr::skim(y)
-qplot(x$g_factor, x$g_factor_old)
+cor.test(birthorder$g_factor_old, birthorder$g_factor)
+ggplot(birthorder, aes(g_factor, g_factor_old, color = as.factor(math_2015_old))) + geom_jitter()
+```
+
+## Intelligence {.active .tabset}
+### g-factor_old {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = g_factor_old)
+model = lmer(outcome ~ birth_order + birthyear + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
 ```
 
 
-## Intelligence {.active .tabset}
 ### g-factor {.tabset}
 
 ```{r}
 birthorder <- birthorder %>% mutate(outcome = g_factor)
-model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+model = lmer(outcome ~ birth_order + birthyear + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 compare_birthorder_specs(model)
 ```

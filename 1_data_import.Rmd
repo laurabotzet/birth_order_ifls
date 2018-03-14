@@ -1263,7 +1263,7 @@ alldata_birthorder <- alldata_birthorder %>%
            -relation_to_HH_head, -years_of_education_factor, -birthdate_duped_in_earlier_wave, -birthorder_duped_in_earlier_wave, -birthorder_naive_ind,
            -order_marriage, -matches("^si[0-9]+$"),  -matches("^[a-z][0-9]r?$"),  -matches("^[a-z][0-9]r_reversed$"),
            -ar08day, -ar08mth, -ar08yr, -birth_day, -birth_month, -birth_year, -highest_grade, -wage_last_month, -wage_last_year, -status,
-           -money_spent_smoking)
+           -money_spent_smoking, -starts_with("hhid14_"))
 ```
 
 ## Save data

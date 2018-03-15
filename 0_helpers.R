@@ -204,6 +204,11 @@ compare_birthorder_specs = function(m2_birthorder_linear, ylimits = NULL) {
   formr::asis_knit_child('_compare_birthorder_specs.Rmd')
 }
 
+compare_birthorder_imputed = function(data_used, ylimits = NULL) {
+  formr::asis_knit_child('_compare_birthorder_imputed.Rmd')
+}
+
+
 pad_month = function(x) { str_pad(x, width = 2, side = "left", pad = "0")}
 
 #' Function to calculate the birthdate out of all available informations for one individual

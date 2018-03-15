@@ -12,7 +12,7 @@ m1_covariates_only <- update(m2_birthorder_linear, formula = . ~ . - birth_order
 summary(m1_covariates_only)
 ```
 
-###### Coefficient Plot
+###### Coefficient Plot {.active}
 ```{r}
 plot(allEffects(m1_covariates_only))
 ```
@@ -24,7 +24,7 @@ plot(allEffects(m1_covariates_only))
 summary(m2_birthorder_linear)
 ```
 
-###### Coefficient Plot
+###### Coefficient Plot {.active}
 ```{r}
 plot_birthorder(m2_birthorder_linear, separate = FALSE, ylimits = ylimits)
 ```
@@ -37,7 +37,7 @@ m3_birthorder_nonlinear = update(m1_covariates_only, formula = . ~ . + birth_ord
 summary(m3_birthorder_nonlinear)
 ```
 
-###### Coefficient Plot
+###### Coefficient Plot {.active}
 ```{r}
 plot_birthorder(m3_birthorder_nonlinear, separate = FALSE, ylimits = ylimits)
 ```
@@ -50,7 +50,7 @@ m4_interaction = update(m3_birthorder_nonlinear, formula = . ~ . - birth_order_n
 summary(m4_interaction)
 ```
 
-###### Coefficient Plot
+###### Coefficient Plot {.active}
 ```{r}
 plot_birthorder(m4_interaction, ylimits = ylimits)
 ```

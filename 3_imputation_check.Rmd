@@ -90,6 +90,19 @@ alldata_birthorder_i_tbl = alldata_birthorder_i_g_factor %>% tbl_df.mitml.list
 correlations_original = corr_pipe(alldata_birthorder %>% select_if(is.numeric))
 correlations_imputed = corr_pipe(alldata_birthorder_i_g_factor[[1]] %>% select_if(is.numeric))
 
+correlations_original = correlations_original %>%
+  mutate(v = paste0(Var1, Var2)) %>%
+  rename(Var1_original = Var1, Var2_original= Var2, n_original = n, r_original = r, p_original = p)
+
+correlations_imputed = correlations_imputed %>%
+  mutate(v = paste0(Var1, Var2)) %>%
+  rename(Var1_imputed = Var1, Var2_imputed = Var2, n_imputed = n, r_imputed = r, p_imputed = p)
+
+correlations = full_join(correlations_original, correlations_imputed, by = "v")
+
+cor.test(correlations$r_original, correlations$r_imputed)
+qplot(correlations$r_original, correlations$r_imputed)
+
 
 # plot imputation steps
 name_columns = colnames(alldata_birthorder_i_tbl[[1]]) %>% as.data.frame 
@@ -97,6 +110,7 @@ name_columns = name_columns[name_columns != "mother_pidlink" & name_columns != "
                               name_columns != "any_multiple_birthdate" &
                               name_columns != "sibling_count_naive" &
                               name_columns != "male"]
+
 
 pdf("imputation_steps.pdf")
 plot(alldata_birthorder_i, name_columns)
@@ -130,6 +144,12 @@ densityplot(alldata_birthorder_i, ~ Elementary_missed + Junior_high_missed + Sen
 densityplot(alldata_birthorder_i, ~ Self_employed +  ever_smoked + still_smoking + amount + wage_last_month_log + wage_last_year_log)
 dev.off()
 
+# additional analyses based on van Buuren & Groothuis-Oudshoorn, 2011
+xyplot(alldata_birthorder_i, birthorder_genes ~ birthorder_naive | .imp , pch = 20, cex = 1.4)
+
+xyplot(alldata_birthorder_i, sibling_count_genes ~ birthorder_genes | .imp , pch = 20, cex = 1.4)
+
+xyplot(alldata_birthorder_i, raven_2015_old ~ birthorder_genes | .imp , pch = 20, cex = 1.4)
 
 ```
 

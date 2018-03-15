@@ -1,99 +1,187 @@
 ---
-output: html_document
+  output: html_document
 editor_options: 
   chunk_output_type: console
 ---
-
-
+  
+#### Naive birth order {.tabset}
+  
+##### Basic Model {.tabset}
+  
+###### Model Summary
 ```{r}
-# Specify your outcome
-birthorder = birthorder %>% mutate(outcome = g_factor_2015)
-
 ### start with naive birthorder
-birthorder <- birthorder %>%
-                     mutate(sibling_count = sibling_count_naive,
-                            birth_order_nonlinear = birthorder_naive_factor,
-                            birth_order = birthorder_naive,
-                            count_birth_order = count_birthorder_naive)
-# naive covariates
-model_naive_m1 <- with(birthorder, lmer(outcome ~ age + male + sibling_count + (1 | mother_pidlink)))
+data_used <- data_used %>%
+  mutate(sibling_count = sibling_count_naive,
+         birth_order_nonlinear = birthorder_naive_factor,
+         birth_order = birthorder_naive,
+         count_birth_order = count_birthorder_naive)
+
+data_used_plots = data_used[[1]]
+
+model_naive_m1 <- with(data_used, lmer(outcome ~ age + male + sibling_count + (1 | mother_pidlink)))
 mitml::testEstimates(model_naive_m1, var.comp = T)
 
+```
+
+
+###### Coefficient Plot {.active}
+```{r }
 model_naive_m1_plot = lmer(outcome ~ age + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder[[1]])
-plot(allEffects(model_naive_m1_plot)) # fuer plots
+                           data = data_used_plots)
+# plot(allEffects(model_naive_m1_plot)) # fuer plots
+```
 
-# naive linear
-model_naive_m2 <- with(birthorder, lmer(outcome ~ birth_order + age + male + sibling_count +
-                                    (1 | mother_pidlink)))
+
+##### Add Birth Order Linear {.tabset}
+
+###### Model Summary
+```{r}
+
+model_naive_m2 <- with(data_used, lmer(outcome ~ birth_order + age + male + sibling_count +
+                                         (1 | mother_pidlink)))
 mitml::testEstimates(model_naive_m2, var.comp = T)
+
+```
+
+###### Coefficient Plot {.active}
+```{r}
 model_naive_m2_plot = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder[[1]])
-plot_birthorder(model_naive_m2_plot, separate = FALSE)
+                           data = data_used_plots)
+# plot_birthorder(model_naive_m2_plot, separate = FALSE)
+```
 
-# naive factor
-model_naive_m3 <- with(birthorder, lmer(outcome ~ birth_order_nonlinear + age + male +
-                                          sibling_count + (1 | mother_pidlink)))
+##### Add Birth Order Factor {.tabset}
+
+###### Model Summary 
+```{r}
+
+model_naive_m3 <- with(data_used, lmer(outcome ~ birth_order_nonlinear + age + male +
+                                         sibling_count + (1 | mother_pidlink)))
 mitml::testEstimates(model_naive_m3, var.comp = T)
-model_naive_m3_plot = lmer(outcome ~ birth_order_nonlinear + age + male + sibling_count +
-                       (1 | mother_pidlink),
-                   data = birthorder[[1]])
-plot_birthorder(model_naive_m3_plot, separate = FALSE)
+```
 
-# naive interaction
-model_naive_m4 <- with(birthorder, lmer(outcome ~ count_birth_order + age + male  +
-                                    (1 | mother_pidlink)))
+###### Coefficient Plot {.active}
+```{r}
+model_naive_m3_plot = lmer(outcome ~ birth_order_nonlinear + age + male + sibling_count +
+                             (1 | mother_pidlink),
+                           data = data_used_plots)
+# plot_birthorder(model_naive_m3_plot, separate = FALSE)
+
+```
+
+##### Add Interaction {.tabset}
+
+###### Model Summary
+```{r}
+
+model_naive_m4 <- with(data_used, lmer(outcome ~ count_birth_order + age + male  +
+                                         (1 | mother_pidlink)))
 mitml::testEstimates(model_naive_m4, var.comp = T)
+
+```
+
+###### Coefficient Plot  {.active}
+```{r}
 model_naive_m4_plot = lmer(outcome ~ count_birth_order + age + male +
-                       (1 | mother_pidlink),
-                   data = birthorder[[1]])
-plot_birthorder(model_naive_m4_plot)
+                             (1 | mother_pidlink),
+                           data = data_used_plots)
+# plot_birthorder(model_naive_m4_plot)
+```
+
+##### Model Comparison
+```{r}
 
 anova(model_naive_m1, model_naive_m2, model_naive_m3, model_naive_m4)
 
-# genes birthorder
-birthorder <- birthorder %>%
-                     mutate(sibling_count = sibling_count_genes,
-                            birth_order_nonlinear = birthorder_genes_factor,
-                            birth_order = birthorder_genes,
-                            count_birth_order = count_birthorder_genes)
+```
 
-# genes covariates
-model_genes_m1 <- with(birthorder, lmer(outcome ~ age + male + sibling_count + (1 | mother_pidlink)))
+#### Parental full sibling order {.tabset}
+
+##### Basic Model {.tabset}
+
+###### Model Summary
+
+```{r}
+data_used = data_used%>%
+  mutate(sibling_count = sibling_count_genes,
+         birth_order_nonlinear = birthorder_genes_factor,
+         birth_order = birthorder_genes,
+         count_birth_order = count_birthorder_genes)
+
+data_used_plots = data_used[[1]]
+
+model_genes_m1 <- with(data_used, lmer(outcome ~ age + male + sibling_count + (1 | mother_pidlink)))
 mitml::testEstimates(model_genes_m1, var.comp = T)
+```
 
+###### Coefficient Plot {.active}
+```{r}
 model_genes_m1_plot = lmer(outcome ~ age + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder[[1]])
-plot(allEffects(model_genes_m1_plot)) # fuer plots
+                           data = data_used_plots)
+# plot(allEffects(model_genes_m1_plot))
+```
 
-# genes linear
-model_genes_m2 <- with(birthorder, lmer(outcome ~ birth_order + age + male + sibling_count +
-                                    (1 | mother_pidlink)))
+##### Add Birth Order Linear {.tabset}
+
+###### Model Summary
+```{r}
+model_genes_m2 <- with(data_used, lmer(outcome ~ birth_order + age + male + sibling_count +
+                                         (1 | mother_pidlink)))
 mitml::testEstimates(model_genes_m2, var.comp = T)
+```
+
+###### Coefficient Plot  {.active}
+```{r}
 model_genes_m2_plot = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder[[1]])
-plot_birthorder(model_genes_m2_plot, separate = FALSE)
+                           data = data_used_plots)
+# plot_birthorder(model_genes_m2_plot, separate = FALSE)
+```
 
-# genes factor
-model_genes_m3 <- with(birthorder, lmer(outcome ~ birth_order_nonlinear + age + male + sibling_count +
-                                    (1 | mother_pidlink)))
+##### Add Birth Order Factor {.tabset}
+
+###### Model Summary
+```{r}
+
+model_genes_m3 <- with(data_used, lmer(outcome ~ birth_order_nonlinear + age + male + sibling_count +
+                                         (1 | mother_pidlink)))
 mitml::testEstimates(model_genes_m3, var.comp = T)
+```
+
+###### Coefficient Plot {.active}
+```{r}
 model_genes_m3_plot = lmer(outcome ~ birth_order_nonlinear + age + male + sibling_count +
-                       (1 | mother_pidlink),
-                   data = birthorder[[1]])
-plot_birthorder(model_genes_m3_plot, separate = FALSE)
+                             (1 | mother_pidlink),
+                           data = data_used_plots)
+# plot_birthorder(model_genes_m3_plot, separate = FALSE)
+```
 
-# genes interaction
-model_genes_m4 <- with(birthorder, lmer(outcome ~ count_birth_order + age + male  +
-                                    (1 | mother_pidlink)))
+##### Add Interaction {.tabset}
+
+###### Model Summary
+```{r}
+model_genes_m4 <- with(data_used, lmer(outcome ~ count_birth_order + age + male  +
+                                         (1 | mother_pidlink)))
 mitml::testEstimates(model_genes_m4, var.comp = T)
-model_genes_m4_plot = lmer(outcome ~ count_birth_order + age + male +
-                       (1 | mother_pidlink),
-                   data = birthorder[[1]])
-plot_birthorder(model_genes_m4_plot)
 
+```
+
+###### Coefficient Plot {.active}
+```{r}
+model_genes_m4_plot = lmer(outcome ~ count_birth_order + age + male +
+                             (1 | mother_pidlink),
+                           data = data_used_plots)
+# plot_birthorder(model_genes_m4_plot)
+```
+
+##### Model Comparison
+```{r}
 anova(model_genes_m1, model_genes_m2, model_genes_m3, model_genes_m4)
 
+```
+
+#### Compare birth order specifications
+```{r}
 
 library(coefplot)
 multiplot(model_naive_m2_plot, model_genes_m2_plot)

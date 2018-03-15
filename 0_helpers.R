@@ -204,7 +204,7 @@ compare_birthorder_specs = function(m2_birthorder_linear, ylimits = NULL) {
   formr::asis_knit_child('_compare_birthorder_specs.Rmd')
 }
 
-compare_birthorder_imputed = function(outcome, ylimits = NULL) {
+compare_birthorder_imputed = function(data_used, ylimits = NULL) {
   formr::asis_knit_child('_compare_birthorder_imputed.Rmd')
 }
 

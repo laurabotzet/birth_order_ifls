@@ -47,7 +47,6 @@ birthorder <- mids2mitml.list(birthorder)
 birthorder <- within(birthorder, {
   g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
 })
-
 birthorder = birthorder %>% tbl_df.mitml.list
 
 ### Birthorder and Sibling Count
@@ -91,29 +90,36 @@ birthorder = birthorder %>%
                                                         "5/5+", "5+/5+")))
 
 
-# ### Variables
+
+### Variables
 birthorder = birthorder %>%
   mutate(
-    # center variables that are used for analysis
-  raven_2015_old = scale(raven_2015_old),
-  math_2015_old = scale(math_2015_old),
-  count_backwards = scale(count_backwards),
-  raven_2015_young = scale(raven_2015_young),
-  math_2015_young = scale(math_2015_young),
-  words_delayed = scale(words_delayed),
-  adaptive_numbering = scale(adaptive_numbering),
-  riskA = scale(riskA),
-  riskB = scale(riskB),
-  years_of_education_z = scale(years_of_education),
-  wage_last_month_z = scale(wage_last_month_log),
-  wage_last_year_z = scale(wage_last_year_log),
-  big5_ext = scale(big5_ext),
-  big5_con = scale(big5_con),
-  big5_agree = scale(big5_agree),
-  big5_open = scale(big5_open),
-  big5_neu = scale(big5_neu)
-)
-
+    g_factor_2015 = (g_factor_2015 - mean(g_factor_2015, na.rm=T)) / sd(g_factor_2015, na.rm=T),
+    raven_2015_old = (raven_2015_old - mean(raven_2015_old, na.rm=T)) / sd(raven_2015_old),
+    math_2015_old = (math_2015_old - mean(math_2015_old, na.rm=T)) / sd(math_2015_old, na.rm=T),
+    raven_2015_young = (raven_2015_young - mean(raven_2015_young, na.rm=T)) / sd(raven_2015_young),
+    math_2015_young = (math_2015_young - mean(math_2015_young, na.rm=T)) /
+      sd(math_2015_young, na.rm=T),
+    count_backwards = (count_backwards - mean(count_backwards, na.rm=T)) /
+      sd(count_backwards, na.rm=T),
+    words_delayed = (words_delayed - mean(words_delayed, na.rm=T)) /
+      sd(words_delayed, na.rm=T),
+    adaptive_numbering = (adaptive_numbering - mean(adaptive_numbering, na.rm=T)) /
+      sd(adaptive_numbering, na.rm=T),
+    big5_ext = (big5_ext - mean(big5_ext, na.rm=T)) / sd(big5_ext, na.rm=T),
+    big5_con = (big5_con - mean(big5_con, na.rm=T)) / sd(big5_con, na.rm=T),
+    big5_agree = (big5_agree - mean(big5_agree, na.rm=T)) / sd(big5_agree, na.rm=T),
+    big5_open = (big5_open - mean(big5_open, na.rm=T)) / sd(big5_open, na.rm=T),
+    big5_neu = (big5_neu - mean(big5_neu, na.rm=T)) / sd(big5_neu, na.rm=T),
+    riskA = (riskA - mean(riskA, na.rm=T)) / sd(riskA, na.rm=T),
+    riskB = (riskB - mean(riskB, na.rm=T)) / sd(riskB, na.rm=T),
+    years_of_education_z = (years_of_education - mean(years_of_education, na.rm=T)) /
+      sd(years_of_education, na.rm=T),
+    wage_last_month_z = (wage_last_month_log - mean(wage_last_month_log, na.rm=T)) /
+      sd(wage_last_month_log, na.rm=T),
+    wage_last_year_z = (wage_last_year_log - mean(wage_last_year_log, na.rm=T)) /
+      sd(wage_last_year_log, na.rm=T)
+        )
 
 ```
 
@@ -123,94 +129,140 @@ birthorder = birthorder %>%
 ```{r}
 # Specify your outcome
 birthorder = birthorder %>% mutate(outcome = g_factor_2015)
+compare_birthorder_imputed(data_used = birthorder)
 
-## start with naive birthorder
-birthorder <- birthorder %>%
-                     mutate(sibling_count = sibling_count_naive,
-                            birth_order_nonlinear = birthorder_naive_factor,
-                            birth_order = birthorder_naive,
-                            count_birth_order = count_birthorder_naive)
-# naive covariates
-model_naive_m1 <- with(birthorder, lmer(outcome ~ age + male + sibling_count + (1 | mother_pidlink)))
-mitml::testEstimates(model_naive_m1, var.comp = T)
+```
 
-model_naive_m1_plot = lmer(outcome ~ age + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder[[1]])
-plot(allEffects(model_naive_m1_plot)) # fuer plots
+### Raven {.tabset}
 
-# naive linear
-model_naive_m2 <- with(birthorder, lmer(outcome ~ birth_order + age + male + sibling_count +
-                                    (1 | mother_pidlink)))
-mitml::testEstimates(model_naive_m2, var.comp = T)
-model_naive_m2_plot = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder[[1]])
-plot_birthorder(model_naive_m2_plot, separate = FALSE)
+```{r}
+# Specify your outcome
+birthorder = birthorder %>% mutate(outcome = raven_2015_old)
+compare_birthorder_imputed(data_used = birthorder)
 
-# naive factor
-model_naive_m3 <- with(birthorder, lmer(outcome ~ birth_order_nonlinear + age + male +
-                                          sibling_count + (1 | mother_pidlink)))
-mitml::testEstimates(model_naive_m3, var.comp = T)
-model_naive_m3_plot = lmer(outcome ~ birth_order_nonlinear + age + male + sibling_count +
-                       (1 | mother_pidlink),
-                   data = birthorder[[1]])
-plot_birthorder(model_naive_m3_plot, separate = FALSE)
+```
 
-# naive interaction
-model_naive_m4 <- with(birthorder, lmer(outcome ~ count_birth_order + age + male  +
-                                    (1 | mother_pidlink)))
-mitml::testEstimates(model_naive_m4, var.comp = T)
-model_naive_m4_plot = lmer(outcome ~ count_birth_order + age + male +
-                       (1 | mother_pidlink),
-                   data = birthorder[[1]])
-plot_birthorder(model_naive_m4_plot)
+### Numeracy {.tabset}
 
-anova(model_naive_m1, model_naive_m2, model_naive_m3, model_naive_m4)
+```{r}
+# Specify your outcome
+birthorder = birthorder %>% mutate(outcome = math_2015_old)
+compare_birthorder_imputed(data_used = birthorder)
 
-# genes birthorder
-birthorder <- birthorder %>%
-                     mutate(sibling_count = sibling_count_genes,
-                            birth_order_nonlinear = birthorder_genes_factor,
-                            birth_order = birthorder_genes,
-                            count_birth_order = count_birthorder_genes)
+```
 
-# genes covariates
-model_genes_m1 <- with(birthorder, lmer(outcome ~ age + male + sibling_count + (1 | mother_pidlink)))
-mitml::testEstimates(model_genes_m1, var.comp = T)
+### Counting Backwards {.tabset}
 
-model_genes_m1_plot = lmer(outcome ~ age + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder[[1]])
-plot(allEffects(model_genes_m1_plot)) # fuer plots
+```{r}
+# Specify your outcome
+birthorder = birthorder %>% mutate(outcome = count_backwards)
+compare_birthorder_imputed(data_used = birthorder)
 
-# genes linear
-model_genes_m2 <- with(birthorder, lmer(outcome ~ birth_order + age + male + sibling_count +
-                                    (1 | mother_pidlink)))
-mitml::testEstimates(model_genes_m2, var.comp = T)
-model_genes_m2_plot = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder[[1]])
-plot_birthorder(model_genes_m2_plot, separate = FALSE)
+```
 
-# genes factor
-model_genes_m3 <- with(birthorder, lmer(outcome ~ birth_order_nonlinear + age + male + sibling_count +
-                                    (1 | mother_pidlink)))
-mitml::testEstimates(model_genes_m3, var.comp = T)
-model_genes_m3_plot = lmer(outcome ~ birth_order_nonlinear + age + male + sibling_count +
-                       (1 | mother_pidlink),
-                   data = birthorder[[1]])
-plot_birthorder(model_genes_m3_plot, separate = FALSE)
+### Delayed Word Recall {.tabset}
 
-# genes interaction
-model_genes_m4 <- with(birthorder, lmer(outcome ~ count_birth_order + age + male  +
-                                    (1 | mother_pidlink)))
-mitml::testEstimates(model_genes_m4, var.comp = T)
-model_genes_m4_plot = lmer(outcome ~ count_birth_order + age + male +
-                       (1 | mother_pidlink),
-                   data = birthorder[[1]])
-plot_birthorder(model_genes_m4_plot)
+```{r}
+# Specify your outcome
+birthorder = birthorder %>% mutate(outcome = words_delayed)
+compare_birthorder_imputed(data_used = birthorder)
 
-anova(model_genes_m1, model_genes_m2, model_genes_m3, model_genes_m4)
+```
 
 
-library(coefplot)
-multiplot(model_naive_m1, model_genes_m1)
+### Adaptive Numbering {.tabset}
+
+```{r}
+# Specify your outcome
+birthorder = birthorder %>% mutate(outcome = adaptive_numbering)
+compare_birthorder_imputed(data_used = birthorder)
+
+```
+
+## Personality {.tabset}
+
+### Extraversion {.tabset}
+
+```{r}
+# Specify your outcome
+birthorder = birthorder %>% mutate(outcome = big5_ext)
+compare_birthorder_imputed(data_used = birthorder)
+
+```
+
+
+### Neuroticism {.tabset}
+
+```{r}
+# Specify your outcome
+birthorder = birthorder %>% mutate(outcome = big5_neu)
+compare_birthorder_imputed(data_used = birthorder)
+
+```
+
+
+### Conscientiousness {.tabset}
+
+```{r}
+# Specify your outcome
+birthorder = birthorder %>% mutate(outcome = big5_neu)
+compare_birthorder_imputed(data_used = birthorder)
+
+```
+
+
+### Agreeableness {.tabset}
+
+```{r}
+# Specify your outcome
+birthorder = birthorder %>% mutate(outcome = big5_agree)
+compare_birthorder_imputed(data_used = birthorder)
+
+```
+
+
+### Openness {.tabset}
+
+```{r}
+# Specify your outcome
+birthorder = birthorder %>% mutate(outcome = Openness)
+compare_birthorder_imputed(data_used = birthorder)
+
+```
+
+## Riskpreference {.tabset}
+### Risk A {.tabset}
+
+```{r}
+# Specify your outcome
+birthorder = birthorder %>% mutate(outcome = riskA)
+compare_birthorder_imputed(data_used = birthorder)
+
+```
+
+### Risk B {.tabset}
+
+```{r}
+# Specify your outcome
+birthorder = birthorder %>% mutate(outcome = riskB)
+compare_birthorder_imputed(data_used = birthorder)
+
+```
+
+## Educational Attainment {.tabset}
+### Years of Education - z-standardized{.tabset}
+
+```{r}
+# Specify your outcome
+birthorder = birthorder %>% mutate(outcome = years_of_education_z)
+compare_birthorder_imputed(data_used = birthorder)
+
+```
+### Years of Education - non z-standardized{.tabset}
+
+```{r}
+# Specify your outcome
+birthorder = birthorder %>% mutate(outcome = years_of_education)
+compare_birthorder_imputed(data_used = birthorder)
 
 ```

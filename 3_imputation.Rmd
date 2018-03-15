@@ -44,9 +44,10 @@ alldata_birthorder = alldata_birthorder %>%
          -Total_score_highest,-Total_score_highest_type, -Math_score_highest, -Math_score_highest_type,
          -birthdate, -birthyear, -marriage_id, 
          -money_spent_smoking_log,-amount_still_smokers, -total_worked, -total_missed, 
-         -highest_education, -chron_order_birth
+         -highest_education, -chron_order_birth, -alive, -death_yr, -death_month
          )
-
+alldata_birthorder = alldata_birthorder %>%
+  select(-pidlink)
 corr_pipe = . %>%  as.matrix() %>% 
 Hmisc::rcorr(.) %>% {
   left_join(left_join(.$r %>% reshape2::melt() %>% rename(r = value), 
@@ -57,13 +58,29 @@ Hmisc::rcorr(.) %>% {
   arrange(desc(r)) %>% 
   filter(Var1 != Var2)
 
-correlations = corr_pipe(alldata_birthorder)
+attributes(alldata_birthorder$mother_pidlink)
+zap_label <- function(x) {
+  UseMethod("zap_label")
+}
+zap_label.data.frame <- function(x) {
+  x[] <- lapply(x, zap_label)
+  x
+}
+zap_label.default <- function(x) {
+  attributes(x)$label <- NULL
+  x
+}
+  
+alldata_birthorder <- alldata_birthorder %>% haven::zap_labels() %>% haven::zap_formats() %>% zap_label()
+str(alldata_birthorder)
+alldata_birthorder %>% select_if(function(.)!is.numeric(.)) %>% names()
+
+correlations = corr_pipe(alldata_birthorder %>% select_if(is.numeric))
 ```
 
 ## R Markdown
 
 ```{r}
-
 n_imputations.mitml = function(imps) {
   imps$iter$m
 }
@@ -92,12 +109,18 @@ test
 ```{r}
 alldata_birthorder$miss_frac_person = rowMeans(is.na(alldata_birthorder))
 qplot(alldata_birthorder$miss_frac_person)
-alldatasm <-  alldata_birthorder %>% arrange(miss_frac_person) %>% slice(1:1000) %>% codebook::zap_attributes()
+alldatasm <-  alldata_birthorder %>% arrange(miss_frac_person) %>% slice(1:1000)
+alldata_birthorder$miss_frac_person <- NULL
+alldatasm$miss_frac_person <- NULL
 
-alldatasm_i = mice(alldatasm, m = 5, maxit = 20)
+predictor_matrix = quickpred(alldatasm, mincor = 0.01)
+predictor_matrix[, "mother_pidlink"] = 0
+predictor_matrix["mother_pidlink", ] = 0
+
+alldatasm_i = mice(alldatasm, m = 5, maxit = 10, predictorMatrix = predictor_matrix)
 
 
-plot(alldatasm_i, c("riskB", "raven_2015_young", "birthorder_genes", "English_score_Junior_High", "Sector", "money_spent_smoking_log", "years_of_education", "still_smoking"))
+plot(alldatasm_i, c("riskB", "raven_2015_young", "birthorder_genes", "English_score_Junior_High", "Sector", "years_of_education", "still_smoking"))
 
 # check densities of imputed/real
 densityplot(alldatasm_i, ~ riskB)
@@ -109,6 +132,10 @@ summary(lm(count_backwards ~ raven_2015_young, alldatasm))
 summary(lm(count_backwards ~ raven_2015_young, complete(alldatasm_i,1)))
 summary(lm(count_backwards ~ raven_2015_old, alldatasm))
 summary(lm(count_backwards ~ raven_2015_old, complete(alldatasm_i,1)))
+summary(lmer(count_backwards ~ (1 | mother_pidlink), alldatasm))
+summary(lmer(count_backwards ~ (1 | mother_pidlink), complete(alldatasm_i,1)))
+summary(lmer(riskA ~ (1 | mother_pidlink), alldatasm))
+summary(lmer(riskA ~ (1 | mother_pidlink), complete(alldatasm_i,1)))
 
 alldatasm_i <- mids2mitml.list(alldatasm_i)
 
@@ -124,16 +151,33 @@ alldatasm <- within(alldatasm, {
 qplot(alldatasm_i[[1]]$g_factor_2015)
 
 alldatasm %>% {cor.test(.$g_factor_2015, .$years_of_education)}
-alldatasm %>% {cor.test(.$g_factor_2015, .$Math_score_Junior_High)}
 alldatasm_i[[1]] %>% {cor.test(.$g_factor_2015, .$years_of_education)}
+alldatasm %>% {cor.test(.$g_factor_2015, .$Math_score_Junior_High)}
 alldatasm_i[[1]] %>% {cor.test(.$g_factor_2015, .$Math_score_Junior_High)}
 ```
 
 
 ```{r}
-alldata_birthorder <- alldata_birthorder %>% codebook::zap_attributes()
+library(future)
+plan(multicore(workers = 10))
+predictor_matrix = quickpred(alldata_birthorder, mincor = 0.1)
+# predictor_matrix[, "mother_pidlink"] = 0
+# predictor_matrix["mother_pidlink", ] = 0
 
-alldata_birthorder_i = mice(alldata_birthorder, m = 5, maxit = 20)
+
+imps = listenv::listenv()
+for (i in seq_along(1:10)) {
+  imps[[i]] %<-% mice(alldata_birthorder, m = 1, maxit = 15, predictorMatrix = predictor_matrix)
+}
+save(imps, file = "imps.rdata")
+
+all_imps = as.list(imps)
+save(all_imps, file = "imps2.rdata")
+alldata_birthorder_i = all_imps[[1]]
+for (i in seq_along(2:length(all_imps))) {
+  alldata_birthorder_i = ibind(alldata_birthorder_i, all_imps[[i]])
+}
+saveRDS(alldata_birthorder_i, file = "alldata_birthorder_i_ml.rds")
 
 plot(alldata_birthorder_i, c("birthorder_uterus_alive", "birthorder_uterus_preg", "birthorder_genes",
 "birthorder_naive"))
@@ -168,6 +212,10 @@ densityplot(alldata_birthorder_i, ~ g_factor_2015)
 summary(lm(count_backwards ~ raven_2015_young, complete(alldata_birthorder_i,1)))
 summary(lm(count_backwards ~ raven_2015_old, alldata_birthorder))
 summary(lm(count_backwards ~ raven_2015_old, complete(alldata_birthorder_i,1)))
+summary(lmer(count_backwards ~ (1 | mother_pidlink), alldata_birthorder))
+summary(lmer(count_backwards ~ (1 | mother_pidlink), complete(alldata_birthorder_i,1)))
+summary(lmer(riskA ~ (1 | mother_pidlink), alldata_birthorder))
+summary(lmer(riskA ~ (1 | mother_pidlink), complete(alldata_birthorder_i,1)))
 
 alldata_birthorder_i <- mids2mitml.list(alldata_birthorder_i)
 

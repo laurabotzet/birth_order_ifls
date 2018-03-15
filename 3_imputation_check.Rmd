@@ -28,7 +28,8 @@ alldata_birthorder_i =  readRDS("data/alldata_birthorder_i.rds")
 
 colnames(alldata_birthorder)
 crosstabs(alldata_birthorder$any_multiple_birth)
-## For the imputation we want to clean the dataset and get rid of all uninteresting data
+## For the imputation we wanted to clean the dataset and get rid of all uninteresting data
+## To get the same dataset that we used for imputation thats what we have to do again:
 alldata_birthorder = alldata_birthorder %>%
   filter(!is.na(pidlink)) %>% # no individuals who are only known from the pregnancy file
   filter(is.na(lifebirths) | lifebirths == 2) %>% # remove 7 and 2 individuals who are known as stillbirth or miscarriage but still have PID
@@ -77,69 +78,114 @@ Hmisc::rcorr(.) %>% {
   arrange(desc(r)) %>% 
   filter(Var1 != Var2)
 
+alldata_birthorder_i_g_factor <- mids2mitml.list(alldata_birthorder_i)
+
+alldata_birthorder_i_tbl = alldata_birthorder_i_g_factor %>% tbl_df.mitml.list
+
 ```
 
-
+# Correlations, iterations and density
 ```{r}
-correlations = corr_pipe(alldata_birthorder %>% select_if(is.numeric))
-correlations = corr_pipe(alldata_birthorder_i[[1]] %>% select_if(is.numeric))
+# correlations
+correlations_original = corr_pipe(alldata_birthorder %>% select_if(is.numeric))
+correlations_imputed = corr_pipe(alldata_birthorder_i_g_factor[[1]] %>% select_if(is.numeric))
 
-plot(alldata_birthorder_i, c("Math_score_elemenatry", "Math_score_Junior_High"))
-plot(alldata_birthorder_i, c("Indonesia_score_elementary", "Indonesia_score_Junior_High"))
 
-plot(alldata_birthorder_i, c( "amount", "ever_smoked"))
+# plot imputation steps
+name_columns = colnames(alldata_birthorder_i_tbl[[1]]) %>% as.data.frame 
+name_columns = name_columns[name_columns != "mother_pidlink" & name_columns != "age" &
+                              name_columns != "any_multiple_birthdate" &
+                              name_columns != "sibling_count_naive" &
+                              name_columns != "male"]
 
-                            
-plot(alldata_birthorder_i, c("raven_2015_old"))
-
-plot(alldata_birthorder_i, c("years_of_education", "Total_score_elemenatry"))
-
-plot(alldata_birthorder_i, c("raven_2015_old", "math_2015_old", "count_backwards", "adaptive_numbering"))
-
-plot(alldata_birthorder_i, c("words_delayed"))
-
-plot(alldata_birthorder_i, c("big5_ext", "big5_agree", "big5_con", "big5_open", "big5_neu"))
-
+pdf("imputation_steps.pdf")
+plot(alldata_birthorder_i, name_columns)
+dev.off()
 
 
 # check densities of imputed/real
-densityplot(alldata_birthorder_i, ~ riskB)
-densityplot(alldata_birthorder_i, ~ years_of_education)
-densityplot(alldata_birthorder_i, ~ birthorder_genes)
-densityplot(alldata_birthorder_i, ~ raven_2015_old)
-densityplot(alldata_birthorder_i, ~ math_2015_old)
-densityplot(alldata_birthorder_i, ~ Math_score_elemenatry)
+pdf("density.pdf")
+densityplot(alldata_birthorder_i, ~ birthorder_genes + sibling_count_genes + birthorder_naive)
+
+densityplot(alldata_birthorder_i, ~ raven_2015_young + math_2015_young + raven_2015_old + math_2015_old + words_delayed + adaptive_numbering + count_backwards)
+            
+densityplot(alldata_birthorder_i, ~ raven_2007_old + raven_2007_young + math_2007_young + math_2007_old)
+
+densityplot(alldata_birthorder_i, ~ big5_ext + big5_con + big5_open + big5_neu + big5_agree)
+
+densityplot(alldata_birthorder_i, ~ random_si + riskA + riskB)
+
+densityplot(alldata_birthorder_i, ~ attended_school + currently_attending_school + hours_in_class + years_of_education)
+
+densityplot(alldata_birthorder_i, ~ Indonesia_score_elementary + English_score_elementary + Math_score_elemenatry + Total_score_elemenatry)
+
+densityplot(alldata_birthorder_i, ~ Indonesia_score_Junior_High + English_score_Junior_High + Math_score_Junior_High, Total_score_Junior_High)
+
+densityplot(alldata_birthorder_i, ~ Indonesia_score_Senior_High + English_score_Senior_High + Math_score_Senior_High + Total_score_Senior_High)
+
+densityplot(alldata_birthorder_i, ~ Elementary_worked + Junior_high_worked + Senior_high_worked + University_worked)
+
+densityplot(alldata_birthorder_i, ~ Elementary_missed + Junior_high_missed + Senior_high_missed + University_missed)
+
+densityplot(alldata_birthorder_i, ~ Self_employed +  ever_smoked + still_smoking + amount + wage_last_month_log + wage_last_year_log)
+dev.off()
 
 
+```
 
-alldata_birthorder_i <- mids2mitml.list(alldata_birthorder_i)
 
-alldata_birthorder_i <- within(alldata_birthorder_i, {
+# G-Factor
+```{r g factor}
+# Normal data - no misses
+no_miss = alldata_birthorder %>%
+  filter(!is.na(raven_2015_old), !is.na(math_2015_old), !is.na(count_backwards),
+         !is.na(words_delayed), !is.na(adaptive_numbering))
+fa.parallel(no_miss %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
+fa(no_miss %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1)
+om_results = omega(no_miss %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1, sl = F)
+om_results
+omega.diagram(om_results)
+
+"g_factor_nomiss =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed + adaptive_numbering" %>%
+  cfa(data = no_miss, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+## Explained variance:
+x = inspect(cfa_g, "rsquare")
+no_miss$g_factor_nomiss = predict(cfa_g)[,1]
+
+no_miss = no_miss %>% select(pidlink, g_factor_nomiss)
+
+alldata_birthorder = left_join(alldata_birthorder, no_miss, by = "pidlink")
+qplot(alldata_birthorder$g_factor_nomiss)
+
+# Imputed data
+alldata_birthorder_i_g_factor <- within(alldata_birthorder_i_g_factor, {
   g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
 })
 
-alldata_birthorder_i <- within(alldata_birthorder_i, {
-  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
+alldata_birthorder_i_g_factor <- within(alldata_birthorder_i_g_factor, {
+  g_factor_2007 <- rowMeans(scale(cbind(raven_2007_old, math_2007_old, count_backwards,  words_delayed, adaptive_numbering)))
 })
 
-summary(lm(count_backwards ~ raven_2015_young, alldata_birthorder_i[[1]]))
-summary(lm(count_backwards ~ raven_2015_old, alldata_birthorder))
-summary(lm(count_backwards ~ raven_2015_young, alldata_birthorder_i[[1]]))
+qplot(alldata_birthorder_i_g_factor[[1]]$g_factor_2015)
+qplot(alldata_birthorder_i_g_factor[[1]]$g_factor_2007)
 
-alldata_birthorder <- within(alldata_birthorder, {
-  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
-})
+summary(lm(g_factor_nomiss ~ raven_2015_old, alldata_birthorder))
+summary(lm(g_factor_2015 ~ raven_2015_old, alldata_birthorder_i_g_factor[[1]]))
+summary(lm(g_factor_nomiss ~ raven_2015_young, alldata_birthorder))
+summary(lm(g_factor_2015 ~ raven_2015_young, alldata_birthorder_i_g_factor[[1]]))
 
+alldata_birthorder %>% {cor.test(.$g_factor_nomiss, .$years_of_education)}
+alldata_birthorder_i_g_factor[[1]] %>% {cor.test(.$g_factor_2015, .$years_of_education)}
+alldata_birthorder %>% {cor.test(.$g_factor_nomiss, .$Math_score_elemenatry)}
+alldata_birthorder_i_g_factor[[1]] %>% {cor.test(.$g_factor_2015, .$Math_score_elemenatry)}
+alldata_birthorder %>% {cor.test(.$g_factor_nomiss, .$Total_score_elemenatry)}
+alldata_birthorder_i_g_factor[[1]] %>% {cor.test(.$g_factor_2015, .$Total_score_elemenatry)}
 
-qplot(alldata_birthorder_i[[1]]$g_factor_2015)
-
-cor.test(alldata_birthorder$g_factor_2015, alldata_birthorder$years_of_education)
-alldata_birthorder_i[[1]] %>% {cor.test(.$g_factor_2015, .$years_of_education)}
-alldata_birthorder %>% {cor.test(.$g_factor_2015, .$Math_score_elemenatry)}
-alldata_birthorder_i[[1]] %>% {cor.test(.$g_factor_2015, .$Math_score_elemenatry)}
-alldata_birthorder %>% {cor.test(.$g_factor_2015, .$Total_score_elemenatry)}
-alldata_birthorder_i[[1]] %>% {cor.test(.$g_factor_2015, .$Total_score_elemenatry)}
-
+qplot(alldata_birthorder$g_factor_nomiss, alldata_birthorder$Total_score_elemenatry)
+qplot(alldata_birthorder_i_g_factor[[1]]$g_factor_2015,
+      alldata_birthorder_i_g_factor[[1]]$Total_score_elemenatry)
 
 saveRDS(alldata_birthorder_i, file="alldata_birthorder_i.rdata")
 ```

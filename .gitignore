@@ -11,3 +11,5 @@ packrat/src/
 .Rhistory
 .RData
 *PowerFolder/*
+*.rdata
+*.rdata

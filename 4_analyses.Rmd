@@ -17,15 +17,15 @@ birthorder = readRDS("data/alldata_birthorder.rds")
 
 ## Data preparations
 ```{r data preparations}
-## For analyses we want to clean the dataset and get rid of all uninteresting data
+# For analyses we want to clean the dataset and get rid of all uninteresting data
 birthorder = birthorder %>%
   filter(!is.na(pidlink)) %>% # no individuals who are only known from the pregnancy file
   filter(is.na(lifebirths) | lifebirths == 2) %>% # remove 7 and 2 individuals who are known as stillbirth or miscarriage but still have PID
-  select(-lifebirths) %>% 
-  filter(!is.na(mother_pidlink)) %>% 
-  select(-father_pidlink) %>% 
+  select(-lifebirths) %>%
+  filter(!is.na(mother_pidlink)) %>%
+  select(-father_pidlink) %>%
   filter(is.na(any_multiple_birth) | any_multiple_birth != 1) %>% # remove families with twins/triplets/..
-  select(-starts_with("age_"), -wave, -any_multiple_birth, -multiple_birth) %>% 
+  select(-starts_with("age_"), -wave, -any_multiple_birth, -multiple_birth) %>%
   mutate(money_spent_smoking_log = if_else(is.na(money_spent_smoking_log) & ever_smoked == 0, 0, money_spent_smoking_log),
          amount = if_else(is.na(amount) & ever_smoked == 0, 0, amount),
          amount_still_smokers = if_else(is.na(amount_still_smokers) &  still_smoking == 0, 0, amount_still_smokers),
@@ -34,6 +34,7 @@ birthorder = birthorder %>%
 birthorder <- within(birthorder, {
   g_factor <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
 })
+
 
 ### Variables
 birthorder = birthorder %>%
@@ -62,8 +63,10 @@ birthorder = birthorder %>%
   big5_open = scale(big5_open),
   big5_neu = scale(big5_neu)
 )
+
 qplot(birthorder$male)
 qplot(birthorder$g_factor)
+qplot(birthorder$g_factor_early)
 
 ### Birthorder and Sibling Count
 birthorder = birthorder %>% 
@@ -172,7 +175,7 @@ ggplot(counts, aes(all, with_data)) + geom_jitter(alpha = 0.1) + geom_smooth() +
 ### g-factor {.tabset}
 
 ```{r}
-birthorder <- birthorder %>% mutate(outcome = g_factor)
+birthorder <- birthorder %>% mutate(outcome = g_factor_early)
 model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 compare_birthorder_specs(model)

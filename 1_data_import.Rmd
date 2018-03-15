@@ -916,6 +916,33 @@ iq %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, 
 ```
 
 
+### g_factor at the beginning
+```{r}
+nomiss = iq %>%
+  filter(!is.na(raven_2015_old), !is.na(math_2015_old), !is.na(count_backwards), !is.na(words_delayed),
+         !is.na(adaptive_numbering))
+
+
+fa.parallel(nomiss %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
+fa(nomiss %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 2)
+om_results = omega(nomiss %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 2, sl = F)
+om_results
+omega.diagram(om_results)
+
+"g_factor_early =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed+  adaptive_numbering" %>%
+  cfa(data = nomiss, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+nomiss$g_factor_early = predict(cfa_g)[,1]
+
+qplot(nomiss$g_factor_early)
+
+nomiss = nomiss %>% select(pidlink, g_factor_early)
+
+iq = left_join(iq, nomiss, by = "pidlink")
+```
+
+
 ## Personality
 ```{r select pesonality data}
 ### Personality

@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Ruben Arslan" />
+
+<meta name="date" content="2017-09-28" />
+
+<title>Untitled</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+
+.section h2 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h3 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h4 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h5 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h6 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("3_imputation_check.Rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Birth Order IFLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+
+<li style="background-color: #66C2A5">
+  <a href="index.html">Overview</a>
+</li>
+<li style="background-color: #FC8D62">
+  <a href="1_data_import.html">Data Wrangling</a>
+</li>
+<li style="background-color: #8DA0CB">
+  <a href="2_Inclusion.html">Data Sampling</a>
+</li>
+<li style="background-color: #E78AC3">
+  <a href="3_sample_analyses.html">Sample Analyses</a>
+</li>
+<li style="background-color: #A6D854">
+  <a href="4_analyses.html">Birth Order Effects</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/laurabotzet/birth_order_ifls">
+    <span class="fa fa-github"></span>
+
+
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Untitled</h1>
+<h4 class="author"><em>Ruben Arslan</em></h4>
+<h4 class="date"><em>28 September 2017</em></h4>
+
+</div>
+
+
+<div id="helper" class="section level2">
+<h2>Helper</h2>
+<pre class="r"><code>source(&quot;0_helpers.R&quot;)</code></pre>
+<pre><code>## Warning: package &#39;rmarkdown&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## Warning: package &#39;knitr&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;formr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:rmarkdown&#39;:
+## 
+##     word_document</code></pre>
+<pre><code>## Warning: package &#39;lubridate&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     date</code></pre>
+<pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## Loading required package: carData</code></pre>
+<pre><code>## lattice theme set by effectsTheme()
+## See ?effectsTheme for details.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;data.table&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:lubridate&#39;:
+## 
+##     hour, isoweek, mday, minute, month, quarter, second, wday, week, yday, year</code></pre>
+<pre><code>## The following objects are masked from &#39;package:formr&#39;:
+## 
+##     first, last</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lmerTest&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:lme4&#39;:
+## 
+##     lmer</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     step</code></pre>
+<pre><code>## 
+## Attaching package: &#39;cowplot&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     ggsave</code></pre>
+<pre><code>## Warning: package &#39;haven&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;psych&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:ggplot2&#39;:
+## 
+##     %+%, alpha</code></pre>
+<pre><code>## This is lavaan 0.5-23.1097</code></pre>
+<pre><code>## lavaan is BETA software! Please report any bugs.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lavaan&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     cor2cov</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Loading required package: survival</code></pre>
+<pre><code>## Loading required package: Formula</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Hmisc&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     describe</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     format.pval, round.POSIXt, trunc.POSIXt, units</code></pre>
+<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;tidyr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:Matrix&#39;:
+## 
+##     expand</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:Hmisc&#39;:
+## 
+##     combine, src, summarize</code></pre>
+<pre><code>## The following objects are masked from &#39;package:data.table&#39;:
+## 
+##     between, first, last</code></pre>
+<pre><code>## The following objects are masked from &#39;package:lubridate&#39;:
+## 
+##     intersect, setdiff, union</code></pre>
+<pre><code>## The following objects are masked from &#39;package:formr&#39;:
+## 
+##     first, last</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre><code>## Warning: package &#39;coefplot&#39; was built under R version 3.4.3</code></pre>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<pre class="r"><code>### Import alldata used for birthorder and g-factors computed
+alldata_birthorder = readRDS(&quot;data/alldata_birthorder.rds&quot;)
+
+alldata_birthorder_i =  readRDS(&quot;data/alldata_birthorder_i.rds&quot;)
+
+
+
+colnames(alldata_birthorder)</code></pre>
+<p><em>wave</em>, <em>mother_pidlink</em>, <em>chron_order_birth</em>, <em>lifebirths</em>, <em>multiple_birth</em>, <em>alive</em>, <em>birthdate</em>, <em>any_multiple_birth</em>, <em>marriage_id</em>, <em>birthorder_uterus_preg</em>, <em>sibling_count_uterus_preg</em>, <em>birthorder_uterus_alive</em>, <em>sibling_count_uterus_alive</em>, <em>birthorder_genes</em>, <em>sibling_count_genes</em>, <em>pidlink</em>, <em>father_pidlink</em>, <em>age</em>, <em>death_yr</em>, <em>death_month</em>, <em>sibling_count_naive_ind</em>, <em>any_multiple_birthdate</em>, <em>birthorder_naive</em>, <em>sibling_count_naive</em>, <em>age_2015_old</em>, <em>age_2015_young</em>, <em>raven_2015_young</em>, <em>math_2015_young</em>, <em>raven_2015_old</em>, <em>math_2015_old</em>, <em>words_immediate</em>, <em>words_delayed</em>, <em>words_remembered_avg</em>, <em>adaptive_numbering</em>, <em>age_2007_young</em>, <em>age_2007_old</em>, <em>raven_2007_old</em>, <em>raven_2007_young</em>, <em>math_2007_young</em>, <em>math_2007_old</em>, <em>count_backwards</em>, <em>big5_ext</em>, <em>big5_con</em>, <em>big5_open</em>, <em>big5_neu</em>, <em>big5_agree</em>, <em>random_si</em>, <em>riskA</em>, <em>riskB</em>, <em>attended_school</em>, <em>highest_education</em>, <em>currently_attending_school</em>, <em>hours_in_class</em>, <em>years_of_education</em>, <em>Type_of_test_elementary</em>, <em>Indonesia_score_elementary</em>, <em>English_score_elementary</em>, <em>Math_score_elemenatry</em>, <em>Total_score_elemenatry</em>, <em>Type_of_test_Junior_High</em>, <em>Indonesia_score_Junior_High</em>, <em>English_score_Junior_High</em>, <em>Math_score_Junior_High</em>, <em>Total_score_Junior_High</em>, <em>Type_of_test_Senior_High</em>, <em>Indonesia_score_Senior_High</em>, <em>English_score_Senior_High</em>, <em>Math_score_Senior_High</em>, <em>Total_score_Senior_High</em>, <em>Total_score_highest</em>, <em>Total_score_highest_type</em>, <em>Math_score_highest</em>, <em>Math_score_highest_type</em>, <em>Elementary_worked</em>, <em>Junior_high_worked</em>, <em>Senior_high_worked</em>, <em>University_worked</em>, <em>total_worked</em>, <em>Elementary_missed</em>, <em>Junior_high_missed</em>, <em>Senior_high_missed</em>, <em>University_missed</em>, <em>total_missed</em>, <em>Category</em>, <em>Sector</em>, <em>Self_employed</em>, <em>ever_smoked</em>, <em>still_smoking</em>, <em>amount</em>, <em>age_first_smoke</em>, <em>amount_still_smokers</em>, <em>male</em>, <em>wage_last_month_log</em>, <em>wage_last_year_log</em> and <em>money_spent_smoking_log</em></p>
+<pre class="r"><code>crosstabs(alldata_birthorder$any_multiple_birth)</code></pre>
+<table style="width:31%;">
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">0</th>
+<th align="center">1</th>
+<th align="center">NA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">45034</td>
+<td align="center">3576</td>
+<td align="center">52631</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>## For the imputation we wanted to clean the dataset and get rid of all uninteresting data
+## To get the same dataset that we used for imputation thats what we have to do again:
+alldata_birthorder = alldata_birthorder %&gt;%
+  filter(!is.na(pidlink)) %&gt;% # no individuals who are only known from the pregnancy file
+  filter(is.na(lifebirths) | lifebirths == 2) %&gt;% # remove 7 and 2 individuals who are known as stillbirth or miscarriage but still have PID
+  select(-lifebirths) %&gt;% 
+  filter(!is.na(mother_pidlink)) %&gt;% 
+  select(-father_pidlink) %&gt;% 
+  filter(is.na(any_multiple_birth) | any_multiple_birth != 1) %&gt;% # remove 7 and 2 individuals who are known as stillbirth or miscarriage but still have PID
+  select(-starts_with(&quot;age_&quot;), -wave, -any_multiple_birth, -multiple_birth) %&gt;% 
+  mutate(money_spent_smoking_log = if_else(is.na(money_spent_smoking_log) &amp; ever_smoked == 0, 0, money_spent_smoking_log),
+         amount = if_else(is.na(amount) &amp; ever_smoked == 0, 0, amount),
+         amount_still_smokers = if_else(is.na(amount_still_smokers) &amp;  still_smoking == 0, 0, amount_still_smokers),
+         birthyear = lubridate::year(birthdate))</code></pre>
+</div>
+<div id="functions-needed" class="section level2">
+<h2>Functions needed</h2>
+<pre class="r"><code>n_imputations.mitml = function(imps) {
+  imps$iter$m
+}
+n_imputations.mids = function(imps) {
+  imps$m
+}
+n_imputations.amelia = function(imps) {
+  length(imps$imputations)
+}
+n_imputations = function(imps) { UseMethod(&quot;n_imputations&quot;) }
+
+complete.mitml = mitml::mitmlComplete
+complete.mids = mice::complete
+complete = function(...) { UseMethod(&quot;complete&quot;) }
+
+library(mice)</code></pre>
+<pre><code>## Warning: package &#39;mice&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;mice&#39;</code></pre>
+<pre><code>## The following object is masked _by_ &#39;.GlobalEnv&#39;:
+## 
+##     complete</code></pre>
+<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
+## 
+##     complete</code></pre>
+<pre class="r"><code>library(miceadds)</code></pre>
+<pre><code>## Warning: package &#39;miceadds&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## * miceadds 2.9-15 (2017-12-18 11:50:04)</code></pre>
+<pre class="r"><code>library(mitml)</code></pre>
+<pre><code>## Warning: package &#39;mitml&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## *** This is beta software. Please report any bugs!
+## *** See the NEWS file for recent changes.</code></pre>
+<pre class="r"><code>corr_pipe = . %&gt;%  as.matrix() %&gt;% 
+Hmisc::rcorr(.) %&gt;% {
+  left_join(left_join(.$r %&gt;% reshape2::melt() %&gt;% rename(r = value), 
+                      .$n %&gt;% reshape2::melt() %&gt;% rename(n = value), by = c(&quot;Var1&quot;, &quot;Var2&quot;)),
+            .$P %&gt;% reshape2::melt() %&gt;% rename(p = value), 
+            by = c(&quot;Var1&quot;, &quot;Var2&quot;))
+  } %&gt;% 
+  arrange(desc(r)) %&gt;% 
+  filter(Var1 != Var2)
+
+alldata_birthorder_i_g_factor &lt;- mids2mitml.list(alldata_birthorder_i)
+
+alldata_birthorder_i_tbl = alldata_birthorder_i_g_factor %&gt;% tbl_df.mitml.list</code></pre>
+</div>
+<div id="correlations-iterations-and-density" class="section level1">
+<h1>Correlations, iterations and density</h1>
+<pre class="r"><code># correlations
+correlations_original = corr_pipe(alldata_birthorder %&gt;% select_if(is.numeric))
+correlations_imputed = corr_pipe(alldata_birthorder_i_g_factor[[1]] %&gt;% select_if(is.numeric))
+
+
+# plot imputation steps
+name_columns = colnames(alldata_birthorder_i_tbl[[1]]) %&gt;% as.data.frame 
+name_columns = name_columns[name_columns != &quot;mother_pidlink&quot; &amp; name_columns != &quot;age&quot; &amp;
+                              name_columns != &quot;any_multiple_birthdate&quot; &amp;
+                              name_columns != &quot;sibling_count_naive&quot; &amp;
+                              name_columns != &quot;male&quot;]
+
+pdf(&quot;imputation_steps.pdf&quot;)
+plot(alldata_birthorder_i, name_columns)
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code># check densities of imputed/real
+pdf(&quot;density.pdf&quot;)
+densityplot(alldata_birthorder_i, ~ birthorder_genes + sibling_count_genes + birthorder_naive)
+
+densityplot(alldata_birthorder_i, ~ raven_2015_young + math_2015_young + raven_2015_old + math_2015_old + words_delayed + adaptive_numbering + count_backwards)
+            
+densityplot(alldata_birthorder_i, ~ raven_2007_old + raven_2007_young + math_2007_young + math_2007_old)
+
+densityplot(alldata_birthorder_i, ~ big5_ext + big5_con + big5_open + big5_neu + big5_agree)
+
+densityplot(alldata_birthorder_i, ~ random_si + riskA + riskB)
+
+densityplot(alldata_birthorder_i, ~ attended_school + currently_attending_school + hours_in_class + years_of_education)
+
+densityplot(alldata_birthorder_i, ~ Indonesia_score_elementary + English_score_elementary + Math_score_elemenatry + Total_score_elemenatry)
+
+densityplot(alldata_birthorder_i, ~ Indonesia_score_Junior_High + English_score_Junior_High + Math_score_Junior_High, Total_score_Junior_High)
+
+densityplot(alldata_birthorder_i, ~ Indonesia_score_Senior_High + English_score_Senior_High + Math_score_Senior_High + Total_score_Senior_High)
+
+densityplot(alldata_birthorder_i, ~ Elementary_worked + Junior_high_worked + Senior_high_worked + University_worked)
+
+densityplot(alldata_birthorder_i, ~ Elementary_missed + Junior_high_missed + Senior_high_missed + University_missed)
+
+densityplot(alldata_birthorder_i, ~ Self_employed +  ever_smoked + still_smoking + amount + wage_last_month_log + wage_last_year_log)
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+</div>
+<div id="g-factor" class="section level1">
+<h1>G-Factor</h1>
+<pre class="r"><code># Normal data - no misses
+no_miss = alldata_birthorder %&gt;%
+  filter(!is.na(raven_2015_old), !is.na(math_2015_old), !is.na(count_backwards),
+         !is.na(words_delayed), !is.na(adaptive_numbering))
+fa.parallel(no_miss %&gt;% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %&gt;% data.frame())</code></pre>
+<p><img src="3_imputation_check_files/figure-html/g%20factor-1.png" width="672" /></p>
+<pre><code>## Parallel analysis suggests that the number of factors =  2  and the number of components =  1</code></pre>
+<pre class="r"><code>fa(no_miss %&gt;% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %&gt;% data.frame(), nfactors = 1)</code></pre>
+<pre><code>## Factor Analysis using method =  minres
+## Call: fa(r = no_miss %&gt;% select(raven_2015_old, math_2015_old, count_backwards, 
+##     words_delayed, adaptive_numbering) %&gt;% data.frame(), nfactors = 1)
+## Standardized loadings (pattern matrix) based upon correlation matrix
+##                     MR1   h2   u2 com
+## raven_2015_old     0.62 0.38 0.62   1
+## math_2015_old      0.51 0.26 0.74   1
+## count_backwards    0.46 0.22 0.78   1
+## words_delayed      0.42 0.18 0.82   1
+## adaptive_numbering 0.62 0.38 0.62   1
+## 
+##                 MR1
+## SS loadings    1.42
+## Proportion Var 0.28
+## 
+## Mean item complexity =  1
+## Test of the hypothesis that 1 factor is sufficient.
+## 
+## The degrees of freedom for the null model are  10  and the objective function was  0.58 with Chi Square of  8539
+## The degrees of freedom for the model are 5  and the objective function was  0.01 
+## 
+## The root mean square of the residuals (RMSR) is  0.02 
+## The df corrected root mean square of the residuals is  0.02 
+## 
+## The harmonic number of observations is  14688 with the empirical chi square  77.5  with prob &lt;  2.8e-15 
+## The total number of observations was  14688  with Likelihood Chi Square =  78.47  with prob &lt;  1.8e-15 
+## 
+## Tucker Lewis Index of factoring reliability =  0.983
+## RMSEA index =  0.032  and the 90 % confidence intervals are  0.026 0.038
+## BIC =  30.49
+## Fit based upon off diagonal values = 1
+## Measures of factor score adequacy             
+##                                                    MR1
+## Correlation of (regression) scores with factors   0.82
+## Multiple R square of scores with factors          0.67
+## Minimum correlation of possible factor scores     0.35</code></pre>
+<pre class="r"><code>om_results = omega(no_miss %&gt;% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %&gt;% data.frame(), nfactors = 1, sl = F)</code></pre>
+<pre><code>## Omega_h for 1 factor is not meaningful, just omega_t</code></pre>
+<pre><code>## Warning in schmid(m, nfactors, fm, digits, rotate = rotate, n.obs = n.obs, : Omega_h and Omega_asymptotic are
+## not meaningful with one factor</code></pre>
+<pre class="r"><code>om_results</code></pre>
+<pre><code>## Omega 
+## Call: omega(m = no_miss %&gt;% select(raven_2015_old, math_2015_old, count_backwards, 
+##     words_delayed, adaptive_numbering) %&gt;% data.frame(), nfactors = 1, 
+##     sl = F)
+## Alpha:                 0.65 
+## G.6:                   0.61 
+## Omega Hierarchical:    0.66 
+## Omega H asymptotic:    1 
+## Omega Total            0.66 
+## 
+## Schmid Leiman Factor loadings greater than  0.2 
+##                       g  F1*   h2   u2 p2
+## raven_2015_old     0.62      0.38 0.62  1
+## math_2015_old      0.51      0.26 0.74  1
+## count_backwards    0.46      0.22 0.78  1
+## words_delayed      0.42      0.18 0.82  1
+## adaptive_numbering 0.62      0.38 0.62  1
+## 
+## With eigenvalues of:
+##   g F1* 
+## 1.4 0.0 
+## 
+## general/max  1.275e+16   max/min =   1
+## mean percent general =  1    with sd =  0 and cv of  0 
+## Explained Common Variance of the general factor =  1 
+## 
+## The degrees of freedom are 5  and the fit is  0.01 
+## The number of observations was  14688  with Chi Square =  78.47  with prob &lt;  1.8e-15
+## The root mean square of the residuals is  0.02 
+## The df corrected root mean square of the residuals is  0.02
+## RMSEA index =  0.032  and the 10 % confidence intervals are  0.026 0.038
+## BIC =  30.49
+## 
+## Compare this with the adequacy of just a general factor and no group factors
+## The degrees of freedom for just the general factor are 5  and the fit is  0.01 
+## The number of observations was  14688  with Chi Square =  78.47  with prob &lt;  1.8e-15
+## The root mean square of the residuals is  0.02 
+## The df corrected root mean square of the residuals is  0.02 
+## 
+## RMSEA index =  0.032  and the 10 % confidence intervals are  0.026 0.038
+## BIC =  30.49 
+## 
+## Measures of factor score adequacy             
+##                                                  g F1*
+## Correlation of scores with factors            0.82   0
+## Multiple R square of scores with factors      0.67   0
+## Minimum correlation of factor score estimates 0.35  -1
+## 
+##  Total, General and Subset omega for each subset
+##                                                  g  F1*
+## Omega total for total scores and subscales    0.66 0.66
+## Omega general for total scores and subscales  0.66 0.66
+## Omega group for total scores and subscales    0.00 0.00</code></pre>
+<pre class="r"><code>omega.diagram(om_results)</code></pre>
+<p><img src="3_imputation_check_files/figure-html/g%20factor-2.png" width="672" /></p>
+<pre class="r"><code>&quot;g_factor_nomiss =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed + adaptive_numbering&quot; %&gt;%
+  cfa(data = no_miss, std.lv = T, std.ov = T) -&gt; cfa_g
+summary(cfa_g)</code></pre>
+<pre><code>## lavaan (0.5-23.1097) converged normally after  14 iterations
+## 
+##   Number of observations                         14688
+## 
+##   Estimator                                         ML
+##   Minimum Function Test Statistic               78.411
+##   Degrees of freedom                                 5
+##   P-value (Chi-square)                           0.000
+## 
+## Parameter Estimates:
+## 
+##   Information                                 Expected
+##   Standard Errors                             Standard
+## 
+## Latent Variables:
+##                      Estimate  Std.Err  z-value  P(&gt;|z|)
+##   g_factor_nomiss =~                                    
+##     raven_2015_old      0.616    0.010   63.882    0.000
+##     math_2015_old       0.514    0.010   53.360    0.000
+##     count_backwrds      0.465    0.010   48.038    0.000
+##     words_delayed       0.419    0.010   43.063    0.000
+##     adaptiv_nmbrng      0.616    0.010   63.838    0.000
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##    .raven_2015_old    0.620    0.010   59.142    0.000
+##    .math_2015_old     0.736    0.010   70.337    0.000
+##    .count_backwrds    0.784    0.011   73.996    0.000
+##    .words_delayed     0.824    0.011   76.713    0.000
+##    .adaptiv_nmbrng    0.621    0.010   59.203    0.000
+##     g_factor_nomss    1.000</code></pre>
+<pre class="r"><code>## Explained variance:
+x = inspect(cfa_g, &quot;rsquare&quot;)
+no_miss$g_factor_nomiss = predict(cfa_g)[,1]
+
+no_miss = no_miss %&gt;% select(pidlink, g_factor_nomiss)
+
+alldata_birthorder = left_join(alldata_birthorder, no_miss, by = &quot;pidlink&quot;)
+qplot(alldata_birthorder$g_factor_nomiss)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 24965 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="3_imputation_check_files/figure-html/g%20factor-3.png" width="672" /></p>
+<pre class="r"><code># Imputed data
+alldata_birthorder_i_g_factor &lt;- within(alldata_birthorder_i_g_factor, {
+  g_factor_2015 &lt;- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
+})
+
+alldata_birthorder_i_g_factor &lt;- within(alldata_birthorder_i_g_factor, {
+  g_factor_2007 &lt;- rowMeans(scale(cbind(raven_2007_old, math_2007_old, count_backwards,  words_delayed, adaptive_numbering)))
+})
+
+qplot(alldata_birthorder_i_g_factor[[1]]$g_factor_2015)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="3_imputation_check_files/figure-html/g%20factor-4.png" width="672" /></p>
+<pre class="r"><code>qplot(alldata_birthorder_i_g_factor[[1]]$g_factor_2007)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="3_imputation_check_files/figure-html/g%20factor-5.png" width="672" /></p>
+<pre class="r"><code>summary(lm(g_factor_nomiss ~ raven_2015_old, alldata_birthorder))</code></pre>
+<table style="width:61%;">
+<colgroup>
+<col width="15%" />
+<col width="18%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">t value</th>
+<th align="center">Pr(&gt;|t|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-1.798</td>
+<td align="center">0.01381</td>
+<td align="center">-130.1</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">2.599</td>
+<td align="center">0.01889</td>
+<td align="center">137.6</td>
+<td align="center">0</td>
+</tr>
+</tbody>
+</table>
+<table style="width:86%;">
+<caption>Fitting linear model: g_factor_nomiss ~ raven_2015_old</caption>
+<colgroup>
+<col width="20%" />
+<col width="30%" />
+<col width="12%" />
+<col width="22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Observations</th>
+<th align="center">Residual Std. Error</th>
+<th align="center"><span class="math inline">\(R^2\)</span></th>
+<th align="center">Adjusted <span class="math inline">\(R^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">14688</td>
+<td align="center">0.5429</td>
+<td align="center">0.5631</td>
+<td align="center">0.5631</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary(lm(g_factor_2015 ~ raven_2015_old, alldata_birthorder_i_g_factor[[1]]))</code></pre>
+<table style="width:61%;">
+<colgroup>
+<col width="15%" />
+<col width="18%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">t value</th>
+<th align="center">Pr(&gt;|t|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-1.315</td>
+<td align="center">0.007102</td>
+<td align="center">-185.1</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">1.899</td>
+<td align="center">0.009673</td>
+<td align="center">196.3</td>
+<td align="center">0</td>
+</tr>
+</tbody>
+</table>
+<table style="width:86%;">
+<caption>Fitting linear model: g_factor_2015 ~ raven_2015_old</caption>
+<colgroup>
+<col width="20%" />
+<col width="30%" />
+<col width="12%" />
+<col width="22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Observations</th>
+<th align="center">Residual Std. Error</th>
+<th align="center"><span class="math inline">\(R^2\)</span></th>
+<th align="center">Adjusted <span class="math inline">\(R^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">39653</td>
+<td align="center">0.4702</td>
+<td align="center">0.4928</td>
+<td align="center">0.4928</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary(lm(g_factor_nomiss ~ raven_2015_young, alldata_birthorder))</code></pre>
+<table style="width:61%;">
+<colgroup>
+<col width="15%" />
+<col width="18%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">t value</th>
+<th align="center">Pr(&gt;|t|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-1.41</td>
+<td align="center">0.03367</td>
+<td align="center">-41.87</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">2.097</td>
+<td align="center">0.04143</td>
+<td align="center">50.63</td>
+<td align="center">0</td>
+</tr>
+</tbody>
+</table>
+<table style="width:86%;">
+<caption>Fitting linear model: g_factor_nomiss ~ raven_2015_young</caption>
+<colgroup>
+<col width="20%" />
+<col width="30%" />
+<col width="12%" />
+<col width="22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Observations</th>
+<th align="center">Residual Std. Error</th>
+<th align="center"><span class="math inline">\(R^2\)</span></th>
+<th align="center">Adjusted <span class="math inline">\(R^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">5584</td>
+<td align="center">0.6084</td>
+<td align="center">0.3147</td>
+<td align="center">0.3146</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary(lm(g_factor_2015 ~ raven_2015_young, alldata_birthorder_i_g_factor[[1]]))</code></pre>
+<table style="width:61%;">
+<colgroup>
+<col width="15%" />
+<col width="18%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">t value</th>
+<th align="center">Pr(&gt;|t|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-0.8916</td>
+<td align="center">0.01002</td>
+<td align="center">-89.01</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">1.228</td>
+<td align="center">0.01316</td>
+<td align="center">93.3</td>
+<td align="center">0</td>
+</tr>
+</tbody>
+</table>
+<table style="width:85%;">
+<caption>Fitting linear model: g_factor_2015 ~ raven_2015_young</caption>
+<colgroup>
+<col width="20%" />
+<col width="30%" />
+<col width="11%" />
+<col width="22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Observations</th>
+<th align="center">Residual Std. Error</th>
+<th align="center"><span class="math inline">\(R^2\)</span></th>
+<th align="center">Adjusted <span class="math inline">\(R^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">39653</td>
+<td align="center">0.5979</td>
+<td align="center">0.18</td>
+<td align="center">0.18</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>alldata_birthorder %&gt;% {cor.test(.$g_factor_nomiss, .$years_of_education)}</code></pre>
+<table style="width:94%;">
+<caption>Pearson’s product-moment correlation: <code>.$g_factor_nomiss</code> and <code>.$years_of_education</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="11%" />
+<col width="13%" />
+<col width="34%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+<th align="center">cor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">67.47</td>
+<td align="center">14435</td>
+<td align="center">0 * * *</td>
+<td align="center">two.sided</td>
+<td align="center">0.4896</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>alldata_birthorder_i_g_factor[[1]] %&gt;% {cor.test(.$g_factor_2015, .$years_of_education)}</code></pre>
+<table style="width:93%;">
+<caption>Pearson’s product-moment correlation: <code>.$g_factor_2015</code> and <code>.$years_of_education</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="11%" />
+<col width="13%" />
+<col width="34%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+<th align="center">cor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">119.3</td>
+<td align="center">39651</td>
+<td align="center">0 * * *</td>
+<td align="center">two.sided</td>
+<td align="center">0.514</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>alldata_birthorder %&gt;% {cor.test(.$g_factor_nomiss, .$Math_score_elemenatry)}</code></pre>
+<table>
+<caption>Pearson’s product-moment correlation: <code>.$g_factor_nomiss</code> and <code>.$Math_score_elemenatry</code></caption>
+<colgroup>
+<col width="22%" />
+<col width="9%" />
+<col width="24%" />
+<col width="33%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+<th align="center">cor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">14.5</td>
+<td align="center">3158</td>
+<td align="center">3.823e-46 * * *</td>
+<td align="center">two.sided</td>
+<td align="center">0.2498</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>alldata_birthorder_i_g_factor[[1]] %&gt;% {cor.test(.$g_factor_2015, .$Math_score_elemenatry)}</code></pre>
+<table style="width:94%;">
+<caption>Pearson’s product-moment correlation: <code>.$g_factor_2015</code> and <code>.$Math_score_elemenatry</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="11%" />
+<col width="13%" />
+<col width="34%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+<th align="center">cor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">65.5</td>
+<td align="center">39651</td>
+<td align="center">0 * * *</td>
+<td align="center">two.sided</td>
+<td align="center">0.3125</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>alldata_birthorder %&gt;% {cor.test(.$g_factor_nomiss, .$Total_score_elemenatry)}</code></pre>
+<table style="width:100%;">
+<caption>Pearson’s product-moment correlation: <code>.$g_factor_nomiss</code> and <code>.$Total_score_elemenatry</code></caption>
+<colgroup>
+<col width="20%" />
+<col width="8%" />
+<col width="30%" />
+<col width="30%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+<th align="center">cor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">6.537</td>
+<td align="center">3193</td>
+<td align="center">0.00000000007278 * * *</td>
+<td align="center">two.sided</td>
+<td align="center">0.1149</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>alldata_birthorder_i_g_factor[[1]] %&gt;% {cor.test(.$g_factor_2015, .$Total_score_elemenatry)}</code></pre>
+<table>
+<caption>Pearson’s product-moment correlation: <code>.$g_factor_2015</code> and <code>.$Total_score_elemenatry</code></caption>
+<colgroup>
+<col width="20%" />
+<col width="9%" />
+<col width="27%" />
+<col width="30%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+<th align="center">cor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-6.022</td>
+<td align="center">39651</td>
+<td align="center">0.000000001736 * * *</td>
+<td align="center">two.sided</td>
+<td align="center">-0.03023</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>qplot(alldata_birthorder$g_factor_nomiss, alldata_birthorder$Total_score_elemenatry)</code></pre>
+<pre><code>## Warning: Removed 36458 rows containing missing values (geom_point).</code></pre>
+<p><img src="3_imputation_check_files/figure-html/g%20factor-6.png" width="672" /></p>
+<pre class="r"><code>qplot(alldata_birthorder_i_g_factor[[1]]$g_factor_2015,
+      alldata_birthorder_i_g_factor[[1]]$Total_score_elemenatry)</code></pre>
+<p><img src="3_imputation_check_files/figure-html/g%20factor-7.png" width="672" /></p>
+<pre class="r"><code>saveRDS(alldata_birthorder_i, file=&quot;alldata_birthorder_i.rdata&quot;)</code></pre>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiVW50aXRsZWQiCmF1dGhvcjogIlJ1YmVuIEFyc2xhbiIKZGF0ZTogIjI4IFNlcHRlbWJlciAyMDE3IgpvdXRwdXQ6IGh0bWxfZG9jdW1lbnQKZWRpdG9yX29wdGlvbnM6IAogIGNodW5rX291dHB1dF90eXBlOiBjb25zb2xlCi0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkKYGBgCgojIyBIZWxwZXIKYGBge3IgaGVscGVyfQpzb3VyY2UoIjBfaGVscGVycy5SIikKYGBgCgoKIyMgRGF0YQpgYGB7cn0KIyMjIEltcG9ydCBhbGxkYXRhIHVzZWQgZm9yIGJpcnRob3JkZXIgYW5kIGctZmFjdG9ycyBjb21wdXRlZAphbGxkYXRhX2JpcnRob3JkZXIgPSByZWFkUkRTKCJkYXRhL2FsbGRhdGFfYmlydGhvcmRlci5yZHMiKQoKYWxsZGF0YV9iaXJ0aG9yZGVyX2kgPSAgcmVhZFJEUygiZGF0YS9hbGxkYXRhX2JpcnRob3JkZXJfaS5yZHMiKQoKCgpjb2xuYW1lcyhhbGxkYXRhX2JpcnRob3JkZXIpCmNyb3NzdGFicyhhbGxkYXRhX2JpcnRob3JkZXIkYW55X211bHRpcGxlX2JpcnRoKQojIyBGb3IgdGhlIGltcHV0YXRpb24gd2Ugd2FudGVkIHRvIGNsZWFuIHRoZSBkYXRhc2V0IGFuZCBnZXQgcmlkIG9mIGFsbCB1bmludGVyZXN0aW5nIGRhdGEKIyMgVG8gZ2V0IHRoZSBzYW1lIGRhdGFzZXQgdGhhdCB3ZSB1c2VkIGZvciBpbXB1dGF0aW9uIHRoYXRzIHdoYXQgd2UgaGF2ZSB0byBkbyBhZ2FpbjoKYWxsZGF0YV9iaXJ0aG9yZGVyID0gYWxsZGF0YV9iaXJ0aG9yZGVyICU+JQogIGZpbHRlcighaXMubmEocGlkbGluaykpICU+JSAjIG5vIGluZGl2aWR1YWxzIHdobyBhcmUgb25seSBrbm93biBmcm9tIHRoZSBwcmVnbmFuY3kgZmlsZQogIGZpbHRlcihpcy5uYShsaWZlYmlydGhzKSB8IGxpZmViaXJ0aHMgPT0gMikgJT4lICMgcmVtb3ZlIDcgYW5kIDIgaW5kaXZpZHVhbHMgd2hvIGFyZSBrbm93biBhcyBzdGlsbGJpcnRoIG9yIG1pc2NhcnJpYWdlIGJ1dCBzdGlsbCBoYXZlIFBJRAogIHNlbGVjdCgtbGlmZWJpcnRocykgJT4lIAogIGZpbHRlcighaXMubmEobW90aGVyX3BpZGxpbmspKSAlPiUgCiAgc2VsZWN0KC1mYXRoZXJfcGlkbGluaykgJT4lIAogIGZpbHRlcihpcy5uYShhbnlfbXVsdGlwbGVfYmlydGgpIHwgYW55X211bHRpcGxlX2JpcnRoICE9IDEpICU+JSAjIHJlbW92ZSA3IGFuZCAyIGluZGl2aWR1YWxzIHdobyBhcmUga25vd24gYXMgc3RpbGxiaXJ0aCBvciBtaXNjYXJyaWFnZSBidXQgc3RpbGwgaGF2ZSBQSUQKICBzZWxlY3QoLXN0YXJ0c193aXRoKCJhZ2VfIiksIC13YXZlLCAtYW55X211bHRpcGxlX2JpcnRoLCAtbXVsdGlwbGVfYmlydGgpICU+JSAKICBtdXRhdGUobW9uZXlfc3BlbnRfc21va2luZ19sb2cgPSBpZl9lbHNlKGlzLm5hKG1vbmV5X3NwZW50X3Ntb2tpbmdfbG9nKSAmIGV2ZXJfc21va2VkID09IDAsIDAsIG1vbmV5X3NwZW50X3Ntb2tpbmdfbG9nKSwKICAgICAgICAgYW1vdW50ID0gaWZfZWxzZShpcy5uYShhbW91bnQpICYgZXZlcl9zbW9rZWQgPT0gMCwgMCwgYW1vdW50KSwKICAgICAgICAgYW1vdW50X3N0aWxsX3Ntb2tlcnMgPSBpZl9lbHNlKGlzLm5hKGFtb3VudF9zdGlsbF9zbW9rZXJzKSAmICBzdGlsbF9zbW9raW5nID09IDAsIDAsIGFtb3VudF9zdGlsbF9zbW9rZXJzKSwKICAgICAgICAgYmlydGh5ZWFyID0gbHVicmlkYXRlOjp5ZWFyKGJpcnRoZGF0ZSkpCmBgYAoKCiMjIEZ1bmN0aW9ucyBuZWVkZWQKCmBgYHtyfQoKbl9pbXB1dGF0aW9ucy5taXRtbCA9IGZ1bmN0aW9uKGltcHMpIHsKICBpbXBzJGl0ZXIkbQp9Cm5faW1wdXRhdGlvbnMubWlkcyA9IGZ1bmN0aW9uKGltcHMpIHsKICBpbXBzJG0KfQpuX2ltcHV0YXRpb25zLmFtZWxpYSA9IGZ1bmN0aW9uKGltcHMpIHsKICBsZW5ndGgoaW1wcyRpbXB1dGF0aW9ucykKfQpuX2ltcHV0YXRpb25zID0gZnVuY3Rpb24oaW1wcykgeyBVc2VNZXRob2QoIm5faW1wdXRhdGlvbnMiKSB9Cgpjb21wbGV0ZS5taXRtbCA9IG1pdG1sOjptaXRtbENvbXBsZXRlCmNvbXBsZXRlLm1pZHMgPSBtaWNlOjpjb21wbGV0ZQpjb21wbGV0ZSA9IGZ1bmN0aW9uKC4uLikgeyBVc2VNZXRob2QoImNvbXBsZXRlIikgfQoKbGlicmFyeShtaWNlKQpsaWJyYXJ5KG1pY2VhZGRzKQpsaWJyYXJ5KG1pdG1sKQoKY29ycl9waXBlID0gLiAlPiUgIGFzLm1hdHJpeCgpICU+JSAKSG1pc2M6OnJjb3JyKC4pICU+JSB7CiAgbGVmdF9qb2luKGxlZnRfam9pbiguJHIgJT4lIHJlc2hhcGUyOjptZWx0KCkgJT4lIHJlbmFtZShyID0gdmFsdWUpLCAKICAgICAgICAgICAgICAgICAgICAgIC4kbiAlPiUgcmVzaGFwZTI6Om1lbHQoKSAlPiUgcmVuYW1lKG4gPSB2YWx1ZSksIGJ5ID0gYygiVmFyMSIsICJWYXIyIikpLAogICAgICAgICAgICAuJFAgJT4lIHJlc2hhcGUyOjptZWx0KCkgJT4lIHJlbmFtZShwID0gdmFsdWUpLCAKICAgICAgICAgICAgYnkgPSBjKCJWYXIxIiwgIlZhcjIiKSkKICB9ICU+JSAKICBhcnJhbmdlKGRlc2MocikpICU+JSAKICBmaWx0ZXIoVmFyMSAhPSBWYXIyKQoKYWxsZGF0YV9iaXJ0aG9yZGVyX2lfZ19mYWN0b3IgPC0gbWlkczJtaXRtbC5saXN0KGFsbGRhdGFfYmlydGhvcmRlcl9pKQoKYWxsZGF0YV9iaXJ0aG9yZGVyX2lfdGJsID0gYWxsZGF0YV9iaXJ0aG9yZGVyX2lfZ19mYWN0b3IgJT4lIHRibF9kZi5taXRtbC5saXN0CgpgYGAKCiMgQ29ycmVsYXRpb25zLCBpdGVyYXRpb25zIGFuZCBkZW5zaXR5CmBgYHtyfQojIGNvcnJlbGF0aW9ucwpjb3JyZWxhdGlvbnNfb3JpZ2luYWwgPSBjb3JyX3BpcGUoYWxsZGF0YV9iaXJ0aG9yZGVyICU+JSBzZWxlY3RfaWYoaXMubnVtZXJpYykpCmNvcnJlbGF0aW9uc19pbXB1dGVkID0gY29ycl9waXBlKGFsbGRhdGFfYmlydGhvcmRlcl9pX2dfZmFjdG9yW1sxXV0gJT4lIHNlbGVjdF9pZihpcy5udW1lcmljKSkKCgojIHBsb3QgaW1wdXRhdGlvbiBzdGVwcwpuYW1lX2NvbHVtbnMgPSBjb2xuYW1lcyhhbGxkYXRhX2JpcnRob3JkZXJfaV90YmxbWzFdXSkgJT4lIGFzLmRhdGEuZnJhbWUgCm5hbWVfY29sdW1ucyA9IG5hbWVfY29sdW1uc1tuYW1lX2NvbHVtbnMgIT0gIm1vdGhlcl9waWRsaW5rIiAmIG5hbWVfY29sdW1ucyAhPSAiYWdlIiAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hbWVfY29sdW1ucyAhPSAiYW55X211bHRpcGxlX2JpcnRoZGF0ZSIgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYW1lX2NvbHVtbnMgIT0gInNpYmxpbmdfY291bnRfbmFpdmUiICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmFtZV9jb2x1bW5zICE9ICJtYWxlIl0KCnBkZigiaW1wdXRhdGlvbl9zdGVwcy5wZGYiKQpwbG90KGFsbGRhdGFfYmlydGhvcmRlcl9pLCBuYW1lX2NvbHVtbnMpCmRldi5vZmYoKQoKCiMgY2hlY2sgZGVuc2l0aWVzIG9mIGltcHV0ZWQvcmVhbApwZGYoImRlbnNpdHkucGRmIikKZGVuc2l0eXBsb3QoYWxsZGF0YV9iaXJ0aG9yZGVyX2ksIH4gYmlydGhvcmRlcl9nZW5lcyArIHNpYmxpbmdfY291bnRfZ2VuZXMgKyBiaXJ0aG9yZGVyX25haXZlKQoKZGVuc2l0eXBsb3QoYWxsZGF0YV9iaXJ0aG9yZGVyX2ksIH4gcmF2ZW5fMjAxNV95b3VuZyArIG1hdGhfMjAxNV95b3VuZyArIHJhdmVuXzIwMTVfb2xkICsgbWF0aF8yMDE1X29sZCArIHdvcmRzX2RlbGF5ZWQgKyBhZGFwdGl2ZV9udW1iZXJpbmcgKyBjb3VudF9iYWNrd2FyZHMpCiAgICAgICAgICAgIApkZW5zaXR5cGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaSwgfiByYXZlbl8yMDA3X29sZCArIHJhdmVuXzIwMDdfeW91bmcgKyBtYXRoXzIwMDdfeW91bmcgKyBtYXRoXzIwMDdfb2xkKQoKZGVuc2l0eXBsb3QoYWxsZGF0YV9iaXJ0aG9yZGVyX2ksIH4gYmlnNV9leHQgKyBiaWc1X2NvbiArIGJpZzVfb3BlbiArIGJpZzVfbmV1ICsgYmlnNV9hZ3JlZSkKCmRlbnNpdHlwbG90KGFsbGRhdGFfYmlydGhvcmRlcl9pLCB+IHJhbmRvbV9zaSArIHJpc2tBICsgcmlza0IpCgpkZW5zaXR5cGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaSwgfiBhdHRlbmRlZF9zY2hvb2wgKyBjdXJyZW50bHlfYXR0ZW5kaW5nX3NjaG9vbCArIGhvdXJzX2luX2NsYXNzICsgeWVhcnNfb2ZfZWR1Y2F0aW9uKQoKZGVuc2l0eXBsb3QoYWxsZGF0YV9iaXJ0aG9yZGVyX2ksIH4gSW5kb25lc2lhX3Njb3JlX2VsZW1lbnRhcnkgKyBFbmdsaXNoX3Njb3JlX2VsZW1lbnRhcnkgKyBNYXRoX3Njb3JlX2VsZW1lbmF0cnkgKyBUb3RhbF9zY29yZV9lbGVtZW5hdHJ5KQoKZGVuc2l0eXBsb3QoYWxsZGF0YV9iaXJ0aG9yZGVyX2ksIH4gSW5kb25lc2lhX3Njb3JlX0p1bmlvcl9IaWdoICsgRW5nbGlzaF9zY29yZV9KdW5pb3JfSGlnaCArIE1hdGhfc2NvcmVfSnVuaW9yX0hpZ2gsIFRvdGFsX3Njb3JlX0p1bmlvcl9IaWdoKQoKZGVuc2l0eXBsb3QoYWxsZGF0YV9iaXJ0aG9yZGVyX2ksIH4gSW5kb25lc2lhX3Njb3JlX1Nlbmlvcl9IaWdoICsgRW5nbGlzaF9zY29yZV9TZW5pb3JfSGlnaCArIE1hdGhfc2NvcmVfU2VuaW9yX0hpZ2ggKyBUb3RhbF9zY29yZV9TZW5pb3JfSGlnaCkKCmRlbnNpdHlwbG90KGFsbGRhdGFfYmlydGhvcmRlcl9pLCB+IEVsZW1lbnRhcnlfd29ya2VkICsgSnVuaW9yX2hpZ2hfd29ya2VkICsgU2VuaW9yX2hpZ2hfd29ya2VkICsgVW5pdmVyc2l0eV93b3JrZWQpCgpkZW5zaXR5cGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaSwgfiBFbGVtZW50YXJ5X21pc3NlZCArIEp1bmlvcl9oaWdoX21pc3NlZCArIFNlbmlvcl9oaWdoX21pc3NlZCArIFVuaXZlcnNpdHlfbWlzc2VkKQoKZGVuc2l0eXBsb3QoYWxsZGF0YV9iaXJ0aG9yZGVyX2ksIH4gU2VsZl9lbXBsb3llZCArICBldmVyX3Ntb2tlZCArIHN0aWxsX3Ntb2tpbmcgKyBhbW91bnQgKyB3YWdlX2xhc3RfbW9udGhfbG9nICsgd2FnZV9sYXN0X3llYXJfbG9nKQpkZXYub2ZmKCkKCgpgYGAKCgojIEctRmFjdG9yCmBgYHtyIGcgZmFjdG9yfQojIE5vcm1hbCBkYXRhIC0gbm8gbWlzc2VzCm5vX21pc3MgPSBhbGxkYXRhX2JpcnRob3JkZXIgJT4lCiAgZmlsdGVyKCFpcy5uYShyYXZlbl8yMDE1X29sZCksICFpcy5uYShtYXRoXzIwMTVfb2xkKSwgIWlzLm5hKGNvdW50X2JhY2t3YXJkcyksCiAgICAgICAgICFpcy5uYSh3b3Jkc19kZWxheWVkKSwgIWlzLm5hKGFkYXB0aXZlX251bWJlcmluZykpCmZhLnBhcmFsbGVsKG5vX21pc3MgJT4lIHNlbGVjdChyYXZlbl8yMDE1X29sZCwgbWF0aF8yMDE1X29sZCwgY291bnRfYmFja3dhcmRzLCB3b3Jkc19kZWxheWVkLCBhZGFwdGl2ZV9udW1iZXJpbmcpICU+JSBkYXRhLmZyYW1lKCkpCmZhKG5vX21pc3MgJT4lIHNlbGVjdChyYXZlbl8yMDE1X29sZCwgbWF0aF8yMDE1X29sZCwgY291bnRfYmFja3dhcmRzLCB3b3Jkc19kZWxheWVkLCBhZGFwdGl2ZV9udW1iZXJpbmcpICU+JSBkYXRhLmZyYW1lKCksIG5mYWN0b3JzID0gMSkKb21fcmVzdWx0cyA9IG9tZWdhKG5vX21pc3MgJT4lIHNlbGVjdChyYXZlbl8yMDE1X29sZCwgbWF0aF8yMDE1X29sZCwgY291bnRfYmFja3dhcmRzLCB3b3Jkc19kZWxheWVkLCBhZGFwdGl2ZV9udW1iZXJpbmcpICU+JSBkYXRhLmZyYW1lKCksIG5mYWN0b3JzID0gMSwgc2wgPSBGKQpvbV9yZXN1bHRzCm9tZWdhLmRpYWdyYW0ob21fcmVzdWx0cykKCiJnX2ZhY3Rvcl9ub21pc3MgPX4gcmF2ZW5fMjAxNV9vbGQgKyBtYXRoXzIwMTVfb2xkICsgY291bnRfYmFja3dhcmRzICsgIHdvcmRzX2RlbGF5ZWQgKyBhZGFwdGl2ZV9udW1iZXJpbmciICU+JQogIGNmYShkYXRhID0gbm9fbWlzcywgc3RkLmx2ID0gVCwgc3RkLm92ID0gVCkgLT4gY2ZhX2cKc3VtbWFyeShjZmFfZykKCiMjIEV4cGxhaW5lZCB2YXJpYW5jZToKeCA9IGluc3BlY3QoY2ZhX2csICJyc3F1YXJlIikKbm9fbWlzcyRnX2ZhY3Rvcl9ub21pc3MgPSBwcmVkaWN0KGNmYV9nKVssMV0KCm5vX21pc3MgPSBub19taXNzICU+JSBzZWxlY3QocGlkbGluaywgZ19mYWN0b3Jfbm9taXNzKQoKYWxsZGF0YV9iaXJ0aG9yZGVyID0gbGVmdF9qb2luKGFsbGRhdGFfYmlydGhvcmRlciwgbm9fbWlzcywgYnkgPSAicGlkbGluayIpCnFwbG90KGFsbGRhdGFfYmlydGhvcmRlciRnX2ZhY3Rvcl9ub21pc3MpCgojIEltcHV0ZWQgZGF0YQphbGxkYXRhX2JpcnRob3JkZXJfaV9nX2ZhY3RvciA8LSB3aXRoaW4oYWxsZGF0YV9iaXJ0aG9yZGVyX2lfZ19mYWN0b3IsIHsKICBnX2ZhY3Rvcl8yMDE1IDwtIHJvd01lYW5zKHNjYWxlKGNiaW5kKHJhdmVuXzIwMTVfb2xkLCBtYXRoXzIwMTVfb2xkLCBjb3VudF9iYWNrd2FyZHMsICB3b3Jkc19kZWxheWVkLCBhZGFwdGl2ZV9udW1iZXJpbmcpKSkKfSkKCmFsbGRhdGFfYmlydGhvcmRlcl9pX2dfZmFjdG9yIDwtIHdpdGhpbihhbGxkYXRhX2JpcnRob3JkZXJfaV9nX2ZhY3RvciwgewogIGdfZmFjdG9yXzIwMDcgPC0gcm93TWVhbnMoc2NhbGUoY2JpbmQocmF2ZW5fMjAwN19vbGQsIG1hdGhfMjAwN19vbGQsIGNvdW50X2JhY2t3YXJkcywgIHdvcmRzX2RlbGF5ZWQsIGFkYXB0aXZlX251bWJlcmluZykpKQp9KQoKcXBsb3QoYWxsZGF0YV9iaXJ0aG9yZGVyX2lfZ19mYWN0b3JbWzFdXSRnX2ZhY3Rvcl8yMDE1KQpxcGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaV9nX2ZhY3RvcltbMV1dJGdfZmFjdG9yXzIwMDcpCgpzdW1tYXJ5KGxtKGdfZmFjdG9yX25vbWlzcyB+IHJhdmVuXzIwMTVfb2xkLCBhbGxkYXRhX2JpcnRob3JkZXIpKQpzdW1tYXJ5KGxtKGdfZmFjdG9yXzIwMTUgfiByYXZlbl8yMDE1X29sZCwgYWxsZGF0YV9iaXJ0aG9yZGVyX2lfZ19mYWN0b3JbWzFdXSkpCnN1bW1hcnkobG0oZ19mYWN0b3Jfbm9taXNzIH4gcmF2ZW5fMjAxNV95b3VuZywgYWxsZGF0YV9iaXJ0aG9yZGVyKSkKc3VtbWFyeShsbShnX2ZhY3Rvcl8yMDE1IH4gcmF2ZW5fMjAxNV95b3VuZywgYWxsZGF0YV9iaXJ0aG9yZGVyX2lfZ19mYWN0b3JbWzFdXSkpCgphbGxkYXRhX2JpcnRob3JkZXIgJT4lIHtjb3IudGVzdCguJGdfZmFjdG9yX25vbWlzcywgLiR5ZWFyc19vZl9lZHVjYXRpb24pfQphbGxkYXRhX2JpcnRob3JkZXJfaV9nX2ZhY3RvcltbMV1dICU+JSB7Y29yLnRlc3QoLiRnX2ZhY3Rvcl8yMDE1LCAuJHllYXJzX29mX2VkdWNhdGlvbil9CmFsbGRhdGFfYmlydGhvcmRlciAlPiUge2Nvci50ZXN0KC4kZ19mYWN0b3Jfbm9taXNzLCAuJE1hdGhfc2NvcmVfZWxlbWVuYXRyeSl9CmFsbGRhdGFfYmlydGhvcmRlcl9pX2dfZmFjdG9yW1sxXV0gJT4lIHtjb3IudGVzdCguJGdfZmFjdG9yXzIwMTUsIC4kTWF0aF9zY29yZV9lbGVtZW5hdHJ5KX0KYWxsZGF0YV9iaXJ0aG9yZGVyICU+JSB7Y29yLnRlc3QoLiRnX2ZhY3Rvcl9ub21pc3MsIC4kVG90YWxfc2NvcmVfZWxlbWVuYXRyeSl9CmFsbGRhdGFfYmlydGhvcmRlcl9pX2dfZmFjdG9yW1sxXV0gJT4lIHtjb3IudGVzdCguJGdfZmFjdG9yXzIwMTUsIC4kVG90YWxfc2NvcmVfZWxlbWVuYXRyeSl9CgpxcGxvdChhbGxkYXRhX2JpcnRob3JkZXIkZ19mYWN0b3Jfbm9taXNzLCBhbGxkYXRhX2JpcnRob3JkZXIkVG90YWxfc2NvcmVfZWxlbWVuYXRyeSkKcXBsb3QoYWxsZGF0YV9iaXJ0aG9yZGVyX2lfZ19mYWN0b3JbWzFdXSRnX2ZhY3Rvcl8yMDE1LAogICAgICBhbGxkYXRhX2JpcnRob3JkZXJfaV9nX2ZhY3RvcltbMV1dJFRvdGFsX3Njb3JlX2VsZW1lbmF0cnkpCgpzYXZlUkRTKGFsbGRhdGFfYmlydGhvcmRlcl9pLCBmaWxlPSJhbGxkYXRhX2JpcnRob3JkZXJfaS5yZGF0YSIpCmBgYAo=</div>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

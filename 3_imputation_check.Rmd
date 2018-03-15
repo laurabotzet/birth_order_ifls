@@ -22,7 +22,9 @@ source("0_helpers.R")
 ### Import alldata used for birthorder and g-factors computed
 alldata_birthorder = readRDS("data/alldata_birthorder.rds")
 
-alldata_birthorder_i =  readRDS("data/imputed_alldata_bo.rds")
+alldata_birthorder_i =  readRDS("data/alldata_birthorder_i.rds")
+
+
 
 colnames(alldata_birthorder)
 crosstabs(alldata_birthorder$any_multiple_birth)
@@ -75,39 +77,27 @@ Hmisc::rcorr(.) %>% {
   arrange(desc(r)) %>% 
   filter(Var1 != Var2)
 
-sort(round(miss_frac(alldata_birthorder),2))
 ```
 
 
 ```{r}
-alldata_birthorder <- alldata_birthorder %>% codebook::zap_attributes()
+correlations = corr_pipe(alldata_birthorder %>% select_if(is.numeric))
+correlations = corr_pipe(alldata_birthorder_i[[1]] %>% select_if(is.numeric))
 
-correlations = corr_pipe(alldata_birthorder)
-
-
-plot(alldata_birthorder_i, c("total_worked", "University_worked"))
-plot(alldata_birthorder_i, c("Total_score_elemenatry", "Total_score_Junior_High"))
 plot(alldata_birthorder_i, c("Math_score_elemenatry", "Math_score_Junior_High"))
 plot(alldata_birthorder_i, c("Indonesia_score_elementary", "Indonesia_score_Junior_High"))
 
-plot(alldata_birthorder_i, c("money_spent_smoking_log", "ever_smoked"))
-plot(alldata_birthorder_i, c("amount", "amount_still_smokers"))
+plot(alldata_birthorder_i, c( "amount", "ever_smoked"))
 
                             
-# problematic:
-plot(alldata_birthorder_i, c("birthorder_uterus_alive", "birthorder_uterus_preg", "birthorder_genes",
-"birthorder_naive"))
+plot(alldata_birthorder_i, c("raven_2015_old"))
 
-# non-problematic:
-plot(alldata_birthorder_i, c("total_missed", "highest_education", "years_of_education"))
+plot(alldata_birthorder_i, c("years_of_education", "Total_score_elemenatry"))
 
-# non-problematic:
 plot(alldata_birthorder_i, c("raven_2015_old", "math_2015_old", "count_backwards", "adaptive_numbering"))
 
-# problematic:
-plot(alldata_birthorder_i, c("words_immediate", "words_delayed", "words_remembered_avg"))
+plot(alldata_birthorder_i, c("words_delayed"))
 
-# non-problematic
 plot(alldata_birthorder_i, c("big5_ext", "big5_agree", "big5_con", "big5_open", "big5_neu"))
 
 
@@ -118,6 +108,8 @@ densityplot(alldata_birthorder_i, ~ years_of_education)
 densityplot(alldata_birthorder_i, ~ birthorder_genes)
 densityplot(alldata_birthorder_i, ~ raven_2015_old)
 densityplot(alldata_birthorder_i, ~ math_2015_old)
+densityplot(alldata_birthorder_i, ~ Math_score_elemenatry)
+
 
 
 alldata_birthorder_i <- mids2mitml.list(alldata_birthorder_i)
@@ -130,15 +122,9 @@ alldata_birthorder_i <- within(alldata_birthorder_i, {
   g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
 })
 
-summary(lm(count_backwards ~ raven_2015_young, complete(alldata_birthorder_i,1)))
+summary(lm(count_backwards ~ raven_2015_young, alldata_birthorder_i[[1]]))
 summary(lm(count_backwards ~ raven_2015_old, alldata_birthorder))
-summary(lm(count_backwards ~ raven_2015_old, complete(alldata_birthorder_i,1)))
-
-alldata_birthorder_i <- mids2mitml.list(alldata_birthorder_i)
-
-alldata_birthorder_i <- within(alldata_birthorder_i, {
-  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
-})
+summary(lm(count_backwards ~ raven_2015_young, alldata_birthorder_i[[1]]))
 
 alldata_birthorder <- within(alldata_birthorder, {
   g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
@@ -147,68 +133,13 @@ alldata_birthorder <- within(alldata_birthorder, {
 
 qplot(alldata_birthorder_i[[1]]$g_factor_2015)
 
-alldata_birthorder %>% {cor.test(.$g_factor_2015, .$years_of_education)}
-alldata_birthorder %>% {cor.test(.$g_factor_2015, .$Math_score_Junior_High)}
+cor.test(alldata_birthorder$g_factor_2015, alldata_birthorder$years_of_education)
 alldata_birthorder_i[[1]] %>% {cor.test(.$g_factor_2015, .$years_of_education)}
-alldata_birthorder_i[[1]] %>% {cor.test(.$g_factor_2015, .$Math_score_Junior_High)}
+alldata_birthorder %>% {cor.test(.$g_factor_2015, .$Math_score_elemenatry)}
+alldata_birthorder_i[[1]] %>% {cor.test(.$g_factor_2015, .$Math_score_elemenatry)}
+alldata_birthorder %>% {cor.test(.$g_factor_2015, .$Total_score_elemenatry)}
+alldata_birthorder_i[[1]] %>% {cor.test(.$g_factor_2015, .$Total_score_elemenatry)}
 
 
 saveRDS(alldata_birthorder_i, file="alldata_birthorder_i.rdata")
-```
-
-recompute g_factor
-```{r}
-within(alldata_birthorder_i, {
-  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
-})
-```
-
-analyse beispiel
-```{r}
-library(lme4)
-fit <- with(alldata_birthorder_i, lmer(risk_taking ~ (menstruation_labelled + premenstrual_phase_fab + fertile_fab) * hormonal_contraception + (1 | short), subset = included_d == TRUE))
-mitml::testEstimates(fit, var.comp = T)
-fit[[1]] # fuer plots
-```
-
-
-test
-```{r}
-alldata_birthorder$miss_frac_person = rowMeans(is.na(alldata_birthorder))
-qplot(alldata_birthorder$miss_frac_person)
-alldatasm <-  alldata_birthorder %>% arrange(miss_frac_person) %>% slice(1:1000) %>% codebook::zap_attributes()
-
-alldatasm_i = mice(alldatasm, m = 5, maxit = 20)
-
-
-plot(alldatasm_i, c("riskB", "raven_2015_young", "birthorder_genes", "English_score_Junior_High", "Sector", "money_spent_smoking_log", "years_of_education", "still_smoking"))
-
-# check densities of imputed/real
-densityplot(alldatasm_i, ~ riskB)
-densityplot(alldatasm_i, ~ years_of_education)
-densityplot(alldatasm_i, ~ birthorder_genes)
-densityplot(alldatasm_i, ~ g_factor_2015)
-
-summary(lm(count_backwards ~ raven_2015_young, alldatasm))
-summary(lm(count_backwards ~ raven_2015_young, complete(alldatasm_i,1)))
-summary(lm(count_backwards ~ raven_2015_old, alldatasm))
-summary(lm(count_backwards ~ raven_2015_old, complete(alldatasm_i,1)))
-
-alldatasm_i <- mids2mitml.list(alldatasm_i)
-
-alldatasm_i <- within(alldatasm_i, {
-  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
-})
-
-alldatasm <- within(alldatasm, {
-  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
-})
-
-
-qplot(alldatasm_i[[1]]$g_factor_2015)
-
-alldatasm %>% {cor.test(.$g_factor_2015, .$years_of_education)}
-alldatasm %>% {cor.test(.$g_factor_2015, .$Math_score_Junior_High)}
-alldatasm_i[[1]] %>% {cor.test(.$g_factor_2015, .$years_of_education)}
-alldatasm_i[[1]] %>% {cor.test(.$g_factor_2015, .$Math_score_Junior_High)}
 ```

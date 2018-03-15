@@ -114,9 +114,11 @@ sort(round(miss_frac(alldata_birthorder),2))
 
 # test multi_level
 ```{r}
+
 set.seed(123) # random seed so that other can replicate our imputation
 
 # look at the dataset
+colnames(alldata_birthorder)
 head(alldata_birthorder)
 dim(alldata_birthorder)
 nrow(alldata_birthorder)
@@ -136,7 +138,7 @@ predictor_matrix = quickpred(alldatasm, mincor = 0.01)
 alldata_birthorder$miss_frac_person = rowMeans(is.na(alldata_birthorder))
 qplot(alldata_birthorder$miss_frac_person)
 
-alldatasm <-  alldata_birthorder %>% arrange(miss_frac_person) %>% slice(1:200)
+alldatasm <-  alldata_birthorder %>% arrange(miss_frac_person) %>% slice(1:1000)
 qplot(alldatasm$miss_frac_person)
 
 alldata_birthorder$miss_frac_person <- NULL
@@ -146,15 +148,12 @@ predictor_matrix = quickpred(alldatasm, mincor = 0.01) #all variables that corre
 
 # mother_pidlink is predicted by none of the other variables
 table(predictor_matrix["mother_pidlink", ] == 0)
-predictor_matrix["mother_pidlink",] = 0
-predictor_matrix[, "mother_pidlink"] = 0
-
 # mother_pidlink predicts 29 other variables
 table(predictor_matrix[, "mother_pidlink"] == 0)
 
 # to make the imputation possible, we exclude all "unimportant" variables from the imputation by mother_pidlink
 
-ini = mice(alldatasm, maxit = 0, predictorMatrix = predictor_matrix)
+ini = mice(alldatasm, maxit = 0)
 pred <- ini$pred
 
 length(meth)
@@ -185,7 +184,7 @@ plot(alldatasm_i, c("riskB", "raven_2015_young", "birthorder_genes", "English_sc
 
 # check densities of imputed/real
 densityplot(ini, ~ riskB)
-densityplot(alldatasm_i, ~ years_of_education)
+densityplot(ini, ~ years_of_education)
 densityplot(alldatasm_i, ~ birthorder_genes)
 densityplot(alldatasm_i, ~ g_factor_2015)
 

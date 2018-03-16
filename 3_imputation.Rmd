@@ -116,6 +116,45 @@ sort(round(miss_frac(alldata_birthorder),2))
 
 # test multi_level
 ```{r}
+alldata_birthorder$miss_frac_person = rowMeans(is.na(alldata_birthorder))
+qplot(alldata_birthorder$miss_frac_person)
+
+alldatasm <-  alldata_birthorder %>% arrange(mother_pidlink) %>% slice(1:1000)
+qplot(alldatasm$miss_frac_person)
+
+alldata_birthorder$miss_frac_person <- NULL
+alldatasm$miss_frac_person <- NULL
+
+alldatasm$mother_pidlink = as.integer(alldatasm$mother_pidlink)
+
+alldatasm = alldatasm %>% select(mother_pidlink, birthorder_genes,
+                                 raven_2015_old, years_of_education, big5_ext)
+
+imp0 <- mice(alldatasm, maxit=0)
+pred1 <- imp0$predictorMatrix
+pred1
+pred1 = quickpred(alldatasm, mincor = 0.1) #all variables that correlate > .01
+pred1
+meth1 <- imp0$method
+
+# linear multilevel imputation using the function mice.impute.2l.norm()
+# specify predictor_matrix using 1 = fixed effects, 2 = random effects, -2 = class variable, 0 = no effect
+# we can set the mother_pidlink as class variable (= -2)
+pred1[, "mother_pidlink"] = -2
+# set imputation procedures
+meth1[-1] <- "2l.pan"
+meth1
+pred1
+imp1 <- mice(alldatasm, maxit=10, m=2, predictorMatrix=pred1, method=meth1)
+imp2 <- mice(alldatasm, maxit=10, m = 2)
+
+
+summary(lmer(raven_2015_old ~ (1 | mother_pidlink), alldatasm))
+summary(lmer(raven_2015_old ~ (1 | mother_pidlink), complete(imp1,1)))
+summary(lmer(raven_2015_old ~ (1 | mother_pidlink), complete(imp2,1)))
+summary(lmer(big5_ext ~ (1 | mother_pidlink), alldatasm))
+summary(lmer(big5_ext ~ (1 | mother_pidlink), complete(imp1,1)))
+summary(lmer(big5_ext ~ (1 | mother_pidlink), complete(imp2,1)))
 
 set.seed(123) # random seed so that other can replicate our imputation
 
@@ -152,10 +191,6 @@ table(predictor_matrix["mother_pidlink", ] == 0)
 # mother_pidlink predicts 39 other variables
 table(predictor_matrix[, "mother_pidlink"] == 0)
 
-# linear multilevel imputation using the function mice.impute.2l.norm()
-# specify predictor_matrix using 1 = fixed effects, 2 = random effects, -2 = class variable, 0 = no effect
-# we can set the mother_pidlink as class variable (= -2)
-predictor_matrix[, "mother_pidlink"] = -2
 
 
 
@@ -167,8 +202,7 @@ alldatasm = alldatasm %>% mutate(mother_pidlink = as.integer(mother_pidlink))
 
 method = vector(mode = "character", length = 61)
 method[1] = "" # not necessary to predict motherpidlink
-method[2:60] = "2l.norm" # variables that can not be predicted by multilevel modelling, will be predicted # by predictive mean matching (default)
-# method[8] = "2l.norm" # we have to specify which variables shoul be predicted by multilevel modelling
+method[2:60] = "2l.pan" # we have to specify which variables shoul be predicted by multilevel modelling
 method[61] = "" # not necessary to predict the constant
 
 ini = mice(alldatasm, meth = method, maxit = 1, pred = predictor_matrix, seed = 71152)

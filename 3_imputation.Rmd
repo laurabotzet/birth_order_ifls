@@ -107,6 +107,20 @@ str(alldata_birthorder)
 alldata_birthorder %>% select_if(function(.)!is.numeric(.)) %>% names()
 
 correlations = corr_pipe(alldata_birthorder %>% select_if(is.numeric))
+
+alldata_birthorder <-  alldata_birthorder %>% select(`mother_pidlink`,  `age`, `male`, `birthorder_naive`, `sibling_count_naive`, `birthorder_genes`, `sibling_count_genes`,  
+`raven_2015_young`, `math_2015_young`, `raven_2015_old`, `math_2015_old`, `words_delayed`, `adaptive_numbering`, `raven_2007_old`, `raven_2007_young`, `math_2007_young`, `math_2007_old`, `count_backwards`, 
+
+`big5_ext`, `big5_con`, `big5_open`, `big5_neu`, `big5_agree`, `riskA`, `riskB`,
+
+`Elementary_missed`, `Elementary_worked`, `attended_school`,
+
+ # `currently_attending_school`,  `Type_of_test_elementary`, `Indonesia_score_elementary`, `English_score_elementary`, `Math_score_elemenatry`, `Total_score_elemenatry`, `Type_of_test_Junior_High`, `Indonesia_score_Junior_High`, `English_score_Junior_High`, `Math_score_Junior_High`, `Total_score_Junior_High`, `Type_of_test_Senior_High`, `Indonesia_score_Senior_High`, `English_score_Senior_High`, `Math_score_Senior_High`, `Total_score_Senior_High`, `Junior_high_worked`, `Senior_high_worked`, `University_worked`, `Junior_high_missed`, `Senior_high_missed`, `University_missed`,
+
+`years_of_education`, `Self_employed`, `ever_smoked`, `still_smoking`, `wage_last_month_log`, `wage_last_year_log`,
+
+`Category_Casual worker in agriculture`, `Category_Casual worker not in agriculture`, `Category_Government worker`, `Category_Private worker`, `Category_Self-employed`, `Category_Unpaid family worker`, 
+`Sector_Agriculture, forestry, fishing and hunting`, `Sector_Construction`, `Sector_Electricity, gas, water`, `Sector_Finance, insurance, real estate and business services`, `Sector_Manufacturing`, `Sector_Mining and quarrying`, `Sector_Social services`, `Sector_Transportation, storage and communications`, `Sector_Wholesale, retail, restaurants and hotels`)
 ```
 
 ## R Markdown

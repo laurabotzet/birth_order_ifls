@@ -121,6 +121,13 @@ birthorder = birthorder %>%
       sd(wage_last_year_log, na.rm=T)
         )
 
+data_used <- birthorder %>%
+  mutate(sibling_count = sibling_count_naive,
+         birth_order_nonlinear = birthorder_naive_factor,
+         birth_order = birthorder_naive,
+         count_birth_order = count_birthorder_naive)
+
+knitr::opts_chunk$set(error = T)
 ```
 
 ## Intelligence {.active .tabset}
@@ -128,17 +135,22 @@ birthorder = birthorder %>%
 
 ```{r}
 # Specify your outcome
-birthorder = birthorder %>% mutate(outcome = g_factor_2015)
-compare_birthorder_imputed(data_used = birthorder)
+data_used = data_used %>% mutate(outcome = g_factor_2015)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
 
 ```
+
 
 ### Raven {.tabset}
 
 ```{r}
 # Specify your outcome
-birthorder = birthorder %>% mutate(outcome = raven_2015_old)
-compare_birthorder_imputed(data_used = birthorder)
+data_used = data_used %>% mutate(outcome = raven_2015_old)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
 
 ```
 
@@ -146,8 +158,10 @@ compare_birthorder_imputed(data_used = birthorder)
 
 ```{r}
 # Specify your outcome
-birthorder = birthorder %>% mutate(outcome = math_2015_old)
-compare_birthorder_imputed(data_used = birthorder)
+data_used = data_used %>% mutate(outcome = math_2015_old)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
 
 ```
 
@@ -155,8 +169,10 @@ compare_birthorder_imputed(data_used = birthorder)
 
 ```{r}
 # Specify your outcome
-birthorder = birthorder %>% mutate(outcome = count_backwards)
-compare_birthorder_imputed(data_used = birthorder)
+data_used = data_used %>% mutate(outcome = count_backwards)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
 
 ```
 
@@ -164,8 +180,10 @@ compare_birthorder_imputed(data_used = birthorder)
 
 ```{r}
 # Specify your outcome
-birthorder = birthorder %>% mutate(outcome = words_delayed)
-compare_birthorder_imputed(data_used = birthorder)
+data_used = data_used %>% mutate(outcome = words_delayed)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
 
 ```
 
@@ -174,9 +192,10 @@ compare_birthorder_imputed(data_used = birthorder)
 
 ```{r}
 # Specify your outcome
-birthorder = birthorder %>% mutate(outcome = adaptive_numbering)
-compare_birthorder_imputed(data_used = birthorder)
+data_used = data_used %>% mutate(outcome = adaptive_numbering)
+data_used_plots <- data_used[[1]]
 
+compare_birthorder_imputed(data_used = data_used)
 ```
 
 ## Personality {.tabset}
@@ -185,8 +204,10 @@ compare_birthorder_imputed(data_used = birthorder)
 
 ```{r}
 # Specify your outcome
-birthorder = birthorder %>% mutate(outcome = big5_ext)
-compare_birthorder_imputed(data_used = birthorder)
+data_used = data_used %>% mutate(outcome = big5_ext)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
 
 ```
 
@@ -195,8 +216,8 @@ compare_birthorder_imputed(data_used = birthorder)
 
 ```{r}
 # Specify your outcome
-birthorder = birthorder %>% mutate(outcome = big5_neu)
-compare_birthorder_imputed(data_used = birthorder)
+data_used = data_used %>% mutate(outcome = big5_neu)
+compare_birthorder_imputed(data_used = data_used)
 
 ```
 
@@ -205,8 +226,10 @@ compare_birthorder_imputed(data_used = birthorder)
 
 ```{r}
 # Specify your outcome
-birthorder = birthorder %>% mutate(outcome = big5_neu)
-compare_birthorder_imputed(data_used = birthorder)
+data_used = data_used %>% mutate(outcome = big5_neu)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
 
 ```
 
@@ -215,8 +238,10 @@ compare_birthorder_imputed(data_used = birthorder)
 
 ```{r}
 # Specify your outcome
-birthorder = birthorder %>% mutate(outcome = big5_agree)
-compare_birthorder_imputed(data_used = birthorder)
+data_used = data_used %>% mutate(outcome = big5_agree)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
 
 ```
 
@@ -225,8 +250,10 @@ compare_birthorder_imputed(data_used = birthorder)
 
 ```{r}
 # Specify your outcome
-birthorder = birthorder %>% mutate(outcome = Openness)
-compare_birthorder_imputed(data_used = birthorder)
+data_used = data_used %>% mutate(outcome = Openness)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
 
 ```
 
@@ -235,8 +262,10 @@ compare_birthorder_imputed(data_used = birthorder)
 
 ```{r}
 # Specify your outcome
-birthorder = birthorder %>% mutate(outcome = riskA)
-compare_birthorder_imputed(data_used = birthorder)
+data_used = data_used %>% mutate(outcome = riskA)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
 
 ```
 
@@ -244,8 +273,10 @@ compare_birthorder_imputed(data_used = birthorder)
 
 ```{r}
 # Specify your outcome
-birthorder = birthorder %>% mutate(outcome = riskB)
-compare_birthorder_imputed(data_used = birthorder)
+data_used = data_used %>% mutate(outcome = riskB)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
 
 ```
 
@@ -254,15 +285,19 @@ compare_birthorder_imputed(data_used = birthorder)
 
 ```{r}
 # Specify your outcome
-birthorder = birthorder %>% mutate(outcome = years_of_education_z)
-compare_birthorder_imputed(data_used = birthorder)
+data_used = data_used %>% mutate(outcome = years_of_education_z)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
 
 ```
 ### Years of Education - non z-standardized{.tabset}
 
 ```{r}
 # Specify your outcome
-birthorder = birthorder %>% mutate(outcome = years_of_education)
-compare_birthorder_imputed(data_used = birthorder)
+data_used = data_used %>% mutate(outcome = years_of_education)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
 
 ```

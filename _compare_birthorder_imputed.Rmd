@@ -29,7 +29,7 @@ mitml::testEstimates(model_naive_m1, var.comp = T)
 ```{r }
 model_naive_m1_plot = lmer(outcome ~ age + male + sibling_count + (1 | mother_pidlink),
                            data = data_used_plots)
-# plot(allEffects(model_naive_m1_plot)) # fuer plots
+plot(allEffects(model_naive_m1_plot)) # fuer plots
 ```
 
 
@@ -48,7 +48,7 @@ mitml::testEstimates(model_naive_m2, var.comp = T)
 ```{r}
 model_naive_m2_plot = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
                            data = data_used_plots)
-# plot_birthorder(model_naive_m2_plot, separate = FALSE)
+plot_birthorder(model_naive_m2_plot, separate = FALSE)
 ```
 
 ##### Add Birth Order Factor {.tabset}
@@ -66,7 +66,7 @@ mitml::testEstimates(model_naive_m3, var.comp = T)
 model_naive_m3_plot = lmer(outcome ~ birth_order_nonlinear + age + male + sibling_count +
                              (1 | mother_pidlink),
                            data = data_used_plots)
-# plot_birthorder(model_naive_m3_plot, separate = FALSE)
+plot_birthorder(model_naive_m3_plot, separate = FALSE)
 
 ```
 
@@ -86,7 +86,7 @@ mitml::testEstimates(model_naive_m4, var.comp = T)
 model_naive_m4_plot = lmer(outcome ~ count_birth_order + age + male +
                              (1 | mother_pidlink),
                            data = data_used_plots)
-# plot_birthorder(model_naive_m4_plot)
+plot_birthorder(model_naive_m4_plot)
 ```
 
 ##### Model Comparison
@@ -119,7 +119,7 @@ mitml::testEstimates(model_genes_m1, var.comp = T)
 ```{r}
 model_genes_m1_plot = lmer(outcome ~ age + male + sibling_count + (1 | mother_pidlink),
                            data = data_used_plots)
-# plot(allEffects(model_genes_m1_plot))
+plot(allEffects(model_genes_m1_plot))
 ```
 
 ##### Add Birth Order Linear {.tabset}
@@ -135,7 +135,7 @@ mitml::testEstimates(model_genes_m2, var.comp = T)
 ```{r}
 model_genes_m2_plot = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
                            data = data_used_plots)
-# plot_birthorder(model_genes_m2_plot, separate = FALSE)
+plot_birthorder(model_genes_m2_plot, separate = FALSE)
 ```
 
 ##### Add Birth Order Factor {.tabset}
@@ -153,7 +153,7 @@ mitml::testEstimates(model_genes_m3, var.comp = T)
 model_genes_m3_plot = lmer(outcome ~ birth_order_nonlinear + age + male + sibling_count +
                              (1 | mother_pidlink),
                            data = data_used_plots)
-# plot_birthorder(model_genes_m3_plot, separate = FALSE)
+plot_birthorder(model_genes_m3_plot, separate = FALSE)
 ```
 
 ##### Add Interaction {.tabset}
@@ -171,7 +171,7 @@ mitml::testEstimates(model_genes_m4, var.comp = T)
 model_genes_m4_plot = lmer(outcome ~ count_birth_order + age + male +
                              (1 | mother_pidlink),
                            data = data_used_plots)
-# plot_birthorder(model_genes_m4_plot)
+plot_birthorder(model_genes_m4_plot)
 ```
 
 ##### Model Comparison
@@ -184,6 +184,6 @@ anova(model_genes_m1, model_genes_m2, model_genes_m3, model_genes_m4)
 ```{r}
 
 library(coefplot)
-multiplot(model_naive_m2_plot, model_genes_m2_plot)
+multiplot(model_naive_m2_plot, model_genes_m2_plot, intercept = FALSE)
 
 ```

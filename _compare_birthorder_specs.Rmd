@@ -57,6 +57,7 @@ compare_models_markdown(outcome_parental_m1)
 #### Compare birth order specifications
 ```{r}
 library(coefplot)
-multiplot(outcome_naive_m1, outcome_preg_m1, outcome_uterus_m1, outcome_parental_m1, dodgeHeight = 0.6)
+multiplot(outcome_naive_m1, outcome_preg_m1, outcome_uterus_m1, outcome_parental_m1, dodgeHeight = 0.6,
+          intercept = FALSE)
 ```
 

@@ -42,9 +42,10 @@ alldata_birthorder = alldata_birthorder %>%
          -sibling_count_uterus_preg, -sibling_count_naive_ind, -sibling_count_uterus_alive,
          -words_immediate, -words_remembered_avg,
          -Total_score_highest,-Total_score_highest_type, -Math_score_highest,
-         -Math_score_highest_type, -birthdate, -birthyear, -marriage_id, 
+         -Math_score_highest_type, -birthdate, -birthyear, -marriage_id,
          -money_spent_smoking_log,-amount_still_smokers, -total_worked, -total_missed, 
-         -highest_education, -chron_order_birth, -alive, -death_yr, -death_month, -g_factor_early
+         -highest_education, -chron_order_birth, -alive, -death_yr, -death_month, -g_factor_early,
+         -University_worked, -University_missed, - English_score_elementary,
          )
 
 alldata_birthorder = alldata_birthorder %>%
@@ -192,13 +193,15 @@ summary(lmer(big5_ext ~ (1 | mother_pidlink), complete(imp2,1)))
 
 # Real Deal Dataset
 ```{r}
+alldata_birthorder <- alldata_birthorder %>% select(-pidlink)
 alldata_birthorder$mother_pidlink = as.integer(alldata_birthorder$mother_pidlink)
+skimr::skim(alldata_birthorder)
 
 imp0 <- mice(alldata_birthorder, maxit=0)
 
 pred1 <- imp0$predictorMatrix
 pred1
-pred1 = quickpred(alldatasm, mincor = 0.1) #all variables that correlate > .01
+pred1 = quickpred(alldata_birthorder, mincor = 0.1) #all variables that correlate > .01
 pred1
 meth1 <- imp0$method
 
@@ -211,9 +214,23 @@ meth1[-1] <- "2l.pan"
 meth1
 pred1
 
-imp1 <- mice(alldatasm, maxit=4, m=2, predictorMatrix=pred1, method=meth1)
-imp2 <- mice(alldatasm, maxit=10, m = 2)
+imp1 <- mice(alldata_birthorder, maxit = 4, m=2, predictorMatrix = pred1, method = meth1)
 
+library(future)
+plan(multicore(workers = 10))
+imps = listenv::listenv()
+for (i in seq_along(1:10)) {
+  imps[[i]] %<-% mice(alldata_birthorder, m = 1, maxit = 15, predictorMatrix = pred1, method = meth1)
+}
+save(imps, file = "imps.rdata")
+
+all_imps = as.list(imps)
+save(all_imps, file = "imps2.rdata")
+alldata_birthorder_i = all_imps[[1]]
+for (i in seq_along(2:length(all_imps))) {
+  alldata_birthorder_i = ibind(alldata_birthorder_i, all_imps[[i]])
+}
+saveRDS(alldata_birthorder_i, file = "alldata_birthorder_i_ml.rds")
 
 summary(lmer(raven_2015_old ~ (1 | mother_pidlink), alldatasm))
 summary(lmer(raven_2015_old ~ (1 | mother_pidlink), complete(imp1,1)))

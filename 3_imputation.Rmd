@@ -46,14 +46,37 @@ alldata_birthorder = alldata_birthorder %>%
          -money_spent_smoking_log,-amount_still_smokers, -total_worked, -total_missed, 
          -highest_education, -chron_order_birth, -alive, -death_yr, -death_month, -g_factor_early
          )
+
 alldata_birthorder = alldata_birthorder %>%
-  select(-pidlink, -Category, -Sector) %>%
   mutate(currently_attending_school = as.integer(currently_attending_school),
          attended_school = as.integer(attended_school),
          Type_of_test_elementary = as.integer(Type_of_test_elementary),
          Type_of_test_Junior_High = as.integer(Type_of_test_Junior_High),
-         Type_of_test_Senior_High = as.integer(Type_of_test_Senior_High)
+         Type_of_test_Senior_High = as.integer(Type_of_test_Senior_High),
+         random_si = as.integer(random_si)
          )
+
+# recode Factor Variable as Dummy Variable
+alldata_birthorder = left_join(alldata_birthorder,
+                                alldata_birthorder %>%
+                                  filter(!is.na(Category)) %>%
+                                  mutate(var = 1) %>%
+                                  select(pidlink, Category, var) %>%
+                                  spread(Category, var, fill = 0, sep = "_"), by = "pidlink") %>%
+  select(-Category)
+
+# recode Factor Variable as Dummy Variable
+alldata_birthorder = left_join(alldata_birthorder,
+                                alldata_birthorder %>%
+                                  filter(!is.na(Sector)) %>%
+                                  mutate(var = 1) %>%
+                                  select(pidlink, Sector, var) %>%
+                                  spread(Sector, var, fill = 0, sep = "_"), by = "pidlink") %>%
+  select(-Sector)
+
+
+
+
 
 corr_pipe = . %>%  as.matrix() %>% 
 Hmisc::rcorr(.) %>% {
@@ -114,7 +137,7 @@ sort(round(miss_frac(alldata_birthorder),2))
 ```
 
 
-# test multi_level
+# Small Dataset
 ```{r}
 alldata_birthorder$miss_frac_person = rowMeans(is.na(alldata_birthorder))
 qplot(alldata_birthorder$miss_frac_person)
@@ -127,10 +150,52 @@ alldatasm$miss_frac_person <- NULL
 
 alldatasm$mother_pidlink = as.integer(alldatasm$mother_pidlink)
 
-alldatasm = alldatasm %>% select(mother_pidlink, birthorder_genes,
-                                 raven_2015_old, years_of_education, big5_ext)
+alldatasm = alldatasm %>% select(1:55)
+
+alldatasm = alldatasm %>% select_if(is.integer)
+
+
+imp4 = mice(alldatasm, blme_use = TRUE)
+alldatasm[,55]
 
 imp0 <- mice(alldatasm, maxit=0)
+pred1 <- imp0$predictorMatrix
+pred1
+pred1 = quickpred(alldatasm, mincor = 0.1) #all variables that correlate > .01
+pred1
+pred1[pred1 == 1] = 2
+meth1 <- imp0$method
+
+# linear multilevel imputation using the function mice.impute.2l.norm()
+# specify predictor_matrix using 1 = fixed effects, 2 = random effects, -2 = class variable, 0 = no effect
+# we can set the mother_pidlink as class variable (= -2)
+pred1[, "mother_pidlink"] = -2
+# set imputation procedures
+meth1[-1] <- "2l.pan"
+meth1
+pred1
+
+imp1 <- mice(alldatasm, maxit=4, m=2, predictorMatrix=pred1, method=meth1)
+imp2 <- mice(alldatasm, maxit=10, m = 2)
+
+
+summary(lmer(raven_2015_old ~ (1 | mother_pidlink), alldatasm))
+summary(lmer(raven_2015_old ~ (1 | mother_pidlink), complete(imp1,1)))
+summary(lmer(raven_2015_old ~ (1 | mother_pidlink), complete(imp2,1)))
+summary(lmer(big5_ext ~ (1 | mother_pidlink), alldatasm))
+summary(lmer(big5_ext ~ (1 | mother_pidlink), complete(imp1,1)))
+summary(lmer(big5_ext ~ (1 | mother_pidlink), complete(imp2,1)))
+
+```
+
+
+
+# Real Deal Dataset
+```{r}
+alldata_birthorder$mother_pidlink = as.integer(alldata_birthorder$mother_pidlink)
+
+imp0 <- mice(alldata_birthorder, maxit=0)
+
 pred1 <- imp0$predictorMatrix
 pred1
 pred1 = quickpred(alldatasm, mincor = 0.1) #all variables that correlate > .01
@@ -145,7 +210,8 @@ pred1[, "mother_pidlink"] = -2
 meth1[-1] <- "2l.pan"
 meth1
 pred1
-imp1 <- mice(alldatasm, maxit=10, m=2, predictorMatrix=pred1, method=meth1)
+
+imp1 <- mice(alldatasm, maxit=4, m=2, predictorMatrix=pred1, method=meth1)
 imp2 <- mice(alldatasm, maxit=10, m = 2)
 
 
@@ -156,6 +222,9 @@ summary(lmer(big5_ext ~ (1 | mother_pidlink), alldatasm))
 summary(lmer(big5_ext ~ (1 | mother_pidlink), complete(imp1,1)))
 summary(lmer(big5_ext ~ (1 | mother_pidlink), complete(imp2,1)))
 
+```
+
+```{r}
 set.seed(123) # random seed so that other can replicate our imputation
 
 # look at the dataset

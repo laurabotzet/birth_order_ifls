@@ -47,11 +47,13 @@ alldata_birthorder = alldata_birthorder %>%
          -highest_education, -chron_order_birth, -alive, -death_yr, -death_month, -g_factor_early
          )
 alldata_birthorder = alldata_birthorder %>%
-  select(-pidlink) %>%
+  select(-pidlink, -Category, -Sector) %>%
   mutate(currently_attending_school = as.integer(currently_attending_school),
          attended_school = as.integer(attended_school),
+         Type_of_test_elementary = as.integer(Type_of_test_elementary),
+         Type_of_test_Junior_High = as.integer(Type_of_test_Junior_High),
+         Type_of_test_Senior_High = as.integer(Type_of_test_Senior_High)
          )
-  
 
 corr_pipe = . %>%  as.matrix() %>% 
 Hmisc::rcorr(.) %>% {
@@ -125,15 +127,14 @@ nrow(alldata_birthorder)
 ncol(alldata_birthorder)
 summary(alldata_birthorder)
 
+alldata_birthorder = alldata_birthorder %>% mutate(const = 1)
+
 #look at the missing data pattern
 missingness_pattern = as.data.frame(md.pattern(alldata_birthorder))
 length(missingness_pattern)
 
-predictor_matrix = quickpred(alldatasm, mincor = 0.01)
-# predictor_matrix[, "mother_pidlink"] = 0
-# predictor_matrix["mother_pidlink", ] = 0
-
 # look if multilevel is needed: Do you think it is necessary to take the multilevel structure into account? YES! There is a strong cluster structure going on. If we ignore the clustering in our imputation model, we may run into invalid inference. To stay as close to the true data model, we must take the cluster structure into account during imputation. ((https://gerkovink.github.io/miceVignettes/Multi_level/Multi_level_data.html))
+
 
 alldata_birthorder$miss_frac_person = rowMeans(is.na(alldata_birthorder))
 qplot(alldata_birthorder$miss_frac_person)
@@ -148,23 +149,37 @@ predictor_matrix = quickpred(alldatasm, mincor = 0.01) #all variables that corre
 
 # mother_pidlink is predicted by none of the other variables
 table(predictor_matrix["mother_pidlink", ] == 0)
-# mother_pidlink predicts 29 other variables
+# mother_pidlink predicts 39 other variables
 table(predictor_matrix[, "mother_pidlink"] == 0)
 
-# to make the imputation possible, we exclude all "unimportant" variables from the imputation by mother_pidlink
+# linear multilevel imputation using the function mice.impute.2l.norm()
+# specify predictor_matrix using 1 = fixed effects, 2 = random effects, -2 = class variable, 0 = no effect
+# we can set the mother_pidlink as class variable (= -2)
+predictor_matrix[, "mother_pidlink"] = -2
 
-ini = mice(alldatasm, maxit = 0)
-pred <- ini$pred
 
-length(meth)
-meth
-meth = "norm"
+
+# mice.impute.2l.norm can not deal with fixed effects very well, thus we recode everything as a random effect (https://www.rdocumentation.org/packages/mice/versions/2.46.0/topics/mice.impute.2l.norm)
+predictor_matrix[predictor_matrix == 1] = 2
+
+# mice.impute.2l.norm can not deal with factor variables as class variables
+alldatasm = alldatasm %>% mutate(mother_pidlink = as.integer(mother_pidlink))
+
+method = vector(mode = "character", length = 61)
+method[1] = "" # not necessary to predict motherpidlink
+method[2:60] = "2l.norm" # variables that can not be predicted by multilevel modelling, will be predicted # by predictive mean matching (default)
+# method[8] = "2l.norm" # we have to specify which variables shoul be predicted by multilevel modelling
+method[61] = "" # not necessary to predict the constant
+
+ini = mice(alldatasm, meth = method, maxit = 1, pred = predictor_matrix, seed = 71152)
 
 alldatasm_i = mice(alldatasm, m = 5, maxit = 10, predictorMatrix = predictor_matrix)
 
-
 plot(ini, c("riskB", "raven_2015_young", "birthorder_genes", "English_score_Junior_High", "years_of_education", "still_smoking"))
 ```
+
+
+
 test
 ```{r}
 alldata_birthorder$miss_frac_person = rowMeans(is.na(alldata_birthorder))

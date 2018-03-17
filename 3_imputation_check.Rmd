@@ -22,12 +22,12 @@ source("0_helpers.R")
 ### Import alldata used for birthorder and g-factors computed
 alldata_birthorder = readRDS("data/alldata_birthorder.rds")
 
-alldata_birthorder_i =  readRDS("data/alldata_birthorder_i.rds")
+alldata_birthorder_i =  readRDS("data/alldata_birthorder_i_ml.rds")
 
 
 
 colnames(alldata_birthorder)
-crosstabs(alldata_birthorder$any_multiple_birth)
+
 ## For the imputation we wanted to clean the dataset and get rid of all uninteresting data
 ## To get the same dataset that we used for imputation thats what we have to do again:
 alldata_birthorder = alldata_birthorder %>%
@@ -111,37 +111,52 @@ name_columns = name_columns[name_columns != "mother_pidlink" & name_columns != "
                               name_columns != "sibling_count_naive" &
                               name_columns != "male"]
 
+name_columns_1 = name_columns[1:30]
 
-pdf("imputation_steps.pdf")
-plot(alldata_birthorder_i, name_columns)
+plot(alldata_birthorder_i, name_columns_1)
+
+pdf("imputation_steps_1.pdf")
+plot(alldata_birthorder_i, name_columns_1)
 dev.off()
 
 
 # check densities of imputed/real
-pdf("density.pdf")
+
 densityplot(alldata_birthorder_i, ~ birthorder_genes + sibling_count_genes + birthorder_naive)
 
-densityplot(alldata_birthorder_i, ~ raven_2015_young + math_2015_young + raven_2015_old + math_2015_old + words_delayed + adaptive_numbering + count_backwards)
+densityplot(alldata_birthorder_i, ~ raven_2015_young + math_2015_young + raven_2015_old + math_2015_old)
+
+densityplot(alldata_birthorder_i, ~ words_delayed + adaptive_numbering + count_backwards)
             
 densityplot(alldata_birthorder_i, ~ raven_2007_old + raven_2007_young + math_2007_young + math_2007_old)
 
 densityplot(alldata_birthorder_i, ~ big5_ext + big5_con + big5_open + big5_neu + big5_agree)
 
-densityplot(alldata_birthorder_i, ~ random_si + riskA + riskB)
+densityplot(alldata_birthorder_i, ~ riskA + riskB)
 
-densityplot(alldata_birthorder_i, ~ attended_school + currently_attending_school + hours_in_class + years_of_education)
+densityplot(alldata_birthorder_i, ~ Elementary_missed + Elementary_worked + attended_school + years_of_education + Self_employed)
 
-densityplot(alldata_birthorder_i, ~ Indonesia_score_elementary + English_score_elementary + Math_score_elemenatry + Total_score_elemenatry)
+densityplot(alldata_birthorder_i, ~ ever_smoked + still_smoking + wage_last_month_log + wage_last_year_log)
 
-densityplot(alldata_birthorder_i, ~ Indonesia_score_Junior_High + English_score_Junior_High + Math_score_Junior_High, Total_score_Junior_High)
 
-densityplot(alldata_birthorder_i, ~ Indonesia_score_Senior_High + English_score_Senior_High + Math_score_Senior_High + Total_score_Senior_High)
 
-densityplot(alldata_birthorder_i, ~ Elementary_worked + Junior_high_worked + Senior_high_worked + University_worked)
+pdf("density.pdf")
+densityplot(alldata_birthorder_i, ~ birthorder_genes + sibling_count_genes + birthorder_naive)
 
-densityplot(alldata_birthorder_i, ~ Elementary_missed + Junior_high_missed + Senior_high_missed + University_missed)
+densityplot(alldata_birthorder_i, ~ raven_2015_young + math_2015_young + raven_2015_old + math_2015_old)
 
-densityplot(alldata_birthorder_i, ~ Self_employed +  ever_smoked + still_smoking + amount + wage_last_month_log + wage_last_year_log)
+densityplot(alldata_birthorder_i, ~ words_delayed + adaptive_numbering + count_backwards)
+            
+densityplot(alldata_birthorder_i, ~ raven_2007_old + raven_2007_young + math_2007_young + math_2007_old)
+
+densityplot(alldata_birthorder_i, ~ big5_ext + big5_con + big5_open + big5_neu + big5_agree)
+
+densityplot(alldata_birthorder_i, ~ riskA + riskB)
+
+densityplot(alldata_birthorder_i, ~ Elementary_missed + Elementary_worked + attended_school + years_of_education + Self_employed)
+
+densityplot(alldata_birthorder_i, ~ ever_smoked + still_smoking + wage_last_month_log + wage_last_year_log)
+
 dev.off()
 
 # additional analyses based on van Buuren & Groothuis-Oudshoorn, 2011
@@ -198,14 +213,7 @@ summary(lm(g_factor_2015 ~ raven_2015_young, alldata_birthorder_i_g_factor[[1]])
 
 alldata_birthorder %>% {cor.test(.$g_factor_nomiss, .$years_of_education)}
 alldata_birthorder_i_g_factor[[1]] %>% {cor.test(.$g_factor_2015, .$years_of_education)}
-alldata_birthorder %>% {cor.test(.$g_factor_nomiss, .$Math_score_elemenatry)}
-alldata_birthorder_i_g_factor[[1]] %>% {cor.test(.$g_factor_2015, .$Math_score_elemenatry)}
-alldata_birthorder %>% {cor.test(.$g_factor_nomiss, .$Total_score_elemenatry)}
-alldata_birthorder_i_g_factor[[1]] %>% {cor.test(.$g_factor_2015, .$Total_score_elemenatry)}
 
-qplot(alldata_birthorder$g_factor_nomiss, alldata_birthorder$Total_score_elemenatry)
-qplot(alldata_birthorder_i_g_factor[[1]]$g_factor_2015,
-      alldata_birthorder_i_g_factor[[1]]$Total_score_elemenatry)
 
 saveRDS(alldata_birthorder_i, file="alldata_birthorder_i.rdata")
 ```

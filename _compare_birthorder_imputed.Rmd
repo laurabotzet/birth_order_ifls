@@ -103,7 +103,7 @@ anova(model_naive_m1, model_naive_m2, model_naive_m3, model_naive_m4)
 ###### Model Summary
 
 ```{r}
-data_used = data_used%>%
+data_used = data_used %>%
   mutate(sibling_count = sibling_count_genes,
          birth_order_nonlinear = birthorder_genes_factor,
          birth_order = birthorder_genes,

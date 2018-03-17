@@ -38,7 +38,7 @@ library(mitml)
 
 ## Load data
 ```{r Load Data}
-birthorder = readRDS("data/alldata_birthorder_i.rds")
+birthorder = readRDS("data/alldata_birthorder_i_ml.rds")
 ```
 
 ## Data preparations
@@ -127,7 +127,6 @@ data_used <- birthorder %>%
          birth_order = birthorder_naive,
          count_birth_order = count_birthorder_naive)
 
-knitr::opts_chunk$set(error = T)
 ```
 
 ## Intelligence {.active .tabset}
@@ -250,7 +249,7 @@ compare_birthorder_imputed(data_used = data_used)
 
 ```{r}
 # Specify your outcome
-data_used = data_used %>% mutate(outcome = Openness)
+data_used = data_used %>% mutate(outcome = big5_open)
 data_used_plots <- data_used[[1]]
 
 compare_birthorder_imputed(data_used = data_used)

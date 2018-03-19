@@ -8,6 +8,7 @@ editor_options:
 ## Helper
 ```{r helper}
 source("0_helpers.R")
+
 ```
 
 ## Load data
@@ -25,23 +26,41 @@ birthorder = birthorder %>%
   filter(!is.na(mother_pidlink)) %>%
   select(-father_pidlink) %>%
   filter(is.na(any_multiple_birth) | any_multiple_birth != 1) %>% # remove families with twins/triplets/..
+  filter(!is.na(birthorder_naive)) %>%
   select(-starts_with("age_"), -wave, -any_multiple_birth, -multiple_birth) %>%
   mutate(money_spent_smoking_log = if_else(is.na(money_spent_smoking_log) & ever_smoked == 0, 0, money_spent_smoking_log),
          amount = if_else(is.na(amount) & ever_smoked == 0, 0, amount),
          amount_still_smokers = if_else(is.na(amount_still_smokers) &  still_smoking == 0, 0, amount_still_smokers),
          birthyear = lubridate::year(birthdate))
 
-birthorder <- within(birthorder, {
-  g_factor <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
-})
+# recode Factor Variable as Dummy Variable
+birthorder = left_join(birthorder,
+                                birthorder %>%
+                                  filter(!is.na(Category)) %>%
+                                  mutate(var = 1) %>%
+                                  select(pidlink, Category, var) %>%
+                                  spread(Category, var, fill = 0, sep = "_"), by = "pidlink") %>%
+  select(-Category)
+
+# recode Factor Variable as Dummy Variable
+birthorder = left_join(birthorder,
+                                birthorder %>%
+                                  filter(!is.na(Sector)) %>%
+                                  mutate(var = 1) %>%
+                                  select(pidlink, Sector, var) %>%
+                                  spread(Sector, var, fill = 0, sep = "_"), by = "pidlink") %>%
+  select(-Sector)
+
 
 
 ### Variables
 birthorder = birthorder %>%
   mutate(
     # center variables that are used for analysis
-  raven_2015_old_nonz = raven_2015_old,
-  g_factor = scale(g_factor),
+  g_factor_2015_old = scale(g_factor_2015_old),
+  g_factor_2015_young = scale(g_factor_2015_young),
+  g_factor_2007_old = scale(g_factor_2007_old),
+  g_factor_2007_young = scale(g_factor_2007_young),
   raven_2015_old = scale(raven_2015_old),
   math_2015_old = scale(math_2015_old),
   count_backwards = scale(count_backwards),
@@ -51,6 +70,10 @@ birthorder = birthorder %>%
   words_immediate = scale(words_immediate),
   words_delayed = scale(words_delayed),
   adaptive_numbering = scale(adaptive_numbering),
+  raven_2007_old = scale(raven_2007_old),
+  math_2007_old = scale(math_2007_old),
+  raven_2007_young = scale(raven_2007_young),
+  math_2007_young = scale(math_2007_young),
   riskA = scale(riskA),
   riskB = scale(riskB),
   years_of_education_z = scale(years_of_education),
@@ -61,12 +84,13 @@ birthorder = birthorder %>%
   big5_con = scale(big5_con),
   big5_agree = scale(big5_agree),
   big5_open = scale(big5_open),
-  big5_neu = scale(big5_neu)
+  big5_neu = scale(big5_neu),
+  attended_school = as.integer(attended_school)
 )
 
 qplot(birthorder$male)
-qplot(birthorder$g_factor)
-qplot(birthorder$g_factor_early)
+qplot(birthorder$g_factor_2015_old)
+qplot(birthorder$g_factor_2015_old)
 
 ### Birthorder and Sibling Count
 birthorder = birthorder %>% 
@@ -154,11 +178,11 @@ birthorder <- birthorder %>%
 ```
 
 ## How many siblings with data do we retain in each family?
-```{r}
-crosstabs(~is.na(birthorder$birthorder_naive) + is.na(birthorder$g_factor))
-crosstabs(~is.na(birthorder$birthorder_uterus_preg) + is.na(birthorder$g_factor))
+```{r  How many siblings with data do we retain in each family?}
+crosstabs(~is.na(birthorder$birthorder_naive) + is.na(birthorder$g_factor_2015_old))
+crosstabs(~is.na(birthorder$birthorder_uterus_preg) + is.na(birthorder$g_factor_2015_old))
 
-birthorder %>% filter(!is.na(birthorder_naive), !is.na(g_factor)) %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_uterus_preg)) -> counts
+birthorder %>% filter(!is.na(birthorder_naive), !is.na(g_factor_2015_old)) %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_uterus_preg)) -> counts
 birthorder %>% filter(!is.na(birthorder_naive)) %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_uterus_preg)) -> counts1
 ```
 
@@ -172,17 +196,44 @@ ggplot(counts, aes(all, with_data)) + geom_jitter(alpha = 0.1) + geom_smooth() +
 
 
 ## Intelligence {.active .tabset}
-### g-factor {.tabset}
+### g-factor 2015 old {.tabset}
 
-```{r}
-birthorder <- birthorder %>% mutate(outcome = g_factor_early)
+```{r g-factor 2015 old}
+birthorder <- birthorder %>% mutate(outcome = g_factor_2015_old)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### g-factor 2015 young {.tabset}
+
+```{r g-factor 2015 young}
+birthorder <- birthorder %>% mutate(outcome = g_factor_2015_young)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### g-factor 2007 old {.tabset}
+
+```{r g-factor 2007 old}
+birthorder <- birthorder %>% mutate(outcome = g_factor_2007_old)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### g-factor 2007 young {.tabset}
+
+```{r g-factor 2007 young}
+birthorder <- birthorder %>% mutate(outcome = g_factor_2007_young)
 model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 compare_birthorder_specs(model)
 ```
 
 
-### Raven {.tabset}
+### Raven 2015 old {.tabset}
 
 ```{r}
 birthorder <- birthorder %>% mutate(outcome = raven_2015_old)
@@ -191,7 +242,7 @@ model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pi
 compare_birthorder_specs(model)
 ```
 
-### Numeracy {.tabset}
+### Numeracy 2015 old {.tabset}
 
 ```{r}
 birthorder <- birthorder %>% mutate(outcome = math_2015_old)
@@ -200,6 +251,59 @@ model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pi
 compare_birthorder_specs(model)
 ```
 
+### Raven 2015 young {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = raven_2015_young)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### Numeracy 2015 young {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = math_2015_young)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### Raven 2007 old {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = raven_2007_old)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+             data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### Numeracy 2007 old{.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = math_2007_old)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+             data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### Raven 2007 young {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = raven_2007_young)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+             data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### Numeracy 2007 young {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = math_2007_young)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+             data = birthorder)
+compare_birthorder_specs(model)
+```
 
 ### Counting backwards {.tabset}
 
@@ -237,6 +341,7 @@ compare_birthorder_specs(model)
 ```
 
 ## Personality {.tabset}
+
 ### Extraversion {.tabset}
 
 
@@ -319,7 +424,6 @@ compare_birthorder_specs(model)
 ## Educational Attainment {.tabset}
 ### Years of Education - z-standardized {.tabset}
 
-
 ```{r}
 birthorder <- birthorder %>% mutate(outcome = years_of_education_z)
 model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
@@ -327,28 +431,39 @@ model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pi
 compare_birthorder_specs(model)
 ```
 
-#### Years of education - non-standardized {.tabset}
+### Elementary missed {.tabset}
 
 ```{r}
-birthorder <- birthorder %>% mutate(outcome = years_of_education)
-model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder)
-compare_birthorder_specs(model)
-```
-
-### EBTANAS {.tabset}
-
-```{r}
-birthorder <- birthorder %>% mutate(outcome = Total_score_elemenatry)
+birthorder <- birthorder %>% mutate(outcome = Elementary_missed)
 model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 compare_birthorder_specs(model)
 ```
 
 
-## Income last month {.tabset}
+### Elementary worked {.tabset}
 
-### z-standardized {.tabset}
+```{r}
+birthorder <- birthorder %>% mutate(outcome = Elementary_worked)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+### Attended School {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = attended_school)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+## Work {.tabset}
+
+### Income Last Month (log) - z-standardized {.tabset}
 
 ```{r}
 birthorder <- birthorder %>% mutate(outcome = wage_last_month_z)
@@ -357,9 +472,7 @@ model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pi
 compare_birthorder_specs(model)
 ```
 
-## Income last year {.tabset}
-
-### z-standardized {.tabset}
+### Income last year (log) - z-standardized {.tabset}
 
 ```{r}
 birthorder <- birthorder %>% mutate(outcome = wage_last_year_z)
@@ -368,11 +481,7 @@ model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pi
 compare_birthorder_specs(model)
 ```
 
-
-
-## Work {.tabset}
 ### Self-Employment - non standardized {.tabset}
-
 
 ```{r}
 birthorder <- birthorder %>% mutate(outcome = Self_employed)
@@ -382,11 +491,158 @@ compare_birthorder_specs(model)
 ```
 
 
-### Child Labour {.tabset}
+## Work Category{.tabset}
+
+### Category_Casual worker in agriculture{.tabset}
+
 ```{r}
-birthorder <- birthorder %>% mutate(outcome = total_worked)
+birthorder <- birthorder %>% mutate(outcome = `Category_Casual worker in agriculture`)
 model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 compare_birthorder_specs(model)
 ```
 
+### Category_Casual worker not in agriculture{.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = `Category_Casual worker not in agriculture`)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### Category_Government worker{.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = `Category_Government worker`)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+### Category_Private worker{.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = `Category_Private worker`)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### Category_Self-employed{.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = `Category_Self-employed`)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### Category_Unpaid family worker{.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = `Category_Unpaid family worker`)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+## Work Sector {.tabset}
+
+### Sector_Agriculture, forestry, fishing and hunting {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = `Sector_Agriculture, forestry, fishing and hunting`)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### Sector_Construction {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = `Sector_Construction`)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### Sector_Electricity, gas, water {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = `Sector_Electricity, gas, water`)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+### Sector_Finance, insurance, real estate and business services {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = `Sector_Finance, insurance, real estate and business services`)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+### Sector_Manufacturing {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = Sector_Manufacturing)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+
+### Sector_Mining and quarrying {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = `Sector_Mining and quarrying`)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+### Sector_Social services {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = `Sector_Social services`)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+
+### Sector_Transportation, storage and communications {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = `Sector_Transportation, storage and communications`)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+## Smoking Behaviour {.tabset}
+### ever_smoked {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = ever_smoked)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### still_smoking {.tabset}
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = still_smoking)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```

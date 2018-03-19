@@ -1,0 +1,335 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# <span style="color:#8DA0CB">Data Sampling</span> {.tabset}
+
+## Helper
+```{r helper}
+source("0_helpers.R")
+```
+
+## Load data
+```{r Load data}
+### Import alldata used for birthorder
+alldata_birthorder = readRDS("data/alldata_birthorder.rds")
+```
+
+## Data Wrangling
+```{r data wrangling}
+## For the imputation we want to clean the dataset and get rid of all uninteresting data
+alldata_birthorder = alldata_birthorder %>%
+  select(-ends_with("_ans"), -matches("[a-z][0-9]r?"),
+         -matches("[a-z][0-9]r_reversed"), -matches("si[0-9]"),
+         starts_with("big5_"))
+```
+
+
+## Test distributions
+```{r}
+alldata_birthorder %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, words_delayed, adaptive_numbering) %>% tidyr::gather() %>% 
+  ggplot(aes(value)) + geom_bar() + facet_wrap(~ key, scale = "free")
+```
+
+## g-factor using ifml
+### Intelligence: old g-factor
+```{r}
+fa.parallel(alldata_birthorder %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
+fa(alldata_birthorder %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 3)
+om_results = omega(alldata_birthorder %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 3, sl = F)
+om_results
+omega.diagram(om_results)
+
+"g_factor =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed + adaptive_numbering" %>%
+  cfa(missing = "fiml", data = alldata_birthorder, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+## Explained variance:
+
+x = inspect(cfa_g, "rsquare")
+alldata_birthorder$g_factor = predict(cfa_g)[,1]
+cor.test(predict(cfa_g)[,1], alldata_birthorder %>% select(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering) %>% scale() %>% rowMeans())
+qplot(alldata_birthorder$g_factor)
+
+
+ggplot(alldata_birthorder, aes(g_factor, raven_2015_old)) + geom_jitter()
+
+round(cor(alldata_birthorder %>% select(g_factor, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+
+formr::missingness_patterns(alldata_birthorder %>% select(g_factor, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor))
+```
+
+### Intelligence: new g-factor based on data from 2015
+```{r}
+fa.parallel(alldata_birthorder %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
+fa(alldata_birthorder %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1)
+om_results = omega(alldata_birthorder %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1, sl = F)
+om_results
+omega.diagram(om_results)
+
+"g_factor_new =~ raven_2015_old + math_2015_old + raven_2015_young + math_2015_young + count_backwards +  words_delayed+ adaptive_numbering" %>%
+  cfa(missing = "fiml", data = alldata_birthorder, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+## Explained variance:
+
+x = inspect(cfa_g, "rsquare")
+alldata_birthorder$g_factor_new = predict(cfa_g)[,1]
+qplot(alldata_birthorder$g_factor_new)
+
+round(cor(alldata_birthorder %>% select(g_factor, g_factor_new, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+
+table(is.na(alldata_birthorder$g_factor), is.na(alldata_birthorder$g_factor_new))
+
+formr::missingness_patterns(alldata_birthorder %>% select(g_factor, g_factor_new, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor))
+```
+
+### Intelligence: crazy, definitly wrong g-factor (using all iqdata)
+```{r}
+fa.parallel(alldata_birthorder %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
+fa(alldata_birthorder %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1)
+om_results = omega(alldata_birthorder %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1, sl = F)
+om_results
+omega.diagram(om_results)
+
+"g_factor_crazy =~ raven_2015_old + math_2015_old + raven_2015_young + math_2015_young + raven_2007_old + math_2007_old + raven_2007_young + math_2007_young + count_backwards +  words_delayed+ adaptive_numbering" %>%
+  cfa(missing = "fiml", data = alldata_birthorder, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+## Explained variance:
+
+x = inspect(cfa_g, "rsquare")
+alldata_birthorder$g_factor_crazy = predict(cfa_g)[,1]
+qplot(alldata_birthorder$g_factor_crazy)
+
+round(cor(alldata_birthorder %>% select(g_factor_crazy, g_factor, g_factor_new, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+
+table(is.na(alldata_birthorder$g_factor_crazy), is.na(alldata_birthorder$g_factor_new))
+table(is.na(alldata_birthorder$g_factor_crazy), is.na(alldata_birthorder$birthorder_naive))
+
+formr::missingness_patterns(alldata_birthorder %>% select(g_factor_crazy, g_factor, g_factor_new, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering, g_factor))
+```
+
+
+### Intelligence: different (adequat?) forms of analyses
+```{r}
+formr::missingness_patterns(alldata_birthorder %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, words_delayed, adaptive_numbering))
+round(cor(alldata_birthorder %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+
+
+fa.parallel(alldata_birthorder %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
+fa(alldata_birthorder %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1)
+om_results = omega(alldata_birthorder %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, raven_2007_old, math_2007_old, raven_2007_young, math_2007_young, count_backwards, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1, sl = F)
+om_results
+omega.diagram(om_results)
+
+"g_factor_2015 =~ raven_2015_old + math_2015_old + raven_2015_young + math_2015_young + count_backwards +  words_delayed+ adaptive_numbering
+g_factor_2007 =~ raven_2007_old + math_2007_old + raven_2007_young + math_2007_young" %>%
+  cfa(missing = "fiml", data = alldata_birthorder, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+"raven_2015_old ~~ age_2015_young + raven_2015_young
+math_2015_old ~~ age_2015_young + math_2015_young
+raven_2007_old ~~ age_2007_young + raven_2007_young
+math_2007_old ~~ age_2007_young + math_2007_young
+g_factor_2015 =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed+ adaptive_numbering
+g_factor_2007 =~ raven_2007_old + math_2007_old" %>%
+  cfa(missing = "fiml", data = alldata_birthorder %>% codebook::zap_attributes(), std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+
+"years_of_education ~ g_factor_2015
+Math_score_Junior_High ~ g_factor_2015
+English_score_Junior_High ~ g_factor_2015
+Indonesia_score_Junior_High ~ g_factor_2015
+g_factor_2015 =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed+ adaptive_numbering
+g_factor_2007 =~ raven_2007_old + math_2007_old" %>%
+  sem(missing = "fiml", data = alldata_birthorder %>% codebook::zap_attributes(), std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+cor.test(predict(cfa_g)[,1], alldata_birthorder %>% select(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering) %>% scale() %>% rowMeans())
+cor.test(predict(cfa_g)[,2], alldata_birthorder %>% select(raven_2007_old, math_2007_old) %>% scale() %>% rowMeans())
+
+"g_factor_2015 =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed+ adaptive_numbering
+g_factor_2007 =~ raven_2007_old + math_2007_old" %>%
+  sem(missing = "fiml", data = alldata_birthorder %>% codebook::zap_attributes(), std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+
+x = inspect(cfa_g, "rsquare")
+alldata_birthorder$g_factor_2015 = predict(cfa_g)[,1]
+alldata_birthorder$g_factor_2007 = predict(cfa_g)[,2]
+cor.test(alldata_birthorder$g_factor_2015, alldata_birthorder$years_of_education)
+
+x = alldata_birthorder %>% filter(round(g_factor_2007, digits = 5) == -0.98104)
+table(is.na(x$math_2007_old))
+
+qplot(alldata_birthorder$g_factor_2015,alldata_birthorder$g_factor_2007, geom = 'jitter', alpha = I(0.2))
+
+qplot(alldata_birthorder$g_factor_2015)
+qplot(alldata_birthorder$g_factor_2007)
+qplot(alldata_birthorder$g_factor_2015,alldata_birthorder$g_factor_2007, geom = 'jitter', alpha = I(0.2))
+
+round(cor(alldata_birthorder %>% select(g_factor_2015, g_factor_2007, g_factor, g_factor_new, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+
+table(is.na(alldata_birthorder$g_factor_crazy), is.na(alldata_birthorder$g_factor_new))
+table(is.na(alldata_birthorder$g_factor_crazy), is.na(alldata_birthorder$birthorder_naive))
+```
+
+### Graphical Analyses
+```{r}
+ggplot(alldata_birthorder, aes(g_factor, g_factor_new)) + geom_jitter()
+ggplot(alldata_birthorder, aes(g_factor, g_factor_crazy)) + geom_jitter()
+```
+
+## g-factor without ifml
+### Intelligence: old g-factor
+```{r}
+no_miss = alldata_birthorder %>%
+  filter(!is.na(raven_2015_old), !is.na(math_2015_old), !is.na(count_backwards),
+         !is.na(words_delayed), !is.na(adaptive_numbering))
+fa.parallel(no_miss %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
+fa(no_miss %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 2)
+om_results = omega(no_miss %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 2, sl = F)
+om_results
+omega.diagram(om_results)
+
+"g_factor_nomiss =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed + adaptive_numbering" %>%
+  cfa(data = no_miss, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+## Explained variance:
+
+x = inspect(cfa_g, "rsquare")
+no_miss$g_factor_nomiss = predict(cfa_g)[,1]
+
+qplot(no_miss$g_factor_nomiss)
+
+no_miss = no_miss %>% select(pidlink, g_factor_nomiss)
+
+alldata_birthorder_full = left_join(alldata_birthorder, no_miss, by = "pidlink")
+
+ggplot(alldata_birthorder_full, aes(g_factor, g_factor_nomiss)) + geom_jitter()
+
+round(cor(alldata_birthorder_full %>% select(g_factor_nomiss, g_factor, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+```
+
+### Intelligence: new g-factor based on data from 2015
+```{r}
+# Here I am not sure if that is the right way to go. These are the people who completed both
+# the young and the old test in 2015 (so they completed two very similar tests). i would not
+# base the imputation on these people
+no_miss = alldata_birthorder %>%
+  filter(!is.na(raven_2015_old), !is.na(math_2015_old), !is.na(count_backwards),
+         !is.na(words_delayed), !is.na(adaptive_numbering), !is.na(raven_2015_young),
+         !is.na(math_2015_young))
+
+fa.parallel(no_miss %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
+fa(no_miss %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1)
+om_results = omega(no_miss %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 3, sl = F)
+om_results
+omega.diagram(om_results)
+
+"g_factor_new_nomiss =~ raven_2015_old + math_2015_old + raven_2015_young + math_2015_young + count_backwards +  words_delayed+ adaptive_numbering" %>%
+  cfa(data = no_miss, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+## Explained variance:
+
+x = inspect(cfa_g, "rsquare")
+no_miss$g_factor_new_nomiss = predict(cfa_g)[,1]
+qplot(no_miss$g_factor_new_nomiss)
+
+no_miss = no_miss %>% select(pidlink, g_factor_new_nomiss)
+
+alldata_birthorder_full = left_join(alldata_birthorder_full, no_miss, by = "pidlink")
+
+ggplot(alldata_birthorder_full, aes(g_factor_new, g_factor_new_nomiss)) + geom_jitter()
+
+round(cor(alldata_birthorder_full %>% select(g_factor_new, g_factor_new_nomiss, raven_2015_old, math_2015_old, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+
+```
+
+### Intelligence: crazy, definitly wrong g-factor (using all iqdata)
+```{r}
+# now this makes maybe more sense: people who completet the raven and math test (old) in 2007
+# and completed all the measurements in 2015
+no_miss = alldata_birthorder %>%
+  filter(!is.na(raven_2015_old), !is.na(math_2015_old), !is.na(count_backwards),
+         !is.na(words_delayed), !is.na(adaptive_numbering), !is.na(raven_2007_old),
+         !is.na(raven_2007_old))
+
+
+fa.parallel(no_miss %>% select(raven_2015_old, math_2015_old, raven_2007_old, math_2007_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
+fa(no_miss %>% select(raven_2015_old, math_2015_old, raven_2007_old, math_2007_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1)
+om_results = omega(no_miss %>% select(raven_2015_old, math_2015_old, raven_2007_old, math_2007_old, count_backwards, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 4, sl = F)
+om_results
+omega.diagram(om_results)
+
+"g_factor_crazy =~ raven_2015_old + math_2015_old + raven_2007_old + math_2007_old + count_backwards +  words_delayed+ adaptive_numbering" %>%
+  cfa(data = no_miss, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+## Explained variance:
+
+x = inspect(cfa_g, "rsquare")
+no_miss$g_factor_crazy_nomiss = predict(cfa_g)[,1]
+qplot(no_miss$g_factor_crazy_nomiss)
+
+no_miss = no_miss %>% select(pidlink, g_factor_crazy_nomiss)
+alldata_birthorder_full = left_join(alldata_birthorder_full, no_miss, by = "pidlink")
+
+ggplot(alldata_birthorder_full, aes(g_factor_crazy, g_factor_crazy_nomiss)) + geom_jitter()
+
+
+round(cor(alldata_birthorder_full %>% select(g_factor_crazy, g_factor_crazy_nomiss, raven_2015_old, math_2015_old, raven_2007_old, math_2007_old, count_backwards, words_immediate, words_delayed, adaptive_numbering), use = "pairwise.complete.obs"), 2)
+
+```
+
+### Graphical Analyses
+```{r}
+ggplot(alldata_birthorder_full, aes(g_factor_nomiss, g_factor_new_nomiss)) +
+  geom_jitter(alpha = I(0.2))
+ggplot(alldata_birthorder_full, aes(g_factor_nomiss, g_factor_crazy_nomiss)) +
+  geom_jitter(alpha = I(0.2))
+```
+
+### Intelligence: different (adequat?) forms of analyses
+```{r}
+"g_factor_2015 =~ raven_2015_old + math_2015_old + raven_2015_young + math_2015_young + count_backwards +  words_delayed+ adaptive_numbering
+g_factor_2007 =~ raven_2007_old + math_2007_old + raven_2007_young + math_2007_young" %>%
+  cfa(data = alldata_birthorder, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+no_miss = alldata_birthorder_full %>%
+  filter(!is.na(raven_2015_old), !is.na(math_2015_old), !is.na(raven_2015_young),
+         !is.na(math_2015_young), !is.na(count_backwards), !is.na(words_delayed),
+         !is.na(adaptive_numbering), !is.na(raven_2007_old), !is.na(math_2007_old),
+         !is.na(raven_2007_young), !is.na(math_2007_young)) %>%
+  mutate(g_factor_2015_nomiss = predict(cfa_g)[,1],
+         g_factor_2007_nomiss = predict(cfa_g)[,2])
+
+qplot(no_miss$g_factor_2015_nomiss,
+      no_miss$g_factor_2007_nomiss, geom = 'jitter', alpha = I(0.2))
+
+no_miss = no_miss %>% select(pidlink, g_factor_2015_nomiss, g_factor_2007_nomiss)
+alldata_birthorder_full = left_join(alldata_birthorder_full, no_miss, by = "pidlink")
+```
+
+
+## All g-factor
+```{r}
+alldata_birthorder_full %>% select(g_factor, g_factor_new, g_factor_crazy, g_factor_nomiss, g_factor_new_nomiss, g_factor_crazy_nomiss, g_factor_2007, g_factor_2015) %>%
+  tidyr::gather() %>% 
+  ggplot(aes(value)) + geom_histogram() +
+  facet_wrap(~ key, scale = "free")
+```
+
+## Save data
+
+for future analyses
+
+```{r save data}
+saveRDS(alldata_birthorder_full, file = "data/alldata_birthorder_full.rds")
+```

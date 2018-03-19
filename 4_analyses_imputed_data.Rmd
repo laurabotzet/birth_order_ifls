@@ -44,12 +44,38 @@ birthorder = readRDS("data/alldata_birthorder_i_ml.rds")
 ## Data preparations
 ```{r data preparations}
 birthorder <- mids2mitml.list(birthorder)
+
+## Calculate g_factors (for now with rowMeans: better to run factor analysis here as well?)
 birthorder <- within(birthorder, {
-  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
+  g_factor_2015_old <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
 })
+
+birthorder <- within(birthorder, {
+  g_factor_2015_young <- rowMeans(scale(cbind(raven_2015_young, math_2015_young)))
+})
+
+birthorder <- within(birthorder, {
+  g_factor_2007_old <- rowMeans(scale(cbind(raven_2007_old, math_2007_old)))
+})
+
+birthorder <- within(birthorder, {
+  g_factor_2007_young <- rowMeans(scale(cbind(raven_2007_young, math_2007_young)))
+})
+
+
 birthorder = birthorder %>% tbl_df.mitml.list
 
 ### Birthorder and Sibling Count
+# for factor variables we have to round birth order position and eliminate all unlikely numbers (negative ones)
+birthorder_data = birthorder[[1]]
+
+birthorder = birthorder %>%
+  mutate(birthorder_genes = ifelse(birthorder_genes < 0, 0, birthorder_genes),
+         birthorder_naive = ifelse(birthorder_naive < 0, 0, birthorder_naive),
+         birthorder_genes = round(birthorder_genes),
+         birthorder_naive = round(birthorder_naive))
+
+
 birthorder = birthorder %>% 
   mutate(
 # birthorder as factors with levels of 1, 2, 3, 4, 5, 5+
@@ -94,12 +120,20 @@ birthorder = birthorder %>%
 ### Variables
 birthorder = birthorder %>%
   mutate(
-    g_factor_2015 = (g_factor_2015 - mean(g_factor_2015, na.rm=T)) / sd(g_factor_2015, na.rm=T),
+    g_factor_2015_old = (g_factor_2015_old - mean(g_factor_2015_old, na.rm=T)) / sd(g_factor_2015_old, na.rm=T),
+    g_factor_2015_young = (g_factor_2015_young - mean(g_factor_2015_young, na.rm=T)) / sd(g_factor_2015_young, na.rm=T),
+    g_factor_2007_old = (g_factor_2007_old - mean(g_factor_2007_old, na.rm=T)) / sd(g_factor_2007_old, na.rm=T),
+g_factor_2007_young = (g_factor_2007_young - mean(g_factor_2007_young, na.rm=T)) / sd(g_factor_2007_young, na.rm=T),
     raven_2015_old = (raven_2015_old - mean(raven_2015_old, na.rm=T)) / sd(raven_2015_old),
     math_2015_old = (math_2015_old - mean(math_2015_old, na.rm=T)) / sd(math_2015_old, na.rm=T),
     raven_2015_young = (raven_2015_young - mean(raven_2015_young, na.rm=T)) / sd(raven_2015_young),
     math_2015_young = (math_2015_young - mean(math_2015_young, na.rm=T)) /
       sd(math_2015_young, na.rm=T),
+    raven_2007_old = (raven_2007_old - mean(raven_2007_old, na.rm=T)) / sd(raven_2007_old),
+math_2007_old = (math_2007_old - mean(math_2007_old, na.rm=T)) / sd(math_2007_old, na.rm=T),
+raven_2007_young = (raven_2007_young - mean(raven_2007_young, na.rm=T)) / sd(raven_2007_young),
+math_2007_young = (math_2007_young - mean(math_2007_young, na.rm=T)) /
+  sd(math_2007_young, na.rm=T),
     count_backwards = (count_backwards - mean(count_backwards, na.rm=T)) /
       sd(count_backwards, na.rm=T),
     words_delayed = (words_delayed - mean(words_delayed, na.rm=T)) /
@@ -130,11 +164,11 @@ data_used <- birthorder %>%
 ```
 
 ## Intelligence {.active .tabset}
-### g-factor {.tabset}
+### g-factor 2015 old {.tabset}
 
 ```{r}
 # Specify your outcome
-data_used = data_used %>% mutate(outcome = g_factor_2015)
+data_used = data_used %>% mutate(outcome = g_factor_2015_old)
 data_used_plots <- data_used[[1]]
 
 compare_birthorder_imputed(data_used = data_used)
@@ -142,7 +176,7 @@ compare_birthorder_imputed(data_used = data_used)
 ```
 
 
-### Raven {.tabset}
+### Raven 2015 old {.tabset}
 
 ```{r}
 # Specify your outcome
@@ -153,7 +187,7 @@ compare_birthorder_imputed(data_used = data_used)
 
 ```
 
-### Numeracy {.tabset}
+### Numeracy 2015 old {.tabset}
 
 ```{r}
 # Specify your outcome
@@ -195,6 +229,108 @@ data_used = data_used %>% mutate(outcome = adaptive_numbering)
 data_used_plots <- data_used[[1]]
 
 compare_birthorder_imputed(data_used = data_used)
+```
+
+### g-factor 2015 young {.tabset}
+
+```{r}
+# Specify your outcome
+data_used = data_used %>% mutate(outcome = g_factor_2015_young)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
+
+```
+
+
+### Raven 2015 young {.tabset}
+
+```{r}
+# Specify your outcome
+data_used = data_used %>% mutate(outcome = raven_2015_young)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
+
+```
+
+### Numeracy 2015 young {.tabset}
+
+```{r}
+# Specify your outcome
+data_used = data_used %>% mutate(outcome = math_2015_young)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
+
+```
+
+### g-factor 2007 old {.tabset}
+
+```{r}
+# Specify your outcome
+data_used = data_used %>% mutate(outcome = g_factor_2007_old)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
+
+```
+
+
+### Raven 2007 old {.tabset}
+
+```{r}
+# Specify your outcome
+data_used = data_used %>% mutate(outcome = raven_2007_old)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
+
+```
+
+### Numeracy 2007 old {.tabset}
+
+```{r}
+# Specify your outcome
+data_used = data_used %>% mutate(outcome = math_2007_old)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
+
+```
+
+### g-factor 2007 young {.tabset}
+
+```{r}
+# Specify your outcome
+data_used = data_used %>% mutate(outcome = g_factor_2007_young)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
+
+```
+
+
+### Raven 2007 young {.tabset}
+
+```{r}
+# Specify your outcome
+data_used = data_used %>% mutate(outcome = raven_2007_young)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
+
+```
+
+### Numeracy 2007 young {.tabset}
+
+```{r}
+# Specify your outcome
+data_used = data_used %>% mutate(outcome = math_2007_young)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
+
 ```
 
 ## Personality {.tabset}
@@ -290,13 +426,89 @@ data_used_plots <- data_used[[1]]
 compare_birthorder_imputed(data_used = data_used)
 
 ```
-### Years of Education - non z-standardized{.tabset}
+
+### elementary_missed
 
 ```{r}
 # Specify your outcome
-data_used = data_used %>% mutate(outcome = years_of_education)
+data_used = data_used %>% mutate(outcome = Elementary_missed)
 data_used_plots <- data_used[[1]]
 
 compare_birthorder_imputed(data_used = data_used)
 
 ```
+
+
+### elementary_worked
+
+```{r}
+# Specify your outcome
+data_used = data_used %>% mutate(outcome = Elementary_worked)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
+
+```
+
+### attended_school
+
+```{r}
+# Specify your outcome
+data_used = data_used %>% mutate(outcome = attended_school)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
+
+```
+
+
+
+## Work {.tabset}
+
+### Income Last Month (log) - z-standardized {.tabset}
+
+```{r}
+data_used = data_used %>% mutate(outcome = wage_last_month_z)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
+
+```
+
+### Income last year (log) - z-standardized {.tabset}
+
+```{r}
+data_used = data_used %>% mutate(outcome = wage_last_year_z)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
+```
+
+### Self-Employment - non standardized {.tabset}
+
+```{r}
+data_used = data_used %>% mutate(outcome = Self_employed)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
+```
+
+## Smoking Behaviour {.tabset}
+### ever_smoked {.tabset}
+
+```{r}
+data_used = data_used %>% mutate(outcome = ever_smoked)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
+```
+
+### still_smoking {.tabset}
+
+```{r}
+data_used = data_used %>% mutate(outcome = still_smoking)
+data_used_plots <- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)
+```
+

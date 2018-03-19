@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+
+.section h2 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h3 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h4 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h5 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h6 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("4_analyses_robust.Rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Birth Order IFLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+
+<li style="background-color: #66C2A5">
+  <a href="index.html">Overview</a>
+</li>
+<li style="background-color: #FC8D62">
+  <a href="1_data_import.html">Data Wrangling</a>
+</li>
+<li style="background-color: #8DA0CB">
+  <a href="2_Inclusion.html">Data Sampling</a>
+</li>
+<li style="background-color: #E78AC3">
+  <a href="3_sample_analyses.html">Sample Analyses</a>
+</li>
+<li style="background-color: #A6D854">
+  <a href="4_analyses.html">Birth Order Effects</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/laurabotzet/birth_order_ifls">
+    <span class="fa fa-github"></span>
+
+
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<div id="birth-order-effects" class="section level1 tabset">
+<h1><span style="color:#A6D854">Birth Order Effects</span></h1>
+<div id="helper" class="section level2">
+<h2>Helper</h2>
+<pre class="r"><code>source(&quot;0_helpers.R&quot;)</code></pre>
+<pre><code>## Warning: package &#39;rmarkdown&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## Warning: package &#39;knitr&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;formr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:rmarkdown&#39;:
+## 
+##     word_document</code></pre>
+<pre><code>## Warning: package &#39;lubridate&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     date</code></pre>
+<pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## Loading required package: carData</code></pre>
+<pre><code>## lattice theme set by effectsTheme()
+## See ?effectsTheme for details.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;data.table&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:lubridate&#39;:
+## 
+##     hour, isoweek, mday, minute, month, quarter, second, wday, week, yday, year</code></pre>
+<pre><code>## The following objects are masked from &#39;package:formr&#39;:
+## 
+##     first, last</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lmerTest&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:lme4&#39;:
+## 
+##     lmer</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     step</code></pre>
+<pre><code>## 
+## Attaching package: &#39;cowplot&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     ggsave</code></pre>
+<pre><code>## Warning: package &#39;haven&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;psych&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:ggplot2&#39;:
+## 
+##     %+%, alpha</code></pre>
+<pre><code>## This is lavaan 0.5-23.1097</code></pre>
+<pre><code>## lavaan is BETA software! Please report any bugs.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lavaan&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     cor2cov</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Loading required package: survival</code></pre>
+<pre><code>## Loading required package: Formula</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Hmisc&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     describe</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     format.pval, round.POSIXt, trunc.POSIXt, units</code></pre>
+<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;tidyr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:Matrix&#39;:
+## 
+##     expand</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:Hmisc&#39;:
+## 
+##     combine, src, summarize</code></pre>
+<pre><code>## The following objects are masked from &#39;package:data.table&#39;:
+## 
+##     between, first, last</code></pre>
+<pre><code>## The following objects are masked from &#39;package:lubridate&#39;:
+## 
+##     intersect, setdiff, union</code></pre>
+<pre><code>## The following objects are masked from &#39;package:formr&#39;:
+## 
+##     first, last</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre><code>## Warning: package &#39;coefplot&#39; was built under R version 3.4.3</code></pre>
+</div>
+<div id="load-data" class="section level2">
+<h2>Load data</h2>
+<pre class="r"><code>birthorder = readRDS(&quot;data/alldata_birthorder.rds&quot;)</code></pre>
+</div>
+<div id="data-preparations" class="section level2">
+<h2>Data preparations</h2>
+<pre class="r"><code># For analyses we want to clean the dataset and get rid of all uninteresting data
+birthorder = birthorder %&gt;%
+  filter(!is.na(pidlink)) %&gt;% # no individuals who are only known from the pregnancy file
+  filter(is.na(lifebirths) | lifebirths == 2) %&gt;% # remove 7 and 2 individuals who are known as stillbirth or miscarriage but still have PID
+  select(-lifebirths) %&gt;%
+  filter(!is.na(mother_pidlink)) %&gt;%
+  select(-father_pidlink) %&gt;%
+  filter(is.na(any_multiple_birth) | any_multiple_birth != 1) %&gt;% # remove families with twins/triplets/..
+  filter(!is.na(birthorder_naive)) %&gt;%
+  select(-starts_with(&quot;age_&quot;), -wave, -any_multiple_birth, -multiple_birth) %&gt;%
+  mutate(money_spent_smoking_log = if_else(is.na(money_spent_smoking_log) &amp; ever_smoked == 0, 0, money_spent_smoking_log),
+         amount = if_else(is.na(amount) &amp; ever_smoked == 0, 0, amount),
+         amount_still_smokers = if_else(is.na(amount_still_smokers) &amp;  still_smoking == 0, 0, amount_still_smokers),
+         birthyear = lubridate::year(birthdate))
+
+# recode Factor Variable as Dummy Variable
+birthorder = left_join(birthorder,
+                                birthorder %&gt;%
+                                  filter(!is.na(Category)) %&gt;%
+                                  mutate(var = 1) %&gt;%
+                                  select(pidlink, Category, var) %&gt;%
+                                  spread(Category, var, fill = 0, sep = &quot;_&quot;), by = &quot;pidlink&quot;) %&gt;%
+  select(-Category)
+
+# recode Factor Variable as Dummy Variable
+birthorder = left_join(birthorder,
+                                birthorder %&gt;%
+                                  filter(!is.na(Sector)) %&gt;%
+                                  mutate(var = 1) %&gt;%
+                                  select(pidlink, Sector, var) %&gt;%
+                                  spread(Sector, var, fill = 0, sep = &quot;_&quot;), by = &quot;pidlink&quot;) %&gt;%
+  select(-Sector)
+
+
+
+### Variables
+birthorder = birthorder %&gt;%
+  mutate(
+    # center variables that are used for analysis
+  g_factor_2015_old = scale(g_factor_2015_old),
+  g_factor_2015_young = scale(g_factor_2015_young),
+  g_factor_2007_old = scale(g_factor_2007_old),
+  g_factor_2007_young = scale(g_factor_2007_young),
+  raven_2015_old = scale(raven_2015_old),
+  math_2015_old = scale(math_2015_old),
+  count_backwards = scale(count_backwards),
+  raven_2015_young = scale(raven_2015_young),
+  math_2015_young = scale(math_2015_young),
+  words_remembered_avg = scale(words_remembered_avg),
+  words_immediate = scale(words_immediate),
+  words_delayed = scale(words_delayed),
+  adaptive_numbering = scale(adaptive_numbering),
+  raven_2007_old = scale(raven_2007_old),
+  math_2007_old = scale(math_2007_old),
+  raven_2007_young = scale(raven_2007_young),
+  math_2007_young = scale(math_2007_young),
+  riskA = scale(riskA),
+  riskB = scale(riskB),
+  years_of_education_z = scale(years_of_education),
+  Total_score_highest_z = scale(Total_score_highest),
+  wage_last_month_z = scale(wage_last_month_log),
+  wage_last_year_z = scale(wage_last_year_log),
+  big5_ext = scale(big5_ext),
+  big5_con = scale(big5_con),
+  big5_agree = scale(big5_agree),
+  big5_open = scale(big5_open),
+  big5_neu = scale(big5_neu),
+  attended_school = as.integer(attended_school)
+)
+
+qplot(birthorder$male)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/data%20preparations-1.png" width="672" /></p>
+<pre class="r"><code>qplot(birthorder$g_factor_2015_old)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 24929 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/data%20preparations-2.png" width="672" /></p>
+<pre class="r"><code>qplot(birthorder$g_factor_2015_old)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 24929 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/data%20preparations-3.png" width="672" /></p>
+<pre class="r"><code>### Birthorder and Sibling Count
+birthorder = birthorder %&gt;% 
+  mutate(
+# birthorder as factors with levels of 1, 2, 3, 4, 5,
+    birthorder_naive_factor = as.character(birthorder_naive),
+    birthorder_naive_factor = ifelse(birthorder_naive &gt; 5, NA,
+                                            birthorder_naive_factor),
+    birthorder_naive_factor = factor(birthorder_naive_factor, 
+                                            levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;)),
+    sibling_count_naive_factor = as.character(sibling_count_naive),
+    sibling_count_naive_factor = ifelse(sibling_count_naive &gt; 5, NA,
+                                               sibling_count_naive_factor),
+    sibling_count_naive_factor = factor(sibling_count_naive_factor, 
+                                               levels = c(&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;)),
+
+    birthorder_uterus_alive_factor = as.character(birthorder_uterus_alive),
+    birthorder_uterus_alive_factor = ifelse(birthorder_uterus_alive &gt; 5, NA,
+                                            birthorder_uterus_alive_factor),
+    birthorder_uterus_alive_factor = factor(birthorder_uterus_alive_factor, 
+                                            levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;)),
+    sibling_count_uterus_alive_factor = as.character(sibling_count_uterus_alive),
+    sibling_count_uterus_alive_factor = ifelse(sibling_count_uterus_alive &gt; 5, NA,
+                                               sibling_count_uterus_alive_factor),
+    sibling_count_uterus_alive_factor = factor(sibling_count_uterus_alive_factor, 
+                                               levels = c(&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;)),
+    birthorder_uterus_preg_factor = as.character(birthorder_uterus_preg),
+    birthorder_uterus_preg_factor = ifelse(birthorder_uterus_preg &gt; 5, NA,
+                                           birthorder_uterus_preg_factor),
+    birthorder_uterus_preg_factor = factor(birthorder_uterus_preg_factor,
+                                           levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;)),
+    sibling_count_uterus_preg_factor = as.character(sibling_count_uterus_preg),
+    sibling_count_uterus_preg_factor = ifelse(sibling_count_uterus_preg &gt; 5, NA,
+                                              sibling_count_uterus_preg_factor),
+    sibling_count_uterus_preg_factor = factor(sibling_count_uterus_preg_factor, 
+                                              levels = c(&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;)),
+    birthorder_genes_factor = as.character(birthorder_genes),
+    birthorder_genes_factor = ifelse(birthorder_genes &gt;5 , NA, birthorder_genes_factor),
+    birthorder_genes_factor = factor(birthorder_genes_factor, 
+                                     levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;)),
+    sibling_count_genes_factor = as.character(sibling_count_genes),
+    sibling_count_genes_factor = ifelse(sibling_count_genes &gt;5 , NA,
+                                        sibling_count_genes_factor),
+    sibling_count_genes_factor = factor(sibling_count_genes_factor, 
+                                        levels = c(&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;)),
+    # interaction birthorder * siblingcout for each birthorder
+    count_birthorder_naive =
+      factor(str_replace(as.character(interaction(birthorder_naive_factor,                                                              sibling_count_naive_factor)),
+                        &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;,
+                                                        &quot;5/5&quot;)),
+    count_birthorder_uterus_alive =
+      factor(str_replace(as.character(interaction(birthorder_uterus_alive_factor,                                                              sibling_count_uterus_alive_factor)),
+                        &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;)),
+    count_birthorder_uterus_preg =
+      factor(str_replace(as.character(interaction(birthorder_uterus_preg_factor,                                                              sibling_count_uterus_preg_factor)), 
+                         &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;)),
+    count_birthorder_genes =
+      factor(str_replace(as.character(interaction(birthorder_genes_factor,                                                              sibling_count_genes_factor)), &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;)))
+
+birthorder &lt;- birthorder %&gt;%
+                     mutate(sibling_count = sibling_count_naive_factor,
+                            birth_order_nonlinear = birthorder_naive_factor,
+                            birth_order = birthorder_naive,
+                            count_birth_order = count_birthorder_naive)</code></pre>
+</div>
+<div id="how-many-siblings-with-data-do-we-retain-in-each-family" class="section level2">
+<h2>How many siblings with data do we retain in each family?</h2>
+<pre class="r"><code>crosstabs(~is.na(birthorder$birthorder_naive) + is.na(birthorder$g_factor_2015_old))</code></pre>
+<table style="width:22%;">
+<colgroup>
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">FALSE</th>
+<th align="center">TRUE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">14688</td>
+<td align="center">24929</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>crosstabs(~is.na(birthorder$birthorder_uterus_preg) + is.na(birthorder$g_factor_2015_old))</code></pre>
+<table style="width:22%;">
+<colgroup>
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">FALSE</th>
+<th align="center">TRUE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">6063</td>
+<td align="center">15137</td>
+</tr>
+<tr class="even">
+<td align="center">8625</td>
+<td align="center">9792</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>birthorder %&gt;% filter(!is.na(birthorder_naive), !is.na(g_factor_2015_old)) %&gt;% group_by(mother_pidlink) %&gt;% summarise(with_data = n(), all = mean(sibling_count_uterus_preg)) -&gt; counts
+birthorder %&gt;% filter(!is.na(birthorder_naive)) %&gt;% group_by(mother_pidlink) %&gt;% summarise(with_data = n(), all = mean(sibling_count_uterus_preg)) -&gt; counts1</code></pre>
+<p>In our test sample families with an average size of 3.9056 siblings, we retain 1.7765.</p>
+<p>In the original sample families with an average size of 2.4873 siblings, we retain 2.2088.</p>
+<pre class="r"><code>ggplot(counts, aes(all, with_data)) + geom_jitter(alpha = 0.1) + geom_smooth() + scale_x_continuous(breaks=1:15) + scale_y_continuous(breaks=1:15)</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39;</code></pre>
+<pre><code>## Warning: Removed 5451 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 5451 rows containing missing values (geom_point).</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+</div>
+<div id="intelligence" class="section level2 active tabset">
+<h2>Intelligence</h2>
+<div id="g-factor-2015-old" class="section level3 tabset">
+<h3>g-factor 2015 old</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = g_factor_2015_old)
+model = lmer(outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)</code></pre>
+<div id="naive-birth-order" class="section level4 tabset">
+<h4>Naive birth order</h4>
+<pre class="r"><code>outcome_naive_m1 &lt;- update(m2_birthorder_linear, data = birthorder %&gt;%
+                     mutate(sibling_count = sibling_count_naive_factor,
+                            birth_order_nonlinear = birthorder_naive_factor,
+                            birth_order = birthorder_naive,
+                            count_birth_order = count_birthorder_naive) %&gt;% 
+                     filter(sibling_count != &quot;1&quot;))
+compare_models_markdown(outcome_naive_m1)</code></pre>
+<div id="basic-model" class="section level5 tabset">
+<h5>Basic Model</h5>
+<div id="model-summary" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>m1_covariates_only &lt;- update(m2_birthorder_linear, formula = . ~ . - birth_order)
+summary(m1_covariates_only)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: outcome ~ age + male + sibling_count + (1 | mother_pidlink)
+##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_naive_factor,  
+##     birth_order_nonlinear = birthorder_naive_factor, birth_order = birthorder_naive,  
+##     count_birth_order = count_birthorder_naive) %&gt;% filter(sibling_count !=      &quot;1&quot;)
+## 
+## REML criterion at convergence: 18496
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -3.180 -0.546  0.028  0.582  3.051 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 0.369    0.608   
+##  Residual                   0.539    0.734   
+## Number of obs: 6915, groups:  mother_pidlink, 4494
+## 
+## Fixed effects:
+##                Estimate Std. Error t value
+## (Intercept)     0.92444    0.04334   21.33
+## age            -0.03025    0.00117  -25.88
+## male            0.03852    0.02129    1.81
+## sibling_count3  0.03530    0.03484    1.01
+## sibling_count4  0.01460    0.03627    0.40
+## sibling_count5  0.02276    0.03792    0.60
+## 
+## Correlation of Fixed Effects:
+##             (Intr) age    male   sbln_3 sbln_4
+## age         -0.793                            
+## male        -0.251  0.027                     
+## siblng_cnt3 -0.455  0.076 -0.005              
+## siblng_cnt4 -0.443  0.082 -0.012  0.480       
+## siblng_cnt5 -0.417  0.065  0.005  0.458  0.441</code></pre>
+</div>
+<div id="coefficient-plot" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot(allEffects(m1_covariates_only))</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-birth-order-linear" class="section level5 tabset">
+<h5>Add Birth Order Linear</h5>
+<div id="model-summary-1" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>summary(m2_birthorder_linear)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink)
+##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_naive_factor,  
+##     birth_order_nonlinear = birthorder_naive_factor, birth_order = birthorder_naive,  
+##     count_birth_order = count_birthorder_naive) %&gt;% filter(sibling_count !=      &quot;1&quot;)
+## 
+## REML criterion at convergence: 18503
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -3.168 -0.543  0.028  0.578  3.058 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 0.369    0.607   
+##  Residual                   0.540    0.735   
+## Number of obs: 6915, groups:  mother_pidlink, 4494
+## 
+## Fixed effects:
+##                Estimate Std. Error t value
+## (Intercept)     0.90773    0.04780   18.99
+## birth_order     0.00845    0.01018    0.83
+## age            -0.03007    0.00119  -25.28
+## male            0.03834    0.02129    1.80
+## sibling_count3  0.03254    0.03499    0.93
+## sibling_count4  0.00768    0.03721    0.21
+## sibling_count5  0.01148    0.04028    0.29
+## 
+## Correlation of Fixed Effects:
+##             (Intr) brth_r age    male   sbln_3 sbln_4
+## birth_order -0.422                                   
+## age         -0.784  0.185                            
+## male        -0.224 -0.009  0.024                     
+## siblng_cnt3 -0.371 -0.095  0.056 -0.004              
+## siblng_cnt4 -0.297 -0.224  0.037 -0.010  0.487       
+## siblng_cnt5 -0.213 -0.338 -0.002  0.008  0.462  0.480</code></pre>
+</div>
+<div id="coefficient-plot-1" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot_birthorder(m2_birthorder_linear, separate = FALSE, ylimits = ylimits)</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-birth-order-factor" class="section level5 tabset">
+<h5>Add Birth Order Factor</h5>
+<div id="model-summary-2" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>m3_birthorder_nonlinear = update(m1_covariates_only, formula = . ~ . + birth_order_nonlinear)
+summary(m3_birthorder_nonlinear)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: outcome ~ age + male + sibling_count + (1 | mother_pidlink) +      birth_order_nonlinear
+##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_naive_factor,  
+##     birth_order_nonlinear = birthorder_naive_factor, birth_order = birthorder_naive,  
+##     count_birth_order = count_birthorder_naive) %&gt;% filter(sibling_count !=      &quot;1&quot;)
+## 
+## REML criterion at convergence: 18513
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -3.167 -0.541  0.027  0.578  3.057 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 0.368    0.607   
+##  Residual                   0.540    0.735   
+## Number of obs: 6915, groups:  mother_pidlink, 4494
+## 
+## Fixed effects:
+##                        Estimate Std. Error t value
+## (Intercept)             0.91209    0.04502   20.26
+## age                    -0.03005    0.00119  -25.26
+## male                    0.03836    0.02130    1.80
+## sibling_count3          0.03394    0.03534    0.96
+## sibling_count4          0.01434    0.03761    0.38
+## sibling_count5          0.01114    0.04046    0.28
+## birth_order_nonlinear2  0.01878    0.02430    0.77
+## birth_order_nonlinear3  0.01307    0.03086    0.42
+## birth_order_nonlinear4 -0.00207    0.04013   -0.05
+## birth_order_nonlinear5  0.08047    0.05803    1.39
+## 
+## Correlation of Fixed Effects:
+##             (Intr) age    male   sbln_3 sbln_4 sbln_5 brt__2 brt__3 brt__4
+## age         -0.786                                                        
+## male        -0.239  0.025                                                 
+## siblng_cnt3 -0.414  0.058 -0.004                                          
+## siblng_cnt4 -0.370  0.039 -0.009  0.489                                   
+## siblng_cnt5 -0.314 -0.005  0.008  0.457  0.472                            
+## brth_rdr_n2 -0.234  0.053 -0.009 -0.028 -0.060 -0.063                     
+## brth_rdr_n3 -0.153  0.108 -0.007 -0.165 -0.204 -0.217  0.362              
+## brth_rdr_n4 -0.159  0.135 -0.009 -0.037 -0.218 -0.233  0.291  0.310       
+## brth_rdr_n5 -0.153  0.147 -0.003 -0.025 -0.061 -0.270  0.206  0.232  0.232</code></pre>
+</div>
+<div id="coefficient-plot-2" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot_birthorder(m3_birthorder_nonlinear, separate = FALSE, ylimits = ylimits)</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-interaction" class="section level5 tabset">
+<h5>Add Interaction</h5>
+<div id="model-summary-3" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>m4_interaction = update(m3_birthorder_nonlinear, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
+summary(m4_interaction)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: outcome ~ age + male + (1 | mother_pidlink) + count_birth_order
+##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_naive_factor,  
+##     birth_order_nonlinear = birthorder_naive_factor, birth_order = birthorder_naive,  
+##     count_birth_order = count_birthorder_naive) %&gt;% filter(sibling_count !=      &quot;1&quot;)
+## 
+## REML criterion at convergence: 18529
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -3.095 -0.542  0.027  0.576  3.043 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 0.369    0.607   
+##  Residual                   0.540    0.735   
+## Number of obs: 6915, groups:  mother_pidlink, 4494
+## 
+## Fixed effects:
+##                       Estimate Std. Error t value
+## (Intercept)           0.923258   0.046527   19.84
+## age                  -0.030017   0.001190  -25.22
+## male                  0.038773   0.021300    1.82
+## count_birth_order2/2 -0.015768   0.041928   -0.38
+## count_birth_order1/3  0.031750   0.043092    0.74
+## count_birth_order2/3  0.030939   0.047444    0.65
+## count_birth_order3/3  0.025387   0.052478    0.48
+## count_birth_order1/4  0.007622   0.048748    0.16
+## count_birth_order2/4  0.044289   0.050875    0.87
+## count_birth_order3/4  0.000557   0.054429    0.01
+## count_birth_order4/4 -0.030161   0.057175   -0.53
+## count_birth_order1/5 -0.065954   0.054240   -1.22
+## count_birth_order2/5  0.039302   0.056577    0.69
+## count_birth_order3/5  0.038540   0.058005    0.66
+## count_birth_order4/5  0.032546   0.061003    0.53
+## count_birth_order5/5  0.081497   0.062327    1.31</code></pre>
+<pre><code>## 
+## Correlation matrix not shown by default, as p = 16 &gt; 12.
+## Use print(x, correlation=TRUE)  or
+##   vcov(x)     if you need it</code></pre>
+</div>
+<div id="coefficient-plot-3" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot_birthorder(m4_interaction, ylimits = ylimits)</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+</div>
+<div id="model-comparison" class="section level5">
+<h5>Model Comparison</h5>
+<pre class="r"><code>###### Model 1 - Model 2
+anova(m1_covariates_only, m2_birthorder_linear, m3_birthorder_nonlinear, m4_interaction)</code></pre>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<table style="width:99%;">
+<caption>Data: birthorder %&gt;% mutate(sibling_count = sibling_count_naive_factor, …</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="12%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">8</td>
+<td align="center">18473</td>
+<td align="center">18527</td>
+<td align="center">-9228</td>
+<td align="center">18457</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">9</td>
+<td align="center">18474</td>
+<td align="center">18535</td>
+<td align="center">-9228</td>
+<td align="center">18456</td>
+<td align="center">0.6899</td>
+<td align="center">1</td>
+<td align="center">0.4062</td>
+</tr>
+<tr class="odd">
+<td align="center">12</td>
+<td align="center">18478</td>
+<td align="center">18560</td>
+<td align="center">-9227</td>
+<td align="center">18454</td>
+<td align="center">1.763</td>
+<td align="center">3</td>
+<td align="center">0.623</td>
+</tr>
+<tr class="even">
+<td align="center">18</td>
+<td align="center">18485</td>
+<td align="center">18608</td>
+<td align="center">-9224</td>
+<td align="center">18449</td>
+<td align="center">5.429</td>
+<td align="center">6</td>
+<td align="center">0.4901</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="maternal-birth-order" class="section level4 tabset">
+<h4>Maternal birth order</h4>
+<pre class="r"><code>outcome_uterus_m1 &lt;- update(m2_birthorder_linear, data = birthorder %&gt;%
+                     mutate(sibling_count = sibling_count_uterus_alive_factor,
+                            birth_order_nonlinear = birthorder_uterus_alive_factor,
+                            birth_order = birthorder_uterus_alive,
+                            count_birth_order = count_birthorder_uterus_alive) %&gt;% 
+                     filter(sibling_count != &quot;1&quot;))
+compare_models_markdown(outcome_uterus_m1)</code></pre>
+<div id="basic-model-1" class="section level5 tabset">
+<h5>Basic Model</h5>
+<div id="model-summary-4" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>m1_covariates_only &lt;- update(m2_birthorder_linear, formula = . ~ . - birth_order)
+summary(m1_covariates_only)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: outcome ~ age + male + sibling_count + (1 | mother_pidlink)
+##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_alive_factor,  
+##     birth_order_nonlinear = birthorder_uterus_alive_factor, birth_order = birthorder_uterus_alive,  
+##     count_birth_order = count_birthorder_uterus_alive) %&gt;% filter(sibling_count !=      &quot;1&quot;)
+## 
+## REML criterion at convergence: 11212
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -3.569 -0.558  0.035  0.583  3.022 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 0.270    0.520   
+##  Residual                   0.495    0.703   
+## Number of obs: 4432, groups:  mother_pidlink, 3045
+## 
+## Fixed effects:
+##                Estimate Std. Error t value
+## (Intercept)     0.65650    0.05030   13.05
+## age            -0.00854    0.00186   -4.58
+## male           -0.04672    0.02503   -1.87
+## sibling_count3  0.00378    0.03725    0.10
+## sibling_count4 -0.07551    0.04075   -1.85
+## sibling_count5 -0.14755    0.04683   -3.15
+## 
+## Correlation of Fixed Effects:
+##             (Intr) age    male   sbln_3 sbln_4
+## age         -0.805                            
+## male        -0.279  0.043                     
+## siblng_cnt3 -0.345 -0.060 -0.007              
+## siblng_cnt4 -0.229 -0.163 -0.005  0.496       
+## siblng_cnt5 -0.171 -0.179 -0.001  0.434  0.416</code></pre>
+</div>
+<div id="coefficient-plot-4" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot(allEffects(m1_covariates_only))</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-birth-order-linear-1" class="section level5 tabset">
+<h5>Add Birth Order Linear</h5>
+<div id="model-summary-5" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>summary(m2_birthorder_linear)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink)
+##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_alive_factor,  
+##     birth_order_nonlinear = birthorder_uterus_alive_factor, birth_order = birthorder_uterus_alive,  
+##     count_birth_order = count_birthorder_uterus_alive) %&gt;% filter(sibling_count !=      &quot;1&quot;)
+## 
+## REML criterion at convergence: 11218
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -3.563 -0.555  0.031  0.586  2.998 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 0.269    0.519   
+##  Residual                   0.495    0.704   
+## Number of obs: 4432, groups:  mother_pidlink, 3045
+## 
+## Fixed effects:
+##                Estimate Std. Error t value
+## (Intercept)     0.62509    0.05638   11.09
+## birth_order     0.01588    0.01289    1.23
+## age            -0.00804    0.00191   -4.22
+## male           -0.04731    0.02504   -1.89
+## sibling_count3 -0.00381    0.03775   -0.10
+## sibling_count4 -0.09315    0.04319   -2.16
+## sibling_count5 -0.17674    0.05247   -3.37
+## 
+## Correlation of Fixed Effects:
+##             (Intr) brth_r age    male   sbln_3 sbln_4
+## birth_order -0.452                                   
+## age         -0.798  0.212                            
+## male        -0.240 -0.019  0.038                     
+## siblng_cnt3 -0.229 -0.164 -0.092 -0.004              
+## siblng_cnt4 -0.043 -0.332 -0.221  0.001  0.516       
+## siblng_cnt5  0.068 -0.452 -0.251  0.007  0.456  0.500</code></pre>
+</div>
+<div id="coefficient-plot-5" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot_birthorder(m2_birthorder_linear, separate = FALSE, ylimits = ylimits)</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-birth-order-factor-1" class="section level5 tabset">
+<h5>Add Birth Order Factor</h5>
+<div id="model-summary-6" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>m3_birthorder_nonlinear = update(m1_covariates_only, formula = . ~ . + birth_order_nonlinear)
+summary(m3_birthorder_nonlinear)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: outcome ~ age + male + sibling_count + (1 | mother_pidlink) +      birth_order_nonlinear
+##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_alive_factor,  
+##     birth_order_nonlinear = birthorder_uterus_alive_factor, birth_order = birthorder_uterus_alive,  
+##     count_birth_order = count_birthorder_uterus_alive) %&gt;% filter(sibling_count !=      &quot;1&quot;)
+## 
+## REML criterion at convergence: 11226
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -3.553 -0.551  0.035  0.592  3.025 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 0.269    0.519   
+##  Residual                   0.495    0.704   
+## Number of obs: 4432, groups:  mother_pidlink, 3045
+## 
+## Fixed effects:
+##                        Estimate Std. Error t value
+## (Intercept)             0.63070    0.05231   12.06
+## age                    -0.00814    0.00191   -4.26
+## male                   -0.04664    0.02504   -1.86
+## sibling_count3         -0.00228    0.03819   -0.06
+## sibling_count4         -0.08659    0.04370   -1.98
+## sibling_count5         -0.16988    0.05318   -3.19
+## birth_order_nonlinear2  0.05318    0.02878    1.85
+## birth_order_nonlinear3  0.02589    0.03687    0.70
+## birth_order_nonlinear4  0.03481    0.04987    0.70
+## birth_order_nonlinear5  0.07979    0.07654    1.04
+## 
+## Correlation of Fixed Effects:
+##             (Intr) age    male   sbln_3 sbln_4 sbln_5 brt__2 brt__3 brt__4
+## age         -0.802                                                        
+## male        -0.265  0.037                                                 
+## siblng_cnt3 -0.287 -0.085 -0.004                                          
+## siblng_cnt4 -0.134 -0.219  0.004  0.513                                   
+## siblng_cnt5 -0.052 -0.255  0.008  0.433  0.480                            
+## brth_rdr_n2 -0.224  0.058  0.004 -0.080 -0.104 -0.085                     
+## brth_rdr_n3 -0.157  0.121 -0.011 -0.221 -0.272 -0.256  0.368              
+## brth_rdr_n4 -0.187  0.182 -0.025 -0.081 -0.311 -0.334  0.282  0.331       
+## brth_rdr_n5 -0.152  0.154 -0.004 -0.057 -0.123 -0.387  0.180  0.223  0.273</code></pre>
+</div>
+<div id="coefficient-plot-6" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot_birthorder(m3_birthorder_nonlinear, separate = FALSE, ylimits = ylimits)</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-interaction-1" class="section level5 tabset">
+<h5>Add Interaction</h5>
+<div id="model-summary-7" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>m4_interaction = update(m3_birthorder_nonlinear, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
+summary(m4_interaction)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: outcome ~ age + male + (1 | mother_pidlink) + count_birth_order
+##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_alive_factor,  
+##     birth_order_nonlinear = birthorder_uterus_alive_factor, birth_order = birthorder_uterus_alive,  
+##     count_birth_order = count_birthorder_uterus_alive) %&gt;% filter(sibling_count !=      &quot;1&quot;)
+## 
+## REML criterion at convergence: 11244
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -3.557 -0.554  0.030  0.586  3.075 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 0.268    0.518   
+##  Residual                   0.497    0.705   
+## Number of obs: 4432, groups:  mother_pidlink, 3045
+## 
+## Fixed effects:
+##                      Estimate Std. Error t value
+## (Intercept)           0.63072    0.05382   11.72
+## age                  -0.00808    0.00191   -4.23
+## male                 -0.04698    0.02507   -1.87
+## count_birth_order2/2  0.05026    0.05008    1.00
+## count_birth_order1/3  0.00121    0.04672    0.03
+## count_birth_order2/3  0.04050    0.05041    0.80
+## count_birth_order3/3  0.02718    0.05611    0.48
+## count_birth_order1/4 -0.11393    0.05701   -2.00
+## count_birth_order2/4 -0.02659    0.05856   -0.45
+## count_birth_order3/4 -0.06004    0.06114   -0.98
+## count_birth_order4/4 -0.02491    0.06373   -0.39
+## count_birth_order1/5 -0.13742    0.07592   -1.81
+## count_birth_order2/5 -0.09646    0.08161   -1.18
+## count_birth_order3/5 -0.15645    0.07631   -2.05
+## count_birth_order4/5 -0.17504    0.07376   -2.37
+## count_birth_order5/5 -0.09238    0.07560   -1.22</code></pre>
+<pre><code>## 
+## Correlation matrix not shown by default, as p = 16 &gt; 12.
+## Use print(x, correlation=TRUE)  or
+##   vcov(x)     if you need it</code></pre>
+</div>
+<div id="coefficient-plot-7" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot_birthorder(m4_interaction, ylimits = ylimits)</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+</div>
+</div>
+<div id="model-comparison-1" class="section level5">
+<h5>Model Comparison</h5>
+<pre class="r"><code>###### Model 1 - Model 2
+anova(m1_covariates_only, m2_birthorder_linear, m3_birthorder_nonlinear, m4_interaction)</code></pre>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_alive_factor, …</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">8</td>
+<td align="center">11191</td>
+<td align="center">11242</td>
+<td align="center">-5588</td>
+<td align="center">11175</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">9</td>
+<td align="center">11192</td>
+<td align="center">11249</td>
+<td align="center">-5587</td>
+<td align="center">11174</td>
+<td align="center">1.52</td>
+<td align="center">1</td>
+<td align="center">0.2177</td>
+</tr>
+<tr class="odd">
+<td align="center">12</td>
+<td align="center">11195</td>
+<td align="center">11272</td>
+<td align="center">-5586</td>
+<td align="center">11171</td>
+<td align="center">2.434</td>
+<td align="center">3</td>
+<td align="center">0.4874</td>
+</tr>
+<tr class="even">
+<td align="center">18</td>
+<td align="center">11206</td>
+<td align="center">11321</td>
+<td align="center">-5585</td>
+<td align="center">11170</td>
+<td align="center">1.562</td>
+<td align="center">6</td>
+<td align="center">0.9553</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="maternal-pregnancy-order" class="section level4 tabset">
+<h4>Maternal pregnancy order</h4>
+<pre class="r"><code>outcome_preg_m1 &lt;- update(m2_birthorder_linear, data = birthorder %&gt;% 
+  mutate(sibling_count = sibling_count_uterus_preg_factor,
+         birth_order_nonlinear = birthorder_uterus_preg_factor,
+         birth_order = birthorder_uterus_preg,
+         count_birth_order = count_birthorder_uterus_preg
+         ) %&gt;% 
+    filter(sibling_count != &quot;1&quot;))
+compare_models_markdown(outcome_preg_m1)</code></pre>
+<div id="basic-model-2" class="section level5 tabset">
+<h5>Basic Model</h5>
+<div id="model-summary-8" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>m1_covariates_only &lt;- update(m2_birthorder_linear, formula = . ~ . - birth_order)
+summary(m1_covariates_only)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: outcome ~ age + male + sibling_count + (1 | mother_pidlink)
+##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_preg_factor,  
+##     birth_order_nonlinear = birthorder_uterus_preg_factor, birth_order = birthorder_uterus_preg,  
+##     count_birth_order = count_birthorder_uterus_preg) %&gt;% filter(sibling_count !=      &quot;1&quot;)
+## 
+## REML criterion at convergence: 10399
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -3.574 -0.554  0.037  0.593  2.419 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 0.267    0.516   
+##  Residual                   0.494    0.703   
+## Number of obs: 4116, groups:  mother_pidlink, 2856
+## 
+## Fixed effects:
+##                Estimate Std. Error t value
+## (Intercept)     0.66014    0.05260   12.55
+## age            -0.00960    0.00194   -4.95
+## male           -0.04087    0.02594   -1.58
+## sibling_count3  0.01089    0.04003    0.27
+## sibling_count4 -0.04031    0.04279   -0.94
+## sibling_count5 -0.07455    0.04606   -1.62
+## 
+## Correlation of Fixed Effects:
+##             (Intr) age    male   sbln_3 sbln_4
+## age         -0.791                            
+## male        -0.277  0.046                     
+## siblng_cnt3 -0.367 -0.060 -0.009              
+## siblng_cnt4 -0.263 -0.157 -0.016  0.520       
+## siblng_cnt5 -0.217 -0.187  0.008  0.485  0.473</code></pre>
+</div>
+<div id="coefficient-plot-8" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot(allEffects(m1_covariates_only))</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-birth-order-linear-2" class="section level5 tabset">
+<h5>Add Birth Order Linear</h5>
+<div id="model-summary-9" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>summary(m2_birthorder_linear)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink)
+##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_preg_factor,  
+##     birth_order_nonlinear = birthorder_uterus_preg_factor, birth_order = birthorder_uterus_preg,  
+##     count_birth_order = count_birthorder_uterus_preg) %&gt;% filter(sibling_count !=      &quot;1&quot;)
+## 
+## REML criterion at convergence: 10406
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -3.573 -0.555  0.037  0.592  2.428 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 0.267    0.516   
+##  Residual                   0.494    0.703   
+## Number of obs: 4116, groups:  mother_pidlink, 2856
+## 
+## Fixed effects:
+##                Estimate Std. Error t value
+## (Intercept)     0.65239    0.05867   11.12
+## birth_order     0.00386    0.01296    0.30
+## age            -0.00947    0.00198   -4.78
+## male           -0.04098    0.02594   -1.58
+## sibling_count3  0.00904    0.04051    0.22
+## sibling_count4 -0.04444    0.04500   -0.99
+## sibling_count5 -0.08108    0.05101   -1.59
+## 
+## Correlation of Fixed Effects:
+##             (Intr) brth_r age    male   sbln_3 sbln_4
+## birth_order -0.443                                   
+## age         -0.787  0.214                            
+## male        -0.243 -0.013  0.042                     
+## siblng_cnt3 -0.257 -0.154 -0.090 -0.007              
+## siblng_cnt4 -0.087 -0.309 -0.212 -0.011  0.536       
+## siblng_cnt5  0.015 -0.430 -0.257  0.013  0.499  0.539</code></pre>
+</div>
+<div id="coefficient-plot-9" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot_birthorder(m2_birthorder_linear, separate = FALSE, ylimits = ylimits)</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-birth-order-factor-2" class="section level5 tabset">
+<h5>Add Birth Order Factor</h5>
+<div id="model-summary-10" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>m3_birthorder_nonlinear = update(m1_covariates_only, formula = . ~ . + birth_order_nonlinear)
+summary(m3_birthorder_nonlinear)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: outcome ~ age + male + sibling_count + (1 | mother_pidlink) +      birth_order_nonlinear
+##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_preg_factor,  
+##     birth_order_nonlinear = birthorder_uterus_preg_factor, birth_order = birthorder_uterus_preg,  
+##     count_birth_order = count_birthorder_uterus_preg) %&gt;% filter(sibling_count !=      &quot;1&quot;)
+## 
+## REML criterion at convergence: 10412
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -3.557 -0.550  0.038  0.590  2.444 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 0.267    0.516   
+##  Residual                   0.494    0.703   
+## Number of obs: 4116, groups:  mother_pidlink, 2856
+## 
+## Fixed effects:
+##                        Estimate Std. Error t value
+## (Intercept)             0.64142    0.05467   11.73
+## age                    -0.00961    0.00199   -4.84
+## male                   -0.03997    0.02594   -1.54
+## sibling_count3          0.01145    0.04095    0.28
+## sibling_count4         -0.03485    0.04549   -0.77
+## sibling_count5         -0.07379    0.05141   -1.44
+## birth_order_nonlinear2  0.05634    0.03003    1.88
+## birth_order_nonlinear3 -0.00262    0.03810   -0.07
+## birth_order_nonlinear4 -0.01110    0.05073   -0.22
+## birth_order_nonlinear5  0.05298    0.07354    0.72
+## 
+## Correlation of Fixed Effects:
+##             (Intr) age    male   sbln_3 sbln_4 sbln_5 brt__2 brt__3 brt__4
+## age         -0.788                                                        
+## male        -0.266  0.041                                                 
+## siblng_cnt3 -0.310 -0.084 -0.007                                          
+## siblng_cnt4 -0.170 -0.208 -0.010  0.534                                   
+## siblng_cnt5 -0.099 -0.260  0.014  0.484  0.523                            
+## brth_rdr_n2 -0.221  0.051  0.011 -0.080 -0.106 -0.086                     
+## brth_rdr_n3 -0.155  0.116 -0.009 -0.212 -0.255 -0.260  0.376              
+## brth_rdr_n4 -0.183  0.174 -0.012 -0.078 -0.293 -0.304  0.291  0.331       
+## brth_rdr_n5 -0.161  0.167 -0.009 -0.058 -0.118 -0.358  0.194  0.237  0.261</code></pre>
+</div>
+<div id="coefficient-plot-10" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot_birthorder(m3_birthorder_nonlinear, separate = FALSE, ylimits = ylimits)</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-interaction-2" class="section level5 tabset">
+<h5>Add Interaction</h5>
+<div id="model-summary-11" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>m4_interaction = update(m3_birthorder_nonlinear, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
+summary(m4_interaction)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: outcome ~ age + male + (1 | mother_pidlink) + count_birth_order
+##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_preg_factor,  
+##     birth_order_nonlinear = birthorder_uterus_preg_factor, birth_order = birthorder_uterus_preg,  
+##     count_birth_order = count_birthorder_uterus_preg) %&gt;% filter(sibling_count !=      &quot;1&quot;)
+## 
+## REML criterion at convergence: 10423
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -3.551 -0.549  0.039  0.590  2.409 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 0.266    0.516   
+##  Residual                   0.494    0.703   
+## Number of obs: 4116, groups:  mother_pidlink, 2856
+## 
+## Fixed effects:
+##                      Estimate Std. Error t value
+## (Intercept)           0.63287    0.05645   11.21
+## age                  -0.00963    0.00199   -4.84
+## male                 -0.04132    0.02596   -1.59
+## count_birth_order2/2  0.08602    0.05481    1.57
+## count_birth_order1/3  0.04577    0.05043    0.91
+## count_birth_order2/3  0.02851    0.05404    0.53
+## count_birth_order3/3  0.04066    0.06050    0.67
+## count_birth_order1/4 -0.08206    0.05959   -1.38
+## count_birth_order2/4  0.08427    0.06051    1.39
+## count_birth_order3/4 -0.02724    0.06527   -0.42
+## count_birth_order4/4 -0.01995    0.06745   -0.30
+## count_birth_order1/5 -0.01110    0.06978   -0.16
+## count_birth_order2/5 -0.01853    0.07483   -0.25
+## count_birth_order3/5 -0.10226    0.07225   -1.42
+## count_birth_order4/5 -0.09498    0.07481   -1.27
+## count_birth_order5/5 -0.01281    0.07460   -0.17</code></pre>
+<pre><code>## 
+## Correlation matrix not shown by default, as p = 16 &gt; 12.
+## Use print(x, correlation=TRUE)  or
+##   vcov(x)     if you need it</code></pre>
+</div>
+<div id="coefficient-plot-11" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot_birthorder(m4_interaction, ylimits = ylimits)</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+</div>
+</div>
+<div id="model-comparison-2" class="section level5">
+<h5>Model Comparison</h5>
+<pre class="r"><code>###### Model 1 - Model 2
+anova(m1_covariates_only, m2_birthorder_linear, m3_birthorder_nonlinear, m4_interaction)</code></pre>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<table style="width:100%;">
+<caption>Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_preg_factor, …</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="13%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">8</td>
+<td align="center">10378</td>
+<td align="center">10429</td>
+<td align="center">-5181</td>
+<td align="center">10362</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">9</td>
+<td align="center">10380</td>
+<td align="center">10437</td>
+<td align="center">-5181</td>
+<td align="center">10362</td>
+<td align="center">0.08921</td>
+<td align="center">1</td>
+<td align="center">0.7652</td>
+</tr>
+<tr class="odd">
+<td align="center">12</td>
+<td align="center">10381</td>
+<td align="center">10457</td>
+<td align="center">-5178</td>
+<td align="center">10357</td>
+<td align="center">4.921</td>
+<td align="center">3</td>
+<td align="center">0.1777</td>
+</tr>
+<tr class="even">
+<td align="center">18</td>
+<td align="center">10386</td>
+<td align="center">10500</td>
+<td align="center">-5175</td>
+<td align="center">10350</td>
+<td align="center">7.192</td>
+<td align="center">6</td>
+<td align="center">0.3034</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="parental-full-sibling-order" class="section level4 tabset">
+<h4>Parental full sibling order</h4>
+<pre class="r"><code>outcome_parental_m1 &lt;- update(m2_birthorder_linear, data = birthorder %&gt;%
+  mutate(sibling_count = sibling_count_genes_factor,
+         birth_order_nonlinear = birthorder_genes_factor,
+         birth_order = birthorder_genes,
+         count_birth_order = count_birthorder_genes
+         ) %&gt;% 
+      filter(sibling_count != &quot;1&quot;))
+compare_models_markdown(outcome_parental_m1)</code></pre>
+<div id="basic-model-3" class="section level5 tabset">
+<h5>Basic Model</h5>
+<div id="model-summary-12" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>m1_covariates_only &lt;- update(m2_birthorder_linear, formula = . ~ . - birth_order)
+summary(m1_covariates_only)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: outcome ~ age + male + sibling_count + (1 | mother_pidlink)
+##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_genes_factor,  
+##     birth_order_nonlinear = birthorder_genes_factor, birth_order = birthorder_genes,  
+##     count_birth_order = count_birthorder_genes) %&gt;% filter(sibling_count !=      &quot;1&quot;)
+## 
+## REML criterion at convergence: 11144
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -3.588 -0.557  0.034  0.588  3.021 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 0.264    0.514   
+##  Residual                   0.494    0.703   
+## Number of obs: 4420, groups:  mother_pidlink, 3022
+## 
+## Fixed effects:
+##                Estimate Std. Error t value
+## (Intercept)     0.65718    0.04979   13.20
+## age            -0.00922    0.00185   -4.98
+## male           -0.04736    0.02498   -1.90
+## sibling_count3  0.01968    0.03658    0.54
+## sibling_count4 -0.05808    0.04021   -1.44
+## sibling_count5 -0.12210    0.04782   -2.55
+## 
+## Correlation of Fixed Effects:
+##             (Intr) age    male   sbln_3 sbln_4
+## age         -0.811                            
+## male        -0.278  0.045                     
+## siblng_cnt3 -0.320 -0.074 -0.021              
+## siblng_cnt4 -0.218 -0.161 -0.008  0.486       
+## siblng_cnt5 -0.148 -0.182 -0.006  0.414  0.393</code></pre>
+</div>
+<div id="coefficient-plot-12" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot(allEffects(m1_covariates_only))</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-birth-order-linear-3" class="section level5 tabset">
+<h5>Add Birth Order Linear</h5>
+<div id="model-summary-13" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>summary(m2_birthorder_linear)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: outcome ~ birth_order + age + male + sibling_count + (1 | mother_pidlink)
+##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_genes_factor,  
+##     birth_order_nonlinear = birthorder_genes_factor, birth_order = birthorder_genes,  
+##     count_birth_order = count_birthorder_genes) %&gt;% filter(sibling_count !=      &quot;1&quot;)
+## 
+## REML criterion at convergence: 11149
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -3.582 -0.556  0.034  0.590  2.992 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 0.264    0.513   
+##  Residual                   0.494    0.703   
+## Number of obs: 4420, groups:  mother_pidlink, 3022
+## 
+## Fixed effects:
+##                Estimate Std. Error t value
+## (Intercept)     0.62062    0.05601   11.08
+## birth_order     0.01849    0.01300    1.42
+## age            -0.00865    0.00189   -4.57
+## male           -0.04787    0.02499   -1.92
+## sibling_count3  0.01078    0.03710    0.29
+## sibling_count4 -0.07856    0.04270   -1.84
+## sibling_count5 -0.15456    0.05297   -2.92
+## 
+## Correlation of Fixed Effects:
+##             (Intr) brth_r age    male   sbln_3 sbln_4
+## birth_order -0.459                                   
+## age         -0.802  0.211                            
+## male        -0.241 -0.014  0.041                     
+## siblng_cnt3 -0.203 -0.169 -0.107 -0.018              
+## siblng_cnt4 -0.028 -0.337 -0.219 -0.003  0.508       
+## siblng_cnt5  0.079 -0.431 -0.251  0.001  0.441  0.479</code></pre>
+</div>
+<div id="coefficient-plot-13" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot_birthorder(m2_birthorder_linear, separate = FALSE, ylimits = ylimits)</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-birth-order-factor-3" class="section level5 tabset">
+<h5>Add Birth Order Factor</h5>
+<div id="model-summary-14" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>m3_birthorder_nonlinear = update(m1_covariates_only, formula = . ~ . + birth_order_nonlinear)
+summary(m3_birthorder_nonlinear)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: outcome ~ age + male + sibling_count + (1 | mother_pidlink) +      birth_order_nonlinear
+##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_genes_factor,  
+##     birth_order_nonlinear = birthorder_genes_factor, birth_order = birthorder_genes,  
+##     count_birth_order = count_birthorder_genes) %&gt;% filter(sibling_count !=      &quot;1&quot;)
+## 
+## REML criterion at convergence: 11158
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -3.570 -0.555  0.031  0.592  2.986 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 0.264    0.514   
+##  Residual                   0.494    0.703   
+## Number of obs: 4420, groups:  mother_pidlink, 3022
+## 
+## Fixed effects:
+##                        Estimate Std. Error t value
+## (Intercept)             0.62877    0.05182   12.13
+## age                    -0.00874    0.00190   -4.61
+## male                   -0.04778    0.02499   -1.91
+## sibling_count3          0.01359    0.03756    0.36
+## sibling_count4         -0.07534    0.04322   -1.74
+## sibling_count5         -0.14435    0.05385   -2.68
+## birth_order_nonlinear2  0.05578    0.02852    1.96
+## birth_order_nonlinear3  0.02854    0.03662    0.78
+## birth_order_nonlinear4  0.06332    0.05061    1.25
+## birth_order_nonlinear5  0.05344    0.08182    0.65
+## 
+## Correlation of Fixed Effects:
+##             (Intr) age    male   sbln_3 sbln_4 sbln_5 brt__2 brt__3 brt__4
+## age         -0.808                                                        
+## male        -0.264  0.040                                                 
+## siblng_cnt3 -0.263 -0.101 -0.020                                          
+## siblng_cnt4 -0.122 -0.217 -0.003  0.506                                   
+## siblng_cnt5 -0.038 -0.255  0.002  0.417  0.458                            
+## brth_rdr_n2 -0.226  0.056  0.000 -0.069 -0.100 -0.072                     
+## brth_rdr_n3 -0.161  0.122  0.000 -0.227 -0.276 -0.239  0.359              
+## brth_rdr_n4 -0.187  0.180 -0.019 -0.081 -0.314 -0.318  0.274  0.321       
+## brth_rdr_n5 -0.145  0.149 -0.010 -0.052 -0.113 -0.373  0.164  0.198  0.247</code></pre>
+</div>
+<div id="coefficient-plot-14" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot_birthorder(m3_birthorder_nonlinear, separate = FALSE, ylimits = ylimits)</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-interaction-3" class="section level5 tabset">
+<h5>Add Interaction</h5>
+<div id="model-summary-15" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>m4_interaction = update(m3_birthorder_nonlinear, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
+summary(m4_interaction)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: outcome ~ age + male + (1 | mother_pidlink) + count_birth_order
+##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_genes_factor,  
+##     birth_order_nonlinear = birthorder_genes_factor, birth_order = birthorder_genes,  
+##     count_birth_order = count_birthorder_genes) %&gt;% filter(sibling_count !=      &quot;1&quot;)
+## 
+## REML criterion at convergence: 11176
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -3.572 -0.557  0.031  0.585  3.021 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 0.263    0.513   
+##  Residual                   0.495    0.704   
+## Number of obs: 4420, groups:  mother_pidlink, 3022
+## 
+## Fixed effects:
+##                      Estimate Std. Error t value
+## (Intercept)           0.62819    0.05335   11.78
+## age                  -0.00873    0.00190   -4.60
+## male                 -0.04809    0.02502   -1.92
+## count_birth_order2/2  0.05695    0.04849    1.17
+## count_birth_order1/3  0.01695    0.04594    0.37
+## count_birth_order2/3  0.06356    0.05011    1.27
+## count_birth_order3/3  0.04500    0.05490    0.82
+## count_birth_order1/4 -0.09493    0.05691   -1.67
+## count_birth_order2/4 -0.01678    0.05823   -0.29
+## count_birth_order3/4 -0.03926    0.06030   -0.65
+## count_birth_order4/4  0.00706    0.06354    0.11
+## count_birth_order1/5 -0.11318    0.07557   -1.50
+## count_birth_order2/5 -0.07343    0.08374   -0.88
+## count_birth_order3/5 -0.13463    0.07946   -1.69
+## count_birth_order4/5 -0.10962    0.07687   -1.43
+## count_birth_order5/5 -0.09137    0.08050   -1.14</code></pre>
+<pre><code>## 
+## Correlation matrix not shown by default, as p = 16 &gt; 12.
+## Use print(x, correlation=TRUE)  or
+##   vcov(x)     if you need it</code></pre>
+</div>
+<div id="coefficient-plot-15" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>plot_birthorder(m4_interaction, ylimits = ylimits)</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+</div>
+</div>
+<div id="model-comparison-3" class="section level5">
+<h5>Model Comparison</h5>
+<pre class="r"><code>###### Model 1 - Model 2
+anova(m1_covariates_only, m2_birthorder_linear, m3_birthorder_nonlinear, m4_interaction)</code></pre>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<table style="width:99%;">
+<caption>Data: birthorder %&gt;% mutate(sibling_count = sibling_count_genes_factor, …</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="12%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">8</td>
+<td align="center">11123</td>
+<td align="center">11175</td>
+<td align="center">-5554</td>
+<td align="center">11107</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">9</td>
+<td align="center">11123</td>
+<td align="center">11181</td>
+<td align="center">-5553</td>
+<td align="center">11105</td>
+<td align="center">2.026</td>
+<td align="center">1</td>
+<td align="center">0.1546</td>
+</tr>
+<tr class="odd">
+<td align="center">12</td>
+<td align="center">11127</td>
+<td align="center">11204</td>
+<td align="center">-5551</td>
+<td align="center">11103</td>
+<td align="center">2.409</td>
+<td align="center">3</td>
+<td align="center">0.492</td>
+</tr>
+<tr class="even">
+<td align="center">18</td>
+<td align="center">11138</td>
+<td align="center">11253</td>
+<td align="center">-5551</td>
+<td align="center">11102</td>
+<td align="center">0.9418</td>
+<td align="center">6</td>
+<td align="center">0.9877</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="compare-birth-order-specifications" class="section level4">
+<h4>Compare birth order specifications</h4>
+<pre class="r"><code>library(coefplot)
+multiplot(outcome_naive_m1, outcome_preg_m1, outcome_uterus_m1, outcome_parental_m1, dodgeHeight = 0.6,
+          intercept = FALSE)</code></pre>
+<p><img src="4_analyses_robust_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCm91dHB1dDogaHRtbF9kb2N1bWVudAplZGl0b3Jfb3B0aW9uczogCiAgY2h1bmtfb3V0cHV0X3R5cGU6IGNvbnNvbGUKLS0tCiMgPHNwYW4gc3R5bGU9ImNvbG9yOiNBNkQ4NTQiPkJpcnRoIE9yZGVyIEVmZmVjdHM8L3NwYW4+IHsudGFic2V0fQoKIyMgSGVscGVyCmBgYHtyIGhlbHBlcn0Kc291cmNlKCIwX2hlbHBlcnMuUiIpCgpgYGAKCiMjIExvYWQgZGF0YQpgYGB7ciBMb2FkIERhdGF9CmJpcnRob3JkZXIgPSByZWFkUkRTKCJkYXRhL2FsbGRhdGFfYmlydGhvcmRlci5yZHMiKQpgYGAKCiMjIERhdGEgcHJlcGFyYXRpb25zCmBgYHtyIGRhdGEgcHJlcGFyYXRpb25zfQojIEZvciBhbmFseXNlcyB3ZSB3YW50IHRvIGNsZWFuIHRoZSBkYXRhc2V0IGFuZCBnZXQgcmlkIG9mIGFsbCB1bmludGVyZXN0aW5nIGRhdGEKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lCiAgZmlsdGVyKCFpcy5uYShwaWRsaW5rKSkgJT4lICMgbm8gaW5kaXZpZHVhbHMgd2hvIGFyZSBvbmx5IGtub3duIGZyb20gdGhlIHByZWduYW5jeSBmaWxlCiAgZmlsdGVyKGlzLm5hKGxpZmViaXJ0aHMpIHwgbGlmZWJpcnRocyA9PSAyKSAlPiUgIyByZW1vdmUgNyBhbmQgMiBpbmRpdmlkdWFscyB3aG8gYXJlIGtub3duIGFzIHN0aWxsYmlydGggb3IgbWlzY2FycmlhZ2UgYnV0IHN0aWxsIGhhdmUgUElECiAgc2VsZWN0KC1saWZlYmlydGhzKSAlPiUKICBmaWx0ZXIoIWlzLm5hKG1vdGhlcl9waWRsaW5rKSkgJT4lCiAgc2VsZWN0KC1mYXRoZXJfcGlkbGluaykgJT4lCiAgZmlsdGVyKGlzLm5hKGFueV9tdWx0aXBsZV9iaXJ0aCkgfCBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSkgJT4lICMgcmVtb3ZlIGZhbWlsaWVzIHdpdGggdHdpbnMvdHJpcGxldHMvLi4KICBmaWx0ZXIoIWlzLm5hKGJpcnRob3JkZXJfbmFpdmUpKSAlPiUKICBzZWxlY3QoLXN0YXJ0c193aXRoKCJhZ2VfIiksIC13YXZlLCAtYW55X211bHRpcGxlX2JpcnRoLCAtbXVsdGlwbGVfYmlydGgpICU+JQogIG11dGF0ZShtb25leV9zcGVudF9zbW9raW5nX2xvZyA9IGlmX2Vsc2UoaXMubmEobW9uZXlfc3BlbnRfc21va2luZ19sb2cpICYgZXZlcl9zbW9rZWQgPT0gMCwgMCwgbW9uZXlfc3BlbnRfc21va2luZ19sb2cpLAogICAgICAgICBhbW91bnQgPSBpZl9lbHNlKGlzLm5hKGFtb3VudCkgJiBldmVyX3Ntb2tlZCA9PSAwLCAwLCBhbW91bnQpLAogICAgICAgICBhbW91bnRfc3RpbGxfc21va2VycyA9IGlmX2Vsc2UoaXMubmEoYW1vdW50X3N0aWxsX3Ntb2tlcnMpICYgIHN0aWxsX3Ntb2tpbmcgPT0gMCwgMCwgYW1vdW50X3N0aWxsX3Ntb2tlcnMpLAogICAgICAgICBiaXJ0aHllYXIgPSBsdWJyaWRhdGU6OnllYXIoYmlydGhkYXRlKSkKCiMgcmVjb2RlIEZhY3RvciBWYXJpYWJsZSBhcyBEdW1teSBWYXJpYWJsZQpiaXJ0aG9yZGVyID0gbGVmdF9qb2luKGJpcnRob3JkZXIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlciAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZpbHRlcighaXMubmEoQ2F0ZWdvcnkpKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG11dGF0ZSh2YXIgPSAxKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNlbGVjdChwaWRsaW5rLCBDYXRlZ29yeSwgdmFyKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNwcmVhZChDYXRlZ29yeSwgdmFyLCBmaWxsID0gMCwgc2VwID0gIl8iKSwgYnkgPSAicGlkbGluayIpICU+JQogIHNlbGVjdCgtQ2F0ZWdvcnkpCgojIHJlY29kZSBGYWN0b3IgVmFyaWFibGUgYXMgRHVtbXkgVmFyaWFibGUKYmlydGhvcmRlciA9IGxlZnRfam9pbihiaXJ0aG9yZGVyLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRob3JkZXIgJT4lCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBmaWx0ZXIoIWlzLm5hKFNlY3RvcikpICU+JQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbXV0YXRlKHZhciA9IDEpICU+JQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2VsZWN0KHBpZGxpbmssIFNlY3RvciwgdmFyKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNwcmVhZChTZWN0b3IsIHZhciwgZmlsbCA9IDAsIHNlcCA9ICJfIiksIGJ5ID0gInBpZGxpbmsiKSAlPiUKICBzZWxlY3QoLVNlY3RvcikKCgoKIyMjIFZhcmlhYmxlcwpiaXJ0aG9yZGVyID0gYmlydGhvcmRlciAlPiUKICBtdXRhdGUoCiAgICAjIGNlbnRlciB2YXJpYWJsZXMgdGhhdCBhcmUgdXNlZCBmb3IgYW5hbHlzaXMKICBnX2ZhY3Rvcl8yMDE1X29sZCA9IHNjYWxlKGdfZmFjdG9yXzIwMTVfb2xkKSwKICBnX2ZhY3Rvcl8yMDE1X3lvdW5nID0gc2NhbGUoZ19mYWN0b3JfMjAxNV95b3VuZyksCiAgZ19mYWN0b3JfMjAwN19vbGQgPSBzY2FsZShnX2ZhY3Rvcl8yMDA3X29sZCksCiAgZ19mYWN0b3JfMjAwN195b3VuZyA9IHNjYWxlKGdfZmFjdG9yXzIwMDdfeW91bmcpLAogIHJhdmVuXzIwMTVfb2xkID0gc2NhbGUocmF2ZW5fMjAxNV9vbGQpLAogIG1hdGhfMjAxNV9vbGQgPSBzY2FsZShtYXRoXzIwMTVfb2xkKSwKICBjb3VudF9iYWNrd2FyZHMgPSBzY2FsZShjb3VudF9iYWNrd2FyZHMpLAogIHJhdmVuXzIwMTVfeW91bmcgPSBzY2FsZShyYXZlbl8yMDE1X3lvdW5nKSwKICBtYXRoXzIwMTVfeW91bmcgPSBzY2FsZShtYXRoXzIwMTVfeW91bmcpLAogIHdvcmRzX3JlbWVtYmVyZWRfYXZnID0gc2NhbGUod29yZHNfcmVtZW1iZXJlZF9hdmcpLAogIHdvcmRzX2ltbWVkaWF0ZSA9IHNjYWxlKHdvcmRzX2ltbWVkaWF0ZSksCiAgd29yZHNfZGVsYXllZCA9IHNjYWxlKHdvcmRzX2RlbGF5ZWQpLAogIGFkYXB0aXZlX251bWJlcmluZyA9IHNjYWxlKGFkYXB0aXZlX251bWJlcmluZyksCiAgcmF2ZW5fMjAwN19vbGQgPSBzY2FsZShyYXZlbl8yMDA3X29sZCksCiAgbWF0aF8yMDA3X29sZCA9IHNjYWxlKG1hdGhfMjAwN19vbGQpLAogIHJhdmVuXzIwMDdfeW91bmcgPSBzY2FsZShyYXZlbl8yMDA3X3lvdW5nKSwKICBtYXRoXzIwMDdfeW91bmcgPSBzY2FsZShtYXRoXzIwMDdfeW91bmcpLAogIHJpc2tBID0gc2NhbGUocmlza0EpLAogIHJpc2tCID0gc2NhbGUocmlza0IpLAogIHllYXJzX29mX2VkdWNhdGlvbl96ID0gc2NhbGUoeWVhcnNfb2ZfZWR1Y2F0aW9uKSwKICBUb3RhbF9zY29yZV9oaWdoZXN0X3ogPSBzY2FsZShUb3RhbF9zY29yZV9oaWdoZXN0KSwKICB3YWdlX2xhc3RfbW9udGhfeiA9IHNjYWxlKHdhZ2VfbGFzdF9tb250aF9sb2cpLAogIHdhZ2VfbGFzdF95ZWFyX3ogPSBzY2FsZSh3YWdlX2xhc3RfeWVhcl9sb2cpLAogIGJpZzVfZXh0ID0gc2NhbGUoYmlnNV9leHQpLAogIGJpZzVfY29uID0gc2NhbGUoYmlnNV9jb24pLAogIGJpZzVfYWdyZWUgPSBzY2FsZShiaWc1X2FncmVlKSwKICBiaWc1X29wZW4gPSBzY2FsZShiaWc1X29wZW4pLAogIGJpZzVfbmV1ID0gc2NhbGUoYmlnNV9uZXUpLAogIGF0dGVuZGVkX3NjaG9vbCA9IGFzLmludGVnZXIoYXR0ZW5kZWRfc2Nob29sKQopCgpxcGxvdChiaXJ0aG9yZGVyJG1hbGUpCnFwbG90KGJpcnRob3JkZXIkZ19mYWN0b3JfMjAxNV9vbGQpCnFwbG90KGJpcnRob3JkZXIkZ19mYWN0b3JfMjAxNV9vbGQpCgojIyMgQmlydGhvcmRlciBhbmQgU2libGluZyBDb3VudApiaXJ0aG9yZGVyID0gYmlydGhvcmRlciAlPiUgCiAgbXV0YXRlKAojIGJpcnRob3JkZXIgYXMgZmFjdG9ycyB3aXRoIGxldmVscyBvZiAxLCAyLCAzLCA0LCA1LAogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoYmlydGhvcmRlcl9uYWl2ZSksCiAgICBiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciA9IGlmZWxzZShiaXJ0aG9yZGVyX25haXZlID4gNSwgTkEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IpLAogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBmYWN0b3IoYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IikpLAogICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoc2libGluZ19jb3VudF9uYWl2ZSksCiAgICBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvciA9IGlmZWxzZShzaWJsaW5nX2NvdW50X25haXZlID4gNSwgTkEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IpLAogICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IgPSBmYWN0b3Ioc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjIiLCIzIiwiNCIsIjUiKSksCgogICAgYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSwKICAgIGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciA9IGlmZWxzZShiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSA+IDUsIE5BLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciksCiAgICBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IgPSBmYWN0b3IoYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIxIiwiMiIsIjMiLCI0IiwiNSIpKSwKICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgPSBpZmVsc2Uoc2libGluZ19jb3VudF91dGVydXNfYWxpdmUgPiA1LCBOQSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IpLAogICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMiIsIjMiLCI0IiwiNSIpKSwKICAgIGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcpLAogICAgYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgPSBpZmVsc2UoYmlydGhvcmRlcl91dGVydXNfcHJlZyA+IDUsIE5BLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IpLAogICAgYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgPSBmYWN0b3IoYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIxIiwiMiIsIjMiLCI0IiwiNSIpKSwKICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yID0gYXMuY2hhcmFjdGVyKHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcpLAogICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IgPSBpZmVsc2Uoc2libGluZ19jb3VudF91dGVydXNfcHJlZyA+IDUsIE5BLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IpLAogICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IgPSBmYWN0b3Ioc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMiIsIjMiLCI0IiwiNSIpKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfZ2VuZXMpLAogICAgYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgPSBpZmVsc2UoYmlydGhvcmRlcl9nZW5lcyA+NSAsIE5BLCBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciksCiAgICBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciA9IGZhY3RvcihiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIxIiwiMiIsIjMiLCI0IiwiNSIpKSwKICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yID0gYXMuY2hhcmFjdGVyKHNpYmxpbmdfY291bnRfZ2VuZXMpLAogICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgPSBpZmVsc2Uoc2libGluZ19jb3VudF9nZW5lcyA+NSAsIE5BLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IpLAogICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgPSBmYWN0b3Ioc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMiIsIjMiLCI0IiwiNSIpKSwKICAgICMgaW50ZXJhY3Rpb24gYmlydGhvcmRlciAqIHNpYmxpbmdjb3V0IGZvciBlYWNoIGJpcnRob3JkZXIKICAgIGNvdW50X2JpcnRob3JkZXJfbmFpdmUgPQogICAgICBmYWN0b3Ioc3RyX3JlcGxhY2UoYXMuY2hhcmFjdGVyKGludGVyYWN0aW9uKGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yLCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IpKSwKICAgICAgICAgICAgICAgICAgICAgICAgIlxcLiIsICIvIiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSAgIGMoIjEvMiIsIjIvMiIsICIxLzMiLCAgIjIvMyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjMvMyIsICIxLzQiLCAiMi80IiwgIjMvNCIsICI0LzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUiLCAiMi81IiwgIjMvNSIsICI0LzUiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI1LzUiKSksCiAgICBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSA9CiAgICAgIGZhY3RvcihzdHJfcmVwbGFjZShhcy5jaGFyYWN0ZXIoaW50ZXJhY3Rpb24oYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yLCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yKSksCiAgICAgICAgICAgICAgICAgICAgICAgICJcXC4iLCAiLyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gICBjKCIxLzIiLCIyLzIiLCAiMS8zIiwgICIyLzMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIzLzMiLCAiMS80IiwgIjIvNCIsICIzLzQiLCAiNC80IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81IiwgIjIvNSIsICIzLzUiLCAiNC81IiwgIjUvNSIpKSwKICAgIGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX3ByZWcgPQogICAgICBmYWN0b3Ioc3RyX3JlcGxhY2UoYXMuY2hhcmFjdGVyKGludGVyYWN0aW9uKGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yLCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IpKSwgCiAgICAgICAgICAgICAgICAgICAgICAgICAiXFwuIiwgIi8iKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9ICAgYygiMS8yIiwiMi8yIiwgIjEvMyIsICAiMi8zIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMy8zIiwgIjEvNCIsICIyLzQiLCAiMy80IiwgIjQvNCIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSIsICIyLzUiLCAiMy81IiwgIjQvNSIsICI1LzUiKSksCiAgICBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yKSksICJcXC4iLCAiLyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gICBjKCIxLzIiLCIyLzIiLCAiMS8zIiwgICIyLzMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIzLzMiLCAiMS80IiwgIjIvNCIsICIzLzQiLCAiNC80IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81IiwgIjIvNSIsICIzLzUiLCAiNC81IiwgIjUvNSIpKSkKCmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUKICAgICAgICAgICAgICAgICAgICAgbXV0YXRlKHNpYmxpbmdfY291bnQgPSBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRoX29yZGVyX25vbmxpbmVhciA9IGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhfb3JkZXIgPSBiaXJ0aG9yZGVyX25haXZlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgY291bnRfYmlydGhfb3JkZXIgPSBjb3VudF9iaXJ0aG9yZGVyX25haXZlKQoKYGBgCgojIyBIb3cgbWFueSBzaWJsaW5ncyB3aXRoIGRhdGEgZG8gd2UgcmV0YWluIGluIGVhY2ggZmFtaWx5PwpgYGB7ciAgSG93IG1hbnkgc2libGluZ3Mgd2l0aCBkYXRhIGRvIHdlIHJldGFpbiBpbiBlYWNoIGZhbWlseT99CmNyb3NzdGFicyh+aXMubmEoYmlydGhvcmRlciRiaXJ0aG9yZGVyX25haXZlKSArIGlzLm5hKGJpcnRob3JkZXIkZ19mYWN0b3JfMjAxNV9vbGQpKQpjcm9zc3RhYnMofmlzLm5hKGJpcnRob3JkZXIkYmlydGhvcmRlcl91dGVydXNfcHJlZykgKyBpcy5uYShiaXJ0aG9yZGVyJGdfZmFjdG9yXzIwMTVfb2xkKSkKCmJpcnRob3JkZXIgJT4lIGZpbHRlcighaXMubmEoYmlydGhvcmRlcl9uYWl2ZSksICFpcy5uYShnX2ZhY3Rvcl8yMDE1X29sZCkpICU+JSBncm91cF9ieShtb3RoZXJfcGlkbGluaykgJT4lIHN1bW1hcmlzZSh3aXRoX2RhdGEgPSBuKCksIGFsbCA9IG1lYW4oc2libGluZ19jb3VudF91dGVydXNfcHJlZykpIC0+IGNvdW50cwpiaXJ0aG9yZGVyICU+JSBmaWx0ZXIoIWlzLm5hKGJpcnRob3JkZXJfbmFpdmUpKSAlPiUgZ3JvdXBfYnkobW90aGVyX3BpZGxpbmspICU+JSBzdW1tYXJpc2Uod2l0aF9kYXRhID0gbigpLCBhbGwgPSBtZWFuKHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcpKSAtPiBjb3VudHMxCmBgYAoKSW4gb3VyIHRlc3Qgc2FtcGxlIGZhbWlsaWVzIHdpdGggYW4gYXZlcmFnZSBzaXplIG9mIGByIG1lYW4oY291bnRzJGFsbCxuYS5ybT0gVClgIHNpYmxpbmdzLCB3ZSByZXRhaW4gYHIgbWVhbihjb3VudHMkd2l0aF9kYXRhKWAuCgpJbiB0aGUgb3JpZ2luYWwgc2FtcGxlIGZhbWlsaWVzIHdpdGggYW4gYXZlcmFnZSBzaXplIG9mIGByIG1lYW4oY291bnRzMSRhbGwsbmEucm09IFQpYCBzaWJsaW5ncywgd2UgcmV0YWluIGByIG1lYW4oY291bnRzMSR3aXRoX2RhdGEpYC4KCmBgYHtyfQpnZ3Bsb3QoY291bnRzLCBhZXMoYWxsLCB3aXRoX2RhdGEpKSArIGdlb21faml0dGVyKGFscGhhID0gMC4xKSArIGdlb21fc21vb3RoKCkgKyBzY2FsZV94X2NvbnRpbnVvdXMoYnJlYWtzPTE6MTUpICsgc2NhbGVfeV9jb250aW51b3VzKGJyZWFrcz0xOjE1KQpgYGAKCgojIyBJbnRlbGxpZ2VuY2Ugey5hY3RpdmUgLnRhYnNldH0KIyMjIGctZmFjdG9yIDIwMTUgb2xkIHsudGFic2V0fQoKYGBge3IgZy1mYWN0b3IgMjAxNSBvbGR9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBnX2ZhY3Rvcl8yMDE1X29sZCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIGFnZSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKY29tcGFyZV9iaXJ0aG9yZGVyX3NwZWNzKG1vZGVsKQpgYGAK</div>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

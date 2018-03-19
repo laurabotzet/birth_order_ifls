@@ -918,6 +918,7 @@ iq %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, 
 
 ### g_factor at the beginning
 ```{r}
+# G_factor_2015_old
 nomiss = iq %>%
   filter(!is.na(raven_2015_old), !is.na(math_2015_old), !is.na(count_backwards), !is.na(words_delayed),
          !is.na(adaptive_numbering))
@@ -929,17 +930,87 @@ om_results = omega(nomiss %>% select(raven_2015_old, math_2015_old, count_backwa
 om_results
 omega.diagram(om_results)
 
-"g_factor_early =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed+  adaptive_numbering" %>%
+"g_factor_2015_old =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed+  adaptive_numbering" %>%
   cfa(data = nomiss, std.lv = T, std.ov = T) -> cfa_g
 summary(cfa_g)
 
-nomiss$g_factor_early = predict(cfa_g)[,1]
+nomiss$g_factor_2015_old = predict(cfa_g)[,1]
 
-qplot(nomiss$g_factor_early)
+qplot(nomiss$g_factor_2015_old)
 
-nomiss = nomiss %>% select(pidlink, g_factor_early)
+nomiss = nomiss %>% select(pidlink, g_factor_2015_old)
 
 iq = left_join(iq, nomiss, by = "pidlink")
+
+# G_factor_2015_young
+nomiss = iq %>%
+  filter(!is.na(raven_2015_young), !is.na(math_2015_young))
+
+
+fa.parallel(nomiss %>% select(raven_2015_young, math_2015_young) %>% data.frame())
+fa(nomiss %>% select(raven_2015_young, math_2015_young) %>% data.frame(), nfactors = 1)
+om_results = omega(nomiss %>% select(raven_2015_young, math_2015_young) %>% data.frame(), nfactors = 1, sl = F)
+om_results
+omega.diagram(om_results)
+
+"g_factor_2015_young =~ raven_2015_young + math_2015_young" %>%
+  cfa(data = nomiss, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+nomiss$g_factor_2015_young = predict(cfa_g)[,1]
+
+qplot(nomiss$g_factor_2015_young)
+
+nomiss = nomiss %>% select(pidlink, g_factor_2015_young)
+
+iq = left_join(iq, nomiss, by = "pidlink")
+
+# G_factor_2007_old
+nomiss = iq %>%
+  filter(!is.na(raven_2007_old), !is.na(math_2007_old))
+
+
+fa.parallel(nomiss %>% select(raven_2007_old, math_2007_old) %>% data.frame())
+fa(nomiss %>% select(raven_2007_old, math_2007_old) %>% data.frame(), nfactors = 1)
+om_results = omega(nomiss %>% select(raven_2007_old, math_2007_old) %>% data.frame(), nfactors = 1, sl = F)
+om_results
+omega.diagram(om_results)
+
+"g_factor_2007_old =~ raven_2007_old + math_2007_old" %>%
+  cfa(data = nomiss, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+nomiss$g_factor_2007_old = predict(cfa_g)[,1]
+
+qplot(nomiss$g_factor_2007_old)
+
+nomiss = nomiss %>% select(pidlink, g_factor_2007_old)
+
+iq = left_join(iq, nomiss, by = "pidlink")
+
+# G_factor_2007_young
+nomiss = iq %>%
+  filter(!is.na(raven_2007_young), !is.na(math_2007_young))
+
+
+fa.parallel(nomiss %>% select(raven_2007_young, math_2007_young) %>% data.frame())
+fa(nomiss %>% select(raven_2007_young, math_2007_young) %>% data.frame(), nfactors = 1)
+om_results = omega(nomiss %>% select(raven_2007_young, math_2007_young) %>% data.frame(), nfactors = 1, sl = F)
+om_results
+omega.diagram(om_results)
+
+"g_factor_2007_young =~ raven_2007_young + math_2007_young" %>%
+  cfa(data = nomiss, std.lv = T, std.ov = T) -> cfa_g
+summary(cfa_g)
+
+nomiss$g_factor_2007_young = predict(cfa_g)[,1]
+
+qplot(nomiss$g_factor_2007_young)
+
+nomiss = nomiss %>% select(pidlink, g_factor_2007_young)
+
+iq = left_join(iq, nomiss, by = "pidlink")
+
 ```
 
 

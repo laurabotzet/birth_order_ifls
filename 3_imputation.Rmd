@@ -30,7 +30,8 @@ alldata_birthorder = alldata_birthorder %>%
   filter(!is.na(mother_pidlink)) %>% 
   select(-father_pidlink) %>% 
   filter(is.na(any_multiple_birth) | any_multiple_birth != 1) %>% # remove 7 and 2 individuals who are known as stillbirth or miscarriage but still have PID
-  select(-starts_with("age_"), -wave, -any_multiple_birth, -multiple_birth) %>% 
+  select(-starts_with("age_"), -wave, -any_multiple_birth, -multiple_birth,
+         -starts_with("g_factor")) %>% 
   mutate(money_spent_smoking_log = if_else(is.na(money_spent_smoking_log) & ever_smoked == 0, 0, money_spent_smoking_log),
          amount = if_else(is.na(amount) & ever_smoked == 0, 0, amount),
          amount_still_smokers = if_else(is.na(amount_still_smokers) &  still_smoking == 0, 0, amount_still_smokers),
@@ -44,7 +45,7 @@ alldata_birthorder = alldata_birthorder %>%
          -Total_score_highest,-Total_score_highest_type, -Math_score_highest,
          -Math_score_highest_type, -birthdate, -birthyear, -marriage_id,
          -money_spent_smoking_log,-amount_still_smokers, -total_worked, -total_missed, 
-         -highest_education, -chron_order_birth, -alive, -death_yr, -death_month, -g_factor_early,
+         -highest_education, -chron_order_birth, -alive, -death_yr, -death_month,
          -University_worked, -University_missed, - English_score_elementary,
          )
 

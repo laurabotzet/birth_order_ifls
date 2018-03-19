@@ -68,7 +68,7 @@ library(tidyr)
 library(dplyr)
 #' make comparisons between different birth orders
 library(coefplot)
-
+library(sjPlot)
 
 #' ## Spin R files
 #' R scripts can be documented in markdown using Roxygen comments, as demonstrated here
@@ -143,6 +143,22 @@ apatheme=theme_bw()+
         panel.grid.minor=element_blank(),
         panel.border=element_blank(),
         axis.line=element_line())
+
+#' function to plot gender plots
+plot_gender = function(data = birthorder){
+  plot = ggplot(data, aes(male, outcome)) +
+    geom_jitter(width = 0.3) +
+    stat_summary(fun.data = mean_cl_normal, geom = "errorbar", color = "red", width = 0.3)
+  plot
+}
+
+plot_age = function(data = birthorder){
+  plot = ggplot(data, aes(age, outcome)) +
+    geom_jitter() +
+    geom_smooth(method = "lm")
+  plot
+}
+
 
 #' function used to do all birth order effect plots
 plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_order", separate = TRUE, ylimits = NULL) {

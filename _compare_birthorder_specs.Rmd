@@ -41,7 +41,7 @@ outcome_preg_m1 <- update(m2_birthorder_linear, data = birthorder %>%
 compare_models_markdown(outcome_preg_m1)
 ```
 
-#### Parental full sibling order {.tabset}
+#### Parental full sibling order {.tabset .active}
 
 ```{r}
 outcome_parental_m1 <- update(m2_birthorder_linear, data = birthorder %>%

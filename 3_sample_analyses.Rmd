@@ -13,181 +13,52 @@ source("0_helpers.R")
 ## Load data
 ```{r Load data}
 ### Import all data with known birthorder
-birthorder = readRDS("data/birthorder.rds")
-
-### Import all data
-alldata = readRDS("data/alldata.rds")
-
-### Import all pregnancy data
-pregnancy = readRDS("data/pregnancy.rds")
-
+birthorder = readRDS("data/alldata_birthorder.rds")
 ```
 
 ## Data wrangling
 ```{r data wrangling}
 ## we have to exclude people in the control group who are part of the birthorder group
-individuals = birthorder$pidlink
-mother_birthdate_unique_ind = birthorder$mother_birthdate_unique
-
-alldata = alldata %>%
-  filter(!pidlink %in% individuals) %>%
-  mutate(check = ifelse(!is.na(g_factor), 1,
-                        ifelse(!is.na(riskA), 1,
-                               ifelse(!is.na(riskB), 1,
-                                      ifelse(!is.na(big5_ext), 1, 0)))),
-         group = "control",
-         sex.x = (ifelse(is.na(sex.x), sex.y, sex.x)),
-         male = factor(sex.x == 1),
-         male = ifelse(sex.x > 3, NA, male),
-         age = ifelse(age>112, NA, age)) %>%
-  filter(check == 1)
-
-pregnancy = pregnancy %>%
-  filter(!mother_birthdate_unique %in% mother_birthdate_unique_ind) %>%
-  mutate(group = "control",
-         male = factor(gender == 1),
-         male = ifelse(gender > 3, NA, male)) %>%
-  group_by(mother_pidlink) %>%
-  mutate(number_siblings = n()) %>%
-  ungroup
-
 birthorder = birthorder %>%
-  mutate(male = factor(gender == 1), 
-         male = (ifelse(gender > 3, NA, male))) %>%
-  group_by(mother_pidlink) %>%
-  mutate(number_siblings = n()) %>%
-  ungroup
-
-df_pregnancy = bind_rows(pregnancy, birthorder)
-df = bind_rows(alldata, birthorder)
-
+  # mark people who have missing birthorder data
+  mutate(check_birthorder = ifelse(!is.na(birthorder_genes), 1, 0),
+  # mark people who have missing outcomes
+         check_outcome = ifelse(!is.na(raven_2015_old), 1,
+                         ifelse(!is.na(math_2015_old), 1,
+                         ifelse(!is.na(raven_2015_young), 1,
+                         ifelse(!is.na(math_2015_young), 1,
+                         ifelse(!is.na(raven_2007_old), 1,
+                         ifelse(!is.na(math_2007_old), 1,
+                         ifelse(!is.na(raven_2007_young), 1,
+                         ifelse(!is.na(math_2007_young), 1,
+                         ifelse(!is.na(adaptive_numbering), 1,
+                         ifelse(!is.na(words_remembered_avg), 1,
+                         ifelse(!is.na(count_backwards), 1,
+                         ifelse(!is.na(big5_ext), 1, 
+                         ifelse(!is.na(riskA), 1,
+                         ifelse(!is.na(riskB), 1,
+                         ifelse(!is.na(years_of_education), 1,
+                         ifelse(!is.na(Elementary_missed), 1,
+                         ifelse(!is.na(Elementary_worked), 1,
+                         ifelse(!is.na(attended_school), 1,
+                         ifelse(!is.na(wage_last_month_log), 1,
+                         ifelse(!is.na(wage_last_year_log), 1,
+                         ifelse(!is.na(Self_employed), 1,
+                         ifelse(!is.na(Category), 1,
+                         ifelse(!is.na(Sector), 1,
+                         ifelse(!is.na(ever_smoked), 1,
+                         ifelse(!is.na(still_smoking), 1,
+                         0))))))))))))))))))))))))),
+  group_birthorder = ifelse(check_birthorder == 0, "control", "test"),
+  group_outcome = ifelse(check_outcome == 0, "control", "test"))
 ```
 
 ## Birth order and sibship size {.active .tabset}
 
-### Maternal birthorder
+### Genes birthorder
 ```{r maternal birthorder}
-descriptives = df_pregnancy %>%
-  filter(!is.na(birthorder_uterus_alive)) %>%
-  group_by(group) %>%
-    summarise(individuals = n(),
-              mothers = length(unique(mother_pidlink)),
-              sibship_size_mean = mean(sibling_count_uterus_alive, na.rm = T),
-              sibship_size_confidence_low = mean(sibling_count_uterus_alive, na.rm = T) - 
-                (qt(.975, n()-1)*sd(sibling_count_uterus_alive, na.rm = T)/sqrt(n())),
-              sibship_size_confidence_high = mean(sibling_count_uterus_alive, na.rm = T) + 
-                (qt(.975, n()-1)*sd(sibling_count_uterus_alive, na.rm = T)/sqrt(n())),
-              sibship_size_min = min(sibling_count_uterus_alive, na.rm = TRUE),
-              sibship_size_max = max(sibling_count_uterus_alive, na.rm = TRUE),
-              birthorder_mean = mean(birthorder_uterus_alive, na.rm = T),
-              birthorder_size_confidence_low = mean(birthorder_uterus_alive, na.rm = T) - 
-                (qt(.975, n()-1)*sd(birthorder_uterus_alive, na.rm = T)/sqrt(n())),
-              birthorder_size_confidence_high = mean(birthorder_uterus_alive, na.rm = T) + 
-                (qt(.975, n()-1)*sd(birthorder_uterus_alive, na.rm = T)/sqrt(n())),
-              birthorder_size_min = min(birthorder_uterus_alive, na.rm = TRUE),
-              birthorder_size_max = max(birthorder_uterus_alive, na.rm = TRUE),
-              number_siblings_mean = mean(number_siblings),
-              number_siblings_confidence_low = mean(number_siblings, na.rm = T) -
-                (qt(.975, n()-1)*sd(number_siblings, na.rm = T)/sqrt(n())),
-              number_siblings_confidence_high = mean(number_siblings, na.rm = T) +
-                (qt(.975, n()-1)*sd(number_siblings, na.rm = T)/sqrt(n())))
-
-descriptives
-
-df_pregnancy %>% 
-  filter(!is.na(birthorder_uterus_alive)) %>% 
-  t.test(sibling_count_uterus_alive ~ group, data = ., var.equal = T)
-
-df_pregnancy %>% 
-  filter(!is.na(birthorder_uterus_alive)) %>% 
-  t.test(birthorder_uterus_alive ~ group, data = ., var.equal = T)
-
-df_pregnancy %>% 
-  filter(!is.na(birthorder_uterus_alive)) %>% 
-  t.test(number_siblings ~ group, data = ., var.equal = T)
-
-```
-
-
-#### How many siblings with data do we retain in each family?
-```{r}
-
-birthorder %>% filter(!is.na(birthorder_uterus_alive)) %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_uterus_alive)) -> counts
-pregnancy %>% filter(!is.na(birthorder_uterus_alive)) %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_uterus_alive)) -> counts1
-```
-
-In our test sample families with an average size of `r mean(counts$all,na.rm= T)` siblings, we retain `r mean(counts$with_data)`.
-
-In the original sample families with an average size of `r mean(counts1$all,na.rm= T)` siblings, we retain `r mean(counts1$with_data)`.
-
-```{r}
-ggplot(counts, aes(all, with_data)) + geom_jitter(alpha = 0.1) + geom_smooth() + scale_x_continuous(breaks=1:15) + scale_y_continuous(breaks=1:15)
-```
-
-### Maternal pregnancy order
-```{r maternal pregnancy order}
-descriptives = df_pregnancy %>%
-  filter(!is.na(birthorder_uterus_preg)) %>%
-  group_by(group) %>%
-  summarise(individuals = n(),
-            mothers = length(unique(mother_pidlink)),
-            sibship_size_mean = mean(sibling_count_uterus_preg, na.rm = T),
-            sibship_size_confidence_low = mean(sibling_count_uterus_preg, na.rm = T) - 
-              (qt(.975, n()-1)*sd(sibling_count_uterus_preg, na.rm = T)/sqrt(n())),
-            sibship_size_confidence_high = mean(sibling_count_uterus_preg, na.rm = T) + 
-              (qt(.975, n()-1)*sd(sibling_count_uterus_preg, na.rm = T)/sqrt(n())),
-            sibship_size_min = min(sibling_count_uterus_preg, na.rm = TRUE),
-            sibship_size_max = max(sibling_count_uterus_preg, na.rm = TRUE),
-            birthorder_mean = mean(birthorder_uterus_preg, na.rm = T),
-            birthorder_size_confidence_low = mean(birthorder_uterus_preg, na.rm = T) - 
-              (qt(.975, n()-1)*sd(birthorder_uterus_preg, na.rm = T)/sqrt(n())),
-            birthorder_size_confidence_high = mean(birthorder_uterus_preg, na.rm = T) + 
-              (qt(.975, n()-1)*sd(birthorder_uterus_preg, na.rm = T)/sqrt(n())),
-            birthorder_size_min = min(birthorder_uterus_preg, na.rm = TRUE),
-            birthorder_size_max = max(birthorder_uterus_preg, na.rm = TRUE),
-            number_siblings_mean = mean(number_siblings),
-            number_siblings_confidence_low = mean(number_siblings, na.rm = T) -
-              (qt(.975, n()-1)*sd(number_siblings, na.rm = T)/sqrt(n())),
-            number_siblings_confidence_high = mean(number_siblings, na.rm = T) +
-              (qt(.975, n()-1)*sd(number_siblings, na.rm = T)/sqrt(n())))
-
-descriptives
-
-df_pregnancy %>% 
-  filter(!is.na(birthorder_uterus_preg)) %>% 
-  t.test(sibling_count_uterus_preg ~ group, data = ., var.equal = T)
-
-df_pregnancy %>% 
-  filter(!is.na(birthorder_uterus_preg)) %>% 
-  t.test(birthorder_uterus_preg ~ group, data = ., var.equal = T)
-
-df_pregnancy %>% 
-  filter(!is.na(birthorder_uterus_preg)) %>% 
-  t.test(number_siblings ~ group, data = ., var.equal = T)
-
-```
-
-
-#### How many siblings with data do we retain in each family?
-```{r}
-
-birthorder %>% filter(!is.na(birthorder_uterus_preg)) %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_uterus_preg)) -> counts
-pregnancy %>% filter(!is.na(birthorder_uterus_preg)) %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_uterus_preg)) -> counts1
-```
-
-In our test sample families with an average size of `r mean(counts$all,na.rm= T)` siblings, we retain `r mean(counts$with_data)`.
-
-In the original sample families with an average size of `r mean(counts1$all,na.rm= T)` siblings, we retain `r mean(counts1$with_data)`.
-
-```{r}
-ggplot(counts, aes(all, with_data)) + geom_jitter(alpha = 0.1) + geom_smooth() + scale_x_continuous(breaks=1:15) + scale_y_continuous(breaks=1:15)
-```
-
-### Parental full sibling order
-```{r parental full sibling order}
-descriptives = df_pregnancy %>%
-  filter(!is.na(birthorder_genes)) %>%
-  group_by(group) %>%
+descriptives = birthorder %>%
+  group_by(group_outcome) %>%
   summarise(individuals = n(),
             mothers = length(unique(mother_pidlink)),
             sibship_size_mean = mean(sibling_count_genes, na.rm = T),
@@ -204,34 +75,27 @@ descriptives = df_pregnancy %>%
               (qt(.975, n()-1)*sd(birthorder_genes, na.rm = T)/sqrt(n())),
             birthorder_size_min = min(birthorder_genes, na.rm = TRUE),
             birthorder_size_max = max(birthorder_genes, na.rm = TRUE),
-            number_siblings_mean = mean(number_siblings),
-            number_siblings_confidence_low = mean(number_siblings, na.rm = T) -
-              (qt(.975, n()-1)*sd(number_siblings, na.rm = T)/sqrt(n())),
-            number_siblings_confidence_high = mean(number_siblings, na.rm = T) +
-              (qt(.975, n()-1)*sd(number_siblings, na.rm = T)/sqrt(n())))
+            number_siblings_mean = mean(sibling_count_genes, na.rm =T),
+            number_siblings_confidence_low = mean(sibling_count_genes, na.rm = T) -
+              (qt(.975, n()-1)*sd(sibling_count_genes, na.rm = T)/sqrt(n())),
+            number_siblings_confidence_high = mean(sibling_count_genes, na.rm = T) +
+              (qt(.975, n()-1)*sd(sibling_count_genes, na.rm = T)/sqrt(n())))
 
 descriptives
 
-df_pregnancy %>% 
-  filter(!is.na(birthorder_genes)) %>% 
-  t.test(sibling_count_genes ~ group, data = ., var.equal = T)
+birthorder %>% 
+  t.test(sibling_count_genes ~ group_outcome, data = ., var.equal = T)
 
-df_pregnancy %>% 
-  filter(!is.na(birthorder_genes)) %>% 
-  t.test(birthorder_genes ~ group, data = ., var.equal = T)
-
-df_pregnancy %>% 
-  filter(!is.na(birthorder_genes)) %>% 
-  t.test(number_siblings ~ group, data = ., var.equal = T)
+birthorder %>% 
+  t.test(birthorder_genes ~ group_outcome, data = ., var.equal = T)
 
 ```
 
 
 #### How many siblings with data do we retain in each family?
 ```{r}
-
-birthorder %>% filter(!is.na(birthorder_genes)) %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_genes)) -> counts
-pregnancy %>% filter(!is.na(birthorder_genes)) %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_genes)) -> counts1
+birthorder %>% filter(!is.na(birthorder_genes), group_outcome == 1) %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_genes)) -> counts
+birthorder %>% filter(!is.na(birthorder_genes), group_outcome == 0) %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_genes)) -> counts1
 ```
 
 In our test sample families with an average size of `r mean(counts$all,na.rm= T)` siblings, we retain `r mean(counts$with_data)`.
@@ -242,12 +106,115 @@ In the original sample families with an average size of `r mean(counts1$all,na.r
 ggplot(counts, aes(all, with_data)) + geom_jitter(alpha = 0.1) + geom_smooth() + scale_x_continuous(breaks=1:15) + scale_y_continuous(breaks=1:15)
 ```
 
+### Maternal birthorder
+```{r maternal birthorder}
+descriptives = birthorder %>%
+  group_by(group_outcome) %>%
+  summarise(individuals = n(),
+            mothers = length(unique(mother_pidlink)),
+            sibship_size_mean = mean(sibling_count_uterus_alive, na.rm = T),
+            sibship_size_confidence_low = mean(sibling_count_uterus_alive, na.rm = T) - 
+              (qt(.975, n()-1)*sd(sibling_count_uterus_alive, na.rm = T)/sqrt(n())),
+            sibship_size_confidence_high = mean(sibling_count_uterus_alive, na.rm = T) + 
+              (qt(.975, n()-1)*sd(sibling_count_uterus_alive, na.rm = T)/sqrt(n())),
+            sibship_size_min = min(sibling_count_uterus_alive, na.rm = TRUE),
+            sibship_size_max = max(sibling_count_uterus_alive, na.rm = TRUE),
+            birthorder_mean = mean(birthorder_uterus_alive, na.rm = T),
+            birthorder_size_confidence_low = mean(birthorder_uterus_alive, na.rm = T) - 
+              (qt(.975, n()-1)*sd(birthorder_uterus_alive, na.rm = T)/sqrt(n())),
+            birthorder_size_confidence_high = mean(birthorder_uterus_alive, na.rm = T) + 
+              (qt(.975, n()-1)*sd(birthorder_uterus_alive, na.rm = T)/sqrt(n())),
+            birthorder_size_min = min(birthorder_uterus_alive, na.rm = TRUE),
+            birthorder_size_max = max(birthorder_uterus_alive, na.rm = TRUE),
+            number_siblings_mean = mean(sibling_count_uterus_alive, na.rm =T),
+            number_siblings_confidence_low = mean(sibling_count_uterus_alive, na.rm = T) -
+              (qt(.975, n()-1)*sd(sibling_count_uterus_alive, na.rm = T)/sqrt(n())),
+            number_siblings_confidence_high = mean(sibling_count_uterus_alive, na.rm = T) +
+              (qt(.975, n()-1)*sd(sibling_count_uterus_alive, na.rm = T)/sqrt(n())))
+
+descriptives
+
+birthorder %>% 
+  t.test(sibling_count_uterus_alive ~ group_outcome, data = ., var.equal = T)
+
+birthorder %>% 
+  t.test(birthorder_uterus_alive ~ group_outcome, data = ., var.equal = T)
+
+```
+
+
+#### How many siblings with data do we retain in each family?
+```{r}
+
+birthorder %>% filter(!is.na(birthorder_uterus_alive), group_outcome == 1) %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_uterus_alive)) -> counts
+birthorder %>% filter(!is.na(birthorder_uterus_alive), group_outcome == 0) %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_uterus_alive)) -> counts1
+```
+
+In our test sample families with an average size of `r mean(counts$all,na.rm= T)` siblings, we retain `r mean(counts$with_data)`.
+
+In the original sample families with an average size of `r mean(counts1$all,na.rm= T)` siblings, we retain `r mean(counts1$with_data)`.
+
+```{r}
+ggplot(counts, aes(all, with_data)) + geom_jitter(alpha = 0.1) + geom_smooth() + scale_x_continuous(breaks=1:15) + scale_y_continuous(breaks=1:15)
+```
+### Maternal pregnancy birthorder
+```{r maternal birthorder}
+descriptives = birthorder %>%
+  group_by(group_outcome) %>%
+  summarise(individuals = n(),
+            mothers = length(unique(mother_pidlink)),
+            sibship_size_mean = mean(sibling_count_uterus_preg, na.rm = T),
+            sibship_size_confidence_low = mean(sibling_count_uterus_preg, na.rm = T) - 
+              (qt(.975, n()-1)*sd(sibling_count_uterus_preg, na.rm = T)/sqrt(n())),
+            sibship_size_confidence_high = mean(sibling_count_uterus_preg, na.rm = T) + 
+              (qt(.975, n()-1)*sd(sibling_count_uterus_preg, na.rm = T)/sqrt(n())),
+            sibship_size_min = min(sibling_count_uterus_preg, na.rm = TRUE),
+            sibship_size_max = max(sibling_count_uterus_preg, na.rm = TRUE),
+            birthorder_mean = mean(birthorder_uterus_preg, na.rm = T),
+            birthorder_size_confidence_low = mean(birthorder_uterus_preg, na.rm = T) - 
+              (qt(.975, n()-1)*sd(birthorder_uterus_preg, na.rm = T)/sqrt(n())),
+            birthorder_size_confidence_high = mean(birthorder_uterus_preg, na.rm = T) + 
+              (qt(.975, n()-1)*sd(birthorder_uterus_preg, na.rm = T)/sqrt(n())),
+            birthorder_size_min = min(birthorder_uterus_preg, na.rm = TRUE),
+            birthorder_size_max = max(birthorder_uterus_preg, na.rm = TRUE),
+            number_siblings_mean = mean(sibling_count_uterus_preg, na.rm =T),
+            number_siblings_confidence_low = mean(sibling_count_uterus_preg, na.rm = T) -
+              (qt(.975, n()-1)*sd(sibling_count_uterus_preg, na.rm = T)/sqrt(n())),
+            number_siblings_confidence_high = mean(sibling_count_uterus_preg, na.rm = T) +
+              (qt(.975, n()-1)*sd(sibling_count_uterus_preg, na.rm = T)/sqrt(n())))
+
+descriptives
+
+birthorder %>% 
+  t.test(sibling_count_uterus_preg ~ group_outcome, data = ., var.equal = T)
+
+birthorder %>% 
+  t.test(birthorder_uterus_preg ~ group_outcome, data = ., var.equal = T)
+
+```
+
+
+#### How many siblings with data do we retain in each family?
+```{r}
+birthorder %>% filter(!is.na(birthorder_uterus_preg), group_outcome == 1) %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_uterus_preg)) -> counts
+birthorder %>% filter(!is.na(birthorder_uterus_preg), group_outcome == 0) %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_uterus_preg)) -> counts1
+```
+
+In our test sample families with an average size of `r mean(counts$all,na.rm= T)` siblings, we retain `r mean(counts$with_data)`.
+
+In the original sample families with an average size of `r mean(counts1$all,na.rm= T)` siblings, we retain `r mean(counts1$with_data)`.
+
+```{r}
+ggplot(counts, aes(all, with_data)) + geom_jitter(alpha = 0.1) + geom_smooth() + scale_x_continuous(breaks=1:15) + scale_y_continuous(breaks=1:15)
+```
+
+
 ## Outcome measurements and covariates {.tabset}
 ### Control group
 ```{r data comparison}
 ## Descriptives
-descriptives = df %>%
-  group_by(group) %>%
+descriptives = birthorder %>%
+  group_by(group_birthorder) %>%
     summarise(n = n(),
               age_mean = mean(age, na.rm=TRUE),
               age_confidence_low = mean(age, na.rm = T) - 
@@ -256,28 +223,29 @@ descriptives = df %>%
                 (qt(.975, n()-1)*sd(age, na.rm = T)/sqrt(n())),
               age_min = min(age, na.rm = TRUE),
               age_max = max(age, na.rm = TRUE),
-              gender = mean(male, na.rm=TRUE) - 1)
+              gender = mean(male, na.rm=TRUE))
 descriptives
 
 
 
 ## Ttest
-t.test(df$age ~ df$group, var.equal = T)
-gender = df %>%
-  group_by(group) %>%
+t.test(birthorder$age ~ birthorder$group_birthorder, var.equal = T)
+
+gender = birthorder %>%
+  group_by(group_birthorder) %>%
     summarise(gender = sum(male == 1, na.rm=T),
-              gender2 = sum(male ==2,na.rm=T)) %>%
+              gender2 = sum(male ==0,na.rm=T)) %>%
   select(gender, gender2)
 chisq.test(gender)
 
 ## Ratings
-ratings = df %>%
-  group_by(group) %>%
-  summarise(g_factor_mean = mean(g_factor, na.rm=T),
-            g_factor_confidence_low= mean(g_factor, na.rm = T) - 
-                (qt(.975, n()-1)*sd(g_factor, na.rm = T)/sqrt(n())),
-            g_factor_confidence_high = mean(g_factor, na.rm = T) +
-                (qt(.975, n()-1)*sd(g_factor, na.rm = T)/sqrt(n())),
+ratings = birthorder %>%
+  group_by(group_birthorder) %>%
+  summarise(g_factor_mean = mean(g_factor_2015_old, na.rm=T),
+            g_factor_confidence_low= mean(g_factor_2015_old, na.rm = T) - 
+                (qt(.975, n()-1)*sd(g_factor_2015_old, na.rm = T)/sqrt(n())),
+            g_factor_confidence_high = mean(g_factor_2015_old, na.rm = T) +
+                (qt(.975, n()-1)*sd(g_factor_2015_old, na.rm = T)/sqrt(n())),
             big5_ext_mean = mean(big5_ext, na.rm=T),
             big5_ext_confidence_low= mean(big5_ext, na.rm = T) - 
                 (qt(.975, n()-1)*sd(big5_ext, na.rm = T)/sqrt(n())),
@@ -315,18 +283,18 @@ ratings = df %>%
                 (qt(.975, n()-1)*sd(riskB, na.rm = T)/sqrt(n())))
 ratings
 
-t.test(df$g_factor ~ df$group, var.equal = T)
-t.test(df$big5_ext ~ df$group, var.equal = T)
-t.test(df$big5_neu ~ df$group, var.equal = T)
-t.test(df$big5_con ~ df$group, var.equal = T)
-t.test(df$big5_agree ~ df$group, var.equal = T)
-t.test(df$big5_open ~ df$group, var.equal = T)
-t.test(df$riskA ~ df$group, var.equal = T)
-t.test(df$riskB ~ df$group, var.equal = T)
+t.test(birthorder$g_factor_2015_old ~ birthorder$group_birthorder, var.equal = T)
+t.test(birthorder$big5_ext ~ birthorder$group_birthorder, var.equal = T)
+t.test(birthorder$big5_neu ~ birthorder$group_birthorder, var.equal = T)
+t.test(birthorder$big5_con ~ birthorder$group_birthorder, var.equal = T)
+t.test(birthorder$big5_agree ~ birthorder$group_birthorder, var.equal = T)
+t.test(birthorder$big5_open ~ birthorder$group_birthorder, var.equal = T)
+t.test(birthorder$riskA ~ birthorder$group_birthorder, var.equal = T)
+t.test(birthorder$riskB ~ birthorder$group_birthorder, var.equal = T)
 
 ## Educational Attainment
-educational_attainment = df %>%
-  group_by(group) %>%
+educational_attainment = birthorder %>%
+  group_by(group_birthorder) %>%
   summarise(years_of_education_mean = mean(years_of_education, na.rm=T),
             years_of_education_confidence_low= mean(years_of_education, na.rm = T) - 
                 (qt(.975, n()-1)*sd(years_of_education, na.rm = T)/sqrt(n())),
@@ -335,151 +303,22 @@ educational_attainment = df %>%
 
 educational_attainment
 
-t.test(df$years_of_education ~ df$group, var.equal = T)
+t.test(birthorder$years_of_education ~ birthorder$group_birthorder, var.equal = T)
 
-ggplot(data=df, aes(x=years_of_education, fill=group)) +
+ggplot(data=birthorder, aes(x=years_of_education, fill=group_birthorder)) +
   geom_histogram(stat="count", binwidth=.5, position="dodge")
 ```
 
-### Restricted control group
-```{r}
-## In order to compare our test group to an alike group from the control sample we have to restict age
-check_test = df %>% filter(group == "test") %>%
-  arrange(gender) %>%
-  group_by(age) %>%
-  mutate(random = min_rank(pidlink),
-         choose = paste0(age, "-", random))
-        
-check_control = df %>% filter(group == "control", !is.na(g_factor), !is.na(riskA),
-                      !is.na(big5_agree), !is.na(big5_ext), !is.na(big5_con),
-                      !is.na(big5_neu), !is.na(big5_open)) %>%
-  arrange(gender) %>%
-  group_by(age) %>%
-  mutate(random = min_rank(pidlink),
-         choose = paste0(age, "-", random),
-         pidlink_choose = pidlink) %>%
-  ungroup() %>%
-  select(choose, pidlink_choose)
-
-check = left_join(check_test, check_control, by = "choose") %>%
-  ungroup() %>% arrange(pidlink_choose)
-
-individuals_restricted = unique(check$pidlink_choose)
-
-df = df %>%
-  mutate(group2 = ifelse(pidlink %in% individuals_restricted, "control_restricted",
-                         NA),
-         group2 = ifelse(group=="test", "test", group2))
-
-table(df$group2)
-## Descriptives
-descriptives_restricted = df %>%
-  group_by(group2) %>%
-    summarise(n = n(),
-              age_mean = mean(age, na.rm=TRUE),
-              age_sd = sd(age, na.rm=T),
-              age_confidence_low = mean(age, na.rm = T) - 
-                (qt(.975, n()-1)*sd(age, na.rm = T)/sqrt(n())),
-              age_confidence_high = mean(age, na.rm = T) +
-                (qt(.975, n()-1)*sd(age, na.rm = T)/sqrt(n())),
-              age_min = min(age, na.rm = TRUE),
-              age_max = max(age, na.rm = TRUE),
-              gender = mean(male, na.rm=TRUE) - 1) %>%
-  filter(!is.na(group2))
-descriptives_restricted
-t.test(df$age ~ df$group2, var.equal = T)
-
-gender = df %>%
-  group_by(group2) %>%
-    summarise(gender = sum(male == 1, na.rm=T),
-              gender2 = sum(male ==2,na.rm=T)) %>%
-  filter(!is.na(group2)) %>%
-  select(gender, gender2)
-chisq.test(gender)
-
-
-ratings_restricted = df %>%
-  group_by(group2) %>%
-   summarise(n = n(),
-             g_factor_mean = mean(g_factor, na.rm=T),
-            g_factor_confidence_low= mean(g_factor, na.rm = T) - 
-                (qt(.975, n()-1)*sd(g_factor, na.rm = T)/sqrt(n())),
-            g_factor_confidence_high = mean(g_factor, na.rm = T) +
-                (qt(.975, n()-1)*sd(g_factor, na.rm = T)/sqrt(n())),
-            big5_ext_mean = mean(big5_ext, na.rm=T),
-            big5_ext_confidence_low= mean(big5_ext, na.rm = T) - 
-                (qt(.975, n()-1)*sd(big5_ext, na.rm = T)/sqrt(n())),
-            big5_ext_confidence_high = mean(big5_ext, na.rm = T) +
-                (qt(.975, n()-1)*sd(big5_ext, na.rm = T)/sqrt(n())),
-            big5_neu_mean = mean(big5_neu, na.rm=T),
-            big5_neu_confidence_low= mean(big5_neu, na.rm = T) - 
-                (qt(.975, n()-1)*sd(big5_neu, na.rm = T)/sqrt(n())),
-            big5_neu_confidence_high = mean(big5_neu, na.rm = T) +
-                (qt(.975, n()-1)*sd(big5_neu, na.rm = T)/sqrt(n())),
-            big5_con_mean = mean(big5_con, na.rm=T),
-            big5_con_confidence_low= mean(big5_con, na.rm = T) - 
-                (qt(.975, n()-1)*sd(big5_con, na.rm = T)/sqrt(n())),
-            big5_con_confidence_high = mean(big5_con, na.rm = T) +
-                (qt(.975, n()-1)*sd(big5_con, na.rm = T)/sqrt(n())),
-            big5_agree_mean = mean(big5_agree, na.rm=T),
-            big5_agree_confidence_low= mean(big5_agree, na.rm = T) - 
-                (qt(.975, n()-1)*sd(big5_agree, na.rm = T)/sqrt(n())),
-            big5_agree_confidence_high = mean(big5_agree, na.rm = T) +
-                (qt(.975, n()-1)*sd(big5_agree, na.rm = T)/sqrt(n())),
-            big5_open_mean = mean(big5_open, na.rm=T),
-            big5_open_confidence_low= mean(big5_open, na.rm = T) - 
-                (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())),
-            big5_open_confidence_high = mean(big5_open, na.rm = T) +
-                (qt(.975, n()-1)*sd(big5_open, na.rm = T)/sqrt(n())),
-            riskA_mean = mean(riskA, na.rm=T),
-            riskA_confidence_low= mean(riskA, na.rm = T) - 
-                (qt(.975, n()-1)*sd(riskA, na.rm = T)/sqrt(n())),
-            riskA_confidence_high = mean(riskA, na.rm = T) +
-                (qt(.975, n()-1)*sd(riskA, na.rm = T)/sqrt(n())),
-            riskB_mean = mean(riskB, na.rm=T),
-            riskB_confidence_low= mean(riskB, na.rm = T) - 
-                (qt(.975, n()-1)*sd(riskB, na.rm = T)/sqrt(n())),
-            riskB_confidence_high = mean(riskB, na.rm = T) +
-                (qt(.975, n()-1)*sd(riskB, na.rm = T)/sqrt(n()))) %>%
-  filter(!is.na(group2))
-
-ratings_restricted
-t.test(df$g_factor ~ df$group2, var.equal = T)
-t.test(df$big5_ext ~ df$group2, var.equal = T)
-t.test(df$big5_neu ~ df$group2, var.equal = T)
-t.test(df$big5_con ~ df$group2, var.equal = T)
-t.test(df$big5_agree ~ df$group2, var.equal = T)
-t.test(df$big5_open ~ df$group2, var.equal = T)
-t.test(df$riskA ~ df$group2, var.equal = T)
-t.test(df$riskB ~ df$group2, var.equal = T)
-
-
-## Educational Attainment
-educational_attainment = df %>%
-  group_by(group2) %>%
-  summarise(years_of_education_mean = mean(years_of_education, na.rm=T),
-            years_of_education_confidence_low= mean(years_of_education, na.rm = T) - 
-                (qt(.975, n()-1)*sd(years_of_education, na.rm = T)/sqrt(n())),
-            years_of_education_high = mean(years_of_education, na.rm = T) +
-                (qt(.975, n()-1)*sd(years_of_education, na.rm = T)/sqrt(n())))
-
-educational_attainment
-
-t.test(df$years_of_education ~ df$group2, var.equal = T)
-
-ggplot(data=df %>% filter(!is.na(group2)), aes(x=years_of_education, fill=group2)) +
-  geom_histogram(stat="count", binwidth=.5, position="dodge")
-```
 
 
 ## Descriptives
 ```{r correlation}
 mean_sd = birthorder %>%
-  group_by(group) %>%
+  group_by(group_birthorder) %>%
   summarise(age_mean = mean(age, na.rm=T),
             age_sd = sd(age, na.rm=T),
-            g_factor_mean = mean(g_factor, na.rm=T),
-            g_factor_sd = sd(g_factor, na.rm=T),
+            g_factor_mean = mean(g_factor_2015_old, na.rm=T),
+            g_factor_sd = sd(g_factor_2015_old, na.rm=T),
             big5_ext_mean = mean(big5_ext, na.rm=T),
             big5_ext_sd = sd(big5_ext, na.rm=T),
             big5_neu_mean = mean(big5_neu, na.rm=T),
@@ -502,4 +341,188 @@ mean_sd
 
 ## Correlations
 ```{r}
-round(cor(birthorder %>% ungroup() %>% select(age, male, g_factor, big5_ext, big5_neu, big5_con, big5_agree, big5_open, riskA, riskB, years_of_education), use = "pairwise.complete.obs"), 2) 
+round(cor(birthorder %>% ungroup() %>% select(age, male, g_factor_2015_old, big5_ext, big5_neu, big5_con, big5_agree, big5_open, riskA, riskB, years_of_education), use = "pairwise.complete.obs"), 2) 
+```
+
+
+## Plots age and gender {.tabset}
+
+### Plots Gender
+```{r}
+birthorder = birthorder %>%
+  mutate(outcome = age)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = birthorder_genes)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = sibling_count_genes)
+plot_gender(birthorder)
+
+
+birthorder = birthorder %>%
+  mutate(outcome = g_factor_2015_old)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = g_factor_2015_young)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = g_factor_2007_old)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = g_factor_2007_young)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = big5_ext)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = big5_con)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = big5_open)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = big5_neu)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = big5_agree)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = riskA)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = riskB)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = years_of_education)
+plot_gender(birthorder)
+
+plot_gender(birthorder %>% filter(!is.na(attended_school)) %>% mutate(outcome = as.numeric(attended_school)))
+
+birthorder = birthorder %>%
+  mutate(outcome = Elementary_missed)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = Elementary_worked)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = wage_last_month_log)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = wage_last_year_log)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = Self_employed)
+plot_gender(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = ever_smoked)
+plot_gender(birthorder)
+
+```
+
+### Plots Gender
+```{r}
+birthorder = birthorder %>% filter(age<=100)
+
+plot_age(birthorder %>% filter(age<= 100) %>% mutate(outcome = birthorder_genes))
+
+
+birthorder = birthorder %>%
+  mutate(outcome = sibling_count_genes)
+plot_age(birthorder)
+
+
+birthorder = birthorder %>%
+  mutate(outcome = g_factor_2015_old)
+plot_age(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = g_factor_2015_young)
+plot_age(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = g_factor_2007_old)
+plot_age(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = g_factor_2007_young)
+plot_age(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = big5_ext)
+plot_age(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = big5_con)
+plot_age(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = big5_open)
+plot_age(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = big5_neu)
+plot_age(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = big5_agree)
+plot_age(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = riskA)
+plot_age(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = riskB)
+plot_age(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = years_of_education)
+plot_age(birthorder)
+
+plot_age(birthorder %>% filter(!is.na(attended_school)) %>% mutate(outcome = as.numeric(attended_school)))
+
+birthorder = birthorder %>%
+  mutate(outcome = Elementary_missed)
+plot_age(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = Elementary_worked)
+plot_age(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = wage_last_month_log)
+plot_age(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = wage_last_year_log)
+plot_age(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = Self_employed)
+plot_age(birthorder)
+
+birthorder = birthorder %>%
+  mutate(outcome = ever_smoked)
+plot_age(birthorder)
+
+```
+

@@ -42,7 +42,7 @@ summary(m3_birthorder_nonlinear)
 plot_birthorder(m3_birthorder_nonlinear, separate = FALSE, ylimits = ylimits)
 ```
 
-##### Add Interaction {.tabset}
+##### Add Interaction {.tabset .active}
 
 ###### Model Summary
 ```{r}

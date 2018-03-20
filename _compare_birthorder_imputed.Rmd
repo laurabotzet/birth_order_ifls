@@ -20,7 +20,8 @@ data_used <- data_used %>%
 data_used_plots = data_used[[1]]
 
 model_naive_m1 <- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink)))
-mitml::testEstimates(model_naive_m1, var.comp = T)
+
+x = mitml::testEstimates(model_naive_m1, var.comp = T)
 
 ```
 

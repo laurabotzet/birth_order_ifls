@@ -335,6 +335,12 @@ $(document).ready(function () {
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre><code>## Warning: package &#39;coefplot&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## Warning: package &#39;sjPlot&#39; was built under R version 3.4.4</code></pre>
+<pre><code>## 
+## Attaching package: &#39;sjPlot&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:cowplot&#39;:
+## 
+##     plot_grid, save_plot</code></pre>
 <pre class="r"><code>opts_chunk$set(warning = FALSE)</code></pre>
 </div>
 <div id="load-data" class="section level2">
@@ -513,6 +519,8 @@ birthorder &lt;- birthorder %&gt;%
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count +
                (1 | mother_pidlink),
                    data = birthorder)
+
+
 compare_birthorder_specs(model)</code></pre>
 <div id="naive-birth-order" class="section level4 tabset">
 <h4>Naive birth order</h4>
@@ -528,49 +536,130 @@ compare_models_markdown(outcome_naive_m1)</code></pre>
 <div id="model-summary" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>m1_covariates_only &lt;- update(m2_birthorder_linear, formula = . ~ . - birth_order)
-summary(m1_covariates_only)</code></pre>
-<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
-## Formula: outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 |      mother_pidlink)
-##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_naive_factor,  
-##     birth_order_nonlinear = birthorder_naive_factor, birth_order = birthorder_naive,  
-##     count_birth_order = count_birthorder_naive) %&gt;% filter(sibling_count !=      &quot;1&quot;)
-## 
-## REML criterion at convergence: 35582
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -3.361 -0.555  0.025  0.593  3.157 
-## 
-## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 0.339    0.582   
-##  Residual                   0.553    0.744   
-## Number of obs: 13504, groups:  mother_pidlink, 7084
-## 
-## Fixed effects:
-##                              Estimate  Std. Error t value
-## (Intercept)                0.19105090  0.19995894    0.96
-## poly(age, 3, raw = TRUE)1  0.02430371  0.02055562    1.18
-## poly(age, 3, raw = TRUE)2 -0.00101673  0.00065843   -1.54
-## poly(age, 3, raw = TRUE)3  0.00000373  0.00000663    0.56
-## male                       0.06205227  0.01492956    4.16
-## sibling_count3             0.03390533  0.03436894    0.99
-## sibling_count4            -0.00068888  0.03584620   -0.02
-## sibling_count5            -0.00168674  0.03754766   -0.04
-## sibling_count5+           -0.19149568  0.02919202   -6.56
-## 
-## Correlation of Fixed Effects:
-##               (Intr) p(,3,r=TRUE)1 p(,3,r=TRUE)2 p(,3,r=TRUE)3 male   sbln_3 sbln_4 sbln_5
-## p(,3,r=TRUE)1 -0.984                                                                      
-## p(,3,r=TRUE)2  0.962 -0.992                                                               
-## p(,3,r=TRUE)3 -0.930  0.970        -0.993                                                 
-## male          -0.065  0.029        -0.028         0.028                                   
-## siblng_cnt3   -0.085 -0.002         0.000         0.004        -0.004                     
-## siblng_cnt4   -0.077 -0.002        -0.005         0.016        -0.009  0.482              
-## siblng_cnt5   -0.049 -0.025         0.014        -0.001         0.003  0.460  0.447       
-## sblng_cnt5+   -0.026 -0.060         0.036        -0.011        -0.010  0.591  0.577  0.557
-## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
+tidy(m1_covariates_only, conf.int = T)</code></pre>
+<table>
+<colgroup>
+<col width="27%" />
+<col width="12%" />
+<col width="12%" />
+<col width="10%" />
+<col width="12%" />
+<col width="11%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">term</th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">statistic</th>
+<th align="center">conf.low</th>
+<th align="center">conf.high</th>
+<th align="center">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">0.1911</td>
+<td align="center">0.2</td>
+<td align="center">0.9555</td>
+<td align="center">-0.2009</td>
+<td align="center">0.583</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">0.0243</td>
+<td align="center">0.02056</td>
+<td align="center">1.182</td>
+<td align="center">-0.01598</td>
+<td align="center">0.06459</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">-0.001017</td>
+<td align="center">0.0006584</td>
+<td align="center">-1.544</td>
+<td align="center">-0.002307</td>
+<td align="center">0.0002738</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">0.000003728</td>
+<td align="center">0.000006632</td>
+<td align="center">0.5621</td>
+<td align="center">-0.000009271</td>
+<td align="center">0.00001673</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">male</td>
+<td align="center">0.06205</td>
+<td align="center">0.01493</td>
+<td align="center">4.156</td>
+<td align="center">0.03279</td>
+<td align="center">0.09131</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count3</td>
+<td align="center">0.03391</td>
+<td align="center">0.03437</td>
+<td align="center">0.9865</td>
+<td align="center">-0.03346</td>
+<td align="center">0.1013</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count4</td>
+<td align="center">-0.0006889</td>
+<td align="center">0.03585</td>
+<td align="center">-0.01922</td>
+<td align="center">-0.07095</td>
+<td align="center">0.06957</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count5</td>
+<td align="center">-0.001687</td>
+<td align="center">0.03755</td>
+<td align="center">-0.04492</td>
+<td align="center">-0.07528</td>
+<td align="center">0.07191</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count5+</td>
+<td align="center">-0.1915</td>
+<td align="center">0.02919</td>
+<td align="center">-6.56</td>
+<td align="center">-0.2487</td>
+<td align="center">-0.1343</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sd_(Intercept).mother_pidlink</td>
+<td align="center">0.5824</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">mother_pidlink</td>
+</tr>
+<tr class="odd">
+<td align="center">sd_Observation.Residual</td>
+<td align="center">0.7438</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">Residual</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="coefficient-plot" class="section level6 active">
 <h6>Coefficient Plot</h6>
@@ -582,51 +671,139 @@ summary(m1_covariates_only)</code></pre>
 <h5>Add Birth Order Linear</h5>
 <div id="model-summary-1" class="section level6">
 <h6>Model Summary</h6>
-<pre class="r"><code>summary(m2_birthorder_linear)</code></pre>
-<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
-## Formula: outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count +      (1 | mother_pidlink)
-##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_naive_factor,  
-##     birth_order_nonlinear = birthorder_naive_factor, birth_order = birthorder_naive,  
-##     count_birth_order = count_birthorder_naive) %&gt;% filter(sibling_count !=      &quot;1&quot;)
-## 
-## REML criterion at convergence: 35591
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -3.373 -0.555  0.024  0.593  3.157 
-## 
-## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 0.339    0.582   
-##  Residual                   0.554    0.744   
-## Number of obs: 13504, groups:  mother_pidlink, 7084
-## 
-## Fixed effects:
-##                              Estimate  Std. Error t value
-## (Intercept)                0.18244885  0.20019181    0.91
-## birth_order               -0.00307693  0.00331953   -0.93
-## poly(age, 3, raw = TRUE)1  0.02631952  0.02067319    1.27
-## poly(age, 3, raw = TRUE)2 -0.00109204  0.00066353   -1.65
-## poly(age, 3, raw = TRUE)3  0.00000448  0.00000668    0.67
-## male                       0.06218352  0.01493184    4.16
-## sibling_count3             0.03435684  0.03436594    1.00
-## sibling_count4             0.00123123  0.03589819    0.03
-## sibling_count5             0.00185919  0.03773174    0.05
-## sibling_count5+           -0.18003003  0.03169944   -5.68
-## 
-## Correlation of Fixed Effects:
-##               (Intr) brth_r p(,3,r=TRUE)1 p(,3,r=TRUE)2 p(,3,r=TRUE)3 male   sbln_3 sbln_4 sbln_5
-## birth_order    0.047                                                                             
-## p(,3,r=TRUE)1 -0.983 -0.106                                                                      
-## p(,3,r=TRUE)2  0.959  0.123 -0.992                                                               
-## p(,3,r=TRUE)3 -0.928 -0.122  0.970        -0.993                                                 
-## male          -0.065 -0.010  0.030        -0.029         0.029                                   
-## siblng_cnt3   -0.086 -0.014  0.000        -0.001         0.006        -0.004                     
-## siblng_cnt4   -0.080 -0.057  0.004        -0.012         0.022        -0.008  0.482              
-## siblng_cnt5   -0.054 -0.101 -0.014         0.001         0.012         0.004  0.459  0.450       
-## sblng_cnt5+   -0.042 -0.390 -0.013        -0.015         0.038        -0.005  0.550  0.553  0.550
-## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>tidy(m2_birthorder_linear, conf.int = T)</code></pre>
+<table>
+<colgroup>
+<col width="27%" />
+<col width="11%" />
+<col width="12%" />
+<col width="10%" />
+<col width="13%" />
+<col width="11%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">term</th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">statistic</th>
+<th align="center">conf.low</th>
+<th align="center">conf.high</th>
+<th align="center">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">0.1824</td>
+<td align="center">0.2002</td>
+<td align="center">0.9114</td>
+<td align="center">-0.2099</td>
+<td align="center">0.5748</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">birth_order</td>
+<td align="center">-0.003077</td>
+<td align="center">0.00332</td>
+<td align="center">-0.9269</td>
+<td align="center">-0.009583</td>
+<td align="center">0.003429</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">0.02632</td>
+<td align="center">0.02067</td>
+<td align="center">1.273</td>
+<td align="center">-0.0142</td>
+<td align="center">0.06684</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">-0.001092</td>
+<td align="center">0.0006635</td>
+<td align="center">-1.646</td>
+<td align="center">-0.002393</td>
+<td align="center">0.0002085</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">0.00000448</td>
+<td align="center">0.000006683</td>
+<td align="center">0.6704</td>
+<td align="center">-0.000008618</td>
+<td align="center">0.00001758</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">male</td>
+<td align="center">0.06218</td>
+<td align="center">0.01493</td>
+<td align="center">4.164</td>
+<td align="center">0.03292</td>
+<td align="center">0.09145</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count3</td>
+<td align="center">0.03436</td>
+<td align="center">0.03437</td>
+<td align="center">0.9997</td>
+<td align="center">-0.033</td>
+<td align="center">0.1017</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count4</td>
+<td align="center">0.001231</td>
+<td align="center">0.0359</td>
+<td align="center">0.0343</td>
+<td align="center">-0.06913</td>
+<td align="center">0.07159</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count5</td>
+<td align="center">0.001859</td>
+<td align="center">0.03773</td>
+<td align="center">0.04927</td>
+<td align="center">-0.07209</td>
+<td align="center">0.07581</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count5+</td>
+<td align="center">-0.18</td>
+<td align="center">0.0317</td>
+<td align="center">-5.679</td>
+<td align="center">-0.2422</td>
+<td align="center">-0.1179</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sd_(Intercept).mother_pidlink</td>
+<td align="center">0.582</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">mother_pidlink</td>
+</tr>
+<tr class="even">
+<td align="center">sd_Observation.Residual</td>
+<td align="center">0.744</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">Residual</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="coefficient-plot-1" class="section level6 active">
 <h6>Coefficient Plot</h6>
@@ -639,48 +816,175 @@ summary(m1_covariates_only)</code></pre>
 <div id="model-summary-2" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>m3_birthorder_nonlinear = update(m1_covariates_only, formula = . ~ . + birth_order_nonlinear)
-summary(m3_birthorder_nonlinear)</code></pre>
-<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
-## Formula: outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 |  
-##     mother_pidlink) + birth_order_nonlinear
-##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_naive_factor,  
-##     birth_order_nonlinear = birthorder_naive_factor, birth_order = birthorder_naive,  
-##     count_birth_order = count_birthorder_naive) %&gt;% filter(sibling_count !=      &quot;1&quot;)
-## 
-## REML criterion at convergence: 35607
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -3.373 -0.555  0.026  0.592  3.154 
-## 
-## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 0.339    0.582   
-##  Residual                   0.553    0.744   
-## Number of obs: 13504, groups:  mother_pidlink, 7084
-## 
-## Fixed effects:
-##                              Estimate  Std. Error t value
-## (Intercept)                0.19744692  0.20170084    0.98
-## poly(age, 3, raw = TRUE)1  0.02455953  0.02073529    1.18
-## poly(age, 3, raw = TRUE)2 -0.00102678  0.00066607   -1.54
-## poly(age, 3, raw = TRUE)3  0.00000376  0.00000672    0.56
-## male                       0.06204609  0.01493237    4.16
-## sibling_count3             0.03502621  0.03469648    1.01
-## sibling_count4             0.00593497  0.03658943    0.16
-## sibling_count5             0.00128309  0.03871186    0.03
-## sibling_count5+           -0.18026381  0.03283861   -5.49
-## birth_order_nonlinear2    -0.01433013  0.02146826   -0.67
-## birth_order_nonlinear3    -0.01179644  0.02501357   -0.47
-## birth_order_nonlinear4    -0.03463925  0.02839794   -1.22
-## birth_order_nonlinear5     0.01513364  0.03228366    0.47
-## birth_order_nonlinear5+   -0.02847107  0.02792763   -1.02</code></pre>
-<pre><code>## 
-## Correlation matrix not shown by default, as p = 14 &gt; 12.
-## Use print(x, correlation=TRUE)  or
-##   vcov(x)     if you need it</code></pre>
-<pre><code>## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
+tidy(m3_birthorder_nonlinear, conf.int = T)</code></pre>
+<table>
+<colgroup>
+<col width="27%" />
+<col width="12%" />
+<col width="12%" />
+<col width="10%" />
+<col width="12%" />
+<col width="11%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">term</th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">statistic</th>
+<th align="center">conf.low</th>
+<th align="center">conf.high</th>
+<th align="center">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">0.1974</td>
+<td align="center">0.2017</td>
+<td align="center">0.9789</td>
+<td align="center">-0.1979</td>
+<td align="center">0.5928</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">0.02456</td>
+<td align="center">0.02074</td>
+<td align="center">1.184</td>
+<td align="center">-0.01608</td>
+<td align="center">0.0652</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">-0.001027</td>
+<td align="center">0.0006661</td>
+<td align="center">-1.542</td>
+<td align="center">-0.002332</td>
+<td align="center">0.0002787</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">0.000003763</td>
+<td align="center">0.000006717</td>
+<td align="center">0.5601</td>
+<td align="center">-0.000009403</td>
+<td align="center">0.00001693</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">male</td>
+<td align="center">0.06205</td>
+<td align="center">0.01493</td>
+<td align="center">4.155</td>
+<td align="center">0.03278</td>
+<td align="center">0.09131</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count3</td>
+<td align="center">0.03503</td>
+<td align="center">0.0347</td>
+<td align="center">1.01</td>
+<td align="center">-0.03298</td>
+<td align="center">0.103</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count4</td>
+<td align="center">0.005935</td>
+<td align="center">0.03659</td>
+<td align="center">0.1622</td>
+<td align="center">-0.06578</td>
+<td align="center">0.07765</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count5</td>
+<td align="center">0.001283</td>
+<td align="center">0.03871</td>
+<td align="center">0.03314</td>
+<td align="center">-0.07459</td>
+<td align="center">0.07716</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count5+</td>
+<td align="center">-0.1803</td>
+<td align="center">0.03284</td>
+<td align="center">-5.489</td>
+<td align="center">-0.2446</td>
+<td align="center">-0.1159</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">birth_order_nonlinear2</td>
+<td align="center">-0.01433</td>
+<td align="center">0.02147</td>
+<td align="center">-0.6675</td>
+<td align="center">-0.05641</td>
+<td align="center">0.02775</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">birth_order_nonlinear3</td>
+<td align="center">-0.0118</td>
+<td align="center">0.02501</td>
+<td align="center">-0.4716</td>
+<td align="center">-0.06082</td>
+<td align="center">0.03723</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">birth_order_nonlinear4</td>
+<td align="center">-0.03464</td>
+<td align="center">0.0284</td>
+<td align="center">-1.22</td>
+<td align="center">-0.0903</td>
+<td align="center">0.02102</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">birth_order_nonlinear5</td>
+<td align="center">0.01513</td>
+<td align="center">0.03228</td>
+<td align="center">0.4688</td>
+<td align="center">-0.04814</td>
+<td align="center">0.07841</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">birth_order_nonlinear5+</td>
+<td align="center">-0.02847</td>
+<td align="center">0.02793</td>
+<td align="center">-1.019</td>
+<td align="center">-0.08321</td>
+<td align="center">0.02627</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sd_(Intercept).mother_pidlink</td>
+<td align="center">0.5822</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">mother_pidlink</td>
+</tr>
+<tr class="even">
+<td align="center">sd_Observation.Residual</td>
+<td align="center">0.744</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">Residual</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="coefficient-plot-2" class="section level6 active">
 <h6>Coefficient Plot</h6>
@@ -693,57 +997,265 @@ summary(m3_birthorder_nonlinear)</code></pre>
 <div id="model-summary-3" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>m4_interaction = update(m3_birthorder_nonlinear, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
-summary(m4_interaction)</code></pre>
-<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
-## Formula: outcome ~ poly(age, 3, raw = TRUE) + male + (1 | mother_pidlink) +      count_birth_order
-##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_naive_factor,  
-##     birth_order_nonlinear = birthorder_naive_factor, birth_order = birthorder_naive,  
-##     count_birth_order = count_birthorder_naive) %&gt;% filter(sibling_count !=      &quot;1&quot;)
-## 
-## REML criterion at convergence: 35633
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -3.376 -0.555  0.025  0.592  3.148 
-## 
-## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 0.339    0.582   
-##  Residual                   0.553    0.744   
-## Number of obs: 13504, groups:  mother_pidlink, 7084
-## 
-## Fixed effects:
-##                              Estimate  Std. Error t value
-## (Intercept)                0.19551676  0.20295396    0.96
-## poly(age, 3, raw = TRUE)1  0.02567332  0.02078898    1.23
-## poly(age, 3, raw = TRUE)2 -0.00105980  0.00066826   -1.59
-## poly(age, 3, raw = TRUE)3  0.00000408  0.00000674    0.60
-## male                       0.06190767  0.01493470    4.15
-## count_birth_order2/2      -0.04118086  0.04235735   -0.97
-## count_birth_order1/3       0.02571135  0.04281149    0.60
-## count_birth_order2/3       0.01941953  0.04732483    0.41
-## count_birth_order3/3       0.00076671  0.05250614    0.01
-## count_birth_order1/4      -0.01818521  0.04861936   -0.37
-## count_birth_order2/4       0.01963691  0.05083357    0.39
-## count_birth_order3/4      -0.02460536  0.05444478   -0.45
-## count_birth_order4/4      -0.05900066  0.05718723   -1.03
-## count_birth_order1/5      -0.09978467  0.05416026   -1.84
-## count_birth_order2/5      -0.00005492  0.05667222    0.00
-## count_birth_order3/5       0.00310499  0.05810610    0.05
-## count_birth_order4/5      -0.01033101  0.06116292   -0.17
-## count_birth_order5/5       0.05910295  0.06228756    0.95
-## count_birth_order1/5+     -0.14744772  0.04374438   -3.37
-## count_birth_order2/5+     -0.23315942  0.04485413   -5.20
-## count_birth_order3/5+     -0.19935446  0.04399454   -4.53
-## count_birth_order4/5+     -0.22719607  0.04305902   -5.28
-## count_birth_order5/5+     -0.19144382  0.04332163   -4.42
-## count_birth_order5+/5+    -0.21868509  0.03572091   -6.12</code></pre>
-<pre><code>## 
-## Correlation matrix not shown by default, as p = 24 &gt; 12.
-## Use print(x, correlation=TRUE)  or
-##   vcov(x)     if you need it</code></pre>
-<pre><code>## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
+tidy(m4_interaction, conf.int = T)</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="28%" />
+<col width="12%" />
+<col width="12%" />
+<col width="10%" />
+<col width="12%" />
+<col width="10%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">term</th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">statistic</th>
+<th align="center">conf.low</th>
+<th align="center">conf.high</th>
+<th align="center">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">0.1955</td>
+<td align="center">0.203</td>
+<td align="center">0.9634</td>
+<td align="center">-0.2023</td>
+<td align="center">0.5933</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">0.02567</td>
+<td align="center">0.02079</td>
+<td align="center">1.235</td>
+<td align="center">-0.01507</td>
+<td align="center">0.06642</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">-0.00106</td>
+<td align="center">0.0006683</td>
+<td align="center">-1.586</td>
+<td align="center">-0.00237</td>
+<td align="center">0.00025</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">0.000004077</td>
+<td align="center">0.000006744</td>
+<td align="center">0.6046</td>
+<td align="center">-0.00000914</td>
+<td align="center">0.0000173</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">male</td>
+<td align="center">0.06191</td>
+<td align="center">0.01493</td>
+<td align="center">4.145</td>
+<td align="center">0.03264</td>
+<td align="center">0.09118</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order2/2</td>
+<td align="center">-0.04118</td>
+<td align="center">0.04236</td>
+<td align="center">-0.9722</td>
+<td align="center">-0.1242</td>
+<td align="center">0.04184</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order1/3</td>
+<td align="center">0.02571</td>
+<td align="center">0.04281</td>
+<td align="center">0.6006</td>
+<td align="center">-0.0582</td>
+<td align="center">0.1096</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order2/3</td>
+<td align="center">0.01942</td>
+<td align="center">0.04732</td>
+<td align="center">0.4103</td>
+<td align="center">-0.07334</td>
+<td align="center">0.1122</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order3/3</td>
+<td align="center">0.0007667</td>
+<td align="center">0.05251</td>
+<td align="center">0.0146</td>
+<td align="center">-0.1021</td>
+<td align="center">0.1037</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order1/4</td>
+<td align="center">-0.01819</td>
+<td align="center">0.04862</td>
+<td align="center">-0.374</td>
+<td align="center">-0.1135</td>
+<td align="center">0.07711</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order2/4</td>
+<td align="center">0.01964</td>
+<td align="center">0.05083</td>
+<td align="center">0.3863</td>
+<td align="center">-0.08</td>
+<td align="center">0.1193</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order3/4</td>
+<td align="center">-0.02461</td>
+<td align="center">0.05444</td>
+<td align="center">-0.4519</td>
+<td align="center">-0.1313</td>
+<td align="center">0.0821</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order4/4</td>
+<td align="center">-0.059</td>
+<td align="center">0.05719</td>
+<td align="center">-1.032</td>
+<td align="center">-0.1711</td>
+<td align="center">0.05308</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order1/5</td>
+<td align="center">-0.09978</td>
+<td align="center">0.05416</td>
+<td align="center">-1.842</td>
+<td align="center">-0.2059</td>
+<td align="center">0.006367</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order2/5</td>
+<td align="center">-0.00005492</td>
+<td align="center">0.05667</td>
+<td align="center">-0.000969</td>
+<td align="center">-0.1111</td>
+<td align="center">0.111</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order3/5</td>
+<td align="center">0.003105</td>
+<td align="center">0.05811</td>
+<td align="center">0.05344</td>
+<td align="center">-0.1108</td>
+<td align="center">0.117</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order4/5</td>
+<td align="center">-0.01033</td>
+<td align="center">0.06116</td>
+<td align="center">-0.1689</td>
+<td align="center">-0.1302</td>
+<td align="center">0.1095</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order5/5</td>
+<td align="center">0.0591</td>
+<td align="center">0.06229</td>
+<td align="center">0.9489</td>
+<td align="center">-0.06298</td>
+<td align="center">0.1812</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order1/5+</td>
+<td align="center">-0.1474</td>
+<td align="center">0.04374</td>
+<td align="center">-3.371</td>
+<td align="center">-0.2332</td>
+<td align="center">-0.06171</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order2/5+</td>
+<td align="center">-0.2332</td>
+<td align="center">0.04485</td>
+<td align="center">-5.198</td>
+<td align="center">-0.3211</td>
+<td align="center">-0.1452</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order3/5+</td>
+<td align="center">-0.1994</td>
+<td align="center">0.04399</td>
+<td align="center">-4.531</td>
+<td align="center">-0.2856</td>
+<td align="center">-0.1131</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order4/5+</td>
+<td align="center">-0.2272</td>
+<td align="center">0.04306</td>
+<td align="center">-5.276</td>
+<td align="center">-0.3116</td>
+<td align="center">-0.1428</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order5/5+</td>
+<td align="center">-0.1914</td>
+<td align="center">0.04332</td>
+<td align="center">-4.419</td>
+<td align="center">-0.2764</td>
+<td align="center">-0.1065</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order5+/5+</td>
+<td align="center">-0.2187</td>
+<td align="center">0.03572</td>
+<td align="center">-6.122</td>
+<td align="center">-0.2887</td>
+<td align="center">-0.1487</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sd_(Intercept).mother_pidlink</td>
+<td align="center">0.5821</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">mother_pidlink</td>
+</tr>
+<tr class="even">
+<td align="center">sd_Observation.Residual</td>
+<td align="center">0.7439</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">Residual</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="coefficient-plot-3" class="section level6 active">
 <h6>Coefficient Plot</h6>
@@ -839,49 +1351,130 @@ compare_models_markdown(outcome_uterus_m1)</code></pre>
 <div id="model-summary-4" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>m1_covariates_only &lt;- update(m2_birthorder_linear, formula = . ~ . - birth_order)
-summary(m1_covariates_only)</code></pre>
-<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
-## Formula: outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 |      mother_pidlink)
-##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_alive_factor,  
-##     birth_order_nonlinear = birthorder_uterus_alive_factor, birth_order = birthorder_uterus_alive,  
-##     count_birth_order = count_birthorder_uterus_alive) %&gt;% filter(sibling_count !=      &quot;1&quot;)
-## 
-## REML criterion at convergence: 14592
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -3.488 -0.556  0.026  0.580  2.987 
-## 
-## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 0.268    0.518   
-##  Residual                   0.487    0.698   
-## Number of obs: 5812, groups:  mother_pidlink, 3725
-## 
-## Fixed effects:
-##                             Estimate Std. Error t value
-## (Intercept)               -0.8338599  0.3707625   -2.25
-## poly(age, 3, raw = TRUE)1  0.1466577  0.0420335    3.49
-## poly(age, 3, raw = TRUE)2 -0.0049027  0.0014990   -3.27
-## poly(age, 3, raw = TRUE)3  0.0000472  0.0000170    2.78
-## male                      -0.0206536  0.0215763   -0.96
-## sibling_count3             0.0003067  0.0370060    0.01
-## sibling_count4            -0.0771012  0.0403596   -1.91
-## sibling_count5            -0.1511065  0.0463575   -3.26
-## sibling_count5+           -0.2821411  0.0409418   -6.89
-## 
-## Correlation of Fixed Effects:
-##               (Intr) p(,3,r=TRUE)1 p(,3,r=TRUE)2 p(,3,r=TRUE)3 male   sbln_3 sbln_4 sbln_5
-## p(,3,r=TRUE)1 -0.991                                                                      
-## p(,3,r=TRUE)2  0.973 -0.994                                                               
-## p(,3,r=TRUE)3 -0.946  0.976        -0.994                                                 
-## male          -0.042  0.009        -0.006         0.003                                   
-## siblng_cnt3   -0.040 -0.009         0.005        -0.003        -0.006                     
-## siblng_cnt4   -0.042  0.003        -0.011         0.014        -0.004  0.495              
-## siblng_cnt5   -0.033  0.002        -0.011         0.015        -0.001  0.433  0.411       
-## sblng_cnt5+   -0.010 -0.022         0.010        -0.008         0.000  0.495  0.481  0.427
-## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
+tidy(m1_covariates_only, conf.int = T)</code></pre>
+<table>
+<colgroup>
+<col width="28%" />
+<col width="11%" />
+<col width="11%" />
+<col width="10%" />
+<col width="11%" />
+<col width="10%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">term</th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">statistic</th>
+<th align="center">conf.low</th>
+<th align="center">conf.high</th>
+<th align="center">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">-0.8339</td>
+<td align="center">0.3708</td>
+<td align="center">-2.249</td>
+<td align="center">-1.561</td>
+<td align="center">-0.1072</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">0.1467</td>
+<td align="center">0.04203</td>
+<td align="center">3.489</td>
+<td align="center">0.06427</td>
+<td align="center">0.229</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">-0.004903</td>
+<td align="center">0.001499</td>
+<td align="center">-3.271</td>
+<td align="center">-0.007841</td>
+<td align="center">-0.001965</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">0.00004724</td>
+<td align="center">0.00001697</td>
+<td align="center">2.784</td>
+<td align="center">0.00001399</td>
+<td align="center">0.0000805</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">male</td>
+<td align="center">-0.02065</td>
+<td align="center">0.02158</td>
+<td align="center">-0.9572</td>
+<td align="center">-0.06294</td>
+<td align="center">0.02164</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count3</td>
+<td align="center">0.0003067</td>
+<td align="center">0.03701</td>
+<td align="center">0.008289</td>
+<td align="center">-0.07222</td>
+<td align="center">0.07284</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count4</td>
+<td align="center">-0.0771</td>
+<td align="center">0.04036</td>
+<td align="center">-1.91</td>
+<td align="center">-0.1562</td>
+<td align="center">0.002002</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count5</td>
+<td align="center">-0.1511</td>
+<td align="center">0.04636</td>
+<td align="center">-3.26</td>
+<td align="center">-0.242</td>
+<td align="center">-0.06025</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count5+</td>
+<td align="center">-0.2821</td>
+<td align="center">0.04094</td>
+<td align="center">-6.891</td>
+<td align="center">-0.3624</td>
+<td align="center">-0.2019</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sd_(Intercept).mother_pidlink</td>
+<td align="center">0.5177</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">mother_pidlink</td>
+</tr>
+<tr class="odd">
+<td align="center">sd_Observation.Residual</td>
+<td align="center">0.6977</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">Residual</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="coefficient-plot-4" class="section level6 active">
 <h6>Coefficient Plot</h6>
@@ -893,51 +1486,139 @@ summary(m1_covariates_only)</code></pre>
 <h5>Add Birth Order Linear</h5>
 <div id="model-summary-5" class="section level6">
 <h6>Model Summary</h6>
-<pre class="r"><code>summary(m2_birthorder_linear)</code></pre>
-<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
-## Formula: outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count +      (1 | mother_pidlink)
-##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_alive_factor,  
-##     birth_order_nonlinear = birthorder_uterus_alive_factor, birth_order = birthorder_uterus_alive,  
-##     count_birth_order = count_birthorder_uterus_alive) %&gt;% filter(sibling_count !=      &quot;1&quot;)
-## 
-## REML criterion at convergence: 14598
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -3.483 -0.558  0.027  0.580  2.977 
-## 
-## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 0.268    0.518   
-##  Residual                   0.486    0.697   
-## Number of obs: 5812, groups:  mother_pidlink, 3725
-## 
-## Fixed effects:
-##                             Estimate Std. Error t value
-## (Intercept)               -0.8411757  0.3707713   -2.27
-## birth_order                0.0090414  0.0073025    1.24
-## poly(age, 3, raw = TRUE)1  0.1459787  0.0420328    3.47
-## poly(age, 3, raw = TRUE)2 -0.0048880  0.0014989   -3.26
-## poly(age, 3, raw = TRUE)3  0.0000475  0.0000170    2.80
-## male                      -0.0211352  0.0215774   -0.98
-## sibling_count3            -0.0043190  0.0371965   -0.12
-## sibling_count4            -0.0882389  0.0413534   -2.13
-## sibling_count5            -0.1690254  0.0485690   -3.48
-## sibling_count5+           -0.3177929  0.0500539   -6.35
-## 
-## Correlation of Fixed Effects:
-##               (Intr) brth_r p(,3,r=TRUE)1 p(,3,r=TRUE)2 p(,3,r=TRUE)3 male   sbln_3 sbln_4 sbln_5
-## birth_order   -0.016                                                                             
-## p(,3,r=TRUE)1 -0.991 -0.013                                                                      
-## p(,3,r=TRUE)2  0.973  0.008 -0.994                                                               
-## p(,3,r=TRUE)3 -0.945  0.010  0.975        -0.994                                                 
-## male          -0.041 -0.018  0.010        -0.006         0.003                                   
-## siblng_cnt3   -0.038 -0.100 -0.007         0.004        -0.004        -0.004                     
-## siblng_cnt4   -0.038 -0.217  0.006        -0.013         0.011         0.000  0.503              
-## siblng_cnt5   -0.026 -0.298  0.005        -0.013         0.011         0.004  0.441  0.448       
-## sblng_cnt5+    0.001 -0.575 -0.010         0.003        -0.012         0.011  0.461  0.509  0.505
-## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>tidy(m2_birthorder_linear, conf.int = T)</code></pre>
+<table>
+<colgroup>
+<col width="28%" />
+<col width="11%" />
+<col width="11%" />
+<col width="10%" />
+<col width="10%" />
+<col width="11%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">term</th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">statistic</th>
+<th align="center">conf.low</th>
+<th align="center">conf.high</th>
+<th align="center">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">-0.8412</td>
+<td align="center">0.3708</td>
+<td align="center">-2.269</td>
+<td align="center">-1.568</td>
+<td align="center">-0.1145</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">birth_order</td>
+<td align="center">0.009041</td>
+<td align="center">0.007302</td>
+<td align="center">1.238</td>
+<td align="center">-0.005271</td>
+<td align="center">0.02335</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">0.146</td>
+<td align="center">0.04203</td>
+<td align="center">3.473</td>
+<td align="center">0.0636</td>
+<td align="center">0.2284</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">-0.004888</td>
+<td align="center">0.001499</td>
+<td align="center">-3.261</td>
+<td align="center">-0.007826</td>
+<td align="center">-0.00195</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">0.00004746</td>
+<td align="center">0.00001697</td>
+<td align="center">2.797</td>
+<td align="center">0.0000142</td>
+<td align="center">0.00008071</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">male</td>
+<td align="center">-0.02114</td>
+<td align="center">0.02158</td>
+<td align="center">-0.9795</td>
+<td align="center">-0.06343</td>
+<td align="center">0.02116</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count3</td>
+<td align="center">-0.004319</td>
+<td align="center">0.0372</td>
+<td align="center">-0.1161</td>
+<td align="center">-0.07722</td>
+<td align="center">0.06858</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count4</td>
+<td align="center">-0.08824</td>
+<td align="center">0.04135</td>
+<td align="center">-2.134</td>
+<td align="center">-0.1693</td>
+<td align="center">-0.007188</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count5</td>
+<td align="center">-0.169</td>
+<td align="center">0.04857</td>
+<td align="center">-3.48</td>
+<td align="center">-0.2642</td>
+<td align="center">-0.07383</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count5+</td>
+<td align="center">-0.3178</td>
+<td align="center">0.05005</td>
+<td align="center">-6.349</td>
+<td align="center">-0.4159</td>
+<td align="center">-0.2197</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sd_(Intercept).mother_pidlink</td>
+<td align="center">0.518</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">mother_pidlink</td>
+</tr>
+<tr class="even">
+<td align="center">sd_Observation.Residual</td>
+<td align="center">0.6974</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">Residual</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="coefficient-plot-5" class="section level6 active">
 <h6>Coefficient Plot</h6>
@@ -950,48 +1631,175 @@ summary(m1_covariates_only)</code></pre>
 <div id="model-summary-6" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>m3_birthorder_nonlinear = update(m1_covariates_only, formula = . ~ . + birth_order_nonlinear)
-summary(m3_birthorder_nonlinear)</code></pre>
-<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
-## Formula: outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 |  
-##     mother_pidlink) + birth_order_nonlinear
-##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_alive_factor,  
-##     birth_order_nonlinear = birthorder_uterus_alive_factor, birth_order = birthorder_uterus_alive,  
-##     count_birth_order = count_birthorder_uterus_alive) %&gt;% filter(sibling_count !=      &quot;1&quot;)
-## 
-## REML criterion at convergence: 14610
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -3.473 -0.556  0.029  0.583  3.021 
-## 
-## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 0.268    0.518   
-##  Residual                   0.487    0.698   
-## Number of obs: 5812, groups:  mother_pidlink, 3725
-## 
-## Fixed effects:
-##                             Estimate Std. Error t value
-## (Intercept)               -0.8704699  0.3717729   -2.34
-## poly(age, 3, raw = TRUE)1  0.1492439  0.0420878    3.55
-## poly(age, 3, raw = TRUE)2 -0.0050057  0.0015007   -3.34
-## poly(age, 3, raw = TRUE)3  0.0000488  0.0000170    2.87
-## male                      -0.0205107  0.0215811   -0.95
-## sibling_count3            -0.0061974  0.0377957   -0.16
-## sibling_count4            -0.0853332  0.0426408   -2.00
-## sibling_count5            -0.1749809  0.0504918   -3.47
-## sibling_count5+           -0.3206357  0.0511927   -6.26
-## birth_order_nonlinear2     0.0395903  0.0271435    1.46
-## birth_order_nonlinear3     0.0268218  0.0336070    0.80
-## birth_order_nonlinear4     0.0122003  0.0417815    0.29
-## birth_order_nonlinear5     0.0965589  0.0518540    1.86
-## birth_order_nonlinear5+    0.0626148  0.0537214    1.17</code></pre>
-<pre><code>## 
-## Correlation matrix not shown by default, as p = 14 &gt; 12.
-## Use print(x, correlation=TRUE)  or
-##   vcov(x)     if you need it</code></pre>
-<pre><code>## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
+tidy(m3_birthorder_nonlinear, conf.int = T)</code></pre>
+<table>
+<colgroup>
+<col width="28%" />
+<col width="11%" />
+<col width="11%" />
+<col width="10%" />
+<col width="10%" />
+<col width="11%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">term</th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">statistic</th>
+<th align="center">conf.low</th>
+<th align="center">conf.high</th>
+<th align="center">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">-0.8705</td>
+<td align="center">0.3718</td>
+<td align="center">-2.341</td>
+<td align="center">-1.599</td>
+<td align="center">-0.1418</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">0.1492</td>
+<td align="center">0.04209</td>
+<td align="center">3.546</td>
+<td align="center">0.06675</td>
+<td align="center">0.2317</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">-0.005006</td>
+<td align="center">0.001501</td>
+<td align="center">-3.336</td>
+<td align="center">-0.007947</td>
+<td align="center">-0.002064</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">0.00004879</td>
+<td align="center">0.00001699</td>
+<td align="center">2.872</td>
+<td align="center">0.0000155</td>
+<td align="center">0.00008209</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">male</td>
+<td align="center">-0.02051</td>
+<td align="center">0.02158</td>
+<td align="center">-0.9504</td>
+<td align="center">-0.06281</td>
+<td align="center">0.02179</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count3</td>
+<td align="center">-0.006197</td>
+<td align="center">0.0378</td>
+<td align="center">-0.164</td>
+<td align="center">-0.08028</td>
+<td align="center">0.06788</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count4</td>
+<td align="center">-0.08533</td>
+<td align="center">0.04264</td>
+<td align="center">-2.001</td>
+<td align="center">-0.1689</td>
+<td align="center">-0.001759</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count5</td>
+<td align="center">-0.175</td>
+<td align="center">0.05049</td>
+<td align="center">-3.466</td>
+<td align="center">-0.2739</td>
+<td align="center">-0.07602</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count5+</td>
+<td align="center">-0.3206</td>
+<td align="center">0.05119</td>
+<td align="center">-6.263</td>
+<td align="center">-0.421</td>
+<td align="center">-0.2203</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">birth_order_nonlinear2</td>
+<td align="center">0.03959</td>
+<td align="center">0.02714</td>
+<td align="center">1.459</td>
+<td align="center">-0.01361</td>
+<td align="center">0.09279</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">birth_order_nonlinear3</td>
+<td align="center">0.02682</td>
+<td align="center">0.03361</td>
+<td align="center">0.7981</td>
+<td align="center">-0.03905</td>
+<td align="center">0.09269</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">birth_order_nonlinear4</td>
+<td align="center">0.0122</td>
+<td align="center">0.04178</td>
+<td align="center">0.292</td>
+<td align="center">-0.06969</td>
+<td align="center">0.09409</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">birth_order_nonlinear5</td>
+<td align="center">0.09656</td>
+<td align="center">0.05185</td>
+<td align="center">1.862</td>
+<td align="center">-0.005073</td>
+<td align="center">0.1982</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">birth_order_nonlinear5+</td>
+<td align="center">0.06261</td>
+<td align="center">0.05372</td>
+<td align="center">1.166</td>
+<td align="center">-0.04268</td>
+<td align="center">0.1679</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sd_(Intercept).mother_pidlink</td>
+<td align="center">0.5179</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">mother_pidlink</td>
+</tr>
+<tr class="even">
+<td align="center">sd_Observation.Residual</td>
+<td align="center">0.6975</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">Residual</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="coefficient-plot-6" class="section level6 active">
 <h6>Coefficient Plot</h6>
@@ -1004,57 +1812,265 @@ summary(m3_birthorder_nonlinear)</code></pre>
 <div id="model-summary-7" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>m4_interaction = update(m3_birthorder_nonlinear, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
-summary(m4_interaction)</code></pre>
-<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
-## Formula: outcome ~ poly(age, 3, raw = TRUE) + male + (1 | mother_pidlink) +      count_birth_order
-##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_alive_factor,  
-##     birth_order_nonlinear = birthorder_uterus_alive_factor, birth_order = birthorder_uterus_alive,  
-##     count_birth_order = count_birthorder_uterus_alive) %&gt;% filter(sibling_count !=      &quot;1&quot;)
-## 
-## REML criterion at convergence: 14635
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -3.466 -0.551  0.030  0.582  3.064 
-## 
-## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 0.269    0.518   
-##  Residual                   0.487    0.698   
-## Number of obs: 5812, groups:  mother_pidlink, 3725
-## 
-## Fixed effects:
-##                             Estimate Std. Error t value
-## (Intercept)               -0.8752453  0.3727919   -2.35
-## poly(age, 3, raw = TRUE)1  0.1489326  0.0421872    3.53
-## poly(age, 3, raw = TRUE)2 -0.0049810  0.0015046   -3.31
-## poly(age, 3, raw = TRUE)3  0.0000484  0.0000170    2.84
-## male                      -0.0213709  0.0216003   -0.99
-## count_birth_order2/2       0.0548705  0.0496782    1.10
-## count_birth_order1/3      -0.0064774  0.0463881   -0.14
-## count_birth_order2/3       0.0429779  0.0500577    0.86
-## count_birth_order3/3       0.0291917  0.0557040    0.52
-## count_birth_order1/4      -0.1093928  0.0564139   -1.94
-## count_birth_order2/4      -0.0250339  0.0580316   -0.43
-## count_birth_order3/4      -0.0634540  0.0606475   -1.05
-## count_birth_order4/4      -0.0342241  0.0632886   -0.54
-## count_birth_order1/5      -0.1232337  0.0751665   -1.64
-## count_birth_order2/5      -0.0938036  0.0808089   -1.16
-## count_birth_order3/5      -0.1583748  0.0756771   -2.09
-## count_birth_order4/5      -0.1876819  0.0732262   -2.56
-## count_birth_order5/5      -0.1089097  0.0751056   -1.45
-## count_birth_order1/5+     -0.2572211  0.0746468   -3.45
-## count_birth_order2/5+     -0.3730353  0.0744919   -5.01
-## count_birth_order3/5+     -0.2643661  0.0737772   -3.58
-## count_birth_order4/5+     -0.3211020  0.0691856   -4.64
-## count_birth_order5/5+     -0.1957176  0.0658608   -2.97
-## count_birth_order5+/5+    -0.2531443  0.0516277   -4.90</code></pre>
-<pre><code>## 
-## Correlation matrix not shown by default, as p = 24 &gt; 12.
-## Use print(x, correlation=TRUE)  or
-##   vcov(x)     if you need it</code></pre>
-<pre><code>## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
+tidy(m4_interaction, conf.int = T)</code></pre>
+<table>
+<colgroup>
+<col width="28%" />
+<col width="11%" />
+<col width="11%" />
+<col width="10%" />
+<col width="11%" />
+<col width="11%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">term</th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">statistic</th>
+<th align="center">conf.low</th>
+<th align="center">conf.high</th>
+<th align="center">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">-0.8752</td>
+<td align="center">0.3728</td>
+<td align="center">-2.348</td>
+<td align="center">-1.606</td>
+<td align="center">-0.1446</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">0.1489</td>
+<td align="center">0.04219</td>
+<td align="center">3.53</td>
+<td align="center">0.06625</td>
+<td align="center">0.2316</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">-0.004981</td>
+<td align="center">0.001505</td>
+<td align="center">-3.311</td>
+<td align="center">-0.00793</td>
+<td align="center">-0.002032</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">0.00004837</td>
+<td align="center">0.00001704</td>
+<td align="center">2.839</td>
+<td align="center">0.00001498</td>
+<td align="center">0.00008176</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">male</td>
+<td align="center">-0.02137</td>
+<td align="center">0.0216</td>
+<td align="center">-0.9894</td>
+<td align="center">-0.06371</td>
+<td align="center">0.02097</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order2/2</td>
+<td align="center">0.05487</td>
+<td align="center">0.04968</td>
+<td align="center">1.105</td>
+<td align="center">-0.0425</td>
+<td align="center">0.1522</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order1/3</td>
+<td align="center">-0.006477</td>
+<td align="center">0.04639</td>
+<td align="center">-0.1396</td>
+<td align="center">-0.0974</td>
+<td align="center">0.08444</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order2/3</td>
+<td align="center">0.04298</td>
+<td align="center">0.05006</td>
+<td align="center">0.8586</td>
+<td align="center">-0.05513</td>
+<td align="center">0.1411</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order3/3</td>
+<td align="center">0.02919</td>
+<td align="center">0.0557</td>
+<td align="center">0.5241</td>
+<td align="center">-0.07999</td>
+<td align="center">0.1384</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order1/4</td>
+<td align="center">-0.1094</td>
+<td align="center">0.05641</td>
+<td align="center">-1.939</td>
+<td align="center">-0.22</td>
+<td align="center">0.001176</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order2/4</td>
+<td align="center">-0.02503</td>
+<td align="center">0.05803</td>
+<td align="center">-0.4314</td>
+<td align="center">-0.1388</td>
+<td align="center">0.08871</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order3/4</td>
+<td align="center">-0.06345</td>
+<td align="center">0.06065</td>
+<td align="center">-1.046</td>
+<td align="center">-0.1823</td>
+<td align="center">0.05541</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order4/4</td>
+<td align="center">-0.03422</td>
+<td align="center">0.06329</td>
+<td align="center">-0.5408</td>
+<td align="center">-0.1583</td>
+<td align="center">0.08982</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order1/5</td>
+<td align="center">-0.1232</td>
+<td align="center">0.07517</td>
+<td align="center">-1.639</td>
+<td align="center">-0.2706</td>
+<td align="center">0.02409</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order2/5</td>
+<td align="center">-0.0938</td>
+<td align="center">0.08081</td>
+<td align="center">-1.161</td>
+<td align="center">-0.2522</td>
+<td align="center">0.06458</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order3/5</td>
+<td align="center">-0.1584</td>
+<td align="center">0.07568</td>
+<td align="center">-2.093</td>
+<td align="center">-0.3067</td>
+<td align="center">-0.01005</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order4/5</td>
+<td align="center">-0.1877</td>
+<td align="center">0.07323</td>
+<td align="center">-2.563</td>
+<td align="center">-0.3312</td>
+<td align="center">-0.04416</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order5/5</td>
+<td align="center">-0.1089</td>
+<td align="center">0.07511</td>
+<td align="center">-1.45</td>
+<td align="center">-0.2561</td>
+<td align="center">0.03829</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order1/5+</td>
+<td align="center">-0.2572</td>
+<td align="center">0.07465</td>
+<td align="center">-3.446</td>
+<td align="center">-0.4035</td>
+<td align="center">-0.1109</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order2/5+</td>
+<td align="center">-0.373</td>
+<td align="center">0.07449</td>
+<td align="center">-5.008</td>
+<td align="center">-0.519</td>
+<td align="center">-0.227</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order3/5+</td>
+<td align="center">-0.2644</td>
+<td align="center">0.07378</td>
+<td align="center">-3.583</td>
+<td align="center">-0.409</td>
+<td align="center">-0.1198</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order4/5+</td>
+<td align="center">-0.3211</td>
+<td align="center">0.06919</td>
+<td align="center">-4.641</td>
+<td align="center">-0.4567</td>
+<td align="center">-0.1855</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order5/5+</td>
+<td align="center">-0.1957</td>
+<td align="center">0.06586</td>
+<td align="center">-2.972</td>
+<td align="center">-0.3248</td>
+<td align="center">-0.06663</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order5+/5+</td>
+<td align="center">-0.2531</td>
+<td align="center">0.05163</td>
+<td align="center">-4.903</td>
+<td align="center">-0.3543</td>
+<td align="center">-0.152</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sd_(Intercept).mother_pidlink</td>
+<td align="center">0.5182</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">mother_pidlink</td>
+</tr>
+<tr class="even">
+<td align="center">sd_Observation.Residual</td>
+<td align="center">0.6977</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">Residual</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="coefficient-plot-7" class="section level6 active">
 <h6>Coefficient Plot</h6>
@@ -1151,49 +2167,130 @@ compare_models_markdown(outcome_preg_m1)</code></pre>
 <div id="model-summary-8" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>m1_covariates_only &lt;- update(m2_birthorder_linear, formula = . ~ . - birth_order)
-summary(m1_covariates_only)</code></pre>
-<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
-## Formula: outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 |      mother_pidlink)
-##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_preg_factor,  
-##     birth_order_nonlinear = birthorder_uterus_preg_factor, birth_order = birthorder_uterus_preg,  
-##     count_birth_order = count_birthorder_uterus_preg) %&gt;% filter(sibling_count !=      &quot;1&quot;)
-## 
-## REML criterion at convergence: 14738
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -3.469 -0.556  0.028  0.582  3.016 
-## 
-## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 0.271    0.521   
-##  Residual                   0.486    0.697   
-## Number of obs: 5863, groups:  mother_pidlink, 3776
-## 
-## Fixed effects:
-##                             Estimate Std. Error t value
-## (Intercept)               -0.8021316  0.3700685   -2.17
-## poly(age, 3, raw = TRUE)1  0.1431180  0.0419675    3.41
-## poly(age, 3, raw = TRUE)2 -0.0048189  0.0014969   -3.22
-## poly(age, 3, raw = TRUE)3  0.0000462  0.0000169    2.73
-## male                      -0.0212323  0.0215142   -0.99
-## sibling_count3             0.0068563  0.0399731    0.17
-## sibling_count4            -0.0426008  0.0425991   -1.00
-## sibling_count5            -0.0780427  0.0457776   -1.70
-## sibling_count5+           -0.1916437  0.0400703   -4.78
-## 
-## Correlation of Fixed Effects:
-##               (Intr) p(,3,r=TRUE)1 p(,3,r=TRUE)2 p(,3,r=TRUE)3 male   sbln_3 sbln_4 sbln_5
-## p(,3,r=TRUE)1 -0.991                                                                      
-## p(,3,r=TRUE)2  0.973 -0.994                                                               
-## p(,3,r=TRUE)3 -0.945  0.976        -0.994                                                 
-## male          -0.041  0.009        -0.005         0.003                                   
-## siblng_cnt3   -0.041 -0.014         0.010        -0.008        -0.007                     
-## siblng_cnt4   -0.050  0.004        -0.012         0.015        -0.012  0.519              
-## siblng_cnt5   -0.034 -0.008        -0.002         0.005         0.007  0.485  0.467       
-## sblng_cnt5+   -0.021 -0.022         0.009        -0.007        -0.002  0.558  0.545  0.516
-## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
+tidy(m1_covariates_only, conf.int = T)</code></pre>
+<table>
+<colgroup>
+<col width="28%" />
+<col width="11%" />
+<col width="11%" />
+<col width="10%" />
+<col width="11%" />
+<col width="11%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">term</th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">statistic</th>
+<th align="center">conf.low</th>
+<th align="center">conf.high</th>
+<th align="center">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">-0.8021</td>
+<td align="center">0.3701</td>
+<td align="center">-2.168</td>
+<td align="center">-1.527</td>
+<td align="center">-0.07681</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">0.1431</td>
+<td align="center">0.04197</td>
+<td align="center">3.41</td>
+<td align="center">0.06086</td>
+<td align="center">0.2254</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">-0.004819</td>
+<td align="center">0.001497</td>
+<td align="center">-3.219</td>
+<td align="center">-0.007753</td>
+<td align="center">-0.001885</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">0.00004624</td>
+<td align="center">0.00001695</td>
+<td align="center">2.728</td>
+<td align="center">0.00001302</td>
+<td align="center">0.00007946</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">male</td>
+<td align="center">-0.02123</td>
+<td align="center">0.02151</td>
+<td align="center">-0.9869</td>
+<td align="center">-0.0634</td>
+<td align="center">0.02093</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count3</td>
+<td align="center">0.006856</td>
+<td align="center">0.03997</td>
+<td align="center">0.1715</td>
+<td align="center">-0.07149</td>
+<td align="center">0.0852</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count4</td>
+<td align="center">-0.0426</td>
+<td align="center">0.0426</td>
+<td align="center">-1</td>
+<td align="center">-0.1261</td>
+<td align="center">0.04089</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count5</td>
+<td align="center">-0.07804</td>
+<td align="center">0.04578</td>
+<td align="center">-1.705</td>
+<td align="center">-0.1678</td>
+<td align="center">0.01168</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count5+</td>
+<td align="center">-0.1916</td>
+<td align="center">0.04007</td>
+<td align="center">-4.783</td>
+<td align="center">-0.2702</td>
+<td align="center">-0.1131</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sd_(Intercept).mother_pidlink</td>
+<td align="center">0.5208</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">mother_pidlink</td>
+</tr>
+<tr class="odd">
+<td align="center">sd_Observation.Residual</td>
+<td align="center">0.6974</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">Residual</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="coefficient-plot-8" class="section level6 active">
 <h6>Coefficient Plot</h6>
@@ -1205,51 +2302,139 @@ summary(m1_covariates_only)</code></pre>
 <h5>Add Birth Order Linear</h5>
 <div id="model-summary-9" class="section level6">
 <h6>Model Summary</h6>
-<pre class="r"><code>summary(m2_birthorder_linear)</code></pre>
-<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
-## Formula: outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count +      (1 | mother_pidlink)
-##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_preg_factor,  
-##     birth_order_nonlinear = birthorder_uterus_preg_factor, birth_order = birthorder_uterus_preg,  
-##     count_birth_order = count_birthorder_uterus_preg) %&gt;% filter(sibling_count !=      &quot;1&quot;)
-## 
-## REML criterion at convergence: 14747
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -3.470 -0.557  0.028  0.583  3.016 
-## 
-## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 0.271    0.521   
-##  Residual                   0.487    0.698   
-## Number of obs: 5863, groups:  mother_pidlink, 3776
-## 
-## Fixed effects:
-##                             Estimate Std. Error t value
-## (Intercept)               -0.7995943  0.3701740   -2.16
-## birth_order               -0.0022765  0.0064315   -0.35
-## poly(age, 3, raw = TRUE)1  0.1432056  0.0419727    3.41
-## poly(age, 3, raw = TRUE)2 -0.0048196  0.0014971   -3.22
-## poly(age, 3, raw = TRUE)3  0.0000462  0.0000170    2.72
-## male                      -0.0211252  0.0215188   -0.98
-## sibling_count3             0.0080265  0.0401089    0.20
-## sibling_count4            -0.0399105  0.0432703   -0.92
-## sibling_count5            -0.0738677  0.0472711   -1.56
-## sibling_count5+           -0.1830047  0.0469189   -3.90
-## 
-## Correlation of Fixed Effects:
-##               (Intr) brth_r p(,3,r=TRUE)1 p(,3,r=TRUE)2 p(,3,r=TRUE)3 male   sbln_3 sbln_4 sbln_5
-## birth_order   -0.019                                                                             
-## p(,3,r=TRUE)1 -0.991 -0.006                                                                      
-## p(,3,r=TRUE)2  0.973  0.001 -0.994                                                               
-## p(,3,r=TRUE)3 -0.945  0.015  0.975        -0.994                                                 
-## male          -0.040 -0.015  0.009        -0.005         0.003                                   
-## siblng_cnt3   -0.040 -0.082 -0.013         0.010        -0.009        -0.006                     
-## siblng_cnt4   -0.046 -0.175  0.005        -0.012         0.012        -0.009  0.523              
-## siblng_cnt5   -0.028 -0.249 -0.006        -0.002         0.001         0.011  0.488  0.489       
-## sblng_cnt5+   -0.008 -0.520 -0.015         0.007        -0.013         0.006  0.518  0.549  0.557
-## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>tidy(m2_birthorder_linear, conf.int = T)</code></pre>
+<table>
+<colgroup>
+<col width="28%" />
+<col width="11%" />
+<col width="11%" />
+<col width="10%" />
+<col width="11%" />
+<col width="11%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">term</th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">statistic</th>
+<th align="center">conf.low</th>
+<th align="center">conf.high</th>
+<th align="center">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">-0.7996</td>
+<td align="center">0.3702</td>
+<td align="center">-2.16</td>
+<td align="center">-1.525</td>
+<td align="center">-0.07407</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">birth_order</td>
+<td align="center">-0.002276</td>
+<td align="center">0.006431</td>
+<td align="center">-0.354</td>
+<td align="center">-0.01488</td>
+<td align="center">0.01033</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">0.1432</td>
+<td align="center">0.04197</td>
+<td align="center">3.412</td>
+<td align="center">0.06094</td>
+<td align="center">0.2255</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">-0.00482</td>
+<td align="center">0.001497</td>
+<td align="center">-3.219</td>
+<td align="center">-0.007754</td>
+<td align="center">-0.001885</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">0.00004615</td>
+<td align="center">0.00001695</td>
+<td align="center">2.722</td>
+<td align="center">0.00001293</td>
+<td align="center">0.00007938</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">male</td>
+<td align="center">-0.02113</td>
+<td align="center">0.02152</td>
+<td align="center">-0.9817</td>
+<td align="center">-0.0633</td>
+<td align="center">0.02105</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count3</td>
+<td align="center">0.008026</td>
+<td align="center">0.04011</td>
+<td align="center">0.2001</td>
+<td align="center">-0.07059</td>
+<td align="center">0.08664</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count4</td>
+<td align="center">-0.03991</td>
+<td align="center">0.04327</td>
+<td align="center">-0.9224</td>
+<td align="center">-0.1247</td>
+<td align="center">0.0449</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count5</td>
+<td align="center">-0.07387</td>
+<td align="center">0.04727</td>
+<td align="center">-1.563</td>
+<td align="center">-0.1665</td>
+<td align="center">0.01878</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count5+</td>
+<td align="center">-0.183</td>
+<td align="center">0.04692</td>
+<td align="center">-3.9</td>
+<td align="center">-0.275</td>
+<td align="center">-0.09105</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sd_(Intercept).mother_pidlink</td>
+<td align="center">0.5206</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">mother_pidlink</td>
+</tr>
+<tr class="even">
+<td align="center">sd_Observation.Residual</td>
+<td align="center">0.6975</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">Residual</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="coefficient-plot-9" class="section level6 active">
 <h6>Coefficient Plot</h6>
@@ -1262,48 +2447,175 @@ summary(m1_covariates_only)</code></pre>
 <div id="model-summary-10" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>m3_birthorder_nonlinear = update(m1_covariates_only, formula = . ~ . + birth_order_nonlinear)
-summary(m3_birthorder_nonlinear)</code></pre>
-<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
-## Formula: outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 |  
-##     mother_pidlink) + birth_order_nonlinear
-##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_preg_factor,  
-##     birth_order_nonlinear = birthorder_uterus_preg_factor, birth_order = birthorder_uterus_preg,  
-##     count_birth_order = count_birthorder_uterus_preg) %&gt;% filter(sibling_count !=      &quot;1&quot;)
-## 
-## REML criterion at convergence: 14758
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -3.458 -0.552  0.031  0.583  3.048 
-## 
-## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 0.271    0.521   
-##  Residual                   0.487    0.698   
-## Number of obs: 5863, groups:  mother_pidlink, 3776
-## 
-## Fixed effects:
-##                             Estimate Std. Error t value
-## (Intercept)               -0.8362872  0.3710353   -2.25
-## poly(age, 3, raw = TRUE)1  0.1457696  0.0420185    3.47
-## poly(age, 3, raw = TRUE)2 -0.0049126  0.0014987   -3.28
-## poly(age, 3, raw = TRUE)3  0.0000472  0.0000170    2.78
-## male                      -0.0202336  0.0215228   -0.94
-## sibling_count3             0.0081511  0.0406873    0.20
-## sibling_count4            -0.0346247  0.0444914   -0.78
-## sibling_count5            -0.0761968  0.0490477   -1.55
-## sibling_count5+           -0.1822229  0.0480546   -3.79
-## birth_order_nonlinear2     0.0345004  0.0277714    1.24
-## birth_order_nonlinear3    -0.0053543  0.0335794   -0.16
-## birth_order_nonlinear4    -0.0239877  0.0407014   -0.59
-## birth_order_nonlinear5     0.0494769  0.0496003    1.00
-## birth_order_nonlinear5+   -0.0096931  0.0484281   -0.20</code></pre>
-<pre><code>## 
-## Correlation matrix not shown by default, as p = 14 &gt; 12.
-## Use print(x, correlation=TRUE)  or
-##   vcov(x)     if you need it</code></pre>
-<pre><code>## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
+tidy(m3_birthorder_nonlinear, conf.int = T)</code></pre>
+<table>
+<colgroup>
+<col width="28%" />
+<col width="11%" />
+<col width="11%" />
+<col width="10%" />
+<col width="11%" />
+<col width="11%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">term</th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">statistic</th>
+<th align="center">conf.low</th>
+<th align="center">conf.high</th>
+<th align="center">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">-0.8363</td>
+<td align="center">0.371</td>
+<td align="center">-2.254</td>
+<td align="center">-1.564</td>
+<td align="center">-0.1091</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">0.1458</td>
+<td align="center">0.04202</td>
+<td align="center">3.469</td>
+<td align="center">0.06341</td>
+<td align="center">0.2281</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">-0.004913</td>
+<td align="center">0.001499</td>
+<td align="center">-3.278</td>
+<td align="center">-0.00785</td>
+<td align="center">-0.001975</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">0.00004722</td>
+<td align="center">0.00001697</td>
+<td align="center">2.782</td>
+<td align="center">0.00001395</td>
+<td align="center">0.00008048</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">male</td>
+<td align="center">-0.02023</td>
+<td align="center">0.02152</td>
+<td align="center">-0.9401</td>
+<td align="center">-0.06242</td>
+<td align="center">0.02195</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count3</td>
+<td align="center">0.008151</td>
+<td align="center">0.04069</td>
+<td align="center">0.2003</td>
+<td align="center">-0.07159</td>
+<td align="center">0.0879</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count4</td>
+<td align="center">-0.03462</td>
+<td align="center">0.04449</td>
+<td align="center">-0.7782</td>
+<td align="center">-0.1218</td>
+<td align="center">0.05258</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count5</td>
+<td align="center">-0.0762</td>
+<td align="center">0.04905</td>
+<td align="center">-1.554</td>
+<td align="center">-0.1723</td>
+<td align="center">0.01993</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count5+</td>
+<td align="center">-0.1822</td>
+<td align="center">0.04805</td>
+<td align="center">-3.792</td>
+<td align="center">-0.2764</td>
+<td align="center">-0.08804</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">birth_order_nonlinear2</td>
+<td align="center">0.0345</td>
+<td align="center">0.02777</td>
+<td align="center">1.242</td>
+<td align="center">-0.01993</td>
+<td align="center">0.08893</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">birth_order_nonlinear3</td>
+<td align="center">-0.005354</td>
+<td align="center">0.03358</td>
+<td align="center">-0.1595</td>
+<td align="center">-0.07117</td>
+<td align="center">0.06046</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">birth_order_nonlinear4</td>
+<td align="center">-0.02399</td>
+<td align="center">0.0407</td>
+<td align="center">-0.5894</td>
+<td align="center">-0.1038</td>
+<td align="center">0.05579</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">birth_order_nonlinear5</td>
+<td align="center">0.04948</td>
+<td align="center">0.0496</td>
+<td align="center">0.9975</td>
+<td align="center">-0.04774</td>
+<td align="center">0.1467</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">birth_order_nonlinear5+</td>
+<td align="center">-0.009693</td>
+<td align="center">0.04843</td>
+<td align="center">-0.2002</td>
+<td align="center">-0.1046</td>
+<td align="center">0.08522</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sd_(Intercept).mother_pidlink</td>
+<td align="center">0.5206</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">mother_pidlink</td>
+</tr>
+<tr class="even">
+<td align="center">sd_Observation.Residual</td>
+<td align="center">0.6975</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">Residual</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="coefficient-plot-10" class="section level6 active">
 <h6>Coefficient Plot</h6>
@@ -1316,57 +2628,265 @@ summary(m3_birthorder_nonlinear)</code></pre>
 <div id="model-summary-11" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>m4_interaction = update(m3_birthorder_nonlinear, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
-summary(m4_interaction)</code></pre>
-<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
-## Formula: outcome ~ poly(age, 3, raw = TRUE) + male + (1 | mother_pidlink) +      count_birth_order
-##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_uterus_preg_factor,  
-##     birth_order_nonlinear = birthorder_uterus_preg_factor, birth_order = birthorder_uterus_preg,  
-##     count_birth_order = count_birthorder_uterus_preg) %&gt;% filter(sibling_count !=      &quot;1&quot;)
-## 
-## REML criterion at convergence: 14777
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -3.440 -0.549  0.029  0.583  3.036 
-## 
-## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 0.271    0.521   
-##  Residual                   0.486    0.697   
-## Number of obs: 5863, groups:  mother_pidlink, 3776
-## 
-## Fixed effects:
-##                             Estimate Std. Error t value
-## (Intercept)               -0.8476186  0.3718376   -2.28
-## poly(age, 3, raw = TRUE)1  0.1446612  0.0420746    3.44
-## poly(age, 3, raw = TRUE)2 -0.0048609  0.0015011   -3.24
-## poly(age, 3, raw = TRUE)3  0.0000465  0.0000170    2.73
-## male                      -0.0211452  0.0215275   -0.98
-## count_birth_order2/2       0.0926918  0.0545768    1.70
-## count_birth_order1/3       0.0399102  0.0502725    0.79
-## count_birth_order2/3       0.0297722  0.0538913    0.55
-## count_birth_order3/3       0.0425686  0.0603101    0.71
-## count_birth_order1/4      -0.0760811  0.0591722   -1.29
-## count_birth_order2/4       0.0876423  0.0601847    1.46
-## count_birth_order3/4      -0.0302977  0.0649985   -0.47
-## count_birth_order4/4      -0.0300339  0.0672528   -0.45
-## count_birth_order1/5      -0.0001437  0.0691878    0.00
-## count_birth_order2/5      -0.0142932  0.0742615   -0.19
-## count_birth_order3/5      -0.1014140  0.0718836   -1.41
-## count_birth_order4/5      -0.1036906  0.0745184   -1.39
-## count_birth_order5/5      -0.0289827  0.0743934   -0.39
-## count_birth_order1/5+     -0.1088609  0.0659872   -1.65
-## count_birth_order2/5+     -0.2303311  0.0688327   -3.35
-## count_birth_order3/5+     -0.1536909  0.0669926   -2.29
-## count_birth_order4/5+     -0.1817051  0.0646628   -2.81
-## count_birth_order5/5+     -0.1001859  0.0658913   -1.52
-## count_birth_order5+/5+    -0.1736146  0.0505725   -3.43</code></pre>
-<pre><code>## 
-## Correlation matrix not shown by default, as p = 24 &gt; 12.
-## Use print(x, correlation=TRUE)  or
-##   vcov(x)     if you need it</code></pre>
-<pre><code>## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
+tidy(m4_interaction, conf.int = T)</code></pre>
+<table>
+<colgroup>
+<col width="28%" />
+<col width="11%" />
+<col width="10%" />
+<col width="10%" />
+<col width="11%" />
+<col width="11%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">term</th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">statistic</th>
+<th align="center">conf.low</th>
+<th align="center">conf.high</th>
+<th align="center">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">-0.8476</td>
+<td align="center">0.3718</td>
+<td align="center">-2.28</td>
+<td align="center">-1.576</td>
+<td align="center">-0.1188</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">0.1447</td>
+<td align="center">0.04207</td>
+<td align="center">3.438</td>
+<td align="center">0.0622</td>
+<td align="center">0.2271</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">-0.004861</td>
+<td align="center">0.001501</td>
+<td align="center">-3.238</td>
+<td align="center">-0.007803</td>
+<td align="center">-0.001919</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">0.00004649</td>
+<td align="center">0.000017</td>
+<td align="center">2.734</td>
+<td align="center">0.00001317</td>
+<td align="center">0.00007981</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">male</td>
+<td align="center">-0.02115</td>
+<td align="center">0.02153</td>
+<td align="center">-0.9822</td>
+<td align="center">-0.06334</td>
+<td align="center">0.02105</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order2/2</td>
+<td align="center">0.09269</td>
+<td align="center">0.05458</td>
+<td align="center">1.698</td>
+<td align="center">-0.01428</td>
+<td align="center">0.1997</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order1/3</td>
+<td align="center">0.03991</td>
+<td align="center">0.05027</td>
+<td align="center">0.7939</td>
+<td align="center">-0.05862</td>
+<td align="center">0.1384</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order2/3</td>
+<td align="center">0.02977</td>
+<td align="center">0.05389</td>
+<td align="center">0.5524</td>
+<td align="center">-0.07585</td>
+<td align="center">0.1354</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order3/3</td>
+<td align="center">0.04257</td>
+<td align="center">0.06031</td>
+<td align="center">0.7058</td>
+<td align="center">-0.07564</td>
+<td align="center">0.1608</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order1/4</td>
+<td align="center">-0.07608</td>
+<td align="center">0.05917</td>
+<td align="center">-1.286</td>
+<td align="center">-0.1921</td>
+<td align="center">0.03989</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order2/4</td>
+<td align="center">0.08764</td>
+<td align="center">0.06018</td>
+<td align="center">1.456</td>
+<td align="center">-0.03032</td>
+<td align="center">0.2056</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order3/4</td>
+<td align="center">-0.0303</td>
+<td align="center">0.065</td>
+<td align="center">-0.4661</td>
+<td align="center">-0.1577</td>
+<td align="center">0.0971</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order4/4</td>
+<td align="center">-0.03003</td>
+<td align="center">0.06725</td>
+<td align="center">-0.4466</td>
+<td align="center">-0.1618</td>
+<td align="center">0.1018</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order1/5</td>
+<td align="center">-0.0001437</td>
+<td align="center">0.06919</td>
+<td align="center">-0.002077</td>
+<td align="center">-0.1357</td>
+<td align="center">0.1355</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order2/5</td>
+<td align="center">-0.01429</td>
+<td align="center">0.07426</td>
+<td align="center">-0.1925</td>
+<td align="center">-0.1598</td>
+<td align="center">0.1313</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order3/5</td>
+<td align="center">-0.1014</td>
+<td align="center">0.07188</td>
+<td align="center">-1.411</td>
+<td align="center">-0.2423</td>
+<td align="center">0.03948</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order4/5</td>
+<td align="center">-0.1037</td>
+<td align="center">0.07452</td>
+<td align="center">-1.391</td>
+<td align="center">-0.2497</td>
+<td align="center">0.04236</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order5/5</td>
+<td align="center">-0.02898</td>
+<td align="center">0.07439</td>
+<td align="center">-0.3896</td>
+<td align="center">-0.1748</td>
+<td align="center">0.1168</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order1/5+</td>
+<td align="center">-0.1089</td>
+<td align="center">0.06599</td>
+<td align="center">-1.65</td>
+<td align="center">-0.2382</td>
+<td align="center">0.02047</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order2/5+</td>
+<td align="center">-0.2303</td>
+<td align="center">0.06883</td>
+<td align="center">-3.346</td>
+<td align="center">-0.3652</td>
+<td align="center">-0.09542</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order3/5+</td>
+<td align="center">-0.1537</td>
+<td align="center">0.06699</td>
+<td align="center">-2.294</td>
+<td align="center">-0.285</td>
+<td align="center">-0.02239</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order4/5+</td>
+<td align="center">-0.1817</td>
+<td align="center">0.06466</td>
+<td align="center">-2.81</td>
+<td align="center">-0.3084</td>
+<td align="center">-0.05497</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order5/5+</td>
+<td align="center">-0.1002</td>
+<td align="center">0.06589</td>
+<td align="center">-1.52</td>
+<td align="center">-0.2293</td>
+<td align="center">0.02896</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order5+/5+</td>
+<td align="center">-0.1736</td>
+<td align="center">0.05057</td>
+<td align="center">-3.433</td>
+<td align="center">-0.2727</td>
+<td align="center">-0.07449</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sd_(Intercept).mother_pidlink</td>
+<td align="center">0.5209</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">mother_pidlink</td>
+</tr>
+<tr class="even">
+<td align="center">sd_Observation.Residual</td>
+<td align="center">0.6971</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">Residual</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="coefficient-plot-11" class="section level6 active">
 <h6>Coefficient Plot</h6>
@@ -1463,49 +2983,130 @@ compare_models_markdown(outcome_parental_m1)</code></pre>
 <div id="model-summary-12" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>m1_covariates_only &lt;- update(m2_birthorder_linear, formula = . ~ . - birth_order)
-summary(m1_covariates_only)</code></pre>
-<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
-## Formula: outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 |      mother_pidlink)
-##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_genes_factor,  
-##     birth_order_nonlinear = birthorder_genes_factor, birth_order = birthorder_genes,  
-##     count_birth_order = count_birthorder_genes) %&gt;% filter(sibling_count !=      &quot;1&quot;)
-## 
-## REML criterion at convergence: 14303
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -3.483 -0.557  0.027  0.578  2.979 
-## 
-## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 0.266    0.516   
-##  Residual                   0.488    0.699   
-## Number of obs: 5698, groups:  mother_pidlink, 3643
-## 
-## Fixed effects:
-##                             Estimate Std. Error t value
-## (Intercept)               -0.9226344  0.3750994   -2.46
-## poly(age, 3, raw = TRUE)1  0.1559202  0.0425404    3.67
-## poly(age, 3, raw = TRUE)2 -0.0052576  0.0015173   -3.46
-## poly(age, 3, raw = TRUE)3  0.0000515  0.0000172    3.00
-## male                      -0.0211721  0.0217975   -0.97
-## sibling_count3             0.0147165  0.0364736    0.40
-## sibling_count4            -0.0640369  0.0400041   -1.60
-## sibling_count5            -0.1279254  0.0475350   -2.69
-## sibling_count5+           -0.2709651  0.0414226   -6.54
-## 
-## Correlation of Fixed Effects:
-##               (Intr) p(,3,r=TRUE)1 p(,3,r=TRUE)2 p(,3,r=TRUE)3 male   sbln_3 sbln_4 sbln_5
-## p(,3,r=TRUE)1 -0.992                                                                      
-## p(,3,r=TRUE)2  0.973 -0.994                                                               
-## p(,3,r=TRUE)3 -0.946  0.975        -0.994                                                 
-## male          -0.042  0.010        -0.006         0.004                                   
-## siblng_cnt3   -0.038 -0.007         0.003         0.000        -0.019                     
-## siblng_cnt4   -0.033 -0.004        -0.005         0.008        -0.008  0.485              
-## siblng_cnt5   -0.030  0.002        -0.011         0.014        -0.005  0.412  0.388       
-## sblng_cnt5+   -0.002 -0.027         0.015        -0.014        -0.008  0.480  0.459  0.399
-## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
+tidy(m1_covariates_only, conf.int = T)</code></pre>
+<table>
+<colgroup>
+<col width="28%" />
+<col width="10%" />
+<col width="11%" />
+<col width="10%" />
+<col width="11%" />
+<col width="11%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">term</th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">statistic</th>
+<th align="center">conf.low</th>
+<th align="center">conf.high</th>
+<th align="center">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">-0.9226</td>
+<td align="center">0.3751</td>
+<td align="center">-2.46</td>
+<td align="center">-1.658</td>
+<td align="center">-0.1875</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">0.1559</td>
+<td align="center">0.04254</td>
+<td align="center">3.665</td>
+<td align="center">0.07254</td>
+<td align="center">0.2393</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">-0.005258</td>
+<td align="center">0.001517</td>
+<td align="center">-3.465</td>
+<td align="center">-0.008231</td>
+<td align="center">-0.002284</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">0.0000515</td>
+<td align="center">0.00001718</td>
+<td align="center">2.997</td>
+<td align="center">0.00001782</td>
+<td align="center">0.00008518</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">male</td>
+<td align="center">-0.02117</td>
+<td align="center">0.0218</td>
+<td align="center">-0.9713</td>
+<td align="center">-0.06389</td>
+<td align="center">0.02155</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count3</td>
+<td align="center">0.01472</td>
+<td align="center">0.03647</td>
+<td align="center">0.4035</td>
+<td align="center">-0.05677</td>
+<td align="center">0.0862</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count4</td>
+<td align="center">-0.06404</td>
+<td align="center">0.04</td>
+<td align="center">-1.601</td>
+<td align="center">-0.1424</td>
+<td align="center">0.01437</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count5</td>
+<td align="center">-0.1279</td>
+<td align="center">0.04754</td>
+<td align="center">-2.691</td>
+<td align="center">-0.2211</td>
+<td align="center">-0.03476</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count5+</td>
+<td align="center">-0.271</td>
+<td align="center">0.04142</td>
+<td align="center">-6.541</td>
+<td align="center">-0.3522</td>
+<td align="center">-0.1898</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sd_(Intercept).mother_pidlink</td>
+<td align="center">0.5155</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">mother_pidlink</td>
+</tr>
+<tr class="odd">
+<td align="center">sd_Observation.Residual</td>
+<td align="center">0.6986</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">Residual</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="coefficient-plot-12" class="section level6 active">
 <h6>Coefficient Plot</h6>
@@ -1517,51 +3118,139 @@ summary(m1_covariates_only)</code></pre>
 <h5>Add Birth Order Linear</h5>
 <div id="model-summary-13" class="section level6">
 <h6>Model Summary</h6>
-<pre class="r"><code>summary(m2_birthorder_linear)</code></pre>
-<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
-## Formula: outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count +      (1 | mother_pidlink)
-##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_genes_factor,  
-##     birth_order_nonlinear = birthorder_genes_factor, birth_order = birthorder_genes,  
-##     count_birth_order = count_birthorder_genes) %&gt;% filter(sibling_count !=      &quot;1&quot;)
-## 
-## REML criterion at convergence: 14309
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -3.478 -0.559  0.025  0.580  2.967 
-## 
-## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 0.266    0.516   
-##  Residual                   0.488    0.698   
-## Number of obs: 5698, groups:  mother_pidlink, 3643
-## 
-## Fixed effects:
-##                             Estimate Std. Error t value
-## (Intercept)               -0.9298342  0.3750977   -2.48
-## birth_order                0.0100508  0.0075119    1.34
-## poly(age, 3, raw = TRUE)1  0.1550982  0.0425402    3.65
-## poly(age, 3, raw = TRUE)2 -0.0052406  0.0015172   -3.45
-## poly(age, 3, raw = TRUE)3  0.0000517  0.0000172    3.01
-## male                      -0.0215033  0.0217964   -0.99
-## sibling_count3             0.0095234  0.0366796    0.26
-## sibling_count4            -0.0761913  0.0410230   -1.86
-## sibling_count5            -0.1470041  0.0496286   -2.96
-## sibling_count5+           -0.3100931  0.0507030   -6.12
-## 
-## Correlation of Fixed Effects:
-##               (Intr) brth_r p(,3,r=TRUE)1 p(,3,r=TRUE)2 p(,3,r=TRUE)3 male   sbln_3 sbln_4 sbln_5
-## birth_order   -0.014                                                                             
-## p(,3,r=TRUE)1 -0.991 -0.015                                                                      
-## p(,3,r=TRUE)2  0.973  0.008 -0.994                                                               
-## p(,3,r=TRUE)3 -0.946  0.010  0.975        -0.994                                                 
-## male          -0.041 -0.012  0.010        -0.006         0.004                                   
-## siblng_cnt3   -0.036 -0.106 -0.006         0.002        -0.001        -0.018                     
-## siblng_cnt4   -0.029 -0.221  0.000        -0.006         0.005        -0.005  0.494              
-## siblng_cnt5   -0.025 -0.287  0.006        -0.013         0.010        -0.002  0.423  0.426       
-## sblng_cnt5+    0.007 -0.577 -0.013         0.007        -0.017         0.000  0.451  0.493  0.478
-## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>tidy(m2_birthorder_linear, conf.int = T)</code></pre>
+<table>
+<colgroup>
+<col width="28%" />
+<col width="11%" />
+<col width="11%" />
+<col width="10%" />
+<col width="11%" />
+<col width="11%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">term</th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">statistic</th>
+<th align="center">conf.low</th>
+<th align="center">conf.high</th>
+<th align="center">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">-0.9298</td>
+<td align="center">0.3751</td>
+<td align="center">-2.479</td>
+<td align="center">-1.665</td>
+<td align="center">-0.1947</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">birth_order</td>
+<td align="center">0.01005</td>
+<td align="center">0.007512</td>
+<td align="center">1.338</td>
+<td align="center">-0.004672</td>
+<td align="center">0.02477</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">0.1551</td>
+<td align="center">0.04254</td>
+<td align="center">3.646</td>
+<td align="center">0.07172</td>
+<td align="center">0.2385</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">-0.005241</td>
+<td align="center">0.001517</td>
+<td align="center">-3.454</td>
+<td align="center">-0.008214</td>
+<td align="center">-0.002267</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">0.00005174</td>
+<td align="center">0.00001718</td>
+<td align="center">3.011</td>
+<td align="center">0.00001806</td>
+<td align="center">0.00008542</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">male</td>
+<td align="center">-0.0215</td>
+<td align="center">0.0218</td>
+<td align="center">-0.9866</td>
+<td align="center">-0.06422</td>
+<td align="center">0.02122</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count3</td>
+<td align="center">0.009523</td>
+<td align="center">0.03668</td>
+<td align="center">0.2596</td>
+<td align="center">-0.06237</td>
+<td align="center">0.08141</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count4</td>
+<td align="center">-0.07619</td>
+<td align="center">0.04102</td>
+<td align="center">-1.857</td>
+<td align="center">-0.1566</td>
+<td align="center">0.004212</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count5</td>
+<td align="center">-0.147</td>
+<td align="center">0.04963</td>
+<td align="center">-2.962</td>
+<td align="center">-0.2443</td>
+<td align="center">-0.04973</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count5+</td>
+<td align="center">-0.3101</td>
+<td align="center">0.0507</td>
+<td align="center">-6.116</td>
+<td align="center">-0.4095</td>
+<td align="center">-0.2107</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sd_(Intercept).mother_pidlink</td>
+<td align="center">0.5157</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">mother_pidlink</td>
+</tr>
+<tr class="even">
+<td align="center">sd_Observation.Residual</td>
+<td align="center">0.6984</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">Residual</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="coefficient-plot-13" class="section level6 active">
 <h6>Coefficient Plot</h6>
@@ -1574,48 +3263,175 @@ summary(m1_covariates_only)</code></pre>
 <div id="model-summary-14" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>m3_birthorder_nonlinear = update(m1_covariates_only, formula = . ~ . + birth_order_nonlinear)
-summary(m3_birthorder_nonlinear)</code></pre>
-<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
-## Formula: outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 |  
-##     mother_pidlink) + birth_order_nonlinear
-##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_genes_factor,  
-##     birth_order_nonlinear = birthorder_genes_factor, birth_order = birthorder_genes,  
-##     count_birth_order = count_birthorder_genes) %&gt;% filter(sibling_count !=      &quot;1&quot;)
-## 
-## REML criterion at convergence: 14323
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -3.468 -0.559  0.030  0.581  2.980 
-## 
-## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 0.266    0.515   
-##  Residual                   0.488    0.699   
-## Number of obs: 5698, groups:  mother_pidlink, 3643
-## 
-## Fixed effects:
-##                             Estimate Std. Error t value
-## (Intercept)               -0.9568423  0.3761054   -2.54
-## poly(age, 3, raw = TRUE)1  0.1580729  0.0425959    3.71
-## poly(age, 3, raw = TRUE)2 -0.0053460  0.0015191   -3.52
-## poly(age, 3, raw = TRUE)3  0.0000529  0.0000172    3.07
-## male                      -0.0211997  0.0218028   -0.97
-## sibling_count3             0.0088299  0.0372941    0.24
-## sibling_count4            -0.0761247  0.0423578   -1.80
-## sibling_count5            -0.1498504  0.0514206   -2.91
-## sibling_count5+           -0.3102295  0.0518931   -5.98
-## birth_order_nonlinear2     0.0435220  0.0270933    1.61
-## birth_order_nonlinear3     0.0261721  0.0336206    0.78
-## birth_order_nonlinear4     0.0343962  0.0429154    0.80
-## birth_order_nonlinear5     0.0733684  0.0541471    1.35
-## birth_order_nonlinear5+    0.0692555  0.0552969    1.25</code></pre>
-<pre><code>## 
-## Correlation matrix not shown by default, as p = 14 &gt; 12.
-## Use print(x, correlation=TRUE)  or
-##   vcov(x)     if you need it</code></pre>
-<pre><code>## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
+tidy(m3_birthorder_nonlinear, conf.int = T)</code></pre>
+<table>
+<colgroup>
+<col width="29%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="11%" />
+<col width="11%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">term</th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">statistic</th>
+<th align="center">conf.low</th>
+<th align="center">conf.high</th>
+<th align="center">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">-0.9568</td>
+<td align="center">0.3761</td>
+<td align="center">-2.544</td>
+<td align="center">-1.694</td>
+<td align="center">-0.2197</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">0.1581</td>
+<td align="center">0.0426</td>
+<td align="center">3.711</td>
+<td align="center">0.07459</td>
+<td align="center">0.2416</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">-0.005346</td>
+<td align="center">0.001519</td>
+<td align="center">-3.519</td>
+<td align="center">-0.008323</td>
+<td align="center">-0.002369</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">0.0000529</td>
+<td align="center">0.0000172</td>
+<td align="center">3.075</td>
+<td align="center">0.00001918</td>
+<td align="center">0.00008662</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">male</td>
+<td align="center">-0.0212</td>
+<td align="center">0.0218</td>
+<td align="center">-0.9723</td>
+<td align="center">-0.06393</td>
+<td align="center">0.02153</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count3</td>
+<td align="center">0.00883</td>
+<td align="center">0.03729</td>
+<td align="center">0.2368</td>
+<td align="center">-0.06427</td>
+<td align="center">0.08192</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count4</td>
+<td align="center">-0.07612</td>
+<td align="center">0.04236</td>
+<td align="center">-1.797</td>
+<td align="center">-0.1591</td>
+<td align="center">0.006895</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count5</td>
+<td align="center">-0.1499</td>
+<td align="center">0.05142</td>
+<td align="center">-2.914</td>
+<td align="center">-0.2506</td>
+<td align="center">-0.04907</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count5+</td>
+<td align="center">-0.3102</td>
+<td align="center">0.05189</td>
+<td align="center">-5.978</td>
+<td align="center">-0.4119</td>
+<td align="center">-0.2085</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">birth_order_nonlinear2</td>
+<td align="center">0.04352</td>
+<td align="center">0.02709</td>
+<td align="center">1.606</td>
+<td align="center">-0.00958</td>
+<td align="center">0.09662</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">birth_order_nonlinear3</td>
+<td align="center">0.02617</td>
+<td align="center">0.03362</td>
+<td align="center">0.7785</td>
+<td align="center">-0.03972</td>
+<td align="center">0.09207</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">birth_order_nonlinear4</td>
+<td align="center">0.0344</td>
+<td align="center">0.04292</td>
+<td align="center">0.8015</td>
+<td align="center">-0.04972</td>
+<td align="center">0.1185</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">birth_order_nonlinear5</td>
+<td align="center">0.07337</td>
+<td align="center">0.05415</td>
+<td align="center">1.355</td>
+<td align="center">-0.03276</td>
+<td align="center">0.1795</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">birth_order_nonlinear5+</td>
+<td align="center">0.06926</td>
+<td align="center">0.0553</td>
+<td align="center">1.252</td>
+<td align="center">-0.03912</td>
+<td align="center">0.1776</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sd_(Intercept).mother_pidlink</td>
+<td align="center">0.5155</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">mother_pidlink</td>
+</tr>
+<tr class="even">
+<td align="center">sd_Observation.Residual</td>
+<td align="center">0.6987</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">Residual</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="coefficient-plot-14" class="section level6 active">
 <h6>Coefficient Plot</h6>
@@ -1628,57 +3444,265 @@ summary(m3_birthorder_nonlinear)</code></pre>
 <div id="model-summary-15" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>m4_interaction = update(m3_birthorder_nonlinear, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
-summary(m4_interaction)</code></pre>
-<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
-## Formula: outcome ~ poly(age, 3, raw = TRUE) + male + (1 | mother_pidlink) +      count_birth_order
-##    Data: birthorder %&gt;% mutate(sibling_count = sibling_count_genes_factor,  
-##     birth_order_nonlinear = birthorder_genes_factor, birth_order = birthorder_genes,  
-##     count_birth_order = count_birthorder_genes) %&gt;% filter(sibling_count !=      &quot;1&quot;)
-## 
-## REML criterion at convergence: 14348
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -3.461 -0.558  0.028  0.582  2.998 
-## 
-## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 0.266    0.516   
-##  Residual                   0.489    0.699   
-## Number of obs: 5698, groups:  mother_pidlink, 3643
-## 
-## Fixed effects:
-##                             Estimate Std. Error t value
-## (Intercept)               -0.9636302  0.3772680   -2.55
-## poly(age, 3, raw = TRUE)1  0.1579002  0.0427134    3.70
-## poly(age, 3, raw = TRUE)2 -0.0053251  0.0015237   -3.49
-## poly(age, 3, raw = TRUE)3  0.0000525  0.0000173    3.04
-## male                      -0.0223533  0.0218243   -1.02
-## count_birth_order2/2       0.0608599  0.0482712    1.26
-## count_birth_order1/3       0.0072466  0.0457752    0.16
-## count_birth_order2/3       0.0643964  0.0499367    1.29
-## count_birth_order3/3       0.0464257  0.0547101    0.85
-## count_birth_order1/4      -0.0956070  0.0565354   -1.69
-## count_birth_order2/4      -0.0208036  0.0579203   -0.36
-## count_birth_order3/4      -0.0459384  0.0600527   -0.76
-## count_birth_order4/4      -0.0049060  0.0633457   -0.08
-## count_birth_order1/5      -0.1047376  0.0751135   -1.39
-## count_birth_order2/5      -0.0720335  0.0832137   -0.87
-## count_birth_order3/5      -0.1374364  0.0790984   -1.74
-## count_birth_order4/5      -0.1243496  0.0766003   -1.62
-## count_birth_order5/5      -0.1119948  0.0802728   -1.40
-## count_birth_order1/5+     -0.2309220  0.0763736   -3.02
-## count_birth_order2/5+     -0.3469441  0.0764301   -4.54
-## count_birth_order3/5+     -0.2686037  0.0746246   -3.60
-## count_birth_order4/5+     -0.3013819  0.0726154   -4.15
-## count_birth_order5/5+     -0.2063437  0.0674119   -3.06
-## count_birth_order5+/5+    -0.2355937  0.0525678   -4.48</code></pre>
-<pre><code>## 
-## Correlation matrix not shown by default, as p = 24 &gt; 12.
-## Use print(x, correlation=TRUE)  or
-##   vcov(x)     if you need it</code></pre>
-<pre><code>## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
+tidy(m4_interaction, conf.int = T)</code></pre>
+<table>
+<colgroup>
+<col width="28%" />
+<col width="10%" />
+<col width="11%" />
+<col width="10%" />
+<col width="11%" />
+<col width="11%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">term</th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">statistic</th>
+<th align="center">conf.low</th>
+<th align="center">conf.high</th>
+<th align="center">group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">-0.9636</td>
+<td align="center">0.3773</td>
+<td align="center">-2.554</td>
+<td align="center">-1.703</td>
+<td align="center">-0.2242</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">0.1579</td>
+<td align="center">0.04271</td>
+<td align="center">3.697</td>
+<td align="center">0.07418</td>
+<td align="center">0.2416</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">-0.005325</td>
+<td align="center">0.001524</td>
+<td align="center">-3.495</td>
+<td align="center">-0.008311</td>
+<td align="center">-0.002339</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">0.0000525</td>
+<td align="center">0.00001726</td>
+<td align="center">3.042</td>
+<td align="center">0.00001867</td>
+<td align="center">0.00008633</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">male</td>
+<td align="center">-0.02235</td>
+<td align="center">0.02182</td>
+<td align="center">-1.024</td>
+<td align="center">-0.06513</td>
+<td align="center">0.02042</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order2/2</td>
+<td align="center">0.06086</td>
+<td align="center">0.04827</td>
+<td align="center">1.261</td>
+<td align="center">-0.03375</td>
+<td align="center">0.1555</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order1/3</td>
+<td align="center">0.007247</td>
+<td align="center">0.04578</td>
+<td align="center">0.1583</td>
+<td align="center">-0.08247</td>
+<td align="center">0.09696</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order2/3</td>
+<td align="center">0.0644</td>
+<td align="center">0.04994</td>
+<td align="center">1.29</td>
+<td align="center">-0.03348</td>
+<td align="center">0.1623</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order3/3</td>
+<td align="center">0.04643</td>
+<td align="center">0.05471</td>
+<td align="center">0.8486</td>
+<td align="center">-0.0608</td>
+<td align="center">0.1537</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order1/4</td>
+<td align="center">-0.09561</td>
+<td align="center">0.05654</td>
+<td align="center">-1.691</td>
+<td align="center">-0.2064</td>
+<td align="center">0.0152</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order2/4</td>
+<td align="center">-0.0208</td>
+<td align="center">0.05792</td>
+<td align="center">-0.3592</td>
+<td align="center">-0.1343</td>
+<td align="center">0.09272</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order3/4</td>
+<td align="center">-0.04594</td>
+<td align="center">0.06005</td>
+<td align="center">-0.765</td>
+<td align="center">-0.1636</td>
+<td align="center">0.07176</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order4/4</td>
+<td align="center">-0.004906</td>
+<td align="center">0.06335</td>
+<td align="center">-0.07745</td>
+<td align="center">-0.1291</td>
+<td align="center">0.1192</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order1/5</td>
+<td align="center">-0.1047</td>
+<td align="center">0.07511</td>
+<td align="center">-1.394</td>
+<td align="center">-0.252</td>
+<td align="center">0.04248</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order2/5</td>
+<td align="center">-0.07203</td>
+<td align="center">0.08321</td>
+<td align="center">-0.8656</td>
+<td align="center">-0.2351</td>
+<td align="center">0.09106</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order3/5</td>
+<td align="center">-0.1374</td>
+<td align="center">0.0791</td>
+<td align="center">-1.738</td>
+<td align="center">-0.2925</td>
+<td align="center">0.01759</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order4/5</td>
+<td align="center">-0.1243</td>
+<td align="center">0.0766</td>
+<td align="center">-1.623</td>
+<td align="center">-0.2745</td>
+<td align="center">0.02578</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order5/5</td>
+<td align="center">-0.112</td>
+<td align="center">0.08027</td>
+<td align="center">-1.395</td>
+<td align="center">-0.2693</td>
+<td align="center">0.04534</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order1/5+</td>
+<td align="center">-0.2309</td>
+<td align="center">0.07637</td>
+<td align="center">-3.024</td>
+<td align="center">-0.3806</td>
+<td align="center">-0.08123</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order2/5+</td>
+<td align="center">-0.3469</td>
+<td align="center">0.07643</td>
+<td align="center">-4.539</td>
+<td align="center">-0.4967</td>
+<td align="center">-0.1971</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order3/5+</td>
+<td align="center">-0.2686</td>
+<td align="center">0.07462</td>
+<td align="center">-3.599</td>
+<td align="center">-0.4149</td>
+<td align="center">-0.1223</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order4/5+</td>
+<td align="center">-0.3014</td>
+<td align="center">0.07262</td>
+<td align="center">-4.15</td>
+<td align="center">-0.4437</td>
+<td align="center">-0.1591</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">count_birth_order5/5+</td>
+<td align="center">-0.2063</td>
+<td align="center">0.06741</td>
+<td align="center">-3.061</td>
+<td align="center">-0.3385</td>
+<td align="center">-0.07422</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="even">
+<td align="center">count_birth_order5+/5+</td>
+<td align="center">-0.2356</td>
+<td align="center">0.05257</td>
+<td align="center">-4.482</td>
+<td align="center">-0.3386</td>
+<td align="center">-0.1326</td>
+<td align="center">fixed</td>
+</tr>
+<tr class="odd">
+<td align="center">sd_(Intercept).mother_pidlink</td>
+<td align="center">0.5157</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">mother_pidlink</td>
+</tr>
+<tr class="even">
+<td align="center">sd_Observation.Residual</td>
+<td align="center">0.699</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">Residual</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="coefficient-plot-15" class="section level6 active">
 <h6>Coefficient Plot</h6>
@@ -1771,7 +3795,7 @@ multiplot(outcome_naive_m1, outcome_preg_m1, outcome_uterus_m1, outcome_parental
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCm91dHB1dDogaHRtbF9kb2N1bWVudAplZGl0b3Jfb3B0aW9uczogCiAgY2h1bmtfb3V0cHV0X3R5cGU6IGNvbnNvbGUKLS0tCiMgPHNwYW4gc3R5bGU9ImNvbG9yOiNBNkQ4NTQiPkJpcnRoIE9yZGVyIEVmZmVjdHM8L3NwYW4+IHsudGFic2V0fQoKIyMgSGVscGVyCmBgYHtyIGhlbHBlcn0Kc291cmNlKCIwX2hlbHBlcnMuUiIpCm9wdHNfY2h1bmskc2V0KHdhcm5pbmcgPSBGQUxTRSkKYGBgCgojIyBMb2FkIGRhdGEKYGBge3IgTG9hZCBEYXRhfQpiaXJ0aG9yZGVyID0gcmVhZFJEUygiZGF0YS9hbGxkYXRhX2JpcnRob3JkZXIucmRzIikKYGBgCgojIyBEYXRhIHByZXBhcmF0aW9ucwpgYGB7ciBkYXRhIHByZXBhcmF0aW9uc30KIyBGb3IgYW5hbHlzZXMgd2Ugd2FudCB0byBjbGVhbiB0aGUgZGF0YXNldCBhbmQgZ2V0IHJpZCBvZiBhbGwgdW5pbnRlcmVzdGluZyBkYXRhCmJpcnRob3JkZXIgPSBiaXJ0aG9yZGVyICU+JQogIGZpbHRlcighaXMubmEocGlkbGluaykpICU+JSAjIG5vIGluZGl2aWR1YWxzIHdobyBhcmUgb25seSBrbm93biBmcm9tIHRoZSBwcmVnbmFuY3kgZmlsZQogIGZpbHRlcihpcy5uYShsaWZlYmlydGhzKSB8IGxpZmViaXJ0aHMgPT0gMikgJT4lICMgcmVtb3ZlIDcgYW5kIDIgaW5kaXZpZHVhbHMgd2hvIGFyZSBrbm93biBhcyBzdGlsbGJpcnRoIG9yIG1pc2NhcnJpYWdlIGJ1dCBzdGlsbCBoYXZlIFBJRAogIHNlbGVjdCgtbGlmZWJpcnRocykgJT4lCiAgZmlsdGVyKCFpcy5uYShtb3RoZXJfcGlkbGluaykpICU+JQogIHNlbGVjdCgtZmF0aGVyX3BpZGxpbmspICU+JQogIGZpbHRlcihpcy5uYShhbnlfbXVsdGlwbGVfYmlydGgpIHwgYW55X211bHRpcGxlX2JpcnRoICE9IDEpICU+JSAjIHJlbW92ZSBmYW1pbGllcyB3aXRoIHR3aW5zL3RyaXBsZXRzLy4uCiAgZmlsdGVyKCFpcy5uYShiaXJ0aG9yZGVyX25haXZlKSkgJT4lCiAgc2VsZWN0KC1zdGFydHNfd2l0aCgiYWdlXyIpLCAtd2F2ZSwgLWFueV9tdWx0aXBsZV9iaXJ0aCwgLW11bHRpcGxlX2JpcnRoKSAlPiUKICBtdXRhdGUobW9uZXlfc3BlbnRfc21va2luZ19sb2cgPSBpZl9lbHNlKGlzLm5hKG1vbmV5X3NwZW50X3Ntb2tpbmdfbG9nKSAmIGV2ZXJfc21va2VkID09IDAsIDAsIG1vbmV5X3NwZW50X3Ntb2tpbmdfbG9nKSwKICAgICAgICAgYW1vdW50ID0gaWZfZWxzZShpcy5uYShhbW91bnQpICYgZXZlcl9zbW9rZWQgPT0gMCwgMCwgYW1vdW50KSwKICAgICAgICAgYW1vdW50X3N0aWxsX3Ntb2tlcnMgPSBpZl9lbHNlKGlzLm5hKGFtb3VudF9zdGlsbF9zbW9rZXJzKSAmICBzdGlsbF9zbW9raW5nID09IDAsIDAsIGFtb3VudF9zdGlsbF9zbW9rZXJzKSwKICAgICAgICAgYmlydGh5ZWFyID0gbHVicmlkYXRlOjp5ZWFyKGJpcnRoZGF0ZSkpCgojIHJlY29kZSBGYWN0b3IgVmFyaWFibGUgYXMgRHVtbXkgVmFyaWFibGUKYmlydGhvcmRlciA9IGxlZnRfam9pbihiaXJ0aG9yZGVyLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRob3JkZXIgJT4lCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBmaWx0ZXIoIWlzLm5hKENhdGVnb3J5KSkgJT4lCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBtdXRhdGUodmFyID0gMSkgJT4lCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzZWxlY3QocGlkbGluaywgQ2F0ZWdvcnksIHZhcikgJT4lCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzcHJlYWQoQ2F0ZWdvcnksIHZhciwgZmlsbCA9IDAsIHNlcCA9ICJfIiksIGJ5ID0gInBpZGxpbmsiKSAlPiUKICBzZWxlY3QoLUNhdGVnb3J5KQoKIyByZWNvZGUgRmFjdG9yIFZhcmlhYmxlIGFzIER1bW15IFZhcmlhYmxlCmJpcnRob3JkZXIgPSBsZWZ0X2pvaW4oYmlydGhvcmRlciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aG9yZGVyICU+JQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZmlsdGVyKCFpcy5uYShTZWN0b3IpKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG11dGF0ZSh2YXIgPSAxKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNlbGVjdChwaWRsaW5rLCBTZWN0b3IsIHZhcikgJT4lCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzcHJlYWQoU2VjdG9yLCB2YXIsIGZpbGwgPSAwLCBzZXAgPSAiXyIpLCBieSA9ICJwaWRsaW5rIikgJT4lCiAgc2VsZWN0KC1TZWN0b3IpCgoKCiMjIyBWYXJpYWJsZXMKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lCiAgbXV0YXRlKAogICAgIyBjZW50ZXIgdmFyaWFibGVzIHRoYXQgYXJlIHVzZWQgZm9yIGFuYWx5c2lzCiAgZ19mYWN0b3JfMjAxNV9vbGQgPSBzY2FsZShnX2ZhY3Rvcl8yMDE1X29sZCksCiAgZ19mYWN0b3JfMjAxNV95b3VuZyA9IHNjYWxlKGdfZmFjdG9yXzIwMTVfeW91bmcpLAogIGdfZmFjdG9yXzIwMDdfb2xkID0gc2NhbGUoZ19mYWN0b3JfMjAwN19vbGQpLAogIGdfZmFjdG9yXzIwMDdfeW91bmcgPSBzY2FsZShnX2ZhY3Rvcl8yMDA3X3lvdW5nKSwKICByYXZlbl8yMDE1X29sZCA9IHNjYWxlKHJhdmVuXzIwMTVfb2xkKSwKICBtYXRoXzIwMTVfb2xkID0gc2NhbGUobWF0aF8yMDE1X29sZCksCiAgY291bnRfYmFja3dhcmRzID0gc2NhbGUoY291bnRfYmFja3dhcmRzKSwKICByYXZlbl8yMDE1X3lvdW5nID0gc2NhbGUocmF2ZW5fMjAxNV95b3VuZyksCiAgbWF0aF8yMDE1X3lvdW5nID0gc2NhbGUobWF0aF8yMDE1X3lvdW5nKSwKICB3b3Jkc19yZW1lbWJlcmVkX2F2ZyA9IHNjYWxlKHdvcmRzX3JlbWVtYmVyZWRfYXZnKSwKICB3b3Jkc19pbW1lZGlhdGUgPSBzY2FsZSh3b3Jkc19pbW1lZGlhdGUpLAogIHdvcmRzX2RlbGF5ZWQgPSBzY2FsZSh3b3Jkc19kZWxheWVkKSwKICBhZGFwdGl2ZV9udW1iZXJpbmcgPSBzY2FsZShhZGFwdGl2ZV9udW1iZXJpbmcpLAogIHJhdmVuXzIwMDdfb2xkID0gc2NhbGUocmF2ZW5fMjAwN19vbGQpLAogIG1hdGhfMjAwN19vbGQgPSBzY2FsZShtYXRoXzIwMDdfb2xkKSwKICByYXZlbl8yMDA3X3lvdW5nID0gc2NhbGUocmF2ZW5fMjAwN195b3VuZyksCiAgbWF0aF8yMDA3X3lvdW5nID0gc2NhbGUobWF0aF8yMDA3X3lvdW5nKSwKICByaXNrQSA9IHNjYWxlKHJpc2tBKSwKICByaXNrQiA9IHNjYWxlKHJpc2tCKSwKICB5ZWFyc19vZl9lZHVjYXRpb25feiA9IHNjYWxlKHllYXJzX29mX2VkdWNhdGlvbiksCiAgVG90YWxfc2NvcmVfaGlnaGVzdF96ID0gc2NhbGUoVG90YWxfc2NvcmVfaGlnaGVzdCksCiAgd2FnZV9sYXN0X21vbnRoX3ogPSBzY2FsZSh3YWdlX2xhc3RfbW9udGhfbG9nKSwKICB3YWdlX2xhc3RfeWVhcl96ID0gc2NhbGUod2FnZV9sYXN0X3llYXJfbG9nKSwKICBiaWc1X2V4dCA9IHNjYWxlKGJpZzVfZXh0KSwKICBiaWc1X2NvbiA9IHNjYWxlKGJpZzVfY29uKSwKICBiaWc1X2FncmVlID0gc2NhbGUoYmlnNV9hZ3JlZSksCiAgYmlnNV9vcGVuID0gc2NhbGUoYmlnNV9vcGVuKSwKICBiaWc1X25ldSA9IHNjYWxlKGJpZzVfbmV1KSwKICBhdHRlbmRlZF9zY2hvb2wgPSBhcy5pbnRlZ2VyKGF0dGVuZGVkX3NjaG9vbCkKKQoKcXBsb3QoYmlydGhvcmRlciRtYWxlKQpxcGxvdChiaXJ0aG9yZGVyJGdfZmFjdG9yXzIwMTVfb2xkKQpxcGxvdChiaXJ0aG9yZGVyJGdfZmFjdG9yXzIwMTVfb2xkKQoKIyMjIEJpcnRob3JkZXIgYW5kIFNpYmxpbmcgQ291bnQKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lIAogIG11dGF0ZSgKIyBiaXJ0aG9yZGVyIGFzIGZhY3RvcnMgd2l0aCBsZXZlbHMgb2YgMSwgMiwgMywgNCwgNSwgNSsKICAgIGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfbmFpdmUpLAogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBpZmVsc2UoYmlydGhvcmRlcl9uYWl2ZSA+IDUsICI1KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IpLAogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBmYWN0b3IoYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihzaWJsaW5nX2NvdW50X25haXZlKSwKICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yID0gaWZlbHNlKHNpYmxpbmdfY291bnRfbmFpdmUgPiA1LCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yKSwKICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCgogICAgYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSwKICAgIGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciA9IGlmZWxzZShiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSA+IDUsICI1KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yKSwKICAgIGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciA9IGZhY3RvcihiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoc2libGluZ19jb3VudF91dGVydXNfYWxpdmUpLAogICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yID0gaWZlbHNlKHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlID4gNSwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IpLAogICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMiIsIjMiLCI0IiwiNSIsIjUrIikpLAogICAgYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoYmlydGhvcmRlcl91dGVydXNfcHJlZyksCiAgICBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciA9IGlmZWxzZShiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnID4gNSwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yKSwKICAgIGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yID0gZmFjdG9yKGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMSIsIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yID0gYXMuY2hhcmFjdGVyKHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcpLAogICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IgPSBpZmVsc2Uoc2libGluZ19jb3VudF91dGVydXNfcHJlZyA+IDUsICI1KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciA9IGZhY3RvcihzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihiaXJ0aG9yZGVyX2dlbmVzKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gaWZlbHNlKGJpcnRob3JkZXJfZ2VuZXMgPjUgLCAiNSsiLCBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciksCiAgICBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciA9IGZhY3RvcihiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIxIiwiMiIsIjMiLCI0IiwiNSIsIjUrIikpLAogICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoc2libGluZ19jb3VudF9nZW5lcyksCiAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciA9IGlmZWxzZShzaWJsaW5nX2NvdW50X2dlbmVzID41ICwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yKSwKICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgICMgaW50ZXJhY3Rpb24gYmlydGhvcmRlciAqIHNpYmxpbmdjb3V0IGZvciBlYWNoIGJpcnRob3JkZXIKICAgIGNvdW50X2JpcnRob3JkZXJfbmFpdmUgPQogICAgICBmYWN0b3Ioc3RyX3JlcGxhY2UoYXMuY2hhcmFjdGVyKGludGVyYWN0aW9uKGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yLCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IpKSwKICAgICAgICAgICAgICAgICAgICAgICAgIlxcLiIsICIvIiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSAgIGMoIjEvMiIsIjIvMiIsICIxLzMiLCAgIjIvMyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjMvMyIsICIxLzQiLCAiMi80IiwgIjMvNCIsICI0LzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUiLCAiMi81IiwgIjMvNSIsICI0LzUiLCAiNS81IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81KyIsICIyLzUrIiwgIjMvNSsiLCAiNC81KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjUvNSsiLCAiNSsvNSsiKSksCiAgICBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSA9CiAgICAgIGZhY3RvcihzdHJfcmVwbGFjZShhcy5jaGFyYWN0ZXIoaW50ZXJhY3Rpb24oYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yLCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yKSksCiAgICAgICAgICAgICAgICAgICAgICAgICJcXC4iLCAiLyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gICBjKCIxLzIiLCIyLzIiLCAiMS8zIiwgICIyLzMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIzLzMiLCAiMS80IiwgIjIvNCIsICIzLzQiLCAiNC80IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81IiwgIjIvNSIsICIzLzUiLCAiNC81IiwgIjUvNSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSsiLCAiMi81KyIsICIzLzUrIiwgIjQvNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI1LzUrIiwgIjUrLzUrIikpLAogICAgY291bnRfYmlydGhvcmRlcl91dGVydXNfcHJlZyA9CiAgICAgIGZhY3RvcihzdHJfcmVwbGFjZShhcy5jaGFyYWN0ZXIoaW50ZXJhY3Rpb24oYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvcikpLCAKICAgICAgICAgICAgICAgICAgICAgICAgICJcXC4iLCAiLyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gICBjKCIxLzIiLCIyLzIiLCAiMS8zIiwgICIyLzMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIzLzMiLCAiMS80IiwgIjIvNCIsICIzLzQiLCAiNC80IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81IiwgIjIvNSIsICIzLzUiLCAiNC81IiwgIjUvNSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSsiLCAiMi81KyIsICIzLzUrIiwgIjQvNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI1LzUrIiwgIjUrLzUrIikpLAogICAgY291bnRfYmlydGhvcmRlcl9nZW5lcyA9CiAgICAgIGZhY3RvcihzdHJfcmVwbGFjZShhcy5jaGFyYWN0ZXIoaW50ZXJhY3Rpb24oYmlydGhvcmRlcl9nZW5lc19mYWN0b3IsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvcikpLCAiXFwuIiwgIi8iKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9ICAgYygiMS8yIiwiMi8yIiwgIjEvMyIsICAiMi8zIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMy8zIiwgIjEvNCIsICIyLzQiLCAiMy80IiwgIjQvNCIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSIsICIyLzUiLCAiMy81IiwgIjQvNSIsICI1LzUiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUrIiwgIjIvNSsiLCAiMy81KyIsICI0LzUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiNS81KyIsICI1Ky81KyIpKSkKCmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUKICAgICAgICAgICAgICAgICAgICAgbXV0YXRlKHNpYmxpbmdfY291bnQgPSBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRoX29yZGVyX25vbmxpbmVhciA9IGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhfb3JkZXIgPSBiaXJ0aG9yZGVyX25haXZlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgY291bnRfYmlydGhfb3JkZXIgPSBjb3VudF9iaXJ0aG9yZGVyX25haXZlKQoKYGBgCgoKIyMgSW50ZWxsaWdlbmNlIHsuYWN0aXZlIC50YWJzZXR9CiMjIyBnLWZhY3RvciAyMDE1IG9sZCB7LnRhYnNldH0KCmBgYHtyIGctZmFjdG9yIDIwMTUgb2xkfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gZ19mYWN0b3JfMjAxNV9vbGQpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArCiAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmNvbXBhcmVfYmlydGhvcmRlcl9zcGVjcyhtb2RlbCkKYGBgCgo=</div>
+<div id="rmd-source-code">LS0tCm91dHB1dDogaHRtbF9kb2N1bWVudAplZGl0b3Jfb3B0aW9uczogCiAgY2h1bmtfb3V0cHV0X3R5cGU6IGNvbnNvbGUKLS0tCiMgPHNwYW4gc3R5bGU9ImNvbG9yOiNBNkQ4NTQiPkJpcnRoIE9yZGVyIEVmZmVjdHM8L3NwYW4+IHsudGFic2V0fQoKIyMgSGVscGVyCmBgYHtyIGhlbHBlcn0Kc291cmNlKCIwX2hlbHBlcnMuUiIpCm9wdHNfY2h1bmskc2V0KHdhcm5pbmcgPSBGQUxTRSkKYGBgCgojIyBMb2FkIGRhdGEKYGBge3IgTG9hZCBEYXRhfQpiaXJ0aG9yZGVyID0gcmVhZFJEUygiZGF0YS9hbGxkYXRhX2JpcnRob3JkZXIucmRzIikKYGBgCgojIyBEYXRhIHByZXBhcmF0aW9ucwpgYGB7ciBkYXRhIHByZXBhcmF0aW9uc30KIyBGb3IgYW5hbHlzZXMgd2Ugd2FudCB0byBjbGVhbiB0aGUgZGF0YXNldCBhbmQgZ2V0IHJpZCBvZiBhbGwgdW5pbnRlcmVzdGluZyBkYXRhCmJpcnRob3JkZXIgPSBiaXJ0aG9yZGVyICU+JQogIGZpbHRlcighaXMubmEocGlkbGluaykpICU+JSAjIG5vIGluZGl2aWR1YWxzIHdobyBhcmUgb25seSBrbm93biBmcm9tIHRoZSBwcmVnbmFuY3kgZmlsZQogIGZpbHRlcihpcy5uYShsaWZlYmlydGhzKSB8IGxpZmViaXJ0aHMgPT0gMikgJT4lICMgcmVtb3ZlIDcgYW5kIDIgaW5kaXZpZHVhbHMgd2hvIGFyZSBrbm93biBhcyBzdGlsbGJpcnRoIG9yIG1pc2NhcnJpYWdlIGJ1dCBzdGlsbCBoYXZlIFBJRAogIHNlbGVjdCgtbGlmZWJpcnRocykgJT4lCiAgZmlsdGVyKCFpcy5uYShtb3RoZXJfcGlkbGluaykpICU+JQogIHNlbGVjdCgtZmF0aGVyX3BpZGxpbmspICU+JQogIGZpbHRlcihpcy5uYShhbnlfbXVsdGlwbGVfYmlydGgpIHwgYW55X211bHRpcGxlX2JpcnRoICE9IDEpICU+JSAjIHJlbW92ZSBmYW1pbGllcyB3aXRoIHR3aW5zL3RyaXBsZXRzLy4uCiAgZmlsdGVyKCFpcy5uYShiaXJ0aG9yZGVyX25haXZlKSkgJT4lCiAgc2VsZWN0KC1zdGFydHNfd2l0aCgiYWdlXyIpLCAtd2F2ZSwgLWFueV9tdWx0aXBsZV9iaXJ0aCwgLW11bHRpcGxlX2JpcnRoKSAlPiUKICBtdXRhdGUobW9uZXlfc3BlbnRfc21va2luZ19sb2cgPSBpZl9lbHNlKGlzLm5hKG1vbmV5X3NwZW50X3Ntb2tpbmdfbG9nKSAmIGV2ZXJfc21va2VkID09IDAsIDAsIG1vbmV5X3NwZW50X3Ntb2tpbmdfbG9nKSwKICAgICAgICAgYW1vdW50ID0gaWZfZWxzZShpcy5uYShhbW91bnQpICYgZXZlcl9zbW9rZWQgPT0gMCwgMCwgYW1vdW50KSwKICAgICAgICAgYW1vdW50X3N0aWxsX3Ntb2tlcnMgPSBpZl9lbHNlKGlzLm5hKGFtb3VudF9zdGlsbF9zbW9rZXJzKSAmICBzdGlsbF9zbW9raW5nID09IDAsIDAsIGFtb3VudF9zdGlsbF9zbW9rZXJzKSwKICAgICAgICAgYmlydGh5ZWFyID0gbHVicmlkYXRlOjp5ZWFyKGJpcnRoZGF0ZSkpCgojIHJlY29kZSBGYWN0b3IgVmFyaWFibGUgYXMgRHVtbXkgVmFyaWFibGUKYmlydGhvcmRlciA9IGxlZnRfam9pbihiaXJ0aG9yZGVyLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRob3JkZXIgJT4lCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBmaWx0ZXIoIWlzLm5hKENhdGVnb3J5KSkgJT4lCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBtdXRhdGUodmFyID0gMSkgJT4lCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzZWxlY3QocGlkbGluaywgQ2F0ZWdvcnksIHZhcikgJT4lCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzcHJlYWQoQ2F0ZWdvcnksIHZhciwgZmlsbCA9IDAsIHNlcCA9ICJfIiksIGJ5ID0gInBpZGxpbmsiKSAlPiUKICBzZWxlY3QoLUNhdGVnb3J5KQoKIyByZWNvZGUgRmFjdG9yIFZhcmlhYmxlIGFzIER1bW15IFZhcmlhYmxlCmJpcnRob3JkZXIgPSBsZWZ0X2pvaW4oYmlydGhvcmRlciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aG9yZGVyICU+JQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZmlsdGVyKCFpcy5uYShTZWN0b3IpKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG11dGF0ZSh2YXIgPSAxKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNlbGVjdChwaWRsaW5rLCBTZWN0b3IsIHZhcikgJT4lCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzcHJlYWQoU2VjdG9yLCB2YXIsIGZpbGwgPSAwLCBzZXAgPSAiXyIpLCBieSA9ICJwaWRsaW5rIikgJT4lCiAgc2VsZWN0KC1TZWN0b3IpCgoKCiMjIyBWYXJpYWJsZXMKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lCiAgbXV0YXRlKAogICAgIyBjZW50ZXIgdmFyaWFibGVzIHRoYXQgYXJlIHVzZWQgZm9yIGFuYWx5c2lzCiAgZ19mYWN0b3JfMjAxNV9vbGQgPSBzY2FsZShnX2ZhY3Rvcl8yMDE1X29sZCksCiAgZ19mYWN0b3JfMjAxNV95b3VuZyA9IHNjYWxlKGdfZmFjdG9yXzIwMTVfeW91bmcpLAogIGdfZmFjdG9yXzIwMDdfb2xkID0gc2NhbGUoZ19mYWN0b3JfMjAwN19vbGQpLAogIGdfZmFjdG9yXzIwMDdfeW91bmcgPSBzY2FsZShnX2ZhY3Rvcl8yMDA3X3lvdW5nKSwKICByYXZlbl8yMDE1X29sZCA9IHNjYWxlKHJhdmVuXzIwMTVfb2xkKSwKICBtYXRoXzIwMTVfb2xkID0gc2NhbGUobWF0aF8yMDE1X29sZCksCiAgY291bnRfYmFja3dhcmRzID0gc2NhbGUoY291bnRfYmFja3dhcmRzKSwKICByYXZlbl8yMDE1X3lvdW5nID0gc2NhbGUocmF2ZW5fMjAxNV95b3VuZyksCiAgbWF0aF8yMDE1X3lvdW5nID0gc2NhbGUobWF0aF8yMDE1X3lvdW5nKSwKICB3b3Jkc19yZW1lbWJlcmVkX2F2ZyA9IHNjYWxlKHdvcmRzX3JlbWVtYmVyZWRfYXZnKSwKICB3b3Jkc19pbW1lZGlhdGUgPSBzY2FsZSh3b3Jkc19pbW1lZGlhdGUpLAogIHdvcmRzX2RlbGF5ZWQgPSBzY2FsZSh3b3Jkc19kZWxheWVkKSwKICBhZGFwdGl2ZV9udW1iZXJpbmcgPSBzY2FsZShhZGFwdGl2ZV9udW1iZXJpbmcpLAogIHJhdmVuXzIwMDdfb2xkID0gc2NhbGUocmF2ZW5fMjAwN19vbGQpLAogIG1hdGhfMjAwN19vbGQgPSBzY2FsZShtYXRoXzIwMDdfb2xkKSwKICByYXZlbl8yMDA3X3lvdW5nID0gc2NhbGUocmF2ZW5fMjAwN195b3VuZyksCiAgbWF0aF8yMDA3X3lvdW5nID0gc2NhbGUobWF0aF8yMDA3X3lvdW5nKSwKICByaXNrQSA9IHNjYWxlKHJpc2tBKSwKICByaXNrQiA9IHNjYWxlKHJpc2tCKSwKICB5ZWFyc19vZl9lZHVjYXRpb25feiA9IHNjYWxlKHllYXJzX29mX2VkdWNhdGlvbiksCiAgVG90YWxfc2NvcmVfaGlnaGVzdF96ID0gc2NhbGUoVG90YWxfc2NvcmVfaGlnaGVzdCksCiAgd2FnZV9sYXN0X21vbnRoX3ogPSBzY2FsZSh3YWdlX2xhc3RfbW9udGhfbG9nKSwKICB3YWdlX2xhc3RfeWVhcl96ID0gc2NhbGUod2FnZV9sYXN0X3llYXJfbG9nKSwKICBiaWc1X2V4dCA9IHNjYWxlKGJpZzVfZXh0KSwKICBiaWc1X2NvbiA9IHNjYWxlKGJpZzVfY29uKSwKICBiaWc1X2FncmVlID0gc2NhbGUoYmlnNV9hZ3JlZSksCiAgYmlnNV9vcGVuID0gc2NhbGUoYmlnNV9vcGVuKSwKICBiaWc1X25ldSA9IHNjYWxlKGJpZzVfbmV1KSwKICBhdHRlbmRlZF9zY2hvb2wgPSBhcy5pbnRlZ2VyKGF0dGVuZGVkX3NjaG9vbCkKKQoKcXBsb3QoYmlydGhvcmRlciRtYWxlKQpxcGxvdChiaXJ0aG9yZGVyJGdfZmFjdG9yXzIwMTVfb2xkKQpxcGxvdChiaXJ0aG9yZGVyJGdfZmFjdG9yXzIwMTVfb2xkKQoKIyMjIEJpcnRob3JkZXIgYW5kIFNpYmxpbmcgQ291bnQKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lIAogIG11dGF0ZSgKIyBiaXJ0aG9yZGVyIGFzIGZhY3RvcnMgd2l0aCBsZXZlbHMgb2YgMSwgMiwgMywgNCwgNSwgNSsKICAgIGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfbmFpdmUpLAogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBpZmVsc2UoYmlydGhvcmRlcl9uYWl2ZSA+IDUsICI1KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IpLAogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBmYWN0b3IoYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihzaWJsaW5nX2NvdW50X25haXZlKSwKICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yID0gaWZlbHNlKHNpYmxpbmdfY291bnRfbmFpdmUgPiA1LCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yKSwKICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCgogICAgYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSwKICAgIGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciA9IGlmZWxzZShiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSA+IDUsICI1KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yKSwKICAgIGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciA9IGZhY3RvcihiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoc2libGluZ19jb3VudF91dGVydXNfYWxpdmUpLAogICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yID0gaWZlbHNlKHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlID4gNSwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IpLAogICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMiIsIjMiLCI0IiwiNSIsIjUrIikpLAogICAgYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoYmlydGhvcmRlcl91dGVydXNfcHJlZyksCiAgICBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciA9IGlmZWxzZShiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnID4gNSwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yKSwKICAgIGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yID0gZmFjdG9yKGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMSIsIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yID0gYXMuY2hhcmFjdGVyKHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcpLAogICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IgPSBpZmVsc2Uoc2libGluZ19jb3VudF91dGVydXNfcHJlZyA+IDUsICI1KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciA9IGZhY3RvcihzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihiaXJ0aG9yZGVyX2dlbmVzKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gaWZlbHNlKGJpcnRob3JkZXJfZ2VuZXMgPjUgLCAiNSsiLCBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciksCiAgICBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciA9IGZhY3RvcihiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIxIiwiMiIsIjMiLCI0IiwiNSIsIjUrIikpLAogICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoc2libGluZ19jb3VudF9nZW5lcyksCiAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciA9IGlmZWxzZShzaWJsaW5nX2NvdW50X2dlbmVzID41ICwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yKSwKICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgICMgaW50ZXJhY3Rpb24gYmlydGhvcmRlciAqIHNpYmxpbmdjb3V0IGZvciBlYWNoIGJpcnRob3JkZXIKICAgIGNvdW50X2JpcnRob3JkZXJfbmFpdmUgPQogICAgICBmYWN0b3Ioc3RyX3JlcGxhY2UoYXMuY2hhcmFjdGVyKGludGVyYWN0aW9uKGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yLCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IpKSwKICAgICAgICAgICAgICAgICAgICAgICAgIlxcLiIsICIvIiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSAgIGMoIjEvMiIsIjIvMiIsICIxLzMiLCAgIjIvMyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjMvMyIsICIxLzQiLCAiMi80IiwgIjMvNCIsICI0LzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUiLCAiMi81IiwgIjMvNSIsICI0LzUiLCAiNS81IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81KyIsICIyLzUrIiwgIjMvNSsiLCAiNC81KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjUvNSsiLCAiNSsvNSsiKSksCiAgICBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSA9CiAgICAgIGZhY3RvcihzdHJfcmVwbGFjZShhcy5jaGFyYWN0ZXIoaW50ZXJhY3Rpb24oYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yLCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yKSksCiAgICAgICAgICAgICAgICAgICAgICAgICJcXC4iLCAiLyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gICBjKCIxLzIiLCIyLzIiLCAiMS8zIiwgICIyLzMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIzLzMiLCAiMS80IiwgIjIvNCIsICIzLzQiLCAiNC80IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81IiwgIjIvNSIsICIzLzUiLCAiNC81IiwgIjUvNSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSsiLCAiMi81KyIsICIzLzUrIiwgIjQvNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI1LzUrIiwgIjUrLzUrIikpLAogICAgY291bnRfYmlydGhvcmRlcl91dGVydXNfcHJlZyA9CiAgICAgIGZhY3RvcihzdHJfcmVwbGFjZShhcy5jaGFyYWN0ZXIoaW50ZXJhY3Rpb24oYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvcikpLCAKICAgICAgICAgICAgICAgICAgICAgICAgICJcXC4iLCAiLyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gICBjKCIxLzIiLCIyLzIiLCAiMS8zIiwgICIyLzMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIzLzMiLCAiMS80IiwgIjIvNCIsICIzLzQiLCAiNC80IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81IiwgIjIvNSIsICIzLzUiLCAiNC81IiwgIjUvNSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSsiLCAiMi81KyIsICIzLzUrIiwgIjQvNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI1LzUrIiwgIjUrLzUrIikpLAogICAgY291bnRfYmlydGhvcmRlcl9nZW5lcyA9CiAgICAgIGZhY3RvcihzdHJfcmVwbGFjZShhcy5jaGFyYWN0ZXIoaW50ZXJhY3Rpb24oYmlydGhvcmRlcl9nZW5lc19mYWN0b3IsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvcikpLCAiXFwuIiwgIi8iKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9ICAgYygiMS8yIiwiMi8yIiwgIjEvMyIsICAiMi8zIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMy8zIiwgIjEvNCIsICIyLzQiLCAiMy80IiwgIjQvNCIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSIsICIyLzUiLCAiMy81IiwgIjQvNSIsICI1LzUiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUrIiwgIjIvNSsiLCAiMy81KyIsICI0LzUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiNS81KyIsICI1Ky81KyIpKSkKCmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUKICAgICAgICAgICAgICAgICAgICAgbXV0YXRlKHNpYmxpbmdfY291bnQgPSBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRoX29yZGVyX25vbmxpbmVhciA9IGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhfb3JkZXIgPSBiaXJ0aG9yZGVyX25haXZlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgY291bnRfYmlydGhfb3JkZXIgPSBjb3VudF9iaXJ0aG9yZGVyX25haXZlKQoKYGBgCgoKIyMgSW50ZWxsaWdlbmNlIHsuYWN0aXZlIC50YWJzZXR9CiMjIyBnLWZhY3RvciAyMDE1IG9sZCB7LnRhYnNldH0KCmBgYHtyIGctZmFjdG9yIDIwMTUgb2xkfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gZ19mYWN0b3JfMjAxNV9vbGQpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArCiAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCgoKY29tcGFyZV9iaXJ0aG9yZGVyX3NwZWNzKG1vZGVsKQpgYGAKCg==</div>
 
 
 

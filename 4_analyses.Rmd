@@ -187,6 +187,7 @@ model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_c
                (1 | mother_pidlink),
                    data = birthorder)
 
+
 compare_birthorder_specs(model)
 ```
 

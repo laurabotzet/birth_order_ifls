@@ -155,7 +155,7 @@ plot_gender = function(data = birthorder){
 plot_age = function(data = birthorder){
   plot = ggplot(data, aes(age, outcome)) +
     geom_jitter() +
-    geom_smooth(method = "lm")
+    geom_smooth(stat = "smooth")
   plot
 }
 

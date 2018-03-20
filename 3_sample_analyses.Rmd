@@ -440,7 +440,7 @@ plot_gender(birthorder)
 
 ```
 
-### Plots Gender
+### Plots Age
 ```{r}
 plot_age(birthorder %>% filter(age<= 100) %>% mutate(outcome = birthorder_genes))
 

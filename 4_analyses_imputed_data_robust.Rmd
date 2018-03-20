@@ -116,6 +116,7 @@ birthorder = birthorder %>%
 
 
 ### Variables
+
 birthorder = birthorder %>%
   mutate(
     g_factor_2015_old = (g_factor_2015_old - mean(g_factor_2015_old, na.rm=T)) / sd(g_factor_2015_old, na.rm=T),
@@ -150,9 +151,10 @@ math_2007_young = (math_2007_young - mean(math_2007_young, na.rm=T)) /
     wage_last_month_z = (wage_last_month_log - mean(wage_last_month_log, na.rm=T)) /
       sd(wage_last_month_log, na.rm=T),
     wage_last_year_z = (wage_last_year_log - mean(wage_last_year_log, na.rm=T)) /
-      sd(wage_last_year_log, na.rm=T)
-        )
-
+      sd(wage_last_year_log, na.rm=T),
+    attended_school = as.integer(attended_school),
+    attended_school = ifelse(attended_school == 1, 0,
+                           ifelse(attended_school == 2, 1, NA)))
 data_used <- birthorder %>%
   mutate(sibling_count = sibling_count_naive,
          birth_order_nonlinear = birthorder_naive_factor,

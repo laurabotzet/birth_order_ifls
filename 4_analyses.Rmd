@@ -85,8 +85,9 @@ birthorder = birthorder %>%
   big5_agree = scale(big5_agree),
   big5_open = scale(big5_open),
   big5_neu = scale(big5_neu),
-  attended_school = as.integer(attended_school)
-)
+  attended_school = as.integer(attended_school),
+  attended_school = ifelse(attended_school == 1, 0,
+                           ifelse(attended_school == 2, 1, NA)))
 
 qplot(birthorder$male)
 qplot(birthorder$g_factor_2015_old)

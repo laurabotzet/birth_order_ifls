@@ -23,6 +23,18 @@ model_naive_m1 <- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + male
 
 x = mitml::testEstimates(model_naive_m1, var.comp = T)
 
+y = as_tibble(x$estimates, rownames = "id")
+
+y = y %>%
+  mutate(CI_low = Estimate - 1.96 * Std.Error,
+         CI_high = Estimate + 1.96 * Std.Error) %>%
+  select(CI_low, CI_high)
+CI_low = y$CI_low
+CI_high = y$CI_high
+
+
+x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
+x
 ```
 
 
@@ -41,7 +53,20 @@ plot(allEffects(model_naive_m1_plot)) # fuer plots
 
 model_naive_m2 <- with(data_used, lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count +
                                          (1 | mother_pidlink)))
-mitml::testEstimates(model_naive_m2, var.comp = T)
+x = mitml::testEstimates(model_naive_m2, var.comp = T)
+
+y = as_tibble(x$estimates, rownames = "id")
+
+y = y %>%
+  mutate(CI_low = Estimate - 1.96 * Std.Error,
+         CI_high = Estimate + 1.96 * Std.Error) %>%
+  select(CI_low, CI_high)
+CI_low = y$CI_low
+CI_high = y$CI_high
+
+
+x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
+x
 
 ```
 
@@ -49,7 +74,7 @@ mitml::testEstimates(model_naive_m2, var.comp = T)
 ```{r}
 model_naive_m2_plot = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                            data = data_used_plots)
-plot_birthorder(model_naive_m2_plot, separate = FALSE)
+plot_birthorder2(model_naive_m2_plot, separate = FALSE)
 ```
 
 ##### Add Birth Order Factor {.tabset}
@@ -59,7 +84,20 @@ plot_birthorder(model_naive_m2_plot, separate = FALSE)
 
 model_naive_m3 <- with(data_used, lmer(outcome ~ birth_order_nonlinear + poly(age, 3, raw = TRUE) + male +
                                          sibling_count + (1 | mother_pidlink)))
-mitml::testEstimates(model_naive_m3, var.comp = T)
+x = mitml::testEstimates(model_naive_m3, var.comp = T)
+
+y = as_tibble(x$estimates, rownames = "id")
+
+y = y %>%
+  mutate(CI_low = Estimate - 1.96 * Std.Error,
+         CI_high = Estimate + 1.96 * Std.Error) %>%
+  select(CI_low, CI_high)
+CI_low = y$CI_low
+CI_high = y$CI_high
+
+
+x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
+x
 ```
 
 ###### Coefficient Plot {.active}
@@ -78,7 +116,20 @@ plot_birthorder(model_naive_m3_plot, separate = FALSE)
 
 model_naive_m4 <- with(data_used, lmer(outcome ~ count_birth_order + poly(age, 3, raw = TRUE) + male  +
                                          (1 | mother_pidlink)))
-mitml::testEstimates(model_naive_m4, var.comp = T)
+x = mitml::testEstimates(model_naive_m4, var.comp = T)
+
+y = as_tibble(x$estimates, rownames = "id")
+
+y = y %>%
+  mutate(CI_low = Estimate - 1.96 * Std.Error,
+         CI_high = Estimate + 1.96 * Std.Error) %>%
+  select(CI_low, CI_high)
+CI_low = y$CI_low
+CI_high = y$CI_high
+
+
+x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
+x
 
 ```
 
@@ -113,7 +164,20 @@ data_used = data_used %>%
 data_used_plots = data_used[[1]]
 
 model_genes_m1 <- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink)))
-mitml::testEstimates(model_genes_m1, var.comp = T)
+x = mitml::testEstimates(model_genes_m1, var.comp = T)
+
+y = as_tibble(x$estimates, rownames = "id")
+
+y = y %>%
+  mutate(CI_low = Estimate - 1.96 * Std.Error,
+         CI_high = Estimate + 1.96 * Std.Error) %>%
+  select(CI_low, CI_high)
+CI_low = y$CI_low
+CI_high = y$CI_high
+
+
+x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
+x
 ```
 
 ###### Coefficient Plot {.active}
@@ -129,14 +193,27 @@ plot(allEffects(model_genes_m1_plot))
 ```{r}
 model_genes_m2 <- with(data_used, lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count +
                                          (1 | mother_pidlink)))
-mitml::testEstimates(model_genes_m2, var.comp = T)
+x = mitml::testEstimates(model_genes_m2, var.comp = T)
+
+y = as_tibble(x$estimates, rownames = "id")
+
+y = y %>%
+  mutate(CI_low = Estimate - 1.96 * Std.Error,
+         CI_high = Estimate + 1.96 * Std.Error) %>%
+  select(CI_low, CI_high)
+CI_low = y$CI_low
+CI_high = y$CI_high
+
+
+x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
+x
 ```
 
 ###### Coefficient Plot  {.active}
 ```{r}
 model_genes_m2_plot = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                            data = data_used_plots)
-plot_birthorder(model_genes_m2_plot, separate = FALSE)
+plot_birthorder2(model_genes_m2_plot, separate = FALSE)
 ```
 
 ##### Add Birth Order Factor {.tabset}
@@ -146,7 +223,20 @@ plot_birthorder(model_genes_m2_plot, separate = FALSE)
 
 model_genes_m3 <- with(data_used, lmer(outcome ~ birth_order_nonlinear + poly(age, 3, raw = TRUE) + male + sibling_count +
                                          (1 | mother_pidlink)))
-mitml::testEstimates(model_genes_m3, var.comp = T)
+x = mitml::testEstimates(model_genes_m3, var.comp = T)
+
+y = as_tibble(x$estimates, rownames = "id")
+
+y = y %>%
+  mutate(CI_low = Estimate - 1.96 * Std.Error,
+         CI_high = Estimate + 1.96 * Std.Error) %>%
+  select(CI_low, CI_high)
+CI_low = y$CI_low
+CI_high = y$CI_high
+
+
+x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
+x
 ```
 
 ###### Coefficient Plot {.active}
@@ -163,7 +253,20 @@ plot_birthorder(model_genes_m3_plot, separate = FALSE)
 ```{r}
 model_genes_m4 <- with(data_used, lmer(outcome ~ count_birth_order + poly(age, 3, raw = TRUE) + male  +
                                          (1 | mother_pidlink)))
-mitml::testEstimates(model_genes_m4, var.comp = T)
+x = mitml::testEstimates(model_genes_m4, var.comp = T)
+
+y = as_tibble(x$estimates, rownames = "id")
+
+y = y %>%
+  mutate(CI_low = Estimate - 1.96 * Std.Error,
+         CI_high = Estimate + 1.96 * Std.Error) %>%
+  select(CI_low, CI_high)
+CI_low = y$CI_low
+CI_high = y$CI_high
+
+
+x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
+x
 
 ```
 

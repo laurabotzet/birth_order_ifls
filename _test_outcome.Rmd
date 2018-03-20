@@ -26,7 +26,7 @@ tidy(m2_birthorder_linear, conf.int = T)
 
 ###### Coefficient Plot {.active}
 ```{r}
-plot_birthorder(m2_birthorder_linear, separate = FALSE, ylimits = ylimits)
+plot_birthorder2(m2_birthorder_linear, separate = FALSE, ylimits = ylimits)
 ```
 
 ##### Add Birth Order Factor {.tabset}

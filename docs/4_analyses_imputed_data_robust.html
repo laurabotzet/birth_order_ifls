@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+
+.section h2 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h3 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h4 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h5 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h6 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("4_analyses_imputed_data_robust.Rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Birth Order IFLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+
+<li style="background-color: #66C2A5">
+  <a href="index.html">Overview</a>
+</li>
+<li style="background-color: #FC8D62">
+  <a href="1_data_import.html">Data Wrangling</a>
+</li>
+<li style="background-color: #8DA0CB">
+  <a href="2_Inclusion.html">Data Sampling</a>
+</li>
+<li style="background-color: #E78AC3">
+  <a href="3_sample_analyses.html">Sample Analyses</a>
+</li>
+<li style="background-color: #A6D854">
+  <a href="4_analyses.html">Birth Order Effects</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/laurabotzet/birth_order_ifls">
+    <span class="fa fa-github"></span>
+
+
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<div id="birth-order-effects" class="section level1 tabset">
+<h1><span style="color:#A6D854">Birth Order Effects</span></h1>
+<div id="helper" class="section level2">
+<h2>Helper</h2>
+<pre class="r"><code>source(&quot;0_helpers.R&quot;)</code></pre>
+<pre><code>## Warning: package &#39;rmarkdown&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## Warning: package &#39;knitr&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;formr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:rmarkdown&#39;:
+## 
+##     word_document</code></pre>
+<pre><code>## Warning: package &#39;lubridate&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     date</code></pre>
+<pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## Loading required package: carData</code></pre>
+<pre><code>## lattice theme set by effectsTheme()
+## See ?effectsTheme for details.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;data.table&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:lubridate&#39;:
+## 
+##     hour, isoweek, mday, minute, month, quarter, second, wday, week, yday, year</code></pre>
+<pre><code>## The following objects are masked from &#39;package:formr&#39;:
+## 
+##     first, last</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lmerTest&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:lme4&#39;:
+## 
+##     lmer</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     step</code></pre>
+<pre><code>## 
+## Attaching package: &#39;cowplot&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     ggsave</code></pre>
+<pre><code>## Warning: package &#39;haven&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;psych&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:ggplot2&#39;:
+## 
+##     %+%, alpha</code></pre>
+<pre><code>## This is lavaan 0.5-23.1097</code></pre>
+<pre><code>## lavaan is BETA software! Please report any bugs.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lavaan&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     cor2cov</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Loading required package: survival</code></pre>
+<pre><code>## Loading required package: Formula</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Hmisc&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     describe</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     format.pval, round.POSIXt, trunc.POSIXt, units</code></pre>
+<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;tidyr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:Matrix&#39;:
+## 
+##     expand</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:Hmisc&#39;:
+## 
+##     combine, src, summarize</code></pre>
+<pre><code>## The following objects are masked from &#39;package:data.table&#39;:
+## 
+##     between, first, last</code></pre>
+<pre><code>## The following objects are masked from &#39;package:lubridate&#39;:
+## 
+##     intersect, setdiff, union</code></pre>
+<pre><code>## The following objects are masked from &#39;package:formr&#39;:
+## 
+##     first, last</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre><code>## Warning: package &#39;coefplot&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## Warning: package &#39;sjPlot&#39; was built under R version 3.4.4</code></pre>
+<pre><code>## 
+## Attaching package: &#39;sjPlot&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:cowplot&#39;:
+## 
+##     plot_grid, save_plot</code></pre>
+</div>
+<div id="functions" class="section level2">
+<h2>Functions</h2>
+<pre class="r"><code>n_imputations.mitml = function(imps) {
+  imps$iter$m
+}
+n_imputations.mids = function(imps) {
+  imps$m
+}
+n_imputations.amelia = function(imps) {
+  length(imps$imputations)
+}
+n_imputations = function(imps) { UseMethod(&quot;n_imputations&quot;) }
+
+complete.mitml = mitml::mitmlComplete
+complete.mids = mice::complete
+complete = function(...) { UseMethod(&quot;complete&quot;) }
+
+library(mice)</code></pre>
+<pre><code>## Warning: package &#39;mice&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;mice&#39;</code></pre>
+<pre><code>## The following object is masked _by_ &#39;.GlobalEnv&#39;:
+## 
+##     complete</code></pre>
+<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
+## 
+##     complete</code></pre>
+<pre class="r"><code>library(miceadds)</code></pre>
+<pre><code>## Warning: package &#39;miceadds&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## * miceadds 2.9-15 (2017-12-18 11:50:04)</code></pre>
+<pre class="r"><code>library(mitml)</code></pre>
+<pre><code>## Warning: package &#39;mitml&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## *** This is beta software. Please report any bugs!
+## *** See the NEWS file for recent changes.</code></pre>
+</div>
+<div id="load-data" class="section level2">
+<h2>Load data</h2>
+<pre class="r"><code>birthorder = readRDS(&quot;data/alldata_birthorder_i_ml.rds&quot;)</code></pre>
+</div>
+<div id="data-preparations" class="section level2">
+<h2>Data preparations</h2>
+<pre class="r"><code>birthorder &lt;- mids2mitml.list(birthorder)
+
+## Calculate g_factors (for now with rowMeans: better to run factor analysis here as well?)
+birthorder &lt;- within(birthorder, {
+  g_factor_2015_old &lt;- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
+})
+
+birthorder &lt;- within(birthorder, {
+  g_factor_2015_young &lt;- rowMeans(scale(cbind(raven_2015_young, math_2015_young)))
+})
+
+birthorder &lt;- within(birthorder, {
+  g_factor_2007_old &lt;- rowMeans(scale(cbind(raven_2007_old, math_2007_old)))
+})
+
+birthorder &lt;- within(birthorder, {
+  g_factor_2007_young &lt;- rowMeans(scale(cbind(raven_2007_young, math_2007_young)))
+})
+
+
+birthorder = birthorder %&gt;% tbl_df.mitml.list
+
+### Birthorder and Sibling Count
+# for factor variables we have to round birth order position and eliminate all unlikely numbers (negative ones)
+birthorder_data = birthorder[[1]]
+
+birthorder = birthorder %&gt;%
+  mutate(birthorder_genes = ifelse(birthorder_genes &lt; 0, 0, birthorder_genes),
+         birthorder_naive = ifelse(birthorder_naive &lt; 0, 0, birthorder_naive),
+         birthorder_genes = round(birthorder_genes),
+         birthorder_naive = round(birthorder_naive),
+         sibling_count_genes = ifelse(sibling_count_genes &lt; 0, 0, sibling_count_genes),
+         sibling_count_naive = ifelse(sibling_count_naive &lt; 0, 0, sibling_count_naive),
+         sibling_count_genes = round(sibling_count_genes),
+         sibling_count_naive = round(sibling_count_naive),
+         birthorder_genes = ifelse(birthorder_genes &gt; 5, NA, birthorder_genes),
+         birthorder_naive = ifelse(birthorder_naive &gt; 5, NA, birthorder_naive),
+         sibling_count_genes = ifelse(sibling_count_genes &gt; 5, NA, sibling_count_genes),
+         sibling_count_naive = ifelse(sibling_count_naive &gt; 5, NA, sibling_count_naive))
+
+
+birthorder = birthorder %&gt;% 
+  mutate(
+# birthorder as factors with levels of 1, 2, 3, 4, 5, 5+
+    birthorder_naive_factor = as.character(birthorder_naive),
+    birthorder_naive_factor = factor(birthorder_naive_factor, 
+                                            levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;)),
+    sibling_count_naive_factor = as.character(sibling_count_naive),
+    sibling_count_naive_factor = factor(sibling_count_naive_factor, 
+                                               levels = c(&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;)),
+    birthorder_genes_factor = as.character(birthorder_genes),
+    birthorder_genes_factor = factor(birthorder_genes_factor, 
+                                     levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;)),
+    sibling_count_genes_factor = as.character(sibling_count_genes),
+    sibling_count_genes_factor = factor(sibling_count_genes_factor, 
+                                        levels = c(&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;)),
+    # interaction birthorder * siblingcout for each birthorder
+    count_birthorder_naive =
+      factor(str_replace(as.character(interaction(birthorder_naive_factor,                                                              sibling_count_naive_factor)),
+                        &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;)),
+    count_birthorder_genes =
+      factor(str_replace(as.character(interaction(birthorder_genes_factor,                                                              sibling_count_genes_factor)), &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;)))
+
+
+
+### Variables
+birthorder = birthorder %&gt;%
+  mutate(
+    g_factor_2015_old = (g_factor_2015_old - mean(g_factor_2015_old, na.rm=T)) / sd(g_factor_2015_old, na.rm=T),
+    g_factor_2015_young = (g_factor_2015_young - mean(g_factor_2015_young, na.rm=T)) / sd(g_factor_2015_young, na.rm=T),
+    g_factor_2007_old = (g_factor_2007_old - mean(g_factor_2007_old, na.rm=T)) / sd(g_factor_2007_old, na.rm=T),
+g_factor_2007_young = (g_factor_2007_young - mean(g_factor_2007_young, na.rm=T)) / sd(g_factor_2007_young, na.rm=T),
+    raven_2015_old = (raven_2015_old - mean(raven_2015_old, na.rm=T)) / sd(raven_2015_old),
+    math_2015_old = (math_2015_old - mean(math_2015_old, na.rm=T)) / sd(math_2015_old, na.rm=T),
+    raven_2015_young = (raven_2015_young - mean(raven_2015_young, na.rm=T)) / sd(raven_2015_young),
+    math_2015_young = (math_2015_young - mean(math_2015_young, na.rm=T)) /
+      sd(math_2015_young, na.rm=T),
+    raven_2007_old = (raven_2007_old - mean(raven_2007_old, na.rm=T)) / sd(raven_2007_old),
+math_2007_old = (math_2007_old - mean(math_2007_old, na.rm=T)) / sd(math_2007_old, na.rm=T),
+raven_2007_young = (raven_2007_young - mean(raven_2007_young, na.rm=T)) / sd(raven_2007_young),
+math_2007_young = (math_2007_young - mean(math_2007_young, na.rm=T)) /
+  sd(math_2007_young, na.rm=T),
+    count_backwards = (count_backwards - mean(count_backwards, na.rm=T)) /
+      sd(count_backwards, na.rm=T),
+    words_delayed = (words_delayed - mean(words_delayed, na.rm=T)) /
+      sd(words_delayed, na.rm=T),
+    adaptive_numbering = (adaptive_numbering - mean(adaptive_numbering, na.rm=T)) /
+      sd(adaptive_numbering, na.rm=T),
+    big5_ext = (big5_ext - mean(big5_ext, na.rm=T)) / sd(big5_ext, na.rm=T),
+    big5_con = (big5_con - mean(big5_con, na.rm=T)) / sd(big5_con, na.rm=T),
+    big5_agree = (big5_agree - mean(big5_agree, na.rm=T)) / sd(big5_agree, na.rm=T),
+    big5_open = (big5_open - mean(big5_open, na.rm=T)) / sd(big5_open, na.rm=T),
+    big5_neu = (big5_neu - mean(big5_neu, na.rm=T)) / sd(big5_neu, na.rm=T),
+    riskA = (riskA - mean(riskA, na.rm=T)) / sd(riskA, na.rm=T),
+    riskB = (riskB - mean(riskB, na.rm=T)) / sd(riskB, na.rm=T),
+    years_of_education_z = (years_of_education - mean(years_of_education, na.rm=T)) /
+      sd(years_of_education, na.rm=T),
+    wage_last_month_z = (wage_last_month_log - mean(wage_last_month_log, na.rm=T)) /
+      sd(wage_last_month_log, na.rm=T),
+    wage_last_year_z = (wage_last_year_log - mean(wage_last_year_log, na.rm=T)) /
+      sd(wage_last_year_log, na.rm=T)
+        )
+
+data_used &lt;- birthorder %&gt;%
+  mutate(sibling_count = sibling_count_naive,
+         birth_order_nonlinear = birthorder_naive_factor,
+         birth_order = birthorder_naive,
+         count_birth_order = count_birthorder_naive)</code></pre>
+</div>
+<div id="intelligence" class="section level2 active tabset">
+<h2>Intelligence</h2>
+<div id="g-factor-2015-old" class="section level3 tabset">
+<h3>g-factor 2015 old</h3>
+<pre class="r"><code># Specify your outcome
+data_used = data_used %&gt;% mutate(outcome = g_factor_2015_old)
+data_used_plots &lt;- data_used[[1]]
+
+compare_birthorder_imputed(data_used = data_used)</code></pre>
+<div id="naive-birth-order" class="section level4 tabset">
+<h4>Naive birth order</h4>
+<div id="basic-model" class="section level5 tabset">
+<h5>Basic Model</h5>
+<div id="model-summary" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>### start with naive birthorder
+data_used &lt;- data_used %&gt;%
+  mutate(sibling_count = sibling_count_naive,
+         birth_order_nonlinear = birthorder_naive_factor,
+         birth_order = birthorder_naive,
+         count_birth_order = count_birthorder_naive)
+
+data_used_plots = data_used[[1]]
+
+model_naive_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink)))</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>mitml::testEstimates(model_naive_m1, var.comp = T)</code></pre>
+<pre><code>## 
+## Call:
+## 
+## mitml::testEstimates(model = model_naive_m1, var.comp = T)
+## 
+## Final parameter estimates and inferences obtained from 10 imputed data sets.
+## 
+##                            Estimate Std.Error   t.value        df   P(&gt;|t|)       RIV       FMI 
+## (Intercept)                   0.465     0.026    17.538    32.757     0.000     1.102     0.551 
+## poly(age, 3, raw = TRUE)1    -0.016     0.003    -5.224    60.673     0.000     0.626     0.404 
+## poly(age, 3, raw = TRUE)2    -0.000     0.000    -1.013   110.522     0.313     0.399     0.298 
+## poly(age, 3, raw = TRUE)3    -0.000     0.000    -1.385   159.170     0.168     0.312     0.247 
+## male                         -0.016     0.015    -1.077    46.416     0.287     0.787     0.463 
+## sibling_count                 0.007     0.006     1.052   108.229     0.295     0.405     0.301 
+## 
+##                                     Estimate 
+## Intercept~~Intercept|mother_pidlink    0.193 
+## Residual~~Residual                     0.676 
+## ICC|mother_pidlink                     0.222 
+## 
+## Unadjusted hypothesis test as appropriate in larger samples.</code></pre>
+</div>
+<div id="coefficient-plot" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>model_naive_m1_plot = lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                           data = data_used_plots)</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>plot(allEffects(model_naive_m1_plot)) # fuer plots</code></pre>
+<p><img src="4_analyses_imputed_data_robust_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-birth-order-linear" class="section level5 tabset">
+<h5>Add Birth Order Linear</h5>
+<div id="model-summary-1" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>model_naive_m2 &lt;- with(data_used, lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count +
+                                         (1 | mother_pidlink)))</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>mitml::testEstimates(model_naive_m2, var.comp = T)</code></pre>
+<pre><code>## 
+## Call:
+## 
+## mitml::testEstimates(model = model_naive_m2, var.comp = T)
+## 
+## Final parameter estimates and inferences obtained from 10 imputed data sets.
+## 
+##                            Estimate Std.Error   t.value        df   P(&gt;|t|)       RIV       FMI 
+## (Intercept)                   0.473     0.025    18.622    48.764     0.000     0.753     0.452 
+## birth_order                  -0.009     0.009    -1.083    40.172     0.285     0.899     0.498 
+## poly(age, 3, raw = TRUE)1    -0.017     0.003    -5.366    61.465     0.000     0.620     0.402 
+## poly(age, 3, raw = TRUE)2    -0.000     0.000    -0.820    99.415     0.414     0.430     0.315 
+## poly(age, 3, raw = TRUE)3    -0.000     0.000    -1.489   140.947     0.139     0.338     0.263 
+## male                         -0.015     0.015    -1.064    46.404     0.293     0.787     0.463 
+## sibling_count                 0.012     0.009     1.366    39.637     0.180     0.910     0.501 
+## 
+##                                     Estimate 
+## Intercept~~Intercept|mother_pidlink    0.193 
+## Residual~~Residual                     0.676 
+## ICC|mother_pidlink                     0.222 
+## 
+## Unadjusted hypothesis test as appropriate in larger samples.</code></pre>
+</div>
+<div id="coefficient-plot-1" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>model_naive_m2_plot = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                           data = data_used_plots)</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>plot_birthorder(model_naive_m2_plot, separate = FALSE)</code></pre>
+<p><img src="4_analyses_imputed_data_robust_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-birth-order-factor" class="section level5 tabset">
+<h5>Add Birth Order Factor</h5>
+<div id="model-summary-2" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>model_naive_m3 &lt;- with(data_used, lmer(outcome ~ birth_order_nonlinear + poly(age, 3, raw = TRUE) + male +
+                                         sibling_count + (1 | mother_pidlink)))</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>mitml::testEstimates(model_naive_m3, var.comp = T)</code></pre>
+<pre><code>## 
+## Call:
+## 
+## mitml::testEstimates(model = model_naive_m3, var.comp = T)
+## 
+## Final parameter estimates and inferences obtained from 10 imputed data sets.
+## 
+##                            Estimate Std.Error   t.value        df   P(&gt;|t|)       RIV       FMI 
+## (Intercept)                   0.461     0.028    16.651    30.051     0.000     1.209     0.575 
+## birth_order_nonlinear2       -0.001     0.019    -0.044    33.824     0.965     1.065     0.542 
+## birth_order_nonlinear3       -0.014     0.021    -0.658    98.505     0.512     0.433     0.316 
+## birth_order_nonlinear4       -0.043     0.034    -1.271    35.794     0.212     1.006     0.527 
+## birth_order_nonlinear5       -0.023     0.045    -0.515    52.380     0.608     0.708     0.436 
+## poly(age, 3, raw = TRUE)1    -0.016     0.003    -5.326    62.172     0.000     0.614     0.399 
+## poly(age, 3, raw = TRUE)2    -0.000     0.000    -0.865   103.483     0.389     0.418     0.308 
+## poly(age, 3, raw = TRUE)3    -0.000     0.000    -1.447   147.828     0.150     0.328     0.257 
+## male                         -0.016     0.015    -1.077    46.543     0.287     0.785     0.462 
+## sibling_count                 0.012     0.009     1.362    40.971     0.181     0.882     0.493 
+## 
+##                                     Estimate 
+## Intercept~~Intercept|mother_pidlink    0.192 
+## Residual~~Residual                     0.676 
+## ICC|mother_pidlink                     0.222 
+## 
+## Unadjusted hypothesis test as appropriate in larger samples.</code></pre>
+</div>
+<div id="coefficient-plot-2" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>model_naive_m3_plot = lmer(outcome ~ birth_order_nonlinear + poly(age, 3, raw = TRUE) + male + sibling_count +
+                             (1 | mother_pidlink),
+                           data = data_used_plots)</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>plot_birthorder(model_naive_m3_plot, separate = FALSE)</code></pre>
+<p><img src="4_analyses_imputed_data_robust_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-interaction" class="section level5 tabset active">
+<h5>Add Interaction</h5>
+<div id="model-summary-3" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>model_naive_m4 &lt;- with(data_used, lmer(outcome ~ count_birth_order + poly(age, 3, raw = TRUE) + male  +
+                                         (1 | mother_pidlink)))</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>mitml::testEstimates(model_naive_m4, var.comp = T)</code></pre>
+<pre><code>## 
+## Call:
+## 
+## mitml::testEstimates(model = model_naive_m4, var.comp = T)
+## 
+## Final parameter estimates and inferences obtained from 10 imputed data sets.
+## 
+##                            Estimate Std.Error   t.value        df   P(&gt;|t|)       RIV       FMI 
+## (Intercept)                   0.470     0.035    13.481    44.547     0.000     0.816     0.473 
+## count_birth_order2/2          0.004     0.026     0.134    47.436     0.894     0.772     0.458 
+## count_birth_order1/3          0.014     0.029     0.493   172.602     0.623     0.296     0.237 
+## count_birth_order2/3         -0.008     0.031    -0.249    70.296     0.804     0.557     0.375 
+## count_birth_order3/3          0.014     0.028     0.490   184.026     0.625     0.284     0.229 
+## count_birth_order1/4         -0.001     0.034    -0.042   673.115     0.966     0.131     0.118 
+## count_birth_order2/4          0.010     0.036     0.286   214.290     0.775     0.258     0.212 
+## count_birth_order3/4         -0.036     0.037    -0.951    83.387     0.344     0.489     0.344 
+## count_birth_order4/4         -0.015     0.037    -0.403    64.596     0.688     0.596     0.392 
+## count_birth_order1/5         -0.021     0.045    -0.468   189.327     0.640     0.279     0.226 
+## count_birth_order2/5          0.026     0.045     0.588   229.964     0.557     0.247     0.205 
+## count_birth_order3/5          0.008     0.041     0.188   635.675     0.851     0.135     0.122 
+## count_birth_order4/5         -0.043     0.045    -0.956    91.872     0.341     0.456     0.327 
+## count_birth_order5/5          0.004     0.043     0.103    85.588     0.918     0.480     0.340 
+## poly(age, 3, raw = TRUE)1    -0.016     0.004    -3.840    53.143     0.000     0.699     0.432 
+## poly(age, 3, raw = TRUE)2     0.000     0.000     0.099   149.785     0.921     0.325     0.255 
+## poly(age, 3, raw = TRUE)3    -0.000     0.000    -2.102   276.001     0.036     0.220     0.186 
+## male                         -0.029     0.014    -1.992    86.542     0.050     0.476     0.338 
+## 
+##                                     Estimate 
+## Intercept~~Intercept|mother_pidlink    0.190 
+## Residual~~Residual                     0.674 
+## ICC|mother_pidlink                     0.220 
+## 
+## Unadjusted hypothesis test as appropriate in larger samples.</code></pre>
+</div>
+<div id="coefficient-plot-3" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>model_naive_m4_plot = lmer(outcome ~ count_birth_order + poly(age, 3, raw = TRUE) + male +
+                             (1 | mother_pidlink),
+                           data = data_used_plots)</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>plot_birthorder(model_naive_m4_plot)</code></pre>
+<p><img src="4_analyses_imputed_data_robust_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+</div>
+<div id="model-comparison" class="section level5">
+<h5>Model Comparison</h5>
+<pre class="r"><code>anova(model_naive_m1, model_naive_m2, model_naive_m3, model_naive_m4)</code></pre>
+<pre><code>## Warning in anova.mitml.result(model_naive_m1, model_naive_m2, model_naive_m3, : The &#39;D3&#39; method is currently
+## not supported for models of class &#39;merModLmerTest&#39;. Switching to &#39;D2&#39;.</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre><code>## 
+## Call:
+## 
+## anova.mitml.result(object = model_naive_m1, model_naive_m2, model_naive_m3, 
+##     model_naive_m4)
+## 
+## Model comparison calculated from 10 imputed data sets.
+## Combination method: D2 (likelihood) 
+## 
+## Model 1: outcome~count_birth_order+poly(age,3,raw=TRUE)+male+(1|mother_pidlink)
+## Model 2: outcome~birth_order_nonlinear+poly(age,3,raw=TRUE)+male+sibling_count+(1|mother_pidlink)
+## Model 3: outcome~birth_order+poly(age,3,raw=TRUE)+male+sibling_count+(1|mother_pidlink)
+## Model 4: outcome~poly(age,3,raw=TRUE)+male+sibling_count+(1|mother_pidlink)
+## 
+##            F.value      df1      df2    P(&gt;F)      RIV 
+##   1 vs 2: 1647.265        8 2383.206    0.000    0.047 
+##   2 vs 3:    4.199        3   37.922    0.012    0.704 
+##   3 vs 4:    3.456        1   56.347    0.068    0.666 
+## 
+## Models originally fit with REML were automatically refit using ML.</code></pre>
+</div>
+</div>
+<div id="parental-full-sibling-order" class="section level4 tabset active">
+<h4>Parental full sibling order</h4>
+<div id="basic-model-1" class="section level5 tabset">
+<h5>Basic Model</h5>
+<div id="model-summary-4" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>data_used = data_used %&gt;%
+  mutate(sibling_count = sibling_count_genes,
+         birth_order_nonlinear = birthorder_genes_factor,
+         birth_order = birthorder_genes,
+         count_birth_order = count_birthorder_genes)
+
+data_used_plots = data_used[[1]]
+
+model_genes_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink)))</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>mitml::testEstimates(model_genes_m1, var.comp = T)</code></pre>
+<pre><code>## 
+## Call:
+## 
+## mitml::testEstimates(model = model_genes_m1, var.comp = T)
+## 
+## Final parameter estimates and inferences obtained from 10 imputed data sets.
+## 
+##                            Estimate Std.Error   t.value        df   P(&gt;|t|)       RIV       FMI 
+## (Intercept)                   0.491     0.026    18.860    27.582     0.000     1.332     0.599 
+## poly(age, 3, raw = TRUE)1    -0.018     0.003    -5.515    34.251     0.000     1.052     0.539 
+## poly(age, 3, raw = TRUE)2    -0.000     0.000    -0.193    54.514     0.847     0.684     0.427 
+## poly(age, 3, raw = TRUE)3    -0.000     0.000    -2.120    73.754     0.037     0.537     0.366 
+## male                         -0.018     0.014    -1.316    36.886     0.196     0.976     0.519 
+## sibling_count                -0.007     0.006    -1.089    82.951     0.279     0.491     0.345 
+## 
+##                                     Estimate 
+## Intercept~~Intercept|mother_pidlink    0.202 
+## Residual~~Residual                     0.668 
+## ICC|mother_pidlink                     0.232 
+## 
+## Unadjusted hypothesis test as appropriate in larger samples.</code></pre>
+</div>
+<div id="coefficient-plot-4" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>model_genes_m1_plot = lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                           data = data_used_plots)</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>plot(allEffects(model_genes_m1_plot))</code></pre>
+<p><img src="4_analyses_imputed_data_robust_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-birth-order-linear-1" class="section level5 tabset">
+<h5>Add Birth Order Linear</h5>
+<div id="model-summary-5" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>model_genes_m2 &lt;- with(data_used, lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count +
+                                         (1 | mother_pidlink)))</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>mitml::testEstimates(model_genes_m2, var.comp = T)</code></pre>
+<pre><code>## 
+## Call:
+## 
+## mitml::testEstimates(model = model_genes_m2, var.comp = T)
+## 
+## Final parameter estimates and inferences obtained from 10 imputed data sets.
+## 
+##                            Estimate Std.Error   t.value        df   P(&gt;|t|)       RIV       FMI 
+## (Intercept)                   0.488     0.026    18.855    32.533     0.000     1.110     0.553 
+## birth_order                   0.002     0.009     0.215    27.700     0.831     1.326     0.598 
+## poly(age, 3, raw = TRUE)1    -0.018     0.003    -5.473    35.193     0.000     1.023     0.532 
+## poly(age, 3, raw = TRUE)2    -0.000     0.000    -0.221    54.021     0.826     0.690     0.429 
+## poly(age, 3, raw = TRUE)3    -0.000     0.000    -2.091    72.498     0.040     0.544     0.369 
+## male                         -0.018     0.014    -1.284    34.549     0.208     1.042     0.536 
+## sibling_count                -0.007     0.007    -0.982    72.210     0.329     0.546     0.370 
+## 
+##                                     Estimate 
+## Intercept~~Intercept|mother_pidlink    0.202 
+## Residual~~Residual                     0.668 
+## ICC|mother_pidlink                     0.232 
+## 
+## Unadjusted hypothesis test as appropriate in larger samples.</code></pre>
+</div>
+<div id="coefficient-plot-5" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>model_genes_m2_plot = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                           data = data_used_plots)</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>plot_birthorder(model_genes_m2_plot, separate = FALSE)</code></pre>
+<p><img src="4_analyses_imputed_data_robust_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-birth-order-factor-1" class="section level5 tabset">
+<h5>Add Birth Order Factor</h5>
+<div id="model-summary-6" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>model_genes_m3 &lt;- with(data_used, lmer(outcome ~ birth_order_nonlinear + poly(age, 3, raw = TRUE) + male + sibling_count +
+                                         (1 | mother_pidlink)))</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>mitml::testEstimates(model_genes_m3, var.comp = T)</code></pre>
+<pre><code>## 
+## Call:
+## 
+## mitml::testEstimates(model = model_genes_m3, var.comp = T)
+## 
+## Final parameter estimates and inferences obtained from 10 imputed data sets.
+## 
+##                            Estimate Std.Error   t.value        df   P(&gt;|t|)       RIV       FMI 
+## (Intercept)                   0.494     0.027    17.995    26.680     0.000     1.386     0.609 
+## birth_order_nonlinear2       -0.002     0.018    -0.105    29.268     0.917     1.245     0.582 
+## birth_order_nonlinear3       -0.004     0.022    -0.202    43.699     0.841     0.831     0.477 
+## birth_order_nonlinear4       -0.020     0.034    -0.578    32.605     0.567     1.107     0.552 
+## birth_order_nonlinear5       -0.036     0.052    -0.689    35.408     0.495     1.017     0.530 
+## poly(age, 3, raw = TRUE)1    -0.018     0.003    -5.434    33.324     0.000     1.082     0.546 
+## poly(age, 3, raw = TRUE)2     0.000     0.000     0.043    53.807     0.966     0.692     0.430 
+## poly(age, 3, raw = TRUE)3    -0.000     0.000    -2.348    76.859     0.021     0.520     0.359 
+## male                         -0.021     0.014    -1.487    38.835     0.145     0.928     0.506 
+## sibling_count                -0.005     0.008    -0.712    72.801     0.479     0.542     0.369 
+## 
+##                                     Estimate 
+## Intercept~~Intercept|mother_pidlink    0.200 
+## Residual~~Residual                     0.669 
+## ICC|mother_pidlink                     0.231 
+## 
+## Unadjusted hypothesis test as appropriate in larger samples.</code></pre>
+</div>
+<div id="coefficient-plot-6" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>model_genes_m3_plot = lmer(outcome ~ birth_order_nonlinear + poly(age, 3, raw = TRUE) + male + sibling_count +
+                             (1 | mother_pidlink),
+                           data = data_used_plots)</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>plot_birthorder(model_genes_m3_plot, separate = FALSE)</code></pre>
+<p><img src="4_analyses_imputed_data_robust_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+</div>
+<div id="add-interaction-1" class="section level5 tabset active">
+<h5>Add Interaction</h5>
+<div id="model-summary-7" class="section level6">
+<h6>Model Summary</h6>
+<pre class="r"><code>model_genes_m4 &lt;- with(data_used, lmer(outcome ~ count_birth_order + poly(age, 3, raw = TRUE) + male  +
+                                         (1 | mother_pidlink)))</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>mitml::testEstimates(model_genes_m4, var.comp = T)</code></pre>
+<pre><code>## 
+## Call:
+## 
+## mitml::testEstimates(model = model_genes_m4, var.comp = T)
+## 
+## Final parameter estimates and inferences obtained from 10 imputed data sets.
+## 
+##                            Estimate Std.Error   t.value        df   P(&gt;|t|)       RIV       FMI 
+## (Intercept)                   0.450     0.030    15.048    79.834     0.000     0.505     0.352 
+## count_birth_order2/2          0.011     0.027     0.421    30.329     0.677     1.197     0.572 
+## count_birth_order1/3          0.023     0.034     0.676    31.675     0.504     1.142     0.560 
+## count_birth_order2/3          0.004     0.033     0.124    29.769     0.902     1.221     0.577 
+## count_birth_order3/3          0.032     0.031     1.017    43.791     0.315     0.829     0.477 
+## count_birth_order1/4         -0.022     0.044    -0.504    38.850     0.617     0.928     0.506 
+## count_birth_order2/4         -0.023     0.037    -0.636    61.007     0.527     0.624     0.403 
+## count_birth_order3/4         -0.046     0.033    -1.376   145.258     0.171     0.331     0.259 
+## count_birth_order4/4         -0.014     0.039    -0.358    49.298     0.722     0.746     0.449 
+## count_birth_order1/5         -0.064     0.048    -1.343   217.658     0.181     0.255     0.211 
+## count_birth_order2/5         -0.098     0.053    -1.846    46.522     0.071     0.785     0.462 
+## count_birth_order3/5         -0.083     0.045    -1.837   107.995     0.069     0.406     0.301 
+## count_birth_order4/5         -0.094     0.056    -1.672    29.560     0.105     1.231     0.579 
+## count_birth_order5/5         -0.072     0.051    -1.424    60.092     0.160     0.631     0.406 
+## poly(age, 3, raw = TRUE)1    -0.014     0.004    -3.358    27.645     0.002     1.329     0.599 
+## poly(age, 3, raw = TRUE)2    -0.000     0.000    -0.445    33.932     0.659     1.062     0.541 
+## poly(age, 3, raw = TRUE)3    -0.000     0.000    -1.499    39.554     0.142     0.912     0.502 
+## male                         -0.027     0.015    -1.811    48.297     0.076     0.760     0.454 
+## 
+##                                     Estimate 
+## Intercept~~Intercept|mother_pidlink    0.201 
+## Residual~~Residual                     0.668 
+## ICC|mother_pidlink                     0.231 
+## 
+## Unadjusted hypothesis test as appropriate in larger samples.</code></pre>
+</div>
+<div id="coefficient-plot-7" class="section level6 active">
+<h6>Coefficient Plot</h6>
+<pre class="r"><code>model_genes_m4_plot = lmer(outcome ~ count_birth_order + poly(age, 3, raw = TRUE) + male +
+                             (1 | mother_pidlink),
+                           data = data_used_plots)</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>plot_birthorder(model_genes_m4_plot)</code></pre>
+<p><img src="4_analyses_imputed_data_robust_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+</div>
+<div id="model-comparison-1" class="section level5">
+<h5>Model Comparison</h5>
+<pre class="r"><code>anova(model_genes_m1, model_genes_m2, model_genes_m3, model_genes_m4)</code></pre>
+<pre><code>## Warning in anova.mitml.result(model_genes_m1, model_genes_m2, model_genes_m3, : The &#39;D3&#39; method is currently
+## not supported for models of class &#39;merModLmerTest&#39;. Switching to &#39;D2&#39;.</code></pre>
+<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling
+
+## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre><code>## 
+## Call:
+## 
+## anova.mitml.result(object = model_genes_m1, model_genes_m2, model_genes_m3, 
+##     model_genes_m4)
+## 
+## Model comparison calculated from 10 imputed data sets.
+## Combination method: D2 (likelihood) 
+## 
+## Model 1: outcome~count_birth_order+poly(age,3,raw=TRUE)+male+(1|mother_pidlink)
+## Model 2: outcome~birth_order_nonlinear+poly(age,3,raw=TRUE)+male+sibling_count+(1|mother_pidlink)
+## Model 3: outcome~birth_order+poly(age,3,raw=TRUE)+male+sibling_count+(1|mother_pidlink)
+## Model 4: outcome~poly(age,3,raw=TRUE)+male+sibling_count+(1|mother_pidlink)
+## 
+##            F.value      df1      df2    P(&gt;F)      RIV 
+##   1 vs 2: 1021.543        8   17.839    0.000    1.083 
+##   2 vs 3:  322.896        3   14.115    0.000    2.098 
+##   3 vs 4:  113.829        1   56.920    0.000    0.660 
+## 
+## Models originally fit with REML were automatically refit using ML.</code></pre>
+</div>
+</div>
+<div id="compare-birth-order-specifications" class="section level4">
+<h4>Compare birth order specifications</h4>
+<pre class="r"><code>library(coefplot)
+multiplot(model_naive_m2_plot, model_genes_m2_plot, intercept = FALSE)</code></pre>
+<p><img src="4_analyses_imputed_data_robust_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCm91dHB1dDogaHRtbF9kb2N1bWVudAplZGl0b3Jfb3B0aW9uczogCiAgY2h1bmtfb3V0cHV0X3R5cGU6IGNvbnNvbGUKLS0tCiMgPHNwYW4gc3R5bGU9ImNvbG9yOiNBNkQ4NTQiPkJpcnRoIE9yZGVyIEVmZmVjdHM8L3NwYW4+IHsudGFic2V0fQoKIyMgSGVscGVyCmBgYHtyIGhlbHBlcn0Kc291cmNlKCIwX2hlbHBlcnMuUiIpCmBgYAoKCiMjIEZ1bmN0aW9ucwoKYGBge3J9CgpuX2ltcHV0YXRpb25zLm1pdG1sID0gZnVuY3Rpb24oaW1wcykgewogIGltcHMkaXRlciRtCn0Kbl9pbXB1dGF0aW9ucy5taWRzID0gZnVuY3Rpb24oaW1wcykgewogIGltcHMkbQp9Cm5faW1wdXRhdGlvbnMuYW1lbGlhID0gZnVuY3Rpb24oaW1wcykgewogIGxlbmd0aChpbXBzJGltcHV0YXRpb25zKQp9Cm5faW1wdXRhdGlvbnMgPSBmdW5jdGlvbihpbXBzKSB7IFVzZU1ldGhvZCgibl9pbXB1dGF0aW9ucyIpIH0KCmNvbXBsZXRlLm1pdG1sID0gbWl0bWw6Om1pdG1sQ29tcGxldGUKY29tcGxldGUubWlkcyA9IG1pY2U6OmNvbXBsZXRlCmNvbXBsZXRlID0gZnVuY3Rpb24oLi4uKSB7IFVzZU1ldGhvZCgiY29tcGxldGUiKSB9CgpsaWJyYXJ5KG1pY2UpCmxpYnJhcnkobWljZWFkZHMpCmxpYnJhcnkobWl0bWwpCmBgYAoKCiMjIExvYWQgZGF0YQpgYGB7ciBMb2FkIERhdGF9CmJpcnRob3JkZXIgPSByZWFkUkRTKCJkYXRhL2FsbGRhdGFfYmlydGhvcmRlcl9pX21sLnJkcyIpCmBgYAoKIyMgRGF0YSBwcmVwYXJhdGlvbnMKYGBge3IgZGF0YSBwcmVwYXJhdGlvbnN9CmJpcnRob3JkZXIgPC0gbWlkczJtaXRtbC5saXN0KGJpcnRob3JkZXIpCgojIyBDYWxjdWxhdGUgZ19mYWN0b3JzIChmb3Igbm93IHdpdGggcm93TWVhbnM6IGJldHRlciB0byBydW4gZmFjdG9yIGFuYWx5c2lzIGhlcmUgYXMgd2VsbD8pCmJpcnRob3JkZXIgPC0gd2l0aGluKGJpcnRob3JkZXIsIHsKICBnX2ZhY3Rvcl8yMDE1X29sZCA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDE1X29sZCwgbWF0aF8yMDE1X29sZCwgY291bnRfYmFja3dhcmRzLCAgd29yZHNfZGVsYXllZCwgYWRhcHRpdmVfbnVtYmVyaW5nKSkpCn0pCgpiaXJ0aG9yZGVyIDwtIHdpdGhpbihiaXJ0aG9yZGVyLCB7CiAgZ19mYWN0b3JfMjAxNV95b3VuZyA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDE1X3lvdW5nLCBtYXRoXzIwMTVfeW91bmcpKSkKfSkKCmJpcnRob3JkZXIgPC0gd2l0aGluKGJpcnRob3JkZXIsIHsKICBnX2ZhY3Rvcl8yMDA3X29sZCA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDA3X29sZCwgbWF0aF8yMDA3X29sZCkpKQp9KQoKYmlydGhvcmRlciA8LSB3aXRoaW4oYmlydGhvcmRlciwgewogIGdfZmFjdG9yXzIwMDdfeW91bmcgPC0gcm93TWVhbnMoc2NhbGUoY2JpbmQocmF2ZW5fMjAwN195b3VuZywgbWF0aF8yMDA3X3lvdW5nKSkpCn0pCgoKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lIHRibF9kZi5taXRtbC5saXN0CgojIyMgQmlydGhvcmRlciBhbmQgU2libGluZyBDb3VudAojIGZvciBmYWN0b3IgdmFyaWFibGVzIHdlIGhhdmUgdG8gcm91bmQgYmlydGggb3JkZXIgcG9zaXRpb24gYW5kIGVsaW1pbmF0ZSBhbGwgdW5saWtlbHkgbnVtYmVycyAobmVnYXRpdmUgb25lcykKYmlydGhvcmRlcl9kYXRhID0gYmlydGhvcmRlcltbMV1dCgpiaXJ0aG9yZGVyID0gYmlydGhvcmRlciAlPiUKICBtdXRhdGUoYmlydGhvcmRlcl9nZW5lcyA9IGlmZWxzZShiaXJ0aG9yZGVyX2dlbmVzIDwgMCwgMCwgYmlydGhvcmRlcl9nZW5lcyksCiAgICAgICAgIGJpcnRob3JkZXJfbmFpdmUgPSBpZmVsc2UoYmlydGhvcmRlcl9uYWl2ZSA8IDAsIDAsIGJpcnRob3JkZXJfbmFpdmUpLAogICAgICAgICBiaXJ0aG9yZGVyX2dlbmVzID0gcm91bmQoYmlydGhvcmRlcl9nZW5lcyksCiAgICAgICAgIGJpcnRob3JkZXJfbmFpdmUgPSByb3VuZChiaXJ0aG9yZGVyX25haXZlKSwKICAgICAgICAgc2libGluZ19jb3VudF9nZW5lcyA9IGlmZWxzZShzaWJsaW5nX2NvdW50X2dlbmVzIDwgMCwgMCwgc2libGluZ19jb3VudF9nZW5lcyksCiAgICAgICAgIHNpYmxpbmdfY291bnRfbmFpdmUgPSBpZmVsc2Uoc2libGluZ19jb3VudF9uYWl2ZSA8IDAsIDAsIHNpYmxpbmdfY291bnRfbmFpdmUpLAogICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzID0gcm91bmQoc2libGluZ19jb3VudF9nZW5lcyksCiAgICAgICAgIHNpYmxpbmdfY291bnRfbmFpdmUgPSByb3VuZChzaWJsaW5nX2NvdW50X25haXZlKSwKICAgICAgICAgYmlydGhvcmRlcl9nZW5lcyA9IGlmZWxzZShiaXJ0aG9yZGVyX2dlbmVzID4gNSwgTkEsIGJpcnRob3JkZXJfZ2VuZXMpLAogICAgICAgICBiaXJ0aG9yZGVyX25haXZlID0gaWZlbHNlKGJpcnRob3JkZXJfbmFpdmUgPiA1LCBOQSwgYmlydGhvcmRlcl9uYWl2ZSksCiAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXMgPSBpZmVsc2Uoc2libGluZ19jb3VudF9nZW5lcyA+IDUsIE5BLCBzaWJsaW5nX2NvdW50X2dlbmVzKSwKICAgICAgICAgc2libGluZ19jb3VudF9uYWl2ZSA9IGlmZWxzZShzaWJsaW5nX2NvdW50X25haXZlID4gNSwgTkEsIHNpYmxpbmdfY291bnRfbmFpdmUpKQoKCmJpcnRob3JkZXIgPSBiaXJ0aG9yZGVyICU+JSAKICBtdXRhdGUoCiMgYmlydGhvcmRlciBhcyBmYWN0b3JzIHdpdGggbGV2ZWxzIG9mIDEsIDIsIDMsIDQsIDUsIDUrCiAgICBiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihiaXJ0aG9yZGVyX25haXZlKSwKICAgIGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yID0gZmFjdG9yKGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIxIiwiMiIsIjMiLCI0IiwiNSIpKSwKICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yID0gYXMuY2hhcmFjdGVyKHNpYmxpbmdfY291bnRfbmFpdmUpLAogICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IgPSBmYWN0b3Ioc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjIiLCIzIiwiNCIsIjUiKSksCiAgICBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihiaXJ0aG9yZGVyX2dlbmVzKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gZmFjdG9yKGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IikpLAogICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoc2libGluZ19jb3VudF9nZW5lcyksCiAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciA9IGZhY3RvcihzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIyIiwiMyIsIjQiLCI1IikpLAogICAgIyBpbnRlcmFjdGlvbiBiaXJ0aG9yZGVyICogc2libGluZ2NvdXQgZm9yIGVhY2ggYmlydGhvcmRlcgogICAgY291bnRfYmlydGhvcmRlcl9uYWl2ZSA9CiAgICAgIGZhY3RvcihzdHJfcmVwbGFjZShhcy5jaGFyYWN0ZXIoaW50ZXJhY3Rpb24oYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvcikpLAogICAgICAgICAgICAgICAgICAgICAgICAiXFwuIiwgIi8iKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9ICAgYygiMS8yIiwiMi8yIiwgIjEvMyIsICAiMi8zIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMy8zIiwgIjEvNCIsICIyLzQiLCAiMy80IiwgIjQvNCIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSIsICIyLzUiLCAiMy81IiwgIjQvNSIsICI1LzUiKSksCiAgICBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yKSksICJcXC4iLCAiLyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gICBjKCIxLzIiLCIyLzIiLCAiMS8zIiwgICIyLzMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIzLzMiLCAiMS80IiwgIjIvNCIsICIzLzQiLCAiNC80IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81IiwgIjIvNSIsICIzLzUiLCAiNC81IiwgIjUvNSIpKSkKCgoKIyMjIFZhcmlhYmxlcwpiaXJ0aG9yZGVyID0gYmlydGhvcmRlciAlPiUKICBtdXRhdGUoCiAgICBnX2ZhY3Rvcl8yMDE1X29sZCA9IChnX2ZhY3Rvcl8yMDE1X29sZCAtIG1lYW4oZ19mYWN0b3JfMjAxNV9vbGQsIG5hLnJtPVQpKSAvIHNkKGdfZmFjdG9yXzIwMTVfb2xkLCBuYS5ybT1UKSwKICAgIGdfZmFjdG9yXzIwMTVfeW91bmcgPSAoZ19mYWN0b3JfMjAxNV95b3VuZyAtIG1lYW4oZ19mYWN0b3JfMjAxNV95b3VuZywgbmEucm09VCkpIC8gc2QoZ19mYWN0b3JfMjAxNV95b3VuZywgbmEucm09VCksCiAgICBnX2ZhY3Rvcl8yMDA3X29sZCA9IChnX2ZhY3Rvcl8yMDA3X29sZCAtIG1lYW4oZ19mYWN0b3JfMjAwN19vbGQsIG5hLnJtPVQpKSAvIHNkKGdfZmFjdG9yXzIwMDdfb2xkLCBuYS5ybT1UKSwKZ19mYWN0b3JfMjAwN195b3VuZyA9IChnX2ZhY3Rvcl8yMDA3X3lvdW5nIC0gbWVhbihnX2ZhY3Rvcl8yMDA3X3lvdW5nLCBuYS5ybT1UKSkgLyBzZChnX2ZhY3Rvcl8yMDA3X3lvdW5nLCBuYS5ybT1UKSwKICAgIHJhdmVuXzIwMTVfb2xkID0gKHJhdmVuXzIwMTVfb2xkIC0gbWVhbihyYXZlbl8yMDE1X29sZCwgbmEucm09VCkpIC8gc2QocmF2ZW5fMjAxNV9vbGQpLAogICAgbWF0aF8yMDE1X29sZCA9IChtYXRoXzIwMTVfb2xkIC0gbWVhbihtYXRoXzIwMTVfb2xkLCBuYS5ybT1UKSkgLyBzZChtYXRoXzIwMTVfb2xkLCBuYS5ybT1UKSwKICAgIHJhdmVuXzIwMTVfeW91bmcgPSAocmF2ZW5fMjAxNV95b3VuZyAtIG1lYW4ocmF2ZW5fMjAxNV95b3VuZywgbmEucm09VCkpIC8gc2QocmF2ZW5fMjAxNV95b3VuZyksCiAgICBtYXRoXzIwMTVfeW91bmcgPSAobWF0aF8yMDE1X3lvdW5nIC0gbWVhbihtYXRoXzIwMTVfeW91bmcsIG5hLnJtPVQpKSAvCiAgICAgIHNkKG1hdGhfMjAxNV95b3VuZywgbmEucm09VCksCiAgICByYXZlbl8yMDA3X29sZCA9IChyYXZlbl8yMDA3X29sZCAtIG1lYW4ocmF2ZW5fMjAwN19vbGQsIG5hLnJtPVQpKSAvIHNkKHJhdmVuXzIwMDdfb2xkKSwKbWF0aF8yMDA3X29sZCA9IChtYXRoXzIwMDdfb2xkIC0gbWVhbihtYXRoXzIwMDdfb2xkLCBuYS5ybT1UKSkgLyBzZChtYXRoXzIwMDdfb2xkLCBuYS5ybT1UKSwKcmF2ZW5fMjAwN195b3VuZyA9IChyYXZlbl8yMDA3X3lvdW5nIC0gbWVhbihyYXZlbl8yMDA3X3lvdW5nLCBuYS5ybT1UKSkgLyBzZChyYXZlbl8yMDA3X3lvdW5nKSwKbWF0aF8yMDA3X3lvdW5nID0gKG1hdGhfMjAwN195b3VuZyAtIG1lYW4obWF0aF8yMDA3X3lvdW5nLCBuYS5ybT1UKSkgLwogIHNkKG1hdGhfMjAwN195b3VuZywgbmEucm09VCksCiAgICBjb3VudF9iYWNrd2FyZHMgPSAoY291bnRfYmFja3dhcmRzIC0gbWVhbihjb3VudF9iYWNrd2FyZHMsIG5hLnJtPVQpKSAvCiAgICAgIHNkKGNvdW50X2JhY2t3YXJkcywgbmEucm09VCksCiAgICB3b3Jkc19kZWxheWVkID0gKHdvcmRzX2RlbGF5ZWQgLSBtZWFuKHdvcmRzX2RlbGF5ZWQsIG5hLnJtPVQpKSAvCiAgICAgIHNkKHdvcmRzX2RlbGF5ZWQsIG5hLnJtPVQpLAogICAgYWRhcHRpdmVfbnVtYmVyaW5nID0gKGFkYXB0aXZlX251bWJlcmluZyAtIG1lYW4oYWRhcHRpdmVfbnVtYmVyaW5nLCBuYS5ybT1UKSkgLwogICAgICBzZChhZGFwdGl2ZV9udW1iZXJpbmcsIG5hLnJtPVQpLAogICAgYmlnNV9leHQgPSAoYmlnNV9leHQgLSBtZWFuKGJpZzVfZXh0LCBuYS5ybT1UKSkgLyBzZChiaWc1X2V4dCwgbmEucm09VCksCiAgICBiaWc1X2NvbiA9IChiaWc1X2NvbiAtIG1lYW4oYmlnNV9jb24sIG5hLnJtPVQpKSAvIHNkKGJpZzVfY29uLCBuYS5ybT1UKSwKICAgIGJpZzVfYWdyZWUgPSAoYmlnNV9hZ3JlZSAtIG1lYW4oYmlnNV9hZ3JlZSwgbmEucm09VCkpIC8gc2QoYmlnNV9hZ3JlZSwgbmEucm09VCksCiAgICBiaWc1X29wZW4gPSAoYmlnNV9vcGVuIC0gbWVhbihiaWc1X29wZW4sIG5hLnJtPVQpKSAvIHNkKGJpZzVfb3BlbiwgbmEucm09VCksCiAgICBiaWc1X25ldSA9IChiaWc1X25ldSAtIG1lYW4oYmlnNV9uZXUsIG5hLnJtPVQpKSAvIHNkKGJpZzVfbmV1LCBuYS5ybT1UKSwKICAgIHJpc2tBID0gKHJpc2tBIC0gbWVhbihyaXNrQSwgbmEucm09VCkpIC8gc2Qocmlza0EsIG5hLnJtPVQpLAogICAgcmlza0IgPSAocmlza0IgLSBtZWFuKHJpc2tCLCBuYS5ybT1UKSkgLyBzZChyaXNrQiwgbmEucm09VCksCiAgICB5ZWFyc19vZl9lZHVjYXRpb25feiA9ICh5ZWFyc19vZl9lZHVjYXRpb24gLSBtZWFuKHllYXJzX29mX2VkdWNhdGlvbiwgbmEucm09VCkpIC8KICAgICAgc2QoeWVhcnNfb2ZfZWR1Y2F0aW9uLCBuYS5ybT1UKSwKICAgIHdhZ2VfbGFzdF9tb250aF96ID0gKHdhZ2VfbGFzdF9tb250aF9sb2cgLSBtZWFuKHdhZ2VfbGFzdF9tb250aF9sb2csIG5hLnJtPVQpKSAvCiAgICAgIHNkKHdhZ2VfbGFzdF9tb250aF9sb2csIG5hLnJtPVQpLAogICAgd2FnZV9sYXN0X3llYXJfeiA9ICh3YWdlX2xhc3RfeWVhcl9sb2cgLSBtZWFuKHdhZ2VfbGFzdF95ZWFyX2xvZywgbmEucm09VCkpIC8KICAgICAgc2Qod2FnZV9sYXN0X3llYXJfbG9nLCBuYS5ybT1UKQogICAgICAgICkKCmRhdGFfdXNlZCA8LSBiaXJ0aG9yZGVyICU+JQogIG11dGF0ZShzaWJsaW5nX2NvdW50ID0gc2libGluZ19jb3VudF9uYWl2ZSwKICAgICAgICAgYmlydGhfb3JkZXJfbm9ubGluZWFyID0gYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IsCiAgICAgICAgIGJpcnRoX29yZGVyID0gYmlydGhvcmRlcl9uYWl2ZSwKICAgICAgICAgY291bnRfYmlydGhfb3JkZXIgPSBjb3VudF9iaXJ0aG9yZGVyX25haXZlKQoKYGBgCgojIyBJbnRlbGxpZ2VuY2Ugey5hY3RpdmUgLnRhYnNldH0KIyMjIGctZmFjdG9yIDIwMTUgb2xkIHsudGFic2V0fQoKYGBge3J9CiMgU3BlY2lmeSB5b3VyIG91dGNvbWUKZGF0YV91c2VkID0gZGF0YV91c2VkICU+JSBtdXRhdGUob3V0Y29tZSA9IGdfZmFjdG9yXzIwMTVfb2xkKQpkYXRhX3VzZWRfcGxvdHMgPC0gZGF0YV91c2VkW1sxXV0KCmNvbXBhcmVfYmlydGhvcmRlcl9pbXB1dGVkKGRhdGFfdXNlZCA9IGRhdGFfdXNlZCkKCmBgYAo=</div>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

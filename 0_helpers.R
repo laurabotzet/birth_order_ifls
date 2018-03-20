@@ -211,6 +211,59 @@ plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_ord
   assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)
 }
 
+#' function used to do all birth order effect plots
+plot_birthorder2 = function(model, ylabel = NULL, title = "", bo_var = "birth_order", separate = TRUE, ylimits = NULL) {
+  if(inherits(model, "merMod")) {
+    varnames = names(model@frame)
+  } else {
+    varnames = names(model$model)
+  }
+  outcome = varnames[1]
+  if(is.null(ylabel)) ylabel = outcome
+  library(effects)
+  library(tidyr)
+  emm = allEffects(model)
+  bo_var = names(emm)[names(emm) %contains% bo_var]
+  cemm = as.data.frame(emm[[bo_var]])
+  if (separate != TRUE) {
+    cemm = cemm %>% rename_("Birth order" = bo_var) %>% mutate(Sibship = "across")
+  } else {
+    cemm = cemm %>%
+      separate_(bo_var, into = c("Birth order", "Sibship"), sep = "/")
+    number = spread(as.data.frame(table(model.frame(model)[`bo_var`])), Var1, Freq)
+    n2 = paste0("2 (", sum(number$`1/2`, number$`2/2`), ")", seperate="")
+    n3 = paste0("3 (", sum(number$`1/3`, number$`2/3`, number$`3/3`), ")",
+                seperate="")
+    n4 = paste0("4 (", sum(number$`1/4`, number$`2/4`, number$`3/4`,
+                           number$`4/4`), ")", seperate="")
+    n5 = paste0("5 (", sum(number$`1/5`, number$`2/5`, number$`3/5`,
+                           number$`4/5`, number$`5/5`), ")", seperate="")
+    n5more = paste0("5+ (", sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
+                                number$`4/5+`, number$`5/5+`, number$`5+/5+`), ")",
+                    seperate="")
+    cemm = cemm %>%
+      mutate(Sibship = recode_factor(Sibship, "2" = `n2`, "3" = `n3`, "4" = `n4`,
+                                     "5" = `n5`, "5+" = `n5more`))
+  }
+  plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
+                           colour = `Sibship`, group = `Sibship`)) +
+    geom_smooth(stat = "identity") +
+    geom_line(position = position_dodge(width = 0.5)) +
+    scale_y_continuous(name = ylabel) +
+    labs(title= title) +
+    apatheme +
+    theme(legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),
+          plot.title = element_text(hjust = 0)) +
+    guides(colour=guide_legend(title = "Sibship")) +
+    scale_fill_brewer(palette = "Set2") +
+    scale_colour_brewer(palette = "Set2") +
+    coord_cartesian(ylim = ylimits)
+  print(plotx)
+  assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)
+}
+
+
+
 #' functions used to compare models
 compare_models_markdown = function(m2_birthorder_linear, ylimits = NULL) {
   formr::asis_knit_child('_test_outcome.Rmd')

@@ -335,6 +335,12 @@ $(document).ready(function () {
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre><code>## Warning: package &#39;coefplot&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## Warning: package &#39;sjPlot&#39; was built under R version 3.4.4</code></pre>
+<pre><code>## 
+## Attaching package: &#39;sjPlot&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:cowplot&#39;:
+## 
+##     plot_grid, save_plot</code></pre>
 </div>
 <div id="functions" class="section level2">
 <h2>Functions</h2>
@@ -407,7 +413,12 @@ birthorder = birthorder %&gt;%
   mutate(birthorder_genes = ifelse(birthorder_genes &lt; 0, 0, birthorder_genes),
          birthorder_naive = ifelse(birthorder_naive &lt; 0, 0, birthorder_naive),
          birthorder_genes = round(birthorder_genes),
-         birthorder_naive = round(birthorder_naive))
+         birthorder_naive = round(birthorder_naive),
+         sibling_count_genes = ifelse(sibling_count_genes &lt; 0, 0, sibling_count_genes),
+         sibling_count_naive = ifelse(sibling_count_naive &lt; 0, 0, sibling_count_naive),
+         sibling_count_genes = round(sibling_count_genes),
+         sibling_count_naive = round(sibling_count_naive)
+         )
 
 
 birthorder = birthorder %&gt;% 
@@ -539,7 +550,20 @@ model_naive_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 ## Warning: Some predictor variables are on very different scales: consider rescaling
 
 ## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>mitml::testEstimates(model_naive_m1, var.comp = T)</code></pre>
+<pre class="r"><code>x = mitml::testEstimates(model_naive_m1, var.comp = T)
+
+y = as_tibble(x$estimates, rownames = &quot;id&quot;)
+
+y = y %&gt;%
+  mutate(CI_low = Estimate - 1.96 * Std.Error,
+         CI_high = Estimate + 1.96 * Std.Error) %&gt;%
+  select(CI_low, CI_high)
+CI_low = y$CI_low
+CI_high = y$CI_high
+
+
+x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
+x</code></pre>
 <pre><code>## 
 ## Call:
 ## 
@@ -547,13 +571,13 @@ model_naive_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 ## 
 ## Final parameter estimates and inferences obtained from 10 imputed data sets.
 ## 
-##                            Estimate Std.Error   t.value        df   P(&gt;|t|)       RIV       FMI 
-## (Intercept)                   0.515     0.024    21.625    24.386     0.000     1.548     0.636 
-## poly(age, 3, raw = TRUE)1    -0.018     0.003    -5.576    30.152     0.000     1.204     0.574 
-## poly(age, 3, raw = TRUE)2     0.000     0.000     0.143    46.845     0.887     0.780     0.461 
-## poly(age, 3, raw = TRUE)3    -0.000     0.000    -2.732    66.584     0.008     0.581     0.386 
-## male                         -0.008     0.011    -0.714    80.174     0.477     0.504     0.351 
-## sibling_count                -0.018     0.002    -8.849   208.373     0.000     0.262     0.215 
+##                            Estimate Std.Error    CI_low   CI_high   t.value        df   P(&gt;|t|)       RIV       FMI 
+## (Intercept)                   0.515     0.024     0.468     0.561    21.625    24.386     0.000     1.548     0.636 
+## poly(age, 3, raw = TRUE)1    -0.018     0.003    -0.024    -0.011    -5.576    30.152     0.000     1.204     0.574 
+## poly(age, 3, raw = TRUE)2     0.000     0.000    -0.000     0.000     0.143    46.845     0.887     0.780     0.461 
+## poly(age, 3, raw = TRUE)3    -0.000     0.000    -0.000    -0.000    -2.732    66.584     0.008     0.581     0.386 
+## male                         -0.008     0.011    -0.029     0.014    -0.714    80.174     0.477     0.504     0.351 
+## sibling_count                -0.018     0.002    -0.022    -0.014    -8.849   208.373     0.000     0.262     0.215 
 ## 
 ##                                     Estimate 
 ## Intercept~~Intercept|mother_pidlink    0.204 
@@ -596,7 +620,20 @@ model_naive_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 ## Warning: Some predictor variables are on very different scales: consider rescaling
 
 ## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>mitml::testEstimates(model_naive_m2, var.comp = T)</code></pre>
+<pre class="r"><code>x = mitml::testEstimates(model_naive_m2, var.comp = T)
+
+y = as_tibble(x$estimates, rownames = &quot;id&quot;)
+
+y = y %&gt;%
+  mutate(CI_low = Estimate - 1.96 * Std.Error,
+         CI_high = Estimate + 1.96 * Std.Error) %&gt;%
+  select(CI_low, CI_high)
+CI_low = y$CI_low
+CI_high = y$CI_high
+
+
+x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
+x</code></pre>
 <pre><code>## 
 ## Call:
 ## 
@@ -604,14 +641,14 @@ model_naive_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 ## 
 ## Final parameter estimates and inferences obtained from 10 imputed data sets.
 ## 
-##                            Estimate Std.Error   t.value        df   P(&gt;|t|)       RIV       FMI 
-## (Intercept)                   0.515     0.024    21.390    24.432     0.000     1.544     0.636 
-## birth_order                  -0.000     0.004    -0.113    43.398     0.910     0.836     0.479 
-## poly(age, 3, raw = TRUE)1    -0.018     0.003    -5.591    30.571     0.000     1.186     0.570 
-## poly(age, 3, raw = TRUE)2     0.000     0.000     0.131    52.912     0.897     0.702     0.433 
-## poly(age, 3, raw = TRUE)3    -0.000     0.000    -2.767    82.282     0.007     0.494     0.346 
-## male                         -0.008     0.011    -0.714    80.118     0.477     0.504     0.351 
-## sibling_count                -0.018     0.003    -6.177   103.577     0.000     0.418     0.308 
+##                            Estimate Std.Error    CI_low   CI_high   t.value        df   P(&gt;|t|)       RIV       FMI 
+## (Intercept)                   0.515     0.024     0.468     0.562    21.390    24.432     0.000     1.544     0.636 
+## birth_order                  -0.000     0.004    -0.007     0.007    -0.113    43.398     0.910     0.836     0.479 
+## poly(age, 3, raw = TRUE)1    -0.018     0.003    -0.024    -0.011    -5.591    30.571     0.000     1.186     0.570 
+## poly(age, 3, raw = TRUE)2     0.000     0.000    -0.000     0.000     0.131    52.912     0.897     0.702     0.433 
+## poly(age, 3, raw = TRUE)3    -0.000     0.000    -0.000    -0.000    -2.767    82.282     0.007     0.494     0.346 
+## male                         -0.008     0.011    -0.029     0.014    -0.714    80.118     0.477     0.504     0.351 
+## sibling_count                -0.018     0.003    -0.023    -0.012    -6.177   103.577     0.000     0.418     0.308 
 ## 
 ##                                     Estimate 
 ## Intercept~~Intercept|mother_pidlink    0.204 
@@ -625,7 +662,7 @@ model_naive_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 <pre class="r"><code>model_naive_m2_plot = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                            data = data_used_plots)</code></pre>
 <pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>plot_birthorder(model_naive_m2_plot, separate = FALSE)</code></pre>
+<pre class="r"><code>plot_birthorder2(model_naive_m2_plot, separate = FALSE)</code></pre>
 <p><img src="4_analyses_imputed_data_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 </div>
@@ -654,7 +691,20 @@ model_naive_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 ## Warning: Some predictor variables are on very different scales: consider rescaling
 
 ## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>mitml::testEstimates(model_naive_m3, var.comp = T)</code></pre>
+<pre class="r"><code>x = mitml::testEstimates(model_naive_m3, var.comp = T)
+
+y = as_tibble(x$estimates, rownames = &quot;id&quot;)
+
+y = y %&gt;%
+  mutate(CI_low = Estimate - 1.96 * Std.Error,
+         CI_high = Estimate + 1.96 * Std.Error) %&gt;%
+  select(CI_low, CI_high)
+CI_low = y$CI_low
+CI_high = y$CI_high
+
+
+x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
+x</code></pre>
 <pre><code>## 
 ## Call:
 ## 
@@ -662,18 +712,18 @@ model_naive_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 ## 
 ## Final parameter estimates and inferences obtained from 10 imputed data sets.
 ## 
-##                            Estimate Std.Error   t.value        df   P(&gt;|t|)       RIV       FMI 
-## (Intercept)                   0.508     0.025    20.702    26.586     0.000     1.391     0.610 
-## birth_order_nonlinear2        0.009     0.017     0.562    35.698     0.578     1.008     0.528 
-## birth_order_nonlinear3        0.012     0.017     0.686   113.511     0.494     0.392     0.294 
-## birth_order_nonlinear4       -0.006     0.025    -0.241    35.817     0.811     1.005     0.527 
-## birth_order_nonlinear5        0.003     0.028     0.092    50.919     0.927     0.725     0.442 
-## birth_order_nonlinear5+      -0.016     0.028    -0.553    36.142     0.584     0.996     0.525 
-## poly(age, 3, raw = TRUE)1    -0.017     0.003    -5.459    30.374     0.000     1.195     0.572 
-## poly(age, 3, raw = TRUE)2    -0.000     0.000    -0.016    50.809     0.987     0.727     0.442 
-## poly(age, 3, raw = TRUE)3    -0.000     0.000    -2.571    76.063     0.012     0.524     0.361 
-## male                         -0.008     0.011    -0.727    79.758     0.469     0.506     0.352 
-## sibling_count                -0.017     0.003    -5.828    75.346     0.000     0.528     0.362 
+##                            Estimate Std.Error    CI_low   CI_high   t.value        df   P(&gt;|t|)       RIV       FMI 
+## (Intercept)                   0.508     0.025     0.460     0.556    20.702    26.586     0.000     1.391     0.610 
+## birth_order_nonlinear2        0.009     0.017    -0.023     0.042     0.562    35.698     0.578     1.008     0.528 
+## birth_order_nonlinear3        0.012     0.017    -0.022     0.045     0.686   113.511     0.494     0.392     0.294 
+## birth_order_nonlinear4       -0.006     0.025    -0.056     0.043    -0.241    35.817     0.811     1.005     0.527 
+## birth_order_nonlinear5        0.003     0.028    -0.052     0.058     0.092    50.919     0.927     0.725     0.442 
+## birth_order_nonlinear5+      -0.016     0.028    -0.071     0.040    -0.553    36.142     0.584     0.996     0.525 
+## poly(age, 3, raw = TRUE)1    -0.017     0.003    -0.023    -0.011    -5.459    30.374     0.000     1.195     0.572 
+## poly(age, 3, raw = TRUE)2    -0.000     0.000    -0.000     0.000    -0.016    50.809     0.987     0.727     0.442 
+## poly(age, 3, raw = TRUE)3    -0.000     0.000    -0.000    -0.000    -2.571    76.063     0.012     0.524     0.361 
+## male                         -0.008     0.011    -0.030     0.014    -0.727    79.758     0.469     0.506     0.352 
+## sibling_count                -0.017     0.003    -0.023    -0.011    -5.828    75.346     0.000     0.528     0.362 
 ## 
 ##                                     Estimate 
 ## Intercept~~Intercept|mother_pidlink    0.204 
@@ -717,7 +767,20 @@ model_naive_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 ## Warning: Some predictor variables are on very different scales: consider rescaling
 
 ## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>mitml::testEstimates(model_naive_m4, var.comp = T)</code></pre>
+<pre class="r"><code>x = mitml::testEstimates(model_naive_m4, var.comp = T)
+
+y = as_tibble(x$estimates, rownames = &quot;id&quot;)
+
+y = y %&gt;%
+  mutate(CI_low = Estimate - 1.96 * Std.Error,
+         CI_high = Estimate + 1.96 * Std.Error) %&gt;%
+  select(CI_low, CI_high)
+CI_low = y$CI_low
+CI_high = y$CI_high
+
+
+x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
+x</code></pre>
 <pre><code>## 
 ## Call:
 ## 
@@ -725,31 +788,31 @@ model_naive_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 ## 
 ## Final parameter estimates and inferences obtained from 10 imputed data sets.
 ## 
-##                            Estimate Std.Error   t.value        df   P(&gt;|t|)       RIV       FMI 
-## (Intercept)                   0.477     0.035    13.488    32.599     0.000     1.107     0.552 
-## count_birth_order2/2          0.000     0.026     0.013    51.102     0.990     0.723     0.441 
-## count_birth_order1/3          0.015     0.029     0.512   178.716     0.610     0.289     0.233 
-## count_birth_order2/3         -0.007     0.032    -0.229    69.461     0.820     0.562     0.378 
-## count_birth_order3/3          0.012     0.028     0.429   190.183     0.668     0.278     0.226 
-## count_birth_order1/4         -0.003     0.034    -0.099   566.449     0.921     0.144     0.129 
-## count_birth_order2/4          0.011     0.035     0.306   242.394     0.760     0.239     0.199 
-## count_birth_order3/4         -0.034     0.037    -0.896    82.927     0.373     0.491     0.345 
-## count_birth_order4/4         -0.015     0.037    -0.415    67.202     0.680     0.577     0.384 
-## count_birth_order1/5         -0.024     0.044    -0.546   205.368     0.585     0.265     0.217 
-## count_birth_order2/5          0.025     0.045     0.559   201.950     0.577     0.268     0.219 
-## count_birth_order3/5          0.009     0.041     0.217   579.371     0.828     0.142     0.128 
-## count_birth_order4/5         -0.040     0.046    -0.880    82.572     0.381     0.493     0.346 
-## count_birth_order5/5          0.005     0.042     0.114    87.816     0.909     0.471     0.335 
-## count_birth_order1/5+        -0.103     0.036    -2.823   117.534     0.006     0.383     0.289 
-## count_birth_order2/5+        -0.157     0.036    -4.316   119.430     0.000     0.378     0.286 
-## count_birth_order3/5+        -0.144     0.039    -3.685    53.004     0.001     0.701     0.433 
-## count_birth_order4/5+        -0.154     0.037    -4.135    62.410     0.000     0.612     0.399 
-## count_birth_order5/5+        -0.147     0.035    -4.256    96.564     0.000     0.439     0.319 
-## count_birth_order5+/5+       -0.159     0.026    -6.232   104.045     0.000     0.417     0.307 
-## poly(age, 3, raw = TRUE)1    -0.019     0.004    -4.469    28.800     0.000     1.268     0.587 
-## poly(age, 3, raw = TRUE)2     0.000     0.000     0.871    46.230     0.389     0.790     0.464 
-## poly(age, 3, raw = TRUE)3    -0.000     0.000    -2.648    66.663     0.010     0.581     0.386 
-## male                         -0.016     0.011    -1.432   112.554     0.155     0.394     0.295 
+##                            Estimate Std.Error    CI_low   CI_high   t.value        df   P(&gt;|t|)       RIV       FMI 
+## (Intercept)                   0.477     0.035     0.407     0.546    13.488    32.599     0.000     1.107     0.552 
+## count_birth_order2/2          0.000     0.026    -0.050     0.050     0.013    51.102     0.990     0.723     0.441 
+## count_birth_order1/3          0.015     0.029    -0.041     0.071     0.512   178.716     0.610     0.289     0.233 
+## count_birth_order2/3         -0.007     0.032    -0.069     0.055    -0.229    69.461     0.820     0.562     0.378 
+## count_birth_order3/3          0.012     0.028    -0.043     0.066     0.429   190.183     0.668     0.278     0.226 
+## count_birth_order1/4         -0.003     0.034    -0.070     0.063    -0.099   566.449     0.921     0.144     0.129 
+## count_birth_order2/4          0.011     0.035    -0.058     0.080     0.306   242.394     0.760     0.239     0.199 
+## count_birth_order3/4         -0.034     0.037    -0.107     0.040    -0.896    82.927     0.373     0.491     0.345 
+## count_birth_order4/4         -0.015     0.037    -0.088     0.057    -0.415    67.202     0.680     0.577     0.384 
+## count_birth_order1/5         -0.024     0.044    -0.111     0.063    -0.546   205.368     0.585     0.265     0.217 
+## count_birth_order2/5          0.025     0.045    -0.063     0.114     0.559   201.950     0.577     0.268     0.219 
+## count_birth_order3/5          0.009     0.041    -0.071     0.089     0.217   579.371     0.828     0.142     0.128 
+## count_birth_order4/5         -0.040     0.046    -0.131     0.050    -0.880    82.572     0.381     0.493     0.346 
+## count_birth_order5/5          0.005     0.042    -0.078     0.088     0.114    87.816     0.909     0.471     0.335 
+## count_birth_order1/5+        -0.103     0.036    -0.174    -0.031    -2.823   117.534     0.006     0.383     0.289 
+## count_birth_order2/5+        -0.157     0.036    -0.229    -0.086    -4.316   119.430     0.000     0.378     0.286 
+## count_birth_order3/5+        -0.144     0.039    -0.221    -0.067    -3.685    53.004     0.001     0.701     0.433 
+## count_birth_order4/5+        -0.154     0.037    -0.227    -0.081    -4.135    62.410     0.000     0.612     0.399 
+## count_birth_order5/5+        -0.147     0.035    -0.215    -0.079    -4.256    96.564     0.000     0.439     0.319 
+## count_birth_order5+/5+       -0.159     0.026    -0.209    -0.109    -6.232   104.045     0.000     0.417     0.307 
+## poly(age, 3, raw = TRUE)1    -0.019     0.004    -0.027    -0.011    -4.469    28.800     0.000     1.268     0.587 
+## poly(age, 3, raw = TRUE)2     0.000     0.000    -0.000     0.000     0.871    46.230     0.389     0.790     0.464 
+## poly(age, 3, raw = TRUE)3    -0.000     0.000    -0.000    -0.000    -2.648    66.663     0.010     0.581     0.386 
+## male                         -0.016     0.011    -0.038     0.006    -1.432   112.554     0.155     0.394     0.295 
 ## 
 ##                                     Estimate 
 ## Intercept~~Intercept|mother_pidlink    0.203 
@@ -948,7 +1011,20 @@ model_genes_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 ## Warning: Some predictor variables are on very different scales: consider rescaling
 
 ## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>mitml::testEstimates(model_genes_m1, var.comp = T)</code></pre>
+<pre class="r"><code>x = mitml::testEstimates(model_genes_m1, var.comp = T)
+
+y = as_tibble(x$estimates, rownames = &quot;id&quot;)
+
+y = y %&gt;%
+  mutate(CI_low = Estimate - 1.96 * Std.Error,
+         CI_high = Estimate + 1.96 * Std.Error) %&gt;%
+  select(CI_low, CI_high)
+CI_low = y$CI_low
+CI_high = y$CI_high
+
+
+x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
+x</code></pre>
 <pre><code>## 
 ## Call:
 ## 
@@ -956,13 +1032,13 @@ model_genes_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 ## 
 ## Final parameter estimates and inferences obtained from 10 imputed data sets.
 ## 
-##                            Estimate Std.Error   t.value        df   P(&gt;|t|)       RIV       FMI 
-## (Intercept)                   0.516     0.024    21.739    25.945     0.000     1.433     0.617 
-## poly(age, 3, raw = TRUE)1    -0.019     0.003    -5.990    30.085     0.000     1.207     0.574 
-## poly(age, 3, raw = TRUE)2     0.000     0.000     0.337    47.182     0.737     0.775     0.459 
-## poly(age, 3, raw = TRUE)3    -0.000     0.000    -2.703    66.911     0.009     0.579     0.385 
-## male                         -0.008     0.011    -0.736    77.280     0.464     0.518     0.358 
-## sibling_count                -0.021     0.003    -6.550   170.346     0.000     0.298     0.239 
+##                            Estimate Std.Error    CI_low   CI_high   t.value        df   P(&gt;|t|)       RIV       FMI 
+## (Intercept)                   0.516     0.024     0.469     0.562    21.678    25.774     0.000     1.445     0.619 
+## poly(age, 3, raw = TRUE)1    -0.019     0.003    -0.025    -0.013    -6.007    30.147     0.000     1.205     0.574 
+## poly(age, 3, raw = TRUE)2     0.000     0.000    -0.000     0.000     0.340    46.945     0.736     0.779     0.460 
+## poly(age, 3, raw = TRUE)3    -0.000     0.000    -0.000    -0.000    -2.693    65.926     0.009     0.586     0.388 
+## male                         -0.008     0.011    -0.030     0.014    -0.736    77.058     0.464     0.519     0.358 
+## sibling_count                -0.020     0.003    -0.027    -0.014    -6.481   164.271     0.000     0.306     0.243 
 ## 
 ##                                     Estimate 
 ## Intercept~~Intercept|mother_pidlink    0.207 
@@ -1005,7 +1081,20 @@ model_genes_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 ## Warning: Some predictor variables are on very different scales: consider rescaling
 
 ## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>mitml::testEstimates(model_genes_m2, var.comp = T)</code></pre>
+<pre class="r"><code>x = mitml::testEstimates(model_genes_m2, var.comp = T)
+
+y = as_tibble(x$estimates, rownames = &quot;id&quot;)
+
+y = y %&gt;%
+  mutate(CI_low = Estimate - 1.96 * Std.Error,
+         CI_high = Estimate + 1.96 * Std.Error) %&gt;%
+  select(CI_low, CI_high)
+CI_low = y$CI_low
+CI_high = y$CI_high
+
+
+x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
+x</code></pre>
 <pre><code>## 
 ## Call:
 ## 
@@ -1013,14 +1102,14 @@ model_genes_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 ## 
 ## Final parameter estimates and inferences obtained from 10 imputed data sets.
 ## 
-##                            Estimate Std.Error   t.value        df   P(&gt;|t|)       RIV       FMI 
-## (Intercept)                   0.512     0.024    21.588    27.383     0.000     1.344     0.601 
-## birth_order                   0.005     0.005     0.972    40.854     0.337     0.884     0.494 
-## poly(age, 3, raw = TRUE)1    -0.019     0.003    -6.001    30.006     0.000     1.211     0.575 
-## poly(age, 3, raw = TRUE)2     0.000     0.000     0.433    48.051     0.667     0.763     0.455 
-## poly(age, 3, raw = TRUE)3    -0.000     0.000    -2.823    70.794     0.006     0.554     0.374 
-## male                         -0.008     0.011    -0.736    77.175     0.464     0.519     0.358 
-## sibling_count                -0.024     0.004    -5.856   142.720     0.000     0.335     0.261 
+##                            Estimate Std.Error    CI_low   CI_high   t.value        df   P(&gt;|t|)       RIV       FMI 
+## (Intercept)                   0.512     0.024     0.465     0.559    21.550    27.271     0.000     1.350     0.603 
+## birth_order                   0.004     0.005    -0.005     0.014     0.911    41.675     0.367     0.868     0.489 
+## poly(age, 3, raw = TRUE)1    -0.019     0.003    -0.025    -0.013    -6.016    30.017     0.000     1.210     0.575 
+## poly(age, 3, raw = TRUE)2     0.000     0.000    -0.000     0.000     0.428    47.355     0.671     0.773     0.458 
+## poly(age, 3, raw = TRUE)3    -0.000     0.000    -0.000    -0.000    -2.798    68.638     0.007     0.568     0.380 
+## male                         -0.008     0.011    -0.030     0.014    -0.736    76.988     0.464     0.520     0.358 
+## sibling_count                -0.023     0.004    -0.031    -0.015    -5.812   151.133     0.000     0.323     0.254 
 ## 
 ##                                     Estimate 
 ## Intercept~~Intercept|mother_pidlink    0.206 
@@ -1034,7 +1123,7 @@ model_genes_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 <pre class="r"><code>model_genes_m2_plot = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                            data = data_used_plots)</code></pre>
 <pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>plot_birthorder(model_genes_m2_plot, separate = FALSE)</code></pre>
+<pre class="r"><code>plot_birthorder2(model_genes_m2_plot, separate = FALSE)</code></pre>
 <p><img src="4_analyses_imputed_data_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 </div>
 </div>
@@ -1063,7 +1152,20 @@ model_genes_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 ## Warning: Some predictor variables are on very different scales: consider rescaling
 
 ## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>mitml::testEstimates(model_genes_m3, var.comp = T)</code></pre>
+<pre class="r"><code>x = mitml::testEstimates(model_genes_m3, var.comp = T)
+
+y = as_tibble(x$estimates, rownames = &quot;id&quot;)
+
+y = y %&gt;%
+  mutate(CI_low = Estimate - 1.96 * Std.Error,
+         CI_high = Estimate + 1.96 * Std.Error) %&gt;%
+  select(CI_low, CI_high)
+CI_low = y$CI_low
+CI_high = y$CI_high
+
+
+x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
+x</code></pre>
 <pre><code>## 
 ## Call:
 ## 
@@ -1071,18 +1173,18 @@ model_genes_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 ## 
 ## Final parameter estimates and inferences obtained from 10 imputed data sets.
 ## 
-##                            Estimate Std.Error   t.value        df   P(&gt;|t|)       RIV       FMI 
-## (Intercept)                   0.518     0.025    20.333    25.306     0.000     1.477     0.625 
-## birth_order_nonlinear2        0.004     0.017     0.220    29.129     0.828     1.252     0.584 
-## birth_order_nonlinear3        0.011     0.021     0.515    35.155     0.610     1.024     0.532 
-## birth_order_nonlinear4        0.001     0.027     0.043    36.530     0.966     0.986     0.522 
-## birth_order_nonlinear5       -0.011     0.032    -0.345    63.534     0.731     0.604     0.395 
-## birth_order_nonlinear5+      -0.008     0.033    -0.251    57.273     0.803     0.657     0.416 
-## poly(age, 3, raw = TRUE)1    -0.019     0.003    -5.703    26.777     0.000     1.380     0.608 
-## poly(age, 3, raw = TRUE)2     0.000     0.000     0.515    41.836     0.609     0.865     0.488 
-## poly(age, 3, raw = TRUE)3    -0.000     0.000    -2.839    63.753     0.006     0.602     0.394 
-## male                         -0.010     0.011    -0.926    86.290     0.357     0.477     0.338 
-## sibling_count                -0.022     0.004    -5.078    80.640     0.000     0.502     0.350 
+##                            Estimate Std.Error    CI_low   CI_high   t.value        df   P(&gt;|t|)       RIV       FMI 
+## (Intercept)                   0.518     0.025     0.468     0.568    20.343    25.389     0.000     1.471     0.624 
+## birth_order_nonlinear2        0.003     0.017    -0.029     0.036     0.201    28.728     0.842     1.271     0.587 
+## birth_order_nonlinear3        0.010     0.021    -0.030     0.050     0.481    36.259     0.633     0.993     0.524 
+## birth_order_nonlinear4        0.000     0.027    -0.052     0.052     0.000    39.868     1.000     0.905     0.500 
+## birth_order_nonlinear5       -0.013     0.032    -0.075     0.050    -0.398    63.001     0.692     0.608     0.397 
+## birth_order_nonlinear5+      -0.011     0.033    -0.076     0.055    -0.320    55.537     0.750     0.674     0.423 
+## poly(age, 3, raw = TRUE)1    -0.019     0.003    -0.025    -0.012    -5.712    26.703     0.000     1.384     0.609 
+## poly(age, 3, raw = TRUE)2     0.000     0.000    -0.000     0.000     0.511    41.407     0.612     0.873     0.490 
+## poly(age, 3, raw = TRUE)3    -0.000     0.000    -0.000    -0.000    -2.817    62.357     0.006     0.613     0.399 
+## male                         -0.010     0.011    -0.032     0.011    -0.926    86.184     0.357     0.477     0.338 
+## sibling_count                -0.021     0.004    -0.030    -0.013    -5.042    87.774     0.000     0.471     0.335 
 ## 
 ##                                     Estimate 
 ## Intercept~~Intercept|mother_pidlink    0.205 
@@ -1126,7 +1228,20 @@ model_genes_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 ## Warning: Some predictor variables are on very different scales: consider rescaling
 
 ## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>mitml::testEstimates(model_genes_m4, var.comp = T)</code></pre>
+<pre class="r"><code>x = mitml::testEstimates(model_genes_m4, var.comp = T)
+
+y = as_tibble(x$estimates, rownames = &quot;id&quot;)
+
+y = y %&gt;%
+  mutate(CI_low = Estimate - 1.96 * Std.Error,
+         CI_high = Estimate + 1.96 * Std.Error) %&gt;%
+  select(CI_low, CI_high)
+CI_low = y$CI_low
+CI_high = y$CI_high
+
+
+x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
+x</code></pre>
 <pre><code>## 
 ## Call:
 ## 
@@ -1134,36 +1249,36 @@ model_genes_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 ## 
 ## Final parameter estimates and inferences obtained from 10 imputed data sets.
 ## 
-##                            Estimate Std.Error   t.value        df   P(&gt;|t|)       RIV       FMI 
-## (Intercept)                   0.480     0.039    12.441    46.741     0.000     0.782     0.461 
-## count_birth_order2/2          0.017     0.033     0.527    28.983     0.602     1.259     0.585 
-## count_birth_order1/3          0.021     0.037     0.578    77.795     0.565     0.515     0.356 
-## count_birth_order2/3          0.014     0.034     0.406   102.594     0.686     0.421     0.310 
-## count_birth_order3/3          0.031     0.036     0.866    56.912     0.390     0.660     0.418 
-## count_birth_order1/4         -0.058     0.052    -1.126    87.677     0.263     0.471     0.335 
-## count_birth_order2/4         -0.029     0.044    -0.659   697.924     0.510     0.128     0.116 
-## count_birth_order3/4         -0.061     0.047    -1.296    88.446     0.198     0.468     0.334 
-## count_birth_order4/4         -0.017     0.043    -0.388    95.713     0.699     0.442     0.321 
-## count_birth_order1/5         -0.065     0.079    -0.820    56.253     0.415     0.667     0.420 
-## count_birth_order2/5         -0.131     0.077    -1.704    92.697     0.092     0.453     0.326 
-## count_birth_order3/5         -0.119     0.075    -1.595    49.377     0.117     0.745     0.449 
-## count_birth_order4/5         -0.103     0.069    -1.492    45.376     0.143     0.803     0.468 
-## count_birth_order5/5         -0.094     0.071    -1.308    29.480     0.201     1.235     0.580 
-## count_birth_order1/5+        -0.480     0.054    -8.840    51.409     0.000     0.719     0.440 
-## count_birth_order2/5+        -0.455     0.048    -9.483    59.864     0.000     0.633     0.407 
-## count_birth_order3/5+        -0.403     0.044    -9.158    75.106     0.000     0.529     0.363 
-## count_birth_order4/5+        -0.384     0.046    -8.342    51.308     0.000     0.721     0.440 
-## count_birth_order5/5+        -0.358     0.044    -8.124    59.285     0.000     0.638     0.409 
-## count_birth_order5+/5+       -0.305     0.035    -8.612    63.925     0.000     0.601     0.394 
-## poly(age, 3, raw = TRUE)1    -0.023     0.006    -3.837    25.720     0.001     1.448     0.620 
-## poly(age, 3, raw = TRUE)2     0.001     0.000     2.605    35.805     0.013     1.005     0.527 
-## poly(age, 3, raw = TRUE)3    -0.000     0.000    -3.105    54.579     0.003     0.684     0.427 
-## male                         -0.026     0.013    -1.986   244.556     0.048     0.237     0.198 
+##                            Estimate Std.Error    CI_low   CI_high   t.value        df   P(&gt;|t|)       RIV       FMI 
+## (Intercept)                   0.456     0.031     0.396     0.516    14.927    55.877     0.000     0.670     0.422 
+## count_birth_order2/2          0.007     0.026    -0.044     0.059     0.281    29.953     0.780     1.213     0.576 
+## count_birth_order1/3          0.022     0.034    -0.045     0.089     0.656    31.433     0.517     1.151     0.562 
+## count_birth_order2/3          0.003     0.033    -0.060     0.067     0.101    29.760     0.920     1.222     0.577 
+## count_birth_order3/3          0.030     0.031    -0.031     0.091     0.955    44.388     0.345     0.819     0.473 
+## count_birth_order1/4         -0.025     0.044    -0.111     0.062    -0.563    38.067     0.577     0.946     0.511 
+## count_birth_order2/4         -0.025     0.036    -0.096     0.047    -0.680    62.674     0.499     0.610     0.398 
+## count_birth_order3/4         -0.046     0.033    -0.111     0.020    -1.363   141.201     0.175     0.338     0.263 
+## count_birth_order4/4         -0.014     0.040    -0.092     0.063    -0.358    48.331     0.722     0.759     0.454 
+## count_birth_order1/5         -0.069     0.048    -0.163     0.024    -1.450   222.650     0.148     0.252     0.208 
+## count_birth_order2/5         -0.101     0.051    -0.201    -0.001    -1.976    54.202     0.053     0.688     0.428 
+## count_birth_order3/5         -0.082     0.045    -0.170     0.006    -1.836   109.620     0.069     0.402     0.299 
+## count_birth_order4/5         -0.092     0.058    -0.205     0.020    -1.607    27.083     0.120     1.361     0.605 
+## count_birth_order5/5         -0.067     0.052    -0.169     0.035    -1.289    49.031     0.203     0.750     0.450 
+## count_birth_order1/5+        -0.181     0.047    -0.273    -0.089    -3.858   109.433     0.000     0.402     0.299 
+## count_birth_order2/5+        -0.187     0.046    -0.277    -0.096    -4.031    57.487     0.000     0.655     0.416 
+## count_birth_order3/5+        -0.159     0.044    -0.246    -0.073    -3.609    57.400     0.001     0.656     0.416 
+## count_birth_order4/5+        -0.167     0.044    -0.252    -0.081    -3.821    60.899     0.000     0.625     0.404 
+## count_birth_order5/5+        -0.172     0.043    -0.257    -0.087    -3.980    56.254     0.000     0.667     0.420 
+## count_birth_order5+/5+       -0.161     0.031    -0.223    -0.099    -5.117    94.930     0.000     0.445     0.322 
+## poly(age, 3, raw = TRUE)1    -0.017     0.004    -0.026    -0.009    -4.161    25.632     0.000     1.454     0.621 
+## poly(age, 3, raw = TRUE)2     0.000     0.000    -0.000     0.000     0.314    31.359     0.756     1.154     0.563 
+## poly(age, 3, raw = TRUE)3    -0.000     0.000    -0.000    -0.000    -2.189    37.688     0.035     0.956     0.514 
+## male                         -0.013     0.012    -0.037     0.011    -1.054    80.590     0.295     0.502     0.350 
 ## 
 ##                                     Estimate 
-## Intercept~~Intercept|mother_pidlink    0.182 
-## Residual~~Residual                     0.655 
-## ICC|mother_pidlink                     0.217 
+## Intercept~~Intercept|mother_pidlink    0.206 
+## Residual~~Residual                     0.663 
+## ICC|mother_pidlink                     0.237 
 ## 
 ## Unadjusted hypothesis test as appropriate in larger samples.</code></pre>
 </div>
@@ -1315,10 +1430,10 @@ model_genes_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + m
 ## Model 3: outcome~birth_order+poly(age,3,raw=TRUE)+male+sibling_count+(1|mother_pidlink)
 ## Model 4: outcome~poly(age,3,raw=TRUE)+male+sibling_count+(1|mother_pidlink)
 ## 
-##            F.value      df1      df2    P(&gt;F)      RIV 
-##   1 vs 2: 2244.060       13   38.234    0.000    0.493 
-##   2 vs 3:  281.068        4   13.802    0.000    1.906 
-##   3 vs 4:    1.468        1  116.574    0.228    0.385 
+##          F.value     df1     df2   P(&gt;F)     RIV 
+##  1 vs 2: 621.189      13  14.790   0.000   1.132 
+##  2 vs 3: 281.690       4  13.835   0.000   1.900 
+##  3 vs 4:   1.326       1 124.759   0.252   0.367 
 ## 
 ## Models originally fit with REML were automatically refit using ML.</code></pre>
 </div>
@@ -1333,7 +1448,7 @@ multiplot(model_naive_m2_plot, model_genes_m2_plot, intercept = FALSE)</code></p
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCm91dHB1dDogaHRtbF9kb2N1bWVudAplZGl0b3Jfb3B0aW9uczogCiAgY2h1bmtfb3V0cHV0X3R5cGU6IGNvbnNvbGUKLS0tCiMgPHNwYW4gc3R5bGU9ImNvbG9yOiNBNkQ4NTQiPkJpcnRoIE9yZGVyIEVmZmVjdHM8L3NwYW4+IHsudGFic2V0fQoKIyMgSGVscGVyCmBgYHtyIGhlbHBlcn0Kc291cmNlKCIwX2hlbHBlcnMuUiIpCmBgYAoKCiMjIEZ1bmN0aW9ucwoKYGBge3J9CgpuX2ltcHV0YXRpb25zLm1pdG1sID0gZnVuY3Rpb24oaW1wcykgewogIGltcHMkaXRlciRtCn0Kbl9pbXB1dGF0aW9ucy5taWRzID0gZnVuY3Rpb24oaW1wcykgewogIGltcHMkbQp9Cm5faW1wdXRhdGlvbnMuYW1lbGlhID0gZnVuY3Rpb24oaW1wcykgewogIGxlbmd0aChpbXBzJGltcHV0YXRpb25zKQp9Cm5faW1wdXRhdGlvbnMgPSBmdW5jdGlvbihpbXBzKSB7IFVzZU1ldGhvZCgibl9pbXB1dGF0aW9ucyIpIH0KCmNvbXBsZXRlLm1pdG1sID0gbWl0bWw6Om1pdG1sQ29tcGxldGUKY29tcGxldGUubWlkcyA9IG1pY2U6OmNvbXBsZXRlCmNvbXBsZXRlID0gZnVuY3Rpb24oLi4uKSB7IFVzZU1ldGhvZCgiY29tcGxldGUiKSB9CgpsaWJyYXJ5KG1pY2UpCmxpYnJhcnkobWljZWFkZHMpCmxpYnJhcnkobWl0bWwpCmBgYAoKCiMjIExvYWQgZGF0YQpgYGB7ciBMb2FkIERhdGF9CmJpcnRob3JkZXIgPSByZWFkUkRTKCJkYXRhL2FsbGRhdGFfYmlydGhvcmRlcl9pX21sLnJkcyIpCmBgYAoKIyMgRGF0YSBwcmVwYXJhdGlvbnMKYGBge3IgZGF0YSBwcmVwYXJhdGlvbnN9CmJpcnRob3JkZXIgPC0gbWlkczJtaXRtbC5saXN0KGJpcnRob3JkZXIpCgojIyBDYWxjdWxhdGUgZ19mYWN0b3JzIChmb3Igbm93IHdpdGggcm93TWVhbnM6IGJldHRlciB0byBydW4gZmFjdG9yIGFuYWx5c2lzIGhlcmUgYXMgd2VsbD8pCmJpcnRob3JkZXIgPC0gd2l0aGluKGJpcnRob3JkZXIsIHsKICBnX2ZhY3Rvcl8yMDE1X29sZCA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDE1X29sZCwgbWF0aF8yMDE1X29sZCwgY291bnRfYmFja3dhcmRzLCAgd29yZHNfZGVsYXllZCwgYWRhcHRpdmVfbnVtYmVyaW5nKSkpCn0pCgpiaXJ0aG9yZGVyIDwtIHdpdGhpbihiaXJ0aG9yZGVyLCB7CiAgZ19mYWN0b3JfMjAxNV95b3VuZyA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDE1X3lvdW5nLCBtYXRoXzIwMTVfeW91bmcpKSkKfSkKCmJpcnRob3JkZXIgPC0gd2l0aGluKGJpcnRob3JkZXIsIHsKICBnX2ZhY3Rvcl8yMDA3X29sZCA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDA3X29sZCwgbWF0aF8yMDA3X29sZCkpKQp9KQoKYmlydGhvcmRlciA8LSB3aXRoaW4oYmlydGhvcmRlciwgewogIGdfZmFjdG9yXzIwMDdfeW91bmcgPC0gcm93TWVhbnMoc2NhbGUoY2JpbmQocmF2ZW5fMjAwN195b3VuZywgbWF0aF8yMDA3X3lvdW5nKSkpCn0pCgoKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lIHRibF9kZi5taXRtbC5saXN0CgojIyMgQmlydGhvcmRlciBhbmQgU2libGluZyBDb3VudAojIGZvciBmYWN0b3IgdmFyaWFibGVzIHdlIGhhdmUgdG8gcm91bmQgYmlydGggb3JkZXIgcG9zaXRpb24gYW5kIGVsaW1pbmF0ZSBhbGwgdW5saWtlbHkgbnVtYmVycyAobmVnYXRpdmUgb25lcykKYmlydGhvcmRlcl9kYXRhID0gYmlydGhvcmRlcltbMV1dCgpiaXJ0aG9yZGVyID0gYmlydGhvcmRlciAlPiUKICBtdXRhdGUoYmlydGhvcmRlcl9nZW5lcyA9IGlmZWxzZShiaXJ0aG9yZGVyX2dlbmVzIDwgMCwgMCwgYmlydGhvcmRlcl9nZW5lcyksCiAgICAgICAgIGJpcnRob3JkZXJfbmFpdmUgPSBpZmVsc2UoYmlydGhvcmRlcl9uYWl2ZSA8IDAsIDAsIGJpcnRob3JkZXJfbmFpdmUpLAogICAgICAgICBiaXJ0aG9yZGVyX2dlbmVzID0gcm91bmQoYmlydGhvcmRlcl9nZW5lcyksCiAgICAgICAgIGJpcnRob3JkZXJfbmFpdmUgPSByb3VuZChiaXJ0aG9yZGVyX25haXZlKSkKCgpiaXJ0aG9yZGVyID0gYmlydGhvcmRlciAlPiUgCiAgbXV0YXRlKAojIGJpcnRob3JkZXIgYXMgZmFjdG9ycyB3aXRoIGxldmVscyBvZiAxLCAyLCAzLCA0LCA1LCA1KwogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoYmlydGhvcmRlcl9uYWl2ZSksCiAgICBiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciA9IGlmZWxzZShiaXJ0aG9yZGVyX25haXZlID4gNSwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciksCiAgICBiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciA9IGZhY3RvcihiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMSIsIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yID0gYXMuY2hhcmFjdGVyKHNpYmxpbmdfY291bnRfbmFpdmUpLAogICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IgPSBpZmVsc2Uoc2libGluZ19jb3VudF9uYWl2ZSA+IDUsICI1KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IpLAogICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IgPSBmYWN0b3Ioc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfZ2VuZXMpLAogICAgYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgPSBpZmVsc2UoYmlydGhvcmRlcl9nZW5lcyA+NSAsICI1KyIsIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gZmFjdG9yKGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihzaWJsaW5nX2NvdW50X2dlbmVzKSwKICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yID0gaWZlbHNlKHNpYmxpbmdfY291bnRfZ2VuZXMgPjUgLCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IpLAogICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgPSBmYWN0b3Ioc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMiIsIjMiLCI0IiwiNSIsIjUrIikpLAogICAgIyBpbnRlcmFjdGlvbiBiaXJ0aG9yZGVyICogc2libGluZ2NvdXQgZm9yIGVhY2ggYmlydGhvcmRlcgogICAgY291bnRfYmlydGhvcmRlcl9uYWl2ZSA9CiAgICAgIGZhY3RvcihzdHJfcmVwbGFjZShhcy5jaGFyYWN0ZXIoaW50ZXJhY3Rpb24oYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvcikpLAogICAgICAgICAgICAgICAgICAgICAgICAiXFwuIiwgIi8iKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9ICAgYygiMS8yIiwiMi8yIiwgIjEvMyIsICAiMi8zIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMy8zIiwgIjEvNCIsICIyLzQiLCAiMy80IiwgIjQvNCIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSIsICIyLzUiLCAiMy81IiwgIjQvNSIsICI1LzUiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUrIiwgIjIvNSsiLCAiMy81KyIsICI0LzUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiNS81KyIsICI1Ky81KyIpKSwKICAgIGNvdW50X2JpcnRob3JkZXJfZ2VuZXMgPQogICAgICBmYWN0b3Ioc3RyX3JlcGxhY2UoYXMuY2hhcmFjdGVyKGludGVyYWN0aW9uKGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yLCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IpKSwgIlxcLiIsICIvIiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSAgIGMoIjEvMiIsIjIvMiIsICIxLzMiLCAgIjIvMyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjMvMyIsICIxLzQiLCAiMi80IiwgIjMvNCIsICI0LzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUiLCAiMi81IiwgIjMvNSIsICI0LzUiLCAiNS81IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81KyIsICIyLzUrIiwgIjMvNSsiLCAiNC81KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjUvNSsiLCAiNSsvNSsiKSkpCgoKCiMjIyBWYXJpYWJsZXMKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lCiAgbXV0YXRlKAogICAgZ19mYWN0b3JfMjAxNV9vbGQgPSAoZ19mYWN0b3JfMjAxNV9vbGQgLSBtZWFuKGdfZmFjdG9yXzIwMTVfb2xkLCBuYS5ybT1UKSkgLyBzZChnX2ZhY3Rvcl8yMDE1X29sZCwgbmEucm09VCksCiAgICBnX2ZhY3Rvcl8yMDE1X3lvdW5nID0gKGdfZmFjdG9yXzIwMTVfeW91bmcgLSBtZWFuKGdfZmFjdG9yXzIwMTVfeW91bmcsIG5hLnJtPVQpKSAvIHNkKGdfZmFjdG9yXzIwMTVfeW91bmcsIG5hLnJtPVQpLAogICAgZ19mYWN0b3JfMjAwN19vbGQgPSAoZ19mYWN0b3JfMjAwN19vbGQgLSBtZWFuKGdfZmFjdG9yXzIwMDdfb2xkLCBuYS5ybT1UKSkgLyBzZChnX2ZhY3Rvcl8yMDA3X29sZCwgbmEucm09VCksCmdfZmFjdG9yXzIwMDdfeW91bmcgPSAoZ19mYWN0b3JfMjAwN195b3VuZyAtIG1lYW4oZ19mYWN0b3JfMjAwN195b3VuZywgbmEucm09VCkpIC8gc2QoZ19mYWN0b3JfMjAwN195b3VuZywgbmEucm09VCksCiAgICByYXZlbl8yMDE1X29sZCA9IChyYXZlbl8yMDE1X29sZCAtIG1lYW4ocmF2ZW5fMjAxNV9vbGQsIG5hLnJtPVQpKSAvIHNkKHJhdmVuXzIwMTVfb2xkKSwKICAgIG1hdGhfMjAxNV9vbGQgPSAobWF0aF8yMDE1X29sZCAtIG1lYW4obWF0aF8yMDE1X29sZCwgbmEucm09VCkpIC8gc2QobWF0aF8yMDE1X29sZCwgbmEucm09VCksCiAgICByYXZlbl8yMDE1X3lvdW5nID0gKHJhdmVuXzIwMTVfeW91bmcgLSBtZWFuKHJhdmVuXzIwMTVfeW91bmcsIG5hLnJtPVQpKSAvIHNkKHJhdmVuXzIwMTVfeW91bmcpLAogICAgbWF0aF8yMDE1X3lvdW5nID0gKG1hdGhfMjAxNV95b3VuZyAtIG1lYW4obWF0aF8yMDE1X3lvdW5nLCBuYS5ybT1UKSkgLwogICAgICBzZChtYXRoXzIwMTVfeW91bmcsIG5hLnJtPVQpLAogICAgcmF2ZW5fMjAwN19vbGQgPSAocmF2ZW5fMjAwN19vbGQgLSBtZWFuKHJhdmVuXzIwMDdfb2xkLCBuYS5ybT1UKSkgLyBzZChyYXZlbl8yMDA3X29sZCksCm1hdGhfMjAwN19vbGQgPSAobWF0aF8yMDA3X29sZCAtIG1lYW4obWF0aF8yMDA3X29sZCwgbmEucm09VCkpIC8gc2QobWF0aF8yMDA3X29sZCwgbmEucm09VCksCnJhdmVuXzIwMDdfeW91bmcgPSAocmF2ZW5fMjAwN195b3VuZyAtIG1lYW4ocmF2ZW5fMjAwN195b3VuZywgbmEucm09VCkpIC8gc2QocmF2ZW5fMjAwN195b3VuZyksCm1hdGhfMjAwN195b3VuZyA9IChtYXRoXzIwMDdfeW91bmcgLSBtZWFuKG1hdGhfMjAwN195b3VuZywgbmEucm09VCkpIC8KICBzZChtYXRoXzIwMDdfeW91bmcsIG5hLnJtPVQpLAogICAgY291bnRfYmFja3dhcmRzID0gKGNvdW50X2JhY2t3YXJkcyAtIG1lYW4oY291bnRfYmFja3dhcmRzLCBuYS5ybT1UKSkgLwogICAgICBzZChjb3VudF9iYWNrd2FyZHMsIG5hLnJtPVQpLAogICAgd29yZHNfZGVsYXllZCA9ICh3b3Jkc19kZWxheWVkIC0gbWVhbih3b3Jkc19kZWxheWVkLCBuYS5ybT1UKSkgLwogICAgICBzZCh3b3Jkc19kZWxheWVkLCBuYS5ybT1UKSwKICAgIGFkYXB0aXZlX251bWJlcmluZyA9IChhZGFwdGl2ZV9udW1iZXJpbmcgLSBtZWFuKGFkYXB0aXZlX251bWJlcmluZywgbmEucm09VCkpIC8KICAgICAgc2QoYWRhcHRpdmVfbnVtYmVyaW5nLCBuYS5ybT1UKSwKICAgIGJpZzVfZXh0ID0gKGJpZzVfZXh0IC0gbWVhbihiaWc1X2V4dCwgbmEucm09VCkpIC8gc2QoYmlnNV9leHQsIG5hLnJtPVQpLAogICAgYmlnNV9jb24gPSAoYmlnNV9jb24gLSBtZWFuKGJpZzVfY29uLCBuYS5ybT1UKSkgLyBzZChiaWc1X2NvbiwgbmEucm09VCksCiAgICBiaWc1X2FncmVlID0gKGJpZzVfYWdyZWUgLSBtZWFuKGJpZzVfYWdyZWUsIG5hLnJtPVQpKSAvIHNkKGJpZzVfYWdyZWUsIG5hLnJtPVQpLAogICAgYmlnNV9vcGVuID0gKGJpZzVfb3BlbiAtIG1lYW4oYmlnNV9vcGVuLCBuYS5ybT1UKSkgLyBzZChiaWc1X29wZW4sIG5hLnJtPVQpLAogICAgYmlnNV9uZXUgPSAoYmlnNV9uZXUgLSBtZWFuKGJpZzVfbmV1LCBuYS5ybT1UKSkgLyBzZChiaWc1X25ldSwgbmEucm09VCksCiAgICByaXNrQSA9IChyaXNrQSAtIG1lYW4ocmlza0EsIG5hLnJtPVQpKSAvIHNkKHJpc2tBLCBuYS5ybT1UKSwKICAgIHJpc2tCID0gKHJpc2tCIC0gbWVhbihyaXNrQiwgbmEucm09VCkpIC8gc2Qocmlza0IsIG5hLnJtPVQpLAogICAgeWVhcnNfb2ZfZWR1Y2F0aW9uX3ogPSAoeWVhcnNfb2ZfZWR1Y2F0aW9uIC0gbWVhbih5ZWFyc19vZl9lZHVjYXRpb24sIG5hLnJtPVQpKSAvCiAgICAgIHNkKHllYXJzX29mX2VkdWNhdGlvbiwgbmEucm09VCksCiAgICB3YWdlX2xhc3RfbW9udGhfeiA9ICh3YWdlX2xhc3RfbW9udGhfbG9nIC0gbWVhbih3YWdlX2xhc3RfbW9udGhfbG9nLCBuYS5ybT1UKSkgLwogICAgICBzZCh3YWdlX2xhc3RfbW9udGhfbG9nLCBuYS5ybT1UKSwKICAgIHdhZ2VfbGFzdF95ZWFyX3ogPSAod2FnZV9sYXN0X3llYXJfbG9nIC0gbWVhbih3YWdlX2xhc3RfeWVhcl9sb2csIG5hLnJtPVQpKSAvCiAgICAgIHNkKHdhZ2VfbGFzdF95ZWFyX2xvZywgbmEucm09VCkKICAgICAgICApCgpkYXRhX3VzZWQgPC0gYmlydGhvcmRlciAlPiUKICBtdXRhdGUoc2libGluZ19jb3VudCA9IHNpYmxpbmdfY291bnRfbmFpdmUsCiAgICAgICAgIGJpcnRoX29yZGVyX25vbmxpbmVhciA9IGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yLAogICAgICAgICBiaXJ0aF9vcmRlciA9IGJpcnRob3JkZXJfbmFpdmUsCiAgICAgICAgIGNvdW50X2JpcnRoX29yZGVyID0gY291bnRfYmlydGhvcmRlcl9uYWl2ZSkKCmBgYAoKIyMgSW50ZWxsaWdlbmNlIHsuYWN0aXZlIC50YWJzZXR9CiMjIyBnLWZhY3RvciAyMDE1IG9sZCB7LnRhYnNldH0KCmBgYHtyfQojIFNwZWNpZnkgeW91ciBvdXRjb21lCmRhdGFfdXNlZCA9IGRhdGFfdXNlZCAlPiUgbXV0YXRlKG91dGNvbWUgPSBnX2ZhY3Rvcl8yMDE1X29sZCkKZGF0YV91c2VkX3Bsb3RzIDwtIGRhdGFfdXNlZFtbMV1dCgpjb21wYXJlX2JpcnRob3JkZXJfaW1wdXRlZChkYXRhX3VzZWQgPSBkYXRhX3VzZWQpCgpgYGAK</div>
+<div id="rmd-source-code">LS0tCm91dHB1dDogaHRtbF9kb2N1bWVudAplZGl0b3Jfb3B0aW9uczogCiAgY2h1bmtfb3V0cHV0X3R5cGU6IGNvbnNvbGUKLS0tCiMgPHNwYW4gc3R5bGU9ImNvbG9yOiNBNkQ4NTQiPkJpcnRoIE9yZGVyIEVmZmVjdHM8L3NwYW4+IHsudGFic2V0fQoKIyMgSGVscGVyCmBgYHtyIGhlbHBlcn0Kc291cmNlKCIwX2hlbHBlcnMuUiIpCmBgYAoKCiMjIEZ1bmN0aW9ucwoKYGBge3J9CgpuX2ltcHV0YXRpb25zLm1pdG1sID0gZnVuY3Rpb24oaW1wcykgewogIGltcHMkaXRlciRtCn0Kbl9pbXB1dGF0aW9ucy5taWRzID0gZnVuY3Rpb24oaW1wcykgewogIGltcHMkbQp9Cm5faW1wdXRhdGlvbnMuYW1lbGlhID0gZnVuY3Rpb24oaW1wcykgewogIGxlbmd0aChpbXBzJGltcHV0YXRpb25zKQp9Cm5faW1wdXRhdGlvbnMgPSBmdW5jdGlvbihpbXBzKSB7IFVzZU1ldGhvZCgibl9pbXB1dGF0aW9ucyIpIH0KCmNvbXBsZXRlLm1pdG1sID0gbWl0bWw6Om1pdG1sQ29tcGxldGUKY29tcGxldGUubWlkcyA9IG1pY2U6OmNvbXBsZXRlCmNvbXBsZXRlID0gZnVuY3Rpb24oLi4uKSB7IFVzZU1ldGhvZCgiY29tcGxldGUiKSB9CgpsaWJyYXJ5KG1pY2UpCmxpYnJhcnkobWljZWFkZHMpCmxpYnJhcnkobWl0bWwpCmBgYAoKCiMjIExvYWQgZGF0YQpgYGB7ciBMb2FkIERhdGF9CmJpcnRob3JkZXIgPSByZWFkUkRTKCJkYXRhL2FsbGRhdGFfYmlydGhvcmRlcl9pX21sLnJkcyIpCmBgYAoKIyMgRGF0YSBwcmVwYXJhdGlvbnMKYGBge3IgZGF0YSBwcmVwYXJhdGlvbnN9CmJpcnRob3JkZXIgPC0gbWlkczJtaXRtbC5saXN0KGJpcnRob3JkZXIpCgojIyBDYWxjdWxhdGUgZ19mYWN0b3JzIChmb3Igbm93IHdpdGggcm93TWVhbnM6IGJldHRlciB0byBydW4gZmFjdG9yIGFuYWx5c2lzIGhlcmUgYXMgd2VsbD8pCmJpcnRob3JkZXIgPC0gd2l0aGluKGJpcnRob3JkZXIsIHsKICBnX2ZhY3Rvcl8yMDE1X29sZCA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDE1X29sZCwgbWF0aF8yMDE1X29sZCwgY291bnRfYmFja3dhcmRzLCAgd29yZHNfZGVsYXllZCwgYWRhcHRpdmVfbnVtYmVyaW5nKSkpCn0pCgpiaXJ0aG9yZGVyIDwtIHdpdGhpbihiaXJ0aG9yZGVyLCB7CiAgZ19mYWN0b3JfMjAxNV95b3VuZyA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDE1X3lvdW5nLCBtYXRoXzIwMTVfeW91bmcpKSkKfSkKCmJpcnRob3JkZXIgPC0gd2l0aGluKGJpcnRob3JkZXIsIHsKICBnX2ZhY3Rvcl8yMDA3X29sZCA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDA3X29sZCwgbWF0aF8yMDA3X29sZCkpKQp9KQoKYmlydGhvcmRlciA8LSB3aXRoaW4oYmlydGhvcmRlciwgewogIGdfZmFjdG9yXzIwMDdfeW91bmcgPC0gcm93TWVhbnMoc2NhbGUoY2JpbmQocmF2ZW5fMjAwN195b3VuZywgbWF0aF8yMDA3X3lvdW5nKSkpCn0pCgoKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lIHRibF9kZi5taXRtbC5saXN0CgojIyMgQmlydGhvcmRlciBhbmQgU2libGluZyBDb3VudAojIGZvciBmYWN0b3IgdmFyaWFibGVzIHdlIGhhdmUgdG8gcm91bmQgYmlydGggb3JkZXIgcG9zaXRpb24gYW5kIGVsaW1pbmF0ZSBhbGwgdW5saWtlbHkgbnVtYmVycyAobmVnYXRpdmUgb25lcykKYmlydGhvcmRlcl9kYXRhID0gYmlydGhvcmRlcltbMV1dCgpiaXJ0aG9yZGVyID0gYmlydGhvcmRlciAlPiUKICBtdXRhdGUoYmlydGhvcmRlcl9nZW5lcyA9IGlmZWxzZShiaXJ0aG9yZGVyX2dlbmVzIDwgMCwgMCwgYmlydGhvcmRlcl9nZW5lcyksCiAgICAgICAgIGJpcnRob3JkZXJfbmFpdmUgPSBpZmVsc2UoYmlydGhvcmRlcl9uYWl2ZSA8IDAsIDAsIGJpcnRob3JkZXJfbmFpdmUpLAogICAgICAgICBiaXJ0aG9yZGVyX2dlbmVzID0gcm91bmQoYmlydGhvcmRlcl9nZW5lcyksCiAgICAgICAgIGJpcnRob3JkZXJfbmFpdmUgPSByb3VuZChiaXJ0aG9yZGVyX25haXZlKSwKICAgICAgICAgc2libGluZ19jb3VudF9nZW5lcyA9IGlmZWxzZShzaWJsaW5nX2NvdW50X2dlbmVzIDwgMCwgMCwgc2libGluZ19jb3VudF9nZW5lcyksCiAgICAgICAgIHNpYmxpbmdfY291bnRfbmFpdmUgPSBpZmVsc2Uoc2libGluZ19jb3VudF9uYWl2ZSA8IDAsIDAsIHNpYmxpbmdfY291bnRfbmFpdmUpLAogICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzID0gcm91bmQoc2libGluZ19jb3VudF9nZW5lcyksCiAgICAgICAgIHNpYmxpbmdfY291bnRfbmFpdmUgPSByb3VuZChzaWJsaW5nX2NvdW50X25haXZlKQogICAgICAgICApCgoKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lIAogIG11dGF0ZSgKIyBiaXJ0aG9yZGVyIGFzIGZhY3RvcnMgd2l0aCBsZXZlbHMgb2YgMSwgMiwgMywgNCwgNSwgNSsKICAgIGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfbmFpdmUpLAogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBpZmVsc2UoYmlydGhvcmRlcl9uYWl2ZSA+IDUsICI1KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IpLAogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBmYWN0b3IoYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihzaWJsaW5nX2NvdW50X25haXZlKSwKICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yID0gaWZlbHNlKHNpYmxpbmdfY291bnRfbmFpdmUgPiA1LCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yKSwKICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihiaXJ0aG9yZGVyX2dlbmVzKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gaWZlbHNlKGJpcnRob3JkZXJfZ2VuZXMgPjUgLCAiNSsiLCBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciksCiAgICBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciA9IGZhY3RvcihiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIxIiwiMiIsIjMiLCI0IiwiNSIsIjUrIikpLAogICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoc2libGluZ19jb3VudF9nZW5lcyksCiAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciA9IGlmZWxzZShzaWJsaW5nX2NvdW50X2dlbmVzID41ICwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yKSwKICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgICMgaW50ZXJhY3Rpb24gYmlydGhvcmRlciAqIHNpYmxpbmdjb3V0IGZvciBlYWNoIGJpcnRob3JkZXIKICAgIGNvdW50X2JpcnRob3JkZXJfbmFpdmUgPQogICAgICBmYWN0b3Ioc3RyX3JlcGxhY2UoYXMuY2hhcmFjdGVyKGludGVyYWN0aW9uKGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yLCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IpKSwKICAgICAgICAgICAgICAgICAgICAgICAgIlxcLiIsICIvIiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSAgIGMoIjEvMiIsIjIvMiIsICIxLzMiLCAgIjIvMyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjMvMyIsICIxLzQiLCAiMi80IiwgIjMvNCIsICI0LzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUiLCAiMi81IiwgIjMvNSIsICI0LzUiLCAiNS81IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81KyIsICIyLzUrIiwgIjMvNSsiLCAiNC81KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjUvNSsiLCAiNSsvNSsiKSksCiAgICBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yKSksICJcXC4iLCAiLyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gICBjKCIxLzIiLCIyLzIiLCAiMS8zIiwgICIyLzMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIzLzMiLCAiMS80IiwgIjIvNCIsICIzLzQiLCAiNC80IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81IiwgIjIvNSIsICIzLzUiLCAiNC81IiwgIjUvNSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSsiLCAiMi81KyIsICIzLzUrIiwgIjQvNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI1LzUrIiwgIjUrLzUrIikpKQoKCgojIyMgVmFyaWFibGVzCmJpcnRob3JkZXIgPSBiaXJ0aG9yZGVyICU+JQogIG11dGF0ZSgKICAgIGdfZmFjdG9yXzIwMTVfb2xkID0gKGdfZmFjdG9yXzIwMTVfb2xkIC0gbWVhbihnX2ZhY3Rvcl8yMDE1X29sZCwgbmEucm09VCkpIC8gc2QoZ19mYWN0b3JfMjAxNV9vbGQsIG5hLnJtPVQpLAogICAgZ19mYWN0b3JfMjAxNV95b3VuZyA9IChnX2ZhY3Rvcl8yMDE1X3lvdW5nIC0gbWVhbihnX2ZhY3Rvcl8yMDE1X3lvdW5nLCBuYS5ybT1UKSkgLyBzZChnX2ZhY3Rvcl8yMDE1X3lvdW5nLCBuYS5ybT1UKSwKICAgIGdfZmFjdG9yXzIwMDdfb2xkID0gKGdfZmFjdG9yXzIwMDdfb2xkIC0gbWVhbihnX2ZhY3Rvcl8yMDA3X29sZCwgbmEucm09VCkpIC8gc2QoZ19mYWN0b3JfMjAwN19vbGQsIG5hLnJtPVQpLApnX2ZhY3Rvcl8yMDA3X3lvdW5nID0gKGdfZmFjdG9yXzIwMDdfeW91bmcgLSBtZWFuKGdfZmFjdG9yXzIwMDdfeW91bmcsIG5hLnJtPVQpKSAvIHNkKGdfZmFjdG9yXzIwMDdfeW91bmcsIG5hLnJtPVQpLAogICAgcmF2ZW5fMjAxNV9vbGQgPSAocmF2ZW5fMjAxNV9vbGQgLSBtZWFuKHJhdmVuXzIwMTVfb2xkLCBuYS5ybT1UKSkgLyBzZChyYXZlbl8yMDE1X29sZCksCiAgICBtYXRoXzIwMTVfb2xkID0gKG1hdGhfMjAxNV9vbGQgLSBtZWFuKG1hdGhfMjAxNV9vbGQsIG5hLnJtPVQpKSAvIHNkKG1hdGhfMjAxNV9vbGQsIG5hLnJtPVQpLAogICAgcmF2ZW5fMjAxNV95b3VuZyA9IChyYXZlbl8yMDE1X3lvdW5nIC0gbWVhbihyYXZlbl8yMDE1X3lvdW5nLCBuYS5ybT1UKSkgLyBzZChyYXZlbl8yMDE1X3lvdW5nKSwKICAgIG1hdGhfMjAxNV95b3VuZyA9IChtYXRoXzIwMTVfeW91bmcgLSBtZWFuKG1hdGhfMjAxNV95b3VuZywgbmEucm09VCkpIC8KICAgICAgc2QobWF0aF8yMDE1X3lvdW5nLCBuYS5ybT1UKSwKICAgIHJhdmVuXzIwMDdfb2xkID0gKHJhdmVuXzIwMDdfb2xkIC0gbWVhbihyYXZlbl8yMDA3X29sZCwgbmEucm09VCkpIC8gc2QocmF2ZW5fMjAwN19vbGQpLAptYXRoXzIwMDdfb2xkID0gKG1hdGhfMjAwN19vbGQgLSBtZWFuKG1hdGhfMjAwN19vbGQsIG5hLnJtPVQpKSAvIHNkKG1hdGhfMjAwN19vbGQsIG5hLnJtPVQpLApyYXZlbl8yMDA3X3lvdW5nID0gKHJhdmVuXzIwMDdfeW91bmcgLSBtZWFuKHJhdmVuXzIwMDdfeW91bmcsIG5hLnJtPVQpKSAvIHNkKHJhdmVuXzIwMDdfeW91bmcpLAptYXRoXzIwMDdfeW91bmcgPSAobWF0aF8yMDA3X3lvdW5nIC0gbWVhbihtYXRoXzIwMDdfeW91bmcsIG5hLnJtPVQpKSAvCiAgc2QobWF0aF8yMDA3X3lvdW5nLCBuYS5ybT1UKSwKICAgIGNvdW50X2JhY2t3YXJkcyA9IChjb3VudF9iYWNrd2FyZHMgLSBtZWFuKGNvdW50X2JhY2t3YXJkcywgbmEucm09VCkpIC8KICAgICAgc2QoY291bnRfYmFja3dhcmRzLCBuYS5ybT1UKSwKICAgIHdvcmRzX2RlbGF5ZWQgPSAod29yZHNfZGVsYXllZCAtIG1lYW4od29yZHNfZGVsYXllZCwgbmEucm09VCkpIC8KICAgICAgc2Qod29yZHNfZGVsYXllZCwgbmEucm09VCksCiAgICBhZGFwdGl2ZV9udW1iZXJpbmcgPSAoYWRhcHRpdmVfbnVtYmVyaW5nIC0gbWVhbihhZGFwdGl2ZV9udW1iZXJpbmcsIG5hLnJtPVQpKSAvCiAgICAgIHNkKGFkYXB0aXZlX251bWJlcmluZywgbmEucm09VCksCiAgICBiaWc1X2V4dCA9IChiaWc1X2V4dCAtIG1lYW4oYmlnNV9leHQsIG5hLnJtPVQpKSAvIHNkKGJpZzVfZXh0LCBuYS5ybT1UKSwKICAgIGJpZzVfY29uID0gKGJpZzVfY29uIC0gbWVhbihiaWc1X2NvbiwgbmEucm09VCkpIC8gc2QoYmlnNV9jb24sIG5hLnJtPVQpLAogICAgYmlnNV9hZ3JlZSA9IChiaWc1X2FncmVlIC0gbWVhbihiaWc1X2FncmVlLCBuYS5ybT1UKSkgLyBzZChiaWc1X2FncmVlLCBuYS5ybT1UKSwKICAgIGJpZzVfb3BlbiA9IChiaWc1X29wZW4gLSBtZWFuKGJpZzVfb3BlbiwgbmEucm09VCkpIC8gc2QoYmlnNV9vcGVuLCBuYS5ybT1UKSwKICAgIGJpZzVfbmV1ID0gKGJpZzVfbmV1IC0gbWVhbihiaWc1X25ldSwgbmEucm09VCkpIC8gc2QoYmlnNV9uZXUsIG5hLnJtPVQpLAogICAgcmlza0EgPSAocmlza0EgLSBtZWFuKHJpc2tBLCBuYS5ybT1UKSkgLyBzZChyaXNrQSwgbmEucm09VCksCiAgICByaXNrQiA9IChyaXNrQiAtIG1lYW4ocmlza0IsIG5hLnJtPVQpKSAvIHNkKHJpc2tCLCBuYS5ybT1UKSwKICAgIHllYXJzX29mX2VkdWNhdGlvbl96ID0gKHllYXJzX29mX2VkdWNhdGlvbiAtIG1lYW4oeWVhcnNfb2ZfZWR1Y2F0aW9uLCBuYS5ybT1UKSkgLwogICAgICBzZCh5ZWFyc19vZl9lZHVjYXRpb24sIG5hLnJtPVQpLAogICAgd2FnZV9sYXN0X21vbnRoX3ogPSAod2FnZV9sYXN0X21vbnRoX2xvZyAtIG1lYW4od2FnZV9sYXN0X21vbnRoX2xvZywgbmEucm09VCkpIC8KICAgICAgc2Qod2FnZV9sYXN0X21vbnRoX2xvZywgbmEucm09VCksCiAgICB3YWdlX2xhc3RfeWVhcl96ID0gKHdhZ2VfbGFzdF95ZWFyX2xvZyAtIG1lYW4od2FnZV9sYXN0X3llYXJfbG9nLCBuYS5ybT1UKSkgLwogICAgICBzZCh3YWdlX2xhc3RfeWVhcl9sb2csIG5hLnJtPVQpCiAgICAgICAgKQoKZGF0YV91c2VkIDwtIGJpcnRob3JkZXIgJT4lCiAgbXV0YXRlKHNpYmxpbmdfY291bnQgPSBzaWJsaW5nX2NvdW50X25haXZlLAogICAgICAgICBiaXJ0aF9vcmRlcl9ub25saW5lYXIgPSBiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciwKICAgICAgICAgYmlydGhfb3JkZXIgPSBiaXJ0aG9yZGVyX25haXZlLAogICAgICAgICBjb3VudF9iaXJ0aF9vcmRlciA9IGNvdW50X2JpcnRob3JkZXJfbmFpdmUpCgpgYGAKCiMjIEludGVsbGlnZW5jZSB7LmFjdGl2ZSAudGFic2V0fQojIyMgZy1mYWN0b3IgMjAxNSBvbGQgey50YWJzZXR9CgpgYGB7cn0KIyBTcGVjaWZ5IHlvdXIgb3V0Y29tZQpkYXRhX3VzZWQgPSBkYXRhX3VzZWQgJT4lIG11dGF0ZShvdXRjb21lID0gZ19mYWN0b3JfMjAxNV9vbGQpCmRhdGFfdXNlZF9wbG90cyA8LSBkYXRhX3VzZWRbWzFdXQoKY29tcGFyZV9iaXJ0aG9yZGVyX2ltcHV0ZWQoZGF0YV91c2VkID0gZGF0YV91c2VkKQoKYGBgCg==</div>
 
 
 

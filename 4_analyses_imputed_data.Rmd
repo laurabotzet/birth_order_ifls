@@ -8,6 +8,8 @@ editor_options:
 ## Helper
 ```{r helper}
 source("0_helpers.R")
+opts_chunk$set(warning = FALSE)
+
 ```
 
 
@@ -73,7 +75,12 @@ birthorder = birthorder %>%
   mutate(birthorder_genes = ifelse(birthorder_genes < 0, 0, birthorder_genes),
          birthorder_naive = ifelse(birthorder_naive < 0, 0, birthorder_naive),
          birthorder_genes = round(birthorder_genes),
-         birthorder_naive = round(birthorder_naive))
+         birthorder_naive = round(birthorder_naive),
+         sibling_count_genes = ifelse(sibling_count_genes < 0, 0, sibling_count_genes),
+         sibling_count_naive = ifelse(sibling_count_naive < 0, 0, sibling_count_naive),
+         sibling_count_genes = round(sibling_count_genes),
+         sibling_count_naive = round(sibling_count_naive)
+         )
 
 
 birthorder = birthorder %>% 
@@ -174,6 +181,7 @@ data_used_plots <- data_used[[1]]
 compare_birthorder_imputed(data_used = data_used)
 
 ```
+
 
 
 ### Raven 2015 old {.tabset}

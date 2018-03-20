@@ -349,6 +349,8 @@ round(cor(birthorder %>% ungroup() %>% select(age, male, g_factor_2015_old, big5
 
 ### Plots Gender
 ```{r}
+birthorder = birthorder %>% filter(age<=100)
+
 birthorder = birthorder %>%
   mutate(outcome = age)
 plot_gender(birthorder)
@@ -440,8 +442,6 @@ plot_gender(birthorder)
 
 ### Plots Gender
 ```{r}
-birthorder = birthorder %>% filter(age<=100)
-
 plot_age(birthorder %>% filter(age<= 100) %>% mutate(outcome = birthorder_genes))
 
 

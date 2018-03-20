@@ -341,6 +341,7 @@ $(document).ready(function () {
 <pre><code>## The following objects are masked from &#39;package:cowplot&#39;:
 ## 
 ##     plot_grid, save_plot</code></pre>
+<pre class="r"><code>opts_chunk$set(warning = FALSE)</code></pre>
 </div>
 <div id="functions" class="section level2">
 <h2>Functions</h2>
@@ -360,7 +361,6 @@ complete.mids = mice::complete
 complete = function(...) { UseMethod(&quot;complete&quot;) }
 
 library(mice)</code></pre>
-<pre><code>## Warning: package &#39;mice&#39; was built under R version 3.4.3</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;mice&#39;</code></pre>
 <pre><code>## The following object is masked _by_ &#39;.GlobalEnv&#39;:
@@ -370,10 +370,8 @@ library(mice)</code></pre>
 ## 
 ##     complete</code></pre>
 <pre class="r"><code>library(miceadds)</code></pre>
-<pre><code>## Warning: package &#39;miceadds&#39; was built under R version 3.4.3</code></pre>
 <pre><code>## * miceadds 2.9-15 (2017-12-18 11:50:04)</code></pre>
 <pre class="r"><code>library(mitml)</code></pre>
-<pre><code>## Warning: package &#39;mitml&#39; was built under R version 3.4.3</code></pre>
 <pre><code>## *** This is beta software. Please report any bugs!
 ## *** See the NEWS file for recent changes.</code></pre>
 </div>
@@ -497,9 +495,11 @@ math_2007_young = (math_2007_young - mean(math_2007_young, na.rm=T)) /
     wage_last_month_z = (wage_last_month_log - mean(wage_last_month_log, na.rm=T)) /
       sd(wage_last_month_log, na.rm=T),
     wage_last_year_z = (wage_last_year_log - mean(wage_last_year_log, na.rm=T)) /
-      sd(wage_last_year_log, na.rm=T)
-        )
-
+      sd(wage_last_year_log, na.rm=T),
+    attended_school = as.integer(attended_school),
+    attended_school = ifelse(attended_school == 1, 0,
+                           ifelse(attended_school == 2, 1, NA)))
+        
 data_used &lt;- birthorder %&gt;%
   mutate(sibling_count = sibling_count_naive,
          birth_order_nonlinear = birthorder_naive_factor,
@@ -530,27 +530,9 @@ data_used &lt;- data_used %&gt;%
 
 data_used_plots = data_used[[1]]
 
-model_naive_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink)))</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
+model_naive_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink)))
 
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>x = mitml::testEstimates(model_naive_m1, var.comp = T)
+x = mitml::testEstimates(model_naive_m1, var.comp = T)
 
 y = as_tibble(x$estimates, rownames = &quot;id&quot;)
 
@@ -589,9 +571,8 @@ x</code></pre>
 <div id="coefficient-plot" class="section level6 active">
 <h6>Coefficient Plot</h6>
 <pre class="r"><code>model_naive_m1_plot = lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
-                           data = data_used_plots)</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>plot(allEffects(model_naive_m1_plot)) # fuer plots</code></pre>
+                           data = data_used_plots)
+plot(allEffects(model_naive_m1_plot)) # fuer plots</code></pre>
 <p><img src="4_analyses_imputed_data_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
 </div>
@@ -600,27 +581,8 @@ x</code></pre>
 <div id="model-summary-1" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>model_naive_m2 &lt;- with(data_used, lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count +
-                                         (1 | mother_pidlink)))</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>x = mitml::testEstimates(model_naive_m2, var.comp = T)
+                                         (1 | mother_pidlink)))
+x = mitml::testEstimates(model_naive_m2, var.comp = T)
 
 y = as_tibble(x$estimates, rownames = &quot;id&quot;)
 
@@ -660,9 +622,8 @@ x</code></pre>
 <div id="coefficient-plot-1" class="section level6 active">
 <h6>Coefficient Plot</h6>
 <pre class="r"><code>model_naive_m2_plot = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
-                           data = data_used_plots)</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>plot_birthorder2(model_naive_m2_plot, separate = FALSE)</code></pre>
+                           data = data_used_plots)
+plot_birthorder2(model_naive_m2_plot, separate = FALSE)</code></pre>
 <p><img src="4_analyses_imputed_data_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 </div>
@@ -671,27 +632,8 @@ x</code></pre>
 <div id="model-summary-2" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>model_naive_m3 &lt;- with(data_used, lmer(outcome ~ birth_order_nonlinear + poly(age, 3, raw = TRUE) + male +
-                                         sibling_count + (1 | mother_pidlink)))</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>x = mitml::testEstimates(model_naive_m3, var.comp = T)
+                                         sibling_count + (1 | mother_pidlink)))
+x = mitml::testEstimates(model_naive_m3, var.comp = T)
 
 y = as_tibble(x$estimates, rownames = &quot;id&quot;)
 
@@ -736,9 +678,8 @@ x</code></pre>
 <h6>Coefficient Plot</h6>
 <pre class="r"><code>model_naive_m3_plot = lmer(outcome ~ birth_order_nonlinear + poly(age, 3, raw = TRUE) + male + sibling_count +
                              (1 | mother_pidlink),
-                           data = data_used_plots)</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>plot_birthorder(model_naive_m3_plot, separate = FALSE)</code></pre>
+                           data = data_used_plots)
+plot_birthorder(model_naive_m3_plot, separate = FALSE)</code></pre>
 <p><img src="4_analyses_imputed_data_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 </div>
@@ -747,27 +688,8 @@ x</code></pre>
 <div id="model-summary-3" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>model_naive_m4 &lt;- with(data_used, lmer(outcome ~ count_birth_order + poly(age, 3, raw = TRUE) + male  +
-                                         (1 | mother_pidlink)))</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>x = mitml::testEstimates(model_naive_m4, var.comp = T)
+                                         (1 | mother_pidlink)))
+x = mitml::testEstimates(model_naive_m4, var.comp = T)
 
 y = as_tibble(x$estimates, rownames = &quot;id&quot;)
 
@@ -825,136 +747,14 @@ x</code></pre>
 <h6>Coefficient Plot</h6>
 <pre class="r"><code>model_naive_m4_plot = lmer(outcome ~ count_birth_order + poly(age, 3, raw = TRUE) + male +
                              (1 | mother_pidlink),
-                           data = data_used_plots)</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>plot_birthorder(model_naive_m4_plot)</code></pre>
+                           data = data_used_plots)
+plot_birthorder(model_naive_m4_plot)</code></pre>
 <p><img src="4_analyses_imputed_data_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
 </div>
 <div id="model-comparison" class="section level5">
 <h5>Model Comparison</h5>
 <pre class="r"><code>anova(model_naive_m1, model_naive_m2, model_naive_m3, model_naive_m4)</code></pre>
-<pre><code>## Warning in anova.mitml.result(model_naive_m1, model_naive_m2, model_naive_m3, : The &#39;D3&#39; method is currently
-## not supported for models of class &#39;merModLmerTest&#39;. Switching to &#39;D2&#39;.</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
 <pre><code>## 
 ## Call:
 ## 
@@ -991,27 +791,8 @@ x</code></pre>
 
 data_used_plots = data_used[[1]]
 
-model_genes_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink)))</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>x = mitml::testEstimates(model_genes_m1, var.comp = T)
+model_genes_m1 &lt;- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink)))
+x = mitml::testEstimates(model_genes_m1, var.comp = T)
 
 y = as_tibble(x$estimates, rownames = &quot;id&quot;)
 
@@ -1050,9 +831,8 @@ x</code></pre>
 <div id="coefficient-plot-4" class="section level6 active">
 <h6>Coefficient Plot</h6>
 <pre class="r"><code>model_genes_m1_plot = lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
-                           data = data_used_plots)</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>plot(allEffects(model_genes_m1_plot))</code></pre>
+                           data = data_used_plots)
+plot(allEffects(model_genes_m1_plot))</code></pre>
 <p><img src="4_analyses_imputed_data_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
 </div>
@@ -1061,27 +841,8 @@ x</code></pre>
 <div id="model-summary-5" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>model_genes_m2 &lt;- with(data_used, lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count +
-                                         (1 | mother_pidlink)))</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>x = mitml::testEstimates(model_genes_m2, var.comp = T)
+                                         (1 | mother_pidlink)))
+x = mitml::testEstimates(model_genes_m2, var.comp = T)
 
 y = as_tibble(x$estimates, rownames = &quot;id&quot;)
 
@@ -1121,9 +882,8 @@ x</code></pre>
 <div id="coefficient-plot-5" class="section level6 active">
 <h6>Coefficient Plot</h6>
 <pre class="r"><code>model_genes_m2_plot = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
-                           data = data_used_plots)</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>plot_birthorder2(model_genes_m2_plot, separate = FALSE)</code></pre>
+                           data = data_used_plots)
+plot_birthorder2(model_genes_m2_plot, separate = FALSE)</code></pre>
 <p><img src="4_analyses_imputed_data_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 </div>
 </div>
@@ -1132,27 +892,8 @@ x</code></pre>
 <div id="model-summary-6" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>model_genes_m3 &lt;- with(data_used, lmer(outcome ~ birth_order_nonlinear + poly(age, 3, raw = TRUE) + male + sibling_count +
-                                         (1 | mother_pidlink)))</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>x = mitml::testEstimates(model_genes_m3, var.comp = T)
+                                         (1 | mother_pidlink)))
+x = mitml::testEstimates(model_genes_m3, var.comp = T)
 
 y = as_tibble(x$estimates, rownames = &quot;id&quot;)
 
@@ -1197,9 +938,8 @@ x</code></pre>
 <h6>Coefficient Plot</h6>
 <pre class="r"><code>model_genes_m3_plot = lmer(outcome ~ birth_order_nonlinear + poly(age, 3, raw = TRUE) + male + sibling_count +
                              (1 | mother_pidlink),
-                           data = data_used_plots)</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>plot_birthorder(model_genes_m3_plot, separate = FALSE)</code></pre>
+                           data = data_used_plots)
+plot_birthorder(model_genes_m3_plot, separate = FALSE)</code></pre>
 <p><img src="4_analyses_imputed_data_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 </div>
@@ -1208,27 +948,8 @@ x</code></pre>
 <div id="model-summary-7" class="section level6">
 <h6>Model Summary</h6>
 <pre class="r"><code>model_genes_m4 &lt;- with(data_used, lmer(outcome ~ count_birth_order + poly(age, 3, raw = TRUE) + male  +
-                                         (1 | mother_pidlink)))</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>x = mitml::testEstimates(model_genes_m4, var.comp = T)
+                                         (1 | mother_pidlink)))
+x = mitml::testEstimates(model_genes_m4, var.comp = T)
 
 y = as_tibble(x$estimates, rownames = &quot;id&quot;)
 
@@ -1286,136 +1007,14 @@ x</code></pre>
 <h6>Coefficient Plot</h6>
 <pre class="r"><code>model_genes_m4_plot = lmer(outcome ~ count_birth_order + poly(age, 3, raw = TRUE) + male +
                              (1 | mother_pidlink),
-                           data = data_used_plots)</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>plot_birthorder(model_genes_m4_plot)</code></pre>
+                           data = data_used_plots)
+plot_birthorder(model_genes_m4_plot)</code></pre>
 <p><img src="4_analyses_imputed_data_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 </div>
 </div>
 <div id="model-comparison-1" class="section level5">
 <h5>Model Comparison</h5>
 <pre class="r"><code>anova(model_genes_m1, model_genes_m2, model_genes_m3, model_genes_m4)</code></pre>
-<pre><code>## Warning in anova.mitml.result(model_genes_m1, model_genes_m2, model_genes_m3, : The &#39;D3&#39; method is currently
-## not supported for models of class &#39;merModLmerTest&#39;. Switching to &#39;D2&#39;.</code></pre>
-<pre><code>## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling
-
-## Warning: Some predictor variables are on very different scales: consider rescaling</code></pre>
 <pre><code>## 
 ## Call:
 ## 
@@ -1448,7 +1047,7 @@ multiplot(model_naive_m2_plot, model_genes_m2_plot, intercept = FALSE)</code></p
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCm91dHB1dDogaHRtbF9kb2N1bWVudAplZGl0b3Jfb3B0aW9uczogCiAgY2h1bmtfb3V0cHV0X3R5cGU6IGNvbnNvbGUKLS0tCiMgPHNwYW4gc3R5bGU9ImNvbG9yOiNBNkQ4NTQiPkJpcnRoIE9yZGVyIEVmZmVjdHM8L3NwYW4+IHsudGFic2V0fQoKIyMgSGVscGVyCmBgYHtyIGhlbHBlcn0Kc291cmNlKCIwX2hlbHBlcnMuUiIpCmBgYAoKCiMjIEZ1bmN0aW9ucwoKYGBge3J9CgpuX2ltcHV0YXRpb25zLm1pdG1sID0gZnVuY3Rpb24oaW1wcykgewogIGltcHMkaXRlciRtCn0Kbl9pbXB1dGF0aW9ucy5taWRzID0gZnVuY3Rpb24oaW1wcykgewogIGltcHMkbQp9Cm5faW1wdXRhdGlvbnMuYW1lbGlhID0gZnVuY3Rpb24oaW1wcykgewogIGxlbmd0aChpbXBzJGltcHV0YXRpb25zKQp9Cm5faW1wdXRhdGlvbnMgPSBmdW5jdGlvbihpbXBzKSB7IFVzZU1ldGhvZCgibl9pbXB1dGF0aW9ucyIpIH0KCmNvbXBsZXRlLm1pdG1sID0gbWl0bWw6Om1pdG1sQ29tcGxldGUKY29tcGxldGUubWlkcyA9IG1pY2U6OmNvbXBsZXRlCmNvbXBsZXRlID0gZnVuY3Rpb24oLi4uKSB7IFVzZU1ldGhvZCgiY29tcGxldGUiKSB9CgpsaWJyYXJ5KG1pY2UpCmxpYnJhcnkobWljZWFkZHMpCmxpYnJhcnkobWl0bWwpCmBgYAoKCiMjIExvYWQgZGF0YQpgYGB7ciBMb2FkIERhdGF9CmJpcnRob3JkZXIgPSByZWFkUkRTKCJkYXRhL2FsbGRhdGFfYmlydGhvcmRlcl9pX21sLnJkcyIpCmBgYAoKIyMgRGF0YSBwcmVwYXJhdGlvbnMKYGBge3IgZGF0YSBwcmVwYXJhdGlvbnN9CmJpcnRob3JkZXIgPC0gbWlkczJtaXRtbC5saXN0KGJpcnRob3JkZXIpCgojIyBDYWxjdWxhdGUgZ19mYWN0b3JzIChmb3Igbm93IHdpdGggcm93TWVhbnM6IGJldHRlciB0byBydW4gZmFjdG9yIGFuYWx5c2lzIGhlcmUgYXMgd2VsbD8pCmJpcnRob3JkZXIgPC0gd2l0aGluKGJpcnRob3JkZXIsIHsKICBnX2ZhY3Rvcl8yMDE1X29sZCA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDE1X29sZCwgbWF0aF8yMDE1X29sZCwgY291bnRfYmFja3dhcmRzLCAgd29yZHNfZGVsYXllZCwgYWRhcHRpdmVfbnVtYmVyaW5nKSkpCn0pCgpiaXJ0aG9yZGVyIDwtIHdpdGhpbihiaXJ0aG9yZGVyLCB7CiAgZ19mYWN0b3JfMjAxNV95b3VuZyA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDE1X3lvdW5nLCBtYXRoXzIwMTVfeW91bmcpKSkKfSkKCmJpcnRob3JkZXIgPC0gd2l0aGluKGJpcnRob3JkZXIsIHsKICBnX2ZhY3Rvcl8yMDA3X29sZCA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDA3X29sZCwgbWF0aF8yMDA3X29sZCkpKQp9KQoKYmlydGhvcmRlciA8LSB3aXRoaW4oYmlydGhvcmRlciwgewogIGdfZmFjdG9yXzIwMDdfeW91bmcgPC0gcm93TWVhbnMoc2NhbGUoY2JpbmQocmF2ZW5fMjAwN195b3VuZywgbWF0aF8yMDA3X3lvdW5nKSkpCn0pCgoKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lIHRibF9kZi5taXRtbC5saXN0CgojIyMgQmlydGhvcmRlciBhbmQgU2libGluZyBDb3VudAojIGZvciBmYWN0b3IgdmFyaWFibGVzIHdlIGhhdmUgdG8gcm91bmQgYmlydGggb3JkZXIgcG9zaXRpb24gYW5kIGVsaW1pbmF0ZSBhbGwgdW5saWtlbHkgbnVtYmVycyAobmVnYXRpdmUgb25lcykKYmlydGhvcmRlcl9kYXRhID0gYmlydGhvcmRlcltbMV1dCgpiaXJ0aG9yZGVyID0gYmlydGhvcmRlciAlPiUKICBtdXRhdGUoYmlydGhvcmRlcl9nZW5lcyA9IGlmZWxzZShiaXJ0aG9yZGVyX2dlbmVzIDwgMCwgMCwgYmlydGhvcmRlcl9nZW5lcyksCiAgICAgICAgIGJpcnRob3JkZXJfbmFpdmUgPSBpZmVsc2UoYmlydGhvcmRlcl9uYWl2ZSA8IDAsIDAsIGJpcnRob3JkZXJfbmFpdmUpLAogICAgICAgICBiaXJ0aG9yZGVyX2dlbmVzID0gcm91bmQoYmlydGhvcmRlcl9nZW5lcyksCiAgICAgICAgIGJpcnRob3JkZXJfbmFpdmUgPSByb3VuZChiaXJ0aG9yZGVyX25haXZlKSwKICAgICAgICAgc2libGluZ19jb3VudF9nZW5lcyA9IGlmZWxzZShzaWJsaW5nX2NvdW50X2dlbmVzIDwgMCwgMCwgc2libGluZ19jb3VudF9nZW5lcyksCiAgICAgICAgIHNpYmxpbmdfY291bnRfbmFpdmUgPSBpZmVsc2Uoc2libGluZ19jb3VudF9uYWl2ZSA8IDAsIDAsIHNpYmxpbmdfY291bnRfbmFpdmUpLAogICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzID0gcm91bmQoc2libGluZ19jb3VudF9nZW5lcyksCiAgICAgICAgIHNpYmxpbmdfY291bnRfbmFpdmUgPSByb3VuZChzaWJsaW5nX2NvdW50X25haXZlKQogICAgICAgICApCgoKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lIAogIG11dGF0ZSgKIyBiaXJ0aG9yZGVyIGFzIGZhY3RvcnMgd2l0aCBsZXZlbHMgb2YgMSwgMiwgMywgNCwgNSwgNSsKICAgIGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfbmFpdmUpLAogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBpZmVsc2UoYmlydGhvcmRlcl9uYWl2ZSA+IDUsICI1KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IpLAogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBmYWN0b3IoYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihzaWJsaW5nX2NvdW50X25haXZlKSwKICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yID0gaWZlbHNlKHNpYmxpbmdfY291bnRfbmFpdmUgPiA1LCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yKSwKICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihiaXJ0aG9yZGVyX2dlbmVzKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gaWZlbHNlKGJpcnRob3JkZXJfZ2VuZXMgPjUgLCAiNSsiLCBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciksCiAgICBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciA9IGZhY3RvcihiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIxIiwiMiIsIjMiLCI0IiwiNSIsIjUrIikpLAogICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoc2libGluZ19jb3VudF9nZW5lcyksCiAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciA9IGlmZWxzZShzaWJsaW5nX2NvdW50X2dlbmVzID41ICwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yKSwKICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgICMgaW50ZXJhY3Rpb24gYmlydGhvcmRlciAqIHNpYmxpbmdjb3V0IGZvciBlYWNoIGJpcnRob3JkZXIKICAgIGNvdW50X2JpcnRob3JkZXJfbmFpdmUgPQogICAgICBmYWN0b3Ioc3RyX3JlcGxhY2UoYXMuY2hhcmFjdGVyKGludGVyYWN0aW9uKGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yLCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IpKSwKICAgICAgICAgICAgICAgICAgICAgICAgIlxcLiIsICIvIiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSAgIGMoIjEvMiIsIjIvMiIsICIxLzMiLCAgIjIvMyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjMvMyIsICIxLzQiLCAiMi80IiwgIjMvNCIsICI0LzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUiLCAiMi81IiwgIjMvNSIsICI0LzUiLCAiNS81IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81KyIsICIyLzUrIiwgIjMvNSsiLCAiNC81KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjUvNSsiLCAiNSsvNSsiKSksCiAgICBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yKSksICJcXC4iLCAiLyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gICBjKCIxLzIiLCIyLzIiLCAiMS8zIiwgICIyLzMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIzLzMiLCAiMS80IiwgIjIvNCIsICIzLzQiLCAiNC80IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81IiwgIjIvNSIsICIzLzUiLCAiNC81IiwgIjUvNSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSsiLCAiMi81KyIsICIzLzUrIiwgIjQvNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI1LzUrIiwgIjUrLzUrIikpKQoKCgojIyMgVmFyaWFibGVzCmJpcnRob3JkZXIgPSBiaXJ0aG9yZGVyICU+JQogIG11dGF0ZSgKICAgIGdfZmFjdG9yXzIwMTVfb2xkID0gKGdfZmFjdG9yXzIwMTVfb2xkIC0gbWVhbihnX2ZhY3Rvcl8yMDE1X29sZCwgbmEucm09VCkpIC8gc2QoZ19mYWN0b3JfMjAxNV9vbGQsIG5hLnJtPVQpLAogICAgZ19mYWN0b3JfMjAxNV95b3VuZyA9IChnX2ZhY3Rvcl8yMDE1X3lvdW5nIC0gbWVhbihnX2ZhY3Rvcl8yMDE1X3lvdW5nLCBuYS5ybT1UKSkgLyBzZChnX2ZhY3Rvcl8yMDE1X3lvdW5nLCBuYS5ybT1UKSwKICAgIGdfZmFjdG9yXzIwMDdfb2xkID0gKGdfZmFjdG9yXzIwMDdfb2xkIC0gbWVhbihnX2ZhY3Rvcl8yMDA3X29sZCwgbmEucm09VCkpIC8gc2QoZ19mYWN0b3JfMjAwN19vbGQsIG5hLnJtPVQpLApnX2ZhY3Rvcl8yMDA3X3lvdW5nID0gKGdfZmFjdG9yXzIwMDdfeW91bmcgLSBtZWFuKGdfZmFjdG9yXzIwMDdfeW91bmcsIG5hLnJtPVQpKSAvIHNkKGdfZmFjdG9yXzIwMDdfeW91bmcsIG5hLnJtPVQpLAogICAgcmF2ZW5fMjAxNV9vbGQgPSAocmF2ZW5fMjAxNV9vbGQgLSBtZWFuKHJhdmVuXzIwMTVfb2xkLCBuYS5ybT1UKSkgLyBzZChyYXZlbl8yMDE1X29sZCksCiAgICBtYXRoXzIwMTVfb2xkID0gKG1hdGhfMjAxNV9vbGQgLSBtZWFuKG1hdGhfMjAxNV9vbGQsIG5hLnJtPVQpKSAvIHNkKG1hdGhfMjAxNV9vbGQsIG5hLnJtPVQpLAogICAgcmF2ZW5fMjAxNV95b3VuZyA9IChyYXZlbl8yMDE1X3lvdW5nIC0gbWVhbihyYXZlbl8yMDE1X3lvdW5nLCBuYS5ybT1UKSkgLyBzZChyYXZlbl8yMDE1X3lvdW5nKSwKICAgIG1hdGhfMjAxNV95b3VuZyA9IChtYXRoXzIwMTVfeW91bmcgLSBtZWFuKG1hdGhfMjAxNV95b3VuZywgbmEucm09VCkpIC8KICAgICAgc2QobWF0aF8yMDE1X3lvdW5nLCBuYS5ybT1UKSwKICAgIHJhdmVuXzIwMDdfb2xkID0gKHJhdmVuXzIwMDdfb2xkIC0gbWVhbihyYXZlbl8yMDA3X29sZCwgbmEucm09VCkpIC8gc2QocmF2ZW5fMjAwN19vbGQpLAptYXRoXzIwMDdfb2xkID0gKG1hdGhfMjAwN19vbGQgLSBtZWFuKG1hdGhfMjAwN19vbGQsIG5hLnJtPVQpKSAvIHNkKG1hdGhfMjAwN19vbGQsIG5hLnJtPVQpLApyYXZlbl8yMDA3X3lvdW5nID0gKHJhdmVuXzIwMDdfeW91bmcgLSBtZWFuKHJhdmVuXzIwMDdfeW91bmcsIG5hLnJtPVQpKSAvIHNkKHJhdmVuXzIwMDdfeW91bmcpLAptYXRoXzIwMDdfeW91bmcgPSAobWF0aF8yMDA3X3lvdW5nIC0gbWVhbihtYXRoXzIwMDdfeW91bmcsIG5hLnJtPVQpKSAvCiAgc2QobWF0aF8yMDA3X3lvdW5nLCBuYS5ybT1UKSwKICAgIGNvdW50X2JhY2t3YXJkcyA9IChjb3VudF9iYWNrd2FyZHMgLSBtZWFuKGNvdW50X2JhY2t3YXJkcywgbmEucm09VCkpIC8KICAgICAgc2QoY291bnRfYmFja3dhcmRzLCBuYS5ybT1UKSwKICAgIHdvcmRzX2RlbGF5ZWQgPSAod29yZHNfZGVsYXllZCAtIG1lYW4od29yZHNfZGVsYXllZCwgbmEucm09VCkpIC8KICAgICAgc2Qod29yZHNfZGVsYXllZCwgbmEucm09VCksCiAgICBhZGFwdGl2ZV9udW1iZXJpbmcgPSAoYWRhcHRpdmVfbnVtYmVyaW5nIC0gbWVhbihhZGFwdGl2ZV9udW1iZXJpbmcsIG5hLnJtPVQpKSAvCiAgICAgIHNkKGFkYXB0aXZlX251bWJlcmluZywgbmEucm09VCksCiAgICBiaWc1X2V4dCA9IChiaWc1X2V4dCAtIG1lYW4oYmlnNV9leHQsIG5hLnJtPVQpKSAvIHNkKGJpZzVfZXh0LCBuYS5ybT1UKSwKICAgIGJpZzVfY29uID0gKGJpZzVfY29uIC0gbWVhbihiaWc1X2NvbiwgbmEucm09VCkpIC8gc2QoYmlnNV9jb24sIG5hLnJtPVQpLAogICAgYmlnNV9hZ3JlZSA9IChiaWc1X2FncmVlIC0gbWVhbihiaWc1X2FncmVlLCBuYS5ybT1UKSkgLyBzZChiaWc1X2FncmVlLCBuYS5ybT1UKSwKICAgIGJpZzVfb3BlbiA9IChiaWc1X29wZW4gLSBtZWFuKGJpZzVfb3BlbiwgbmEucm09VCkpIC8gc2QoYmlnNV9vcGVuLCBuYS5ybT1UKSwKICAgIGJpZzVfbmV1ID0gKGJpZzVfbmV1IC0gbWVhbihiaWc1X25ldSwgbmEucm09VCkpIC8gc2QoYmlnNV9uZXUsIG5hLnJtPVQpLAogICAgcmlza0EgPSAocmlza0EgLSBtZWFuKHJpc2tBLCBuYS5ybT1UKSkgLyBzZChyaXNrQSwgbmEucm09VCksCiAgICByaXNrQiA9IChyaXNrQiAtIG1lYW4ocmlza0IsIG5hLnJtPVQpKSAvIHNkKHJpc2tCLCBuYS5ybT1UKSwKICAgIHllYXJzX29mX2VkdWNhdGlvbl96ID0gKHllYXJzX29mX2VkdWNhdGlvbiAtIG1lYW4oeWVhcnNfb2ZfZWR1Y2F0aW9uLCBuYS5ybT1UKSkgLwogICAgICBzZCh5ZWFyc19vZl9lZHVjYXRpb24sIG5hLnJtPVQpLAogICAgd2FnZV9sYXN0X21vbnRoX3ogPSAod2FnZV9sYXN0X21vbnRoX2xvZyAtIG1lYW4od2FnZV9sYXN0X21vbnRoX2xvZywgbmEucm09VCkpIC8KICAgICAgc2Qod2FnZV9sYXN0X21vbnRoX2xvZywgbmEucm09VCksCiAgICB3YWdlX2xhc3RfeWVhcl96ID0gKHdhZ2VfbGFzdF95ZWFyX2xvZyAtIG1lYW4od2FnZV9sYXN0X3llYXJfbG9nLCBuYS5ybT1UKSkgLwogICAgICBzZCh3YWdlX2xhc3RfeWVhcl9sb2csIG5hLnJtPVQpCiAgICAgICAgKQoKZGF0YV91c2VkIDwtIGJpcnRob3JkZXIgJT4lCiAgbXV0YXRlKHNpYmxpbmdfY291bnQgPSBzaWJsaW5nX2NvdW50X25haXZlLAogICAgICAgICBiaXJ0aF9vcmRlcl9ub25saW5lYXIgPSBiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciwKICAgICAgICAgYmlydGhfb3JkZXIgPSBiaXJ0aG9yZGVyX25haXZlLAogICAgICAgICBjb3VudF9iaXJ0aF9vcmRlciA9IGNvdW50X2JpcnRob3JkZXJfbmFpdmUpCgpgYGAKCiMjIEludGVsbGlnZW5jZSB7LmFjdGl2ZSAudGFic2V0fQojIyMgZy1mYWN0b3IgMjAxNSBvbGQgey50YWJzZXR9CgpgYGB7cn0KIyBTcGVjaWZ5IHlvdXIgb3V0Y29tZQpkYXRhX3VzZWQgPSBkYXRhX3VzZWQgJT4lIG11dGF0ZShvdXRjb21lID0gZ19mYWN0b3JfMjAxNV9vbGQpCmRhdGFfdXNlZF9wbG90cyA8LSBkYXRhX3VzZWRbWzFdXQoKY29tcGFyZV9iaXJ0aG9yZGVyX2ltcHV0ZWQoZGF0YV91c2VkID0gZGF0YV91c2VkKQoKYGBgCg==</div>
+<div id="rmd-source-code">LS0tCm91dHB1dDogaHRtbF9kb2N1bWVudAplZGl0b3Jfb3B0aW9uczogCiAgY2h1bmtfb3V0cHV0X3R5cGU6IGNvbnNvbGUKLS0tCiMgPHNwYW4gc3R5bGU9ImNvbG9yOiNBNkQ4NTQiPkJpcnRoIE9yZGVyIEVmZmVjdHM8L3NwYW4+IHsudGFic2V0fQoKIyMgSGVscGVyCmBgYHtyIGhlbHBlcn0Kc291cmNlKCIwX2hlbHBlcnMuUiIpCm9wdHNfY2h1bmskc2V0KHdhcm5pbmcgPSBGQUxTRSkKCmBgYAoKCiMjIEZ1bmN0aW9ucwoKYGBge3J9CgpuX2ltcHV0YXRpb25zLm1pdG1sID0gZnVuY3Rpb24oaW1wcykgewogIGltcHMkaXRlciRtCn0Kbl9pbXB1dGF0aW9ucy5taWRzID0gZnVuY3Rpb24oaW1wcykgewogIGltcHMkbQp9Cm5faW1wdXRhdGlvbnMuYW1lbGlhID0gZnVuY3Rpb24oaW1wcykgewogIGxlbmd0aChpbXBzJGltcHV0YXRpb25zKQp9Cm5faW1wdXRhdGlvbnMgPSBmdW5jdGlvbihpbXBzKSB7IFVzZU1ldGhvZCgibl9pbXB1dGF0aW9ucyIpIH0KCmNvbXBsZXRlLm1pdG1sID0gbWl0bWw6Om1pdG1sQ29tcGxldGUKY29tcGxldGUubWlkcyA9IG1pY2U6OmNvbXBsZXRlCmNvbXBsZXRlID0gZnVuY3Rpb24oLi4uKSB7IFVzZU1ldGhvZCgiY29tcGxldGUiKSB9CgpsaWJyYXJ5KG1pY2UpCmxpYnJhcnkobWljZWFkZHMpCmxpYnJhcnkobWl0bWwpCmBgYAoKCiMjIExvYWQgZGF0YQpgYGB7ciBMb2FkIERhdGF9CmJpcnRob3JkZXIgPSByZWFkUkRTKCJkYXRhL2FsbGRhdGFfYmlydGhvcmRlcl9pX21sLnJkcyIpCmBgYAoKIyMgRGF0YSBwcmVwYXJhdGlvbnMKYGBge3IgZGF0YSBwcmVwYXJhdGlvbnN9CmJpcnRob3JkZXIgPC0gbWlkczJtaXRtbC5saXN0KGJpcnRob3JkZXIpCgojIyBDYWxjdWxhdGUgZ19mYWN0b3JzIChmb3Igbm93IHdpdGggcm93TWVhbnM6IGJldHRlciB0byBydW4gZmFjdG9yIGFuYWx5c2lzIGhlcmUgYXMgd2VsbD8pCmJpcnRob3JkZXIgPC0gd2l0aGluKGJpcnRob3JkZXIsIHsKICBnX2ZhY3Rvcl8yMDE1X29sZCA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDE1X29sZCwgbWF0aF8yMDE1X29sZCwgY291bnRfYmFja3dhcmRzLCAgd29yZHNfZGVsYXllZCwgYWRhcHRpdmVfbnVtYmVyaW5nKSkpCn0pCgpiaXJ0aG9yZGVyIDwtIHdpdGhpbihiaXJ0aG9yZGVyLCB7CiAgZ19mYWN0b3JfMjAxNV95b3VuZyA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDE1X3lvdW5nLCBtYXRoXzIwMTVfeW91bmcpKSkKfSkKCmJpcnRob3JkZXIgPC0gd2l0aGluKGJpcnRob3JkZXIsIHsKICBnX2ZhY3Rvcl8yMDA3X29sZCA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDA3X29sZCwgbWF0aF8yMDA3X29sZCkpKQp9KQoKYmlydGhvcmRlciA8LSB3aXRoaW4oYmlydGhvcmRlciwgewogIGdfZmFjdG9yXzIwMDdfeW91bmcgPC0gcm93TWVhbnMoc2NhbGUoY2JpbmQocmF2ZW5fMjAwN195b3VuZywgbWF0aF8yMDA3X3lvdW5nKSkpCn0pCgoKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lIHRibF9kZi5taXRtbC5saXN0CgojIyMgQmlydGhvcmRlciBhbmQgU2libGluZyBDb3VudAojIGZvciBmYWN0b3IgdmFyaWFibGVzIHdlIGhhdmUgdG8gcm91bmQgYmlydGggb3JkZXIgcG9zaXRpb24gYW5kIGVsaW1pbmF0ZSBhbGwgdW5saWtlbHkgbnVtYmVycyAobmVnYXRpdmUgb25lcykKYmlydGhvcmRlcl9kYXRhID0gYmlydGhvcmRlcltbMV1dCgpiaXJ0aG9yZGVyID0gYmlydGhvcmRlciAlPiUKICBtdXRhdGUoYmlydGhvcmRlcl9nZW5lcyA9IGlmZWxzZShiaXJ0aG9yZGVyX2dlbmVzIDwgMCwgMCwgYmlydGhvcmRlcl9nZW5lcyksCiAgICAgICAgIGJpcnRob3JkZXJfbmFpdmUgPSBpZmVsc2UoYmlydGhvcmRlcl9uYWl2ZSA8IDAsIDAsIGJpcnRob3JkZXJfbmFpdmUpLAogICAgICAgICBiaXJ0aG9yZGVyX2dlbmVzID0gcm91bmQoYmlydGhvcmRlcl9nZW5lcyksCiAgICAgICAgIGJpcnRob3JkZXJfbmFpdmUgPSByb3VuZChiaXJ0aG9yZGVyX25haXZlKSwKICAgICAgICAgc2libGluZ19jb3VudF9nZW5lcyA9IGlmZWxzZShzaWJsaW5nX2NvdW50X2dlbmVzIDwgMCwgMCwgc2libGluZ19jb3VudF9nZW5lcyksCiAgICAgICAgIHNpYmxpbmdfY291bnRfbmFpdmUgPSBpZmVsc2Uoc2libGluZ19jb3VudF9uYWl2ZSA8IDAsIDAsIHNpYmxpbmdfY291bnRfbmFpdmUpLAogICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzID0gcm91bmQoc2libGluZ19jb3VudF9nZW5lcyksCiAgICAgICAgIHNpYmxpbmdfY291bnRfbmFpdmUgPSByb3VuZChzaWJsaW5nX2NvdW50X25haXZlKQogICAgICAgICApCgoKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lIAogIG11dGF0ZSgKIyBiaXJ0aG9yZGVyIGFzIGZhY3RvcnMgd2l0aCBsZXZlbHMgb2YgMSwgMiwgMywgNCwgNSwgNSsKICAgIGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfbmFpdmUpLAogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBpZmVsc2UoYmlydGhvcmRlcl9uYWl2ZSA+IDUsICI1KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IpLAogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBmYWN0b3IoYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihzaWJsaW5nX2NvdW50X25haXZlKSwKICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yID0gaWZlbHNlKHNpYmxpbmdfY291bnRfbmFpdmUgPiA1LCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yKSwKICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihiaXJ0aG9yZGVyX2dlbmVzKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gaWZlbHNlKGJpcnRob3JkZXJfZ2VuZXMgPjUgLCAiNSsiLCBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciksCiAgICBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciA9IGZhY3RvcihiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIxIiwiMiIsIjMiLCI0IiwiNSIsIjUrIikpLAogICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoc2libGluZ19jb3VudF9nZW5lcyksCiAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciA9IGlmZWxzZShzaWJsaW5nX2NvdW50X2dlbmVzID41ICwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yKSwKICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgICMgaW50ZXJhY3Rpb24gYmlydGhvcmRlciAqIHNpYmxpbmdjb3V0IGZvciBlYWNoIGJpcnRob3JkZXIKICAgIGNvdW50X2JpcnRob3JkZXJfbmFpdmUgPQogICAgICBmYWN0b3Ioc3RyX3JlcGxhY2UoYXMuY2hhcmFjdGVyKGludGVyYWN0aW9uKGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yLCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IpKSwKICAgICAgICAgICAgICAgICAgICAgICAgIlxcLiIsICIvIiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSAgIGMoIjEvMiIsIjIvMiIsICIxLzMiLCAgIjIvMyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjMvMyIsICIxLzQiLCAiMi80IiwgIjMvNCIsICI0LzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUiLCAiMi81IiwgIjMvNSIsICI0LzUiLCAiNS81IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81KyIsICIyLzUrIiwgIjMvNSsiLCAiNC81KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjUvNSsiLCAiNSsvNSsiKSksCiAgICBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yKSksICJcXC4iLCAiLyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gICBjKCIxLzIiLCIyLzIiLCAiMS8zIiwgICIyLzMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIzLzMiLCAiMS80IiwgIjIvNCIsICIzLzQiLCAiNC80IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81IiwgIjIvNSIsICIzLzUiLCAiNC81IiwgIjUvNSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSsiLCAiMi81KyIsICIzLzUrIiwgIjQvNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI1LzUrIiwgIjUrLzUrIikpKQoKCgojIyMgVmFyaWFibGVzCmJpcnRob3JkZXIgPSBiaXJ0aG9yZGVyICU+JQogIG11dGF0ZSgKICAgIGdfZmFjdG9yXzIwMTVfb2xkID0gKGdfZmFjdG9yXzIwMTVfb2xkIC0gbWVhbihnX2ZhY3Rvcl8yMDE1X29sZCwgbmEucm09VCkpIC8gc2QoZ19mYWN0b3JfMjAxNV9vbGQsIG5hLnJtPVQpLAogICAgZ19mYWN0b3JfMjAxNV95b3VuZyA9IChnX2ZhY3Rvcl8yMDE1X3lvdW5nIC0gbWVhbihnX2ZhY3Rvcl8yMDE1X3lvdW5nLCBuYS5ybT1UKSkgLyBzZChnX2ZhY3Rvcl8yMDE1X3lvdW5nLCBuYS5ybT1UKSwKICAgIGdfZmFjdG9yXzIwMDdfb2xkID0gKGdfZmFjdG9yXzIwMDdfb2xkIC0gbWVhbihnX2ZhY3Rvcl8yMDA3X29sZCwgbmEucm09VCkpIC8gc2QoZ19mYWN0b3JfMjAwN19vbGQsIG5hLnJtPVQpLApnX2ZhY3Rvcl8yMDA3X3lvdW5nID0gKGdfZmFjdG9yXzIwMDdfeW91bmcgLSBtZWFuKGdfZmFjdG9yXzIwMDdfeW91bmcsIG5hLnJtPVQpKSAvIHNkKGdfZmFjdG9yXzIwMDdfeW91bmcsIG5hLnJtPVQpLAogICAgcmF2ZW5fMjAxNV9vbGQgPSAocmF2ZW5fMjAxNV9vbGQgLSBtZWFuKHJhdmVuXzIwMTVfb2xkLCBuYS5ybT1UKSkgLyBzZChyYXZlbl8yMDE1X29sZCksCiAgICBtYXRoXzIwMTVfb2xkID0gKG1hdGhfMjAxNV9vbGQgLSBtZWFuKG1hdGhfMjAxNV9vbGQsIG5hLnJtPVQpKSAvIHNkKG1hdGhfMjAxNV9vbGQsIG5hLnJtPVQpLAogICAgcmF2ZW5fMjAxNV95b3VuZyA9IChyYXZlbl8yMDE1X3lvdW5nIC0gbWVhbihyYXZlbl8yMDE1X3lvdW5nLCBuYS5ybT1UKSkgLyBzZChyYXZlbl8yMDE1X3lvdW5nKSwKICAgIG1hdGhfMjAxNV95b3VuZyA9IChtYXRoXzIwMTVfeW91bmcgLSBtZWFuKG1hdGhfMjAxNV95b3VuZywgbmEucm09VCkpIC8KICAgICAgc2QobWF0aF8yMDE1X3lvdW5nLCBuYS5ybT1UKSwKICAgIHJhdmVuXzIwMDdfb2xkID0gKHJhdmVuXzIwMDdfb2xkIC0gbWVhbihyYXZlbl8yMDA3X29sZCwgbmEucm09VCkpIC8gc2QocmF2ZW5fMjAwN19vbGQpLAptYXRoXzIwMDdfb2xkID0gKG1hdGhfMjAwN19vbGQgLSBtZWFuKG1hdGhfMjAwN19vbGQsIG5hLnJtPVQpKSAvIHNkKG1hdGhfMjAwN19vbGQsIG5hLnJtPVQpLApyYXZlbl8yMDA3X3lvdW5nID0gKHJhdmVuXzIwMDdfeW91bmcgLSBtZWFuKHJhdmVuXzIwMDdfeW91bmcsIG5hLnJtPVQpKSAvIHNkKHJhdmVuXzIwMDdfeW91bmcpLAptYXRoXzIwMDdfeW91bmcgPSAobWF0aF8yMDA3X3lvdW5nIC0gbWVhbihtYXRoXzIwMDdfeW91bmcsIG5hLnJtPVQpKSAvCiAgc2QobWF0aF8yMDA3X3lvdW5nLCBuYS5ybT1UKSwKICAgIGNvdW50X2JhY2t3YXJkcyA9IChjb3VudF9iYWNrd2FyZHMgLSBtZWFuKGNvdW50X2JhY2t3YXJkcywgbmEucm09VCkpIC8KICAgICAgc2QoY291bnRfYmFja3dhcmRzLCBuYS5ybT1UKSwKICAgIHdvcmRzX2RlbGF5ZWQgPSAod29yZHNfZGVsYXllZCAtIG1lYW4od29yZHNfZGVsYXllZCwgbmEucm09VCkpIC8KICAgICAgc2Qod29yZHNfZGVsYXllZCwgbmEucm09VCksCiAgICBhZGFwdGl2ZV9udW1iZXJpbmcgPSAoYWRhcHRpdmVfbnVtYmVyaW5nIC0gbWVhbihhZGFwdGl2ZV9udW1iZXJpbmcsIG5hLnJtPVQpKSAvCiAgICAgIHNkKGFkYXB0aXZlX251bWJlcmluZywgbmEucm09VCksCiAgICBiaWc1X2V4dCA9IChiaWc1X2V4dCAtIG1lYW4oYmlnNV9leHQsIG5hLnJtPVQpKSAvIHNkKGJpZzVfZXh0LCBuYS5ybT1UKSwKICAgIGJpZzVfY29uID0gKGJpZzVfY29uIC0gbWVhbihiaWc1X2NvbiwgbmEucm09VCkpIC8gc2QoYmlnNV9jb24sIG5hLnJtPVQpLAogICAgYmlnNV9hZ3JlZSA9IChiaWc1X2FncmVlIC0gbWVhbihiaWc1X2FncmVlLCBuYS5ybT1UKSkgLyBzZChiaWc1X2FncmVlLCBuYS5ybT1UKSwKICAgIGJpZzVfb3BlbiA9IChiaWc1X29wZW4gLSBtZWFuKGJpZzVfb3BlbiwgbmEucm09VCkpIC8gc2QoYmlnNV9vcGVuLCBuYS5ybT1UKSwKICAgIGJpZzVfbmV1ID0gKGJpZzVfbmV1IC0gbWVhbihiaWc1X25ldSwgbmEucm09VCkpIC8gc2QoYmlnNV9uZXUsIG5hLnJtPVQpLAogICAgcmlza0EgPSAocmlza0EgLSBtZWFuKHJpc2tBLCBuYS5ybT1UKSkgLyBzZChyaXNrQSwgbmEucm09VCksCiAgICByaXNrQiA9IChyaXNrQiAtIG1lYW4ocmlza0IsIG5hLnJtPVQpKSAvIHNkKHJpc2tCLCBuYS5ybT1UKSwKICAgIHllYXJzX29mX2VkdWNhdGlvbl96ID0gKHllYXJzX29mX2VkdWNhdGlvbiAtIG1lYW4oeWVhcnNfb2ZfZWR1Y2F0aW9uLCBuYS5ybT1UKSkgLwogICAgICBzZCh5ZWFyc19vZl9lZHVjYXRpb24sIG5hLnJtPVQpLAogICAgd2FnZV9sYXN0X21vbnRoX3ogPSAod2FnZV9sYXN0X21vbnRoX2xvZyAtIG1lYW4od2FnZV9sYXN0X21vbnRoX2xvZywgbmEucm09VCkpIC8KICAgICAgc2Qod2FnZV9sYXN0X21vbnRoX2xvZywgbmEucm09VCksCiAgICB3YWdlX2xhc3RfeWVhcl96ID0gKHdhZ2VfbGFzdF95ZWFyX2xvZyAtIG1lYW4od2FnZV9sYXN0X3llYXJfbG9nLCBuYS5ybT1UKSkgLwogICAgICBzZCh3YWdlX2xhc3RfeWVhcl9sb2csIG5hLnJtPVQpLAogICAgYXR0ZW5kZWRfc2Nob29sID0gYXMuaW50ZWdlcihhdHRlbmRlZF9zY2hvb2wpLAogICAgYXR0ZW5kZWRfc2Nob29sID0gaWZlbHNlKGF0dGVuZGVkX3NjaG9vbCA9PSAxLCAwLAogICAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoYXR0ZW5kZWRfc2Nob29sID09IDIsIDEsIE5BKSkpCiAgICAgICAgCmRhdGFfdXNlZCA8LSBiaXJ0aG9yZGVyICU+JQogIG11dGF0ZShzaWJsaW5nX2NvdW50ID0gc2libGluZ19jb3VudF9uYWl2ZSwKICAgICAgICAgYmlydGhfb3JkZXJfbm9ubGluZWFyID0gYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IsCiAgICAgICAgIGJpcnRoX29yZGVyID0gYmlydGhvcmRlcl9uYWl2ZSwKICAgICAgICAgY291bnRfYmlydGhfb3JkZXIgPSBjb3VudF9iaXJ0aG9yZGVyX25haXZlKQoKYGBgCgojIyBJbnRlbGxpZ2VuY2Ugey5hY3RpdmUgLnRhYnNldH0KIyMjIGctZmFjdG9yIDIwMTUgb2xkIHsudGFic2V0fQoKYGBge3J9CiMgU3BlY2lmeSB5b3VyIG91dGNvbWUKZGF0YV91c2VkID0gZGF0YV91c2VkICU+JSBtdXRhdGUob3V0Y29tZSA9IGdfZmFjdG9yXzIwMTVfb2xkKQpkYXRhX3VzZWRfcGxvdHMgPC0gZGF0YV91c2VkW1sxXV0KCmNvbXBhcmVfYmlydGhvcmRlcl9pbXB1dGVkKGRhdGFfdXNlZCA9IGRhdGFfdXNlZCkKCmBgYAoK</div>
 
 
 

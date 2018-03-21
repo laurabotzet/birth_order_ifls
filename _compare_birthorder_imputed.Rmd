@@ -19,7 +19,7 @@ data_used <- data_used %>%
 
 data_used_plots = data_used[[1]]
 
-model_naive_m1 <- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink)))
+model_naive_m1 <- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink), REML = FALSE))
 
 x = mitml::testEstimates(model_naive_m1, var.comp = T)
 
@@ -41,7 +41,7 @@ x
 ###### Coefficient Plot {.active}
 ```{r }
 model_naive_m1_plot = lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
-                           data = data_used_plots)
+                           data = data_used_plots, REML = FALSE)
 plot(allEffects(model_naive_m1_plot)) # fuer plots
 ```
 
@@ -50,9 +50,8 @@ plot(allEffects(model_naive_m1_plot)) # fuer plots
 
 ###### Model Summary
 ```{r}
-
 model_naive_m2 <- with(data_used, lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count +
-                                         (1 | mother_pidlink)))
+                                         (1 | mother_pidlink), REML = FALSE))
 x = mitml::testEstimates(model_naive_m2, var.comp = T)
 
 y = as_tibble(x$estimates, rownames = "id")
@@ -73,7 +72,7 @@ x
 ###### Coefficient Plot {.active}
 ```{r}
 model_naive_m2_plot = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
-                           data = data_used_plots)
+                           data = data_used_plots, REML = FALSE)
 plot_birthorder2(model_naive_m2_plot, separate = FALSE)
 ```
 
@@ -83,7 +82,7 @@ plot_birthorder2(model_naive_m2_plot, separate = FALSE)
 ```{r}
 
 model_naive_m3 <- with(data_used, lmer(outcome ~ birth_order_nonlinear + poly(age, 3, raw = TRUE) + male +
-                                         sibling_count + (1 | mother_pidlink)))
+                                         sibling_count + (1 | mother_pidlink), REML = FALSE))
 x = mitml::testEstimates(model_naive_m3, var.comp = T)
 
 y = as_tibble(x$estimates, rownames = "id")
@@ -104,7 +103,7 @@ x
 ```{r}
 model_naive_m3_plot = lmer(outcome ~ birth_order_nonlinear + poly(age, 3, raw = TRUE) + male + sibling_count +
                              (1 | mother_pidlink),
-                           data = data_used_plots)
+                           data = data_used_plots, REML = FALSE)
 plot_birthorder(model_naive_m3_plot, separate = FALSE)
 
 ```
@@ -115,7 +114,7 @@ plot_birthorder(model_naive_m3_plot, separate = FALSE)
 ```{r}
 
 model_naive_m4 <- with(data_used, lmer(outcome ~ count_birth_order + poly(age, 3, raw = TRUE) + male  +
-                                         (1 | mother_pidlink)))
+                                         (1 | mother_pidlink), REML = FALSE))
 x = mitml::testEstimates(model_naive_m4, var.comp = T)
 
 y = as_tibble(x$estimates, rownames = "id")
@@ -137,7 +136,7 @@ x
 ```{r}
 model_naive_m4_plot = lmer(outcome ~ count_birth_order + poly(age, 3, raw = TRUE) + male +
                              (1 | mother_pidlink),
-                           data = data_used_plots)
+                           data = data_used_plots, REML = FALSE)
 plot_birthorder(model_naive_m4_plot)
 ```
 
@@ -163,7 +162,7 @@ data_used = data_used %>%
 
 data_used_plots = data_used[[1]]
 
-model_genes_m1 <- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink)))
+model_genes_m1 <- with(data_used, lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink), REML = FALSE))
 x = mitml::testEstimates(model_genes_m1, var.comp = T)
 
 y = as_tibble(x$estimates, rownames = "id")
@@ -183,7 +182,7 @@ x
 ###### Coefficient Plot {.active}
 ```{r}
 model_genes_m1_plot = lmer(outcome ~ poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
-                           data = data_used_plots)
+                           data = data_used_plots, REML = FALSE)
 plot(allEffects(model_genes_m1_plot))
 ```
 
@@ -192,7 +191,7 @@ plot(allEffects(model_genes_m1_plot))
 ###### Model Summary
 ```{r}
 model_genes_m2 <- with(data_used, lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count +
-                                         (1 | mother_pidlink)))
+                                         (1 | mother_pidlink), REML = FALSE))
 x = mitml::testEstimates(model_genes_m2, var.comp = T)
 
 y = as_tibble(x$estimates, rownames = "id")
@@ -212,7 +211,7 @@ x
 ###### Coefficient Plot  {.active}
 ```{r}
 model_genes_m2_plot = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
-                           data = data_used_plots)
+                           data = data_used_plots, REML = FALSE)
 plot_birthorder2(model_genes_m2_plot, separate = FALSE)
 ```
 
@@ -222,7 +221,7 @@ plot_birthorder2(model_genes_m2_plot, separate = FALSE)
 ```{r}
 
 model_genes_m3 <- with(data_used, lmer(outcome ~ birth_order_nonlinear + poly(age, 3, raw = TRUE) + male + sibling_count +
-                                         (1 | mother_pidlink)))
+                                         (1 | mother_pidlink), REML = FALSE))
 x = mitml::testEstimates(model_genes_m3, var.comp = T)
 
 y = as_tibble(x$estimates, rownames = "id")
@@ -243,7 +242,7 @@ x
 ```{r}
 model_genes_m3_plot = lmer(outcome ~ birth_order_nonlinear + poly(age, 3, raw = TRUE) + male + sibling_count +
                              (1 | mother_pidlink),
-                           data = data_used_plots)
+                           data = data_used_plots, REML = FALSE)
 plot_birthorder(model_genes_m3_plot, separate = FALSE)
 ```
 
@@ -252,7 +251,7 @@ plot_birthorder(model_genes_m3_plot, separate = FALSE)
 ###### Model Summary
 ```{r}
 model_genes_m4 <- with(data_used, lmer(outcome ~ count_birth_order + poly(age, 3, raw = TRUE) + male  +
-                                         (1 | mother_pidlink)))
+                                         (1 | mother_pidlink), REML = FALSE))
 x = mitml::testEstimates(model_genes_m4, var.comp = T)
 
 y = as_tibble(x$estimates, rownames = "id")
@@ -274,7 +273,7 @@ x
 ```{r}
 model_genes_m4_plot = lmer(outcome ~ count_birth_order + poly(age, 3, raw = TRUE) + male +
                              (1 | mother_pidlink),
-                           data = data_used_plots)
+                           data = data_used_plots, REML = FALSE)
 plot_birthorder(model_genes_m4_plot)
 ```
 

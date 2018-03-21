@@ -165,7 +165,7 @@ math_2007_young = (math_2007_young - mean(math_2007_young, na.rm=T)) /
                            ifelse(attended_school == 2, 1, NA)))
         
 data_used <- birthorder %>%
-  mutate(sibling_count = sibling_count_naive,
+  mutate(sibling_count = sibling_count_naive_factor,
          birth_order_nonlinear = birthorder_naive_factor,
          birth_order = birthorder_naive,
          count_birth_order = count_birthorder_naive)

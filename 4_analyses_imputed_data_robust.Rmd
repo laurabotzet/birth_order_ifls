@@ -9,6 +9,7 @@ editor_options:
 ```{r helper}
 source("0_helpers.R")
 opts_chunk$set(warning = FALSE)
+detach("package:lmerTest", unload=TRUE)
 ```
 
 
@@ -156,7 +157,7 @@ math_2007_young = (math_2007_young - mean(math_2007_young, na.rm=T)) /
     attended_school = ifelse(attended_school == 1, 0,
                            ifelse(attended_school == 2, 1, NA)))
 data_used <- birthorder %>%
-  mutate(sibling_count = sibling_count_naive,
+  mutate(sibling_count = sibling_count_naive_factor,
          birth_order_nonlinear = birthorder_naive_factor,
          birth_order = birthorder_naive,
          count_birth_order = count_birthorder_naive)

@@ -52,6 +52,24 @@ birthorder = left_join(birthorder,
   select(-Sector)
 
 
+# data based on 4_analyses without running the analyses
+
+ggplot(birthorder, aes(riskA)) + geom_bar() + xlab("Risk Aversion SetA" )
+ggplot(birthorder, aes(riskB)) + geom_bar() + xlab("Risk Aversion SetB" )
+
+cor.test(birthorder$riskA, birthorder$riskB)
+
+ggplot(birthorder, aes(riskA, riskB)) + geom_jitter(alpha = .1) + xlab("Risk Aversion SetA" ) + ylab("Risk Aversion SetB" )
+
+cor.test(birthorder$riskA, birthorder$ever_smoked)
+cor.test(birthorder$riskB, birthorder$ever_smoked)
+
+cor.test(birthorder$riskA, birthorder$still_smoking)
+cor.test(birthorder$riskB, birthorder$still_smoking)
+
+
+cor.test(birthorder$riskA, birthorder$Self_employed)
+cor.test(birthorder$riskB, birthorder$Self_employed)
 
 ### Variables
 birthorder = birthorder %>%
@@ -270,14 +288,130 @@ x$Coefficient = ifelse(x$Coefficient == "birthorder_genes", "birth order", "sibs
 
 ggplot(x, aes(Model, Value)) +
   geom_pointrange(data=x, mapping=aes(x=Model, y=Value, ymin=HighOuter, ymax=LowOuter, color = Coefficient),
-                  position = position_dodge(width=0.3)) +
+                  position = position_dodge(width=0.3), size = 1) +
   scale_colour_brewer(palette = "Set2") +
-  geom_hline(yintercept = 0)  +
-  geom_hline(yintercept = -.1, linetype = "dotted") + 
+  geom_hline(yintercept = 0, size = 1.5)  +
+  geom_hline(yintercept = -.1, linetype = "dotted", size = 1.5) + 
   scale_x_discrete(limits=c("RiskB", "RiskA", "Openness", "Neuroticism", "Extraversion", "Conscientiousness",
                             "Agreeableness", "`Educational Attainment`", "Intelligence")) +
-  coord_flip()
+  coord_flip() +
+  theme(text = element_text(size=25), axis.text.x = element_text(size = 20), axis.text.y = element_text(size = 20))
 ```
 
+
+```{r g-factor 2015 old}
+Intelligence = lmer(g_factor_2015_old ~ birthorder_genes_factor + poly(age, 3, raw = TRUE) + male +
+                      sibling_count_genes_factor +
+                      (1 | mother_pidlink),
+                    data = birthorder)
+
+```
+
+
+```{r g-factor 2015 old}
+`Educational Attainment` = lmer(years_of_education_z ~ birthorder_genes_factor + poly(age, 3, raw = TRUE) + male +
+                                  sibling_count_genes_factor + (1 | mother_pidlink),
+                                data = birthorder)
+
+
+```
+
+
+
+```{r g-factor 2015 old}
+Extraversion = lmer(big5_ext ~ birthorder_genes_factor + poly(age, 3, raw = TRUE) + male +
+                      sibling_count_genes_factor + (1 | mother_pidlink),
+                    data = birthorder)
+
+
+```
+
+
+
+```{r g-factor 2015 old}
+Neuroticism = lmer(big5_neu ~ birthorder_genes_factor + poly(age, 3, raw = TRUE) + male +
+                     sibling_count_genes_factor + (1 | mother_pidlink),
+                   data = birthorder)
+
+
+```
+
+
+```{r g-factor 2015 old}
+Conscientiousness = lmer(big5_con ~ birthorder_genes_factor + poly(age, 3, raw = TRUE) + male +
+                           sibling_count_genes_factor + (1 | mother_pidlink),
+                         data = birthorder)
+
+
+```
+
+
+
+```{r g-factor 2015 old}
+Agreeableness = lmer(big5_agree ~ birthorder_genes_factor + poly(age, 3, raw = TRUE) + male +
+                       sibling_count_genes_factor + (1 | mother_pidlink),
+                     data = birthorder)
+
+
+```
+
+
+```{r g-factor 2015 old}
+Openness = lmer(big5_open ~ birthorder_genes_factor + poly(age, 3, raw = TRUE) + male +
+                  sibling_count_genes_factor + (1 | mother_pidlink),
+                data = birthorder)
+
+
+```
+
+
+```{r g-factor 2015 old}
+RiskA = lmer(riskA ~ birthorder_genes_factor + poly(age, 3, raw = TRUE) + male +
+               sibling_count_genes_factor + (1 | mother_pidlink),
+             data = birthorder)
+
+
+```
+
+```{r g-factor 2015 old}
+RiskB = lmer(riskB ~ birthorder_genes_factor + poly(age, 3, raw = TRUE) + male +
+               sibling_count_genes_factor + (1 | mother_pidlink),
+             data = birthorder)
+
+
+```
+
+
+## Multiplot
+```{r}
+x = multiplot(Intelligence, `Educational Attainment`, Agreeableness, Conscientiousness, Extraversion, Neuroticism, Openness, RiskA, RiskB, intercept = FALSE, coefficients = c("birthorder_genes_factor2", "birthorder_genes_factor3", "birthorder_genes_factor4", "birthorder_genes_factor5", "birthorder_genes_factor5+"), plot = F)
+
+x = data.frame(x)
+
+x$Model = as.factor(x$Model)
+levels(x$Model)
+
+x$Coefficient = ifelse(x$Coefficient == "birthorder_genes_factor2", "2",
+                       ifelse(x$Coefficient == "birthorder_genes_factor3", "3",
+                              ifelse(x$Coefficient == "birthorder_genes_factor4", "4",
+                                     ifelse(x$Coefficient == "birthorder_genes_factor5", "5",
+                                            ifelse(x$Coefficient == "birthorder_genes_factor5+", "5+", NA)))))
+
+colnames(x)[2] = "Birth Order"
+
+
+
+ggplot(x, aes(Model, Value)) +
+  geom_pointrange(data=x, mapping=aes(x=Model, y=Value, ymin=HighOuter, ymax=LowOuter,
+                                      color = `Birth Order`),
+                  position = position_dodge(width=0.3), size = 1) +
+  scale_colour_brewer(palette = "Set2") +
+  geom_hline(yintercept = 0, size = 1.5)  +
+  geom_hline(yintercept = -.1, linetype = "dotted", size = 1.5) + 
+  scale_x_discrete(limits=c("RiskB", "RiskA", "Openness", "Neuroticism", "Extraversion", "Conscientiousness",
+                            "Agreeableness", "`Educational Attainment`", "Intelligence")) +
+  coord_flip() +
+  theme(text = element_text(size=25), axis.text.x = element_text(size = 20), axis.text.y = element_text(size = 20))
+```
 
 

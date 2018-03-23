@@ -1083,17 +1083,20 @@ risk$riskA = ifelse(risk$si01 == 1 & risk$si02 == 1, 5,
              ifelse(risk$si01 == 2 & risk$si03 == 2 & risk$si05 == 1, 2,
              ifelse(risk$si01 == 2 & risk$si03 == 2 & risk$si05 == 2, 1,
              NA)))))
-qplot(risk$riskA[risk$riskA != 5])
 
 ## calculate a risk score for risk game B 
-# (5 = gamble averse, Ordinalskala : 1 = risk loving, 4 = risk averse)
+# (5 = gamble loving, Ordinalskala : 1 = risk loving, 4 = risk averse)
 risk$riskB = ifelse(risk$si11 == 2 & risk$si12 == 1, 5,
              ifelse(risk$si11 == 1 & risk$si13 == 1 & risk$si14 == 1, 4,
              ifelse(risk$si11 == 1 & risk$si13 == 1 & risk$si14 == 2, 3,
              ifelse(risk$si11 == 1 & risk$si13 == 2 & risk$si15 == 1, 2,
              ifelse(risk$si11 == 1 & risk$si13 == 2 & risk$si15 == 2, 1,
              NA)))))
-qplot(risk$riskB[risk$riskB !=5])
+
+# risk variable is messy
+risk = risk %>%
+  mutate(riskB = ifelse(riskB == 5, 0, riskB),
+         riskB = riskB + 1)
 
 psych::alpha(data.frame(risk %>% select(riskA, riskB)), check.keys = T)
 

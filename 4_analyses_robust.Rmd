@@ -53,7 +53,6 @@ birthorder = left_join(birthorder,
   select(-Sector)
 
 
-
 ### Variables
 birthorder = birthorder %>%
   mutate(

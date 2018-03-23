@@ -51,8 +51,6 @@ birthorder = left_join(birthorder,
                                   spread(Sector, var, fill = 0, sep = "_"), by = "pidlink") %>%
   select(-Sector)
 
-
-
 ### Variables
 birthorder = birthorder %>%
   mutate(

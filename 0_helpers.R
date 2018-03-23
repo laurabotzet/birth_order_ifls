@@ -142,7 +142,8 @@ apatheme=theme_bw()+
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
         panel.border=element_blank(),
-        axis.line=element_line())
+        axis.line=element_line(),
+        text = element_text(size=20))
 
 #' function to plot gender plots
 plot_gender = function(data = birthorder){

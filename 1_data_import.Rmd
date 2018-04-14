@@ -925,14 +925,15 @@ nomiss = iq %>%
 
 
 fa.parallel(nomiss %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
-fa(nomiss %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 2)
-om_results = omega(nomiss %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 2, sl = F)
+fa(nomiss %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1)
+om_results = omega(nomiss %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1, sl = F)
 om_results
 omega.diagram(om_results)
 
 "g_factor_2015_old =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed+  adaptive_numbering" %>%
   cfa(data = nomiss, std.lv = T, std.ov = T) -> cfa_g
 summary(cfa_g)
+summary
 
 nomiss$g_factor_2015_old = predict(cfa_g)[,1]
 
@@ -941,6 +942,9 @@ qplot(nomiss$g_factor_2015_old)
 nomiss = nomiss %>% select(pidlink, g_factor_2015_old)
 
 iq = left_join(iq, nomiss, by = "pidlink")
+
+# Explained Variance
+
 
 # G_factor_2015_young
 nomiss = iq %>%

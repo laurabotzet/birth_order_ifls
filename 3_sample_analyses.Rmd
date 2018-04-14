@@ -229,14 +229,15 @@ descriptives
 
 
 ## Ttest
-t.test(birthorder$age ~ birthorder$group_birthorder, var.equal = T)
+tidy(t.test(birthorder$age ~ birthorder$group_birthorder, var.equal = T))
 
 gender = birthorder %>%
   group_by(group_birthorder) %>%
     summarise(gender = sum(male == 1, na.rm=T),
               gender2 = sum(male ==0,na.rm=T)) %>%
   select(gender, gender2)
-chisq.test(gender)
+prop.table(gender)
+tidy(chisq.test(gender))
 
 ## Ratings
 ratings = birthorder %>%
@@ -283,14 +284,15 @@ ratings = birthorder %>%
                 (qt(.975, n()-1)*sd(riskB, na.rm = T)/sqrt(n())))
 ratings
 
-t.test(birthorder$g_factor_2015_old ~ birthorder$group_birthorder, var.equal = T)
-t.test(birthorder$big5_ext ~ birthorder$group_birthorder, var.equal = T)
-t.test(birthorder$big5_neu ~ birthorder$group_birthorder, var.equal = T)
-t.test(birthorder$big5_con ~ birthorder$group_birthorder, var.equal = T)
-t.test(birthorder$big5_agree ~ birthorder$group_birthorder, var.equal = T)
-t.test(birthorder$big5_open ~ birthorder$group_birthorder, var.equal = T)
-t.test(birthorder$riskA ~ birthorder$group_birthorder, var.equal = T)
-t.test(birthorder$riskB ~ birthorder$group_birthorder, var.equal = T)
+tidy(t.test(birthorder$g_factor_2015_old ~ birthorder$group_birthorder, var.equal = T))
+tidy(t.test(birthorder$years_of_education ~ birthorder$group_birthorder, var.equal = T))
+tidy(t.test(birthorder$big5_ext ~ birthorder$group_birthorder, var.equal = T))
+tidy(t.test(birthorder$big5_neu ~ birthorder$group_birthorder, var.equal = T))
+tidy(t.test(birthorder$big5_con ~ birthorder$group_birthorder, var.equal = T))
+tidy(t.test(birthorder$big5_agree ~ birthorder$group_birthorder, var.equal = T))
+tidy(t.test(birthorder$big5_open ~ birthorder$group_birthorder, var.equal = T))
+tidy(t.test(birthorder$riskA ~ birthorder$group_birthorder, var.equal = T))
+tidy(t.test(birthorder$riskB ~ birthorder$group_birthorder, var.equal = T))
 
 ## Educational Attainment
 educational_attainment = birthorder %>%
@@ -313,6 +315,7 @@ ggplot(data=birthorder, aes(x=years_of_education, fill=group_birthorder)) +
 
 ## Descriptives
 ```{r correlation}
+x = birthorder %>% filter(group_birthorder == "test", group_outcome == "test")
 mean_sd = birthorder %>%
   group_by(group_birthorder) %>%
   summarise(age_mean = mean(age, na.rm=T),
@@ -341,7 +344,7 @@ mean_sd
 
 ## Correlations
 ```{r}
-round(cor(birthorder %>% ungroup() %>% select(age, male, g_factor_2015_old, big5_ext, big5_neu, big5_con, big5_agree, big5_open, riskA, riskB, years_of_education), use = "pairwise.complete.obs"), 2) 
+cor = round(cor(birthorder %>% filter(group_birthorder == "test", group_outcome == "test") %>% ungroup() %>% select(age, male, g_factor_2015_old, years_of_education, big5_ext, big5_neu, big5_con, big5_agree, big5_open, riskA, riskB), use = "pairwise.complete.obs"), 2) 
 ```
 
 

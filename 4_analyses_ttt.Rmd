@@ -71,6 +71,25 @@ cor.test(birthorder$riskB, birthorder$still_smoking)
 cor.test(birthorder$riskA, birthorder$Self_employed)
 cor.test(birthorder$riskB, birthorder$Self_employed)
 
+## Robust Analyses without weird categories
+birthorder = birthorder %>%
+  mutate(riskA_robust = ifelse(riskA == 5, NA, riskA),
+         riskB_robust = ifelse(riskB == 1, NA, riskB))
+
+
+ggplot(birthorder, aes(riskA_robust)) + geom_bar() + xlab("Risk Aversion SetA" )
+ggplot(birthorder, aes(riskB_robust)) + geom_bar() + xlab("Risk Aversion SetB" )
+
+cor.test(birthorder$riskA_robust, birthorder$riskB_robust)
+
+ggplot(birthorder, aes(riskA_robust, riskB_robust)) + geom_jitter(alpha = .1) + xlab("Risk Aversion SetA" ) + ylab("Risk Aversion SetB" )
+
+cor.test(birthorder$riskA_robust, birthorder$ever_smoked)
+cor.test(birthorder$riskB_robust, birthorder$ever_smoked)
+
+cor.test(birthorder$riskA_robust, birthorder$Self_employed)
+cor.test(birthorder$riskB_robust, birthorder$Self_employed)
+
 ### Variables
 birthorder = birthorder %>%
   mutate(
@@ -82,7 +101,9 @@ birthorder = birthorder %>%
   raven_2015_old = scale(raven_2015_old),
   math_2015_old = scale(math_2015_old),
   count_backwards = scale(count_backwards),
-  raven_2015_young = scale(raven_2015_young),
+  raven_2015_young = scale(raven_2015_young),  years_of_education_z = scale(years_of_education),
+  Total_score_highest_z = scale(Total_score_highest),
+
   math_2015_young = scale(math_2015_young),
   words_remembered_avg = scale(words_remembered_avg),
   words_immediate = scale(words_immediate),
@@ -94,6 +115,8 @@ birthorder = birthorder %>%
   math_2007_young = scale(math_2007_young),
   riskA = scale(riskA),
   riskB = scale(riskB),
+  riskA_robust = scale(riskA_robust),
+  riskB_robust = scale(riskB_robust),
   years_of_education_z = scale(years_of_education),
   Total_score_highest_z = scale(Total_score_highest),
   wage_last_month_z = scale(wage_last_month_log),
@@ -218,6 +241,26 @@ model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_c
 compare_birthorder_specs(model)
 ```
 
+## Risk Preference Robust {.tabset}
+### Risk A {.tabset}
+
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = riskA_robust)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
+
+### Risk B {.tabset}
+
+
+```{r}
+birthorder <- birthorder %>% mutate(outcome = riskB_robust)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+compare_birthorder_specs(model)
+```
 
 
 
@@ -269,9 +312,7 @@ plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_ord
           plot.title = element_text(hjust = 0)) +
     guides(colour=guide_legend(title = "Sibship")) +
     scale_fill_brewer(palette = "Set2") +
-    scale_colour_brewer(palette = "Set2") +
-    scale_y_continuous(name = ylabel, limits = c(-0.8, 0.9),
-                       breaks = c(-0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8))
+    scale_colour_brewer(palette = "Set2")
   print(plotx)
   assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)
 }

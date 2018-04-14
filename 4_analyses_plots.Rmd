@@ -71,6 +71,25 @@ cor.test(birthorder$riskB, birthorder$still_smoking)
 cor.test(birthorder$riskA, birthorder$Self_employed)
 cor.test(birthorder$riskB, birthorder$Self_employed)
 
+## Robust Analyses without weird categories
+birthorder = birthorder %>%
+  mutate(riskA_robust = ifelse(riskA == 5, NA, riskA),
+         riskB_robust = ifelse(riskB == 1, NA, riskB))
+
+
+ggplot(birthorder, aes(riskA_robust)) + geom_bar() + xlab("Risk Aversion SetA" )
+ggplot(birthorder, aes(riskB_robust)) + geom_bar() + xlab("Risk Aversion SetB" )
+
+cor.test(birthorder$riskA_robust, birthorder$riskB_robust)
+
+ggplot(birthorder, aes(riskA_robust, riskB_robust)) + geom_jitter(alpha = .1) + xlab("Risk Aversion SetA" ) + ylab("Risk Aversion SetB" )
+
+cor.test(birthorder$riskA_robust, birthorder$ever_smoked)
+cor.test(birthorder$riskB_robust, birthorder$ever_smoked)
+
+cor.test(birthorder$riskA_robust, birthorder$Self_employed)
+cor.test(birthorder$riskB_robust, birthorder$Self_employed)
+
 ### Variables
 birthorder = birthorder %>%
   mutate(
@@ -82,7 +101,9 @@ birthorder = birthorder %>%
   raven_2015_old = scale(raven_2015_old),
   math_2015_old = scale(math_2015_old),
   count_backwards = scale(count_backwards),
-  raven_2015_young = scale(raven_2015_young),
+  raven_2015_young = scale(raven_2015_young),  years_of_education_z = scale(years_of_education),
+  Total_score_highest_z = scale(Total_score_highest),
+
   math_2015_young = scale(math_2015_young),
   words_remembered_avg = scale(words_remembered_avg),
   words_immediate = scale(words_immediate),
@@ -94,6 +115,8 @@ birthorder = birthorder %>%
   math_2007_young = scale(math_2007_young),
   riskA = scale(riskA),
   riskB = scale(riskB),
+  riskA_robust = scale(riskA_robust),
+  riskB_robust = scale(riskB_robust),
   years_of_education_z = scale(years_of_education),
   Total_score_highest_z = scale(Total_score_highest),
   wage_last_month_z = scale(wage_last_month_log),
@@ -108,7 +131,6 @@ birthorder = birthorder %>%
                            ifelse(attended_school == 2, 1, NA)))
 
 qplot(birthorder$male)
-qplot(birthorder$g_factor_2015_old)
 qplot(birthorder$g_factor_2015_old)
 
 ### Birthorder and Sibling Count
@@ -188,8 +210,304 @@ birthorder = birthorder %>%
                                                         "1/5+", "2/5+", "3/5+", "4/5+",
                                                         "5/5+", "5+/5+")))
 
+birthorder <- birthorder %>%
+                     mutate(sibling_count = sibling_count_genes_factor,
+                            birth_order_nonlinear = birthorder_genes_factor,
+                            birth_order = birthorder_genes,
+                            count_birth_order = count_birthorder_genes)
+
 ```
 
+
+
+
+## Plots - nonadjusted y-axis
+```{r}
+plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_order", separate = TRUE) {
+  if(inherits(model, "merMod")) {
+    varnames = names(model@frame)
+  } else {
+    varnames = names(model$model)
+  }
+  outcome = varnames[1]
+  if(is.null(ylabel)) ylabel = outcome
+  library(effects)
+  library(tidyr)
+  emm = allEffects(model)
+  bo_var = names(emm)[names(emm) %contains% bo_var]
+  cemm = as.data.frame(emm[[bo_var]])
+  if (separate != TRUE) {
+    cemm = cemm %>% rename_("Birth order" = bo_var) %>% mutate(Sibship = "across")
+  } else {
+    cemm = cemm %>%
+      separate_(bo_var, into = c("Birth order", "Sibship"), sep = "/")
+    number = spread(as.data.frame(table(model.frame(model)[`bo_var`])), Var1, Freq)
+    n2 = paste0("2 (", sum(number$`1/2`, number$`2/2`), ")", seperate="")
+    n3 = paste0("3 (", sum(number$`1/3`, number$`2/3`, number$`3/3`), ")",
+                seperate="")
+    n4 = paste0("4 (", sum(number$`1/4`, number$`2/4`, number$`3/4`,
+                           number$`4/4`), ")", seperate="")
+    n5 = paste0("5 (", sum(number$`1/5`, number$`2/5`, number$`3/5`,
+                           number$`4/5`, number$`5/5`), ")", seperate="")
+    n5more = paste0("5+ (", sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
+                                number$`4/5+`, number$`5/5+`, number$`5+/5+`), ")",
+                    seperate="")
+    cemm = cemm %>%
+      mutate(Sibship = recode_factor(Sibship, "2" = `n2`, "3" = `n3`, "4" = `n4`,
+                                     "5" = `n5`, "5+" = `n5more`))
+  }
+  plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
+                           colour = `Sibship`, group = `Sibship`)) +
+    geom_pointrange(stat = "identity", position = position_dodge(width = 0.5), size = 1) +
+    geom_line(position = position_dodge(width = 0.5), size = 1) +
+    scale_y_continuous(name = ylabel, limits = c(-0.4, 0.9),
+                       breaks = c(-0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8)) +
+    labs(title = title) +
+    apatheme +
+    theme(text = element_text(size=20), axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15), legend.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),
+          plot.title = element_text(hjust = 0)) +
+    guides(colour=guide_legend(title = "Sibship")) +
+    scale_fill_brewer(palette = "Set2") +
+    scale_colour_brewer(palette = "Set2")
+  print(plotx)
+  assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)
+}
+
+library(grid)
+library(gridExtra)
+
+birthorder <- birthorder %>% mutate(outcome = g_factor_2015_old)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Intelligence \n (z-standardized)"
+
+plot_gfactor = plot_birthorder(model, ylabel=ylabel) 
+
+birthorder <- birthorder %>% mutate(outcome = years_of_education_z)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Years of education \n (z-standardized)"
+
+plot_yoe = plot_birthorder(model, ylabel=ylabel) 
+
+birthorder <- birthorder %>% mutate(outcome = big5_agree)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Agreeableness \n (z-standardized)"
+
+plot_big5_agree = plot_birthorder(model, ylabel=ylabel) 
+
+birthorder <- birthorder %>% mutate(outcome = big5_ext)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Extraversion \n (z-standardized)"
+
+plot_big5_ext = plot_birthorder(model, ylabel=ylabel) 
+
+birthorder <- birthorder %>% mutate(outcome = big5_con)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Conscientiousness \n (z-standardized)"
+
+plot_big5_con = plot_birthorder(model, ylabel=ylabel) 
+
+birthorder <- birthorder %>% mutate(outcome = big5_open)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Openness \n (z-standardized)"
+
+plot_big5_open = plot_birthorder(model, ylabel=ylabel) 
+
+
+birthorder <- birthorder %>% mutate(outcome = big5_neu)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Neuroticism \n (z-standardized)"
+
+plot_big5_neu = plot_birthorder(model, ylabel=ylabel) 
+
+birthorder <- birthorder %>% mutate(outcome = riskA)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Risk Aversion A \n (z-standardized)"
+
+plot_riskA = plot_birthorder(model, ylabel=ylabel) 
+
+birthorder <- birthorder %>% mutate(outcome = riskB)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Risk Aversion B \n (z-standardized)"
+
+plot_riskB = plot_birthorder(model, ylabel=ylabel) 
+
+plots_nonadjusted = grid.arrange(plot_gfactor, plot_yoe, plot_big5_ext, plot_big5_neu, plot_big5_con,
+                     plot_big5_agree, plot_big5_open, plot_riskA, plot_riskB,
+                     ncol = 3)
+```
+
+## Plots -  adjusted y-axis
+```{r}
+plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_order", separate = TRUE) {
+  if(inherits(model, "merMod")) {
+    varnames = names(model@frame)
+  } else {
+    varnames = names(model$model)
+  }
+  outcome = varnames[1]
+  if(is.null(ylabel)) ylabel = outcome
+  library(effects)
+  library(tidyr)
+  emm = allEffects(model)
+  bo_var = names(emm)[names(emm) %contains% bo_var]
+  cemm = as.data.frame(emm[[bo_var]])
+  if (separate != TRUE) {
+    cemm = cemm %>% rename_("Birth order" = bo_var) %>% mutate(Sibship = "across")
+  } else {
+    cemm = cemm %>%
+      separate_(bo_var, into = c("Birth order", "Sibship"), sep = "/")
+    number = spread(as.data.frame(table(model.frame(model)[`bo_var`])), Var1, Freq)
+    n2 = paste0("2 (", sum(number$`1/2`, number$`2/2`), ")", seperate="")
+    n3 = paste0("3 (", sum(number$`1/3`, number$`2/3`, number$`3/3`), ")",
+                seperate="")
+    n4 = paste0("4 (", sum(number$`1/4`, number$`2/4`, number$`3/4`,
+                           number$`4/4`), ")", seperate="")
+    n5 = paste0("5 (", sum(number$`1/5`, number$`2/5`, number$`3/5`,
+                           number$`4/5`, number$`5/5`), ")", seperate="")
+    n5more = paste0("5+ (", sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
+                                number$`4/5+`, number$`5/5+`, number$`5+/5+`), ")",
+                    seperate="")
+    cemm = cemm %>%
+      mutate(Sibship = recode_factor(Sibship, "2" = `n2`, "3" = `n3`, "4" = `n4`,
+                                     "5" = `n5`, "5+" = `n5more`))
+  }
+  plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
+                           colour = `Sibship`, group = `Sibship`)) +
+    geom_pointrange(stat = "identity", position = position_dodge(width = 0.5), size = 1) +
+    geom_line(position = position_dodge(width = 0.5), size = 1) +
+    scale_y_continuous(name = ylabel) +
+    labs(title= title) +
+    apatheme +
+    theme(text = element_text(size=20), axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15), legend.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),
+          plot.title = element_text(hjust = 0)) +
+    guides(colour=guide_legend(title = "Sibship")) +
+    scale_fill_brewer(palette = "Set2") +
+    scale_colour_brewer(palette = "Set2")
+  print(plotx)
+  assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)
+}
+
+birthorder <- birthorder %>% mutate(outcome = g_factor_2015_old)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Intelligence \n (z-standardized)"
+
+plot_gfactor = plot_birthorder(model, ylabel=ylabel) 
+
+birthorder <- birthorder %>% mutate(outcome = years_of_education_z)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Years of education \n (z-standardized)"
+
+plot_yoe = plot_birthorder(model, ylabel=ylabel) 
+
+birthorder <- birthorder %>% mutate(outcome = big5_agree)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Agreeableness \n (z-standardized)"
+
+plot_big5_agree = plot_birthorder(model, ylabel=ylabel) 
+
+birthorder <- birthorder %>% mutate(outcome = big5_ext)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Extraversion \n (z-standardized)"
+
+plot_big5_ext = plot_birthorder(model, ylabel=ylabel) 
+
+birthorder <- birthorder %>% mutate(outcome = big5_con)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Conscientiousness \n (z-standardized)"
+
+plot_big5_con = plot_birthorder(model, ylabel=ylabel) 
+
+birthorder <- birthorder %>% mutate(outcome = big5_open)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Openness \n (z-standardized)"
+
+plot_big5_open = plot_birthorder(model, ylabel=ylabel) 
+
+
+birthorder <- birthorder %>% mutate(outcome = big5_neu)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Neuroticism \n (z-standardized)"
+
+plot_big5_neu = plot_birthorder(model, ylabel=ylabel) 
+
+birthorder <- birthorder %>% mutate(outcome = riskA)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Risk Aversion A \n (z-standardized)"
+
+plot_riskA = plot_birthorder(model, ylabel=ylabel) 
+
+birthorder <- birthorder %>% mutate(outcome = riskB)
+model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
+               count_birth_order +
+               (1 | mother_pidlink),
+                   data = birthorder)
+ylabel = "Risk Aversion B \n (z-standardized)"
+
+plot_riskB = plot_birthorder(model, ylabel=ylabel) 
+
+plots_adjusted = grid.arrange(plot_gfactor, plot_yoe, plot_big5_ext, plot_big5_neu, plot_big5_con,
+                     plot_big5_agree, plot_big5_open, plot_riskA, plot_riskB,
+                     ncol = 3)
+```
+
+## Effect Size Plots - linear
 
 
 ```{r g-factor 2015 old}
@@ -275,16 +593,17 @@ RiskB = lmer(riskB ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
 ```
 
 
-## Multiplot
+## Multiplot - linear
 ```{r}
 x = multiplot(Intelligence, `Educational Attainment`, Agreeableness, Conscientiousness, Extraversion, Neuroticism, Openness, RiskA, RiskB, intercept = FALSE, coefficients = c("birthorder_genes", "sibling_count_genes"), plot = F)
         
 x = data.frame(x)
 
+x$Model = ifelse(x$Model == "`Educational Attainment`", "Educational Attainment", x$Model)
 x$Model = as.factor(x$Model)
 levels(x$Model)
 
-x$Coefficient = ifelse(x$Coefficient == "birthorder_genes", "birth order", "sibship size")
+x$Coefficient = ifelse(x$Coefficient == "birthorder_genes", "Birth order", "Sibship size")
 
 ggplot(x, aes(Model, Value)) +
   geom_pointrange(data=x, mapping=aes(x=Model, y=Value, ymin=HighOuter, ymax=LowOuter, color = Coefficient),
@@ -292,13 +611,19 @@ ggplot(x, aes(Model, Value)) +
   scale_colour_brewer(palette = "Set2") +
   geom_hline(yintercept = 0, size = 1.5)  +
   geom_hline(yintercept = -.1, linetype = "dotted", size = 1.5) + 
-  scale_x_discrete(limits=c("RiskB", "RiskA", "Openness", "Neuroticism", "Extraversion", "Conscientiousness",
-                            "Agreeableness", "`Educational Attainment`", "Intelligence")) +
+  scale_x_discrete(limits=c("RiskB", "RiskA", "Openness", "Neuroticism", "Extraversion",
+                            "Conscientiousness", "Agreeableness", "Educational Attainment",
+                            "Intelligence")) +
+  scale_y_continuous(limits = c(-0.1, 0.05), breaks = c(-0.1, -0.05, 0, 0.05)) +
   coord_flip() +
-  theme(text = element_text(size=25), axis.text.x = element_text(size = 20), axis.text.y = element_text(size = 20))
+  theme(text = element_text(size=25), axis.text.x = element_text(size = 20),
+        axis.text.y = element_text(size = 20)) +
+  labs(y = "Linear effect size", x = "Outcome")
+  
 ```
 
 
+## Effect Size Plots - nonlinear
 ```{r g-factor 2015 old}
 Intelligence = lmer(g_factor_2015_old ~ birthorder_genes_factor + poly(age, 3, raw = TRUE) + male +
                       sibling_count_genes_factor +
@@ -382,12 +707,13 @@ RiskB = lmer(riskB ~ birthorder_genes_factor + poly(age, 3, raw = TRUE) + male +
 ```
 
 
-## Multiplot
+## Multiplot - nonlinear
 ```{r}
 x = multiplot(Intelligence, `Educational Attainment`, Agreeableness, Conscientiousness, Extraversion, Neuroticism, Openness, RiskA, RiskB, intercept = FALSE, coefficients = c("birthorder_genes_factor2", "birthorder_genes_factor3", "birthorder_genes_factor4", "birthorder_genes_factor5", "birthorder_genes_factor5+"), plot = F)
 
 x = data.frame(x)
 
+x$Model = ifelse(x$Model == "`Educational Attainment`", "Educational Attainment", x$Model)
 x$Model = as.factor(x$Model)
 levels(x$Model)
 
@@ -397,21 +723,26 @@ x$Coefficient = ifelse(x$Coefficient == "birthorder_genes_factor2", "2",
                                      ifelse(x$Coefficient == "birthorder_genes_factor5", "5",
                                             ifelse(x$Coefficient == "birthorder_genes_factor5+", "5+", NA)))))
 
-colnames(x)[2] = "Birth Order"
+colnames(x)[2] = "Birth order"
 
 
 
 ggplot(x, aes(Model, Value)) +
   geom_pointrange(data=x, mapping=aes(x=Model, y=Value, ymin=HighOuter, ymax=LowOuter,
-                                      color = `Birth Order`),
+                                      color = `Birth order`),
                   position = position_dodge(width=0.3), size = 1) +
   scale_colour_brewer(palette = "Set2") +
   geom_hline(yintercept = 0, size = 1.5)  +
   geom_hline(yintercept = -.1, linetype = "dotted", size = 1.5) + 
-  scale_x_discrete(limits=c("RiskB", "RiskA", "Openness", "Neuroticism", "Extraversion", "Conscientiousness",
-                            "Agreeableness", "`Educational Attainment`", "Intelligence")) +
+  scale_x_discrete(limits=c("RiskB", "RiskA", "Openness", "Neuroticism", "Extraversion",
+                            "Conscientiousness", "Agreeableness", "Educational Attainment",
+                            "Intelligence")) +
+  scale_y_continuous(limits = c(-0.36, 0.36), breaks = c(-0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3)) +
   coord_flip() +
-  theme(text = element_text(size=25), axis.text.x = element_text(size = 20), axis.text.y = element_text(size = 20))
+  theme(text = element_text(size=25), axis.text.x = element_text(size = 20),
+        axis.text.y = element_text(size = 20)) +
+  labs(y = "Categorical effect size", x = "Outcome")
 ```
+
 
 

@@ -16,7 +16,7 @@ detach("package:lmerTest", unload=TRUE)
 ## Functions
 
 ```{r}
-
+options(mc.cores=4)
 n_imputations.mitml = function(imps) {
   imps$iter$m
 }
@@ -184,159 +184,11 @@ compare_birthorder_imputed(data_used = data_used)
 
 ```
 
-
-
-### Raven 2015 old {.tabset}
-
-```{r}
-# Specify your outcome
-data_used = data_used %>% mutate(outcome = raven_2015_old)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-
-```
-
-### Numeracy 2015 old {.tabset}
-
-```{r}
-# Specify your outcome
-data_used = data_used %>% mutate(outcome = math_2015_old)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-
-```
-
-### Counting Backwards {.tabset}
-
-```{r}
-# Specify your outcome
-data_used = data_used %>% mutate(outcome = count_backwards)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-
-```
-
-### Delayed Word Recall {.tabset}
-
-```{r}
-# Specify your outcome
-data_used = data_used %>% mutate(outcome = words_delayed)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-
-```
-
-
-### Adaptive Numbering {.tabset}
-
-```{r}
-# Specify your outcome
-data_used = data_used %>% mutate(outcome = adaptive_numbering)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-```
-
 ### g-factor 2015 young {.tabset}
 
 ```{r}
 # Specify your outcome
 data_used = data_used %>% mutate(outcome = g_factor_2015_young)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-
-```
-
-
-### Raven 2015 young {.tabset}
-
-```{r}
-# Specify your outcome
-data_used = data_used %>% mutate(outcome = raven_2015_young)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-
-```
-
-### Numeracy 2015 young {.tabset}
-
-```{r}
-# Specify your outcome
-data_used = data_used %>% mutate(outcome = math_2015_young)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-
-```
-
-### g-factor 2007 old {.tabset}
-
-```{r}
-# Specify your outcome
-data_used = data_used %>% mutate(outcome = g_factor_2007_old)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-
-```
-
-
-### Raven 2007 old {.tabset}
-
-```{r}
-# Specify your outcome
-data_used = data_used %>% mutate(outcome = raven_2007_old)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-
-```
-
-### Numeracy 2007 old {.tabset}
-
-```{r}
-# Specify your outcome
-data_used = data_used %>% mutate(outcome = math_2007_old)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-
-```
-
-### g-factor 2007 young {.tabset}
-
-```{r}
-# Specify your outcome
-data_used = data_used %>% mutate(outcome = g_factor_2007_young)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-
-```
-
-
-### Raven 2007 young {.tabset}
-
-```{r}
-# Specify your outcome
-data_used = data_used %>% mutate(outcome = raven_2007_young)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-
-```
-
-### Numeracy 2007 young {.tabset}
-
-```{r}
-# Specify your outcome
-data_used = data_used %>% mutate(outcome = math_2007_young)
 data_used_plots <- data_used[[1]]
 
 compare_birthorder_imputed(data_used = data_used)

@@ -25,6 +25,37 @@ bk_ar1 = read_dta("data/hh14_all_dta/bk_ar1.dta") # Book K, Section ar
 bk_ar1 = left_join(bk_ar1, bk_ar1 %>% select(hhid14_9, pid14, pidlink) %>% rename(ar10 = pid14, father_pidlink = pidlink), by = c("hhid14_9", "ar10"))
 # compute mother pidlink
 bk_ar1 = left_join(bk_ar1, bk_ar1 %>% select(hhid14_9, pid14, pidlink) %>% rename(ar11 = pid14, mother_pidlink = pidlink), by = c("hhid14_9", "ar11"))
+bk_sc1 = read_dta("data/hh14_all_dta/bk_sc1.dta") # Location info
+bk_sc1 <- bk_sc1 %>% mutate(province = str_trim(recode(bk_sc1$sc01_14_14,  `11` = 'N. Aceh Darussalam',
+ `12` = 'North Sumatera  ',
+ `13` = 'West Sumatera',
+ `14` = 'Riau  ',
+ `15` = 'Jambi ',
+ `16` = 'South Sumatera  ',
+ `17` = 'Bengkulu',
+ `18` = 'Lampung ',
+ `19` = 'Bangka Belitung ',
+ `31` = 'Jakarta ',
+ `32` = 'West Java  ',
+ `33` = 'Central Java ',
+ `34` = 'DI Yogyakarta',
+ `35` = 'East Java  ',
+ `36` = 'Banten',
+ `51` = 'Bali  ',
+ `52` = 'West Nusa Tenggara',
+ `53` = 'East Nusa Tenggara',
+ `61` = 'West Kalimantan ',
+ `62` = 'Central Kalimantan',
+ `63` = 'South Kalimantan',
+ `64` = 'East Kalimantan ',
+ `71` = 'North Sulawesi  ',
+ `72` = 'Central Sulawesi',
+ `73` = 'South Sulawesi  ',
+ `74` = 'Southeast Sulawesi',
+ `81` = 'Maluku',
+ `94` = 'Papua ',
+ `98` = NA_character_,
+ `99` = NA_character_, .default = NA_character_)))
 
 ### Informations from IFLS wave 5 to link data to earlier waves:
 ptrack = read_dta("data/hh14_all_dta/ptrack.dta") # Tracking informations
@@ -408,6 +439,8 @@ pregnancy %>% select(sibling_count_uterus_alive, sibling_count_uterus_preg, sibl
 ```{r select individual data}
 ### Individuals
 individuals = bk_ar1 %>% select(hhid14_9, pidlink, father_pidlink, mother_pidlink, ar01a, ar02b, ar10, ar11, ar07, ar08day, ar08mth, ar08yr, ar09, ar18eyr, ar18emth)
+individuals = left_join(individuals, bk_sc1 %>% select(hhid14_9, sc05, province, sc01_14_14), by = c("hhid14_9"))
+
 #Rename variables to make it easier
 individuals = rename(individuals, relation_to_HH_head = ar02b, fatherID = ar10, motherID = ar11, sex = ar07, age = ar09, status = ar01a, death_yr = ar18eyr, death_month = ar18emth) 
 # Remove duplicats (some people are mentioned in two households, e.g. because they moved in the last 12 months)
@@ -1376,7 +1409,7 @@ alldata_birthorder <- alldata_birthorder %>%
            -relation_to_HH_head, -years_of_education_factor, -birthdate_duped_in_earlier_wave, -birthorder_duped_in_earlier_wave, -birthorder_naive_ind,
            -order_marriage, -matches("^si[0-9]+$"),  -matches("^[a-z][0-9]r?$"),  -matches("^[a-z][0-9]r_reversed$"),
            -ar08day, -ar08mth, -ar08yr, -birth_day, -birth_month, -birth_year, -highest_grade, -wage_last_month, -wage_last_year, -status,
-           -money_spent_smoking, -starts_with("hhid14_"))
+           -money_spent_smoking, -starts_with("hhid14_"), sc05, province, sc01_14_14)
 ```
 
 ## Save data

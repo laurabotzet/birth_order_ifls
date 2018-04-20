@@ -94,8 +94,8 @@ birthorder %>%
 
 #### How many siblings with data do we retain in each family?
 ```{r}
-birthorder %>% filter(!is.na(birthorder_genes), group_outcome == 1) %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_genes)) -> counts
-birthorder %>% filter(!is.na(birthorder_genes), group_outcome == 0) %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_genes)) -> counts1
+birthorder %>% filter(!is.na(birthorder_genes), group_outcome == "test") %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_genes)) -> counts
+birthorder %>% filter(!is.na(birthorder_genes), group_outcome == "control") %>% group_by(mother_pidlink) %>% summarise(with_data = n(), all = mean(sibling_count_genes)) -> counts1
 ```
 
 In our test sample families with an average size of `r mean(counts$all,na.rm= T)` siblings, we retain `r mean(counts$with_data)`.

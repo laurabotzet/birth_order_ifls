@@ -1,0 +1,3222 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>4_analyses_by_province.utf8</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+
+.section h2 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h3 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h4 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h5 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h6 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("4_analyses_by_province.Rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Birth Order IFLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+
+<li style="background-color: #66C2A5">
+  <a href="index.html">Overview</a>
+</li>
+<li style="background-color: #FC8D62">
+  <a href="1_data_import.html">Data Wrangling</a>
+</li>
+<li style="background-color: #8DA0CB">
+  <a href="2_Inclusion.html">Data Sampling</a>
+</li>
+<li style="background-color: #E78AC3">
+  <a href="3_sample_analyses.html">Sample Analyses</a>
+</li>
+<li style="background-color: #A6D854">
+  <a href="4_analyses.html">Birth Order Effects</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/laurabotzet/birth_order_ifls">
+    <span class="fa fa-github"></span>
+
+
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<div id="birth-order-effects" class="section level1">
+<h1><span style="color:#A6D854">Birth Order Effects</span></h1>
+<div id="preparation" class="section level2 tabset">
+<h2>Preparation</h2>
+<div id="helper" class="section level3">
+<h3>Helper</h3>
+<pre class="r"><code>source(&quot;0_helpers.R&quot;)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;formr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:rmarkdown&#39;:
+## 
+##     word_document</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     date</code></pre>
+<pre><code>## Loading required package: carData</code></pre>
+<pre><code>## lattice theme set by effectsTheme()
+## See ?effectsTheme for details.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;data.table&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:lubridate&#39;:
+## 
+##     hour, isoweek, mday, minute, month, quarter, second, wday, week, yday, year</code></pre>
+<pre><code>## The following objects are masked from &#39;package:formr&#39;:
+## 
+##     first, last</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lmerTest&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:lme4&#39;:
+## 
+##     lmer</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     step</code></pre>
+<pre><code>## 
+## Attaching package: &#39;cowplot&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     ggsave</code></pre>
+<pre><code>## 
+## Attaching package: &#39;psych&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:ggplot2&#39;:
+## 
+##     %+%, alpha</code></pre>
+<pre><code>## This is lavaan 0.5-23.1097</code></pre>
+<pre><code>## lavaan is BETA software! Please report any bugs.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lavaan&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     cor2cov</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Loading required package: survival</code></pre>
+<pre><code>## Loading required package: Formula</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Hmisc&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     describe</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     format.pval, units</code></pre>
+<pre><code>## 
+## Attaching package: &#39;tidyr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:Matrix&#39;:
+## 
+##     expand</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:Hmisc&#39;:
+## 
+##     src, summarize</code></pre>
+<pre><code>## The following objects are masked from &#39;package:data.table&#39;:
+## 
+##     between, first, last</code></pre>
+<pre><code>## The following objects are masked from &#39;package:lubridate&#39;:
+## 
+##     intersect, setdiff, union</code></pre>
+<pre><code>## The following objects are masked from &#39;package:formr&#39;:
+## 
+##     first, last</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre><code>## 
+## Attaching package: &#39;sjPlot&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:cowplot&#39;:
+## 
+##     plot_grid, save_plot</code></pre>
+<pre class="r"><code>opts_chunk$set(warning = FALSE)</code></pre>
+</div>
+<div id="load-data" class="section level3">
+<h3>Load data</h3>
+<pre class="r"><code>birthorder = readRDS(&quot;data/alldata_birthorder.rds&quot;)</code></pre>
+</div>
+<div id="data-preparations" class="section level3">
+<h3>Data preparations</h3>
+<pre class="r"><code># For analyses we want to clean the dataset and get rid of all uninteresting data
+birthorder = birthorder %&gt;%
+  filter(!is.na(pidlink)) %&gt;% # no individuals who are only known from the pregnancy file
+  filter(is.na(lifebirths) | lifebirths == 2) %&gt;% # remove 7 and 2 individuals who are known as stillbirth or miscarriage but still have PID
+  select(-lifebirths) %&gt;%
+  filter(!is.na(mother_pidlink)) %&gt;%
+  select(-father_pidlink) %&gt;%
+  filter(is.na(any_multiple_birth) | any_multiple_birth != 1) %&gt;% # remove families with twins/triplets/..
+  filter(!is.na(birthorder_naive)) %&gt;%
+  select(-starts_with(&quot;age_&quot;), -wave, -any_multiple_birth, -multiple_birth) %&gt;%
+  mutate(money_spent_smoking_log = if_else(is.na(money_spent_smoking_log) &amp; ever_smoked == 0, 0, money_spent_smoking_log),
+         amount = if_else(is.na(amount) &amp; ever_smoked == 0, 0, amount),
+         amount_still_smokers = if_else(is.na(amount_still_smokers) &amp;  still_smoking == 0, 0, amount_still_smokers),
+         birthyear = lubridate::year(birthdate))
+
+# recode Factor Variable as Dummy Variable
+birthorder = left_join(birthorder,
+                                birthorder %&gt;%
+                                  filter(!is.na(Category)) %&gt;%
+                                  mutate(var = 1) %&gt;%
+                                  select(pidlink, Category, var) %&gt;%
+                                  spread(Category, var, fill = 0, sep = &quot;_&quot;), by = &quot;pidlink&quot;) %&gt;%
+  select(-Category)
+
+# recode Factor Variable as Dummy Variable
+birthorder = left_join(birthorder,
+                                birthorder %&gt;%
+                                  filter(!is.na(Sector)) %&gt;%
+                                  mutate(var = 1) %&gt;%
+                                  select(pidlink, Sector, var) %&gt;%
+                                  spread(Sector, var, fill = 0, sep = &quot;_&quot;), by = &quot;pidlink&quot;) %&gt;%
+  select(-Sector)
+
+### Variables
+birthorder = birthorder %&gt;%
+  mutate(
+    # center variables that are used for analysis
+  g_factor_2015_old = scale(g_factor_2015_old),
+  g_factor_2015_young = scale(g_factor_2015_young),
+  g_factor_2007_old = scale(g_factor_2007_old),
+  g_factor_2007_young = scale(g_factor_2007_young),
+  raven_2015_old = scale(raven_2015_old),
+  math_2015_old = scale(math_2015_old),
+  count_backwards = scale(count_backwards),
+  raven_2015_young = scale(raven_2015_young),
+  math_2015_young = scale(math_2015_young),
+  words_remembered_avg = scale(words_remembered_avg),
+  words_immediate = scale(words_immediate),
+  words_delayed = scale(words_delayed),
+  adaptive_numbering = scale(adaptive_numbering),
+  raven_2007_old = scale(raven_2007_old),
+  math_2007_old = scale(math_2007_old),
+  raven_2007_young = scale(raven_2007_young),
+  math_2007_young = scale(math_2007_young),
+  riskA = scale(riskA),
+  riskB = scale(riskB),
+  years_of_education_z = scale(years_of_education),
+  Total_score_highest_z = scale(Total_score_highest),
+  wage_last_month_z = scale(wage_last_month_log),
+  wage_last_year_z = scale(wage_last_year_log),
+  big5_ext = scale(big5_ext),
+  big5_con = scale(big5_con),
+  big5_agree = scale(big5_agree),
+  big5_open = scale(big5_open),
+  big5_neu = scale(big5_neu),
+  attended_school = as.integer(attended_school),
+  attended_school = ifelse(attended_school == 1, 0,
+                           ifelse(attended_school == 2, 1, NA)))
+
+qplot(birthorder$male)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/data%20preparations-1.png" width="672" /></p>
+<pre class="r"><code>qplot(birthorder$g_factor_2015_old)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/data%20preparations-2.png" width="672" /></p>
+<pre class="r"><code>qplot(birthorder$g_factor_2015_old)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/data%20preparations-3.png" width="672" /></p>
+<pre class="r"><code>### Birthorder and Sibling Count
+birthorder = birthorder %&gt;% 
+  mutate(
+# birthorder as factors with levels of 1, 2, 3, 4, 5, 5+
+    birthorder_naive_factor = as.character(birthorder_naive),
+    birthorder_naive_factor = ifelse(birthorder_naive &gt; 5, &quot;5+&quot;,
+                                            birthorder_naive_factor),
+    birthorder_naive_factor = factor(birthorder_naive_factor, 
+                                            levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+    sibling_count_naive_factor = as.character(sibling_count_naive),
+    sibling_count_naive_factor = ifelse(sibling_count_naive &gt; 5, &quot;5+&quot;,
+                                               sibling_count_naive_factor),
+    sibling_count_naive_factor = factor(sibling_count_naive_factor, 
+                                               levels = c(&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+
+    birthorder_uterus_alive_factor = as.character(birthorder_uterus_alive),
+    birthorder_uterus_alive_factor = ifelse(birthorder_uterus_alive &gt; 5, &quot;5+&quot;,
+                                            birthorder_uterus_alive_factor),
+    birthorder_uterus_alive_factor = factor(birthorder_uterus_alive_factor, 
+                                            levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+    sibling_count_uterus_alive_factor = as.character(sibling_count_uterus_alive),
+    sibling_count_uterus_alive_factor = ifelse(sibling_count_uterus_alive &gt; 5, &quot;5+&quot;,
+                                               sibling_count_uterus_alive_factor),
+    sibling_count_uterus_alive_factor = factor(sibling_count_uterus_alive_factor, 
+                                               levels = c(&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+    birthorder_uterus_preg_factor = as.character(birthorder_uterus_preg),
+    birthorder_uterus_preg_factor = ifelse(birthorder_uterus_preg &gt; 5, &quot;5+&quot;,
+                                           birthorder_uterus_preg_factor),
+    birthorder_uterus_preg_factor = factor(birthorder_uterus_preg_factor,
+                                           levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+    sibling_count_uterus_preg_factor = as.character(sibling_count_uterus_preg),
+    sibling_count_uterus_preg_factor = ifelse(sibling_count_uterus_preg &gt; 5, &quot;5+&quot;,
+                                              sibling_count_uterus_preg_factor),
+    sibling_count_uterus_preg_factor = factor(sibling_count_uterus_preg_factor, 
+                                              levels = c(&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+    birthorder_genes_factor = as.character(birthorder_genes),
+    birthorder_genes_factor = ifelse(birthorder_genes &gt;5 , &quot;5+&quot;, birthorder_genes_factor),
+    birthorder_genes_factor = factor(birthorder_genes_factor, 
+                                     levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+    sibling_count_genes_factor = as.character(sibling_count_genes),
+    sibling_count_genes_factor = ifelse(sibling_count_genes &gt;5 , &quot;5+&quot;,
+                                        sibling_count_genes_factor),
+    sibling_count_genes_factor = factor(sibling_count_genes_factor, 
+                                        levels = c(&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+    # interaction birthorder * siblingcout for each birthorder
+    count_birthorder_naive =
+      factor(str_replace(as.character(interaction(birthorder_naive_factor,                                                              sibling_count_naive_factor)),
+                        &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;,
+                                                        &quot;1/5+&quot;, &quot;2/5+&quot;, &quot;3/5+&quot;, &quot;4/5+&quot;,
+                                                        &quot;5/5+&quot;, &quot;5+/5+&quot;)),
+    count_birthorder_uterus_alive =
+      factor(str_replace(as.character(interaction(birthorder_uterus_alive_factor,                                                              sibling_count_uterus_alive_factor)),
+                        &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;,
+                                                        &quot;1/5+&quot;, &quot;2/5+&quot;, &quot;3/5+&quot;, &quot;4/5+&quot;,
+                                                        &quot;5/5+&quot;, &quot;5+/5+&quot;)),
+    count_birthorder_uterus_preg =
+      factor(str_replace(as.character(interaction(birthorder_uterus_preg_factor,                                                              sibling_count_uterus_preg_factor)), 
+                         &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;,
+                                                        &quot;1/5+&quot;, &quot;2/5+&quot;, &quot;3/5+&quot;, &quot;4/5+&quot;,
+                                                        &quot;5/5+&quot;, &quot;5+/5+&quot;)),
+    count_birthorder_genes =
+      factor(str_replace(as.character(interaction(birthorder_genes_factor,                                                              sibling_count_genes_factor)), &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;,
+                                                        &quot;1/5+&quot;, &quot;2/5+&quot;, &quot;3/5+&quot;, &quot;4/5+&quot;,
+                                                        &quot;5/5+&quot;, &quot;5+/5+&quot;)))
+
+birthorder &lt;- birthorder %&gt;%
+                     mutate(sibling_count = sibling_count_naive_factor,
+                            birth_order_nonlinear = birthorder_naive_factor,
+                            birth_order = birthorder_naive,
+                            count_birth_order = count_birthorder_naive)</code></pre>
+</div>
+<div id="by-province" class="section level3 active">
+<h3>By province</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% filter(!is.na(province))
+birthorder$urban = factor(birthorder$sc05==1)
+
+provinces &lt;- birthorder %&gt;% select(province, urban) %&gt;% group_by(province) %&gt;% 
+  summarise(urban = mean(urban == TRUE)) %&gt;% arrange(desc(urban))
+kable(provinces)</code></pre>
+<pre><code>## 
+## 
+## province               urban
+## -------------------  -------
+## Jakarta               1.0000
+## Bangka Belitung       0.8661
+## East Kalimantan       0.8625
+## Banten                0.7689
+## DI Yogyakarta         0.7666
+## Jambi                 0.7619
+## West Java             0.7073
+## West Sumatera         0.6572
+## Central Kalimantan    0.6522
+## Bali                  0.6434
+## East Java             0.5625
+## Riau                  0.5580
+## North Sumatera        0.5179
+## West Nusa Tenggara    0.4823
+## South Sulawesi        0.4727
+## Central Java          0.4660
+## South Kalimantan      0.4394
+## South Sumatera        0.3151
+## Lampung               0.2990
+## West Kalimantan       0.0000</code></pre>
+<pre class="r"><code>add_slope_by_province &lt;- function(model) {
+  m1 &lt;- update(model, formula = . ~ . + (1 + sibling_count | province), REML = FALSE)
+  m2 &lt;- update(model, formula = . ~ . + (1 + sibling_count + birth_order | province), REML = FALSE)
+  an &lt;- anova(m1, m2)
+  if (an$`Pr(&gt;Chisq)`[2] &lt; .05) {
+    print(ranef(m2)$province %&gt;% as.data.frame() %&gt;% 
+            tibble::rownames_to_column(&quot;province&quot;) %&gt;% 
+            left_join(provinces, by = &quot;province&quot;) %&gt;% 
+            arrange(birth_order) %&gt;% 
+            mutate(birth_order = birth_order + fixef(m2)[&quot;birth_order&quot;], 
+                   province = forcats::fct_inorder(province)
+                   ) %&gt;% 
+            ggplot(aes(province, birth_order, colour = urban)) + 
+            geom_point(size = 4) + 
+            scale_colour_continuous(low = &quot;red&quot;, high = &quot;blue&quot;) +
+            coord_flip() + 
+            geom_hline(yintercept = fixef(m2)[&quot;birth_order&quot;], linetype = &#39;dashed&#39;))
+    cat(&quot;\n\n\n&quot;)
+  }
+  an
+}</code></pre>
+<p>Wherever adding a random slope for the linear birth order by province improved the model at a nominal significance of p &lt; .05, we show how effects varied by province in a plot.</p>
+<p>Number of people by province</p>
+<pre class="r"><code>qplot(forcats::fct_infreq(birthorder$province)) + coord_flip()</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Family size by province</p>
+<pre class="r"><code>qplot(sibling_count_genes, data = birthorder %&gt;% group_by(province) %&gt;% mutate(mean_sibling_count_genes= mean(sibling_count_genes, na.rm =T))) + geom_vline(aes(xintercept = mean_sibling_count_genes), color = &#39;red&#39;) + facet_wrap(~ forcats::fct_infreq(province), scales = &quot;free_y&quot;) + coord_cartesian(xlim = c(0,10))</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+</div>
+<div id="intelligence" class="section level2 active">
+<h2>Intelligence</h2>
+<div id="g-factor-2015-old" class="section level3">
+<h3>g-factor 2015 old</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = g_factor_2015_old)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count +
+               (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/g-factor%202015%20old-1.png" width="672" /></p>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">34934</td>
+<td align="center">35136</td>
+<td align="center">-17440</td>
+<td align="center">34880</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">34933</td>
+<td align="center">35180</td>
+<td align="center">-17433</td>
+<td align="center">34867</td>
+<td align="center">13.14</td>
+<td align="center">6</td>
+<td align="center">0.04084</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="g-factor-2015-young" class="section level3">
+<h3>g-factor 2015 young</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = g_factor_2015_young)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count +
+               (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/g-factor%202015%20young-1.png" width="672" /></p>
+<table>
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="10%" />
+<col width="10%" />
+<col width="12%" />
+<col width="15%" />
+<col width="10%" />
+<col width="12%" />
+<col width="20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">31216</td>
+<td align="center">31415</td>
+<td align="center">-15581</td>
+<td align="center">31162</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">31180</td>
+<td align="center">31423</td>
+<td align="center">-15557</td>
+<td align="center">31114</td>
+<td align="center">48.2</td>
+<td align="center">6</td>
+<td align="center">0.00000001078</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="g-factor-2007-old" class="section level3">
+<h3>g-factor 2007 old</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = g_factor_2007_old)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">21405</td>
+<td align="center">21594</td>
+<td align="center">-10676</td>
+<td align="center">21351</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">21412</td>
+<td align="center">21643</td>
+<td align="center">-10673</td>
+<td align="center">21346</td>
+<td align="center">5.151</td>
+<td align="center">6</td>
+<td align="center">0.5246</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="g-factor-2007-young" class="section level3">
+<h3>g-factor 2007 young</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = g_factor_2007_young)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">24200</td>
+<td align="center">24392</td>
+<td align="center">-12073</td>
+<td align="center">24146</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">24208</td>
+<td align="center">24443</td>
+<td align="center">-12071</td>
+<td align="center">24142</td>
+<td align="center">3.975</td>
+<td align="center">6</td>
+<td align="center">0.6801</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="raven-2015-old" class="section level3">
+<h3>Raven 2015 old</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = raven_2015_old)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">36932</td>
+<td align="center">37136</td>
+<td align="center">-18439</td>
+<td align="center">36878</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">36934</td>
+<td align="center">37183</td>
+<td align="center">-18434</td>
+<td align="center">36868</td>
+<td align="center">9.888</td>
+<td align="center">6</td>
+<td align="center">0.1295</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="numeracy-2015-old" class="section level3">
+<h3>Numeracy 2015 old</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = math_2015_old)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">38397</td>
+<td align="center">38600</td>
+<td align="center">-19171</td>
+<td align="center">38343</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">38407</td>
+<td align="center">38655</td>
+<td align="center">-19170</td>
+<td align="center">38341</td>
+<td align="center">2.012</td>
+<td align="center">6</td>
+<td align="center">0.9186</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="raven-2015-young" class="section level3">
+<h3>Raven 2015 young</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = raven_2015_young)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<table>
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="10%" />
+<col width="10%" />
+<col width="12%" />
+<col width="14%" />
+<col width="10%" />
+<col width="12%" />
+<col width="21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">31309</td>
+<td align="center">31508</td>
+<td align="center">-15627</td>
+<td align="center">31255</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">31272</td>
+<td align="center">31516</td>
+<td align="center">-15603</td>
+<td align="center">31206</td>
+<td align="center">48.74</td>
+<td align="center">6</td>
+<td align="center">0.000000008403</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="numeracy-2015-young" class="section level3">
+<h3>Numeracy 2015 young</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = math_2015_young)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">32266</td>
+<td align="center">32465</td>
+<td align="center">-16106</td>
+<td align="center">32212</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">32271</td>
+<td align="center">32515</td>
+<td align="center">-16103</td>
+<td align="center">32205</td>
+<td align="center">7.021</td>
+<td align="center">6</td>
+<td align="center">0.3189</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="raven-2007-old" class="section level3">
+<h3>Raven 2007 old</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = raven_2007_old)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+             data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">21901</td>
+<td align="center">22090</td>
+<td align="center">-10924</td>
+<td align="center">21847</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">21906</td>
+<td align="center">22136</td>
+<td align="center">-10920</td>
+<td align="center">21840</td>
+<td align="center">7.74</td>
+<td align="center">6</td>
+<td align="center">0.2578</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="numeracy-2007-old" class="section level3">
+<h3>Numeracy 2007 old</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = math_2007_old)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+             data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">21619</td>
+<td align="center">21807</td>
+<td align="center">-10782</td>
+<td align="center">21565</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">21629</td>
+<td align="center">21860</td>
+<td align="center">-10782</td>
+<td align="center">21563</td>
+<td align="center">1.341</td>
+<td align="center">6</td>
+<td align="center">0.9694</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="raven-2007-young" class="section level3">
+<h3>Raven 2007 young</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = raven_2007_young)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+             data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">24496</td>
+<td align="center">24688</td>
+<td align="center">-12221</td>
+<td align="center">24442</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">24501</td>
+<td align="center">24736</td>
+<td align="center">-12218</td>
+<td align="center">24435</td>
+<td align="center">6.379</td>
+<td align="center">6</td>
+<td align="center">0.3821</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="numeracy-2007-young" class="section level3">
+<h3>Numeracy 2007 young</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = math_2007_young)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+             data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">24659</td>
+<td align="center">24852</td>
+<td align="center">-12303</td>
+<td align="center">24605</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">24670</td>
+<td align="center">24905</td>
+<td align="center">-12302</td>
+<td align="center">24604</td>
+<td align="center">1.229</td>
+<td align="center">6</td>
+<td align="center">0.9755</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="counting-backwards" class="section level3">
+<h3>Counting backwards</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = count_backwards)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">37733</td>
+<td align="center">37935</td>
+<td align="center">-18839</td>
+<td align="center">37679</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">37728</td>
+<td align="center">37976</td>
+<td align="center">-18831</td>
+<td align="center">37662</td>
+<td align="center">16.25</td>
+<td align="center">6</td>
+<td align="center">0.01248</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="immediate-word-recall" class="section level3">
+<h3>Immediate word recall</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = words_immediate)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">37810</td>
+<td align="center">38014</td>
+<td align="center">-18878</td>
+<td align="center">37756</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">37824</td>
+<td align="center">38073</td>
+<td align="center">-18879</td>
+<td align="center">37758</td>
+<td align="center">0</td>
+<td align="center">6</td>
+<td align="center">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="delayed-word-recall" class="section level3">
+<h3>Delayed word recall</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = words_delayed)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:99%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="12%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">37906</td>
+<td align="center">38110</td>
+<td align="center">-18926</td>
+<td align="center">37852</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">37918</td>
+<td align="center">38166</td>
+<td align="center">-18926</td>
+<td align="center">37852</td>
+<td align="center">0.5622</td>
+<td align="center">6</td>
+<td align="center">0.997</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="adaptive-numbering" class="section level3">
+<h3>Adaptive Numbering</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = adaptive_numbering)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">37401</td>
+<td align="center">37604</td>
+<td align="center">-18673</td>
+<td align="center">37347</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">37401</td>
+<td align="center">37650</td>
+<td align="center">-18668</td>
+<td align="center">37335</td>
+<td align="center">11.31</td>
+<td align="center">6</td>
+<td align="center">0.07915</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="personality" class="section level2">
+<h2>Personality</h2>
+<div id="extraversion" class="section level3">
+<h3>Extraversion</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = big5_ext)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:99%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="12%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">39351</td>
+<td align="center">39554</td>
+<td align="center">-19648</td>
+<td align="center">39297</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">39362</td>
+<td align="center">39611</td>
+<td align="center">-19648</td>
+<td align="center">39296</td>
+<td align="center">0.7276</td>
+<td align="center">6</td>
+<td align="center">0.9939</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="neuroticism" class="section level3">
+<h3>Neuroticism</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = big5_neu)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">39225</td>
+<td align="center">39428</td>
+<td align="center">-19585</td>
+<td align="center">39171</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">39229</td>
+<td align="center">39478</td>
+<td align="center">-19582</td>
+<td align="center">39163</td>
+<td align="center">7.322</td>
+<td align="center">6</td>
+<td align="center">0.2921</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="conscientiousness" class="section level3">
+<h3>Conscientiousness</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = big5_con)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:99%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="12%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">38891</td>
+<td align="center">39094</td>
+<td align="center">-19418</td>
+<td align="center">38837</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">38902</td>
+<td align="center">39151</td>
+<td align="center">-19418</td>
+<td align="center">38836</td>
+<td align="center">0.5563</td>
+<td align="center">6</td>
+<td align="center">0.9971</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="agreeableness" class="section level3">
+<h3>Agreeableness</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = big5_agree)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">39373</td>
+<td align="center">39577</td>
+<td align="center">-19660</td>
+<td align="center">39319</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">39383</td>
+<td align="center">39632</td>
+<td align="center">-19659</td>
+<td align="center">39317</td>
+<td align="center">2.112</td>
+<td align="center">6</td>
+<td align="center">0.9091</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="openness" class="section level3">
+<h3>Openness</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = big5_open)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">39228</td>
+<td align="center">39432</td>
+<td align="center">-19587</td>
+<td align="center">39174</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">39217</td>
+<td align="center">39466</td>
+<td align="center">-19576</td>
+<td align="center">39151</td>
+<td align="center">22.91</td>
+<td align="center">6</td>
+<td align="center">0.0008255</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="risk-preference" class="section level2">
+<h2>Risk preference</h2>
+<div id="risk-a" class="section level3">
+<h3>Risk A</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = riskA)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">34725</td>
+<td align="center">34925</td>
+<td align="center">-17335</td>
+<td align="center">34671</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">34731</td>
+<td align="center">34976</td>
+<td align="center">-17333</td>
+<td align="center">34665</td>
+<td align="center">5.459</td>
+<td align="center">6</td>
+<td align="center">0.4864</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="risk-b" class="section level3">
+<h3>Risk B</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = riskB)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">37037</td>
+<td align="center">37239</td>
+<td align="center">-18491</td>
+<td align="center">36983</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">37044</td>
+<td align="center">37291</td>
+<td align="center">-18489</td>
+<td align="center">36978</td>
+<td align="center">4.126</td>
+<td align="center">6</td>
+<td align="center">0.6596</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="educational-attainment" class="section level2">
+<h2>Educational Attainment</h2>
+<div id="years-of-education---z-standardized" class="section level3">
+<h3>Years of Education - z-standardized</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = years_of_education)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">77138</td>
+<td align="center">77342</td>
+<td align="center">-38542</td>
+<td align="center">77084</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">77130</td>
+<td align="center">77380</td>
+<td align="center">-38532</td>
+<td align="center">77064</td>
+<td align="center">19.76</td>
+<td align="center">6</td>
+<td align="center">0.003052</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary( m1_urbrur &lt;- lmer(outcome ~ (sibling_count + birth_order) * urban + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink), data = birthorder))</code></pre>
+<pre><code>## Linear mixed model fit by REML 
+## t-tests use  Satterthwaite approximations to degrees of freedom [&#39;lmerMod&#39;]
+## Formula: outcome ~ (sibling_count + birth_order) * urban + poly(age, 3,  
+##     raw = TRUE) + male + sibling_count + (1 | mother_pidlink)
+##    Data: birthorder
+## 
+## REML criterion at convergence: 77011
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -4.611 -0.481 -0.009  0.431  4.199 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 7.33     2.71    
+##  Residual                   7.05     2.66    
+## Number of obs: 14458, groups:  mother_pidlink, 7311
+## 
+## Fixed effects:
+##                                Estimate    Std. Error            df t value   Pr(&gt;|t|)    
+## (Intercept)                  -2.5441018     0.5445320 14169.0000000   -4.67 0.00000301 ***
+## sibling_count3                0.5352544     0.2182502  9028.0000000    2.45      0.014 *  
+## sibling_count4                0.3006860     0.2262799  8790.0000000    1.33      0.184    
+## sibling_count5               -0.0454916     0.2378796  8522.0000000   -0.19      0.848    
+## sibling_count5+              -0.9236523     0.1882684  9975.0000000   -4.91 0.00000094 ***
+## birth_order                   0.0742661     0.0172547 13057.0000000    4.30 0.00001689 ***
+## urbanTRUE                     2.0673397     0.1955184  9814.0000000   10.57    &lt; 2e-16 ***
+## poly(age, 3, raw = TRUE)1     1.1159839     0.0504639 13828.0000000   22.11    &lt; 2e-16 ***
+## poly(age, 3, raw = TRUE)2    -0.0294620     0.0014854 13984.0000000  -19.83    &lt; 2e-16 ***
+## poly(age, 3, raw = TRUE)3     0.0002178     0.0000136 14115.0000000   15.98    &lt; 2e-16 ***
+## male                         -0.1121999     0.0536113 11977.0000000   -2.09      0.036 *  
+## sibling_count3:urbanTRUE     -0.4903358     0.2788500  9057.0000000   -1.76      0.079 .  
+## sibling_count4:urbanTRUE     -0.3456844     0.2901685  8781.0000000   -1.19      0.234    
+## sibling_count5:urbanTRUE      0.2184111     0.3067478  8493.0000000    0.71      0.476    
+## sibling_count5+:urbanTRUE     0.0271713     0.2455018  9954.0000000    0.11      0.912    
+## birth_order:urbanTRUE        -0.0958779     0.0222340 11249.0000000   -4.31 0.00001630 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre><code>## 
+## Correlation matrix not shown by default, as p = 16 &gt; 12.
+## Use print(x, correlation=TRUE)  or
+##   vcov(x)     if you need it</code></pre>
+<pre><code>## fit warnings:
+## Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>plot(allEffects(m1_urbrur))</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-23-2.png" width="672" /></p>
+<pre class="r"><code>summary( m1_urbrur &lt;- lmer(outcome ~ (sibling_count + birthorder_genes_factor) * urban + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink), data = birthorder))</code></pre>
+<pre><code>## Linear mixed model fit by REML 
+## t-tests use  Satterthwaite approximations to degrees of freedom [&#39;lmerMod&#39;]
+## Formula: outcome ~ (sibling_count + birthorder_genes_factor) * urban +  
+##     poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink)
+##    Data: birthorder
+## 
+## REML criterion at convergence: 31319
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -4.533 -0.380 -0.006  0.386  3.451 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev.
+##  mother_pidlink (Intercept) 4.38     2.09    
+##  Residual                   5.49     2.34    
+## Number of obs: 6211, groups:  mother_pidlink, 3938
+## 
+## Fixed effects:
+##                                         Estimate   Std. Error           df t value       Pr(&gt;|t|)    
+## (Intercept)                          -18.0459473    1.2868285 5749.0000000  -14.02        &lt; 2e-16 ***
+## sibling_count3                        -0.0315793    0.2783707 4657.0000000   -0.11         0.9097    
+## sibling_count4                         0.0597457    0.2913253 4587.0000000    0.21         0.8375    
+## sibling_count5                        -0.8015941    0.3038295 4658.0000000   -2.64         0.0084 ** 
+## sibling_count5+                       -1.7496855    0.2665646 5064.0000000   -6.56 0.000000000058 ***
+## birthorder_genes_factor2              -0.2010271    0.1570903 4977.0000000   -1.28         0.2007    
+## birthorder_genes_factor3               0.2843875    0.1987698 5058.0000000    1.43         0.1526    
+## birthorder_genes_factor4               0.3618250    0.2488886 5135.0000000    1.45         0.1461    
+## birthorder_genes_factor5               0.7430437    0.2981877 4754.0000000    2.49         0.0127 *  
+## birthorder_genes_factor5+              0.5720622    0.2694705 5739.0000000    2.12         0.0338 *  
+## urbanTRUE                              0.7334586    0.2538976 4913.0000000    2.89         0.0039 ** 
+## poly(age, 3, raw = TRUE)1              2.9646915    0.1446606 5643.0000000   20.49        &lt; 2e-16 ***
+## poly(age, 3, raw = TRUE)2             -0.0921450    0.0051699 5599.0000000  -17.82        &lt; 2e-16 ***
+## poly(age, 3, raw = TRUE)3              0.0009189    0.0000587 5573.0000000   15.66        &lt; 2e-16 ***
+## male                                  -0.3264038    0.0730417 5423.0000000   -4.47 0.000008028445 ***
+## sibling_count3:urbanTRUE               0.1244703    0.3395594 4618.0000000    0.37         0.7140    
+## sibling_count4:urbanTRUE              -0.2089092    0.3540832 4578.0000000   -0.59         0.5552    
+## sibling_count5:urbanTRUE               0.7224415    0.3717668 4588.0000000    1.94         0.0520 .  
+## sibling_count5+:urbanTRUE              0.7655006    0.3215355 5123.0000000    2.38         0.0173 *  
+## birthorder_genes_factor2:urbanTRUE     0.0205051    0.1912143 4773.0000000    0.11         0.9146    
+## birthorder_genes_factor3:urbanTRUE    -0.2670075    0.2385910 4810.0000000   -1.12         0.2632    
+## birthorder_genes_factor4:urbanTRUE    -0.0167023    0.2989644 4818.0000000   -0.06         0.9554    
+## birthorder_genes_factor5:urbanTRUE    -0.5976274    0.3639746 4547.0000000   -1.64         0.1007    
+## birthorder_genes_factor5+:urbanTRUE   -1.0887288    0.3376258 5448.0000000   -3.22         0.0013 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre><code>## 
+## Correlation matrix not shown by default, as p = 24 &gt; 12.
+## Use print(x, correlation=TRUE)  or
+##   vcov(x)     if you need it</code></pre>
+<pre><code>## fit warnings:
+## Some predictor variables are on very different scales: consider rescaling</code></pre>
+<pre class="r"><code>plot(allEffects(m1_urbrur))</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-23-3.png" width="672" /></p>
+</div>
+<div id="elementary-missed" class="section level3">
+<h3>Elementary missed</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = Elementary_missed)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">-4433</td>
+<td align="center">-4246</td>
+<td align="center">2244</td>
+<td align="center">-4487</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">-4422</td>
+<td align="center">-4194</td>
+<td align="center">2244</td>
+<td align="center">-4488</td>
+<td align="center">1.058</td>
+<td align="center">6</td>
+<td align="center">0.9833</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="elementary-worked" class="section level3">
+<h3>Elementary worked</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = Elementary_worked)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table>
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="15%" />
+<col width="12%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">-897.5</td>
+<td align="center">-710.4</td>
+<td align="center">475.7</td>
+<td align="center">-951.5</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">-886.3</td>
+<td align="center">-657.6</td>
+<td align="center">476.1</td>
+<td align="center">-952.3</td>
+<td align="center">0.7532</td>
+<td align="center">6</td>
+<td align="center">0.9933</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="attended-school" class="section level3">
+<h3>Attended School</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = attended_school)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<table style="width:100%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">-22771</td>
+<td align="center">-22565</td>
+<td align="center">11412</td>
+<td align="center">-22825</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">-22774</td>
+<td align="center">-22523</td>
+<td align="center">11420</td>
+<td align="center">-22840</td>
+<td align="center">15.46</td>
+<td align="center">6</td>
+<td align="center">0.01699</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="work" class="section level2">
+<h2>Work</h2>
+<div id="income-last-month-log---z-standardized" class="section level3">
+<h3>Income Last Month (log) - z-standardized</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = wage_last_month_z)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:99%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="12%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">16799</td>
+<td align="center">16980</td>
+<td align="center">-8373</td>
+<td align="center">16745</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">16810</td>
+<td align="center">17031</td>
+<td align="center">-8372</td>
+<td align="center">16744</td>
+<td align="center">0.8937</td>
+<td align="center">6</td>
+<td align="center">0.9893</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="income-last-year-log---z-standardized" class="section level3">
+<h3>Income last year (log) - z-standardized</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = wage_last_year_z)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">16682</td>
+<td align="center">16863</td>
+<td align="center">-8314</td>
+<td align="center">16628</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">16692</td>
+<td align="center">16913</td>
+<td align="center">-8313</td>
+<td align="center">16626</td>
+<td align="center">2.359</td>
+<td align="center">6</td>
+<td align="center">0.8839</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="self-employment---non-standardized" class="section level3">
+<h3>Self-Employment - non standardized</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = Self_employed)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">11842</td>
+<td align="center">12036</td>
+<td align="center">-5894</td>
+<td align="center">11788</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">11851</td>
+<td align="center">12089</td>
+<td align="center">-5893</td>
+<td align="center">11785</td>
+<td align="center">2.193</td>
+<td align="center">6</td>
+<td align="center">0.9011</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="work-category" class="section level2">
+<h2>Work Category</h2>
+<div id="category_casual-worker-in-agriculture" class="section level3">
+<h3>Category_Casual worker in agriculture</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = `Category_Casual worker in agriculture`)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:99%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="12%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">-8104</td>
+<td align="center">-7909</td>
+<td align="center">4079</td>
+<td align="center">-8158</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">-8092</td>
+<td align="center">-7854</td>
+<td align="center">4079</td>
+<td align="center">-8158</td>
+<td align="center">0.1904</td>
+<td align="center">6</td>
+<td align="center">0.9999</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="category_casual-worker-not-in-agriculture" class="section level3">
+<h3>Category_Casual worker not in agriculture</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = `Category_Casual worker not in agriculture`)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:94%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="9%" />
+<col width="9%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">2194</td>
+<td align="center">2389</td>
+<td align="center">-1070</td>
+<td align="center">2140</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">2204</td>
+<td align="center">2442</td>
+<td align="center">-1069</td>
+<td align="center">2138</td>
+<td align="center">2.205</td>
+<td align="center">6</td>
+<td align="center">0.8999</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="category_government-worker" class="section level3">
+<h3>Category_Government worker</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = `Category_Government worker`)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:99%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="12%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">-36.85</td>
+<td align="center">158</td>
+<td align="center">45.42</td>
+<td align="center">-90.85</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">-32.8</td>
+<td align="center">205.4</td>
+<td align="center">49.4</td>
+<td align="center">-98.8</td>
+<td align="center">7.948</td>
+<td align="center">6</td>
+<td align="center">0.2419</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="category_private-worker" class="section level3">
+<h3>Category_Private worker</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = `Category_Private worker`)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">13527</td>
+<td align="center">13722</td>
+<td align="center">-6737</td>
+<td align="center">13473</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">13534</td>
+<td align="center">13772</td>
+<td align="center">-6734</td>
+<td align="center">13468</td>
+<td align="center">5.618</td>
+<td align="center">6</td>
+<td align="center">0.4674</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="category_self-employed" class="section level3">
+<h3>Category_Self-employed</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = `Category_Self-employed`)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">11842</td>
+<td align="center">12036</td>
+<td align="center">-5894</td>
+<td align="center">11788</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">11851</td>
+<td align="center">12089</td>
+<td align="center">-5893</td>
+<td align="center">11785</td>
+<td align="center">2.193</td>
+<td align="center">6</td>
+<td align="center">0.9011</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="category_unpaid-family-worker" class="section level3">
+<h3>Category_Unpaid family worker</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = `Category_Unpaid family worker`)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:94%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="9%" />
+<col width="9%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">4364</td>
+<td align="center">4559</td>
+<td align="center">-2155</td>
+<td align="center">4310</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">4370</td>
+<td align="center">4608</td>
+<td align="center">-2152</td>
+<td align="center">4304</td>
+<td align="center">5.967</td>
+<td align="center">6</td>
+<td align="center">0.4269</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="work-sector" class="section level2">
+<h2>Work Sector</h2>
+<div id="sector_agriculture-forestry-fishing-and-hunting" class="section level3">
+<h3>Sector_Agriculture, forestry, fishing and hunting</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = `Sector_Agriculture, forestry, fishing and hunting`)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:96%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="9%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">9832</td>
+<td align="center">10026</td>
+<td align="center">-4889</td>
+<td align="center">9778</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">9843</td>
+<td align="center">10080</td>
+<td align="center">-4888</td>
+<td align="center">9777</td>
+<td align="center">1.426</td>
+<td align="center">6</td>
+<td align="center">0.9643</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="sector_construction" class="section level3">
+<h3>Sector_Construction</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = `Sector_Construction`)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<table style="width:100%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">-36759</td>
+<td align="center">-36565</td>
+<td align="center">18407</td>
+<td align="center">-36813</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">-36777</td>
+<td align="center">-36540</td>
+<td align="center">18421</td>
+<td align="center">-36843</td>
+<td align="center">29.71</td>
+<td align="center">6</td>
+<td align="center">0.00004456</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="sector_electricity-gas-water" class="section level3">
+<h3>Sector_Electricity, gas, water</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = `Sector_Electricity, gas, water`)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:100%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">-11813</td>
+<td align="center">-11619</td>
+<td align="center">5933</td>
+<td align="center">-11867</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">-11813</td>
+<td align="center">-11576</td>
+<td align="center">5939</td>
+<td align="center">-11879</td>
+<td align="center">11.71</td>
+<td align="center">6</td>
+<td align="center">0.0687</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="sector_finance-insurance-real-estate-and-business-services" class="section level3">
+<h3>Sector_Finance, insurance, real estate and business services</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = `Sector_Finance, insurance, real estate and business services`)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:99%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="12%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">10559</td>
+<td align="center">10753</td>
+<td align="center">-5252</td>
+<td align="center">10505</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">10570</td>
+<td align="center">10807</td>
+<td align="center">-5252</td>
+<td align="center">10504</td>
+<td align="center">0.5698</td>
+<td align="center">6</td>
+<td align="center">0.9969</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="sector_manufacturing" class="section level3">
+<h3>Sector_Manufacturing</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = Sector_Manufacturing)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:97%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">11034</td>
+<td align="center">11228</td>
+<td align="center">-5490</td>
+<td align="center">10980</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">11043</td>
+<td align="center">11280</td>
+<td align="center">-5488</td>
+<td align="center">10977</td>
+<td align="center">2.784</td>
+<td align="center">6</td>
+<td align="center">0.8354</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="sector_mining-and-quarrying" class="section level3">
+<h3>Sector_Mining and quarrying</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = `Sector_Mining and quarrying`)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:99%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="12%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">-5695</td>
+<td align="center">-5501</td>
+<td align="center">2875</td>
+<td align="center">-5749</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">-5684</td>
+<td align="center">-5447</td>
+<td align="center">2875</td>
+<td align="center">-5750</td>
+<td align="center">0.3508</td>
+<td align="center">6</td>
+<td align="center">0.9992</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="sector_social-services" class="section level3">
+<h3>Sector_Social services</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = `Sector_Social services`)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:100%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">-826.7</td>
+<td align="center">-632.7</td>
+<td align="center">440.3</td>
+<td align="center">-880.7</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">-816.1</td>
+<td align="center">-579.1</td>
+<td align="center">441.1</td>
+<td align="center">-882.1</td>
+<td align="center">1.446</td>
+<td align="center">6</td>
+<td align="center">0.963</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="sector_transportation-storage-and-communications" class="section level3">
+<h3>Sector_Transportation, storage and communications</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = `Sector_Transportation, storage and communications`)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:99%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="12%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">-4859</td>
+<td align="center">-4665</td>
+<td align="center">2457</td>
+<td align="center">-4913</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">-4847</td>
+<td align="center">-4610</td>
+<td align="center">2457</td>
+<td align="center">-4913</td>
+<td align="center">0.3156</td>
+<td align="center">6</td>
+<td align="center">0.9994</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="smoking-behaviour" class="section level2">
+<h2>Smoking Behaviour</h2>
+<div id="ever_smoked" class="section level3">
+<h3>ever_smoked</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = ever_smoked)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:94%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="9%" />
+<col width="9%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">9010</td>
+<td align="center">9215</td>
+<td align="center">-4478</td>
+<td align="center">8956</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">9027</td>
+<td align="center">9278</td>
+<td align="center">-4481</td>
+<td align="center">8961</td>
+<td align="center">0</td>
+<td align="center">6</td>
+<td align="center">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="still_smoking" class="section level3">
+<h3>still_smoking</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = still_smoking)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table style="width:94%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="9%" />
+<col width="9%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">27</td>
+<td align="center">1308</td>
+<td align="center">1484</td>
+<td align="center">-627.1</td>
+<td align="center">1254</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">33</td>
+<td align="center">1323</td>
+<td align="center">1538</td>
+<td align="center">-628.4</td>
+<td align="center">1257</td>
+<td align="center">0</td>
+<td align="center">6</td>
+<td align="center">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCm91dHB1dDogaHRtbF9kb2N1bWVudAplZGl0b3Jfb3B0aW9uczogCiAgY2h1bmtfb3V0cHV0X3R5cGU6IGNvbnNvbGUKLS0tCiMgPHNwYW4gc3R5bGU9ImNvbG9yOiNBNkQ4NTQiPkJpcnRoIE9yZGVyIEVmZmVjdHM8L3NwYW4+IAoKIyMgUHJlcGFyYXRpb24gey50YWJzZXR9CgojIyMgSGVscGVyCmBgYHtyIGhlbHBlcn0Kc291cmNlKCIwX2hlbHBlcnMuUiIpCm9wdHNfY2h1bmskc2V0KHdhcm5pbmcgPSBGQUxTRSkKYGBgCgojIyMgTG9hZCBkYXRhCmBgYHtyIExvYWQgRGF0YX0KYmlydGhvcmRlciA9IHJlYWRSRFMoImRhdGEvYWxsZGF0YV9iaXJ0aG9yZGVyLnJkcyIpCmBgYAoKIyMjIERhdGEgcHJlcGFyYXRpb25zCmBgYHtyIGRhdGEgcHJlcGFyYXRpb25zfQojIEZvciBhbmFseXNlcyB3ZSB3YW50IHRvIGNsZWFuIHRoZSBkYXRhc2V0IGFuZCBnZXQgcmlkIG9mIGFsbCB1bmludGVyZXN0aW5nIGRhdGEKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lCiAgZmlsdGVyKCFpcy5uYShwaWRsaW5rKSkgJT4lICMgbm8gaW5kaXZpZHVhbHMgd2hvIGFyZSBvbmx5IGtub3duIGZyb20gdGhlIHByZWduYW5jeSBmaWxlCiAgZmlsdGVyKGlzLm5hKGxpZmViaXJ0aHMpIHwgbGlmZWJpcnRocyA9PSAyKSAlPiUgIyByZW1vdmUgNyBhbmQgMiBpbmRpdmlkdWFscyB3aG8gYXJlIGtub3duIGFzIHN0aWxsYmlydGggb3IgbWlzY2FycmlhZ2UgYnV0IHN0aWxsIGhhdmUgUElECiAgc2VsZWN0KC1saWZlYmlydGhzKSAlPiUKICBmaWx0ZXIoIWlzLm5hKG1vdGhlcl9waWRsaW5rKSkgJT4lCiAgc2VsZWN0KC1mYXRoZXJfcGlkbGluaykgJT4lCiAgZmlsdGVyKGlzLm5hKGFueV9tdWx0aXBsZV9iaXJ0aCkgfCBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSkgJT4lICMgcmVtb3ZlIGZhbWlsaWVzIHdpdGggdHdpbnMvdHJpcGxldHMvLi4KICBmaWx0ZXIoIWlzLm5hKGJpcnRob3JkZXJfbmFpdmUpKSAlPiUKICBzZWxlY3QoLXN0YXJ0c193aXRoKCJhZ2VfIiksIC13YXZlLCAtYW55X211bHRpcGxlX2JpcnRoLCAtbXVsdGlwbGVfYmlydGgpICU+JQogIG11dGF0ZShtb25leV9zcGVudF9zbW9raW5nX2xvZyA9IGlmX2Vsc2UoaXMubmEobW9uZXlfc3BlbnRfc21va2luZ19sb2cpICYgZXZlcl9zbW9rZWQgPT0gMCwgMCwgbW9uZXlfc3BlbnRfc21va2luZ19sb2cpLAogICAgICAgICBhbW91bnQgPSBpZl9lbHNlKGlzLm5hKGFtb3VudCkgJiBldmVyX3Ntb2tlZCA9PSAwLCAwLCBhbW91bnQpLAogICAgICAgICBhbW91bnRfc3RpbGxfc21va2VycyA9IGlmX2Vsc2UoaXMubmEoYW1vdW50X3N0aWxsX3Ntb2tlcnMpICYgIHN0aWxsX3Ntb2tpbmcgPT0gMCwgMCwgYW1vdW50X3N0aWxsX3Ntb2tlcnMpLAogICAgICAgICBiaXJ0aHllYXIgPSBsdWJyaWRhdGU6OnllYXIoYmlydGhkYXRlKSkKCiMgcmVjb2RlIEZhY3RvciBWYXJpYWJsZSBhcyBEdW1teSBWYXJpYWJsZQpiaXJ0aG9yZGVyID0gbGVmdF9qb2luKGJpcnRob3JkZXIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlciAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZpbHRlcighaXMubmEoQ2F0ZWdvcnkpKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG11dGF0ZSh2YXIgPSAxKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNlbGVjdChwaWRsaW5rLCBDYXRlZ29yeSwgdmFyKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNwcmVhZChDYXRlZ29yeSwgdmFyLCBmaWxsID0gMCwgc2VwID0gIl8iKSwgYnkgPSAicGlkbGluayIpICU+JQogIHNlbGVjdCgtQ2F0ZWdvcnkpCgojIHJlY29kZSBGYWN0b3IgVmFyaWFibGUgYXMgRHVtbXkgVmFyaWFibGUKYmlydGhvcmRlciA9IGxlZnRfam9pbihiaXJ0aG9yZGVyLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRob3JkZXIgJT4lCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBmaWx0ZXIoIWlzLm5hKFNlY3RvcikpICU+JQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbXV0YXRlKHZhciA9IDEpICU+JQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2VsZWN0KHBpZGxpbmssIFNlY3RvciwgdmFyKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNwcmVhZChTZWN0b3IsIHZhciwgZmlsbCA9IDAsIHNlcCA9ICJfIiksIGJ5ID0gInBpZGxpbmsiKSAlPiUKICBzZWxlY3QoLVNlY3RvcikKCiMjIyBWYXJpYWJsZXMKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lCiAgbXV0YXRlKAogICAgIyBjZW50ZXIgdmFyaWFibGVzIHRoYXQgYXJlIHVzZWQgZm9yIGFuYWx5c2lzCiAgZ19mYWN0b3JfMjAxNV9vbGQgPSBzY2FsZShnX2ZhY3Rvcl8yMDE1X29sZCksCiAgZ19mYWN0b3JfMjAxNV95b3VuZyA9IHNjYWxlKGdfZmFjdG9yXzIwMTVfeW91bmcpLAogIGdfZmFjdG9yXzIwMDdfb2xkID0gc2NhbGUoZ19mYWN0b3JfMjAwN19vbGQpLAogIGdfZmFjdG9yXzIwMDdfeW91bmcgPSBzY2FsZShnX2ZhY3Rvcl8yMDA3X3lvdW5nKSwKICByYXZlbl8yMDE1X29sZCA9IHNjYWxlKHJhdmVuXzIwMTVfb2xkKSwKICBtYXRoXzIwMTVfb2xkID0gc2NhbGUobWF0aF8yMDE1X29sZCksCiAgY291bnRfYmFja3dhcmRzID0gc2NhbGUoY291bnRfYmFja3dhcmRzKSwKICByYXZlbl8yMDE1X3lvdW5nID0gc2NhbGUocmF2ZW5fMjAxNV95b3VuZyksCiAgbWF0aF8yMDE1X3lvdW5nID0gc2NhbGUobWF0aF8yMDE1X3lvdW5nKSwKICB3b3Jkc19yZW1lbWJlcmVkX2F2ZyA9IHNjYWxlKHdvcmRzX3JlbWVtYmVyZWRfYXZnKSwKICB3b3Jkc19pbW1lZGlhdGUgPSBzY2FsZSh3b3Jkc19pbW1lZGlhdGUpLAogIHdvcmRzX2RlbGF5ZWQgPSBzY2FsZSh3b3Jkc19kZWxheWVkKSwKICBhZGFwdGl2ZV9udW1iZXJpbmcgPSBzY2FsZShhZGFwdGl2ZV9udW1iZXJpbmcpLAogIHJhdmVuXzIwMDdfb2xkID0gc2NhbGUocmF2ZW5fMjAwN19vbGQpLAogIG1hdGhfMjAwN19vbGQgPSBzY2FsZShtYXRoXzIwMDdfb2xkKSwKICByYXZlbl8yMDA3X3lvdW5nID0gc2NhbGUocmF2ZW5fMjAwN195b3VuZyksCiAgbWF0aF8yMDA3X3lvdW5nID0gc2NhbGUobWF0aF8yMDA3X3lvdW5nKSwKICByaXNrQSA9IHNjYWxlKHJpc2tBKSwKICByaXNrQiA9IHNjYWxlKHJpc2tCKSwKICB5ZWFyc19vZl9lZHVjYXRpb25feiA9IHNjYWxlKHllYXJzX29mX2VkdWNhdGlvbiksCiAgVG90YWxfc2NvcmVfaGlnaGVzdF96ID0gc2NhbGUoVG90YWxfc2NvcmVfaGlnaGVzdCksCiAgd2FnZV9sYXN0X21vbnRoX3ogPSBzY2FsZSh3YWdlX2xhc3RfbW9udGhfbG9nKSwKICB3YWdlX2xhc3RfeWVhcl96ID0gc2NhbGUod2FnZV9sYXN0X3llYXJfbG9nKSwKICBiaWc1X2V4dCA9IHNjYWxlKGJpZzVfZXh0KSwKICBiaWc1X2NvbiA9IHNjYWxlKGJpZzVfY29uKSwKICBiaWc1X2FncmVlID0gc2NhbGUoYmlnNV9hZ3JlZSksCiAgYmlnNV9vcGVuID0gc2NhbGUoYmlnNV9vcGVuKSwKICBiaWc1X25ldSA9IHNjYWxlKGJpZzVfbmV1KSwKICBhdHRlbmRlZF9zY2hvb2wgPSBhcy5pbnRlZ2VyKGF0dGVuZGVkX3NjaG9vbCksCiAgYXR0ZW5kZWRfc2Nob29sID0gaWZlbHNlKGF0dGVuZGVkX3NjaG9vbCA9PSAxLCAwLAogICAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoYXR0ZW5kZWRfc2Nob29sID09IDIsIDEsIE5BKSkpCgpxcGxvdChiaXJ0aG9yZGVyJG1hbGUpCnFwbG90KGJpcnRob3JkZXIkZ19mYWN0b3JfMjAxNV9vbGQpCnFwbG90KGJpcnRob3JkZXIkZ19mYWN0b3JfMjAxNV9vbGQpCgojIyMgQmlydGhvcmRlciBhbmQgU2libGluZyBDb3VudApiaXJ0aG9yZGVyID0gYmlydGhvcmRlciAlPiUgCiAgbXV0YXRlKAojIGJpcnRob3JkZXIgYXMgZmFjdG9ycyB3aXRoIGxldmVscyBvZiAxLCAyLCAzLCA0LCA1LCA1KwogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoYmlydGhvcmRlcl9uYWl2ZSksCiAgICBiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciA9IGlmZWxzZShiaXJ0aG9yZGVyX25haXZlID4gNSwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciksCiAgICBiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciA9IGZhY3RvcihiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMSIsIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yID0gYXMuY2hhcmFjdGVyKHNpYmxpbmdfY291bnRfbmFpdmUpLAogICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IgPSBpZmVsc2Uoc2libGluZ19jb3VudF9uYWl2ZSA+IDUsICI1KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IpLAogICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IgPSBmYWN0b3Ioc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKCiAgICBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoYmlydGhvcmRlcl91dGVydXNfYWxpdmUpLAogICAgYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yID0gaWZlbHNlKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlID4gNSwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IpLAogICAgYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yID0gZmFjdG9yKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMSIsIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgPSBpZmVsc2Uoc2libGluZ19jb3VudF91dGVydXNfYWxpdmUgPiA1LCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgPSBmYWN0b3Ioc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnKSwKICAgIGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yID0gaWZlbHNlKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcgPiA1LCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IpLAogICAgYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgPSBmYWN0b3IoYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIxIiwiMiIsIjMiLCI0IiwiNSIsIjUrIikpLAogICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoc2libGluZ19jb3VudF91dGVydXNfcHJlZyksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciA9IGlmZWxzZShzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnID4gNSwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yKSwKICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfZ2VuZXMpLAogICAgYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgPSBpZmVsc2UoYmlydGhvcmRlcl9nZW5lcyA+NSAsICI1KyIsIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gZmFjdG9yKGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihzaWJsaW5nX2NvdW50X2dlbmVzKSwKICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yID0gaWZlbHNlKHNpYmxpbmdfY291bnRfZ2VuZXMgPjUgLCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IpLAogICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgPSBmYWN0b3Ioc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMiIsIjMiLCI0IiwiNSIsIjUrIikpLAogICAgIyBpbnRlcmFjdGlvbiBiaXJ0aG9yZGVyICogc2libGluZ2NvdXQgZm9yIGVhY2ggYmlydGhvcmRlcgogICAgY291bnRfYmlydGhvcmRlcl9uYWl2ZSA9CiAgICAgIGZhY3RvcihzdHJfcmVwbGFjZShhcy5jaGFyYWN0ZXIoaW50ZXJhY3Rpb24oYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvcikpLAogICAgICAgICAgICAgICAgICAgICAgICAiXFwuIiwgIi8iKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9ICAgYygiMS8yIiwiMi8yIiwgIjEvMyIsICAiMi8zIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMy8zIiwgIjEvNCIsICIyLzQiLCAiMy80IiwgIjQvNCIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSIsICIyLzUiLCAiMy81IiwgIjQvNSIsICI1LzUiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUrIiwgIjIvNSsiLCAiMy81KyIsICI0LzUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiNS81KyIsICI1Ky81KyIpKSwKICAgIGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IpKSwKICAgICAgICAgICAgICAgICAgICAgICAgIlxcLiIsICIvIiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSAgIGMoIjEvMiIsIjIvMiIsICIxLzMiLCAgIjIvMyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjMvMyIsICIxLzQiLCAiMi80IiwgIjMvNCIsICI0LzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUiLCAiMi81IiwgIjMvNSIsICI0LzUiLCAiNS81IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81KyIsICIyLzUrIiwgIjMvNSsiLCAiNC81KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjUvNSsiLCAiNSsvNSsiKSksCiAgICBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yKSksIAogICAgICAgICAgICAgICAgICAgICAgICAgIlxcLiIsICIvIiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSAgIGMoIjEvMiIsIjIvMiIsICIxLzMiLCAgIjIvMyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjMvMyIsICIxLzQiLCAiMi80IiwgIjMvNCIsICI0LzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUiLCAiMi81IiwgIjMvNSIsICI0LzUiLCAiNS81IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81KyIsICIyLzUrIiwgIjMvNSsiLCAiNC81KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjUvNSsiLCAiNSsvNSsiKSksCiAgICBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yKSksICJcXC4iLCAiLyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gICBjKCIxLzIiLCIyLzIiLCAiMS8zIiwgICIyLzMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIzLzMiLCAiMS80IiwgIjIvNCIsICIzLzQiLCAiNC80IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81IiwgIjIvNSIsICIzLzUiLCAiNC81IiwgIjUvNSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSsiLCAiMi81KyIsICIzLzUrIiwgIjQvNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI1LzUrIiwgIjUrLzUrIikpKQoKYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JQogICAgICAgICAgICAgICAgICAgICBtdXRhdGUoc2libGluZ19jb3VudCA9IHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhfb3JkZXJfbm9ubGluZWFyID0gYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aF9vcmRlciA9IGJpcnRob3JkZXJfbmFpdmUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb3VudF9iaXJ0aF9vcmRlciA9IGNvdW50X2JpcnRob3JkZXJfbmFpdmUpCmBgYAoKIyMjIEJ5IHByb3ZpbmNlIHsuYWN0aXZlfQpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBmaWx0ZXIoIWlzLm5hKHByb3ZpbmNlKSkKYmlydGhvcmRlciR1cmJhbiA9IGZhY3RvcihiaXJ0aG9yZGVyJHNjMDU9PTEpCgpwcm92aW5jZXMgPC0gYmlydGhvcmRlciAlPiUgc2VsZWN0KHByb3ZpbmNlLCB1cmJhbikgJT4lIGdyb3VwX2J5KHByb3ZpbmNlKSAlPiUgCiAgc3VtbWFyaXNlKHVyYmFuID0gbWVhbih1cmJhbiA9PSBUUlVFKSkgJT4lIGFycmFuZ2UoZGVzYyh1cmJhbikpCmthYmxlKHByb3ZpbmNlcykKCmFkZF9zbG9wZV9ieV9wcm92aW5jZSA8LSBmdW5jdGlvbihtb2RlbCkgewogIG0xIDwtIHVwZGF0ZShtb2RlbCwgZm9ybXVsYSA9IC4gfiAuICsgKDEgKyBzaWJsaW5nX2NvdW50IHwgcHJvdmluY2UpLCBSRU1MID0gRkFMU0UpCiAgbTIgPC0gdXBkYXRlKG1vZGVsLCBmb3JtdWxhID0gLiB+IC4gKyAoMSArIHNpYmxpbmdfY291bnQgKyBiaXJ0aF9vcmRlciB8IHByb3ZpbmNlKSwgUkVNTCA9IEZBTFNFKQogIGFuIDwtIGFub3ZhKG0xLCBtMikKICBpZiAoYW4kYFByKD5DaGlzcSlgWzJdIDwgLjA1KSB7CiAgICBwcmludChyYW5lZihtMikkcHJvdmluY2UgJT4lIGFzLmRhdGEuZnJhbWUoKSAlPiUgCiAgICAgICAgICAgIHRpYmJsZTo6cm93bmFtZXNfdG9fY29sdW1uKCJwcm92aW5jZSIpICU+JSAKICAgICAgICAgICAgbGVmdF9qb2luKHByb3ZpbmNlcywgYnkgPSAicHJvdmluY2UiKSAlPiUgCiAgICAgICAgICAgIGFycmFuZ2UoYmlydGhfb3JkZXIpICU+JSAKICAgICAgICAgICAgbXV0YXRlKGJpcnRoX29yZGVyID0gYmlydGhfb3JkZXIgKyBmaXhlZihtMilbImJpcnRoX29yZGVyIl0sIAogICAgICAgICAgICAgICAgICAgcHJvdmluY2UgPSBmb3JjYXRzOjpmY3RfaW5vcmRlcihwcm92aW5jZSkKICAgICAgICAgICAgICAgICAgICkgJT4lIAogICAgICAgICAgICBnZ3Bsb3QoYWVzKHByb3ZpbmNlLCBiaXJ0aF9vcmRlciwgY29sb3VyID0gdXJiYW4pKSArIAogICAgICAgICAgICBnZW9tX3BvaW50KHNpemUgPSA0KSArIAogICAgICAgICAgICBzY2FsZV9jb2xvdXJfY29udGludW91cyhsb3cgPSAicmVkIiwgaGlnaCA9ICJibHVlIikgKwogICAgICAgICAgICBjb29yZF9mbGlwKCkgKyAKICAgICAgICAgICAgZ2VvbV9obGluZSh5aW50ZXJjZXB0ID0gZml4ZWYobTIpWyJiaXJ0aF9vcmRlciJdLCBsaW5ldHlwZSA9ICdkYXNoZWQnKSkKICAgIGNhdCgiXG5cblxuIikKICB9CiAgYW4KfQpgYGAKCldoZXJldmVyIGFkZGluZyBhIHJhbmRvbSBzbG9wZSBmb3IgdGhlIGxpbmVhciBiaXJ0aCBvcmRlciBieSBwcm92aW5jZSBpbXByb3ZlZCAKdGhlIG1vZGVsIGF0IGEgbm9taW5hbCBzaWduaWZpY2FuY2Ugb2YgcCA8IC4wNSwgd2Ugc2hvdyBob3cgZWZmZWN0cyB2YXJpZWQgYnkgCnByb3ZpbmNlIGluIGEgcGxvdC4KCgpOdW1iZXIgb2YgcGVvcGxlIGJ5IHByb3ZpbmNlCmBgYHtyfQpxcGxvdChmb3JjYXRzOjpmY3RfaW5mcmVxKGJpcnRob3JkZXIkcHJvdmluY2UpKSArIGNvb3JkX2ZsaXAoKQpgYGAKCkZhbWlseSBzaXplIGJ5IHByb3ZpbmNlCgpgYGB7cn0KcXBsb3Qoc2libGluZ19jb3VudF9nZW5lcywgZGF0YSA9IGJpcnRob3JkZXIgJT4lIGdyb3VwX2J5KHByb3ZpbmNlKSAlPiUgbXV0YXRlKG1lYW5fc2libGluZ19jb3VudF9nZW5lcz0gbWVhbihzaWJsaW5nX2NvdW50X2dlbmVzLCBuYS5ybSA9VCkpKSArIGdlb21fdmxpbmUoYWVzKHhpbnRlcmNlcHQgPSBtZWFuX3NpYmxpbmdfY291bnRfZ2VuZXMpLCBjb2xvciA9ICdyZWQnKSArIGZhY2V0X3dyYXAofiBmb3JjYXRzOjpmY3RfaW5mcmVxKHByb3ZpbmNlKSwgc2NhbGVzID0gImZyZWVfeSIpICsgY29vcmRfY2FydGVzaWFuKHhsaW0gPSBjKDAsMTApKQpgYGAKCgojIyBJbnRlbGxpZ2VuY2Ugey5hY3RpdmUgfQojIyMgZy1mYWN0b3IgMjAxNSBvbGQge30KCmBgYHtyIGctZmFjdG9yIDIwMTUgb2xkfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gZ19mYWN0b3JfMjAxNV9vbGQpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArCiAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKCiMjIyBnLWZhY3RvciAyMDE1IHlvdW5nIHt9CgpgYGB7ciBnLWZhY3RvciAyMDE1IHlvdW5nfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gZ19mYWN0b3JfMjAxNV95b3VuZykKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsKICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyMgZy1mYWN0b3IgMjAwNyBvbGQge30KCmBgYHtyIGctZmFjdG9yIDIwMDcgb2xkfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gZ19mYWN0b3JfMjAwN19vbGQpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgZy1mYWN0b3IgMjAwNyB5b3VuZyB7fQoKYGBge3IgZy1mYWN0b3IgMjAwNyB5b3VuZ30KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGdfZmFjdG9yXzIwMDdfeW91bmcpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMjIFJhdmVuIDIwMTUgb2xkIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IHJhdmVuXzIwMTVfb2xkKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIE51bWVyYWN5IDIwMTUgb2xkIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IG1hdGhfMjAxNV9vbGQpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgUmF2ZW4gMjAxNSB5b3VuZyB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSByYXZlbl8yMDE1X3lvdW5nKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIE51bWVyYWN5IDIwMTUgeW91bmcge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gbWF0aF8yMDE1X3lvdW5nKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIFJhdmVuIDIwMDcgb2xkIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IHJhdmVuXzIwMDdfb2xkKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIE51bWVyYWN5IDIwMDcgb2xke30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gbWF0aF8yMDA3X29sZCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBSYXZlbiAyMDA3IHlvdW5nIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IHJhdmVuXzIwMDdfeW91bmcpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgTnVtZXJhY3kgMjAwNyB5b3VuZyB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBtYXRoXzIwMDdfeW91bmcpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgQ291bnRpbmcgYmFja3dhcmRzIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGNvdW50X2JhY2t3YXJkcykKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBJbW1lZGlhdGUgd29yZCByZWNhbGwge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gd29yZHNfaW1tZWRpYXRlKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIERlbGF5ZWQgd29yZCByZWNhbGwge30KYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSB3b3Jkc19kZWxheWVkKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIEFkYXB0aXZlIE51bWJlcmluZyB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBhZGFwdGl2ZV9udW1iZXJpbmcpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyBQZXJzb25hbGl0eSB7fQoKIyMjIEV4dHJhdmVyc2lvbiB7fQoKCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYmlnNV9leHQpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMjIE5ldXJvdGljaXNtIHt9CgoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBiaWc1X25ldSkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyMgQ29uc2NpZW50aW91c25lc3Mge30KCgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGJpZzVfY29uKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIyBBZ3JlZWFibGVuZXNzIHt9CgoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBiaWc1X2FncmVlKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIyBPcGVubmVzcyB7fQoKCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYmlnNV9vcGVuKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIFJpc2sgcHJlZmVyZW5jZSB7fQoKIyMjIFJpc2sgQSB7fQoKCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gcmlza0EpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMjIFJpc2sgQiB7fQoKCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gcmlza0IpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMgRWR1Y2F0aW9uYWwgQXR0YWlubWVudCB7fQojIyMgWWVhcnMgb2YgRWR1Y2F0aW9uIC0gei1zdGFuZGFyZGl6ZWQge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0geWVhcnNfb2ZfZWR1Y2F0aW9uKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCgoKc3VtbWFyeSggbTFfdXJicnVyIDwtIGxtZXIob3V0Y29tZSB+IChzaWJsaW5nX2NvdW50ICsgYmlydGhfb3JkZXIpICogdXJiYW4gKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLCBkYXRhID0gYmlydGhvcmRlcikpCnBsb3QoYWxsRWZmZWN0cyhtMV91cmJydXIpKQpzdW1tYXJ5KCBtMV91cmJydXIgPC0gbG1lcihvdXRjb21lIH4gKHNpYmxpbmdfY291bnQgKyBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvcikgKiB1cmJhbiArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksIGRhdGEgPSBiaXJ0aG9yZGVyKSkKcGxvdChhbGxFZmZlY3RzKG0xX3VyYnJ1cikpCmBgYAoKIyMjIEVsZW1lbnRhcnkgbWlzc2VkIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IEVsZW1lbnRhcnlfbWlzc2VkKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIyBFbGVtZW50YXJ5IHdvcmtlZCB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBFbGVtZW50YXJ5X3dvcmtlZCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyMgQXR0ZW5kZWQgU2Nob29sIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGF0dGVuZGVkX3NjaG9vbCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyBXb3JrIHt9CgojIyMgSW5jb21lIExhc3QgTW9udGggKGxvZykgLSB6LXN0YW5kYXJkaXplZCB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSB3YWdlX2xhc3RfbW9udGhfeikKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBJbmNvbWUgbGFzdCB5ZWFyIChsb2cpIC0gei1zdGFuZGFyZGl6ZWQge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gd2FnZV9sYXN0X3llYXJfeikKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBTZWxmLUVtcGxveW1lbnQgLSBub24gc3RhbmRhcmRpemVkIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IFNlbGZfZW1wbG95ZWQpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMgV29yayBDYXRlZ29yeXt9CgojIyMgQ2F0ZWdvcnlfQ2FzdWFsIHdvcmtlciBpbiBhZ3JpY3VsdHVyZXt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGBDYXRlZ29yeV9DYXN1YWwgd29ya2VyIGluIGFncmljdWx0dXJlYCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBDYXRlZ29yeV9DYXN1YWwgd29ya2VyIG5vdCBpbiBhZ3JpY3VsdHVyZXt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGBDYXRlZ29yeV9DYXN1YWwgd29ya2VyIG5vdCBpbiBhZ3JpY3VsdHVyZWApCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgQ2F0ZWdvcnlfR292ZXJubWVudCB3b3JrZXJ7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBgQ2F0ZWdvcnlfR292ZXJubWVudCB3b3JrZXJgKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIyBDYXRlZ29yeV9Qcml2YXRlIHdvcmtlcnt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGBDYXRlZ29yeV9Qcml2YXRlIHdvcmtlcmApCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgQ2F0ZWdvcnlfU2VsZi1lbXBsb3llZHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGBDYXRlZ29yeV9TZWxmLWVtcGxveWVkYCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBDYXRlZ29yeV9VbnBhaWQgZmFtaWx5IHdvcmtlcnt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGBDYXRlZ29yeV9VbnBhaWQgZmFtaWx5IHdvcmtlcmApCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyBXb3JrIFNlY3RvciB7fQoKIyMjIFNlY3Rvcl9BZ3JpY3VsdHVyZSwgZm9yZXN0cnksIGZpc2hpbmcgYW5kIGh1bnRpbmcge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYFNlY3Rvcl9BZ3JpY3VsdHVyZSwgZm9yZXN0cnksIGZpc2hpbmcgYW5kIGh1bnRpbmdgKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIFNlY3Rvcl9Db25zdHJ1Y3Rpb24ge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYFNlY3Rvcl9Db25zdHJ1Y3Rpb25gKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIFNlY3Rvcl9FbGVjdHJpY2l0eSwgZ2FzLCB3YXRlciB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBgU2VjdG9yX0VsZWN0cmljaXR5LCBnYXMsIHdhdGVyYCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyMgU2VjdG9yX0ZpbmFuY2UsIGluc3VyYW5jZSwgcmVhbCBlc3RhdGUgYW5kIGJ1c2luZXNzIHNlcnZpY2VzIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGBTZWN0b3JfRmluYW5jZSwgaW5zdXJhbmNlLCByZWFsIGVzdGF0ZSBhbmQgYnVzaW5lc3Mgc2VydmljZXNgKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIyBTZWN0b3JfTWFudWZhY3R1cmluZyB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBTZWN0b3JfTWFudWZhY3R1cmluZykKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgoKIyMjIFNlY3Rvcl9NaW5pbmcgYW5kIHF1YXJyeWluZyB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBgU2VjdG9yX01pbmluZyBhbmQgcXVhcnJ5aW5nYCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyMgU2VjdG9yX1NvY2lhbCBzZXJ2aWNlcyB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBgU2VjdG9yX1NvY2lhbCBzZXJ2aWNlc2ApCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMjIFNlY3Rvcl9UcmFuc3BvcnRhdGlvbiwgc3RvcmFnZSBhbmQgY29tbXVuaWNhdGlvbnMge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYFNlY3Rvcl9UcmFuc3BvcnRhdGlvbiwgc3RvcmFnZSBhbmQgY29tbXVuaWNhdGlvbnNgKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMgU21va2luZyBCZWhhdmlvdXIge30KIyMjIGV2ZXJfc21va2VkIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGV2ZXJfc21va2VkKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIHN0aWxsX3Ntb2tpbmcge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gc3RpbGxfc21va2luZykKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAK</div>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

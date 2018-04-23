@@ -86,7 +86,7 @@ alldata_birthorder_i_tbl = alldata_birthorder_i_g_factor %>% tbl_df.mitml.list
 
 ```
 
-## Correlations, iterations and density
+## Correlations, iterations and density {.active}
 ```{r}
 # correlations
 correlations_original = corr_pipe(alldata_birthorder %>% select_if(is.numeric))

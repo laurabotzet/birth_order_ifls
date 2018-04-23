@@ -20,7 +20,7 @@ birthorder = readRDS("data/alldata_birthorder.rds")
 
 ## Overview Raw data
 ```{r Overview Raw Data}
-codebook(birthorder)
+# codebook(birthorder)
 ```
 
 ## Data wrangling

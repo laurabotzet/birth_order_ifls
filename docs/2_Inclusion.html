@@ -9,9 +9,10 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="Laura Botzet &amp; Ruben Arslan" />
 
 
-<title></title>
+<title>2_Inclusion</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -182,16 +183,16 @@ $(document).ready(function () {
 
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="index.html">Birth Order IFLS</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
+<div class="navbar-header">
+  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+  </button>
+  <a class="navbar-brand" href="index.html">Birth Order IFLS</a>
+</div>
+<div id="navbar" class="navbar-collapse collapse">
+  <ul class="nav navbar-nav">
 
 <li style="background-color: #66C2A5">
   <a href="index.html">Overview</a>
@@ -208,17 +209,33 @@ $(document).ready(function () {
 <li style="background-color: #A6D854">
   <a href="4_analyses.html">Birth Order Effects</a>
 </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li>
+<li style="background-color: #FFD92F">
+  <a href="4_analyses_robust.html">Robustness Analyses</a>
+</li>
+<li style="background-color: #E5C494">
+  <a href="3_imputation.html">Imputation</a>
+</li>
+<li style="background-color: #B3B3B3">
+  <a href="3_imputation_check">Imputation Checks</a>
+</li>
+<li style="background-color: #A6D854">
+  <a href="4_analyses_imputed_data.html">Birth Order Effects Imputed Data</a>
+</li>
+<li style="background-color: #FFD92F">
+  <a href="4_analyses_imputed_data_robust.html">Robustness Analyses Imputed Data</a>
+</li>
+
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+<li>
   <a href="https://github.com/laurabotzet/birth_order_ifls">
-    <span class="fa fa-github"></span>
+<span class="fa fa-github"></span>
 
 
   </a>
 </li>
-      </ul>
-    </div><!--/.nav-collapse -->
+  </ul>
+</div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
@@ -236,6 +253,8 @@ $(document).ready(function () {
 
 
 
+<h1 class="title toc-ignore">2_Inclusion</h1>
+<h4 class="author"><em>Laura Botzet &amp; Ruben Arslan</em></h4>
 
 </div>
 
@@ -252,6 +271,7 @@ $(document).ready(function () {
 <pre><code>## The following object is masked from &#39;package:rmarkdown&#39;:
 ## 
 ##     word_document</code></pre>
+<pre><code>## Warning: package &#39;lubridate&#39; was built under R version 3.4.3</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;lubridate&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:base&#39;:
@@ -278,11 +298,6 @@ $(document).ready(function () {
 <pre><code>## The following object is masked from &#39;package:stats&#39;:
 ## 
 ##     step</code></pre>
-<pre><code>## 
-## Attaching package: &#39;cowplot&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
-## 
-##     ggsave</code></pre>
 <pre><code>## Warning: package &#39;haven&#39; was built under R version 3.4.3</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;psych&#39;</code></pre>
@@ -333,6 +348,15 @@ $(document).ready(function () {
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
+<pre><code>## Warning: package &#39;coefplot&#39; was built under R version 3.4.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;codebook&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     bfi</code></pre>
+<pre><code>## The following objects are masked from &#39;package:formr&#39;:
+## 
+##     asis_knit_child, expired, paste.knit_asis</code></pre>
 </div>
 <div id="load-data" class="section level2">
 <h2>Load data</h2>
@@ -348,26 +372,30 @@ alldata_birthorder = readRDS(&quot;data/alldata_birthorder.rds&quot;)</code></pr
 n_birthorder = alldata_birthorder %&gt;%
   summarise(Maternal_Birth_Order = sum(!is.na(birthorder_uterus_alive)),
             Maternal_Pregnancy_Order = sum(!is.na(birthorder_uterus_preg)),
-            Parental_Full_Sibling_Birth_Order = sum(!is.na(birthorder_genes)))
+            Parental_Full_Sibling_Birth_Order = sum(!is.na(birthorder_genes)),
+            Naive_Maternal_Birth_Order = sum(!is.na(birthorder_naive)))
 n_birthorder</code></pre>
 <table style="width:100%;">
 <colgroup>
-<col width="27%" />
+<col width="20%" />
+<col width="23%" />
 <col width="31%" />
-<col width="41%" />
+<col width="24%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="center">Maternal_Birth_Order</th>
 <th align="center">Maternal_Pregnancy_Order</th>
 <th align="center">Parental_Full_Sibling_Birth_Order</th>
+<th align="center">Naive_Maternal_Birth_Order</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">43539</td>
-<td align="center">48853</td>
-<td align="center">42896</td>
+<td align="center">43322</td>
+<td align="center">48546</td>
+<td align="center">42682</td>
+<td align="center">67026</td>
 </tr>
 </tbody>
 </table>
@@ -380,26 +408,31 @@ n_birthorder</code></pre>
             Maternal_Pregnancy_Order = sum(!is.na(birthorder_uterus_preg) &amp; any_multiple_birth != 1,
                                            na.rm = T),
             Parental_Full_Sibling_Birth_Order = sum(!is.na(birthorder_genes) &amp; any_multiple_birth != 1,
+                                                    na.rm = T),
+            Naive_Maternal_Birth_Order = sum(!is.na(birthorder_naive) &amp; (is.na(any_multiple_birth) | any_multiple_birth != 1),
                                                     na.rm = T))
 n_birthorder</code></pre>
 <table style="width:100%;">
 <colgroup>
-<col width="27%" />
+<col width="20%" />
+<col width="23%" />
 <col width="31%" />
-<col width="41%" />
+<col width="24%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="center">Maternal_Birth_Order</th>
 <th align="center">Maternal_Pregnancy_Order</th>
 <th align="center">Parental_Full_Sibling_Birth_Order</th>
+<th align="center">Naive_Maternal_Birth_Order</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">32714</td>
-<td align="center">33493</td>
-<td align="center">32183</td>
+<td align="center">40189</td>
+<td align="center">45034</td>
+<td align="center">39589</td>
+<td align="center">63451</td>
 </tr>
 </tbody>
 </table>
@@ -416,26 +449,32 @@ n_birthorder = alldata_birthorder %&gt;%
                                            na.rm = T),
             Parental_Full_Sibling_Birth_Order = sum(!is.na(birthorder_genes) &amp; any_multiple_birth != 1 &amp;
                                                       sibling_count_genes != 1,
+                                                    na.rm = T),
+            Naive_Maternal_Birth_Order = sum(!is.na(birthorder_naive) &amp; any_multiple_birth != 1 &amp;
+                                                      sibling_count_naive != 1,
                                                     na.rm = T))
 n_birthorder</code></pre>
 <table style="width:100%;">
 <colgroup>
-<col width="27%" />
+<col width="20%" />
+<col width="23%" />
 <col width="31%" />
-<col width="41%" />
+<col width="24%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="center">Maternal_Birth_Order</th>
 <th align="center">Maternal_Pregnancy_Order</th>
 <th align="center">Parental_Full_Sibling_Birth_Order</th>
+<th align="center">Naive_Maternal_Birth_Order</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">29018</td>
-<td align="center">29812</td>
-<td align="center">27974</td>
+<td align="center">36014</td>
+<td align="center">41204</td>
+<td align="center">34786</td>
+<td align="center">41692</td>
 </tr>
 </tbody>
 </table>
@@ -444,7 +483,7 @@ n_birthorder</code></pre>
 <h3>Still alive</h3>
 <pre class="r"><code>## Count Birthorder - without only children
 alldata_birthorder = alldata_birthorder %&gt;%
-  mutate(alive = ifelse(!is.na(g_factor), 1, alive)) # for seven people its reported that they are not alive anymore but they participated in IFLS5 ?
+  mutate(alive = ifelse(!is.na(g_factor_2015_old), 1, alive)) # for seven people its reported that they are not alive anymore but they participated in IFLS5 ?
 
 n_birthorder = alldata_birthorder %&gt;%
   summarise(Maternal_Birth_Order = sum(!is.na(birthorder_uterus_alive) &amp; any_multiple_birth != 1 &amp;
@@ -472,45 +511,9 @@ n_birthorder</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">26689</td>
-<td align="center">26710</td>
-<td align="center">25760</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="aged-15-or-older" class="section level3">
-<h3>Aged 15 or older</h3>
-<pre class="r"><code>## Count Birthorder - without only children
-n_birthorder = alldata_birthorder %&gt;%
-  summarise(Maternal_Birth_Order = sum(!is.na(birthorder_uterus_alive) &amp; any_multiple_birth != 1 &amp;
-                                         sibling_count_uterus_alive != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000,
-                                       na.rm = T),
-            Maternal_Pregnancy_Order = sum(!is.na(birthorder_uterus_preg) &amp; any_multiple_birth != 1 &amp;
-                                             sibling_count_uterus_preg != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000,
-                                           na.rm = T),
-            Parental_Full_Sibling_Birth_Order = sum(!is.na(birthorder_genes) &amp; any_multiple_birth != 1 &amp;
-                                                      sibling_count_genes != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000,
-                                                    na.rm = T))
-n_birthorder</code></pre>
-<table style="width:100%;">
-<colgroup>
-<col width="27%" />
-<col width="31%" />
-<col width="41%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="center">Maternal_Birth_Order</th>
-<th align="center">Maternal_Pregnancy_Order</th>
-<th align="center">Parental_Full_Sibling_Birth_Order</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="center">18153</td>
-<td align="center">18174</td>
-<td align="center">17564</td>
+<td align="center">32714</td>
+<td align="center">33678</td>
+<td align="center">31635</td>
 </tr>
 </tbody>
 </table>
@@ -519,44 +522,54 @@ n_birthorder</code></pre>
 <h3>Interviewed for IFLS 5</h3>
 <div id="total-1" class="section level4">
 <h4>Total</h4>
-<pre class="r"><code>### All people in the birthorder data file that have ANY g-factor, personality or risk values have to be marked
+<pre class="r"><code>### All people in the birthorder data file that have ANY g-factor, educational attainment, personality or risk values have to be marked
 alldata_birthorder = alldata_birthorder %&gt;%
-  mutate(used_any = ifelse(!is.na(g_factor) | !is.na(big5_ext) | !is.na(big5_open) | !is.na(big5_agree) |
+  mutate(used_any = ifelse(!is.na(g_factor_2015_old) | !is.na(g_factor_2015_young) | !is.na(g_factor_2007_old) |
+                             !is.na(g_factor_2007_young) | !is.na(big5_ext) | !is.na(big5_open) | !is.na(big5_agree) |
                              !is.na(big5_neu) | !is.na(big5_con) | !is.na(riskA) | !is.na(riskB) |
                              is.na(years_of_education), 1, 0))
 
 n_birthorder = alldata_birthorder %&gt;%
   summarise(Maternal_Birth_Order = sum(!is.na(birthorder_uterus_alive) &amp; any_multiple_birth != 1 &amp;
-                                         sibling_count_uterus_alive != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                         sibling_count_uterus_alive != 1 &amp; alive != 3 &amp;
                                          used_any == 1,
                                        na.rm = T),
             Maternal_Pregnancy_Order = sum(!is.na(birthorder_uterus_preg) &amp; any_multiple_birth != 1 &amp;
-                                             sibling_count_uterus_preg != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                             sibling_count_uterus_preg != 1 &amp; alive != 3 &amp;
                                          used_any == 1,
                                            na.rm = T),
             Parental_Full_Sibling_Birth_Order = sum(!is.na(birthorder_genes) &amp; any_multiple_birth != 1 &amp;
-                                                      sibling_count_genes != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                                      sibling_count_genes != 1 &amp; alive != 3 &amp;
                                                       used_any == 1,
-                                                    na.rm = T))
+                                                    na.rm = T),
+            Naive_Maternal_Birth_Order = sum(!is.na(birthorder_naive) &amp; (is.na(any_multiple_birth) | any_multiple_birth != 1) &amp;
+                                                      sibling_count_naive != 1 &amp; alive != 3 &amp;
+                                                      used_any == 1,
+                                                    na.rm = T)
+
+    )
 n_birthorder</code></pre>
 <table style="width:100%;">
 <colgroup>
-<col width="27%" />
+<col width="20%" />
+<col width="23%" />
 <col width="31%" />
-<col width="41%" />
+<col width="24%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="center">Maternal_Birth_Order</th>
 <th align="center">Maternal_Pregnancy_Order</th>
 <th align="center">Parental_Full_Sibling_Birth_Order</th>
+<th align="center">Naive_Maternal_Birth_Order</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">17932</td>
-<td align="center">17953</td>
-<td align="center">17346</td>
+<td align="center">32643</td>
+<td align="center">33606</td>
+<td align="center">31566</td>
+<td align="center">41693</td>
 </tr>
 </tbody>
 </table>
@@ -565,20 +578,21 @@ n_birthorder</code></pre>
 <h4>Intelligence</h4>
 <pre class="r"><code>### All people in the birthorder data file that have all Intelligence measurements
 alldata_birthorder = alldata_birthorder %&gt;%
-  mutate(used_iq = ifelse(!is.na(g_factor), 1, 0)) # used_iq = 1:included, 0:not_included
+  mutate(used_iq = ifelse(!is.na(g_factor_2015_old) | !is.na(g_factor_2015_young) | !is.na(g_factor_2007_old) |
+                             !is.na(g_factor_2007_young), 1, 0)) # used_iq = 1:included, 0:not_included
 
 
 n_birthorder = alldata_birthorder %&gt;%
   summarise(Maternal_Birth_Order = sum(!is.na(birthorder_uterus_alive) &amp; any_multiple_birth != 1 &amp;
-                                         sibling_count_uterus_alive != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                         sibling_count_uterus_alive != 1 &amp; alive != 3 &amp;
                                          used_iq == 1,
                                        na.rm = T),
             Maternal_Pregnancy_Order = sum(!is.na(birthorder_uterus_preg) &amp; any_multiple_birth != 1 &amp;
-                                             sibling_count_uterus_preg != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                             sibling_count_uterus_preg != 1 &amp; alive != 3 &amp;
                                          used_iq == 1,
                                            na.rm = T),
             Parental_Full_Sibling_Birth_Order = sum(!is.na(birthorder_genes) &amp; any_multiple_birth != 1 &amp;
-                                                      sibling_count_genes != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                                      sibling_count_genes != 1 &amp; alive != 3 &amp;
                                                       used_iq == 1,
                                                     na.rm = T))
 n_birthorder</code></pre>
@@ -597,9 +611,9 @@ n_birthorder</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">4622</td>
-<td align="center">4629</td>
-<td align="center">4527</td>
+<td align="center">12503</td>
+<td align="center">12631</td>
+<td align="center">12193</td>
 </tr>
 </tbody>
 </table>
@@ -609,11 +623,11 @@ n_birthorder</code></pre>
 <pre class="r"><code>### All people in the birthorder data file that have Personality Measurements
 missingness_patterns(alldata_birthorder %&gt;% select(big5_ext, big5_con, big5_open, big5_neu, big5_agree, big5_open))</code></pre>
 <pre><code>##  index        col missings
-##      1   big5_ext    42243
-##      2   big5_con    42243
-##      3  big5_open    42243
-##      4   big5_neu    42243
-##      5 big5_agree    42243</code></pre>
+##      1   big5_ext    69795
+##      2   big5_con    69795
+##      3  big5_open    69795
+##      4   big5_neu    69795
+##      5 big5_agree    69795</code></pre>
 <table style="width:40%;">
 <colgroup>
 <col width="16%" />
@@ -630,12 +644,12 @@ missingness_patterns(alldata_birthorder %&gt;% select(big5_ext, big5_con, big5_o
 <tbody>
 <tr class="odd">
 <td align="center">1_2_3_4_5</td>
-<td align="center">42243</td>
+<td align="center">69795</td>
 <td align="center"></td>
 </tr>
 <tr class="even">
 <td align="center">_________</td>
-<td align="center">6610</td>
+<td align="center">31446</td>
 <td align="center">_</td>
 </tr>
 </tbody>
@@ -647,15 +661,15 @@ alldata_birthorder = alldata_birthorder %&gt;%
 
 n_birthorder = alldata_birthorder %&gt;%
   summarise(Maternal_Birth_Order = sum(!is.na(birthorder_uterus_alive) &amp; any_multiple_birth != 1 &amp;
-                                         sibling_count_uterus_alive != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                         sibling_count_uterus_alive != 1 &amp; alive != 3 &amp;
                                          used_pers == 1,
                                        na.rm = T),
             Maternal_Pregnancy_Order = sum(!is.na(birthorder_uterus_preg) &amp; any_multiple_birth != 1 &amp;
-                                             sibling_count_uterus_preg != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                             sibling_count_uterus_preg != 1 &amp; alive != 3 &amp;
                                          used_pers == 1,
                                            na.rm = T),
             Parental_Full_Sibling_Birth_Order = sum(!is.na(birthorder_genes) &amp; any_multiple_birth != 1 &amp;
-                                                      sibling_count_genes != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                                      sibling_count_genes != 1 &amp; alive != 3 &amp;
                                                       used_pers == 1,
                                                     na.rm = T))
 n_birthorder</code></pre>
@@ -674,9 +688,9 @@ n_birthorder</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">4648</td>
-<td align="center">4655</td>
-<td align="center">4552</td>
+<td align="center">5922</td>
+<td align="center">5976</td>
+<td align="center">5803</td>
 </tr>
 </tbody>
 </table>
@@ -686,8 +700,8 @@ n_birthorder</code></pre>
 <pre class="r"><code>### All people in the birthorder data file that have Risk Measurements
 missingness_patterns(alldata_birthorder %&gt;% select(riskA, riskB))</code></pre>
 <pre><code>##  index   col missings
-##      1 riskA    42913
-##      2 riskB    42589</code></pre>
+##      1 riskA    73461
+##      2 riskB    71663</code></pre>
 <table style="width:38%;">
 <colgroup>
 <col width="13%" />
@@ -704,22 +718,22 @@ missingness_patterns(alldata_birthorder %&gt;% select(riskA, riskB))</code></pre
 <tbody>
 <tr class="odd">
 <td align="center">1_2</td>
-<td align="center">42288</td>
+<td align="center">70149</td>
 <td align="center"></td>
 </tr>
 <tr class="even">
 <td align="center">___</td>
-<td align="center">5639</td>
+<td align="center">26266</td>
 <td align="center">_</td>
 </tr>
 <tr class="odd">
 <td align="center">1__</td>
-<td align="center">625</td>
+<td align="center">3312</td>
 <td align="center">riskA</td>
 </tr>
 <tr class="even">
 <td align="center">__2</td>
-<td align="center">301</td>
+<td align="center">1514</td>
 <td align="center">riskB</td>
 </tr>
 </tbody>
@@ -731,15 +745,15 @@ alldata_birthorder = alldata_birthorder %&gt;%
 
 n_birthorder = alldata_birthorder %&gt;%
   summarise(Maternal_Birth_Order = sum(!is.na(birthorder_uterus_alive) &amp; any_multiple_birth != 1 &amp;
-                                         sibling_count_uterus_alive != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                         sibling_count_uterus_alive != 1 &amp; alive != 3 &amp;
                                          used_riskA == 1,
                                        na.rm = T),
             Maternal_Pregnancy_Order = sum(!is.na(birthorder_uterus_preg) &amp; any_multiple_birth != 1 &amp;
-                                             sibling_count_uterus_preg != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                             sibling_count_uterus_preg != 1 &amp; alive != 3 &amp;
                                          used_riskA == 1,
                                            na.rm = T),
             Parental_Full_Sibling_Birth_Order = sum(!is.na(birthorder_genes) &amp; any_multiple_birth != 1 &amp;
-                                                      sibling_count_genes != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                                      sibling_count_genes != 1 &amp; alive != 3 &amp;
                                                       used_riskA == 1,
                                                     na.rm = T))
 n_birthorder</code></pre>
@@ -758,23 +772,23 @@ n_birthorder</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">4190</td>
-<td align="center">4196</td>
-<td align="center">4109</td>
+<td align="center">5331</td>
+<td align="center">5383</td>
+<td align="center">5230</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>n_birthorder = alldata_birthorder %&gt;%
   summarise(Maternal_Birth_Order = sum(!is.na(birthorder_uterus_alive) &amp; any_multiple_birth != 1 &amp;
-                                         sibling_count_uterus_alive != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                         sibling_count_uterus_alive != 1 &amp; alive != 3 &amp;
                                          used_riskB == 1,
                                        na.rm = T),
             Maternal_Pregnancy_Order = sum(!is.na(birthorder_uterus_preg) &amp; any_multiple_birth != 1 &amp;
-                                             sibling_count_uterus_preg != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                             sibling_count_uterus_preg != 1 &amp; alive != 3 &amp;
                                          used_riskB == 1,
                                            na.rm = T),
             Parental_Full_Sibling_Birth_Order = sum(!is.na(birthorder_genes) &amp; any_multiple_birth != 1 &amp;
-                                                      sibling_count_genes != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                                      sibling_count_genes != 1 &amp; alive != 3 &amp;
                                                       used_riskB == 1,
                                                     na.rm = T))
 n_birthorder</code></pre>
@@ -793,9 +807,9 @@ n_birthorder</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">4404</td>
-<td align="center">4411</td>
-<td align="center">4314</td>
+<td align="center">5603</td>
+<td align="center">5658</td>
+<td align="center">5490</td>
 </tr>
 </tbody>
 </table>
@@ -805,7 +819,7 @@ n_birthorder</code></pre>
 <pre class="r"><code>### All people in the birthorder data file that have educational attainment measurements
 missingness_patterns(alldata_birthorder %&gt;% select(years_of_education))</code></pre>
 <pre><code>##  index                col missings
-##      1 years_of_education    41976</code></pre>
+##      1 years_of_education    67423</code></pre>
 <table style="width:53%;">
 <colgroup>
 <col width="13%" />
@@ -822,12 +836,12 @@ missingness_patterns(alldata_birthorder %&gt;% select(years_of_education))</code
 <tbody>
 <tr class="odd">
 <td align="center">1</td>
-<td align="center">41976</td>
+<td align="center">67423</td>
 <td align="center">years_of_education</td>
 </tr>
 <tr class="even">
 <td align="center">_</td>
-<td align="center">6877</td>
+<td align="center">33818</td>
 <td align="center">_</td>
 </tr>
 </tbody>
@@ -837,15 +851,15 @@ missingness_patterns(alldata_birthorder %&gt;% select(years_of_education))</code
 
 n_birthorder = alldata_birthorder %&gt;%
   summarise(Maternal_Birth_Order = sum(!is.na(birthorder_uterus_alive) &amp; any_multiple_birth != 1 &amp;
-                                         sibling_count_uterus_alive != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                         sibling_count_uterus_alive != 1 &amp; alive != 3 &amp;
                                          used_ea == 1,
                                        na.rm = T),
             Maternal_Pregnancy_Order = sum(!is.na(birthorder_uterus_preg) &amp; any_multiple_birth != 1 &amp;
-                                             sibling_count_uterus_preg != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                             sibling_count_uterus_preg != 1 &amp; alive != 3 &amp;
                                          used_ea == 1,
                                            na.rm = T),
             Parental_Full_Sibling_Birth_Order = sum(!is.na(birthorder_genes) &amp; any_multiple_birth != 1 &amp;
-                                                      sibling_count_genes != 1 &amp; alive != 3 &amp; birth_year &lt;= 2000 &amp;
+                                                      sibling_count_genes != 1 &amp; alive != 3 &amp;
                                                       used_ea == 1,
                                                     na.rm = T))
 n_birthorder</code></pre>
@@ -864,52 +878,18 @@ n_birthorder</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">4814</td>
-<td align="center">4820</td>
-<td align="center">4717</td>
+<td align="center">6150</td>
+<td align="center">6209</td>
+<td align="center">6030</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<div id="save-data" class="section level3">
-<h3>Save Data</h3>
-<pre class="r"><code>## For the imputation we want to clean the dataset and get rid of all uninteresting data
-alldata_birthorder = alldata_birthorder %&gt;%
-  mutate(age = ifelse(!is.na(IQage), IQage, age)) %&gt;%
-  select(-ends_with(&quot;_ans&quot;), -starts_with(&quot;co0&quot;), -co10count, -starts_with(&quot;cob&quot;), -matches(&quot;[a-z][0-9]r?&quot;),
-         -matches(&quot;[a-z][0-9]r_reversed&quot;), -matches(&quot;si[0-9]&quot;), -sex.y, -duped_in_earlier_wave, -missing,
-         -IQage, starts_with(&quot;big5_&quot;)) %&gt;%
-  rename(sex = sex.x)
-
-## We only want to include people in the birthorder group that are no children of a family with mutiple births, no only children and people who actually have iq, personality, etc. data
-birthorder = alldata_birthorder %&gt;%
-  filter(any_multiple_birth != 1) %&gt;%
-  filter(!is.na(birthorder_uterus_preg) | !is.na(birthorder_uterus_alive) | !is.na(birthorder_genes)) %&gt;%
-  filter(sibling_count_uterus_preg != 1 | sibling_count_uterus_alive != 1 | sibling_count_genes != 1) %&gt;%
-  mutate(check = ifelse(!is.na(g_factor), 1,
-                        ifelse(!is.na(riskA), 1,
-                               ifelse(!is.na(riskB), 1,
-                                      ifelse(!is.na(big5_ext), 1,
-                                             ifelse(!is.na(years_of_education), 1, 0))))),
-         group = &quot;test&quot;,
-         # if only child, we have to set birthorder and siblingcount as NA
-         birthorder_uterus_alive = ifelse(sibling_count_uterus_alive == 1, NA, birthorder_uterus_alive),
-         birthorder_uterus_preg = ifelse(sibling_count_uterus_preg == 1, NA, birthorder_uterus_preg),
-         birthorder_genes = ifelse(sibling_count_genes == 1, NA, birthorder_genes),
-         # if only child we have to set siblingcount as NA
-         sibling_count_uterus_alive = ifelse(sibling_count_uterus_alive == 1, NA, sibling_count_uterus_alive),
-         sibling_count_uterus_preg = ifelse(sibling_count_uterus_preg == 1, NA, sibling_count_uterus_preg),
-         sibling_count_genes = ifelse(sibling_count_genes == 1, NA, sibling_count_genes)) %&gt;%
-  filter(check == 1)
-
-saveRDS(alldata_birthorder, file = &quot;data/alldata_birthorder&quot;)
-saveRDS(birthorder, file = &quot;data/birthorder.rds&quot;)</code></pre>
-</div>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCm91dHB1dDogaHRtbF9kb2N1bWVudAplZGl0b3Jfb3B0aW9uczogCiAgY2h1bmtfb3V0cHV0X3R5cGU6IGNvbnNvbGUKLS0tCiMgPHNwYW4gc3R5bGU9ImNvbG9yOiM4REEwQ0IiPkRhdGEgU2FtcGxpbmc8L3NwYW4+IHsudGFic2V0fQoKIyMgSGVscGVyCmBgYHtyIGhlbHBlcn0Kc291cmNlKCIwX2hlbHBlcnMuUiIpCmBgYAoKIyMgTG9hZCBkYXRhCmBgYHtyIExvYWQgZGF0YX0KIyMjIEltcG9ydCBhbGxkYXRhIHVzZWQgZm9yIGJpcnRob3JkZXIKYWxsZGF0YV9iaXJ0aG9yZGVyID0gcmVhZFJEUygiZGF0YS9hbGxkYXRhX2JpcnRob3JkZXIucmRzIikKYGBgCgojIyBCaXJ0aG9yZGVyIHsuYWN0aXZlfQoKIyMjIFRvdGFsCk51bWJlciBvZiBpbmRpdmlkdWFscyB3ZSB3ZXJlIGFibGUgdG8gcmVjb25zdHJ1Y3QgdGhlIHRocmVlIGRpZmZlcmVudCBiaXJ0aCBvcmRlcnMgYmFzZWQgb24gcHJlZ25hbmN5IGFuZCBtYXJyaWFnZSBoaXN0b3J5IGZvciAKYGBge3J9CiMjIENvdW50IEJpcnRob3JkZXIKbl9iaXJ0aG9yZGVyID0gYWxsZGF0YV9iaXJ0aG9yZGVyICU+JQogIHN1bW1hcmlzZShNYXRlcm5hbF9CaXJ0aF9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl91dGVydXNfYWxpdmUpKSwKICAgICAgICAgICAgTWF0ZXJuYWxfUHJlZ25hbmN5X09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnKSksCiAgICAgICAgICAgIFBhcmVudGFsX0Z1bGxfU2libGluZ19CaXJ0aF9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl9nZW5lcykpKQpuX2JpcnRob3JkZXIKYGBgCgoKIyMjIE5vIG11bHRpcGxlIGJpcnRocwpgYGAge3J9Cm5fYmlydGhvcmRlciA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUKICBzdW1tYXJpc2UoTWF0ZXJuYWxfQmlydGhfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpLAogICAgICAgICAgICBNYXRlcm5hbF9QcmVnbmFuY3lfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpLAogICAgICAgICAgICBQYXJlbnRhbF9GdWxsX1NpYmxpbmdfQmlydGhfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfZ2VuZXMpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpKQpuX2JpcnRob3JkZXIKYGBgCgojIyMgTm8gc2luZ2xlIGNoaWxkcmVuCmBgYHtyfQojIyBDb3VudCBCaXJ0aG9yZGVyIC0gd2l0aG91dCBvbmx5IGNoaWxkcmVuCm5fYmlydGhvcmRlciA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUKICBzdW1tYXJpc2UoTWF0ZXJuYWxfQmlydGhfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSAhPSAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpLAogICAgICAgICAgICBNYXRlcm5hbF9QcmVnbmFuY3lfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnICE9IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpLAogICAgICAgICAgICBQYXJlbnRhbF9GdWxsX1NpYmxpbmdfQmlydGhfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfZ2VuZXMpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzICE9IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpKQpuX2JpcnRob3JkZXIKYGBgCgoKIyMjIFN0aWxsIGFsaXZlCmBgYHtyfQojIyBDb3VudCBCaXJ0aG9yZGVyIC0gd2l0aG91dCBvbmx5IGNoaWxkcmVuCmFsbGRhdGFfYmlydGhvcmRlciA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUKICBtdXRhdGUoYWxpdmUgPSBpZmVsc2UoIWlzLm5hKGdfZmFjdG9yKSwgMSwgYWxpdmUpKSAjIGZvciBzZXZlbiBwZW9wbGUgaXRzIHJlcG9ydGVkIHRoYXQgdGhleSBhcmUgbm90IGFsaXZlIGFueW1vcmUgYnV0IHRoZXkgcGFydGljaXBhdGVkIGluIElGTFM1ID8KCm5fYmlydGhvcmRlciA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUKICBzdW1tYXJpc2UoTWF0ZXJuYWxfQmlydGhfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSAhPSAxICYgYWxpdmUgIT0gMywKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmEucm0gPSBUKSwKICAgICAgICAgICAgTWF0ZXJuYWxfUHJlZ25hbmN5X09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZyAhPSAxICYgYWxpdmUgIT0gMywKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCksCiAgICAgICAgICAgIFBhcmVudGFsX0Z1bGxfU2libGluZ19CaXJ0aF9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl9nZW5lcykgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXMgIT0gMSAmIGFsaXZlICE9IDMsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpKQpuX2JpcnRob3JkZXIKCgpgYGAKCgojIyMgQWdlZCAxNSBvciBvbGRlcgpgYGB7cn0KIyMgQ291bnQgQmlydGhvcmRlciAtIHdpdGhvdXQgb25seSBjaGlsZHJlbgpuX2JpcnRob3JkZXIgPSBhbGxkYXRhX2JpcnRob3JkZXIgJT4lCiAgc3VtbWFyaXNlKE1hdGVybmFsX0JpcnRoX09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSkgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmUgIT0gMSAmIGFsaXZlICE9IDMgJiBiaXJ0aF95ZWFyIDw9IDIwMDAsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCksCiAgICAgICAgICAgIE1hdGVybmFsX1ByZWduYW5jeV9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl91dGVydXNfcHJlZykgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcgIT0gMSAmIGFsaXZlICE9IDMgJiBiaXJ0aF95ZWFyIDw9IDIwMDAsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpLAogICAgICAgICAgICBQYXJlbnRhbF9GdWxsX1NpYmxpbmdfQmlydGhfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfZ2VuZXMpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzICE9IDEgJiBhbGl2ZSAhPSAzICYgYmlydGhfeWVhciA8PSAyMDAwLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmEucm0gPSBUKSkKbl9iaXJ0aG9yZGVyCmBgYAoKCiMjIyBJbnRlcnZpZXdlZCBmb3IgSUZMUyA1ICB7LnRhYnNldH0KCiMjIyMgVG90YWwKYGBge3J9CiMjIyBBbGwgcGVvcGxlIGluIHRoZSBiaXJ0aG9yZGVyIGRhdGEgZmlsZSB0aGF0IGhhdmUgQU5ZIGctZmFjdG9yLCBwZXJzb25hbGl0eSBvciByaXNrIHZhbHVlcyBoYXZlIHRvIGJlIG1hcmtlZAphbGxkYXRhX2JpcnRob3JkZXIgPSBhbGxkYXRhX2JpcnRob3JkZXIgJT4lCiAgbXV0YXRlKHVzZWRfYW55ID0gaWZlbHNlKCFpcy5uYShnX2ZhY3RvcikgfCAhaXMubmEoYmlnNV9leHQpIHwgIWlzLm5hKGJpZzVfb3BlbikgfCAhaXMubmEoYmlnNV9hZ3JlZSkgfAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICFpcy5uYShiaWc1X25ldSkgfCAhaXMubmEoYmlnNV9jb24pIHwgIWlzLm5hKHJpc2tBKSB8ICFpcy5uYShyaXNrQikgfAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlzLm5hKHllYXJzX29mX2VkdWNhdGlvbiksIDEsIDApKQoKbl9iaXJ0aG9yZGVyID0gYWxsZGF0YV9iaXJ0aG9yZGVyICU+JQogIHN1bW1hcmlzZShNYXRlcm5hbF9CaXJ0aF9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl91dGVydXNfYWxpdmUpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlICE9IDEgJiBhbGl2ZSAhPSAzICYgYmlydGhfeWVhciA8PSAyMDAwICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB1c2VkX2FueSA9PSAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpLAogICAgICAgICAgICBNYXRlcm5hbF9QcmVnbmFuY3lfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnICE9IDEgJiBhbGl2ZSAhPSAzICYgYmlydGhfeWVhciA8PSAyMDAwICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB1c2VkX2FueSA9PSAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmEucm0gPSBUKSwKICAgICAgICAgICAgUGFyZW50YWxfRnVsbF9TaWJsaW5nX0JpcnRoX09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX2dlbmVzKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lcyAhPSAxICYgYWxpdmUgIT0gMyAmIGJpcnRoX3llYXIgPD0gMjAwMCAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVzZWRfYW55ID09IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpKQpuX2JpcnRob3JkZXIKYGBgCgojIyMjIEludGVsbGlnZW5jZQpgYGB7cn0KIyMjIEFsbCBwZW9wbGUgaW4gdGhlIGJpcnRob3JkZXIgZGF0YSBmaWxlIHRoYXQgaGF2ZSBhbGwgSW50ZWxsaWdlbmNlIG1lYXN1cmVtZW50cwphbGxkYXRhX2JpcnRob3JkZXIgPSBhbGxkYXRhX2JpcnRob3JkZXIgJT4lCiAgbXV0YXRlKHVzZWRfaXEgPSBpZmVsc2UoIWlzLm5hKGdfZmFjdG9yKSwgMSwgMCkpICMgdXNlZF9pcSA9IDE6aW5jbHVkZWQsIDA6bm90X2luY2x1ZGVkCgoKbl9iaXJ0aG9yZGVyID0gYWxsZGF0YV9iaXJ0aG9yZGVyICU+JQogIHN1bW1hcmlzZShNYXRlcm5hbF9CaXJ0aF9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl91dGVydXNfYWxpdmUpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlICE9IDEgJiBhbGl2ZSAhPSAzICYgYmlydGhfeWVhciA8PSAyMDAwICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB1c2VkX2lxID09IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCksCiAgICAgICAgICAgIE1hdGVybmFsX1ByZWduYW5jeV9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl91dGVydXNfcHJlZykgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcgIT0gMSAmIGFsaXZlICE9IDMgJiBiaXJ0aF95ZWFyIDw9IDIwMDAgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVzZWRfaXEgPT0gMSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCksCiAgICAgICAgICAgIFBhcmVudGFsX0Z1bGxfU2libGluZ19CaXJ0aF9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl9nZW5lcykgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXMgIT0gMSAmIGFsaXZlICE9IDMgJiBiaXJ0aF95ZWFyIDw9IDIwMDAgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB1c2VkX2lxID09IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpKQpuX2JpcnRob3JkZXIKCmBgYAoKIyMjIyBQZXJzb25hbGl0eQpgYGB7cn0KIyMjIEFsbCBwZW9wbGUgaW4gdGhlIGJpcnRob3JkZXIgZGF0YSBmaWxlIHRoYXQgaGF2ZSBQZXJzb25hbGl0eSBNZWFzdXJlbWVudHMKbWlzc2luZ25lc3NfcGF0dGVybnMoYWxsZGF0YV9iaXJ0aG9yZGVyICU+JSBzZWxlY3QoYmlnNV9leHQsIGJpZzVfY29uLCBiaWc1X29wZW4sIGJpZzVfbmV1LCBiaWc1X2FncmVlLCBiaWc1X29wZW4pKQojIE1pc3NpbmduZXNzIFBhdHRlcm4gc2hvd3MgdGhhdCBpZiBvbmUgb2YgdGhlIHBlcnNvbmFsaXR5IG1lYXN1cmVtZW50cyBpcyBtaXNzaW5nIGFsbCBNZWFzdXJlbWVudHMgYXJlIG1pc3NpbmcKYWxsZGF0YV9iaXJ0aG9yZGVyID0gYWxsZGF0YV9iaXJ0aG9yZGVyICU+JQogIG11dGF0ZSh1c2VkX3BlcnMgPSBpZmVsc2UoIWlzLm5hKGJpZzVfZXh0KSwgMSwgMCkpCgoKbl9iaXJ0aG9yZGVyID0gYWxsZGF0YV9iaXJ0aG9yZGVyICU+JQogIHN1bW1hcmlzZShNYXRlcm5hbF9CaXJ0aF9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl91dGVydXNfYWxpdmUpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlICE9IDEgJiBhbGl2ZSAhPSAzICYgYmlydGhfeWVhciA8PSAyMDAwICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB1c2VkX3BlcnMgPT0gMSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmEucm0gPSBUKSwKICAgICAgICAgICAgTWF0ZXJuYWxfUHJlZ25hbmN5X09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZyAhPSAxICYgYWxpdmUgIT0gMyAmIGJpcnRoX3llYXIgPD0gMjAwMCAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdXNlZF9wZXJzID09IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpLAogICAgICAgICAgICBQYXJlbnRhbF9GdWxsX1NpYmxpbmdfQmlydGhfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfZ2VuZXMpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzICE9IDEgJiBhbGl2ZSAhPSAzICYgYmlydGhfeWVhciA8PSAyMDAwICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdXNlZF9wZXJzID09IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpKQpuX2JpcnRob3JkZXIKCmBgYAoKIyMjIyBSaXNrIHByZWZlcmVuY2UKYGBge3J9CiMjIyBBbGwgcGVvcGxlIGluIHRoZSBiaXJ0aG9yZGVyIGRhdGEgZmlsZSB0aGF0IGhhdmUgUmlzayBNZWFzdXJlbWVudHMKbWlzc2luZ25lc3NfcGF0dGVybnMoYWxsZGF0YV9iaXJ0aG9yZGVyICU+JSBzZWxlY3Qocmlza0EsIHJpc2tCKSkKIyMgTWlzc2luZ25lc3MgUGF0dGVybiBzaG93cyB0aGF0IHNvbWV0aW1lcyBBIGFuZCBzb21ldGltZXMgQiBpcyBtaXNzaW5nCmFsbGRhdGFfYmlydGhvcmRlciA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUKICBtdXRhdGUodXNlZF9yaXNrQSA9IGlmZWxzZSghaXMubmEocmlza0EpLCAxLCAwKSwKICAgICAgICAgdXNlZF9yaXNrQiA9IGlmZWxzZSghaXMubmEocmlza0IpLCAxLCAwKSkKCm5fYmlydGhvcmRlciA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUKICBzdW1tYXJpc2UoTWF0ZXJuYWxfQmlydGhfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSAhPSAxICYgYWxpdmUgIT0gMyAmIGJpcnRoX3llYXIgPD0gMjAwMCAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdXNlZF9yaXNrQSA9PSAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpLAogICAgICAgICAgICBNYXRlcm5hbF9QcmVnbmFuY3lfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnICE9IDEgJiBhbGl2ZSAhPSAzICYgYmlydGhfeWVhciA8PSAyMDAwICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB1c2VkX3Jpc2tBID09IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpLAogICAgICAgICAgICBQYXJlbnRhbF9GdWxsX1NpYmxpbmdfQmlydGhfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfZ2VuZXMpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzICE9IDEgJiBhbGl2ZSAhPSAzICYgYmlydGhfeWVhciA8PSAyMDAwICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdXNlZF9yaXNrQSA9PSAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmEucm0gPSBUKSkKbl9iaXJ0aG9yZGVyCgoKCm5fYmlydGhvcmRlciA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUKICBzdW1tYXJpc2UoTWF0ZXJuYWxfQmlydGhfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSAhPSAxICYgYWxpdmUgIT0gMyAmIGJpcnRoX3llYXIgPD0gMjAwMCAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdXNlZF9yaXNrQiA9PSAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpLAogICAgICAgICAgICBNYXRlcm5hbF9QcmVnbmFuY3lfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnICE9IDEgJiBhbGl2ZSAhPSAzICYgYmlydGhfeWVhciA8PSAyMDAwICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB1c2VkX3Jpc2tCID09IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpLAogICAgICAgICAgICBQYXJlbnRhbF9GdWxsX1NpYmxpbmdfQmlydGhfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfZ2VuZXMpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzICE9IDEgJiBhbGl2ZSAhPSAzICYgYmlydGhfeWVhciA8PSAyMDAwICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdXNlZF9yaXNrQiA9PSAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmEucm0gPSBUKSkKbl9iaXJ0aG9yZGVyCgoKYGBgCgojIyMjIEVkdWNhdGlvbmFsIEF0dGFpbm1lbnQKYGBge3J9CiMjIyBBbGwgcGVvcGxlIGluIHRoZSBiaXJ0aG9yZGVyIGRhdGEgZmlsZSB0aGF0IGhhdmUgZWR1Y2F0aW9uYWwgYXR0YWlubWVudCBtZWFzdXJlbWVudHMKbWlzc2luZ25lc3NfcGF0dGVybnMoYWxsZGF0YV9iaXJ0aG9yZGVyICU+JSBzZWxlY3QoeWVhcnNfb2ZfZWR1Y2F0aW9uKSkKCmFsbGRhdGFfYmlydGhvcmRlciA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUKICBtdXRhdGUodXNlZF9lYSA9IGlmZWxzZSghaXMubmEoeWVhcnNfb2ZfZWR1Y2F0aW9uKSwgMSwgMCkpCgpuX2JpcnRob3JkZXIgPSBhbGxkYXRhX2JpcnRob3JkZXIgJT4lCiAgc3VtbWFyaXNlKE1hdGVybmFsX0JpcnRoX09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSkgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmUgIT0gMSAmIGFsaXZlICE9IDMgJiBiaXJ0aF95ZWFyIDw9IDIwMDAgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVzZWRfZWEgPT0gMSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmEucm0gPSBUKSwKICAgICAgICAgICAgTWF0ZXJuYWxfUHJlZ25hbmN5X09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZyAhPSAxICYgYWxpdmUgIT0gMyAmIGJpcnRoX3llYXIgPD0gMjAwMCAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdXNlZF9lYSA9PSAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmEucm0gPSBUKSwKICAgICAgICAgICAgUGFyZW50YWxfRnVsbF9TaWJsaW5nX0JpcnRoX09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX2dlbmVzKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lcyAhPSAxICYgYWxpdmUgIT0gMyAmIGJpcnRoX3llYXIgPD0gMjAwMCAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVzZWRfZWEgPT0gMSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCkpCm5fYmlydGhvcmRlcgoKYGBgCgoKIyMjIFNhdmUgRGF0YQpgYGB7ciBkYXRhIHdyYW5nbGluZ30KIyMgRm9yIHRoZSBpbXB1dGF0aW9uIHdlIHdhbnQgdG8gY2xlYW4gdGhlIGRhdGFzZXQgYW5kIGdldCByaWQgb2YgYWxsIHVuaW50ZXJlc3RpbmcgZGF0YQphbGxkYXRhX2JpcnRob3JkZXIgPSBhbGxkYXRhX2JpcnRob3JkZXIgJT4lCiAgbXV0YXRlKGFnZSA9IGlmZWxzZSghaXMubmEoSVFhZ2UpLCBJUWFnZSwgYWdlKSkgJT4lCiAgc2VsZWN0KC1lbmRzX3dpdGgoIl9hbnMiKSwgLXN0YXJ0c193aXRoKCJjbzAiKSwgLWNvMTBjb3VudCwgLXN0YXJ0c193aXRoKCJjb2IiKSwgLW1hdGNoZXMoIlthLXpdWzAtOV1yPyIpLAogICAgICAgICAtbWF0Y2hlcygiW2Etel1bMC05XXJfcmV2ZXJzZWQiKSwgLW1hdGNoZXMoInNpWzAtOV0iKSwgLXNleC55LCAtZHVwZWRfaW5fZWFybGllcl93YXZlLCAtbWlzc2luZywKICAgICAgICAgLUlRYWdlLCBzdGFydHNfd2l0aCgiYmlnNV8iKSkgJT4lCiAgcmVuYW1lKHNleCA9IHNleC54KQoKIyMgV2Ugb25seSB3YW50IHRvIGluY2x1ZGUgcGVvcGxlIGluIHRoZSBiaXJ0aG9yZGVyIGdyb3VwIHRoYXQgYXJlIG5vIGNoaWxkcmVuIG9mIGEgZmFtaWx5IHdpdGggbXV0aXBsZSBiaXJ0aHMsIG5vIG9ubHkgY2hpbGRyZW4gYW5kIHBlb3BsZSB3aG8gYWN0dWFsbHkgaGF2ZSBpcSwgcGVyc29uYWxpdHksIGV0Yy4gZGF0YQpiaXJ0aG9yZGVyID0gYWxsZGF0YV9iaXJ0aG9yZGVyICU+JQogIGZpbHRlcihhbnlfbXVsdGlwbGVfYmlydGggIT0gMSkgJT4lCiAgZmlsdGVyKCFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnKSB8ICFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSkgfCAhaXMubmEoYmlydGhvcmRlcl9nZW5lcykpICU+JQogIGZpbHRlcihzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnICE9IDEgfCBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSAhPSAxIHwgc2libGluZ19jb3VudF9nZW5lcyAhPSAxKSAlPiUKICBtdXRhdGUoY2hlY2sgPSBpZmVsc2UoIWlzLm5hKGdfZmFjdG9yKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShyaXNrQSksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKHJpc2tCKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKGJpZzVfZXh0KSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYSh5ZWFyc19vZl9lZHVjYXRpb24pLCAxLCAwKSkpKSksCiAgICAgICAgIGdyb3VwID0gInRlc3QiLAogICAgICAgICAjIGlmIG9ubHkgY2hpbGQsIHdlIGhhdmUgdG8gc2V0IGJpcnRob3JkZXIgYW5kIHNpYmxpbmdjb3VudCBhcyBOQQogICAgICAgICBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSA9IGlmZWxzZShzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSA9PSAxLCBOQSwgYmlydGhvcmRlcl91dGVydXNfYWxpdmUpLAogICAgICAgICBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnID0gaWZlbHNlKHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcgPT0gMSwgTkEsIGJpcnRob3JkZXJfdXRlcnVzX3ByZWcpLAogICAgICAgICBiaXJ0aG9yZGVyX2dlbmVzID0gaWZlbHNlKHNpYmxpbmdfY291bnRfZ2VuZXMgPT0gMSwgTkEsIGJpcnRob3JkZXJfZ2VuZXMpLAogICAgICAgICAjIGlmIG9ubHkgY2hpbGQgd2UgaGF2ZSB0byBzZXQgc2libGluZ2NvdW50IGFzIE5BCiAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlID0gaWZlbHNlKHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlID09IDEsIE5BLCBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSksCiAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcgPSBpZmVsc2Uoc2libGluZ19jb3VudF91dGVydXNfcHJlZyA9PSAxLCBOQSwgc2libGluZ19jb3VudF91dGVydXNfcHJlZyksCiAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXMgPSBpZmVsc2Uoc2libGluZ19jb3VudF9nZW5lcyA9PSAxLCBOQSwgc2libGluZ19jb3VudF9nZW5lcykpICU+JQogIGZpbHRlcihjaGVjayA9PSAxKQoKc2F2ZVJEUyhhbGxkYXRhX2JpcnRob3JkZXIsIGZpbGUgPSAiZGF0YS9hbGxkYXRhX2JpcnRob3JkZXIiKQpzYXZlUkRTKGJpcnRob3JkZXIsIGZpbGUgPSAiZGF0YS9iaXJ0aG9yZGVyLnJkcyIpCmBgYAoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiMl9JbmNsdXNpb24iCmF1dGhvcjogIkxhdXJhIEJvdHpldCAmIFJ1YmVuIEFyc2xhbiIKb3V0cHV0OiBodG1sX2RvY3VtZW50CmVkaXRvcl9vcHRpb25zOiAKICBjaHVua19vdXRwdXRfdHlwZTogY29uc29sZQotLS0KIyA8c3BhbiBzdHlsZT0iY29sb3I6IzhEQTBDQiI+RGF0YSBTYW1wbGluZzwvc3Bhbj4gey50YWJzZXR9CgojIyBIZWxwZXIKYGBge3IgaGVscGVyfQpzb3VyY2UoIjBfaGVscGVycy5SIikKYGBgCgojIyBMb2FkIGRhdGEKYGBge3IgTG9hZCBkYXRhfQojIyMgSW1wb3J0IGFsbGRhdGEgdXNlZCBmb3IgYmlydGhvcmRlcgphbGxkYXRhX2JpcnRob3JkZXIgPSByZWFkUkRTKCJkYXRhL2FsbGRhdGFfYmlydGhvcmRlci5yZHMiKQpgYGAKCgojIyBCaXJ0aG9yZGVyIHsuYWN0aXZlfQoKIyMjIFRvdGFsCk51bWJlciBvZiBpbmRpdmlkdWFscyB3ZSB3ZXJlIGFibGUgdG8gcmVjb25zdHJ1Y3QgdGhlIHRocmVlIGRpZmZlcmVudCBiaXJ0aCBvcmRlcnMgYmFzZWQgb24gcHJlZ25hbmN5IGFuZCBtYXJyaWFnZSBoaXN0b3J5IGZvciAKYGBge3J9CiMjIENvdW50IEJpcnRob3JkZXIKbl9iaXJ0aG9yZGVyID0gYWxsZGF0YV9iaXJ0aG9yZGVyICU+JQogIHN1bW1hcmlzZShNYXRlcm5hbF9CaXJ0aF9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl91dGVydXNfYWxpdmUpKSwKICAgICAgICAgICAgTWF0ZXJuYWxfUHJlZ25hbmN5X09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnKSksCiAgICAgICAgICAgIFBhcmVudGFsX0Z1bGxfU2libGluZ19CaXJ0aF9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl9nZW5lcykpLAogICAgICAgICAgICBOYWl2ZV9NYXRlcm5hbF9CaXJ0aF9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl9uYWl2ZSkpKQpuX2JpcnRob3JkZXIKYGBgCgoKIyMjIE5vIG11bHRpcGxlIGJpcnRocwpgYGAge3J9Cm5fYmlydGhvcmRlciA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUKICBzdW1tYXJpc2UoTWF0ZXJuYWxfQmlydGhfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpLAogICAgICAgICAgICBNYXRlcm5hbF9QcmVnbmFuY3lfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpLAogICAgICAgICAgICBQYXJlbnRhbF9GdWxsX1NpYmxpbmdfQmlydGhfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfZ2VuZXMpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpLAogICAgICAgICAgICBOYWl2ZV9NYXRlcm5hbF9CaXJ0aF9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl9uYWl2ZSkgJiAoaXMubmEoYW55X211bHRpcGxlX2JpcnRoKSB8IGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCkpCm5fYmlydGhvcmRlcgpgYGAKCiMjIyBObyBzaW5nbGUgY2hpbGRyZW4KYGBge3J9CiMjIENvdW50IEJpcnRob3JkZXIgLSB3aXRob3V0IG9ubHkgY2hpbGRyZW4Kbl9iaXJ0aG9yZGVyID0gYWxsZGF0YV9iaXJ0aG9yZGVyICU+JQogIHN1bW1hcmlzZShNYXRlcm5hbF9CaXJ0aF9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl91dGVydXNfYWxpdmUpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlICE9IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCksCiAgICAgICAgICAgIE1hdGVybmFsX1ByZWduYW5jeV9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl91dGVydXNfcHJlZykgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcgIT0gMSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCksCiAgICAgICAgICAgIFBhcmVudGFsX0Z1bGxfU2libGluZ19CaXJ0aF9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl9nZW5lcykgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXMgIT0gMSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCksCiAgICAgICAgICAgIE5haXZlX01hdGVybmFsX0JpcnRoX09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX25haXZlKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9uYWl2ZSAhPSAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmEucm0gPSBUKSkKbl9iaXJ0aG9yZGVyCmBgYAoKCiMjIyBTdGlsbCBhbGl2ZQpgYGB7cn0KIyMgQ291bnQgQmlydGhvcmRlciAtIHdpdGhvdXQgb25seSBjaGlsZHJlbgphbGxkYXRhX2JpcnRob3JkZXIgPSBhbGxkYXRhX2JpcnRob3JkZXIgJT4lCiAgbXV0YXRlKGFsaXZlID0gaWZlbHNlKCFpcy5uYShnX2ZhY3Rvcl8yMDE1X29sZCksIDEsIGFsaXZlKSkgIyBmb3Igc2V2ZW4gcGVvcGxlIGl0cyByZXBvcnRlZCB0aGF0IHRoZXkgYXJlIG5vdCBhbGl2ZSBhbnltb3JlIGJ1dCB0aGV5IHBhcnRpY2lwYXRlZCBpbiBJRkxTNSA/CgpuX2JpcnRob3JkZXIgPSBhbGxkYXRhX2JpcnRob3JkZXIgJT4lCiAgc3VtbWFyaXNlKE1hdGVybmFsX0JpcnRoX09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSkgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmUgIT0gMSAmIGFsaXZlICE9IDMsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCksCiAgICAgICAgICAgIE1hdGVybmFsX1ByZWduYW5jeV9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl91dGVydXNfcHJlZykgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcgIT0gMSAmIGFsaXZlICE9IDMsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpLAogICAgICAgICAgICBQYXJlbnRhbF9GdWxsX1NpYmxpbmdfQmlydGhfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfZ2VuZXMpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzICE9IDEgJiBhbGl2ZSAhPSAzLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmEucm0gPSBUKSkKbl9iaXJ0aG9yZGVyCgoKYGBgCgoKIyMjIEludGVydmlld2VkIGZvciBJRkxTIDUgIHsudGFic2V0fQoKIyMjIyBUb3RhbApgYGB7cn0KIyMjIEFsbCBwZW9wbGUgaW4gdGhlIGJpcnRob3JkZXIgZGF0YSBmaWxlIHRoYXQgaGF2ZSBBTlkgZy1mYWN0b3IsIGVkdWNhdGlvbmFsIGF0dGFpbm1lbnQsIHBlcnNvbmFsaXR5IG9yIHJpc2sgdmFsdWVzIGhhdmUgdG8gYmUgbWFya2VkCmFsbGRhdGFfYmlydGhvcmRlciA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUKICBtdXRhdGUodXNlZF9hbnkgPSBpZmVsc2UoIWlzLm5hKGdfZmFjdG9yXzIwMTVfb2xkKSB8ICFpcy5uYShnX2ZhY3Rvcl8yMDE1X3lvdW5nKSB8ICFpcy5uYShnX2ZhY3Rvcl8yMDA3X29sZCkgfAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICFpcy5uYShnX2ZhY3Rvcl8yMDA3X3lvdW5nKSB8ICFpcy5uYShiaWc1X2V4dCkgfCAhaXMubmEoYmlnNV9vcGVuKSB8ICFpcy5uYShiaWc1X2FncmVlKSB8CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIWlzLm5hKGJpZzVfbmV1KSB8ICFpcy5uYShiaWc1X2NvbikgfCAhaXMubmEocmlza0EpIHwgIWlzLm5hKHJpc2tCKSB8CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaXMubmEoeWVhcnNfb2ZfZWR1Y2F0aW9uKSwgMSwgMCkpCgpuX2JpcnRob3JkZXIgPSBhbGxkYXRhX2JpcnRob3JkZXIgJT4lCiAgc3VtbWFyaXNlKE1hdGVybmFsX0JpcnRoX09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSkgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmUgIT0gMSAmIGFsaXZlICE9IDMgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVzZWRfYW55ID09IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCksCiAgICAgICAgICAgIE1hdGVybmFsX1ByZWduYW5jeV9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl91dGVydXNfcHJlZykgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcgIT0gMSAmIGFsaXZlICE9IDMgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVzZWRfYW55ID09IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpLAogICAgICAgICAgICBQYXJlbnRhbF9GdWxsX1NpYmxpbmdfQmlydGhfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfZ2VuZXMpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzICE9IDEgJiBhbGl2ZSAhPSAzICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdXNlZF9hbnkgPT0gMSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCksCiAgICAgICAgICAgIE5haXZlX01hdGVybmFsX0JpcnRoX09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX25haXZlKSAmIChpcy5uYShhbnlfbXVsdGlwbGVfYmlydGgpIHwgYW55X211bHRpcGxlX2JpcnRoICE9IDEpICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9uYWl2ZSAhPSAxICYgYWxpdmUgIT0gMyAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVzZWRfYW55ID09IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpCgogICAgKQpuX2JpcnRob3JkZXIKYGBgCgojIyMjIEludGVsbGlnZW5jZQpgYGB7cn0KIyMjIEFsbCBwZW9wbGUgaW4gdGhlIGJpcnRob3JkZXIgZGF0YSBmaWxlIHRoYXQgaGF2ZSBhbGwgSW50ZWxsaWdlbmNlIG1lYXN1cmVtZW50cwphbGxkYXRhX2JpcnRob3JkZXIgPSBhbGxkYXRhX2JpcnRob3JkZXIgJT4lCiAgbXV0YXRlKHVzZWRfaXEgPSBpZmVsc2UoIWlzLm5hKGdfZmFjdG9yXzIwMTVfb2xkKSB8ICFpcy5uYShnX2ZhY3Rvcl8yMDE1X3lvdW5nKSB8ICFpcy5uYShnX2ZhY3Rvcl8yMDA3X29sZCkgfAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICFpcy5uYShnX2ZhY3Rvcl8yMDA3X3lvdW5nKSwgMSwgMCkpICMgdXNlZF9pcSA9IDE6aW5jbHVkZWQsIDA6bm90X2luY2x1ZGVkCgoKbl9iaXJ0aG9yZGVyID0gYWxsZGF0YV9iaXJ0aG9yZGVyICU+JQogIHN1bW1hcmlzZShNYXRlcm5hbF9CaXJ0aF9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl91dGVydXNfYWxpdmUpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlICE9IDEgJiBhbGl2ZSAhPSAzICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB1c2VkX2lxID09IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCksCiAgICAgICAgICAgIE1hdGVybmFsX1ByZWduYW5jeV9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl91dGVydXNfcHJlZykgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcgIT0gMSAmIGFsaXZlICE9IDMgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVzZWRfaXEgPT0gMSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCksCiAgICAgICAgICAgIFBhcmVudGFsX0Z1bGxfU2libGluZ19CaXJ0aF9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl9nZW5lcykgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXMgIT0gMSAmIGFsaXZlICE9IDMgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB1c2VkX2lxID09IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpKQpuX2JpcnRob3JkZXIKCmBgYAoKCiMjIyMgUGVyc29uYWxpdHkKYGBge3J9CiMjIyBBbGwgcGVvcGxlIGluIHRoZSBiaXJ0aG9yZGVyIGRhdGEgZmlsZSB0aGF0IGhhdmUgUGVyc29uYWxpdHkgTWVhc3VyZW1lbnRzCm1pc3NpbmduZXNzX3BhdHRlcm5zKGFsbGRhdGFfYmlydGhvcmRlciAlPiUgc2VsZWN0KGJpZzVfZXh0LCBiaWc1X2NvbiwgYmlnNV9vcGVuLCBiaWc1X25ldSwgYmlnNV9hZ3JlZSwgYmlnNV9vcGVuKSkKIyBNaXNzaW5nbmVzcyBQYXR0ZXJuIHNob3dzIHRoYXQgaWYgb25lIG9mIHRoZSBwZXJzb25hbGl0eSBtZWFzdXJlbWVudHMgaXMgbWlzc2luZyBhbGwgTWVhc3VyZW1lbnRzIGFyZSBtaXNzaW5nCmFsbGRhdGFfYmlydGhvcmRlciA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUKICBtdXRhdGUodXNlZF9wZXJzID0gaWZlbHNlKCFpcy5uYShiaWc1X2V4dCksIDEsIDApKQoKCm5fYmlydGhvcmRlciA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUKICBzdW1tYXJpc2UoTWF0ZXJuYWxfQmlydGhfT3JkZXIgPSBzdW0oIWlzLm5hKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSAhPSAxICYgYWxpdmUgIT0gMyAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdXNlZF9wZXJzID09IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCksCiAgICAgICAgICAgIE1hdGVybmFsX1ByZWduYW5jeV9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl91dGVydXNfcHJlZykgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcgIT0gMSAmIGFsaXZlICE9IDMgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVzZWRfcGVycyA9PSAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmEucm0gPSBUKSwKICAgICAgICAgICAgUGFyZW50YWxfRnVsbF9TaWJsaW5nX0JpcnRoX09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX2dlbmVzKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lcyAhPSAxICYgYWxpdmUgIT0gMyAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVzZWRfcGVycyA9PSAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmEucm0gPSBUKSkKbl9iaXJ0aG9yZGVyCgpgYGAKCiMjIyMgUmlzayBwcmVmZXJlbmNlCmBgYHtyfQojIyMgQWxsIHBlb3BsZSBpbiB0aGUgYmlydGhvcmRlciBkYXRhIGZpbGUgdGhhdCBoYXZlIFJpc2sgTWVhc3VyZW1lbnRzCm1pc3NpbmduZXNzX3BhdHRlcm5zKGFsbGRhdGFfYmlydGhvcmRlciAlPiUgc2VsZWN0KHJpc2tBLCByaXNrQikpCiMjIE1pc3NpbmduZXNzIFBhdHRlcm4gc2hvd3MgdGhhdCBzb21ldGltZXMgQSBhbmQgc29tZXRpbWVzIEIgaXMgbWlzc2luZwphbGxkYXRhX2JpcnRob3JkZXIgPSBhbGxkYXRhX2JpcnRob3JkZXIgJT4lCiAgbXV0YXRlKHVzZWRfcmlza0EgPSBpZmVsc2UoIWlzLm5hKHJpc2tBKSwgMSwgMCksCiAgICAgICAgIHVzZWRfcmlza0IgPSBpZmVsc2UoIWlzLm5hKHJpc2tCKSwgMSwgMCkpCgpuX2JpcnRob3JkZXIgPSBhbGxkYXRhX2JpcnRob3JkZXIgJT4lCiAgc3VtbWFyaXNlKE1hdGVybmFsX0JpcnRoX09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSkgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmUgIT0gMSAmIGFsaXZlICE9IDMgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVzZWRfcmlza0EgPT0gMSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmEucm0gPSBUKSwKICAgICAgICAgICAgTWF0ZXJuYWxfUHJlZ25hbmN5X09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZyAhPSAxICYgYWxpdmUgIT0gMyAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdXNlZF9yaXNrQSA9PSAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmEucm0gPSBUKSwKICAgICAgICAgICAgUGFyZW50YWxfRnVsbF9TaWJsaW5nX0JpcnRoX09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX2dlbmVzKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lcyAhPSAxICYgYWxpdmUgIT0gMyAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVzZWRfcmlza0EgPT0gMSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCkpCm5fYmlydGhvcmRlcgoKCgpuX2JpcnRob3JkZXIgPSBhbGxkYXRhX2JpcnRob3JkZXIgJT4lCiAgc3VtbWFyaXNlKE1hdGVybmFsX0JpcnRoX09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSkgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmUgIT0gMSAmIGFsaXZlICE9IDMgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVzZWRfcmlza0IgPT0gMSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmEucm0gPSBUKSwKICAgICAgICAgICAgTWF0ZXJuYWxfUHJlZ25hbmN5X09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZyAhPSAxICYgYWxpdmUgIT0gMyAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdXNlZF9yaXNrQiA9PSAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmEucm0gPSBUKSwKICAgICAgICAgICAgUGFyZW50YWxfRnVsbF9TaWJsaW5nX0JpcnRoX09yZGVyID0gc3VtKCFpcy5uYShiaXJ0aG9yZGVyX2dlbmVzKSAmIGFueV9tdWx0aXBsZV9iaXJ0aCAhPSAxICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lcyAhPSAxICYgYWxpdmUgIT0gMyAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVzZWRfcmlza0IgPT0gMSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCkpCm5fYmlydGhvcmRlcgoKCmBgYAoKIyMjIyBFZHVjYXRpb25hbCBBdHRhaW5tZW50CmBgYHtyfQojIyMgQWxsIHBlb3BsZSBpbiB0aGUgYmlydGhvcmRlciBkYXRhIGZpbGUgdGhhdCBoYXZlIGVkdWNhdGlvbmFsIGF0dGFpbm1lbnQgbWVhc3VyZW1lbnRzCm1pc3NpbmduZXNzX3BhdHRlcm5zKGFsbGRhdGFfYmlydGhvcmRlciAlPiUgc2VsZWN0KHllYXJzX29mX2VkdWNhdGlvbikpCgphbGxkYXRhX2JpcnRob3JkZXIgPSBhbGxkYXRhX2JpcnRob3JkZXIgJT4lCiAgbXV0YXRlKHVzZWRfZWEgPSBpZmVsc2UoIWlzLm5hKHllYXJzX29mX2VkdWNhdGlvbiksIDEsIDApKQoKbl9iaXJ0aG9yZGVyID0gYWxsZGF0YV9iaXJ0aG9yZGVyICU+JQogIHN1bW1hcmlzZShNYXRlcm5hbF9CaXJ0aF9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl91dGVydXNfYWxpdmUpICYgYW55X211bHRpcGxlX2JpcnRoICE9IDEgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlICE9IDEgJiBhbGl2ZSAhPSAzICYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB1c2VkX2VhID09IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCksCiAgICAgICAgICAgIE1hdGVybmFsX1ByZWduYW5jeV9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl91dGVydXNfcHJlZykgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcgIT0gMSAmIGFsaXZlICE9IDMgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVzZWRfZWEgPT0gMSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hLnJtID0gVCksCiAgICAgICAgICAgIFBhcmVudGFsX0Z1bGxfU2libGluZ19CaXJ0aF9PcmRlciA9IHN1bSghaXMubmEoYmlydGhvcmRlcl9nZW5lcykgJiBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSAmCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXMgIT0gMSAmIGFsaXZlICE9IDMgJgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB1c2VkX2VhID09IDEsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFQpKQpuX2JpcnRob3JkZXIKCmBgYAoK</div>
 
 
 

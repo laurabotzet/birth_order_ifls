@@ -1,4 +1,6 @@
 ---
+title: "3_sample_analyses"
+author: "Laura Botzet & Ruben Arslan"
 output: html_document
 editor_options: 
   chunk_output_type: console
@@ -14,6 +16,11 @@ source("0_helpers.R")
 ```{r Load data}
 ### Import all data with known birthorder
 birthorder = readRDS("data/alldata_birthorder.rds")
+```
+
+## Overview Raw data
+```{r Overview Raw Data}
+codebook(birthorder)
 ```
 
 ## Data wrangling

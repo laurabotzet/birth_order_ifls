@@ -1,11 +1,13 @@
 ---
-title: "Untitled"
-author: "Ruben Arslan"
+title: "3_imputation_check"
+author: "Laura Botzet & Ruben Arslan"
 date: "28 September 2017"
 output: html_document
 editor_options: 
   chunk_output_type: console
 ---
+
+# <span style="color:#B3B3B3">Imputation Checks</span> {.tabset}
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -84,7 +86,7 @@ alldata_birthorder_i_tbl = alldata_birthorder_i_g_factor %>% tbl_df.mitml.list
 
 ```
 
-# Correlations, iterations and density
+## Correlations, iterations and density
 ```{r}
 # correlations
 correlations_original = corr_pipe(alldata_birthorder %>% select_if(is.numeric))
@@ -169,7 +171,7 @@ xyplot(alldata_birthorder_i, raven_2015_old ~ birthorder_genes | .imp , pch = 20
 ```
 
 
-# G-Factor
+## G-Factor
 ```{r g factor}
 # Normal data - no misses
 no_miss = alldata_birthorder %>%

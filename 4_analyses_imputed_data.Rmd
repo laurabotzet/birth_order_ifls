@@ -1,9 +1,11 @@
 ---
+title: "4_analyses_imputed_data"
+author: "Laura Botzet & Ruben Arslan"
 output: html_document
 editor_options: 
   chunk_output_type: console
 ---
-# <span style="color:#A6D854">Birth Order Effects</span> {.tabset}
+# <span style="color:#A6D854">Birth Order Effects Imputed Data</span> {.tabset}
 
 ## Helper
 ```{r helper}
@@ -374,3 +376,117 @@ data_used_plots <- data_used[[1]]
 compare_birthorder_imputed(data_used = data_used)
 ```
 
+
+## Multiplot Linear Birth Order Effect {.tabset}
+
+### Models {.tabset}
+
+```{r g-factor 2015 old}
+Intelligence = lmer(g_factor_2015_old ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
+                        sibling_count_genes +
+               (1 | mother_pidlink),
+                   data = birthorder)
+
+```
+
+```{r g-factor 2015 old}
+`Educational Attainment` = lmer(years_of_education_z ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
+                                  sibling_count_genes + (1 | mother_pidlink),
+                   data = birthorder)
+
+
+```
+
+
+
+```{r g-factor 2015 old}
+Extraversion = lmer(big5_ext ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
+                                  sibling_count_genes + (1 | mother_pidlink),
+                   data = birthorder)
+
+
+```
+
+
+
+```{r g-factor 2015 old}
+Neuroticism = lmer(big5_neu ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
+                                  sibling_count_genes + (1 | mother_pidlink),
+                   data = birthorder)
+
+
+```
+
+
+```{r g-factor 2015 old}
+Conscientiousness = lmer(big5_con ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
+                                  sibling_count_genes + (1 | mother_pidlink),
+                   data = birthorder)
+
+
+```
+
+
+
+```{r g-factor 2015 old}
+Agreeableness = lmer(big5_agree ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
+                                  sibling_count_genes + (1 | mother_pidlink),
+                   data = birthorder)
+
+
+```
+
+
+```{r g-factor 2015 old}
+Openness = lmer(big5_open ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
+                                  sibling_count_genes + (1 | mother_pidlink),
+                   data = birthorder)
+
+
+```
+
+
+```{r g-factor 2015 old}
+RiskA = lmer(riskA ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
+                                  sibling_count_genes + (1 | mother_pidlink),
+                   data = birthorder)
+
+
+```
+
+```{r g-factor 2015 old}
+RiskB = lmer(riskB ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
+                                  sibling_count_genes + (1 | mother_pidlink),
+                   data = birthorder)
+
+
+```
+
+### Plot {.active}
+```{r}
+x = multiplot(Intelligence, `Educational Attainment`, Agreeableness, Conscientiousness, Extraversion, Neuroticism, Openness, RiskA, RiskB, intercept = FALSE, coefficients = c("birthorder_genes", "sibling_count_genes"), plot = F)
+        
+x = data.frame(x)
+
+x$Model = ifelse(x$Model == "`Educational Attainment`", "Educational Attainment", x$Model)
+x$Model = as.factor(x$Model)
+levels(x$Model)
+
+x$Coefficient = ifelse(x$Coefficient == "birthorder_genes", "Birth order", "Sibship size")
+
+ggplot(x, aes(Model, Value)) +
+  geom_pointrange(data=x, mapping=aes(x=Model, y=Value, ymin=HighOuter, ymax=LowOuter, color = Coefficient),
+                  position = position_dodge(width=0.3), size = 1) +
+  scale_colour_brewer(palette = "Set2") +
+  geom_hline(yintercept = 0, size = 1.5)  +
+  geom_hline(yintercept = -.1, linetype = "dotted", size = 1.5) + 
+  scale_x_discrete(limits=c("RiskB", "RiskA", "Openness", "Neuroticism", "Extraversion",
+                            "Conscientiousness", "Agreeableness", "Educational Attainment",
+                            "Intelligence")) +
+  scale_y_continuous(limits = c(-0.1, 0.05), breaks = c(-0.1, -0.05, 0, 0.05)) +
+  coord_flip() +
+  theme(text = element_text(size=25), axis.text.x = element_text(size = 20),
+        axis.text.y = element_text(size = 20)) +
+  labs(y = "Linear effect size", x = "Outcome")
+  
+```

@@ -13,6 +13,7 @@ options(width = 110)
 #' set a seed to make analyses depending on random number generation reproducible
 set.seed(1710)
 
+
 #' ## Load packages
 #' generate the site
 library(rmarkdown)
@@ -44,8 +45,6 @@ library(effects)
 library(stringr)
 #' tools for working with categorical variables
 library(forcats)
-#' helps with fancier graphs
-library(cowplot)
 #' provides a funtion to format R source corde
 library(formatR)
 #' loads specific r tools
@@ -68,7 +67,8 @@ library(tidyr)
 library(dplyr)
 #' make comparisons between different birth orders
 library(coefplot)
-library(sjPlot)
+#' nice overview of raw data
+library(codebook)
 
 #' ## Spin R files
 #' R scripts can be documented in markdown using Roxygen comments, as demonstrated here
@@ -132,153 +132,15 @@ opts_chunk$set(
   render = pander_handler
 )
 
+#' do not show warnings
+opts_chunk$set(warning = FALSE)
 
 #' don't split tables, scroll horizontally
 panderOptions("table.split.table", Inf)
 
 #' ## Functions used
-#' set apa-conform theme for all graphs
-apatheme=theme_bw()+
-  theme(panel.grid.major=element_blank(),
-        panel.grid.minor=element_blank(),
-        panel.border=element_blank(),
-        axis.line=element_line(),
-        text = element_text(size=20))
 
-#' function to plot gender plots
-plot_gender = function(data = birthorder){
-  plot = ggplot(data, aes(male, outcome)) +
-    geom_jitter(width = 0.3) +
-    stat_summary(fun.data = mean_cl_normal, geom = "errorbar", color = "red", width = 0.3)
-  plot
-}
-
-plot_age = function(data = birthorder){
-  plot = ggplot(data, aes(age, outcome)) +
-    geom_jitter() +
-    geom_smooth(stat = "smooth")
-  plot
-}
-
-
-#' function used to do all birth order effect plots
-plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_order", separate = TRUE, ylimits = NULL) {
-  if(inherits(model, "merMod")) {
-    varnames = names(model@frame)
-  } else {
-    varnames = names(model$model)
-  }
-  outcome = varnames[1]
-  if(is.null(ylabel)) ylabel = outcome
-  library(effects)
-  library(tidyr)
-  emm = allEffects(model)
-  bo_var = names(emm)[names(emm) %contains% bo_var]
-  cemm = as.data.frame(emm[[bo_var]])
-  if (separate != TRUE) {
-    cemm = cemm %>% rename_("Birth order" = bo_var) %>% mutate(Sibship = "across")
-  } else {
-    cemm = cemm %>%
-      separate_(bo_var, into = c("Birth order", "Sibship"), sep = "/")
-    number = spread(as.data.frame(table(model.frame(model)[`bo_var`])), Var1, Freq)
-    n2 = paste0("2 (", sum(number$`1/2`, number$`2/2`), ")", seperate="")
-    n3 = paste0("3 (", sum(number$`1/3`, number$`2/3`, number$`3/3`), ")",
-                seperate="")
-    n4 = paste0("4 (", sum(number$`1/4`, number$`2/4`, number$`3/4`,
-                           number$`4/4`), ")", seperate="")
-    n5 = paste0("5 (", sum(number$`1/5`, number$`2/5`, number$`3/5`,
-                           number$`4/5`, number$`5/5`), ")", seperate="")
-    n5more = paste0("5+ (", sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
-                                number$`4/5+`, number$`5/5+`, number$`5+/5+`), ")",
-                    seperate="")
-    cemm = cemm %>%
-      mutate(Sibship = recode_factor(Sibship, "2" = `n2`, "3" = `n3`, "4" = `n4`,
-                                     "5" = `n5`, "5+" = `n5more`))
-  }
-  plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
-                           colour = `Sibship`, group = `Sibship`)) +
-    geom_pointrange(stat = "identity", position = position_dodge(width = 0.5)) +
-    geom_line(position = position_dodge(width = 0.5)) +
-    scale_y_continuous(name = ylabel) +
-    labs(title= title) +
-    apatheme +
-    theme(legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),
-          plot.title = element_text(hjust = 0)) +
-    guides(colour=guide_legend(title = "Sibship")) +
-    scale_fill_brewer(palette = "Set2") +
-    scale_colour_brewer(palette = "Set2") +
-    coord_cartesian(ylim = ylimits)
-  print(plotx)
-  assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)
-}
-
-#' function used to do all birth order effect plots
-plot_birthorder2 = function(model, ylabel = NULL, title = "", bo_var = "birth_order", separate = TRUE, ylimits = NULL) {
-  if(inherits(model, "merMod")) {
-    varnames = names(model@frame)
-  } else {
-    varnames = names(model$model)
-  }
-  outcome = varnames[1]
-  if(is.null(ylabel)) ylabel = outcome
-  library(effects)
-  library(tidyr)
-  emm = allEffects(model)
-  bo_var = names(emm)[names(emm) %contains% bo_var]
-  cemm = as.data.frame(emm[[bo_var]])
-  if (separate != TRUE) {
-    cemm = cemm %>% rename_("Birth order" = bo_var) %>% mutate(Sibship = "across")
-  } else {
-    cemm = cemm %>%
-      separate_(bo_var, into = c("Birth order", "Sibship"), sep = "/")
-    number = spread(as.data.frame(table(model.frame(model)[`bo_var`])), Var1, Freq)
-    n2 = paste0("2 (", sum(number$`1/2`, number$`2/2`), ")", seperate="")
-    n3 = paste0("3 (", sum(number$`1/3`, number$`2/3`, number$`3/3`), ")",
-                seperate="")
-    n4 = paste0("4 (", sum(number$`1/4`, number$`2/4`, number$`3/4`,
-                           number$`4/4`), ")", seperate="")
-    n5 = paste0("5 (", sum(number$`1/5`, number$`2/5`, number$`3/5`,
-                           number$`4/5`, number$`5/5`), ")", seperate="")
-    n5more = paste0("5+ (", sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
-                                number$`4/5+`, number$`5/5+`, number$`5+/5+`), ")",
-                    seperate="")
-    cemm = cemm %>%
-      mutate(Sibship = recode_factor(Sibship, "2" = `n2`, "3" = `n3`, "4" = `n4`,
-                                     "5" = `n5`, "5+" = `n5more`))
-  }
-  plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
-                           colour = `Sibship`, group = `Sibship`)) +
-    geom_smooth(stat = "identity") +
-    geom_line(position = position_dodge(width = 0.5)) +
-    scale_y_continuous(name = ylabel) +
-    labs(title= title) +
-    apatheme +
-    theme(legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),
-          plot.title = element_text(hjust = 0)) +
-    guides(colour=guide_legend(title = "Sibship")) +
-    scale_fill_brewer(palette = "Set2") +
-    scale_colour_brewer(palette = "Set2") +
-    coord_cartesian(ylim = ylimits)
-  print(plotx)
-  assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)
-}
-
-
-
-#' functions used to compare models
-compare_models_markdown = function(m2_birthorder_linear, ylimits = NULL) {
-  formr::asis_knit_child('_test_outcome.Rmd')
-  }
-
-compare_birthorder_specs = function(m2_birthorder_linear, ylimits = NULL) {
-  formr::asis_knit_child('_compare_birthorder_specs.Rmd')
-}
-
-compare_birthorder_imputed = function(data_used, ylimits = NULL) {
-  formr::asis_knit_child('_compare_birthorder_imputed.Rmd')
-}
-
-
+#' Function to extract month from dataset
 pad_month = function(x) { str_pad(x, width = 2, side = "left", pad = "0")}
 
 #' Function to calculate the birthdate out of all available informations for one individual
@@ -318,7 +180,143 @@ older_sibs_alive_and_dependent = function(byear, dyear) {
   older_sibs_alive_and_dependent
 }
 
+#' set apa-conform theme for all graphs
+apatheme=theme_bw()+
+  theme(panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        panel.border=element_blank(),
+        axis.line=element_line(),
+        text = element_text(size=20))
 
+#' function to plot gender plots
+plot_gender = function(data = birthorder){
+  plot = ggplot(data, aes(male, outcome)) +
+    geom_jitter(width = 0.3) +
+    stat_summary(fun.data = mean_cl_normal, geom = "errorbar", color = "red", width = 0.3)
+  plot
+}
+
+#' function to plot age plots
+plot_age = function(data = birthorder){
+  plot = ggplot(data, aes(age, outcome)) +
+    geom_jitter() +
+    geom_smooth(stat = "smooth")
+  plot
+}
+
+#' function used to do all birth order effect plots except for linear birth order effects
+plot_birthorder = function(model, title = "", bo_var = "birth_order", separate = TRUE) {
+  if(inherits(model, "merMod")) {
+    varnames = names(model@frame)
+  } else {
+    varnames = names(model$model)
+  }
+  outcome = varnames[1]
+  library(effects)
+  library(tidyr)
+  emm = allEffects(model)
+  bo_var = names(emm)[names(emm) %contains% bo_var]
+  cemm = as.data.frame(emm[[bo_var]])
+  if (separate != TRUE) {
+    cemm = cemm %>% rename_("Birth order" = bo_var) %>% mutate(Sibship = "across")
+  } else {
+    cemm = cemm %>%
+      separate_(bo_var, into = c("Birth order", "Sibship"), sep = "/")
+    number = spread(as.data.frame(table(model.frame(model)[`bo_var`])), Var1, Freq)
+    n2 = paste0("2 (", sum(number$`1/2`, number$`2/2`), ")", seperate="")
+    n3 = paste0("3 (", sum(number$`1/3`, number$`2/3`, number$`3/3`), ")",
+                seperate="")
+    n4 = paste0("4 (", sum(number$`1/4`, number$`2/4`, number$`3/4`,
+                           number$`4/4`), ")", seperate="")
+    n5 = paste0("5 (", sum(number$`1/5`, number$`2/5`, number$`3/5`,
+                           number$`4/5`, number$`5/5`), ")", seperate="")
+    n5more = paste0("5+ (", sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
+                                number$`4/5+`, number$`5/5+`, number$`5+/5+`), ")",
+                    seperate="")
+    cemm = cemm %>%
+      mutate(Sibship = recode_factor(Sibship, "2" = `n2`, "3" = `n3`, "4" = `n4`,
+                                     "5" = `n5`, "5+" = `n5more`))
+  }
+  plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
+                           colour = `Sibship`, group = `Sibship`)) +
+    geom_pointrange(stat = "identity", position = position_dodge(width = 0.5), size = 1) +
+    geom_line(position = position_dodge(width = 0.5), size = 1) +
+    labs(title = title) +
+    apatheme +
+    theme(text = element_text(size=20), axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15), legend.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),
+          plot.title = element_text(hjust = 0)) +
+    guides(colour=guide_legend(title = "Sibship")) +
+    scale_fill_brewer(palette = "Set2") +
+    scale_colour_brewer(palette = "Set2")
+  print(plotx)
+  assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)
+}
+
+plot_birthorder2 = function(model, title = "", bo_var = "birth_order", separate = TRUE) {
+  if(inherits(model, "merMod")) {
+    varnames = names(model@frame)
+  } else {
+    varnames = names(model$model)
+  }
+  outcome = varnames[1]
+  library(effects)
+  library(tidyr)
+  emm = allEffects(model)
+  bo_var = names(emm)[names(emm) %contains% bo_var]
+  cemm = as.data.frame(emm[[bo_var]])
+  if (separate != TRUE) {
+    cemm = cemm %>% rename_("Birth order" = bo_var) %>% mutate(Sibship = "across")
+  } else {
+    cemm = cemm %>%
+      separate_(bo_var, into = c("Birth order", "Sibship"), sep = "/")
+    number = spread(as.data.frame(table(model.frame(model)[`bo_var`])), Var1, Freq)
+    n2 = paste0("2 (", sum(number$`1/2`, number$`2/2`), ")", seperate="")
+    n3 = paste0("3 (", sum(number$`1/3`, number$`2/3`, number$`3/3`), ")",
+                seperate="")
+    n4 = paste0("4 (", sum(number$`1/4`, number$`2/4`, number$`3/4`,
+                           number$`4/4`), ")", seperate="")
+    n5 = paste0("5 (", sum(number$`1/5`, number$`2/5`, number$`3/5`,
+                           number$`4/5`, number$`5/5`), ")", seperate="")
+    n5more = paste0("5+ (", sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
+                                number$`4/5+`, number$`5/5+`, number$`5+/5+`), ")",
+                    seperate="")
+    cemm = cemm %>%
+      mutate(Sibship = recode_factor(Sibship, "2" = `n2`, "3" = `n3`, "4" = `n4`,
+                                     "5" = `n5`, "5+" = `n5more`))
+  }
+  plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
+                           colour = `Sibship`, group = `Sibship`)) +
+    geom_smooth(stat = "identity", position = position_dodge(width = 0.5), size = 1) +
+    geom_line(position = position_dodge(width = 0.5), size = 1) +
+    labs(title = title) +
+    apatheme +
+    theme(text = element_text(size=20), axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15), legend.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),
+          plot.title = element_text(hjust = 0)) +
+    guides(colour=guide_legend(title = "Sibship")) +
+    scale_fill_brewer(palette = "Set2") +
+    scale_colour_brewer(palette = "Set2")
+  print(plotx)
+  assign(paste0("plot_", outcome, seperate=""),plotx,.GlobalEnv)
+}
+
+#' function used to compare models
+compare_models_markdown = function(m2_birthorder_linear) {
+  formr::asis_knit_child('_test_outcome.Rmd')
+  }
+
+#' function used to run different birth order specifications
+compare_birthorder_specs = function(m2_birthorder_linear) {
+  formr::asis_knit_child('_compare_birthorder_specs.Rmd')
+}
+
+
+#' function used for imputation
 mutate.mitml.list <- function(.data, ...) {
   r <- lapply(.data, FUN = mutate, ...)
   class(r) = class(.data)
@@ -349,14 +347,8 @@ summarise.mitml.list <- function(.data, ...) {
   r
 }
 
-#
-# with.mitml.list <- function(data, expr, ...){
-#   # evaluates an expression for a list of data sets
-#
-#   expr <- substitute(expr)
-#   parent <- parent.frame()
-#
-#   out <- parallel::mclapply(data, function(x) eval(expr, x, parent))
-#   class(out) <- c("mitml.result","list")
-#   out
-# }
+#' function used to compare models based on imputed data
+compare_birthorder_imputed = function(data_used) {
+  formr::asis_knit_child('_compare_birthorder_imputed.Rmd')
+}
+

@@ -1,15 +1,13 @@
 ---
-title: "Untitled"
-author: "Ruben Arslan"
+title: "3_imputation"
+author: "Laura Botzet & Ruben Arslan"
 date: "28 September 2017"
 output: html_document
 editor_options: 
   chunk_output_type: console
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+# <span style="color:#E5C494">Imputation</span> {.tabset}
 
 ## Helper
 ```{r helper}
@@ -116,15 +114,13 @@ alldata_birthorder <-  alldata_birthorder %>% select(`mother_pidlink`,  `age`, `
 
 `Elementary_missed`, `Elementary_worked`, `attended_school`,
 
- # `currently_attending_school`,  `Type_of_test_elementary`, `Indonesia_score_elementary`, `English_score_elementary`, `Math_score_elemenatry`, `Total_score_elemenatry`, `Type_of_test_Junior_High`, `Indonesia_score_Junior_High`, `English_score_Junior_High`, `Math_score_Junior_High`, `Total_score_Junior_High`, `Type_of_test_Senior_High`, `Indonesia_score_Senior_High`, `English_score_Senior_High`, `Math_score_Senior_High`, `Total_score_Senior_High`, `Junior_high_worked`, `Senior_high_worked`, `University_worked`, `Junior_high_missed`, `Senior_high_missed`, `University_missed`,
-
 `years_of_education`, `Self_employed`, `ever_smoked`, `still_smoking`, `wage_last_month_log`, `wage_last_year_log`,
 
 `Category_Casual worker in agriculture`, `Category_Casual worker not in agriculture`, `Category_Government worker`, `Category_Private worker`, `Category_Self-employed`, `Category_Unpaid family worker`, 
 `Sector_Agriculture, forestry, fishing and hunting`, `Sector_Construction`, `Sector_Electricity, gas, water`, `Sector_Finance, insurance, real estate and business services`, `Sector_Manufacturing`, `Sector_Mining and quarrying`, `Sector_Social services`, `Sector_Transportation, storage and communications`, `Sector_Wholesale, retail, restaurants and hotels`)
 ```
 
-## R Markdown
+## Functions
 
 ```{r}
 n_imputations.mitml = function(imps) {
@@ -153,60 +149,7 @@ sort(round(miss_frac(alldata_birthorder),2))
 ```
 
 
-# Small Dataset
-```{r}
-alldata_birthorder$miss_frac_person = rowMeans(is.na(alldata_birthorder))
-qplot(alldata_birthorder$miss_frac_person)
-
-alldatasm <-  alldata_birthorder %>% arrange(mother_pidlink) %>% slice(1:1000)
-qplot(alldatasm$miss_frac_person)
-
-alldata_birthorder$miss_frac_person <- NULL
-alldatasm$miss_frac_person <- NULL
-
-alldatasm$mother_pidlink = as.integer(alldatasm$mother_pidlink)
-
-alldatasm = alldatasm %>% select(1:55)
-
-alldatasm = alldatasm %>% select_if(is.integer)
-
-
-imp4 = mice(alldatasm, blme_use = TRUE)
-alldatasm[,55]
-
-imp0 <- mice(alldatasm, maxit=0)
-pred1 <- imp0$predictorMatrix
-pred1
-pred1 = quickpred(alldatasm, mincor = 0.1) #all variables that correlate > .01
-pred1
-pred1[pred1 == 1] = 2
-meth1 <- imp0$method
-
-# linear multilevel imputation using the function mice.impute.2l.norm()
-# specify predictor_matrix using 1 = fixed effects, 2 = random effects, -2 = class variable, 0 = no effect
-# we can set the mother_pidlink as class variable (= -2)
-pred1[, "mother_pidlink"] = -2
-# set imputation procedures
-meth1[-1] <- "2l.pan"
-meth1
-pred1
-
-imp1 <- mice(alldatasm, maxit=4, m=2, predictorMatrix=pred1, method=meth1)
-imp2 <- mice(alldatasm, maxit=10, m = 2)
-
-
-summary(lmer(raven_2015_old ~ (1 | mother_pidlink), alldatasm))
-summary(lmer(raven_2015_old ~ (1 | mother_pidlink), complete(imp1,1)))
-summary(lmer(raven_2015_old ~ (1 | mother_pidlink), complete(imp2,1)))
-summary(lmer(big5_ext ~ (1 | mother_pidlink), alldatasm))
-summary(lmer(big5_ext ~ (1 | mother_pidlink), complete(imp1,1)))
-summary(lmer(big5_ext ~ (1 | mother_pidlink), complete(imp2,1)))
-
-```
-
-
-
-# Real Deal Dataset
+## Imputation
 ```{r}
 alldata_birthorder <- alldata_birthorder %>% select(-pidlink)
 alldata_birthorder$mother_pidlink = as.integer(alldata_birthorder$mother_pidlink)

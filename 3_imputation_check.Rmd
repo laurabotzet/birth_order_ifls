@@ -7,7 +7,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# <span style="color:#B3B3B3">Imputation Checks</span> {.tabset}
+# <span style="color:#FFD92F">Imputation Checks</span> {.tabset}
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)

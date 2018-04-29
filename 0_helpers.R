@@ -69,6 +69,8 @@ library(dplyr)
 library(coefplot)
 #' nice overview of raw data
 library(codebook)
+#' used to compute effect sizes for t tests
+library(effsize)
 
 #' ## Spin R files
 #' R scripts can be documented in markdown using Roxygen comments, as demonstrated here

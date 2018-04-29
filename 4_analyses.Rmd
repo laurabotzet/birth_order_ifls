@@ -5,7 +5,7 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
-# <span style="color:#A6D854">Birth Order Effects</span> {.tabset}
+# <span style="color:#E5C494">Birth Order Effects</span> {.tabset}
 
 ## Helper
 ```{r helper}

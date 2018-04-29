@@ -238,6 +238,8 @@ descriptives
 ## Ttest
 tidy(t.test(birthorder$age ~ birthorder$group_birthorder, var.equal = T))
 
+cohen.d(birthorder$age, as.factor(birthorder$group_birthorder), na.rm = T)
+
 gender = birthorder %>%
   group_by(group_birthorder) %>%
     summarise(gender = sum(male == 1, na.rm=T),
@@ -292,14 +294,38 @@ ratings = birthorder %>%
 ratings
 
 tidy(t.test(birthorder$g_factor_2015_old ~ birthorder$group_birthorder, var.equal = T))
+cohen.d(birthorder$g_factor_2015_old, as.factor(birthorder$group_birthorder), na.rm = T)
+
+
 tidy(t.test(birthorder$years_of_education ~ birthorder$group_birthorder, var.equal = T))
+cohen.d(birthorder$years_of_education, as.factor(birthorder$group_birthorder), na.rm = T)
+
+
 tidy(t.test(birthorder$big5_ext ~ birthorder$group_birthorder, var.equal = T))
+cohen.d(birthorder$big5_ext, as.factor(birthorder$group_birthorder), na.rm = T)
+
+
 tidy(t.test(birthorder$big5_neu ~ birthorder$group_birthorder, var.equal = T))
+cohen.d(birthorder$big5_neu, as.factor(birthorder$group_birthorder), na.rm = T)
+
+
 tidy(t.test(birthorder$big5_con ~ birthorder$group_birthorder, var.equal = T))
+cohen.d(birthorder$big5_con, as.factor(birthorder$group_birthorder), na.rm = T)
+
+
 tidy(t.test(birthorder$big5_agree ~ birthorder$group_birthorder, var.equal = T))
+cohen.d(birthorder$big5_agree, as.factor(birthorder$group_birthorder), na.rm = T)
+
+
 tidy(t.test(birthorder$big5_open ~ birthorder$group_birthorder, var.equal = T))
+cohen.d(birthorder$big5_open, as.factor(birthorder$group_birthorder), na.rm = T)
+
+
 tidy(t.test(birthorder$riskA ~ birthorder$group_birthorder, var.equal = T))
+cohen.d(birthorder$riskA, as.factor(birthorder$group_birthorder), na.rm = T)
+
 tidy(t.test(birthorder$riskB ~ birthorder$group_birthorder, var.equal = T))
+cohen.d(birthorder$riskB, as.factor(birthorder$group_birthorder), na.rm = T)
 
 ## Educational Attainment
 educational_attainment = birthorder %>%

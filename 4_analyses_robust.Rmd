@@ -5,7 +5,7 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
-# <span style="color:#FFD92F">Robustness Analyses</span> {.tabset}
+# <span style="color:#E5C494">Robustness Analyses</span> {.tabset}
 
 ## Helper
 ```{r helper}

@@ -7,7 +7,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# <span style="color:#E5C494">Imputation</span> {.tabset}
+# <span style="color:#FFD92F">Imputation</span> {.tabset}
 
 ## Helper
 ```{r helper}

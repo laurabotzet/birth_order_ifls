@@ -180,6 +180,19 @@ $(document).ready(function () {
 
 
 
+<head>
+<style>
+.dropdown-menu li:hover .sub-menu {
+  visibility: visible;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+</style>
+</head>
+
+
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
 <div class="navbar-header">
@@ -205,24 +218,29 @@ $(document).ready(function () {
 <li style="background-color: #E78AC3">
   <a href="3_sample_analyses.html">Sample Analyses</a>
 </li>
-<li style="background-color: #A6D854">
-  <a href="4_analyses.html">Birth Order Effects</a>
-</li>
-<li style="background-color: #FFD92F">
-  <a href="4_analyses_robust.html">Robustness Analyses</a>
-</li>
-<li style="background-color: #E5C494">
-  <a href="3_imputation.html">Imputation</a>
-</li>
-<li style="background-color: #B3B3B3">
-  <a href="3_imputation_check">Imputation Checks</a>
-</li>
-<li style="background-color: #A6D854">
-  <a href="4_analyses_imputed_data.html">Birth Order Effects Imputed Data</a>
-</li>
-<li style="background-color: #FFD92F">
-  <a href="4_analyses_imputed_data_robust.html">Robustness Analyses Imputed Data</a>
-</li>
+
+<li class="dropdown" style="background-color: #E5C494">
+        <a class="dropdown-toggle" aria-expanded="false">
+          Birth Order Effects <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" style="background-color: #E5C494">
+          <li class=""><a href="4_analyses.html" aria-expanded="false" aria-controls="first-tab"> Main Analyses</a></li>
+          <li class=""><a href="4_analyses_robust.html" aria-expanded="false" aria-controls="first-tab"> Robustness Analyses</a></li>
+        </ul>
+     </li>
+
+
+<li class="dropdown" style="background-color: #FFD92F">
+        <a class="dropdown-toggle" aria-expanded="false">
+          Birth Order Effects Imputed Data <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" style="background-color: #FFD92F">
+          <li class=""><a href="3_imputation.html" aria-expanded="false" aria-controls="first-tab">Multiple Imputation</a></li>
+          <li class=""><a href="3_imputation_check.html" aria-expanded="false" aria-controls="first-tab">Imputation Checks</a></li>
+          <li class=""><a href="4_analyses_imputed_data.html" aria-expanded="false" aria-controls="second-tab">Birth Order Effects Imputed Data</a></li>
+        </ul>
+     </li>
+
 
   </ul>
   <ul class="nav navbar-nav navbar-right">
@@ -261,7 +279,6 @@ $(document).ready(function () {
 source(&quot;0_helpers.R&quot;)</code></pre>
 <div class="row">
 <div class="col-md-5">
-<h2 id="supplemental-materials">Supplemental Materials</h2>
 <p>We used these <a href="0_helpers.html">helper functions</a>. These are the <a href=".Rprofile.html">.Rprofile settings</a></p>
 <ol style="list-style-type: decimal">
 <li>First we <a href="1_data_import.html">wrangled the data</a>.</li>
@@ -297,7 +314,7 @@ source(&quot;0_helpers.R&quot;)</code></pre>
 </div>
 <div id="abstract" class="section level3">
 <h3>Abstract</h3>
-<p>((not ready, yet… insert abstract here))</p>
+<p>Is it possible to replicate effects of birth order on intelligence, educational attainment, personality, and risk preference cross-culturally? So far, studies on birth order effects focused on samples from western, educated, industrialised, rich, democratic countries (WEIRD). Based on earlier research we formulated three hypotheses: (1) Intelligence and educational attainment slightly decline with increasing birth order position, (2) personality is unrelated to birth order position and (2) risk preference slightly rises with increasing birth order position. The Indonesian Family Life Survey collected data about intelligence, education, personality, and risk preference in 2015. Based on this data and the maternal pregnancy history we were able to obtain a sample of 11,188 individuals. Analyses were performed using within-family designs in mixed-effects models. We did not replicate results based on WEIRD-samples, one pattern was even reversed. This evidence points towards social mechanisms behind possible birth order effects rather than universally valid, biological mechanisms.</p>
 </div>
 <div id="references" class="section level3 unnumbered">
 <h3>References</h3>
@@ -387,7 +404,7 @@ source(&quot;0_helpers.R&quot;)</code></pre>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiA8Zm9udCBjb2xvcj0iIzY2QzJBNSI+RWZmZWN0cyBvZiBCaXJ0aCBPcmRlciBvbiBJbnRlbGxpZ2VuY2UsIFBlcnNvbmFsaXR5LCBhbmQgUmlzayBQcmVmZXJlbmNlIGluIGFuIEluZG9uZXNpYW4gU2FtcGxlPC9mb250PgpiaWJsaW9ncmFwaHk6IHBhY2tyYXRfYmlibGlvZ3JhcGh5LmJpYnRleApjc2w6IGFwYS1jdXN0b20tbm8taXNzdWUuY3NsCm5vY2l0ZTogfAogICAgQFIgQHBhY2tyYXQgQHJtYXJrZG93biBAa25pdHIgQGZvcm1yIEBwYW5kZXIgQGx1YnJpZGF0ZSBAc3RyaW5nciBAYnJvb20gQGVmZmVjdHMgQGdncGxvdDIgQHRpZHlyIEBkcGx5ciBAZm9ybWF0UiBAZGV2dG9vbHMgQGhhdmVuIEBHUEFyb3RhdGlvbiBAcHN5Y2ggQGxhdmFhbiBASG1pc2MgQHBseXIgQGFwYVRhYmxlcyBAbG1lNCBAbG1lclRlc3QgQGZvcmNhdHMgQGNvd3Bsb3QgQGdyaWRFeHRyYQotLS0KCgoKYGBge3IgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KIyNORVcKc291cmNlKCIwX2hlbHBlcnMuUiIpCmBgYAoKPGRpdiBjbGFzcz0icm93Ij4KCjxkaXYgY2xhc3M9ImNvbC1tZC01Ij4KCiMjIFN1cHBsZW1lbnRhbCBNYXRlcmlhbHMKV2UgdXNlZCB0aGVzZSBbaGVscGVyIGZ1bmN0aW9uc10oMF9oZWxwZXJzLmh0bWwpLiBUaGVzZSBhcmUgdGhlIFsuUnByb2ZpbGUgc2V0dGluZ3NdKC5ScHJvZmlsZS5odG1sKQoKMS4gRmlyc3Qgd2UgW3dyYW5nbGVkIHRoZSBkYXRhXSgxX2RhdGFfaW1wb3J0Lmh0bWwpLgoyLiBXZSBbZGVjaWRlZCB3aGljaCBkYXRhIHRvIGtlZXBdKDJfaW5jbHVzaW9uLmh0bWwpLgozLiBUaGVuIHdlIFthbmFseXplZCBvdXIgc2FtcGxlIGFuZCBsb29rZWQgYXQgc29tZSBkZXNjcmlwdGl2ZXNdKDNfc2FtcGxlX2FuYWx5c2VzLmh0bWwpLgo0LiBUaGUgbWFpbiBhbmFseXNlczogV2UgW2FuYWx5emVkXSg0X2FuYWx5c2VzLmh0bWwpIGJpcnRoIG9yZGVyIGVmZmVjdHMgKGNsaWNrIGhlcmUgZm9yIG5pY2UgZ3JhcGhzIG9mIGJpcnRoIG9yZGVyIGVmZmVjdHMpLgo1LiBUaGVuIHdlIFtyYW4gc29tZSByb2J1c3RuZXNzIGFuYWx5c2VzXSg0X2FuYWx5c2VzX3JvYnVzdC5odG1sKS4KNi4gQWRkaXRpb25hbGx5LCB3ZSBbaW1wdXRlZCBtaXNzaW5nIGRhdGFdKDNfaW1wdXRhdGlvbi5odG1sKS4KNy4gV2UgW2NoZWNrZWQgaW1wdXRhdGlvbiBkYXRhXSgzX2ltcHV0YXRpb25fY2hlY2suaHRtbCkgdG8gc2VlIHdoZXRoZXIgaW1wdXRhdGlvbiB3YXMgZG9uZSBjb3JyZWN0bHkuCjguIEFuZCBbYW5hbHl6ZWQgaW1wdXRlZCBkYXRhXSg0X2FuYWx5c2VzX2ltcHV0ZWRfZGF0YS5odG1sKSBmb3IgYmlydGggb3JkZXIgZWZmZWN0cy4KOS4gSW4gdGhlIGVuZCB3ZSByYW4gW3JvYnVzdG5lc3MgYW5hbHlzZXMgZm9yIGltcHV0ZWQgZGF0YV0oNF9hbmFseXNlc19pbXB1dGVkX2RhdGFfcm9idXN0Lmh0bWwpIGFzIHdlbGwuCgpNb3JlIGluZm9ybWF0aW9uIGFib3V0IHRoZSBbSW5kb25lc2lhbiBGYW1pbHkgTGlmZSBTdXJ2ZXkgKElGTFMpXShodHRwOi8vd3d3LnJhbmQub3JnL2xhYm9yL0ZMUy9JRkxTLmh0bWwpLgoKPC9kaXY+Cgo8ZGl2IGNsYXNzPSJjb2wtbWQtNiBjb2wtbWQtb2Zmc2V0LTEiPgohW0VmZmVjdCBzaXplIGVzdGltYXRlcyBpbiBzdGFuZGFyZCBkZXZpYXRpb25zIGZvciBsaW5lYXIgZWZmZWN0cyBvZiBiaXJ0aCBvcmRlciBhbmQgc2lic2hpcCBzaXplLiBFZmZlY3Qgc2l6ZSBhbmQgOTUlIGNvbmZpZGVuY2UgaW50ZXJ2YWxzIGZyb20gbGluZWFyIG1peGVkIGVmZmVjdHMgbW9kZWxzIHdpdGggc2lic2hpcCBzaXplLCBiaXJ0aCBvcmRlciwgZ2VuZGVyIGFuZCBhZ2UgYXMgZml4ZWQgZWZmZWN0cyBhbmQgbWF0ZXJuYWwgaWRlbnRpdHkgYXMgcmFuZG9tIGVmZmVjdCBhcmUgc2hvd24uXShScGxvdDY0LnBuZykKPC9kaXY+Cgo8L2Rpdj4KPGRpdiBjbGFzcz0iY2xlYXJmaXgiPjwvZGl2PgoKIyMgQXV0aG9ycyAmIEFic3RyYWN0ICYgQWNrbm93bGVkZ2VtZW50cyB7LnRhYnNldCAudGFic2V0LXN0aWNreX0KCiMjIyBBdXRob3JzCkxhdXJhIEouIEJvdHpldCAmIFJ1YmVuIEMuIEFyc2xhbi4KCkdlb3JnLUVsaWFzLU3DvGxsZXItSW5zdGl0dXQgZm9yIFBzeWNob2xvZ3ksIEdlb3JnLUF1Z3VzdC1Vbml2ZXJzaXTDpHQgR8O2dHRpbmdlbgoKQ2VudGVyIGZvciBBZGFwdGl2ZSBSYXRpb25hbGl0eSwgTWF4LVBsYW5jay1JbnN0aXR1dGUgZm9yIEh1bWFuIERldmVsb3BtZW50LCBCZXJsaW4KClRoaXMgc3VwcGxlbWVudGFyeSB3ZWJzaXRlIGhhcyBiZWVuIGFyY2hpdmVkIG9uIFplbm9kby5vcmcgWyFbRE9JXSgpXSgpLgoKCiMjIyBBYnN0cmFjdAoKKChub3QgcmVhZHksIHlldC4uLiBpbnNlcnQgYWJzdHJhY3QgaGVyZSkpCgojIyMgUmVmZXJlbmNlcwoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiA8Zm9udCBjb2xvcj0iIzY2QzJBNSI+RWZmZWN0cyBvZiBCaXJ0aCBPcmRlciBvbiBJbnRlbGxpZ2VuY2UsIFBlcnNvbmFsaXR5LCBhbmQgUmlzayBQcmVmZXJlbmNlIGluIGFuIEluZG9uZXNpYW4gU2FtcGxlPC9mb250PgpiaWJsaW9ncmFwaHk6IHBhY2tyYXRfYmlibGlvZ3JhcGh5LmJpYnRleApjc2w6IGFwYS1jdXN0b20tbm8taXNzdWUuY3NsCm5vY2l0ZTogfAogICAgQFIgQHBhY2tyYXQgQHJtYXJrZG93biBAa25pdHIgQGZvcm1yIEBwYW5kZXIgQGx1YnJpZGF0ZSBAc3RyaW5nciBAYnJvb20gQGVmZmVjdHMgQGdncGxvdDIgQHRpZHlyIEBkcGx5ciBAZm9ybWF0UiBAZGV2dG9vbHMgQGhhdmVuIEBHUEFyb3RhdGlvbiBAcHN5Y2ggQGxhdmFhbiBASG1pc2MgQHBseXIgQGFwYVRhYmxlcyBAbG1lNCBAbG1lclRlc3QgQGZvcmNhdHMgQGNvd3Bsb3QgQGdyaWRFeHRyYQotLS0KCgoKYGBge3IgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KIyNORVcKc291cmNlKCIwX2hlbHBlcnMuUiIpCmBgYAoKPGRpdiBjbGFzcz0icm93Ij4KCjxkaXYgY2xhc3M9ImNvbC1tZC01Ij4KCldlIHVzZWQgdGhlc2UgW2hlbHBlciBmdW5jdGlvbnNdKDBfaGVscGVycy5odG1sKS4gVGhlc2UgYXJlIHRoZSBbLlJwcm9maWxlIHNldHRpbmdzXSguUnByb2ZpbGUuaHRtbCkKCjEuIEZpcnN0IHdlIFt3cmFuZ2xlZCB0aGUgZGF0YV0oMV9kYXRhX2ltcG9ydC5odG1sKS4KMi4gV2UgW2RlY2lkZWQgd2hpY2ggZGF0YSB0byBrZWVwXSgyX2luY2x1c2lvbi5odG1sKS4KMy4gVGhlbiB3ZSBbYW5hbHl6ZWQgb3VyIHNhbXBsZSBhbmQgbG9va2VkIGF0IHNvbWUgZGVzY3JpcHRpdmVzXSgzX3NhbXBsZV9hbmFseXNlcy5odG1sKS4KNC4gVGhlIG1haW4gYW5hbHlzZXM6IFdlIFthbmFseXplZF0oNF9hbmFseXNlcy5odG1sKSBiaXJ0aCBvcmRlciBlZmZlY3RzIChjbGljayBoZXJlIGZvciBuaWNlIGdyYXBocyBvZiBiaXJ0aCBvcmRlciBlZmZlY3RzKS4KNS4gVGhlbiB3ZSBbcmFuIHNvbWUgcm9idXN0bmVzcyBhbmFseXNlc10oNF9hbmFseXNlc19yb2J1c3QuaHRtbCkuCjYuIEFkZGl0aW9uYWxseSwgd2UgW2ltcHV0ZWQgbWlzc2luZyBkYXRhXSgzX2ltcHV0YXRpb24uaHRtbCkuCjcuIFdlIFtjaGVja2VkIGltcHV0YXRpb24gZGF0YV0oM19pbXB1dGF0aW9uX2NoZWNrLmh0bWwpIHRvIHNlZSB3aGV0aGVyIGltcHV0YXRpb24gd2FzIGRvbmUgY29ycmVjdGx5Lgo4LiBBbmQgW2FuYWx5emVkIGltcHV0ZWQgZGF0YV0oNF9hbmFseXNlc19pbXB1dGVkX2RhdGEuaHRtbCkgZm9yIGJpcnRoIG9yZGVyIGVmZmVjdHMuCjkuIEluIHRoZSBlbmQgd2UgcmFuIFtyb2J1c3RuZXNzIGFuYWx5c2VzIGZvciBpbXB1dGVkIGRhdGFdKDRfYW5hbHlzZXNfaW1wdXRlZF9kYXRhX3JvYnVzdC5odG1sKSBhcyB3ZWxsLgoKTW9yZSBpbmZvcm1hdGlvbiBhYm91dCB0aGUgW0luZG9uZXNpYW4gRmFtaWx5IExpZmUgU3VydmV5IChJRkxTKV0oaHR0cDovL3d3dy5yYW5kLm9yZy9sYWJvci9GTFMvSUZMUy5odG1sKS4KCjwvZGl2PgoKPGRpdiBjbGFzcz0iY29sLW1kLTYgY29sLW1kLW9mZnNldC0xIj4KIVtFZmZlY3Qgc2l6ZSBlc3RpbWF0ZXMgaW4gc3RhbmRhcmQgZGV2aWF0aW9ucyBmb3IgbGluZWFyIGVmZmVjdHMgb2YgYmlydGggb3JkZXIgYW5kIHNpYnNoaXAgc2l6ZS4gRWZmZWN0IHNpemUgYW5kIDk1JSBjb25maWRlbmNlIGludGVydmFscyBmcm9tIGxpbmVhciBtaXhlZCBlZmZlY3RzIG1vZGVscyB3aXRoIHNpYnNoaXAgc2l6ZSwgYmlydGggb3JkZXIsIGdlbmRlciBhbmQgYWdlIGFzIGZpeGVkIGVmZmVjdHMgYW5kIG1hdGVybmFsIGlkZW50aXR5IGFzIHJhbmRvbSBlZmZlY3QgYXJlIHNob3duLl0oUnBsb3Q2NC5wbmcpCjwvZGl2PgoKPC9kaXY+CjxkaXYgY2xhc3M9ImNsZWFyZml4Ij48L2Rpdj4KCiMjIEF1dGhvcnMgJiBBYnN0cmFjdCAmIEFja25vd2xlZGdlbWVudHMgey50YWJzZXQgLnRhYnNldC1zdGlja3l9CgojIyMgQXV0aG9ycwpMYXVyYSBKLiBCb3R6ZXQgJiBSdWJlbiBDLiBBcnNsYW4uCgpHZW9yZy1FbGlhcy1Nw7xsbGVyLUluc3RpdHV0IGZvciBQc3ljaG9sb2d5LCBHZW9yZy1BdWd1c3QtVW5pdmVyc2l0w6R0IEfDtnR0aW5nZW4KCkNlbnRlciBmb3IgQWRhcHRpdmUgUmF0aW9uYWxpdHksIE1heC1QbGFuY2stSW5zdGl0dXRlIGZvciBIdW1hbiBEZXZlbG9wbWVudCwgQmVybGluCgpUaGlzIHN1cHBsZW1lbnRhcnkgd2Vic2l0ZSBoYXMgYmVlbiBhcmNoaXZlZCBvbiBaZW5vZG8ub3JnIFshW0RPSV0oKV0oKS4KCgojIyMgQWJzdHJhY3QKCklzIGl0IHBvc3NpYmxlIHRvIHJlcGxpY2F0ZSBlZmZlY3RzIG9mIGJpcnRoIG9yZGVyIG9uIGludGVsbGlnZW5jZSwgZWR1Y2F0aW9uYWwgYXR0YWlubWVudCwgcGVyc29uYWxpdHksIGFuZCByaXNrIHByZWZlcmVuY2UgY3Jvc3MtY3VsdHVyYWxseT8gU28gZmFyLCBzdHVkaWVzIG9uIGJpcnRoIG9yZGVyIGVmZmVjdHMgZm9jdXNlZCBvbiBzYW1wbGVzIGZyb20gd2VzdGVybiwgZWR1Y2F0ZWQsIGluZHVzdHJpYWxpc2VkLCByaWNoLCBkZW1vY3JhdGljIGNvdW50cmllcyAoV0VJUkQpLiBCYXNlZCBvbiBlYXJsaWVyIHJlc2VhcmNoIHdlIGZvcm11bGF0ZWQgdGhyZWUgaHlwb3RoZXNlczogKDEpIEludGVsbGlnZW5jZSBhbmQgZWR1Y2F0aW9uYWwgYXR0YWlubWVudCBzbGlnaHRseSBkZWNsaW5lIHdpdGggaW5jcmVhc2luZyBiaXJ0aCBvcmRlciBwb3NpdGlvbiwgKDIpIHBlcnNvbmFsaXR5IGlzIHVucmVsYXRlZCB0byBiaXJ0aCBvcmRlciBwb3NpdGlvbiBhbmQgKDIpIHJpc2sgcHJlZmVyZW5jZSBzbGlnaHRseSByaXNlcyB3aXRoIGluY3JlYXNpbmcgYmlydGggb3JkZXIgcG9zaXRpb24uIFRoZSBJbmRvbmVzaWFuIEZhbWlseSBMaWZlIFN1cnZleSBjb2xsZWN0ZWQgZGF0YSBhYm91dCBpbnRlbGxpZ2VuY2UsIGVkdWNhdGlvbiwgcGVyc29uYWxpdHksIGFuZCByaXNrIHByZWZlcmVuY2UgaW4gMjAxNS4gQmFzZWQgb24gdGhpcyBkYXRhIGFuZCB0aGUgbWF0ZXJuYWwgcHJlZ25hbmN5IGhpc3Rvcnkgd2Ugd2VyZSBhYmxlIHRvIG9idGFpbiBhIHNhbXBsZSBvZiAxMSwxODggaW5kaXZpZHVhbHMuIEFuYWx5c2VzIHdlcmUgcGVyZm9ybWVkIHVzaW5nIHdpdGhpbi1mYW1pbHkgZGVzaWducyBpbiBtaXhlZC1lZmZlY3RzIG1vZGVscy4gV2UgZGlkIG5vdCByZXBsaWNhdGUgcmVzdWx0cyBiYXNlZCBvbiBXRUlSRC1zYW1wbGVzLCBvbmUgcGF0dGVybiB3YXMgZXZlbiByZXZlcnNlZC4gVGhpcyBldmlkZW5jZSBwb2ludHMgdG93YXJkcyBzb2NpYWwgbWVjaGFuaXNtcyBiZWhpbmQgcG9zc2libGUgYmlydGggb3JkZXIgZWZmZWN0cyByYXRoZXIgdGhhbiB1bml2ZXJzYWxseSB2YWxpZCwgYmlvbG9naWNhbCBtZWNoYW5pc21zLgoKIyMjIFJlZmVyZW5jZXMKCg==</div>
 
 
 

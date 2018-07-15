@@ -17,7 +17,6 @@ source("0_helpers.R")
 
 <div class="col-md-5">
 
-## Supplemental Materials
 We used these [helper functions](0_helpers.html). These are the [.Rprofile settings](.Rprofile.html)
 
 1. First we [wrangled the data](1_data_import.html).
@@ -55,7 +54,7 @@ This supplementary website has been archived on Zenodo.org [![DOI]()]().
 
 ### Abstract
 
-((not ready, yet... insert abstract here))
+Is it possible to replicate effects of birth order on intelligence, educational attainment, personality, and risk preference cross-culturally? So far, studies on birth order effects focused on samples from western, educated, industrialised, rich, democratic countries (WEIRD). Based on earlier research we formulated three hypotheses: (1) Intelligence and educational attainment slightly decline with increasing birth order position, (2) personality is unrelated to birth order position and (2) risk preference slightly rises with increasing birth order position. The Indonesian Family Life Survey collected data about intelligence, education, personality, and risk preference in 2015. Based on this data and the maternal pregnancy history we were able to obtain a sample of 11,188 individuals. Analyses were performed using within-family designs in mixed-effects models. We did not replicate results based on WEIRD-samples, one pattern was even reversed. This evidence points towards social mechanisms behind possible birth order effects rather than universally valid, biological mechanisms.
 
 ### References
 

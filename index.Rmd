@@ -1,5 +1,5 @@
 ---
-title: <font color="#66C2A5">BlablaEffects of Birth Order on Intelligence, Educational Attainment, Personality, and Risk Preference in an Indonesian Sample</font>
+title: <font color="#66C2A5">Effects of Birth Order on Intelligence, Educational Attainment, Personality, and Risk Preference in an Indonesian Sample</font>
 bibliography: packrat_bibliography.bibtex
 csl: apa-custom-no-issue.csl
 nocite: |

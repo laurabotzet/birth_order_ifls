@@ -151,258 +151,108 @@ sort(round(miss_frac(alldata_birthorder),2))
 
 ## Imputation
 ```{r}
-alldata_birthorder <- alldata_birthorder %>% select(-pidlink)
-alldata_birthorder$mother_pidlink = as.integer(alldata_birthorder$mother_pidlink)
-skimr::skim(alldata_birthorder)
-
-imp0 <- mice(alldata_birthorder, maxit=0)
-
-pred1 <- imp0$predictorMatrix
-pred1
-pred1 = quickpred(alldata_birthorder, mincor = 0.1) #all variables that correlate > .01
-pred1
-meth1 <- imp0$method
-
-# linear multilevel imputation using the function mice.impute.2l.norm()
-# specify predictor_matrix using 1 = fixed effects, 2 = random effects, -2 = class variable, 0 = no effect
-# we can set the mother_pidlink as class variable (= -2)
-pred1[, "mother_pidlink"] = -2
-# set imputation procedures
-meth1[-1] <- "2l.pan"
-meth1
-pred1
-
-imp1 <- mice(alldata_birthorder, maxit = 4, m=2, predictorMatrix = pred1, method = meth1)
-
-library(future)
-plan(multicore(workers = 10))
-imps = listenv::listenv()
-for (i in seq_along(1:10)) {
-  imps[[i]] %<-% mice(alldata_birthorder, m = 1, maxit = 15, predictorMatrix = pred1, method = meth1)
-}
-save(imps, file = "imps.rdata")
-
-all_imps = as.list(imps)
-save(all_imps, file = "imps2.rdata")
-alldata_birthorder_i = all_imps[[1]]
-for (i in seq_along(2:length(all_imps))) {
-  alldata_birthorder_i = ibind(alldata_birthorder_i, all_imps[[i]])
-}
-saveRDS(alldata_birthorder_i, file = "alldata_birthorder_i_ml.rds")
-
-summary(lmer(raven_2015_old ~ (1 | mother_pidlink), alldatasm))
-summary(lmer(raven_2015_old ~ (1 | mother_pidlink), complete(imp1,1)))
-summary(lmer(raven_2015_old ~ (1 | mother_pidlink), complete(imp2,1)))
-summary(lmer(big5_ext ~ (1 | mother_pidlink), alldatasm))
-summary(lmer(big5_ext ~ (1 | mother_pidlink), complete(imp1,1)))
-summary(lmer(big5_ext ~ (1 | mother_pidlink), complete(imp2,1)))
-
+# alldata_birthorder <- alldata_birthorder %>% select(-pidlink)
+# alldata_birthorder$mother_pidlink = as.integer(alldata_birthorder$mother_pidlink)
+# skimr::skim(alldata_birthorder)
+# 
+# imp0 <- mice(alldata_birthorder, maxit=0)
+# 
+# pred1 <- imp0$predictorMatrix
+# pred1
+# pred1 = quickpred(alldata_birthorder, mincor = 0.1) #all variables that correlate > .01
+# pred1
+# meth1 <- imp0$method
+# 
+# # linear multilevel imputation using the function mice.impute.2l.norm()
+# # specify predictor_matrix using 1 = fixed effects, 2 = random effects, -2 = class variable, 0 = no effect
+# # we can set the mother_pidlink as class variable (= -2)
+# pred1[, "mother_pidlink"] = -2
+# # set imputation procedures
+# meth1[-1] <- "2l.pan"
+# meth1
+# pred1
+# 
+# imp1 <- mice(alldata_birthorder, maxit = 4, m=2, predictorMatrix = pred1, method = meth1)
+# 
+# library(future)
+# plan(multicore(workers = 10))
+# imps = listenv::listenv()
+# for (i in seq_along(1:10)) {
+#   imps[[i]] %<-% mice(alldata_birthorder, m = 1, maxit = 15, predictorMatrix = pred1, method = meth1)
+# }
+# save(imps, file = "imps.rdata")
+# 
+# all_imps = as.list(imps)
+# save(all_imps, file = "imps2.rdata")
+# alldata_birthorder_i = all_imps[[1]]
+# for (i in seq_along(2:length(all_imps))) {
+#   alldata_birthorder_i = ibind(alldata_birthorder_i, all_imps[[i]])
+# }
+# saveRDS(alldata_birthorder_i, file = "alldata_birthorder_i_ml.rds")
+# 
+# summary(lmer(raven_2015_old ~ (1 | mother_pidlink), alldatasm))
+# summary(lmer(raven_2015_old ~ (1 | mother_pidlink), complete(imp1,1)))
+# summary(lmer(raven_2015_old ~ (1 | mother_pidlink), complete(imp2,1)))
+# summary(lmer(big5_ext ~ (1 | mother_pidlink), alldatasm))
+# summary(lmer(big5_ext ~ (1 | mother_pidlink), complete(imp1,1)))
+# summary(lmer(big5_ext ~ (1 | mother_pidlink), complete(imp2,1)))
+# 
+# ```
+# 
+# ```{r}
+# set.seed(123) # random seed so that other can replicate our imputation
+# 
+# # look at the dataset
+# colnames(alldata_birthorder)
+# head(alldata_birthorder)
+# dim(alldata_birthorder)
+# nrow(alldata_birthorder)
+# ncol(alldata_birthorder)
+# summary(alldata_birthorder)
+# 
+# alldata_birthorder = alldata_birthorder %>% mutate(const = 1)
+# 
+# #look at the missing data pattern
+# missingness_pattern = as.data.frame(md.pattern(alldata_birthorder))
+# length(missingness_pattern)
+# 
+# # look if multilevel is needed: Do you think it is necessary to take the multilevel structure into account? YES! There is a strong cluster structure going on. If we ignore the clustering in our imputation model, we may run into invalid inference. To stay as close to the true data model, we must take the cluster structure into account during imputation. ((https://gerkovink.github.io/miceVignettes/Multi_level/Multi_level_data.html))
+# 
+# 
+# alldata_birthorder$miss_frac_person = rowMeans(is.na(alldata_birthorder))
+# qplot(alldata_birthorder$miss_frac_person)
+# 
+# alldatasm <-  alldata_birthorder %>% arrange(miss_frac_person) %>% slice(1:1000)
+# qplot(alldatasm$miss_frac_person)
+# 
+# alldata_birthorder$miss_frac_person <- NULL
+# alldatasm$miss_frac_person <- NULL
+# 
+# predictor_matrix = quickpred(alldatasm, mincor = 0.01) #all variables that correlate > .01
+# 
+# # mother_pidlink is predicted by none of the other variables
+# table(predictor_matrix["mother_pidlink", ] == 0)
+# # mother_pidlink predicts 39 other variables
+# table(predictor_matrix[, "mother_pidlink"] == 0)
+# 
+# 
+# 
+# 
+# # mice.impute.2l.norm can not deal with fixed effects very well, thus we recode everything as a random effect (https://www.rdocumentation.org/packages/mice/versions/2.46.0/topics/mice.impute.2l.norm)
+# predictor_matrix[predictor_matrix == 1] = 2
+# 
+# # mice.impute.2l.norm can not deal with factor variables as class variables
+# alldatasm = alldatasm %>% mutate(mother_pidlink = as.integer(mother_pidlink))
+# 
+# method = vector(mode = "character", length = 61)
+# method[1] = "" # not necessary to predict motherpidlink
+# method[2:60] = "2l.pan" # we have to specify which variables shoul be predicted by multilevel modelling
+# method[61] = "" # not necessary to predict the constant
+# 
+# ini = mice(alldatasm, meth = method, maxit = 1, pred = predictor_matrix, seed = 71152)
+# 
+# alldatasm_i = mice(alldatasm, m = 5, maxit = 10, predictorMatrix = predictor_matrix)
+# 
+# plot(ini, c("riskB", "raven_2015_young", "birthorder_genes", "English_score_Junior_High", "years_of_education", "still_smoking"))
 ```
 
-```{r}
-set.seed(123) # random seed so that other can replicate our imputation
-
-# look at the dataset
-colnames(alldata_birthorder)
-head(alldata_birthorder)
-dim(alldata_birthorder)
-nrow(alldata_birthorder)
-ncol(alldata_birthorder)
-summary(alldata_birthorder)
-
-alldata_birthorder = alldata_birthorder %>% mutate(const = 1)
-
-#look at the missing data pattern
-missingness_pattern = as.data.frame(md.pattern(alldata_birthorder))
-length(missingness_pattern)
-
-# look if multilevel is needed: Do you think it is necessary to take the multilevel structure into account? YES! There is a strong cluster structure going on. If we ignore the clustering in our imputation model, we may run into invalid inference. To stay as close to the true data model, we must take the cluster structure into account during imputation. ((https://gerkovink.github.io/miceVignettes/Multi_level/Multi_level_data.html))
-
-
-alldata_birthorder$miss_frac_person = rowMeans(is.na(alldata_birthorder))
-qplot(alldata_birthorder$miss_frac_person)
-
-alldatasm <-  alldata_birthorder %>% arrange(miss_frac_person) %>% slice(1:1000)
-qplot(alldatasm$miss_frac_person)
-
-alldata_birthorder$miss_frac_person <- NULL
-alldatasm$miss_frac_person <- NULL
-
-predictor_matrix = quickpred(alldatasm, mincor = 0.01) #all variables that correlate > .01
-
-# mother_pidlink is predicted by none of the other variables
-table(predictor_matrix["mother_pidlink", ] == 0)
-# mother_pidlink predicts 39 other variables
-table(predictor_matrix[, "mother_pidlink"] == 0)
-
-
-
-
-# mice.impute.2l.norm can not deal with fixed effects very well, thus we recode everything as a random effect (https://www.rdocumentation.org/packages/mice/versions/2.46.0/topics/mice.impute.2l.norm)
-predictor_matrix[predictor_matrix == 1] = 2
-
-# mice.impute.2l.norm can not deal with factor variables as class variables
-alldatasm = alldatasm %>% mutate(mother_pidlink = as.integer(mother_pidlink))
-
-method = vector(mode = "character", length = 61)
-method[1] = "" # not necessary to predict motherpidlink
-method[2:60] = "2l.pan" # we have to specify which variables shoul be predicted by multilevel modelling
-method[61] = "" # not necessary to predict the constant
-
-ini = mice(alldatasm, meth = method, maxit = 1, pred = predictor_matrix, seed = 71152)
-
-alldatasm_i = mice(alldatasm, m = 5, maxit = 10, predictorMatrix = predictor_matrix)
-
-plot(ini, c("riskB", "raven_2015_young", "birthorder_genes", "English_score_Junior_High", "years_of_education", "still_smoking"))
-```
-
-
-
-test
-```{r}
-alldata_birthorder$miss_frac_person = rowMeans(is.na(alldata_birthorder))
-qplot(alldata_birthorder$miss_frac_person)
-alldatasm <-  alldata_birthorder %>% arrange(miss_frac_person) %>% slice(1:1000)
-alldata_birthorder$miss_frac_person <- NULL
-alldatasm$miss_frac_person <- NULL
-
-predictor_matrix = quickpred(alldatasm, mincor = 0.01)
-predictor_matrix[, "mother_pidlink"] = 0
-predictor_matrix["mother_pidlink", ] = 0
-
-alldatasm_i = mice(alldatasm, m = 5, maxit = 10, predictorMatrix = predictor_matrix)
-
-
-plot(alldatasm_i, c("riskB", "raven_2015_young", "birthorder_genes", "English_score_Junior_High", "Sector", "years_of_education", "still_smoking"))
-
-# check densities of imputed/real
-densityplot(ini, ~ riskB)
-densityplot(ini, ~ years_of_education)
-densityplot(alldatasm_i, ~ birthorder_genes)
-densityplot(alldatasm_i, ~ g_factor_2015)
-
-summary(lm(count_backwards ~ raven_2015_young, alldatasm))
-summary(lm(count_backwards ~ raven_2015_young, complete(alldatasm_i,1)))
-summary(lm(count_backwards ~ raven_2015_old, alldatasm))
-summary(lm(count_backwards ~ raven_2015_old, complete(alldatasm_i,1)))
-summary(lmer(count_backwards ~ (1 | mother_pidlink), alldatasm))
-summary(lmer(count_backwards ~ (1 | mother_pidlink), complete(alldatasm_i,1)))
-summary(lmer(riskA ~ (1 | mother_pidlink), alldatasm))
-summary(lmer(riskA ~ (1 | mother_pidlink), complete(alldatasm_i,1)))
-
-alldatasm_i <- mids2mitml.list(alldatasm_i)
-
-alldatasm_i <- within(alldatasm_i, {
-  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
-})
-
-alldatasm <- within(alldatasm, {
-  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
-})
-
-
-qplot(alldatasm_i[[1]]$g_factor_2015)
-
-alldatasm %>% {cor.test(.$g_factor_2015, .$years_of_education)}
-alldatasm_i[[1]] %>% {cor.test(.$g_factor_2015, .$years_of_education)}
-alldatasm %>% {cor.test(.$g_factor_2015, .$Math_score_Junior_High)}
-alldatasm_i[[1]] %>% {cor.test(.$g_factor_2015, .$Math_score_Junior_High)}
-```
-
-
-```{r}
-library(future)
-plan(multicore(workers = 10))
-predictor_matrix = quickpred(alldata_birthorder, mincor = 0.1)
-# predictor_matrix[, "mother_pidlink"] = 0
-# predictor_matrix["mother_pidlink", ] = 0
-
-
-imps = listenv::listenv()
-for (i in seq_along(1:10)) {
-  imps[[i]] %<-% mice(alldata_birthorder, m = 1, maxit = 15, predictorMatrix = predictor_matrix)
-}
-save(imps, file = "imps.rdata")
-
-all_imps = as.list(imps)
-save(all_imps, file = "imps2.rdata")
-alldata_birthorder_i = all_imps[[1]]
-for (i in seq_along(2:length(all_imps))) {
-  alldata_birthorder_i = ibind(alldata_birthorder_i, all_imps[[i]])
-}
-saveRDS(alldata_birthorder_i, file = "alldata_birthorder_i_ml.rds")
-
-plot(alldata_birthorder_i, c("birthorder_uterus_alive", "birthorder_uterus_preg", "birthorder_genes",
-"birthorder_naive"))
-
-plot(alldata_birthorder_i, c("raven_2015_old", "math_2015_old", "count_backwards", "adaptive_numbering"))
-
-plot(alldata_birthorder_i, c("words_immediate", "words_delayed", "words_remembered_avg"))
-
-plot(alldata_birthorder_i, c("big5_ext", "big5_agree", "big5_con", "big5_open", "big5_neu"))
-
-
-
-alldatasm_i <- mids2mitml.list(alldatasm_i)
-
-alldatasm_i <- within(alldatasm_i, {
-  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
-})
-
-alldatasm <- within(alldatasm, {
-  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
-})
-plot(alldata_birthorder_i, c("birthorder_uterus_alive", "birthorder_uterus_preg", "birthorder_genes",
-"birthorder_naive"))
-                             
-
-# check densities of imputed/real
-densityplot(alldata_birthorder_i, ~ riskB)
-densityplot(alldata_birthorder_i, ~ years_of_education)
-densityplot(alldata_birthorder_i, ~ birthorder_genes)
-densityplot(alldata_birthorder_i, ~ g_factor_2015)
-
-summary(lm(count_backwards ~ raven_2015_young, complete(alldata_birthorder_i,1)))
-summary(lm(count_backwards ~ raven_2015_old, alldata_birthorder))
-summary(lm(count_backwards ~ raven_2015_old, complete(alldata_birthorder_i,1)))
-summary(lmer(count_backwards ~ (1 | mother_pidlink), alldata_birthorder))
-summary(lmer(count_backwards ~ (1 | mother_pidlink), complete(alldata_birthorder_i,1)))
-summary(lmer(riskA ~ (1 | mother_pidlink), alldata_birthorder))
-summary(lmer(riskA ~ (1 | mother_pidlink), complete(alldata_birthorder_i,1)))
-
-alldata_birthorder_i <- mids2mitml.list(alldata_birthorder_i)
-
-alldata_birthorder_i <- within(alldata_birthorder_i, {
-  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
-})
-
-alldata_birthorder <- within(alldata_birthorder, {
-  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
-})
-
-
-qplot(alldata_birthorder_i[[1]]$g_factor_2015)
-
-alldata_birthorder %>% {cor.test(.$g_factor_2015, .$years_of_education)}
-alldata_birthorder %>% {cor.test(.$g_factor_2015, .$Math_score_Junior_High)}
-alldata_birthorder_i[[1]] %>% {cor.test(.$g_factor_2015, .$years_of_education)}
-alldata_birthorder_i[[1]] %>% {cor.test(.$g_factor_2015, .$Math_score_Junior_High)}
-
-
-saveRDS(alldata_birthorder_i, file="alldata_birthorder_i.rdata")
-```
-
-recompute g_factor
-```{r}
-within(alldata_birthorder_i, {
-  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
-})
-```
-
-analyse beispiel
-```{r}
-library(lme4)
-fit <- with(alldata_birthorder_i, lmer(risk_taking ~ (menstruation_labelled + premenstrual_phase_fab + fertile_fab) * hormonal_contraception + (1 | short), subset = included_d == TRUE))
-mitml::testEstimates(fit, var.comp = T)
-fit[[1]] # fuer plots
-```

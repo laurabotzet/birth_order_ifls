@@ -348,7 +348,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Risk Aversion A \n (z-standardized)"
+ylabel = "Risk aversion A \n (z-standardized)"
 
 plot_riskA = plot_birthorder(model, ylabel=ylabel) 
 
@@ -357,7 +357,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Risk Aversion B \n (z-standardized)"
+ylabel = "Risk aversion B \n (z-standardized)"
 
 plot_riskB = plot_birthorder(model, ylabel=ylabel) 
 
@@ -520,7 +520,7 @@ Intelligence = lmer(g_factor_2015_old ~ birthorder_genes + poly(age, 3, raw = TR
 
 
 ```{r g-factor 2015 old}
-`Educational Attainment` = lmer(years_of_education_z ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
+`Educational attainment` = lmer(years_of_education_z ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
                                   sibling_count_genes + (1 | mother_pidlink),
                    data = birthorder)
 
@@ -577,7 +577,7 @@ Openness = lmer(big5_open ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
 
 
 ```{r g-factor 2015 old}
-RiskA = lmer(riskA ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
+`Risk A` = lmer(riskA ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
                                   sibling_count_genes + (1 | mother_pidlink),
                    data = birthorder)
 
@@ -585,7 +585,7 @@ RiskA = lmer(riskA ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
 ```
 
 ```{r g-factor 2015 old}
-RiskB = lmer(riskB ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
+`Risk B` = lmer(riskB ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
                                   sibling_count_genes + (1 | mother_pidlink),
                    data = birthorder)
 
@@ -595,29 +595,37 @@ RiskB = lmer(riskB ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
 
 ## Multiplot - linear
 ```{r}
-x = multiplot(Intelligence, `Educational Attainment`, Agreeableness, Conscientiousness, Extraversion, Neuroticism, Openness, RiskA, RiskB, intercept = FALSE, coefficients = c("birthorder_genes", "sibling_count_genes"), plot = F)
+x = multiplot(Intelligence, `Educational attainment`, Agreeableness, Conscientiousness, Extraversion, Neuroticism, Openness, `Risk A`, `Risk B`, intercept = FALSE, coefficients = c("birthorder_genes", "sibling_count_genes"), plot = F)
         
 x = data.frame(x)
 
-x$Model = ifelse(x$Model == "`Educational Attainment`", "Educational Attainment", x$Model)
+x$Model = ifelse(x$Model == "`Educational attainment`", "Educational attainment", x$Model)
+x$Model = ifelse(x$Model == "`Risk A`", "Risk aversion A", x$Model)
+x$Model = ifelse(x$Model == "`Risk B`", "Risk aversion B", x$Model)
+
 x$Model = as.factor(x$Model)
 levels(x$Model)
 
 x$Coefficient = ifelse(x$Coefficient == "birthorder_genes", "Birth order", "Sibship size")
+x$Coefficients = x$Coefficient
 
 ggplot(x, aes(Model, Value)) +
-  geom_pointrange(data=x, mapping=aes(x=Model, y=Value, ymin=HighOuter, ymax=LowOuter, color = Coefficient),
+  geom_pointrange(data=x, mapping=aes(x=Model, y=Value, ymin=HighOuter, ymax=LowOuter, color = Coefficients),
                   position = position_dodge(width=0.3), size = 1) +
   scale_colour_brewer(palette = "Set2") +
   geom_hline(yintercept = 0, size = 1.5)  +
   geom_hline(yintercept = -.1, linetype = "dotted", size = 1.5) + 
-  scale_x_discrete(limits=c("RiskB", "RiskA", "Openness", "Neuroticism", "Extraversion",
-                            "Conscientiousness", "Agreeableness", "Educational Attainment",
+  scale_x_discrete(limits=c("Risk aversion B", "Risk aversion A", "Openness", "Neuroticism", "Extraversion",
+                            "Conscientiousness", "Agreeableness", "Educational attainment",
                             "Intelligence")) +
   scale_y_continuous(limits = c(-0.1, 0.05), breaks = c(-0.1, -0.05, 0, 0.05)) +
   coord_flip() +
-  theme(text = element_text(size=25), axis.text.x = element_text(size = 20),
-        axis.text.y = element_text(size = 20)) +
+  apatheme +
+  theme(text = element_text(size=15), axis.text.x = element_text(size = 10),
+          axis.text.y = element_text(size = 10), legend.text = element_text(size = 10),
+          legend.title = element_text(size = 10),
+          legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),
+          plot.title = element_text(hjust = 0), legend.key.size = unit(2, 'line')) +
   labs(y = "Linear effect size", x = "Outcome")
   
 ```

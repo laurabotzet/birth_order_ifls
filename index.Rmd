@@ -34,7 +34,7 @@ More information about the [Indonesian Family Life Survey (IFLS)](http://www.ran
 </div>
 
 <div class="col-md-6 col-md-offset-1">
-![Effect size estimates in standard deviations for linear effects of birth order and sibship size. Effect size and 95% confidence intervals from linear mixed effects models with sibship size, birth order, gender and age as fixed effects and maternal identity as random effect are shown.](Rplot64.png)
+![Effect size estimates in standard deviations for linear effects of birth order and sibship size. Effect size and 95% confidence intervals from linear mixed effects models with sibship size, birth order, gender and age as fixed effects and maternal identity as random effect are shown.](plot1_final.png)
 </div>
 
 </div>

@@ -43,18 +43,15 @@ More information about the [Indonesian Family Life Survey (IFLS)](http://www.ran
 ## Authors & Abstract & Acknowledgements {.tabset .tabset-sticky}
 
 ### Authors
-Laura J. Botzet & Ruben C. Arslan.
+Laura J. Botzet (University of Goettingen, Germany), Julia M. Rohrer (University of Leipzig, Germany), & Ruben C. Arslan (Max Planck Institute for Human Development, Germany)
 
-Georg-Elias-Müller-Institut for Psychology, Georg-August-Universität Göttingen
-
-Center for Adaptive Rationality, Max-Planck-Institute for Human Development, Berlin
 
 This supplementary website has been archived on Zenodo.org [![DOI]()]().
 
 
 ### Abstract
 
-Is it possible to replicate effects of birth order on intelligence, educational attainment, personality, and risk preference cross-culturally? So far, studies on birth order effects focused on samples from western, educated, industrialised, rich, democratic countries (WEIRD). Based on earlier research we formulated three hypotheses: (1) Intelligence and educational attainment slightly decline with increasing birth order position, (2) personality is unrelated to birth order position and (2) risk preference slightly rises with increasing birth order position. The Indonesian Family Life Survey collected data about intelligence, education, personality, and risk preference in 2015. Based on this data and the maternal pregnancy history we were able to obtain a sample of 11,188 individuals. Analyses were performed using within-family designs in mixed-effects models. We did not replicate results based on WEIRD-samples, one pattern was even reversed. This evidence points towards social mechanisms behind possible birth order effects rather than universally valid, biological mechanisms.
+Few studies have examined birth order effects on personality in countries that are not Western, educated, industrialised, rich, and democratic (WEIRD), even though prominent theories such as resource dilution would predict stronger effects in poorer countries and theories have generally suggested interculturally universal family dynamics as the mechanism behind birth order effects. Here, we use a subset of up to 6,035 participants of the Indonesian Family Life Study, an ongoing representative panel study, to study whether later-born siblings differ from earlier-borns in intelligence, personality, and education. Our estimated effect sizes exclude recent estimates from WEIRD populations based on large sample sizes, and are consistent with the emerging account of birth order as having relatively little impact on intelligence, education, personality, and risk aversion. Thus, even the small effects of birth order reported in other studies appear to be culturally specific. 
 
 ### References
 

@@ -612,7 +612,7 @@ x$Coefficients = x$Coefficient
 ggplot(x, aes(Model, Value)) +
   geom_pointrange(data=x, mapping=aes(x=Model, y=Value, ymin=HighOuter, ymax=LowOuter, color = Coefficients),
                   position = position_dodge(width=0.3), size = 1) +
-  scale_colour_brewer(palette = "Set2") +
+  scale_colour_grey() +
   geom_hline(yintercept = 0, size = 1.5)  +
   geom_hline(yintercept = -.1, linetype = "dotted", size = 1.5) + 
   scale_x_discrete(limits=c("Risk aversion B", "Risk aversion A", "Openness", "Neuroticism", "Extraversion",

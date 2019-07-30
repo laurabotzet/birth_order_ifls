@@ -378,6 +378,8 @@ mean_sd
 ## Correlations
 ```{r}
 cor = round(cor(birthorder %>% filter(group_birthorder == "test", group_outcome == "test") %>% ungroup() %>% select(age, male, g_factor_2015_old, years_of_education, big5_ext, big5_neu, big5_con, big5_agree, big5_open, riskA, riskB), use = "pairwise.complete.obs"), 2) 
+
+cor
 ```
 
 

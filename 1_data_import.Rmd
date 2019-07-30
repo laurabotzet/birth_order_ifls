@@ -950,20 +950,14 @@ iq %>% select(raven_2015_old, math_2015_old, raven_2015_young, math_2015_young, 
 ```{r}
 # G_factor_2015_old
 nomiss = iq %>%
-  filter(!is.na(raven_2015_old), !is.na(math_2015_old), !is.na(count_backwards), !is.na(words_delayed),
-         !is.na(adaptive_numbering))
+  filter(!is.na(raven_2015_old), !is.na(math_2015_old), !is.na(count_backwards),
+         !is.na(words_delayed), !is.na(adaptive_numbering))
 
-
-fa.parallel(nomiss %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame())
-fa(nomiss %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1)
-om_results = omega(nomiss %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %>% data.frame(), nfactors = 1, sl = F)
-om_results
-omega.diagram(om_results)
 
 "g_factor_2015_old =~ raven_2015_old + math_2015_old + count_backwards +  words_delayed+  adaptive_numbering" %>%
   cfa(data = nomiss, std.lv = T, std.ov = T) -> cfa_g
-summary(cfa_g)
-summary
+
+summary(cfa_g, fit.measures = T, standardized = T, rsquare = TRUE)
 
 nomiss$g_factor_2015_old = predict(cfa_g)[,1]
 

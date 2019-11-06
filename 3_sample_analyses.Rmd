@@ -382,6 +382,33 @@ cor = round(cor(birthorder %>% filter(group_birthorder == "test", group_outcome 
 cor
 ```
 
+## Reliability {.tabset}
+
+### Intelligence
+```{r}
+alpha(birthorder %>% filter(group_birthorder == "test", group_outcome == "test") %>% ungroup() %>% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering))
+```
+
+### Personality
+```{r}
+##Extraversion
+alpha(birthorder %>% filter(group_birthorder == "test", group_outcome == "test") %>% ungroup() %>%
+        select(e1, e2r_reversed, e3))
+
+## Neuroticism
+alpha(birthorder %>% filter(group_birthorder == "test", group_outcome == "test") %>% ungroup()
+      %>% select(n1r_reversed, n2, n3))
+
+##conscientiousness
+alpha(birthorder %>% filter(group_birthorder == "test", group_outcome == "test") %>% ungroup() %>% select(c1, c2r_reversed, c3))
+
+##Agreeableness
+alpha(birthorder %>% filter(group_birthorder == "test", group_outcome == "test") %>% ungroup() %>% select(a1, a2, a3r_reversed))
+
+##Openness
+alpha(birthorder %>% filter(group_birthorder == "test", group_outcome == "test") %>% ungroup() %>% select(o1, o2, o3))
+```
+
 
 ## Plots age and gender {.tabset}
 

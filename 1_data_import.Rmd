@@ -1045,8 +1045,8 @@ iq = left_join(iq, nomiss, by = "pidlink")
 ##Rearrange personality data so that every individual has only one row
 pers = spread(b3b_psn, psntype, psn01)
 ##name columns
-colnames(pers) <- c("hhid14_9", "pid14", "hhid14", "pidlink", "version", "module", "e1", "c1", "o1", "e2r", "n1r", "a1", "n2r", "o2", "c2r", "o3", "a2", "c3", "e3", "a3r", "n3")
-pers = pers %>% select(hhid14_9, pidlink, e1, c1, o1, e2r, n1r, a1, n2r, o2, c2r, o3, a2, c3, e3, a3r, n3)
+colnames(pers) <- c("hhid14_9", "pid14", "hhid14", "pidlink", "version", "module", "e1", "c1", "o1", "e2r", "n1r", "a1", "n2", "o2", "c2r", "o3", "a2", "c3", "e3", "a3r", "n3")
+pers = pers %>% select(hhid14_9, pidlink, e1, c1, o1, e2r, n1r, a1, n2, o2, c2r, o3, a2, c3, e3, a3r, n3)
 
 ##Extraversion
 pers$e2r_reversed = 6 - pers$e2r
@@ -1070,8 +1070,7 @@ qplot(pers$big5_open)
 
 ## Neuroticism
 pers$n1r_reversed = 6 - pers$n1r
-pers$n2r_reversed = 6 - pers$n2r
-neuroticism = pers %>% select(n1r_reversed, n2r_reversed, n3)
+neuroticism = pers %>% select(n1r_reversed, n2, n3)
 pers$big5_neu = rowMeans(neuroticism)
 qplot(pers$big5_neu)
 
@@ -1378,7 +1377,10 @@ alldata_birthorder <- alldata_birthorder %>%
   mutate_at(vars(age_2015_old, age_2015_young, alive, death_yr, 
                  English_score_elementary, English_score_Junior_High, English_score_Senior_High,
                  Indonesia_score_elementary, Indonesia_score_Junior_High, Indonesia_score_Senior_High,
-                 Math_score_elemenatry, Math_score_Junior_High, Math_score_Senior_High, 
+                 Math_score_elemenatry, Math_score_Junior_High, Math_score_Senior_High,
+                 e1, c1, o1, e2r, n1r, a1, n2, o2, c2r, o3, a2, c3, e3, a3r, n3, e2r_reversed, c2r_reversed,
+                 n1r_reversed, a3r_reversed,
+                 si01 ,si02, si03, si04, si05, si11, si12, si13, si14, si15
                  ), funs(as.numeric)) %>% 
   mutate_at(vars(Math_score_highest_type, Total_score_highest_type, mother_pidlink, father_pidlink, marriage_id,
                  pidlink,  random_si, Sector, Type_of_test_elementary, Type_of_test_Junior_High,
@@ -1394,7 +1396,7 @@ alldata_birthorder <- alldata_birthorder %>%
   mutate_at(vars(birthdate), funs(as.Date)) %>% 
     select(-motherID, -fatherID, -mother_birthorder, -mother_birthdate, -month, -end, -start, -gender, -sex, -sex_2015_old, -sex_2015_young,
            -relation_to_HH_head, -years_of_education_factor, -birthdate_duped_in_earlier_wave, -birthorder_duped_in_earlier_wave, -birthorder_naive_ind,
-           -order_marriage, -matches("^si[0-9]+$"),  -matches("^[a-z][0-9]r?$"),  -matches("^[a-z][0-9]r_reversed$"),
+           -order_marriage,
            -ar08day, -ar08mth, -ar08yr, -birth_day, -birth_month, -birth_year, -highest_grade, -wage_last_month, -wage_last_year, -status,
            -money_spent_smoking, -starts_with("hhid14_"), sc05, province, sc01_14_14)
 ```

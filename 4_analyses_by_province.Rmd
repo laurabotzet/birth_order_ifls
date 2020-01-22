@@ -171,33 +171,40 @@ birthorder = birthorder %>%
                                                         "5/5+", "5+/5+")))
 
 birthorder <- birthorder %>%
-                     mutate(sibling_count = sibling_count_naive_factor,
-                            birth_order_nonlinear = birthorder_naive_factor,
-                            birth_order = birthorder_naive,
-                            count_birth_order = count_birthorder_naive)
+                     mutate(sibling_count = sibling_count_genes_factor,
+                            birth_order_nonlinear = birthorder_genes_factor,
+                            birth_order = birthorder_genes,
+                            age = scale(age/10, scale = FALSE),
+                            count_birth_order = count_birthorder_genes)
 ```
 
 ### By province {.active}
+
 ```{r}
 birthorder <- birthorder %>% filter(!is.na(province))
 birthorder$urban = factor(birthorder$sc05==1)
+birthorder <- birthorder %>% drop_na(birth_order, mother_pidlink, age, male, urban) %>% group_by(province) %>% filter(n_nonmissing(years_of_education) > 50)
 
-provinces <- birthorder %>% select(province, urban) %>% group_by(province) %>% 
-  summarise(urban = mean(urban == TRUE)) %>% arrange(desc(urban))
+provinces <- birthorder %>% drop_na(birth_order, urban) %>%  select(province, urban, years_of_education, birth_order) %>% group_by(province) %>% 
+  summarise(urban = mean(urban == TRUE), n_nonmissing(years_of_education), sd(birth_order, na.rm = TRUE)) %>% arrange(desc(urban))
 kable(provinces)
+```
 
+```{r}
 add_slope_by_province <- function(model) {
-  m1 <- update(model, formula = . ~ . + (1 + sibling_count | province), REML = FALSE)
-  m2 <- update(model, formula = . ~ . + (1 + sibling_count + birth_order | province), REML = FALSE)
+  m1 <- update(model, formula = . ~ . + (1  | province), REML = FALSE)
+  m2 <- update(model, formula = . ~ . + (1 + birth_order || province), REML = FALSE)
   an <- anova(m1, m2)
-  if (an$`Pr(>Chisq)`[2] < .05) {
-    print(ranef(m2)$province %>% as.data.frame() %>% 
+  if (an$`Pr(>Chisq)`[2] < .01) {
+    ranefs <- ranef(m2)$province %>% as.data.frame() %>% 
             tibble::rownames_to_column("province") %>% 
             left_join(provinces, by = "province") %>% 
             arrange(birth_order) %>% 
             mutate(birth_order = birth_order + fixef(m2)["birth_order"], 
                    province = forcats::fct_inorder(province)
-                   ) %>% 
+                   ) 
+    print(knitr::kable(ranefs %>% select(province, birth_order) %>% arrange(birth_order)))
+    print(ranefs %>% 
             ggplot(aes(province, birth_order, colour = urban)) + 
             geom_point(size = 4) + 
             scale_colour_continuous(low = "red", high = "blue") +
@@ -214,19 +221,33 @@ the model at a nominal significance of p < .05, we show how effects varied by
 province in a plot.
 
 
-Number of people by province
+### Number of people by province
 ```{r}
-qplot(forcats::fct_infreq(birthorder$province)) + coord_flip()
+qplot(forcats::fct_infreq(birthorder$province)) + coord_flip() + xlab("Province") + ylab("N")
 ```
 
-Family size by province
+### Family size by province
 
 ```{r}
+ggplot(data = birthorder, aes(forcats::fct_infreq(province), sibling_count_genes)) + coord_flip() + xlab("Province") + ylab("N") + geom_pointrange(stat = 'summary')
+
 qplot(sibling_count_genes, data = birthorder %>% group_by(province) %>% mutate(mean_sibling_count_genes= mean(sibling_count_genes, na.rm =T))) + geom_vline(aes(xintercept = mean_sibling_count_genes), color = 'red') + facet_wrap(~ forcats::fct_infreq(province), scales = "free_y") + coord_cartesian(xlim = c(0,10))
 ```
 
 
-## Intelligence {.active }
+## Urbanisation by province
+```{r}
+ggplot(data = birthorder, aes(forcats::fct_infreq(province), if_else(urban == "TRUE", 1, 0))) + coord_flip() + xlab("Province") + ylab("N") + geom_pointrange(stat = 'summary')
+```
+
+
+### Urbanisation and family size
+```{r}
+ggplot(data = birthorder %>% group_by(province) %>% summarise(family_size = mean(sibling_count_genes, na.rm = TRUE), urban = mean(if_else(urban == "TRUE", 1,0), na.rm = T)), aes(family_size, urban, label = province)) + geom_text() + xlab("Family size") + ylab("Urbanisation")
+```
+
+## Intelligence {.active}
+
 ### g-factor 2015 old {}
 
 ```{r g-factor 2015 old}
@@ -466,10 +487,19 @@ model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_c
                    data = birthorder)
 add_slope_by_province(model)
 
+summary( m0_by_province <- lmer(outcome ~ sibling_count * urban + birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink) + (1 + birth_order | province), data = birthorder))
+summary( m1_urbrur <- lmer(outcome ~ (sibling_count + birth_order) * urban + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink) + (1 + birth_order | province), data = birthorder))
 
-summary( m1_urbrur <- lmer(outcome ~ (sibling_count + birth_order) * urban + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink), data = birthorder))
-plot(allEffects(m1_urbrur))
-summary( m1_urbrur <- lmer(outcome ~ (sibling_count + birthorder_genes_factor) * urban + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink), data = birthorder))
+library(brms)
+summary( m0_by_province_ort <- brm(outcome ~ sibling_count * urban + birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink) + (1 + birth_order  + sibling_count|| province), data = birthorder, cores = 4, 
+                               prior = c(prior(normal(0,2)), prior(normal(0,2), class = sd))))
+summary( m0_by_province <- brm(outcome ~ sibling_count * urban + birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink) + (1 + birth_order  + sibling_count| province), data = birthorder, cores = 4, 
+                               prior = c(prior(normal(0,2)), prior(normal(0,2), class = sd))))
+summary( m1_urbrur <- brm(outcome ~ (sibling_count + birth_order) * urban  + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink) + (1 + birth_order  + sibling_count| province), data = birthorder, cores = 4, 
+                               prior = c(prior(normal(0,2)), prior(normal(0,2), class = sd))))
+loo(m0_by_province_ort, m0_by_province, m1_urbrur)
+
+anova(m0_by_province, m1_urbrur)
 plot(allEffects(m1_urbrur))
 ```
 

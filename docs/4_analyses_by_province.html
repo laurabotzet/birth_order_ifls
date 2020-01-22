@@ -11,7 +11,7 @@
 
 
 
-<title>4_analyses_by_province.utf8</title>
+<title>4_analyses_by_province.utf8.md</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -24,7 +24,8 @@
 <script src="site_libs/navigation-1.1/sourceembed.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -97,8 +98,14 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -114,7 +121,6 @@ body {
   padding-top: 69px;
   margin-top: -69px;
 }
-
 .section h2 {
   padding-top: 69px;
   margin-top: -69px;
@@ -134,6 +140,43 @@ body {
 .section h6 {
   padding-top: 69px;
   margin-top: -69px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,13 +198,73 @@ $(document).ready(function () {
 });
 </script>
 
-
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
 });
 </script>
 
@@ -175,7 +278,6 @@ $(document).ready(function () {
   window.initializeCodeFolding("hide" === "show");
 });
 </script>
-
 
 
 
@@ -287,7 +389,7 @@ $(document).ready(function () {
 <pre><code>## The following objects are masked from &#39;package:ggplot2&#39;:
 ## 
 ##     %+%, alpha</code></pre>
-<pre><code>## This is lavaan 0.5-23.1097</code></pre>
+<pre><code>## This is lavaan 0.6-3</code></pre>
 <pre><code>## lavaan is BETA software! Please report any bugs.</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;lavaan&#39;</code></pre>
@@ -499,55 +601,53 @@ birthorder = birthorder %&gt;%
                                                         &quot;5/5+&quot;, &quot;5+/5+&quot;)))
 
 birthorder &lt;- birthorder %&gt;%
-                     mutate(sibling_count = sibling_count_naive_factor,
-                            birth_order_nonlinear = birthorder_naive_factor,
-                            birth_order = birthorder_naive,
-                            count_birth_order = count_birthorder_naive)</code></pre>
+                     mutate(sibling_count = sibling_count_genes_factor,
+                            birth_order_nonlinear = birthorder_genes_factor,
+                            birth_order = birthorder_genes,
+                            age = scale(age/10, scale = FALSE),
+                            count_birth_order = count_birthorder_genes)</code></pre>
 </div>
 <div id="by-province" class="section level3 active">
 <h3>By province</h3>
 <pre class="r"><code>birthorder &lt;- birthorder %&gt;% filter(!is.na(province))
 birthorder$urban = factor(birthorder$sc05==1)
+birthorder &lt;- birthorder %&gt;% drop_na(birth_order, mother_pidlink, age, male, urban) %&gt;% group_by(province) %&gt;% filter(n_nonmissing(years_of_education) &gt; 50)
 
-provinces &lt;- birthorder %&gt;% select(province, urban) %&gt;% group_by(province) %&gt;% 
-  summarise(urban = mean(urban == TRUE)) %&gt;% arrange(desc(urban))
+provinces &lt;- birthorder %&gt;% drop_na(birth_order, urban) %&gt;%  select(province, urban, years_of_education, birth_order) %&gt;% group_by(province) %&gt;% 
+  summarise(urban = mean(urban == TRUE), n_nonmissing(years_of_education), sd(birth_order, na.rm = TRUE)) %&gt;% arrange(desc(urban))
 kable(provinces)</code></pre>
 <pre><code>## 
 ## 
-## province               urban
-## -------------------  -------
-## Jakarta               1.0000
-## Bangka Belitung       0.8661
-## East Kalimantan       0.8625
-## Banten                0.7689
-## DI Yogyakarta         0.7666
-## Jambi                 0.7619
-## West Java             0.7073
-## West Sumatera         0.6572
-## Central Kalimantan    0.6522
-## Bali                  0.6434
-## East Java             0.5625
-## Riau                  0.5580
-## North Sumatera        0.5179
-## West Nusa Tenggara    0.4823
-## South Sulawesi        0.4727
-## Central Java          0.4660
-## South Kalimantan      0.4394
-## South Sumatera        0.3151
-## Lampung               0.2990
-## West Kalimantan       0.0000</code></pre>
+## province               urban   n_nonmissing(years_of_education)   sd(birth_order, na.rm = TRUE)
+## -------------------  -------  ---------------------------------  ------------------------------
+## Jakarta               1.0000                                539                           1.691
+## Banten                0.8065                                146                           2.172
+## DI Yogyakarta         0.7920                                411                           1.137
+## West Java             0.7719                                891                           1.647
+## West Sumatera         0.6736                                379                           1.784
+## Bali                  0.6736                                281                           1.409
+## East Java             0.6085                                857                           1.415
+## South Sulawesi        0.5445                                316                           1.726
+## North Sumatera        0.5159                                563                           1.963
+## West Nusa Tenggara    0.4930                                260                           1.550
+## Central Java          0.4797                                974                           1.359
+## South Kalimantan      0.4638                                225                           1.432
+## South Sumatera        0.3567                                255                           1.763
+## Lampung               0.2980                                224                           1.705</code></pre>
 <pre class="r"><code>add_slope_by_province &lt;- function(model) {
-  m1 &lt;- update(model, formula = . ~ . + (1 + sibling_count | province), REML = FALSE)
-  m2 &lt;- update(model, formula = . ~ . + (1 + sibling_count + birth_order | province), REML = FALSE)
+  m1 &lt;- update(model, formula = . ~ . + (1  | province), REML = FALSE)
+  m2 &lt;- update(model, formula = . ~ . + (1 + birth_order || province), REML = FALSE)
   an &lt;- anova(m1, m2)
-  if (an$`Pr(&gt;Chisq)`[2] &lt; .05) {
-    print(ranef(m2)$province %&gt;% as.data.frame() %&gt;% 
+  if (an$`Pr(&gt;Chisq)`[2] &lt; .01) {
+    ranefs &lt;- ranef(m2)$province %&gt;% as.data.frame() %&gt;% 
             tibble::rownames_to_column(&quot;province&quot;) %&gt;% 
             left_join(provinces, by = &quot;province&quot;) %&gt;% 
             arrange(birth_order) %&gt;% 
             mutate(birth_order = birth_order + fixef(m2)[&quot;birth_order&quot;], 
                    province = forcats::fct_inorder(province)
-                   ) %&gt;% 
+                   ) 
+    print(knitr::kable(ranefs %&gt;% select(province, birth_order) %&gt;% arrange(birth_order)))
+    print(ranefs %&gt;% 
             ggplot(aes(province, birth_order, colour = urban)) + 
             geom_point(size = 4) + 
             scale_colour_continuous(low = &quot;red&quot;, high = &quot;blue&quot;) +
@@ -558,13 +658,31 @@ kable(provinces)</code></pre>
   an
 }</code></pre>
 <p>Wherever adding a random slope for the linear birth order by province improved the model at a nominal significance of p &lt; .05, we show how effects varied by province in a plot.</p>
-<p>Number of people by province</p>
-<pre class="r"><code>qplot(forcats::fct_infreq(birthorder$province)) + coord_flip()</code></pre>
-<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>Family size by province</p>
+</div>
+<div id="number-of-people-by-province" class="section level3">
+<h3>Number of people by province</h3>
+<pre class="r"><code>qplot(forcats::fct_infreq(birthorder$province)) + coord_flip() + xlab(&quot;Province&quot;) + ylab(&quot;N&quot;)</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="family-size-by-province" class="section level3">
+<h3>Family size by province</h3>
+<pre class="r"><code>ggplot(data = birthorder, aes(forcats::fct_infreq(province), sibling_count_genes)) + coord_flip() + xlab(&quot;Province&quot;) + ylab(&quot;N&quot;) + geom_pointrange(stat = &#39;summary&#39;)</code></pre>
+<pre><code>## No summary function supplied, defaulting to `mean_se()</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <pre class="r"><code>qplot(sibling_count_genes, data = birthorder %&gt;% group_by(province) %&gt;% mutate(mean_sibling_count_genes= mean(sibling_count_genes, na.rm =T))) + geom_vline(aes(xintercept = mean_sibling_count_genes), color = &#39;red&#39;) + facet_wrap(~ forcats::fct_infreq(province), scales = &quot;free_y&quot;) + coord_cartesian(xlim = c(0,10))</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+</div>
+</div>
+<div id="urbanisation-by-province" class="section level2">
+<h2>Urbanisation by province</h2>
+<pre class="r"><code>ggplot(data = birthorder, aes(forcats::fct_infreq(province), if_else(urban == &quot;TRUE&quot;, 1, 0))) + coord_flip() + xlab(&quot;Province&quot;) + ylab(&quot;N&quot;) + geom_pointrange(stat = &#39;summary&#39;)</code></pre>
+<pre><code>## No summary function supplied, defaulting to `mean_se()</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<div id="urbanisation-and-family-size" class="section level3">
+<h3>Urbanisation and family size</h3>
+<pre class="r"><code>ggplot(data = birthorder %&gt;% group_by(province) %&gt;% summarise(family_size = mean(sibling_count_genes, na.rm = TRUE), urban = mean(if_else(urban == &quot;TRUE&quot;, 1,0), na.rm = T)), aes(family_size, urban, label = province)) + geom_text() + xlab(&quot;Family size&quot;) + ylab(&quot;Urbanisation&quot;)</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 </div>
 <div id="intelligence" class="section level2 active">
@@ -576,18 +694,18 @@ model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_c
                (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<p><img src="4_analyses_by_province_files/figure-html/g-factor%202015%20old-1.png" width="672" /></p>
-<table style="width:97%;">
+<pre><code>## singular fit</code></pre>
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="11%" />
-<col width="11%" />
-<col width="12%" />
+<col width="9%" />
+<col width="9%" />
+<col width="10%" />
+<col width="13%" />
+<col width="23%" />
+<col width="10%" />
 <col width="15%" />
-<col width="11%" />
-<col width="12%" />
-<col width="16%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -603,24 +721,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">34934</td>
-<td align="center">35136</td>
-<td align="center">-17440</td>
-<td align="center">34880</td>
+<td align="center">13</td>
+<td align="center">13990</td>
+<td align="center">14076</td>
+<td align="center">-6982</td>
+<td align="center">13964</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">34933</td>
-<td align="center">35180</td>
-<td align="center">-17433</td>
-<td align="center">34867</td>
-<td align="center">13.14</td>
-<td align="center">6</td>
-<td align="center">0.04084</td>
+<td align="center">14</td>
+<td align="center">13992</td>
+<td align="center">14085</td>
+<td align="center">-6982</td>
+<td align="center">13964</td>
+<td align="center">0.00000000002728</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -632,18 +750,17 @@ model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_c
                (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<p><img src="4_analyses_by_province_files/figure-html/g-factor%202015%20young-1.png" width="672" /></p>
 <table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="10%" />
-<col width="10%" />
+<col width="11%" />
+<col width="11%" />
 <col width="12%" />
 <col width="15%" />
-<col width="10%" />
 <col width="12%" />
-<col width="20%" />
+<col width="12%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -659,24 +776,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">31216</td>
-<td align="center">31415</td>
-<td align="center">-15581</td>
-<td align="center">31162</td>
+<td align="center">13</td>
+<td align="center">21192</td>
+<td align="center">21283</td>
+<td align="center">-10583</td>
+<td align="center">21166</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">31180</td>
-<td align="center">31423</td>
-<td align="center">-15557</td>
-<td align="center">31114</td>
-<td align="center">48.2</td>
-<td align="center">6</td>
-<td align="center">0.00000001078</td>
+<td align="center">14</td>
+<td align="center">21193</td>
+<td align="center">21291</td>
+<td align="center">-10583</td>
+<td align="center">21165</td>
+<td align="center">0.3148</td>
+<td align="center">1</td>
+<td align="center">0.5747</td>
 </tr>
 </tbody>
 </table>
@@ -687,17 +804,18 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+<pre><code>## singular fit</code></pre>
+<table style="width:96%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="11%" />
-<col width="11%" />
+<col width="9%" />
+<col width="9%" />
 <col width="12%" />
 <col width="15%" />
 <col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -713,24 +831,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">21405</td>
-<td align="center">21594</td>
-<td align="center">-10676</td>
-<td align="center">21351</td>
+<td align="center">13</td>
+<td align="center">9060</td>
+<td align="center">9140</td>
+<td align="center">-4517</td>
+<td align="center">9034</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">21412</td>
-<td align="center">21643</td>
-<td align="center">-10673</td>
-<td align="center">21346</td>
-<td align="center">5.151</td>
-<td align="center">6</td>
-<td align="center">0.5246</td>
+<td align="center">14</td>
+<td align="center">9062</td>
+<td align="center">9148</td>
+<td align="center">-4517</td>
+<td align="center">9034</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -741,16 +859,17 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+<pre><code>## singular fit</code></pre>
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
+<col width="9%" />
+<col width="9%" />
 <col width="11%" />
+<col width="13%" />
+<col width="22%" />
 <col width="11%" />
-<col width="12%" />
-<col width="15%" />
-<col width="11%" />
-<col width="12%" />
 <col width="16%" />
 </colgroup>
 <thead>
@@ -767,24 +886,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">24200</td>
-<td align="center">24392</td>
-<td align="center">-12073</td>
-<td align="center">24146</td>
+<td align="center">13</td>
+<td align="center">13116</td>
+<td align="center">13201</td>
+<td align="center">-6545</td>
+<td align="center">13090</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">24208</td>
-<td align="center">24443</td>
-<td align="center">-12071</td>
-<td align="center">24142</td>
-<td align="center">3.975</td>
-<td align="center">6</td>
-<td align="center">0.6801</td>
+<td align="center">14</td>
+<td align="center">13118</td>
+<td align="center">13210</td>
+<td align="center">-6545</td>
+<td align="center">13090</td>
+<td align="center">0.0000000001783</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -795,17 +914,18 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+<pre><code>## singular fit</code></pre>
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="11%" />
-<col width="11%" />
-<col width="12%" />
+<col width="9%" />
+<col width="9%" />
+<col width="10%" />
+<col width="13%" />
+<col width="23%" />
+<col width="10%" />
 <col width="15%" />
-<col width="11%" />
-<col width="12%" />
-<col width="16%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -821,24 +941,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">36932</td>
-<td align="center">37136</td>
-<td align="center">-18439</td>
-<td align="center">36878</td>
+<td align="center">13</td>
+<td align="center">14163</td>
+<td align="center">14250</td>
+<td align="center">-7069</td>
+<td align="center">14137</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">36934</td>
-<td align="center">37183</td>
-<td align="center">-18434</td>
-<td align="center">36868</td>
-<td align="center">9.888</td>
-<td align="center">6</td>
-<td align="center">0.1295</td>
+<td align="center">14</td>
+<td align="center">14165</td>
+<td align="center">14259</td>
+<td align="center">-7069</td>
+<td align="center">14137</td>
+<td align="center">0.00000000004729</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -849,7 +969,8 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+<pre><code>## singular fit</code></pre>
+<table style="width:99%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
@@ -859,7 +980,7 @@ add_slope_by_province(model)</code></pre>
 <col width="15%" />
 <col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -875,24 +996,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">38397</td>
-<td align="center">38600</td>
-<td align="center">-19171</td>
-<td align="center">38343</td>
+<td align="center">13</td>
+<td align="center">16411</td>
+<td align="center">16497</td>
+<td align="center">-8192</td>
+<td align="center">16385</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">38407</td>
-<td align="center">38655</td>
-<td align="center">-19170</td>
-<td align="center">38341</td>
-<td align="center">2.012</td>
-<td align="center">6</td>
-<td align="center">0.9186</td>
+<td align="center">14</td>
+<td align="center">16413</td>
+<td align="center">16506</td>
+<td align="center">-8192</td>
+<td align="center">16385</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -903,18 +1024,18 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<table>
+<pre><code>## singular fit</code></pre>
+<table style="width:99%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="10%" />
-<col width="10%" />
+<col width="11%" />
+<col width="11%" />
 <col width="12%" />
-<col width="14%" />
-<col width="10%" />
+<col width="15%" />
+<col width="11%" />
 <col width="12%" />
-<col width="21%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -930,24 +1051,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">31309</td>
-<td align="center">31508</td>
-<td align="center">-15627</td>
-<td align="center">31255</td>
+<td align="center">13</td>
+<td align="center">21127</td>
+<td align="center">21218</td>
+<td align="center">-10551</td>
+<td align="center">21101</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">31272</td>
-<td align="center">31516</td>
-<td align="center">-15603</td>
-<td align="center">31206</td>
-<td align="center">48.74</td>
-<td align="center">6</td>
-<td align="center">0.000000008403</td>
+<td align="center">14</td>
+<td align="center">21129</td>
+<td align="center">21227</td>
+<td align="center">-10551</td>
+<td align="center">21101</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -958,17 +1079,17 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="11%" />
-<col width="11%" />
+<col width="10%" />
+<col width="10%" />
 <col width="12%" />
-<col width="15%" />
-<col width="11%" />
+<col width="14%" />
+<col width="14%" />
 <col width="12%" />
-<col width="16%" />
+<col width="17%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -984,24 +1105,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">32266</td>
-<td align="center">32465</td>
-<td align="center">-16106</td>
-<td align="center">32212</td>
+<td align="center">13</td>
+<td align="center">22162</td>
+<td align="center">22253</td>
+<td align="center">-11068</td>
+<td align="center">22136</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">32271</td>
-<td align="center">32515</td>
-<td align="center">-16103</td>
-<td align="center">32205</td>
-<td align="center">7.021</td>
-<td align="center">6</td>
-<td align="center">0.3189</td>
+<td align="center">14</td>
+<td align="center">22164</td>
+<td align="center">22262</td>
+<td align="center">-11068</td>
+<td align="center">22136</td>
+<td align="center">0.001382</td>
+<td align="center">1</td>
+<td align="center">0.9703</td>
 </tr>
 </tbody>
 </table>
@@ -1012,17 +1133,17 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
              data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+<table style="width:96%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="11%" />
-<col width="11%" />
+<col width="9%" />
+<col width="9%" />
 <col width="12%" />
 <col width="15%" />
 <col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1038,24 +1159,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">21901</td>
-<td align="center">22090</td>
-<td align="center">-10924</td>
-<td align="center">21847</td>
+<td align="center">13</td>
+<td align="center">8768</td>
+<td align="center">8848</td>
+<td align="center">-4371</td>
+<td align="center">8742</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">21906</td>
-<td align="center">22136</td>
-<td align="center">-10920</td>
-<td align="center">21840</td>
-<td align="center">7.74</td>
-<td align="center">6</td>
-<td align="center">0.2578</td>
+<td align="center">14</td>
+<td align="center">8768</td>
+<td align="center">8854</td>
+<td align="center">-4370</td>
+<td align="center">8740</td>
+<td align="center">2.546</td>
+<td align="center">1</td>
+<td align="center">0.1105</td>
 </tr>
 </tbody>
 </table>
@@ -1066,17 +1187,18 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
              data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+<pre><code>## singular fit</code></pre>
+<table style="width:96%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="11%" />
-<col width="11%" />
+<col width="9%" />
+<col width="9%" />
 <col width="12%" />
 <col width="15%" />
 <col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1092,24 +1214,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">21619</td>
-<td align="center">21807</td>
-<td align="center">-10782</td>
-<td align="center">21565</td>
+<td align="center">13</td>
+<td align="center">9634</td>
+<td align="center">9714</td>
+<td align="center">-4804</td>
+<td align="center">9608</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">21629</td>
-<td align="center">21860</td>
-<td align="center">-10782</td>
-<td align="center">21563</td>
-<td align="center">1.341</td>
-<td align="center">6</td>
-<td align="center">0.9694</td>
+<td align="center">14</td>
+<td align="center">9636</td>
+<td align="center">9722</td>
+<td align="center">-4804</td>
+<td align="center">9608</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -1120,7 +1242,7 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
              data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+<table style="width:99%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
@@ -1130,7 +1252,7 @@ add_slope_by_province(model)</code></pre>
 <col width="15%" />
 <col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1146,24 +1268,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">24496</td>
-<td align="center">24688</td>
-<td align="center">-12221</td>
-<td align="center">24442</td>
+<td align="center">13</td>
+<td align="center">13204</td>
+<td align="center">13289</td>
+<td align="center">-6589</td>
+<td align="center">13178</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">24501</td>
-<td align="center">24736</td>
-<td align="center">-12218</td>
-<td align="center">24435</td>
-<td align="center">6.379</td>
-<td align="center">6</td>
-<td align="center">0.3821</td>
+<td align="center">14</td>
+<td align="center">13204</td>
+<td align="center">13296</td>
+<td align="center">-6588</td>
+<td align="center">13176</td>
+<td align="center">1.2</td>
+<td align="center">1</td>
+<td align="center">0.2733</td>
 </tr>
 </tbody>
 </table>
@@ -1174,7 +1296,8 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
              data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+<pre><code>## singular fit</code></pre>
+<table style="width:99%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
@@ -1184,7 +1307,7 @@ add_slope_by_province(model)</code></pre>
 <col width="15%" />
 <col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1200,24 +1323,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">24659</td>
-<td align="center">24852</td>
-<td align="center">-12303</td>
-<td align="center">24605</td>
+<td align="center">13</td>
+<td align="center">13628</td>
+<td align="center">13713</td>
+<td align="center">-6801</td>
+<td align="center">13602</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">24670</td>
-<td align="center">24905</td>
-<td align="center">-12302</td>
-<td align="center">24604</td>
-<td align="center">1.229</td>
-<td align="center">6</td>
-<td align="center">0.9755</td>
+<td align="center">14</td>
+<td align="center">13630</td>
+<td align="center">13722</td>
+<td align="center">-6801</td>
+<td align="center">13602</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -1228,17 +1351,17 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<table style="width:97%;">
+<pre><code>## singular fit</code></pre>
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
+<col width="9%" />
+<col width="9%" />
 <col width="11%" />
+<col width="13%" />
+<col width="22%" />
 <col width="11%" />
-<col width="12%" />
-<col width="15%" />
-<col width="11%" />
-<col width="12%" />
 <col width="16%" />
 </colgroup>
 <thead>
@@ -1255,24 +1378,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">37733</td>
-<td align="center">37935</td>
-<td align="center">-18839</td>
-<td align="center">37679</td>
+<td align="center">13</td>
+<td align="center">14946</td>
+<td align="center">15033</td>
+<td align="center">-7460</td>
+<td align="center">14920</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">37728</td>
-<td align="center">37976</td>
-<td align="center">-18831</td>
-<td align="center">37662</td>
-<td align="center">16.25</td>
-<td align="center">6</td>
-<td align="center">0.01248</td>
+<td align="center">14</td>
+<td align="center">14948</td>
+<td align="center">15041</td>
+<td align="center">-7460</td>
+<td align="center">14920</td>
+<td align="center">0.0000000000382</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -1283,7 +1406,7 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
@@ -1291,9 +1414,9 @@ add_slope_by_province(model)</code></pre>
 <col width="11%" />
 <col width="12%" />
 <col width="15%" />
-<col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="12%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1309,24 +1432,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">37810</td>
-<td align="center">38014</td>
-<td align="center">-18878</td>
-<td align="center">37756</td>
+<td align="center">13</td>
+<td align="center">15127</td>
+<td align="center">15214</td>
+<td align="center">-7551</td>
+<td align="center">15101</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">37824</td>
-<td align="center">38073</td>
-<td align="center">-18879</td>
-<td align="center">37758</td>
-<td align="center">0</td>
-<td align="center">6</td>
+<td align="center">14</td>
+<td align="center">15128</td>
+<td align="center">15222</td>
+<td align="center">-7550</td>
+<td align="center">15100</td>
+<td align="center">0.5056</td>
 <td align="center">1</td>
+<td align="center">0.477</td>
 </tr>
 </tbody>
 </table>
@@ -1337,17 +1460,18 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:99%;">
+<pre><code>## singular fit</code></pre>
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="11%" />
-<col width="11%" />
+<col width="10%" />
+<col width="10%" />
 <col width="12%" />
-<col width="15%" />
-<col width="12%" />
-<col width="12%" />
+<col width="14%" />
 <col width="16%" />
+<col width="12%" />
+<col width="17%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1363,24 +1487,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">37906</td>
-<td align="center">38110</td>
-<td align="center">-18926</td>
-<td align="center">37852</td>
+<td align="center">13</td>
+<td align="center">15411</td>
+<td align="center">15497</td>
+<td align="center">-7692</td>
+<td align="center">15385</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">37918</td>
-<td align="center">38166</td>
-<td align="center">-18926</td>
-<td align="center">37852</td>
-<td align="center">0.5622</td>
-<td align="center">6</td>
-<td align="center">0.997</td>
+<td align="center">14</td>
+<td align="center">15413</td>
+<td align="center">15506</td>
+<td align="center">-7692</td>
+<td align="center">15385</td>
+<td align="center">5.457e-12</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -1391,7 +1515,8 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+<pre><code>## singular fit</code></pre>
+<table style="width:99%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
@@ -1401,7 +1526,7 @@ add_slope_by_province(model)</code></pre>
 <col width="15%" />
 <col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1417,24 +1542,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">37401</td>
-<td align="center">37604</td>
-<td align="center">-18673</td>
-<td align="center">37347</td>
+<td align="center">13</td>
+<td align="center">14587</td>
+<td align="center">14674</td>
+<td align="center">-7281</td>
+<td align="center">14561</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">37401</td>
-<td align="center">37650</td>
-<td align="center">-18668</td>
-<td align="center">37335</td>
-<td align="center">11.31</td>
-<td align="center">6</td>
-<td align="center">0.07915</td>
+<td align="center">14</td>
+<td align="center">14589</td>
+<td align="center">14682</td>
+<td align="center">-7281</td>
+<td align="center">14561</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -1448,7 +1573,7 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:99%;">
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
@@ -1458,7 +1583,7 @@ add_slope_by_province(model)</code></pre>
 <col width="15%" />
 <col width="12%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1474,24 +1599,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">39351</td>
-<td align="center">39554</td>
-<td align="center">-19648</td>
-<td align="center">39297</td>
+<td align="center">13</td>
+<td align="center">16381</td>
+<td align="center">16468</td>
+<td align="center">-8178</td>
+<td align="center">16355</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">39362</td>
-<td align="center">39611</td>
-<td align="center">-19648</td>
-<td align="center">39296</td>
-<td align="center">0.7276</td>
-<td align="center">6</td>
-<td align="center">0.9939</td>
+<td align="center">14</td>
+<td align="center">16383</td>
+<td align="center">16476</td>
+<td align="center">-8177</td>
+<td align="center">16355</td>
+<td align="center">0.3107</td>
+<td align="center">1</td>
+<td align="center">0.5773</td>
 </tr>
 </tbody>
 </table>
@@ -1502,7 +1627,8 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+<pre><code>## singular fit</code></pre>
+<table style="width:99%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
@@ -1512,7 +1638,7 @@ add_slope_by_province(model)</code></pre>
 <col width="15%" />
 <col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1528,24 +1654,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">39225</td>
-<td align="center">39428</td>
-<td align="center">-19585</td>
-<td align="center">39171</td>
+<td align="center">13</td>
+<td align="center">15771</td>
+<td align="center">15857</td>
+<td align="center">-7872</td>
+<td align="center">15745</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">39229</td>
-<td align="center">39478</td>
-<td align="center">-19582</td>
-<td align="center">39163</td>
-<td align="center">7.322</td>
-<td align="center">6</td>
-<td align="center">0.2921</td>
+<td align="center">14</td>
+<td align="center">15770</td>
+<td align="center">15863</td>
+<td align="center">-7871</td>
+<td align="center">15742</td>
+<td align="center">2.636</td>
+<td align="center">1</td>
+<td align="center">0.1044</td>
 </tr>
 </tbody>
 </table>
@@ -1553,6 +1679,60 @@ add_slope_by_province(model)</code></pre>
 <div id="conscientiousness" class="section level3">
 <h3>Conscientiousness</h3>
 <pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = big5_con)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)
+add_slope_by_province(model)</code></pre>
+<table>
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="12%" />
+<col width="12%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">13</td>
+<td align="center">16188</td>
+<td align="center">16274</td>
+<td align="center">-8081</td>
+<td align="center">16162</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">14</td>
+<td align="center">16189</td>
+<td align="center">16282</td>
+<td align="center">-8080</td>
+<td align="center">16161</td>
+<td align="center">0.7567</td>
+<td align="center">1</td>
+<td align="center">0.3844</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="agreeableness" class="section level3">
+<h3>Agreeableness</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = big5_agree)
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
@@ -1564,9 +1744,9 @@ add_slope_by_province(model)</code></pre>
 <col width="11%" />
 <col width="12%" />
 <col width="15%" />
+<col width="11%" />
 <col width="12%" />
-<col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1582,78 +1762,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">38891</td>
-<td align="center">39094</td>
-<td align="center">-19418</td>
-<td align="center">38837</td>
+<td align="center">13</td>
+<td align="center">16105</td>
+<td align="center">16192</td>
+<td align="center">-8040</td>
+<td align="center">16079</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">38902</td>
-<td align="center">39151</td>
-<td align="center">-19418</td>
-<td align="center">38836</td>
-<td align="center">0.5563</td>
-<td align="center">6</td>
-<td align="center">0.9971</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="agreeableness" class="section level3">
-<h3>Agreeableness</h3>
-<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = big5_agree)
-model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder)
-add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
-<caption>Data: birthorder</caption>
-<colgroup>
-<col width="6%" />
-<col width="11%" />
-<col width="11%" />
-<col width="12%" />
-<col width="15%" />
-<col width="11%" />
-<col width="12%" />
-<col width="16%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="center">Df</th>
-<th align="center">AIC</th>
-<th align="center">BIC</th>
-<th align="center">logLik</th>
-<th align="center">deviance</th>
-<th align="center">Chisq</th>
-<th align="center">Chi Df</th>
-<th align="center">Pr(&gt;Chisq)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="center">27</td>
-<td align="center">39373</td>
-<td align="center">39577</td>
-<td align="center">-19660</td>
-<td align="center">39319</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-</tr>
-<tr class="even">
-<td align="center">33</td>
-<td align="center">39383</td>
-<td align="center">39632</td>
-<td align="center">-19659</td>
-<td align="center">39317</td>
-<td align="center">2.112</td>
-<td align="center">6</td>
-<td align="center">0.9091</td>
+<td align="center">14</td>
+<td align="center">16107</td>
+<td align="center">16200</td>
+<td align="center">-8039</td>
+<td align="center">16079</td>
+<td align="center">0.509</td>
+<td align="center">1</td>
+<td align="center">0.4756</td>
 </tr>
 </tbody>
 </table>
@@ -1664,8 +1790,7 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
-<table style="width:97%;">
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
@@ -1673,9 +1798,9 @@ add_slope_by_province(model)</code></pre>
 <col width="11%" />
 <col width="12%" />
 <col width="15%" />
-<col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="12%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1691,24 +1816,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">39228</td>
-<td align="center">39432</td>
-<td align="center">-19587</td>
-<td align="center">39174</td>
+<td align="center">13</td>
+<td align="center">15492</td>
+<td align="center">15578</td>
+<td align="center">-7733</td>
+<td align="center">15466</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">39217</td>
-<td align="center">39466</td>
-<td align="center">-19576</td>
-<td align="center">39151</td>
-<td align="center">22.91</td>
-<td align="center">6</td>
-<td align="center">0.0008255</td>
+<td align="center">14</td>
+<td align="center">15493</td>
+<td align="center">15587</td>
+<td align="center">-7733</td>
+<td align="center">15465</td>
+<td align="center">0.2341</td>
+<td align="center">1</td>
+<td align="center">0.6285</td>
 </tr>
 </tbody>
 </table>
@@ -1722,7 +1847,7 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
@@ -1730,9 +1855,9 @@ add_slope_by_province(model)</code></pre>
 <col width="11%" />
 <col width="12%" />
 <col width="15%" />
-<col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="12%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1748,24 +1873,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">34725</td>
-<td align="center">34925</td>
-<td align="center">-17335</td>
-<td align="center">34671</td>
+<td align="center">13</td>
+<td align="center">14218</td>
+<td align="center">14303</td>
+<td align="center">-7096</td>
+<td align="center">14192</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">34731</td>
-<td align="center">34976</td>
-<td align="center">-17333</td>
-<td align="center">34665</td>
-<td align="center">5.459</td>
-<td align="center">6</td>
-<td align="center">0.4864</td>
+<td align="center">14</td>
+<td align="center">14220</td>
+<td align="center">14312</td>
+<td align="center">-7096</td>
+<td align="center">14192</td>
+<td align="center">0.0528</td>
+<td align="center">1</td>
+<td align="center">0.8183</td>
 </tr>
 </tbody>
 </table>
@@ -1776,17 +1901,17 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="11%" />
-<col width="11%" />
+<col width="10%" />
+<col width="10%" />
 <col width="12%" />
-<col width="15%" />
-<col width="11%" />
+<col width="14%" />
+<col width="14%" />
 <col width="12%" />
-<col width="16%" />
+<col width="17%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1802,24 +1927,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">37037</td>
-<td align="center">37239</td>
-<td align="center">-18491</td>
-<td align="center">36983</td>
+<td align="center">13</td>
+<td align="center">14707</td>
+<td align="center">14792</td>
+<td align="center">-7340</td>
+<td align="center">14681</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">37044</td>
-<td align="center">37291</td>
-<td align="center">-18489</td>
-<td align="center">36978</td>
-<td align="center">4.126</td>
-<td align="center">6</td>
-<td align="center">0.6596</td>
+<td align="center">14</td>
+<td align="center">14709</td>
+<td align="center">14801</td>
+<td align="center">-7340</td>
+<td align="center">14681</td>
+<td align="center">0.002391</td>
+<td align="center">1</td>
+<td align="center">0.961</td>
 </tr>
 </tbody>
 </table>
@@ -1833,18 +1958,18 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
-<table style="width:97%;">
+<pre><code>## singular fit</code></pre>
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="11%" />
-<col width="11%" />
-<col width="12%" />
+<col width="9%" />
+<col width="9%" />
+<col width="10%" />
+<col width="13%" />
+<col width="23%" />
+<col width="10%" />
 <col width="15%" />
-<col width="11%" />
-<col width="12%" />
-<col width="16%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1860,137 +1985,123 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">77138</td>
-<td align="center">77342</td>
-<td align="center">-38542</td>
-<td align="center">77084</td>
+<td align="center">13</td>
+<td align="center">30122</td>
+<td align="center">30209</td>
+<td align="center">-15048</td>
+<td align="center">30096</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">77130</td>
-<td align="center">77380</td>
-<td align="center">-38532</td>
-<td align="center">77064</td>
-<td align="center">19.76</td>
-<td align="center">6</td>
-<td align="center">0.003052</td>
+<td align="center">14</td>
+<td align="center">30124</td>
+<td align="center">30218</td>
+<td align="center">-15048</td>
+<td align="center">30096</td>
+<td align="center">0.00000000003638</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>summary( m1_urbrur &lt;- lmer(outcome ~ (sibling_count + birth_order) * urban + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink), data = birthorder))</code></pre>
-<pre><code>## Linear mixed model fit by REML 
-## t-tests use  Satterthwaite approximations to degrees of freedom [&#39;lmerMod&#39;]
-## Formula: outcome ~ (sibling_count + birth_order) * urban + poly(age, 3,  
-##     raw = TRUE) + male + sibling_count + (1 | mother_pidlink)
+<pre class="r"><code>summary( m0_by_province &lt;- lmer(outcome ~ sibling_count * urban + birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink) + (1 + birth_order | province), data = birthorder))</code></pre>
+<pre><code>## singular fit</code></pre>
+<pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [&#39;lmerModLmerTest&#39;]
+## Formula: outcome ~ sibling_count * urban + birth_order + poly(age, 3,  
+##     raw = TRUE) + male + sibling_count + (1 | mother_pidlink) +      (1 + birth_order | province)
 ##    Data: birthorder
 ## 
-## REML criterion at convergence: 77011
+## REML criterion at convergence: 30086
 ## 
 ## Scaled residuals: 
 ##    Min     1Q Median     3Q    Max 
-## -4.611 -0.481 -0.009  0.431  4.199 
+## -4.659 -0.380 -0.014  0.388  3.335 
 ## 
 ## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 7.33     2.71    
-##  Residual                   7.05     2.66    
-## Number of obs: 14458, groups:  mother_pidlink, 7311
+##  Groups         Name        Variance Std.Dev. Corr
+##  mother_pidlink (Intercept) 4.30239  2.0742       
+##  province       (Intercept) 0.00000  0.0000       
+##                 birth_order 0.00699  0.0836    NaN
+##  Residual                   5.58869  2.3640       
+## Number of obs: 5964, groups:  mother_pidlink, 3743; province, 14
 ## 
 ## Fixed effects:
-##                                Estimate    Std. Error            df t value   Pr(&gt;|t|)    
-## (Intercept)                  -2.5441018     0.5445320 14169.0000000   -4.67 0.00000301 ***
-## sibling_count3                0.5352544     0.2182502  9028.0000000    2.45      0.014 *  
-## sibling_count4                0.3006860     0.2262799  8790.0000000    1.33      0.184    
-## sibling_count5               -0.0454916     0.2378796  8522.0000000   -0.19      0.848    
-## sibling_count5+              -0.9236523     0.1882684  9975.0000000   -4.91 0.00000094 ***
-## birth_order                   0.0742661     0.0172547 13057.0000000    4.30 0.00001689 ***
-## urbanTRUE                     2.0673397     0.1955184  9814.0000000   10.57    &lt; 2e-16 ***
-## poly(age, 3, raw = TRUE)1     1.1159839     0.0504639 13828.0000000   22.11    &lt; 2e-16 ***
-## poly(age, 3, raw = TRUE)2    -0.0294620     0.0014854 13984.0000000  -19.83    &lt; 2e-16 ***
-## poly(age, 3, raw = TRUE)3     0.0002178     0.0000136 14115.0000000   15.98    &lt; 2e-16 ***
-## male                         -0.1121999     0.0536113 11977.0000000   -2.09      0.036 *  
-## sibling_count3:urbanTRUE     -0.4903358     0.2788500  9057.0000000   -1.76      0.079 .  
-## sibling_count4:urbanTRUE     -0.3456844     0.2901685  8781.0000000   -1.19      0.234    
-## sibling_count5:urbanTRUE      0.2184111     0.3067478  8493.0000000    0.71      0.476    
-## sibling_count5+:urbanTRUE     0.0271713     0.2455018  9954.0000000    0.11      0.912    
-## birth_order:urbanTRUE        -0.0958779     0.0222340 11249.0000000   -4.31 0.00001630 ***
+##                             Estimate Std. Error         df t value     Pr(&gt;|t|)    
+## (Intercept)                 11.72582    0.17416 4984.91502   67.33      &lt; 2e-16 ***
+## sibling_count3               0.00307    0.22738 4330.56942    0.01      0.98922    
+## sibling_count4              -0.35784    0.25033 4273.77174   -1.43      0.15295    
+## sibling_count5              -1.10104    0.29071 4142.13923   -3.79      0.00015 ***
+## sibling_count5+             -1.57232    0.25820 4267.03254   -6.09 0.0000000012 ***
+## urbanTRUE                    0.95383    0.19883 4593.03799    4.80 0.0000016591 ***
+## birth_order                  0.06096    0.03481   24.04165    1.75      0.09268 .  
+## poly(age, 3, raw = TRUE)1    3.21316    0.10129 5940.63337   31.72      &lt; 2e-16 ***
+## poly(age, 3, raw = TRUE)2   -3.47890    0.16135 5478.56615  -21.56      &lt; 2e-16 ***
+## poly(age, 3, raw = TRUE)3    0.93365    0.05975 5356.52061   15.63      &lt; 2e-16 ***
+## male                        -0.32668    0.07479 5218.25345   -4.37 0.0000127840 ***
+## sibling_count3:urbanTRUE    -0.04849    0.27737 4312.62559   -0.17      0.86123    
+## sibling_count4:urbanTRUE     0.02610    0.30312 4167.22490    0.09      0.93138    
+## sibling_count5:urbanTRUE     0.57872    0.35829 3979.02142    1.62      0.10634    
+## sibling_count5+:urbanTRUE   -0.14655    0.30011 3730.74944   -0.49      0.62535    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre><code>## 
+## Correlation matrix not shown by default, as p = 15 &gt; 12.
+## Use print(x, correlation=TRUE)  or
+##     vcov(x)        if you need it</code></pre>
+<pre><code>## convergence code: 0
+## singular fit</code></pre>
+<pre class="r"><code>summary( m1_urbrur &lt;- lmer(outcome ~ (sibling_count + birth_order) * urban + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink) + (1 + birth_order | province), data = birthorder))</code></pre>
+<pre><code>## singular fit</code></pre>
+<pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [&#39;lmerModLmerTest&#39;]
+## Formula: outcome ~ (sibling_count + birth_order) * urban + poly(age, 3,  
+##     raw = TRUE) + male + sibling_count + (1 | mother_pidlink) +      (1 + birth_order | province)
+##    Data: birthorder
+## 
+## REML criterion at convergence: 30087
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -4.640 -0.378 -0.012  0.388  3.327 
+## 
+## Random effects:
+##  Groups         Name        Variance Std.Dev. Corr
+##  mother_pidlink (Intercept) 4.30783  2.0755       
+##  province       (Intercept) 0.00000  0.0000       
+##                 birth_order 0.00652  0.0808    NaN
+##  Residual                   5.58353  2.3629       
+## Number of obs: 5964, groups:  mother_pidlink, 3743; province, 14
+## 
+## Fixed effects:
+##                             Estimate Std. Error         df t value      Pr(&gt;|t|)    
+## (Intercept)                 11.65361    0.17924 5189.69611   65.02       &lt; 2e-16 ***
+## sibling_count3              -0.02230    0.22790 4328.93956   -0.10         0.922    
+## sibling_count4              -0.40581    0.25196 4303.76991   -1.61         0.107    
+## sibling_count5              -1.17829    0.29432 4221.84708   -4.00 0.00006349538 ***
+## sibling_count5+             -1.73833    0.27630 4843.31172   -6.29 0.00000000034 ***
+## birth_order                  0.11529    0.04702   46.64317    2.45         0.018 *  
+## urbanTRUE                    1.06711    0.20973 4946.99490    5.09 0.00000037499 ***
+## poly(age, 3, raw = TRUE)1    3.21838    0.10132 5932.52813   31.76       &lt; 2e-16 ***
+## poly(age, 3, raw = TRUE)2   -3.47664    0.16132 5437.44251  -21.55       &lt; 2e-16 ***
+## poly(age, 3, raw = TRUE)3    0.92947    0.05979 5316.34757   15.55       &lt; 2e-16 ***
+## male                        -0.32491    0.07478 5205.46624   -4.35 0.00001418760 ***
+## sibling_count3:urbanTRUE    -0.00941    0.27836 4323.35203   -0.03         0.973    
+## sibling_count4:urbanTRUE     0.10722    0.30693 4236.53847    0.35         0.727    
+## sibling_count5:urbanTRUE     0.70887    0.36655 4145.07461    1.93         0.053 .  
+## sibling_count5+:urbanTRUE    0.13068    0.34220 4882.63927    0.38         0.703    
+## birth_order:urbanTRUE       -0.08776    0.05179 1639.03545   -1.69         0.090 .  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre><code>## 
 ## Correlation matrix not shown by default, as p = 16 &gt; 12.
 ## Use print(x, correlation=TRUE)  or
-##   vcov(x)     if you need it</code></pre>
-<pre><code>## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>plot(allEffects(m1_urbrur))</code></pre>
-<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-23-2.png" width="672" /></p>
-<pre class="r"><code>summary( m1_urbrur &lt;- lmer(outcome ~ (sibling_count + birthorder_genes_factor) * urban + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink), data = birthorder))</code></pre>
-<pre><code>## Linear mixed model fit by REML 
-## t-tests use  Satterthwaite approximations to degrees of freedom [&#39;lmerMod&#39;]
-## Formula: outcome ~ (sibling_count + birthorder_genes_factor) * urban +  
-##     poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink)
-##    Data: birthorder
-## 
-## REML criterion at convergence: 31319
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -4.533 -0.380 -0.006  0.386  3.451 
-## 
-## Random effects:
-##  Groups         Name        Variance Std.Dev.
-##  mother_pidlink (Intercept) 4.38     2.09    
-##  Residual                   5.49     2.34    
-## Number of obs: 6211, groups:  mother_pidlink, 3938
-## 
-## Fixed effects:
-##                                         Estimate   Std. Error           df t value       Pr(&gt;|t|)    
-## (Intercept)                          -18.0459473    1.2868285 5749.0000000  -14.02        &lt; 2e-16 ***
-## sibling_count3                        -0.0315793    0.2783707 4657.0000000   -0.11         0.9097    
-## sibling_count4                         0.0597457    0.2913253 4587.0000000    0.21         0.8375    
-## sibling_count5                        -0.8015941    0.3038295 4658.0000000   -2.64         0.0084 ** 
-## sibling_count5+                       -1.7496855    0.2665646 5064.0000000   -6.56 0.000000000058 ***
-## birthorder_genes_factor2              -0.2010271    0.1570903 4977.0000000   -1.28         0.2007    
-## birthorder_genes_factor3               0.2843875    0.1987698 5058.0000000    1.43         0.1526    
-## birthorder_genes_factor4               0.3618250    0.2488886 5135.0000000    1.45         0.1461    
-## birthorder_genes_factor5               0.7430437    0.2981877 4754.0000000    2.49         0.0127 *  
-## birthorder_genes_factor5+              0.5720622    0.2694705 5739.0000000    2.12         0.0338 *  
-## urbanTRUE                              0.7334586    0.2538976 4913.0000000    2.89         0.0039 ** 
-## poly(age, 3, raw = TRUE)1              2.9646915    0.1446606 5643.0000000   20.49        &lt; 2e-16 ***
-## poly(age, 3, raw = TRUE)2             -0.0921450    0.0051699 5599.0000000  -17.82        &lt; 2e-16 ***
-## poly(age, 3, raw = TRUE)3              0.0009189    0.0000587 5573.0000000   15.66        &lt; 2e-16 ***
-## male                                  -0.3264038    0.0730417 5423.0000000   -4.47 0.000008028445 ***
-## sibling_count3:urbanTRUE               0.1244703    0.3395594 4618.0000000    0.37         0.7140    
-## sibling_count4:urbanTRUE              -0.2089092    0.3540832 4578.0000000   -0.59         0.5552    
-## sibling_count5:urbanTRUE               0.7224415    0.3717668 4588.0000000    1.94         0.0520 .  
-## sibling_count5+:urbanTRUE              0.7655006    0.3215355 5123.0000000    2.38         0.0173 *  
-## birthorder_genes_factor2:urbanTRUE     0.0205051    0.1912143 4773.0000000    0.11         0.9146    
-## birthorder_genes_factor3:urbanTRUE    -0.2670075    0.2385910 4810.0000000   -1.12         0.2632    
-## birthorder_genes_factor4:urbanTRUE    -0.0167023    0.2989644 4818.0000000   -0.06         0.9554    
-## birthorder_genes_factor5:urbanTRUE    -0.5976274    0.3639746 4547.0000000   -1.64         0.1007    
-## birthorder_genes_factor5+:urbanTRUE   -1.0887288    0.3376258 5448.0000000   -3.22         0.0013 ** 
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre><code>## 
-## Correlation matrix not shown by default, as p = 24 &gt; 12.
-## Use print(x, correlation=TRUE)  or
-##   vcov(x)     if you need it</code></pre>
-<pre><code>## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling</code></pre>
-<pre class="r"><code>plot(allEffects(m1_urbrur))</code></pre>
-<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-23-3.png" width="672" /></p>
-</div>
-<div id="elementary-missed" class="section level3">
-<h3>Elementary missed</h3>
-<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = Elementary_missed)
-model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder)
-add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+##     vcov(x)        if you need it</code></pre>
+<pre><code>## convergence code: 0
+## singular fit</code></pre>
+<pre class="r"><code>anova(m0_by_province, m1_urbrur)</code></pre>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<table style="width:99%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
@@ -2000,7 +2111,7 @@ add_slope_by_province(model)</code></pre>
 <col width="15%" />
 <col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2016,24 +2127,102 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">-4433</td>
-<td align="center">-4246</td>
-<td align="center">2244</td>
-<td align="center">-4487</td>
+<td align="center">20</td>
+<td align="center">30044</td>
+<td align="center">30178</td>
+<td align="center">-15002</td>
+<td align="center">30004</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">-4422</td>
-<td align="center">-4194</td>
-<td align="center">2244</td>
-<td align="center">-4488</td>
-<td align="center">1.058</td>
-<td align="center">6</td>
-<td align="center">0.9833</td>
+<td align="center">21</td>
+<td align="center">30041</td>
+<td align="center">30181</td>
+<td align="center">-14999</td>
+<td align="center">29999</td>
+<td align="center">4.97</td>
+<td align="center">1</td>
+<td align="center">0.0258</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>plot(allEffects(m1_urbrur))</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+</div>
+<div id="elementary-missed" class="section level3">
+<h3>Elementary missed</h3>
+<pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = Elementary_missed)
+model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
+                   data = birthorder)</code></pre>
+<pre><code>## singular fit</code></pre>
+<pre class="r"><code>add_slope_by_province(model)</code></pre>
+<pre><code>## singular fit
+## singular fit</code></pre>
+<pre><code>## 
+## 
+## province              birth_order
+## -------------------  ------------
+## South Sumatera            -0.0021
+## West Nusa Tenggara        -0.0019
+## DI Yogyakarta             -0.0013
+## Central Java              -0.0009
+## North Sumatera             0.0010
+## South Sulawesi             0.0010
+## West Sumatera              0.0015
+## Jakarta                    0.0016
+## South Kalimantan           0.0018
+## Lampung                    0.0020
+## Banten                     0.0027
+## Bali                       0.0031
+## West Java                  0.0061
+## East Java                  0.0069</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<table style="width:99%;">
+<caption>Data: birthorder</caption>
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="12%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Df</th>
+<th align="center">AIC</th>
+<th align="center">BIC</th>
+<th align="center">logLik</th>
+<th align="center">deviance</th>
+<th align="center">Chisq</th>
+<th align="center">Chi Df</th>
+<th align="center">Pr(&gt;Chisq)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">13</td>
+<td align="center">-2877</td>
+<td align="center">-2795</td>
+<td align="center">1451</td>
+<td align="center">-2903</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">14</td>
+<td align="center">-2881</td>
+<td align="center">-2794</td>
+<td align="center">1455</td>
+<td align="center">-2909</td>
+<td align="center">6.684</td>
+<td align="center">1</td>
+<td align="center">0.009729</td>
 </tr>
 </tbody>
 </table>
@@ -2044,17 +2233,18 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table>
+<pre><code>## singular fit</code></pre>
+<table style="width:99%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="12%" />
-<col width="12%" />
+<col width="11%" />
+<col width="11%" />
 <col width="12%" />
 <col width="15%" />
+<col width="11%" />
 <col width="12%" />
-<col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2070,24 +2260,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">-897.5</td>
-<td align="center">-710.4</td>
-<td align="center">475.7</td>
-<td align="center">-951.5</td>
+<td align="center">13</td>
+<td align="center">-1901</td>
+<td align="center">-1820</td>
+<td align="center">963.6</td>
+<td align="center">-1927</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">-886.3</td>
-<td align="center">-657.6</td>
-<td align="center">476.1</td>
-<td align="center">-952.3</td>
-<td align="center">0.7532</td>
-<td align="center">6</td>
-<td align="center">0.9933</td>
+<td align="center">14</td>
+<td align="center">-1899</td>
+<td align="center">-1812</td>
+<td align="center">963.6</td>
+<td align="center">-1927</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -2096,20 +2286,41 @@ add_slope_by_province(model)</code></pre>
 <h3>Attended School</h3>
 <pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = attended_school)
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder)
-add_slope_by_province(model)</code></pre>
-<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
-<table style="width:100%;">
+                   data = birthorder)</code></pre>
+<pre><code>## singular fit</code></pre>
+<pre class="r"><code>add_slope_by_province(model)</code></pre>
+<pre><code>## singular fit
+## singular fit</code></pre>
+<pre><code>## 
+## 
+## province              birth_order
+## -------------------  ------------
+## Banten                    -0.0078
+## West Sumatera             -0.0019
+## East Java                 -0.0013
+## South Kalimantan          -0.0012
+## South Sumatera            -0.0009
+## South Sulawesi            -0.0002
+## DI Yogyakarta              0.0000
+## West Nusa Tenggara         0.0001
+## Central Java               0.0001
+## North Sumatera             0.0001
+## Jakarta                    0.0004
+## Bali                       0.0005
+## West Java                  0.0006
+## Lampung                    0.0006</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
 <col width="12%" />
 <col width="12%" />
 <col width="12%" />
-<col width="15%" />
-<col width="11%" />
+<col width="14%" />
+<col width="10%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2125,24 +2336,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">-22771</td>
-<td align="center">-22565</td>
-<td align="center">11412</td>
-<td align="center">-22825</td>
+<td align="center">13</td>
+<td align="center">-15819</td>
+<td align="center">-15732</td>
+<td align="center">7922</td>
+<td align="center">-15845</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">-22774</td>
-<td align="center">-22523</td>
-<td align="center">11420</td>
-<td align="center">-22840</td>
-<td align="center">15.46</td>
-<td align="center">6</td>
-<td align="center">0.01699</td>
+<td align="center">14</td>
+<td align="center">-15845</td>
+<td align="center">-15751</td>
+<td align="center">7937</td>
+<td align="center">-15873</td>
+<td align="center">28.1</td>
+<td align="center">1</td>
+<td align="center">0.000000115</td>
 </tr>
 </tbody>
 </table>
@@ -2156,17 +2367,18 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:99%;">
+<pre><code>## singular fit</code></pre>
+<table style="width:96%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="11%" />
-<col width="11%" />
+<col width="9%" />
+<col width="9%" />
 <col width="12%" />
 <col width="15%" />
+<col width="11%" />
 <col width="12%" />
-<col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2182,24 +2394,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">16799</td>
-<td align="center">16980</td>
-<td align="center">-8373</td>
-<td align="center">16745</td>
+<td align="center">13</td>
+<td align="center">6916</td>
+<td align="center">6991</td>
+<td align="center">-3445</td>
+<td align="center">6890</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">16810</td>
-<td align="center">17031</td>
-<td align="center">-8372</td>
-<td align="center">16744</td>
-<td align="center">0.8937</td>
-<td align="center">6</td>
-<td align="center">0.9893</td>
+<td align="center">14</td>
+<td align="center">6918</td>
+<td align="center">6999</td>
+<td align="center">-3445</td>
+<td align="center">6890</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -2210,16 +2422,17 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+<pre><code>## singular fit</code></pre>
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
+<col width="8%" />
+<col width="8%" />
 <col width="11%" />
+<col width="13%" />
+<col width="23%" />
 <col width="11%" />
-<col width="12%" />
-<col width="15%" />
-<col width="11%" />
-<col width="12%" />
 <col width="16%" />
 </colgroup>
 <thead>
@@ -2236,24 +2449,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">16682</td>
-<td align="center">16863</td>
-<td align="center">-8314</td>
-<td align="center">16628</td>
+<td align="center">13</td>
+<td align="center">7022</td>
+<td align="center">7097</td>
+<td align="center">-3498</td>
+<td align="center">6996</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">16692</td>
-<td align="center">16913</td>
-<td align="center">-8313</td>
-<td align="center">16626</td>
-<td align="center">2.359</td>
-<td align="center">6</td>
-<td align="center">0.8839</td>
+<td align="center">14</td>
+<td align="center">7024</td>
+<td align="center">7105</td>
+<td align="center">-3498</td>
+<td align="center">6996</td>
+<td align="center">0.00000000001819</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -2268,13 +2481,13 @@ add_slope_by_province(model)</code></pre>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="11%" />
-<col width="11%" />
+<col width="9%" />
+<col width="9%" />
 <col width="12%" />
 <col width="15%" />
-<col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="12%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2290,24 +2503,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">11842</td>
-<td align="center">12036</td>
-<td align="center">-5894</td>
-<td align="center">11788</td>
+<td align="center">13</td>
+<td align="center">3801</td>
+<td align="center">3882</td>
+<td align="center">-1888</td>
+<td align="center">3775</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">11851</td>
-<td align="center">12089</td>
-<td align="center">-5893</td>
-<td align="center">11785</td>
-<td align="center">2.193</td>
-<td align="center">6</td>
-<td align="center">0.9011</td>
+<td align="center">14</td>
+<td align="center">3803</td>
+<td align="center">3890</td>
+<td align="center">-1888</td>
+<td align="center">3775</td>
+<td align="center">0.4362</td>
+<td align="center">1</td>
+<td align="center">0.509</td>
 </tr>
 </tbody>
 </table>
@@ -2329,9 +2542,9 @@ add_slope_by_province(model)</code></pre>
 <col width="11%" />
 <col width="12%" />
 <col width="15%" />
+<col width="11%" />
 <col width="12%" />
-<col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2347,24 +2560,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">-8104</td>
-<td align="center">-7909</td>
-<td align="center">4079</td>
-<td align="center">-8158</td>
+<td align="center">13</td>
+<td align="center">-5151</td>
+<td align="center">-5070</td>
+<td align="center">2588</td>
+<td align="center">-5177</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">-8092</td>
-<td align="center">-7854</td>
-<td align="center">4079</td>
-<td align="center">-8158</td>
-<td align="center">0.1904</td>
-<td align="center">6</td>
-<td align="center">0.9999</td>
+<td align="center">14</td>
+<td align="center">-5151</td>
+<td align="center">-5063</td>
+<td align="center">2589</td>
+<td align="center">-5179</td>
+<td align="center">2.032</td>
+<td align="center">1</td>
+<td align="center">0.154</td>
 </tr>
 </tbody>
 </table>
@@ -2375,17 +2588,17 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:94%;">
+<table style="width:99%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="9%" />
-<col width="9%" />
+<col width="11%" />
+<col width="11%" />
 <col width="12%" />
 <col width="15%" />
 <col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2401,24 +2614,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">2194</td>
-<td align="center">2389</td>
-<td align="center">-1070</td>
-<td align="center">2140</td>
+<td align="center">13</td>
+<td align="center">695.9</td>
+<td align="center">776.8</td>
+<td align="center">-334.9</td>
+<td align="center">669.9</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">2204</td>
-<td align="center">2442</td>
-<td align="center">-1069</td>
-<td align="center">2138</td>
-<td align="center">2.205</td>
-<td align="center">6</td>
-<td align="center">0.8999</td>
+<td align="center">14</td>
+<td align="center">695.8</td>
+<td align="center">782.9</td>
+<td align="center">-333.9</td>
+<td align="center">667.8</td>
+<td align="center">2.097</td>
+<td align="center">1</td>
+<td align="center">0.1476</td>
 </tr>
 </tbody>
 </table>
@@ -2429,16 +2642,17 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:99%;">
+<pre><code>## singular fit</code></pre>
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="12%" />
+<col width="9%" />
+<col width="9%" />
 <col width="11%" />
-<col width="12%" />
-<col width="15%" />
+<col width="13%" />
+<col width="22%" />
 <col width="11%" />
-<col width="12%" />
 <col width="16%" />
 </colgroup>
 <thead>
@@ -2455,24 +2669,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">-36.85</td>
-<td align="center">158</td>
-<td align="center">45.42</td>
-<td align="center">-90.85</td>
+<td align="center">13</td>
+<td align="center">508.2</td>
+<td align="center">589.1</td>
+<td align="center">-241.1</td>
+<td align="center">482.2</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">-32.8</td>
-<td align="center">205.4</td>
-<td align="center">49.4</td>
-<td align="center">-98.8</td>
-<td align="center">7.948</td>
-<td align="center">6</td>
-<td align="center">0.2419</td>
+<td align="center">14</td>
+<td align="center">510.2</td>
+<td align="center">597.3</td>
+<td align="center">-241.1</td>
+<td align="center">482.2</td>
+<td align="center">0.0000000000241</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -2483,17 +2697,17 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+<table style="width:99%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="11%" />
-<col width="11%" />
+<col width="9%" />
+<col width="9%" />
 <col width="12%" />
 <col width="15%" />
-<col width="11%" />
+<col width="13%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2509,24 +2723,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">13527</td>
-<td align="center">13722</td>
-<td align="center">-6737</td>
-<td align="center">13473</td>
+<td align="center">13</td>
+<td align="center">5092</td>
+<td align="center">5173</td>
+<td align="center">-2533</td>
+<td align="center">5066</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">13534</td>
-<td align="center">13772</td>
-<td align="center">-6734</td>
-<td align="center">13468</td>
-<td align="center">5.618</td>
-<td align="center">6</td>
-<td align="center">0.4674</td>
+<td align="center">14</td>
+<td align="center">5094</td>
+<td align="center">5181</td>
+<td align="center">-2533</td>
+<td align="center">5066</td>
+<td align="center">0.08895</td>
+<td align="center">1</td>
+<td align="center">0.7655</td>
 </tr>
 </tbody>
 </table>
@@ -2541,13 +2755,13 @@ add_slope_by_province(model)</code></pre>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="11%" />
-<col width="11%" />
+<col width="9%" />
+<col width="9%" />
 <col width="12%" />
 <col width="15%" />
-<col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="12%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2563,24 +2777,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">11842</td>
-<td align="center">12036</td>
-<td align="center">-5894</td>
-<td align="center">11788</td>
+<td align="center">13</td>
+<td align="center">3801</td>
+<td align="center">3882</td>
+<td align="center">-1888</td>
+<td align="center">3775</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">11851</td>
-<td align="center">12089</td>
-<td align="center">-5893</td>
-<td align="center">11785</td>
-<td align="center">2.193</td>
-<td align="center">6</td>
-<td align="center">0.9011</td>
+<td align="center">14</td>
+<td align="center">3803</td>
+<td align="center">3890</td>
+<td align="center">-1888</td>
+<td align="center">3775</td>
+<td align="center">0.4362</td>
+<td align="center">1</td>
+<td align="center">0.509</td>
 </tr>
 </tbody>
 </table>
@@ -2591,7 +2805,7 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:94%;">
+<table style="width:97%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
@@ -2599,9 +2813,9 @@ add_slope_by_province(model)</code></pre>
 <col width="9%" />
 <col width="12%" />
 <col width="15%" />
-<col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="12%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2617,24 +2831,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">4364</td>
-<td align="center">4559</td>
-<td align="center">-2155</td>
-<td align="center">4310</td>
+<td align="center">13</td>
+<td align="center">1280</td>
+<td align="center">1361</td>
+<td align="center">-627.1</td>
+<td align="center">1254</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">4370</td>
-<td align="center">4608</td>
-<td align="center">-2152</td>
-<td align="center">4304</td>
-<td align="center">5.967</td>
-<td align="center">6</td>
-<td align="center">0.4269</td>
+<td align="center">14</td>
+<td align="center">1281</td>
+<td align="center">1368</td>
+<td align="center">-626.7</td>
+<td align="center">1253</td>
+<td align="center">0.8954</td>
+<td align="center">1</td>
+<td align="center">0.344</td>
 </tr>
 </tbody>
 </table>
@@ -2648,17 +2862,17 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:96%;">
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
 <col width="9%" />
-<col width="11%" />
+<col width="9%" />
 <col width="12%" />
 <col width="15%" />
-<col width="11%" />
+<col width="15%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2674,24 +2888,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">9832</td>
-<td align="center">10026</td>
-<td align="center">-4889</td>
-<td align="center">9778</td>
+<td align="center">13</td>
+<td align="center">3141</td>
+<td align="center">3222</td>
+<td align="center">-1558</td>
+<td align="center">3115</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">9843</td>
-<td align="center">10080</td>
-<td align="center">-4888</td>
-<td align="center">9777</td>
-<td align="center">1.426</td>
-<td align="center">6</td>
-<td align="center">0.9643</td>
+<td align="center">14</td>
+<td align="center">3143</td>
+<td align="center">3230</td>
+<td align="center">-1558</td>
+<td align="center">3115</td>
+<td align="center">0.007269</td>
+<td align="center">1</td>
+<td align="center">0.9321</td>
 </tr>
 </tbody>
 </table>
@@ -2700,10 +2914,31 @@ add_slope_by_province(model)</code></pre>
 <h3>Sector_Construction</h3>
 <pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = `Sector_Construction`)
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder)
-add_slope_by_province(model)</code></pre>
-<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
-<table style="width:100%;">
+                   data = birthorder)</code></pre>
+<pre><code>## singular fit</code></pre>
+<pre class="r"><code>add_slope_by_province(model)</code></pre>
+<pre><code>## singular fit
+## singular fit</code></pre>
+<pre><code>## 
+## 
+## province              birth_order
+## -------------------  ------------
+## Central Java              -0.0002
+## Jakarta                   -0.0001
+## West Java                 -0.0001
+## Lampung                   -0.0001
+## West Sumatera             -0.0001
+## Bali                      -0.0001
+## South Sumatera            -0.0001
+## West Nusa Tenggara        -0.0001
+## Banten                    -0.0001
+## South Kalimantan           0.0000
+## North Sumatera             0.0000
+## East Java                  0.0000
+## South Sulawesi             0.0002
+## DI Yogyakarta              0.0040</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
@@ -2711,9 +2946,9 @@ add_slope_by_province(model)</code></pre>
 <col width="12%" />
 <col width="12%" />
 <col width="15%" />
-<col width="11%" />
+<col width="10%" />
 <col width="12%" />
-<col width="16%" />
+<col width="17%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2729,24 +2964,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">-36759</td>
-<td align="center">-36565</td>
-<td align="center">18407</td>
-<td align="center">-36813</td>
+<td align="center">13</td>
+<td align="center">-13307</td>
+<td align="center">-13226</td>
+<td align="center">6666</td>
+<td align="center">-13333</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">-36777</td>
-<td align="center">-36540</td>
-<td align="center">18421</td>
-<td align="center">-36843</td>
-<td align="center">29.71</td>
-<td align="center">6</td>
-<td align="center">0.00004456</td>
+<td align="center">14</td>
+<td align="center">-13316</td>
+<td align="center">-13229</td>
+<td align="center">6672</td>
+<td align="center">-13344</td>
+<td align="center">10.88</td>
+<td align="center">1</td>
+<td align="center">0.0009743</td>
 </tr>
 </tbody>
 </table>
@@ -2757,17 +2992,37 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:100%;">
+<pre><code>## singular fit</code></pre>
+<pre><code>## 
+## 
+## province              birth_order
+## -------------------  ------------
+## Bali                      -0.0018
+## West Nusa Tenggara        -0.0015
+## Central Java              -0.0011
+## East Java                 -0.0010
+## West Sumatera             -0.0008
+## DI Yogyakarta             -0.0004
+## South Sulawesi            -0.0003
+## North Sumatera            -0.0002
+## Lampung                    0.0000
+## West Java                  0.0001
+## South Sumatera             0.0003
+## Banten                     0.0006
+## South Kalimantan           0.0016
+## Jakarta                    0.0086</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<table style="width:99%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="12%" />
-<col width="12%" />
+<col width="11%" />
+<col width="11%" />
 <col width="12%" />
 <col width="15%" />
 <col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2783,24 +3038,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">-11813</td>
-<td align="center">-11619</td>
-<td align="center">5933</td>
-<td align="center">-11867</td>
+<td align="center">13</td>
+<td align="center">-4740</td>
+<td align="center">-4659</td>
+<td align="center">2383</td>
+<td align="center">-4766</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">-11813</td>
-<td align="center">-11576</td>
-<td align="center">5939</td>
-<td align="center">-11879</td>
-<td align="center">11.71</td>
-<td align="center">6</td>
-<td align="center">0.0687</td>
+<td align="center">14</td>
+<td align="center">-4748</td>
+<td align="center">-4662</td>
+<td align="center">2388</td>
+<td align="center">-4776</td>
+<td align="center">10.84</td>
+<td align="center">1</td>
+<td align="center">0.0009956</td>
 </tr>
 </tbody>
 </table>
@@ -2811,17 +3066,18 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:99%;">
+<pre><code>## singular fit</code></pre>
+<table style="width:96%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="11%" />
-<col width="11%" />
+<col width="9%" />
+<col width="9%" />
 <col width="12%" />
 <col width="15%" />
+<col width="11%" />
 <col width="12%" />
-<col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2837,24 +3093,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">10559</td>
-<td align="center">10753</td>
-<td align="center">-5252</td>
-<td align="center">10505</td>
+<td align="center">13</td>
+<td align="center">4216</td>
+<td align="center">4297</td>
+<td align="center">-2095</td>
+<td align="center">4190</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">10570</td>
-<td align="center">10807</td>
-<td align="center">-5252</td>
-<td align="center">10504</td>
-<td align="center">0.5698</td>
-<td align="center">6</td>
-<td align="center">0.9969</td>
+<td align="center">14</td>
+<td align="center">4218</td>
+<td align="center">4305</td>
+<td align="center">-2095</td>
+<td align="center">4190</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -2865,17 +3121,18 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:97%;">
+<pre><code>## singular fit</code></pre>
+<table style="width:96%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="11%" />
-<col width="11%" />
+<col width="9%" />
+<col width="9%" />
 <col width="12%" />
 <col width="15%" />
 <col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2891,24 +3148,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">11034</td>
-<td align="center">11228</td>
-<td align="center">-5490</td>
-<td align="center">10980</td>
+<td align="center">13</td>
+<td align="center">4125</td>
+<td align="center">4205</td>
+<td align="center">-2050</td>
+<td align="center">4099</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">11043</td>
-<td align="center">11280</td>
-<td align="center">-5488</td>
-<td align="center">10977</td>
-<td align="center">2.784</td>
-<td align="center">6</td>
-<td align="center">0.8354</td>
+<td align="center">14</td>
+<td align="center">4127</td>
+<td align="center">4214</td>
+<td align="center">-2050</td>
+<td align="center">4099</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -2919,6 +3176,8 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
+<pre><code>## singular fit
+## singular fit</code></pre>
 <table style="width:99%;">
 <caption>Data: birthorder</caption>
 <colgroup>
@@ -2927,9 +3186,9 @@ add_slope_by_province(model)</code></pre>
 <col width="11%" />
 <col width="12%" />
 <col width="15%" />
+<col width="11%" />
 <col width="12%" />
-<col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2945,24 +3204,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">-5695</td>
-<td align="center">-5501</td>
-<td align="center">2875</td>
-<td align="center">-5749</td>
+<td align="center">13</td>
+<td align="center">-2888</td>
+<td align="center">-2808</td>
+<td align="center">1457</td>
+<td align="center">-2914</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">-5684</td>
-<td align="center">-5447</td>
-<td align="center">2875</td>
-<td align="center">-5750</td>
-<td align="center">0.3508</td>
-<td align="center">6</td>
-<td align="center">0.9992</td>
+<td align="center">14</td>
+<td align="center">-2886</td>
+<td align="center">-2799</td>
+<td align="center">1457</td>
+<td align="center">-2914</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -2973,16 +3232,18 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:100%;">
+<pre><code>## singular fit
+## singular fit</code></pre>
+<table>
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="12%" />
-<col width="12%" />
-<col width="12%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="14%" />
 <col width="15%" />
 <col width="11%" />
-<col width="12%" />
 <col width="16%" />
 </colgroup>
 <thead>
@@ -2999,24 +3260,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">-826.7</td>
-<td align="center">-632.7</td>
-<td align="center">440.3</td>
-<td align="center">-880.7</td>
+<td align="center">13</td>
+<td align="center">-311.8</td>
+<td align="center">-231.5</td>
+<td align="center">168.9</td>
+<td align="center">-337.8</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">-816.1</td>
-<td align="center">-579.1</td>
-<td align="center">441.1</td>
-<td align="center">-882.1</td>
-<td align="center">1.446</td>
-<td align="center">6</td>
-<td align="center">0.963</td>
+<td align="center">14</td>
+<td align="center">-309.8</td>
+<td align="center">-223.3</td>
+<td align="center">168.9</td>
+<td align="center">-337.8</td>
+<td align="center">5.457e-12</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -3035,9 +3296,9 @@ add_slope_by_province(model)</code></pre>
 <col width="11%" />
 <col width="12%" />
 <col width="15%" />
+<col width="11%" />
 <col width="12%" />
-<col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -3053,24 +3314,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">-4859</td>
-<td align="center">-4665</td>
-<td align="center">2457</td>
-<td align="center">-4913</td>
+<td align="center">13</td>
+<td align="center">-1879</td>
+<td align="center">-1799</td>
+<td align="center">952.7</td>
+<td align="center">-1905</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">-4847</td>
-<td align="center">-4610</td>
-<td align="center">2457</td>
-<td align="center">-4913</td>
-<td align="center">0.3156</td>
-<td align="center">6</td>
-<td align="center">0.9994</td>
+<td align="center">14</td>
+<td align="center">-1880</td>
+<td align="center">-1793</td>
+<td align="center">953.9</td>
+<td align="center">-1908</td>
+<td align="center">2.264</td>
+<td align="center">1</td>
+<td align="center">0.1324</td>
 </tr>
 </tbody>
 </table>
@@ -3084,7 +3345,7 @@ add_slope_by_province(model)</code></pre>
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
                    data = birthorder)
 add_slope_by_province(model)</code></pre>
-<table style="width:94%;">
+<table style="width:96%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
@@ -3094,7 +3355,7 @@ add_slope_by_province(model)</code></pre>
 <col width="15%" />
 <col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -3110,24 +3371,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">9010</td>
-<td align="center">9215</td>
-<td align="center">-4478</td>
-<td align="center">8956</td>
+<td align="center">13</td>
+<td align="center">4075</td>
+<td align="center">4162</td>
+<td align="center">-2025</td>
+<td align="center">4049</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">9027</td>
-<td align="center">9278</td>
-<td align="center">-4481</td>
-<td align="center">8961</td>
-<td align="center">0</td>
-<td align="center">6</td>
+<td align="center">14</td>
+<td align="center">4077</td>
+<td align="center">4171</td>
+<td align="center">-2025</td>
+<td align="center">4049</td>
+<td align="center">0.125</td>
 <td align="center">1</td>
+<td align="center">0.7237</td>
 </tr>
 </tbody>
 </table>
@@ -3136,19 +3397,41 @@ add_slope_by_province(model)</code></pre>
 <h3>still_smoking</h3>
 <pre class="r"><code>birthorder &lt;- birthorder %&gt;% mutate(outcome = still_smoking)
 model = lmer(outcome ~ birth_order + poly(age, 3, raw = TRUE) + male + sibling_count + (1 | mother_pidlink),
-                   data = birthorder)
-add_slope_by_province(model)</code></pre>
-<table style="width:94%;">
+                   data = birthorder)</code></pre>
+<pre><code>## singular fit</code></pre>
+<pre class="r"><code>add_slope_by_province(model)</code></pre>
+<pre><code>## singular fit
+## singular fit</code></pre>
+<pre><code>## 
+## 
+## province              birth_order
+## -------------------  ------------
+## West Sumatera             -0.0241
+## DI Yogyakarta             -0.0102
+## South Sulawesi            -0.0060
+## East Java                 -0.0056
+## Bali                      -0.0029
+## Central Java              -0.0021
+## Banten                    -0.0019
+## West Nusa Tenggara        -0.0018
+## South Kalimantan          -0.0014
+## South Sumatera            -0.0003
+## Lampung                    0.0025
+## North Sumatera             0.0028
+## West Java                  0.0033
+## Jakarta                    0.0108</code></pre>
+<p><img src="4_analyses_by_province_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<table style="width:99%;">
 <caption>Data: birthorder</caption>
 <colgroup>
 <col width="6%" />
-<col width="9%" />
-<col width="9%" />
+<col width="11%" />
+<col width="11%" />
 <col width="12%" />
 <col width="15%" />
 <col width="11%" />
 <col width="12%" />
-<col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -3164,24 +3447,24 @@ add_slope_by_province(model)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">27</td>
-<td align="center">1308</td>
-<td align="center">1484</td>
-<td align="center">-627.1</td>
-<td align="center">1254</td>
+<td align="center">13</td>
+<td align="center">528.9</td>
+<td align="center">600.4</td>
+<td align="center">-251.5</td>
+<td align="center">502.9</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="even">
-<td align="center">33</td>
-<td align="center">1323</td>
-<td align="center">1538</td>
-<td align="center">-628.4</td>
-<td align="center">1257</td>
-<td align="center">0</td>
-<td align="center">6</td>
+<td align="center">14</td>
+<td align="center">524.3</td>
+<td align="center">601.3</td>
+<td align="center">-248.1</td>
+<td align="center">496.3</td>
+<td align="center">6.66</td>
 <td align="center">1</td>
+<td align="center">0.009862</td>
 </tr>
 </tbody>
 </table>
@@ -3189,7 +3472,7 @@ add_slope_by_province(model)</code></pre>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCm91dHB1dDogaHRtbF9kb2N1bWVudAplZGl0b3Jfb3B0aW9uczogCiAgY2h1bmtfb3V0cHV0X3R5cGU6IGNvbnNvbGUKLS0tCiMgPHNwYW4gc3R5bGU9ImNvbG9yOiNBNkQ4NTQiPkJpcnRoIE9yZGVyIEVmZmVjdHM8L3NwYW4+IAoKIyMgUHJlcGFyYXRpb24gey50YWJzZXR9CgojIyMgSGVscGVyCmBgYHtyIGhlbHBlcn0Kc291cmNlKCIwX2hlbHBlcnMuUiIpCm9wdHNfY2h1bmskc2V0KHdhcm5pbmcgPSBGQUxTRSkKYGBgCgojIyMgTG9hZCBkYXRhCmBgYHtyIExvYWQgRGF0YX0KYmlydGhvcmRlciA9IHJlYWRSRFMoImRhdGEvYWxsZGF0YV9iaXJ0aG9yZGVyLnJkcyIpCmBgYAoKIyMjIERhdGEgcHJlcGFyYXRpb25zCmBgYHtyIGRhdGEgcHJlcGFyYXRpb25zfQojIEZvciBhbmFseXNlcyB3ZSB3YW50IHRvIGNsZWFuIHRoZSBkYXRhc2V0IGFuZCBnZXQgcmlkIG9mIGFsbCB1bmludGVyZXN0aW5nIGRhdGEKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lCiAgZmlsdGVyKCFpcy5uYShwaWRsaW5rKSkgJT4lICMgbm8gaW5kaXZpZHVhbHMgd2hvIGFyZSBvbmx5IGtub3duIGZyb20gdGhlIHByZWduYW5jeSBmaWxlCiAgZmlsdGVyKGlzLm5hKGxpZmViaXJ0aHMpIHwgbGlmZWJpcnRocyA9PSAyKSAlPiUgIyByZW1vdmUgNyBhbmQgMiBpbmRpdmlkdWFscyB3aG8gYXJlIGtub3duIGFzIHN0aWxsYmlydGggb3IgbWlzY2FycmlhZ2UgYnV0IHN0aWxsIGhhdmUgUElECiAgc2VsZWN0KC1saWZlYmlydGhzKSAlPiUKICBmaWx0ZXIoIWlzLm5hKG1vdGhlcl9waWRsaW5rKSkgJT4lCiAgc2VsZWN0KC1mYXRoZXJfcGlkbGluaykgJT4lCiAgZmlsdGVyKGlzLm5hKGFueV9tdWx0aXBsZV9iaXJ0aCkgfCBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSkgJT4lICMgcmVtb3ZlIGZhbWlsaWVzIHdpdGggdHdpbnMvdHJpcGxldHMvLi4KICBmaWx0ZXIoIWlzLm5hKGJpcnRob3JkZXJfbmFpdmUpKSAlPiUKICBzZWxlY3QoLXN0YXJ0c193aXRoKCJhZ2VfIiksIC13YXZlLCAtYW55X211bHRpcGxlX2JpcnRoLCAtbXVsdGlwbGVfYmlydGgpICU+JQogIG11dGF0ZShtb25leV9zcGVudF9zbW9raW5nX2xvZyA9IGlmX2Vsc2UoaXMubmEobW9uZXlfc3BlbnRfc21va2luZ19sb2cpICYgZXZlcl9zbW9rZWQgPT0gMCwgMCwgbW9uZXlfc3BlbnRfc21va2luZ19sb2cpLAogICAgICAgICBhbW91bnQgPSBpZl9lbHNlKGlzLm5hKGFtb3VudCkgJiBldmVyX3Ntb2tlZCA9PSAwLCAwLCBhbW91bnQpLAogICAgICAgICBhbW91bnRfc3RpbGxfc21va2VycyA9IGlmX2Vsc2UoaXMubmEoYW1vdW50X3N0aWxsX3Ntb2tlcnMpICYgIHN0aWxsX3Ntb2tpbmcgPT0gMCwgMCwgYW1vdW50X3N0aWxsX3Ntb2tlcnMpLAogICAgICAgICBiaXJ0aHllYXIgPSBsdWJyaWRhdGU6OnllYXIoYmlydGhkYXRlKSkKCiMgcmVjb2RlIEZhY3RvciBWYXJpYWJsZSBhcyBEdW1teSBWYXJpYWJsZQpiaXJ0aG9yZGVyID0gbGVmdF9qb2luKGJpcnRob3JkZXIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlciAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZpbHRlcighaXMubmEoQ2F0ZWdvcnkpKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG11dGF0ZSh2YXIgPSAxKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNlbGVjdChwaWRsaW5rLCBDYXRlZ29yeSwgdmFyKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNwcmVhZChDYXRlZ29yeSwgdmFyLCBmaWxsID0gMCwgc2VwID0gIl8iKSwgYnkgPSAicGlkbGluayIpICU+JQogIHNlbGVjdCgtQ2F0ZWdvcnkpCgojIHJlY29kZSBGYWN0b3IgVmFyaWFibGUgYXMgRHVtbXkgVmFyaWFibGUKYmlydGhvcmRlciA9IGxlZnRfam9pbihiaXJ0aG9yZGVyLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRob3JkZXIgJT4lCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBmaWx0ZXIoIWlzLm5hKFNlY3RvcikpICU+JQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbXV0YXRlKHZhciA9IDEpICU+JQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2VsZWN0KHBpZGxpbmssIFNlY3RvciwgdmFyKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNwcmVhZChTZWN0b3IsIHZhciwgZmlsbCA9IDAsIHNlcCA9ICJfIiksIGJ5ID0gInBpZGxpbmsiKSAlPiUKICBzZWxlY3QoLVNlY3RvcikKCiMjIyBWYXJpYWJsZXMKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lCiAgbXV0YXRlKAogICAgIyBjZW50ZXIgdmFyaWFibGVzIHRoYXQgYXJlIHVzZWQgZm9yIGFuYWx5c2lzCiAgZ19mYWN0b3JfMjAxNV9vbGQgPSBzY2FsZShnX2ZhY3Rvcl8yMDE1X29sZCksCiAgZ19mYWN0b3JfMjAxNV95b3VuZyA9IHNjYWxlKGdfZmFjdG9yXzIwMTVfeW91bmcpLAogIGdfZmFjdG9yXzIwMDdfb2xkID0gc2NhbGUoZ19mYWN0b3JfMjAwN19vbGQpLAogIGdfZmFjdG9yXzIwMDdfeW91bmcgPSBzY2FsZShnX2ZhY3Rvcl8yMDA3X3lvdW5nKSwKICByYXZlbl8yMDE1X29sZCA9IHNjYWxlKHJhdmVuXzIwMTVfb2xkKSwKICBtYXRoXzIwMTVfb2xkID0gc2NhbGUobWF0aF8yMDE1X29sZCksCiAgY291bnRfYmFja3dhcmRzID0gc2NhbGUoY291bnRfYmFja3dhcmRzKSwKICByYXZlbl8yMDE1X3lvdW5nID0gc2NhbGUocmF2ZW5fMjAxNV95b3VuZyksCiAgbWF0aF8yMDE1X3lvdW5nID0gc2NhbGUobWF0aF8yMDE1X3lvdW5nKSwKICB3b3Jkc19yZW1lbWJlcmVkX2F2ZyA9IHNjYWxlKHdvcmRzX3JlbWVtYmVyZWRfYXZnKSwKICB3b3Jkc19pbW1lZGlhdGUgPSBzY2FsZSh3b3Jkc19pbW1lZGlhdGUpLAogIHdvcmRzX2RlbGF5ZWQgPSBzY2FsZSh3b3Jkc19kZWxheWVkKSwKICBhZGFwdGl2ZV9udW1iZXJpbmcgPSBzY2FsZShhZGFwdGl2ZV9udW1iZXJpbmcpLAogIHJhdmVuXzIwMDdfb2xkID0gc2NhbGUocmF2ZW5fMjAwN19vbGQpLAogIG1hdGhfMjAwN19vbGQgPSBzY2FsZShtYXRoXzIwMDdfb2xkKSwKICByYXZlbl8yMDA3X3lvdW5nID0gc2NhbGUocmF2ZW5fMjAwN195b3VuZyksCiAgbWF0aF8yMDA3X3lvdW5nID0gc2NhbGUobWF0aF8yMDA3X3lvdW5nKSwKICByaXNrQSA9IHNjYWxlKHJpc2tBKSwKICByaXNrQiA9IHNjYWxlKHJpc2tCKSwKICB5ZWFyc19vZl9lZHVjYXRpb25feiA9IHNjYWxlKHllYXJzX29mX2VkdWNhdGlvbiksCiAgVG90YWxfc2NvcmVfaGlnaGVzdF96ID0gc2NhbGUoVG90YWxfc2NvcmVfaGlnaGVzdCksCiAgd2FnZV9sYXN0X21vbnRoX3ogPSBzY2FsZSh3YWdlX2xhc3RfbW9udGhfbG9nKSwKICB3YWdlX2xhc3RfeWVhcl96ID0gc2NhbGUod2FnZV9sYXN0X3llYXJfbG9nKSwKICBiaWc1X2V4dCA9IHNjYWxlKGJpZzVfZXh0KSwKICBiaWc1X2NvbiA9IHNjYWxlKGJpZzVfY29uKSwKICBiaWc1X2FncmVlID0gc2NhbGUoYmlnNV9hZ3JlZSksCiAgYmlnNV9vcGVuID0gc2NhbGUoYmlnNV9vcGVuKSwKICBiaWc1X25ldSA9IHNjYWxlKGJpZzVfbmV1KSwKICBhdHRlbmRlZF9zY2hvb2wgPSBhcy5pbnRlZ2VyKGF0dGVuZGVkX3NjaG9vbCksCiAgYXR0ZW5kZWRfc2Nob29sID0gaWZlbHNlKGF0dGVuZGVkX3NjaG9vbCA9PSAxLCAwLAogICAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoYXR0ZW5kZWRfc2Nob29sID09IDIsIDEsIE5BKSkpCgpxcGxvdChiaXJ0aG9yZGVyJG1hbGUpCnFwbG90KGJpcnRob3JkZXIkZ19mYWN0b3JfMjAxNV9vbGQpCnFwbG90KGJpcnRob3JkZXIkZ19mYWN0b3JfMjAxNV9vbGQpCgojIyMgQmlydGhvcmRlciBhbmQgU2libGluZyBDb3VudApiaXJ0aG9yZGVyID0gYmlydGhvcmRlciAlPiUgCiAgbXV0YXRlKAojIGJpcnRob3JkZXIgYXMgZmFjdG9ycyB3aXRoIGxldmVscyBvZiAxLCAyLCAzLCA0LCA1LCA1KwogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoYmlydGhvcmRlcl9uYWl2ZSksCiAgICBiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciA9IGlmZWxzZShiaXJ0aG9yZGVyX25haXZlID4gNSwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciksCiAgICBiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciA9IGZhY3RvcihiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMSIsIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yID0gYXMuY2hhcmFjdGVyKHNpYmxpbmdfY291bnRfbmFpdmUpLAogICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IgPSBpZmVsc2Uoc2libGluZ19jb3VudF9uYWl2ZSA+IDUsICI1KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IpLAogICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IgPSBmYWN0b3Ioc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKCiAgICBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoYmlydGhvcmRlcl91dGVydXNfYWxpdmUpLAogICAgYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yID0gaWZlbHNlKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlID4gNSwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IpLAogICAgYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yID0gZmFjdG9yKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMSIsIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgPSBpZmVsc2Uoc2libGluZ19jb3VudF91dGVydXNfYWxpdmUgPiA1LCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgPSBmYWN0b3Ioc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnKSwKICAgIGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yID0gaWZlbHNlKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcgPiA1LCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IpLAogICAgYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgPSBmYWN0b3IoYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIxIiwiMiIsIjMiLCI0IiwiNSIsIjUrIikpLAogICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoc2libGluZ19jb3VudF91dGVydXNfcHJlZyksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciA9IGlmZWxzZShzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnID4gNSwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yKSwKICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfZ2VuZXMpLAogICAgYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgPSBpZmVsc2UoYmlydGhvcmRlcl9nZW5lcyA+NSAsICI1KyIsIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gZmFjdG9yKGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihzaWJsaW5nX2NvdW50X2dlbmVzKSwKICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yID0gaWZlbHNlKHNpYmxpbmdfY291bnRfZ2VuZXMgPjUgLCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IpLAogICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgPSBmYWN0b3Ioc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMiIsIjMiLCI0IiwiNSIsIjUrIikpLAogICAgIyBpbnRlcmFjdGlvbiBiaXJ0aG9yZGVyICogc2libGluZ2NvdXQgZm9yIGVhY2ggYmlydGhvcmRlcgogICAgY291bnRfYmlydGhvcmRlcl9uYWl2ZSA9CiAgICAgIGZhY3RvcihzdHJfcmVwbGFjZShhcy5jaGFyYWN0ZXIoaW50ZXJhY3Rpb24oYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvcikpLAogICAgICAgICAgICAgICAgICAgICAgICAiXFwuIiwgIi8iKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9ICAgYygiMS8yIiwiMi8yIiwgIjEvMyIsICAiMi8zIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMy8zIiwgIjEvNCIsICIyLzQiLCAiMy80IiwgIjQvNCIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSIsICIyLzUiLCAiMy81IiwgIjQvNSIsICI1LzUiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUrIiwgIjIvNSsiLCAiMy81KyIsICI0LzUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiNS81KyIsICI1Ky81KyIpKSwKICAgIGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IpKSwKICAgICAgICAgICAgICAgICAgICAgICAgIlxcLiIsICIvIiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSAgIGMoIjEvMiIsIjIvMiIsICIxLzMiLCAgIjIvMyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjMvMyIsICIxLzQiLCAiMi80IiwgIjMvNCIsICI0LzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUiLCAiMi81IiwgIjMvNSIsICI0LzUiLCAiNS81IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81KyIsICIyLzUrIiwgIjMvNSsiLCAiNC81KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjUvNSsiLCAiNSsvNSsiKSksCiAgICBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yKSksIAogICAgICAgICAgICAgICAgICAgICAgICAgIlxcLiIsICIvIiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSAgIGMoIjEvMiIsIjIvMiIsICIxLzMiLCAgIjIvMyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjMvMyIsICIxLzQiLCAiMi80IiwgIjMvNCIsICI0LzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUiLCAiMi81IiwgIjMvNSIsICI0LzUiLCAiNS81IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81KyIsICIyLzUrIiwgIjMvNSsiLCAiNC81KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjUvNSsiLCAiNSsvNSsiKSksCiAgICBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yKSksICJcXC4iLCAiLyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gICBjKCIxLzIiLCIyLzIiLCAiMS8zIiwgICIyLzMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIzLzMiLCAiMS80IiwgIjIvNCIsICIzLzQiLCAiNC80IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81IiwgIjIvNSIsICIzLzUiLCAiNC81IiwgIjUvNSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSsiLCAiMi81KyIsICIzLzUrIiwgIjQvNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI1LzUrIiwgIjUrLzUrIikpKQoKYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JQogICAgICAgICAgICAgICAgICAgICBtdXRhdGUoc2libGluZ19jb3VudCA9IHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhfb3JkZXJfbm9ubGluZWFyID0gYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aF9vcmRlciA9IGJpcnRob3JkZXJfbmFpdmUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb3VudF9iaXJ0aF9vcmRlciA9IGNvdW50X2JpcnRob3JkZXJfbmFpdmUpCmBgYAoKIyMjIEJ5IHByb3ZpbmNlIHsuYWN0aXZlfQpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBmaWx0ZXIoIWlzLm5hKHByb3ZpbmNlKSkKYmlydGhvcmRlciR1cmJhbiA9IGZhY3RvcihiaXJ0aG9yZGVyJHNjMDU9PTEpCgpwcm92aW5jZXMgPC0gYmlydGhvcmRlciAlPiUgc2VsZWN0KHByb3ZpbmNlLCB1cmJhbikgJT4lIGdyb3VwX2J5KHByb3ZpbmNlKSAlPiUgCiAgc3VtbWFyaXNlKHVyYmFuID0gbWVhbih1cmJhbiA9PSBUUlVFKSkgJT4lIGFycmFuZ2UoZGVzYyh1cmJhbikpCmthYmxlKHByb3ZpbmNlcykKCmFkZF9zbG9wZV9ieV9wcm92aW5jZSA8LSBmdW5jdGlvbihtb2RlbCkgewogIG0xIDwtIHVwZGF0ZShtb2RlbCwgZm9ybXVsYSA9IC4gfiAuICsgKDEgKyBzaWJsaW5nX2NvdW50IHwgcHJvdmluY2UpLCBSRU1MID0gRkFMU0UpCiAgbTIgPC0gdXBkYXRlKG1vZGVsLCBmb3JtdWxhID0gLiB+IC4gKyAoMSArIHNpYmxpbmdfY291bnQgKyBiaXJ0aF9vcmRlciB8IHByb3ZpbmNlKSwgUkVNTCA9IEZBTFNFKQogIGFuIDwtIGFub3ZhKG0xLCBtMikKICBpZiAoYW4kYFByKD5DaGlzcSlgWzJdIDwgLjA1KSB7CiAgICBwcmludChyYW5lZihtMikkcHJvdmluY2UgJT4lIGFzLmRhdGEuZnJhbWUoKSAlPiUgCiAgICAgICAgICAgIHRpYmJsZTo6cm93bmFtZXNfdG9fY29sdW1uKCJwcm92aW5jZSIpICU+JSAKICAgICAgICAgICAgbGVmdF9qb2luKHByb3ZpbmNlcywgYnkgPSAicHJvdmluY2UiKSAlPiUgCiAgICAgICAgICAgIGFycmFuZ2UoYmlydGhfb3JkZXIpICU+JSAKICAgICAgICAgICAgbXV0YXRlKGJpcnRoX29yZGVyID0gYmlydGhfb3JkZXIgKyBmaXhlZihtMilbImJpcnRoX29yZGVyIl0sIAogICAgICAgICAgICAgICAgICAgcHJvdmluY2UgPSBmb3JjYXRzOjpmY3RfaW5vcmRlcihwcm92aW5jZSkKICAgICAgICAgICAgICAgICAgICkgJT4lIAogICAgICAgICAgICBnZ3Bsb3QoYWVzKHByb3ZpbmNlLCBiaXJ0aF9vcmRlciwgY29sb3VyID0gdXJiYW4pKSArIAogICAgICAgICAgICBnZW9tX3BvaW50KHNpemUgPSA0KSArIAogICAgICAgICAgICBzY2FsZV9jb2xvdXJfY29udGludW91cyhsb3cgPSAicmVkIiwgaGlnaCA9ICJibHVlIikgKwogICAgICAgICAgICBjb29yZF9mbGlwKCkgKyAKICAgICAgICAgICAgZ2VvbV9obGluZSh5aW50ZXJjZXB0ID0gZml4ZWYobTIpWyJiaXJ0aF9vcmRlciJdLCBsaW5ldHlwZSA9ICdkYXNoZWQnKSkKICAgIGNhdCgiXG5cblxuIikKICB9CiAgYW4KfQpgYGAKCldoZXJldmVyIGFkZGluZyBhIHJhbmRvbSBzbG9wZSBmb3IgdGhlIGxpbmVhciBiaXJ0aCBvcmRlciBieSBwcm92aW5jZSBpbXByb3ZlZCAKdGhlIG1vZGVsIGF0IGEgbm9taW5hbCBzaWduaWZpY2FuY2Ugb2YgcCA8IC4wNSwgd2Ugc2hvdyBob3cgZWZmZWN0cyB2YXJpZWQgYnkgCnByb3ZpbmNlIGluIGEgcGxvdC4KCgpOdW1iZXIgb2YgcGVvcGxlIGJ5IHByb3ZpbmNlCmBgYHtyfQpxcGxvdChmb3JjYXRzOjpmY3RfaW5mcmVxKGJpcnRob3JkZXIkcHJvdmluY2UpKSArIGNvb3JkX2ZsaXAoKQpgYGAKCkZhbWlseSBzaXplIGJ5IHByb3ZpbmNlCgpgYGB7cn0KcXBsb3Qoc2libGluZ19jb3VudF9nZW5lcywgZGF0YSA9IGJpcnRob3JkZXIgJT4lIGdyb3VwX2J5KHByb3ZpbmNlKSAlPiUgbXV0YXRlKG1lYW5fc2libGluZ19jb3VudF9nZW5lcz0gbWVhbihzaWJsaW5nX2NvdW50X2dlbmVzLCBuYS5ybSA9VCkpKSArIGdlb21fdmxpbmUoYWVzKHhpbnRlcmNlcHQgPSBtZWFuX3NpYmxpbmdfY291bnRfZ2VuZXMpLCBjb2xvciA9ICdyZWQnKSArIGZhY2V0X3dyYXAofiBmb3JjYXRzOjpmY3RfaW5mcmVxKHByb3ZpbmNlKSwgc2NhbGVzID0gImZyZWVfeSIpICsgY29vcmRfY2FydGVzaWFuKHhsaW0gPSBjKDAsMTApKQpgYGAKCgojIyBJbnRlbGxpZ2VuY2Ugey5hY3RpdmUgfQojIyMgZy1mYWN0b3IgMjAxNSBvbGQge30KCmBgYHtyIGctZmFjdG9yIDIwMTUgb2xkfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gZ19mYWN0b3JfMjAxNV9vbGQpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArCiAgICAgICAgICAgICAgICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKCiMjIyBnLWZhY3RvciAyMDE1IHlvdW5nIHt9CgpgYGB7ciBnLWZhY3RvciAyMDE1IHlvdW5nfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gZ19mYWN0b3JfMjAxNV95b3VuZykKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsKICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyMgZy1mYWN0b3IgMjAwNyBvbGQge30KCmBgYHtyIGctZmFjdG9yIDIwMDcgb2xkfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gZ19mYWN0b3JfMjAwN19vbGQpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgZy1mYWN0b3IgMjAwNyB5b3VuZyB7fQoKYGBge3IgZy1mYWN0b3IgMjAwNyB5b3VuZ30KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGdfZmFjdG9yXzIwMDdfeW91bmcpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMjIFJhdmVuIDIwMTUgb2xkIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IHJhdmVuXzIwMTVfb2xkKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIE51bWVyYWN5IDIwMTUgb2xkIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IG1hdGhfMjAxNV9vbGQpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgUmF2ZW4gMjAxNSB5b3VuZyB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSByYXZlbl8yMDE1X3lvdW5nKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIE51bWVyYWN5IDIwMTUgeW91bmcge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gbWF0aF8yMDE1X3lvdW5nKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIFJhdmVuIDIwMDcgb2xkIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IHJhdmVuXzIwMDdfb2xkKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIE51bWVyYWN5IDIwMDcgb2xke30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gbWF0aF8yMDA3X29sZCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBSYXZlbiAyMDA3IHlvdW5nIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IHJhdmVuXzIwMDdfeW91bmcpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgTnVtZXJhY3kgMjAwNyB5b3VuZyB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBtYXRoXzIwMDdfeW91bmcpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgQ291bnRpbmcgYmFja3dhcmRzIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGNvdW50X2JhY2t3YXJkcykKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBJbW1lZGlhdGUgd29yZCByZWNhbGwge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gd29yZHNfaW1tZWRpYXRlKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIERlbGF5ZWQgd29yZCByZWNhbGwge30KYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSB3b3Jkc19kZWxheWVkKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIEFkYXB0aXZlIE51bWJlcmluZyB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBhZGFwdGl2ZV9udW1iZXJpbmcpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyBQZXJzb25hbGl0eSB7fQoKIyMjIEV4dHJhdmVyc2lvbiB7fQoKCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYmlnNV9leHQpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMjIE5ldXJvdGljaXNtIHt9CgoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBiaWc1X25ldSkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyMgQ29uc2NpZW50aW91c25lc3Mge30KCgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGJpZzVfY29uKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIyBBZ3JlZWFibGVuZXNzIHt9CgoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBiaWc1X2FncmVlKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIyBPcGVubmVzcyB7fQoKCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYmlnNV9vcGVuKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIFJpc2sgcHJlZmVyZW5jZSB7fQoKIyMjIFJpc2sgQSB7fQoKCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gcmlza0EpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMjIFJpc2sgQiB7fQoKCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gcmlza0IpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMgRWR1Y2F0aW9uYWwgQXR0YWlubWVudCB7fQojIyMgWWVhcnMgb2YgRWR1Y2F0aW9uIC0gei1zdGFuZGFyZGl6ZWQge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0geWVhcnNfb2ZfZWR1Y2F0aW9uKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCgoKc3VtbWFyeSggbTFfdXJicnVyIDwtIGxtZXIob3V0Y29tZSB+IChzaWJsaW5nX2NvdW50ICsgYmlydGhfb3JkZXIpICogdXJiYW4gKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLCBkYXRhID0gYmlydGhvcmRlcikpCnBsb3QoYWxsRWZmZWN0cyhtMV91cmJydXIpKQpzdW1tYXJ5KCBtMV91cmJydXIgPC0gbG1lcihvdXRjb21lIH4gKHNpYmxpbmdfY291bnQgKyBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvcikgKiB1cmJhbiArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksIGRhdGEgPSBiaXJ0aG9yZGVyKSkKcGxvdChhbGxFZmZlY3RzKG0xX3VyYnJ1cikpCmBgYAoKIyMjIEVsZW1lbnRhcnkgbWlzc2VkIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IEVsZW1lbnRhcnlfbWlzc2VkKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIyBFbGVtZW50YXJ5IHdvcmtlZCB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBFbGVtZW50YXJ5X3dvcmtlZCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyMgQXR0ZW5kZWQgU2Nob29sIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGF0dGVuZGVkX3NjaG9vbCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyBXb3JrIHt9CgojIyMgSW5jb21lIExhc3QgTW9udGggKGxvZykgLSB6LXN0YW5kYXJkaXplZCB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSB3YWdlX2xhc3RfbW9udGhfeikKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBJbmNvbWUgbGFzdCB5ZWFyIChsb2cpIC0gei1zdGFuZGFyZGl6ZWQge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gd2FnZV9sYXN0X3llYXJfeikKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBTZWxmLUVtcGxveW1lbnQgLSBub24gc3RhbmRhcmRpemVkIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IFNlbGZfZW1wbG95ZWQpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMgV29yayBDYXRlZ29yeXt9CgojIyMgQ2F0ZWdvcnlfQ2FzdWFsIHdvcmtlciBpbiBhZ3JpY3VsdHVyZXt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGBDYXRlZ29yeV9DYXN1YWwgd29ya2VyIGluIGFncmljdWx0dXJlYCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBDYXRlZ29yeV9DYXN1YWwgd29ya2VyIG5vdCBpbiBhZ3JpY3VsdHVyZXt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGBDYXRlZ29yeV9DYXN1YWwgd29ya2VyIG5vdCBpbiBhZ3JpY3VsdHVyZWApCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgQ2F0ZWdvcnlfR292ZXJubWVudCB3b3JrZXJ7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBgQ2F0ZWdvcnlfR292ZXJubWVudCB3b3JrZXJgKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIyBDYXRlZ29yeV9Qcml2YXRlIHdvcmtlcnt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGBDYXRlZ29yeV9Qcml2YXRlIHdvcmtlcmApCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgQ2F0ZWdvcnlfU2VsZi1lbXBsb3llZHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGBDYXRlZ29yeV9TZWxmLWVtcGxveWVkYCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBDYXRlZ29yeV9VbnBhaWQgZmFtaWx5IHdvcmtlcnt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGBDYXRlZ29yeV9VbnBhaWQgZmFtaWx5IHdvcmtlcmApCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyBXb3JrIFNlY3RvciB7fQoKIyMjIFNlY3Rvcl9BZ3JpY3VsdHVyZSwgZm9yZXN0cnksIGZpc2hpbmcgYW5kIGh1bnRpbmcge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYFNlY3Rvcl9BZ3JpY3VsdHVyZSwgZm9yZXN0cnksIGZpc2hpbmcgYW5kIGh1bnRpbmdgKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIFNlY3Rvcl9Db25zdHJ1Y3Rpb24ge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYFNlY3Rvcl9Db25zdHJ1Y3Rpb25gKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIFNlY3Rvcl9FbGVjdHJpY2l0eSwgZ2FzLCB3YXRlciB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBgU2VjdG9yX0VsZWN0cmljaXR5LCBnYXMsIHdhdGVyYCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyMgU2VjdG9yX0ZpbmFuY2UsIGluc3VyYW5jZSwgcmVhbCBlc3RhdGUgYW5kIGJ1c2luZXNzIHNlcnZpY2VzIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGBTZWN0b3JfRmluYW5jZSwgaW5zdXJhbmNlLCByZWFsIGVzdGF0ZSBhbmQgYnVzaW5lc3Mgc2VydmljZXNgKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIyBTZWN0b3JfTWFudWZhY3R1cmluZyB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBTZWN0b3JfTWFudWZhY3R1cmluZykKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgoKIyMjIFNlY3Rvcl9NaW5pbmcgYW5kIHF1YXJyeWluZyB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBgU2VjdG9yX01pbmluZyBhbmQgcXVhcnJ5aW5nYCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyMgU2VjdG9yX1NvY2lhbCBzZXJ2aWNlcyB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBgU2VjdG9yX1NvY2lhbCBzZXJ2aWNlc2ApCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMjIFNlY3Rvcl9UcmFuc3BvcnRhdGlvbiwgc3RvcmFnZSBhbmQgY29tbXVuaWNhdGlvbnMge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYFNlY3Rvcl9UcmFuc3BvcnRhdGlvbiwgc3RvcmFnZSBhbmQgY29tbXVuaWNhdGlvbnNgKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMgU21va2luZyBCZWhhdmlvdXIge30KIyMjIGV2ZXJfc21va2VkIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGV2ZXJfc21va2VkKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIHN0aWxsX3Ntb2tpbmcge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gc3RpbGxfc21va2luZykKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAK</div>
+<div id="rmd-source-code">LS0tCm91dHB1dDogaHRtbF9kb2N1bWVudAplZGl0b3Jfb3B0aW9uczogCiAgY2h1bmtfb3V0cHV0X3R5cGU6IGNvbnNvbGUKLS0tCiMgPHNwYW4gc3R5bGU9ImNvbG9yOiNBNkQ4NTQiPkJpcnRoIE9yZGVyIEVmZmVjdHM8L3NwYW4+IAoKIyMgUHJlcGFyYXRpb24gey50YWJzZXR9CgojIyMgSGVscGVyCmBgYHtyIGhlbHBlcn0Kc291cmNlKCIwX2hlbHBlcnMuUiIpCm9wdHNfY2h1bmskc2V0KHdhcm5pbmcgPSBGQUxTRSkKYGBgCgojIyMgTG9hZCBkYXRhCmBgYHtyIExvYWQgRGF0YX0KYmlydGhvcmRlciA9IHJlYWRSRFMoImRhdGEvYWxsZGF0YV9iaXJ0aG9yZGVyLnJkcyIpCmBgYAoKIyMjIERhdGEgcHJlcGFyYXRpb25zCmBgYHtyIGRhdGEgcHJlcGFyYXRpb25zfQojIEZvciBhbmFseXNlcyB3ZSB3YW50IHRvIGNsZWFuIHRoZSBkYXRhc2V0IGFuZCBnZXQgcmlkIG9mIGFsbCB1bmludGVyZXN0aW5nIGRhdGEKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lCiAgZmlsdGVyKCFpcy5uYShwaWRsaW5rKSkgJT4lICMgbm8gaW5kaXZpZHVhbHMgd2hvIGFyZSBvbmx5IGtub3duIGZyb20gdGhlIHByZWduYW5jeSBmaWxlCiAgZmlsdGVyKGlzLm5hKGxpZmViaXJ0aHMpIHwgbGlmZWJpcnRocyA9PSAyKSAlPiUgIyByZW1vdmUgNyBhbmQgMiBpbmRpdmlkdWFscyB3aG8gYXJlIGtub3duIGFzIHN0aWxsYmlydGggb3IgbWlzY2FycmlhZ2UgYnV0IHN0aWxsIGhhdmUgUElECiAgc2VsZWN0KC1saWZlYmlydGhzKSAlPiUKICBmaWx0ZXIoIWlzLm5hKG1vdGhlcl9waWRsaW5rKSkgJT4lCiAgc2VsZWN0KC1mYXRoZXJfcGlkbGluaykgJT4lCiAgZmlsdGVyKGlzLm5hKGFueV9tdWx0aXBsZV9iaXJ0aCkgfCBhbnlfbXVsdGlwbGVfYmlydGggIT0gMSkgJT4lICMgcmVtb3ZlIGZhbWlsaWVzIHdpdGggdHdpbnMvdHJpcGxldHMvLi4KICBmaWx0ZXIoIWlzLm5hKGJpcnRob3JkZXJfbmFpdmUpKSAlPiUKICBzZWxlY3QoLXN0YXJ0c193aXRoKCJhZ2VfIiksIC13YXZlLCAtYW55X211bHRpcGxlX2JpcnRoLCAtbXVsdGlwbGVfYmlydGgpICU+JQogIG11dGF0ZShtb25leV9zcGVudF9zbW9raW5nX2xvZyA9IGlmX2Vsc2UoaXMubmEobW9uZXlfc3BlbnRfc21va2luZ19sb2cpICYgZXZlcl9zbW9rZWQgPT0gMCwgMCwgbW9uZXlfc3BlbnRfc21va2luZ19sb2cpLAogICAgICAgICBhbW91bnQgPSBpZl9lbHNlKGlzLm5hKGFtb3VudCkgJiBldmVyX3Ntb2tlZCA9PSAwLCAwLCBhbW91bnQpLAogICAgICAgICBhbW91bnRfc3RpbGxfc21va2VycyA9IGlmX2Vsc2UoaXMubmEoYW1vdW50X3N0aWxsX3Ntb2tlcnMpICYgIHN0aWxsX3Ntb2tpbmcgPT0gMCwgMCwgYW1vdW50X3N0aWxsX3Ntb2tlcnMpLAogICAgICAgICBiaXJ0aHllYXIgPSBsdWJyaWRhdGU6OnllYXIoYmlydGhkYXRlKSkKCiMgcmVjb2RlIEZhY3RvciBWYXJpYWJsZSBhcyBEdW1teSBWYXJpYWJsZQpiaXJ0aG9yZGVyID0gbGVmdF9qb2luKGJpcnRob3JkZXIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlciAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZpbHRlcighaXMubmEoQ2F0ZWdvcnkpKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG11dGF0ZSh2YXIgPSAxKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNlbGVjdChwaWRsaW5rLCBDYXRlZ29yeSwgdmFyKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNwcmVhZChDYXRlZ29yeSwgdmFyLCBmaWxsID0gMCwgc2VwID0gIl8iKSwgYnkgPSAicGlkbGluayIpICU+JQogIHNlbGVjdCgtQ2F0ZWdvcnkpCgojIHJlY29kZSBGYWN0b3IgVmFyaWFibGUgYXMgRHVtbXkgVmFyaWFibGUKYmlydGhvcmRlciA9IGxlZnRfam9pbihiaXJ0aG9yZGVyLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRob3JkZXIgJT4lCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBmaWx0ZXIoIWlzLm5hKFNlY3RvcikpICU+JQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbXV0YXRlKHZhciA9IDEpICU+JQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2VsZWN0KHBpZGxpbmssIFNlY3RvciwgdmFyKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNwcmVhZChTZWN0b3IsIHZhciwgZmlsbCA9IDAsIHNlcCA9ICJfIiksIGJ5ID0gInBpZGxpbmsiKSAlPiUKICBzZWxlY3QoLVNlY3RvcikKCiMjIyBWYXJpYWJsZXMKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lCiAgbXV0YXRlKAogICAgIyBjZW50ZXIgdmFyaWFibGVzIHRoYXQgYXJlIHVzZWQgZm9yIGFuYWx5c2lzCiAgZ19mYWN0b3JfMjAxNV9vbGQgPSBzY2FsZShnX2ZhY3Rvcl8yMDE1X29sZCksCiAgZ19mYWN0b3JfMjAxNV95b3VuZyA9IHNjYWxlKGdfZmFjdG9yXzIwMTVfeW91bmcpLAogIGdfZmFjdG9yXzIwMDdfb2xkID0gc2NhbGUoZ19mYWN0b3JfMjAwN19vbGQpLAogIGdfZmFjdG9yXzIwMDdfeW91bmcgPSBzY2FsZShnX2ZhY3Rvcl8yMDA3X3lvdW5nKSwKICByYXZlbl8yMDE1X29sZCA9IHNjYWxlKHJhdmVuXzIwMTVfb2xkKSwKICBtYXRoXzIwMTVfb2xkID0gc2NhbGUobWF0aF8yMDE1X29sZCksCiAgY291bnRfYmFja3dhcmRzID0gc2NhbGUoY291bnRfYmFja3dhcmRzKSwKICByYXZlbl8yMDE1X3lvdW5nID0gc2NhbGUocmF2ZW5fMjAxNV95b3VuZyksCiAgbWF0aF8yMDE1X3lvdW5nID0gc2NhbGUobWF0aF8yMDE1X3lvdW5nKSwKICB3b3Jkc19yZW1lbWJlcmVkX2F2ZyA9IHNjYWxlKHdvcmRzX3JlbWVtYmVyZWRfYXZnKSwKICB3b3Jkc19pbW1lZGlhdGUgPSBzY2FsZSh3b3Jkc19pbW1lZGlhdGUpLAogIHdvcmRzX2RlbGF5ZWQgPSBzY2FsZSh3b3Jkc19kZWxheWVkKSwKICBhZGFwdGl2ZV9udW1iZXJpbmcgPSBzY2FsZShhZGFwdGl2ZV9udW1iZXJpbmcpLAogIHJhdmVuXzIwMDdfb2xkID0gc2NhbGUocmF2ZW5fMjAwN19vbGQpLAogIG1hdGhfMjAwN19vbGQgPSBzY2FsZShtYXRoXzIwMDdfb2xkKSwKICByYXZlbl8yMDA3X3lvdW5nID0gc2NhbGUocmF2ZW5fMjAwN195b3VuZyksCiAgbWF0aF8yMDA3X3lvdW5nID0gc2NhbGUobWF0aF8yMDA3X3lvdW5nKSwKICByaXNrQSA9IHNjYWxlKHJpc2tBKSwKICByaXNrQiA9IHNjYWxlKHJpc2tCKSwKICB5ZWFyc19vZl9lZHVjYXRpb25feiA9IHNjYWxlKHllYXJzX29mX2VkdWNhdGlvbiksCiAgVG90YWxfc2NvcmVfaGlnaGVzdF96ID0gc2NhbGUoVG90YWxfc2NvcmVfaGlnaGVzdCksCiAgd2FnZV9sYXN0X21vbnRoX3ogPSBzY2FsZSh3YWdlX2xhc3RfbW9udGhfbG9nKSwKICB3YWdlX2xhc3RfeWVhcl96ID0gc2NhbGUod2FnZV9sYXN0X3llYXJfbG9nKSwKICBiaWc1X2V4dCA9IHNjYWxlKGJpZzVfZXh0KSwKICBiaWc1X2NvbiA9IHNjYWxlKGJpZzVfY29uKSwKICBiaWc1X2FncmVlID0gc2NhbGUoYmlnNV9hZ3JlZSksCiAgYmlnNV9vcGVuID0gc2NhbGUoYmlnNV9vcGVuKSwKICBiaWc1X25ldSA9IHNjYWxlKGJpZzVfbmV1KSwKICBhdHRlbmRlZF9zY2hvb2wgPSBhcy5pbnRlZ2VyKGF0dGVuZGVkX3NjaG9vbCksCiAgYXR0ZW5kZWRfc2Nob29sID0gaWZlbHNlKGF0dGVuZGVkX3NjaG9vbCA9PSAxLCAwLAogICAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoYXR0ZW5kZWRfc2Nob29sID09IDIsIDEsIE5BKSkpCgpxcGxvdChiaXJ0aG9yZGVyJG1hbGUpCnFwbG90KGJpcnRob3JkZXIkZ19mYWN0b3JfMjAxNV9vbGQpCnFwbG90KGJpcnRob3JkZXIkZ19mYWN0b3JfMjAxNV9vbGQpCgojIyMgQmlydGhvcmRlciBhbmQgU2libGluZyBDb3VudApiaXJ0aG9yZGVyID0gYmlydGhvcmRlciAlPiUgCiAgbXV0YXRlKAojIGJpcnRob3JkZXIgYXMgZmFjdG9ycyB3aXRoIGxldmVscyBvZiAxLCAyLCAzLCA0LCA1LCA1KwogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoYmlydGhvcmRlcl9uYWl2ZSksCiAgICBiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciA9IGlmZWxzZShiaXJ0aG9yZGVyX25haXZlID4gNSwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciksCiAgICBiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciA9IGZhY3RvcihiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMSIsIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yID0gYXMuY2hhcmFjdGVyKHNpYmxpbmdfY291bnRfbmFpdmUpLAogICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IgPSBpZmVsc2Uoc2libGluZ19jb3VudF9uYWl2ZSA+IDUsICI1KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IpLAogICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IgPSBmYWN0b3Ioc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKCiAgICBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoYmlydGhvcmRlcl91dGVydXNfYWxpdmUpLAogICAgYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yID0gaWZlbHNlKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlID4gNSwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IpLAogICAgYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yID0gZmFjdG9yKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMSIsIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZSksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgPSBpZmVsc2Uoc2libGluZ19jb3VudF91dGVydXNfYWxpdmUgPiA1LCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgPSBmYWN0b3Ioc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnKSwKICAgIGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yID0gaWZlbHNlKGJpcnRob3JkZXJfdXRlcnVzX3ByZWcgPiA1LCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IpLAogICAgYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgPSBmYWN0b3IoYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIxIiwiMiIsIjMiLCI0IiwiNSIsIjUrIikpLAogICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoc2libGluZ19jb3VudF91dGVydXNfcHJlZyksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciA9IGlmZWxzZShzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnID4gNSwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yKSwKICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfZ2VuZXMpLAogICAgYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgPSBpZmVsc2UoYmlydGhvcmRlcl9nZW5lcyA+NSAsICI1KyIsIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gZmFjdG9yKGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihzaWJsaW5nX2NvdW50X2dlbmVzKSwKICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yID0gaWZlbHNlKHNpYmxpbmdfY291bnRfZ2VuZXMgPjUgLCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IpLAogICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgPSBmYWN0b3Ioc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMiIsIjMiLCI0IiwiNSIsIjUrIikpLAogICAgIyBpbnRlcmFjdGlvbiBiaXJ0aG9yZGVyICogc2libGluZ2NvdXQgZm9yIGVhY2ggYmlydGhvcmRlcgogICAgY291bnRfYmlydGhvcmRlcl9uYWl2ZSA9CiAgICAgIGZhY3RvcihzdHJfcmVwbGFjZShhcy5jaGFyYWN0ZXIoaW50ZXJhY3Rpb24oYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvcikpLAogICAgICAgICAgICAgICAgICAgICAgICAiXFwuIiwgIi8iKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9ICAgYygiMS8yIiwiMi8yIiwgIjEvMyIsICAiMi8zIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMy8zIiwgIjEvNCIsICIyLzQiLCAiMy80IiwgIjQvNCIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSIsICIyLzUiLCAiMy81IiwgIjQvNSIsICI1LzUiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUrIiwgIjIvNSsiLCAiMy81KyIsICI0LzUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiNS81KyIsICI1Ky81KyIpKSwKICAgIGNvdW50X2JpcnRob3JkZXJfdXRlcnVzX2FsaXZlID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IpKSwKICAgICAgICAgICAgICAgICAgICAgICAgIlxcLiIsICIvIiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSAgIGMoIjEvMiIsIjIvMiIsICIxLzMiLCAgIjIvMyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjMvMyIsICIxLzQiLCAiMi80IiwgIjMvNCIsICI0LzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUiLCAiMi81IiwgIjMvNSIsICI0LzUiLCAiNS81IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81KyIsICIyLzUrIiwgIjMvNSsiLCAiNC81KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjUvNSsiLCAiNSsvNSsiKSksCiAgICBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yKSksIAogICAgICAgICAgICAgICAgICAgICAgICAgIlxcLiIsICIvIiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSAgIGMoIjEvMiIsIjIvMiIsICIxLzMiLCAgIjIvMyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjMvMyIsICIxLzQiLCAiMi80IiwgIjMvNCIsICI0LzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUiLCAiMi81IiwgIjMvNSIsICI0LzUiLCAiNS81IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81KyIsICIyLzUrIiwgIjMvNSsiLCAiNC81KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjUvNSsiLCAiNSsvNSsiKSksCiAgICBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yKSksICJcXC4iLCAiLyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gICBjKCIxLzIiLCIyLzIiLCAiMS8zIiwgICIyLzMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIzLzMiLCAiMS80IiwgIjIvNCIsICIzLzQiLCAiNC80IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81IiwgIjIvNSIsICIzLzUiLCAiNC81IiwgIjUvNSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSsiLCAiMi81KyIsICIzLzUrIiwgIjQvNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI1LzUrIiwgIjUrLzUrIikpKQoKYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JQogICAgICAgICAgICAgICAgICAgICBtdXRhdGUoc2libGluZ19jb3VudCA9IHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhfb3JkZXJfbm9ubGluZWFyID0gYmlydGhvcmRlcl9nZW5lc19mYWN0b3IsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBiaXJ0aF9vcmRlciA9IGJpcnRob3JkZXJfZ2VuZXMsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBhZ2UgPSBzY2FsZShhZ2UvMTAsIHNjYWxlID0gRkFMU0UpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgY291bnRfYmlydGhfb3JkZXIgPSBjb3VudF9iaXJ0aG9yZGVyX2dlbmVzKQpgYGAKCiMjIyBCeSBwcm92aW5jZSB7LmFjdGl2ZX0KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIGZpbHRlcighaXMubmEocHJvdmluY2UpKQpiaXJ0aG9yZGVyJHVyYmFuID0gZmFjdG9yKGJpcnRob3JkZXIkc2MwNT09MSkKYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBkcm9wX25hKGJpcnRoX29yZGVyLCBtb3RoZXJfcGlkbGluaywgYWdlLCBtYWxlLCB1cmJhbikgJT4lIGdyb3VwX2J5KHByb3ZpbmNlKSAlPiUgZmlsdGVyKG5fbm9ubWlzc2luZyh5ZWFyc19vZl9lZHVjYXRpb24pID4gNTApCgpwcm92aW5jZXMgPC0gYmlydGhvcmRlciAlPiUgZHJvcF9uYShiaXJ0aF9vcmRlciwgdXJiYW4pICU+JSAgc2VsZWN0KHByb3ZpbmNlLCB1cmJhbiwgeWVhcnNfb2ZfZWR1Y2F0aW9uLCBiaXJ0aF9vcmRlcikgJT4lIGdyb3VwX2J5KHByb3ZpbmNlKSAlPiUgCiAgc3VtbWFyaXNlKHVyYmFuID0gbWVhbih1cmJhbiA9PSBUUlVFKSwgbl9ub25taXNzaW5nKHllYXJzX29mX2VkdWNhdGlvbiksIHNkKGJpcnRoX29yZGVyLCBuYS5ybSA9IFRSVUUpKSAlPiUgYXJyYW5nZShkZXNjKHVyYmFuKSkKa2FibGUocHJvdmluY2VzKQpgYGAKCmBgYHtyfQphZGRfc2xvcGVfYnlfcHJvdmluY2UgPC0gZnVuY3Rpb24obW9kZWwpIHsKICBtMSA8LSB1cGRhdGUobW9kZWwsIGZvcm11bGEgPSAuIH4gLiArICgxICB8IHByb3ZpbmNlKSwgUkVNTCA9IEZBTFNFKQogIG0yIDwtIHVwZGF0ZShtb2RlbCwgZm9ybXVsYSA9IC4gfiAuICsgKDEgKyBiaXJ0aF9vcmRlciB8fCBwcm92aW5jZSksIFJFTUwgPSBGQUxTRSkKICBhbiA8LSBhbm92YShtMSwgbTIpCiAgaWYgKGFuJGBQcig+Q2hpc3EpYFsyXSA8IC4wMSkgewogICAgcmFuZWZzIDwtIHJhbmVmKG0yKSRwcm92aW5jZSAlPiUgYXMuZGF0YS5mcmFtZSgpICU+JSAKICAgICAgICAgICAgdGliYmxlOjpyb3duYW1lc190b19jb2x1bW4oInByb3ZpbmNlIikgJT4lIAogICAgICAgICAgICBsZWZ0X2pvaW4ocHJvdmluY2VzLCBieSA9ICJwcm92aW5jZSIpICU+JSAKICAgICAgICAgICAgYXJyYW5nZShiaXJ0aF9vcmRlcikgJT4lIAogICAgICAgICAgICBtdXRhdGUoYmlydGhfb3JkZXIgPSBiaXJ0aF9vcmRlciArIGZpeGVmKG0yKVsiYmlydGhfb3JkZXIiXSwgCiAgICAgICAgICAgICAgICAgICBwcm92aW5jZSA9IGZvcmNhdHM6OmZjdF9pbm9yZGVyKHByb3ZpbmNlKQogICAgICAgICAgICAgICAgICAgKSAKICAgIHByaW50KGtuaXRyOjprYWJsZShyYW5lZnMgJT4lIHNlbGVjdChwcm92aW5jZSwgYmlydGhfb3JkZXIpICU+JSBhcnJhbmdlKGJpcnRoX29yZGVyKSkpCiAgICBwcmludChyYW5lZnMgJT4lIAogICAgICAgICAgICBnZ3Bsb3QoYWVzKHByb3ZpbmNlLCBiaXJ0aF9vcmRlciwgY29sb3VyID0gdXJiYW4pKSArIAogICAgICAgICAgICBnZW9tX3BvaW50KHNpemUgPSA0KSArIAogICAgICAgICAgICBzY2FsZV9jb2xvdXJfY29udGludW91cyhsb3cgPSAicmVkIiwgaGlnaCA9ICJibHVlIikgKwogICAgICAgICAgICBjb29yZF9mbGlwKCkgKyAKICAgICAgICAgICAgZ2VvbV9obGluZSh5aW50ZXJjZXB0ID0gZml4ZWYobTIpWyJiaXJ0aF9vcmRlciJdLCBsaW5ldHlwZSA9ICdkYXNoZWQnKSkKICAgIGNhdCgiXG5cblxuIikKICB9CiAgYW4KfQpgYGAKCldoZXJldmVyIGFkZGluZyBhIHJhbmRvbSBzbG9wZSBmb3IgdGhlIGxpbmVhciBiaXJ0aCBvcmRlciBieSBwcm92aW5jZSBpbXByb3ZlZCAKdGhlIG1vZGVsIGF0IGEgbm9taW5hbCBzaWduaWZpY2FuY2Ugb2YgcCA8IC4wNSwgd2Ugc2hvdyBob3cgZWZmZWN0cyB2YXJpZWQgYnkgCnByb3ZpbmNlIGluIGEgcGxvdC4KCgojIyMgTnVtYmVyIG9mIHBlb3BsZSBieSBwcm92aW5jZQpgYGB7cn0KcXBsb3QoZm9yY2F0czo6ZmN0X2luZnJlcShiaXJ0aG9yZGVyJHByb3ZpbmNlKSkgKyBjb29yZF9mbGlwKCkgKyB4bGFiKCJQcm92aW5jZSIpICsgeWxhYigiTiIpCmBgYAoKIyMjIEZhbWlseSBzaXplIGJ5IHByb3ZpbmNlCgpgYGB7cn0KZ2dwbG90KGRhdGEgPSBiaXJ0aG9yZGVyLCBhZXMoZm9yY2F0czo6ZmN0X2luZnJlcShwcm92aW5jZSksIHNpYmxpbmdfY291bnRfZ2VuZXMpKSArIGNvb3JkX2ZsaXAoKSArIHhsYWIoIlByb3ZpbmNlIikgKyB5bGFiKCJOIikgKyBnZW9tX3BvaW50cmFuZ2Uoc3RhdCA9ICdzdW1tYXJ5JykKCnFwbG90KHNpYmxpbmdfY291bnRfZ2VuZXMsIGRhdGEgPSBiaXJ0aG9yZGVyICU+JSBncm91cF9ieShwcm92aW5jZSkgJT4lIG11dGF0ZShtZWFuX3NpYmxpbmdfY291bnRfZ2VuZXM9IG1lYW4oc2libGluZ19jb3VudF9nZW5lcywgbmEucm0gPVQpKSkgKyBnZW9tX3ZsaW5lKGFlcyh4aW50ZXJjZXB0ID0gbWVhbl9zaWJsaW5nX2NvdW50X2dlbmVzKSwgY29sb3IgPSAncmVkJykgKyBmYWNldF93cmFwKH4gZm9yY2F0czo6ZmN0X2luZnJlcShwcm92aW5jZSksIHNjYWxlcyA9ICJmcmVlX3kiKSArIGNvb3JkX2NhcnRlc2lhbih4bGltID0gYygwLDEwKSkKYGBgCgoKIyMgVXJiYW5pc2F0aW9uIGJ5IHByb3ZpbmNlCmBgYHtyfQpnZ3Bsb3QoZGF0YSA9IGJpcnRob3JkZXIsIGFlcyhmb3JjYXRzOjpmY3RfaW5mcmVxKHByb3ZpbmNlKSwgaWZfZWxzZSh1cmJhbiA9PSAiVFJVRSIsIDEsIDApKSkgKyBjb29yZF9mbGlwKCkgKyB4bGFiKCJQcm92aW5jZSIpICsgeWxhYigiTiIpICsgZ2VvbV9wb2ludHJhbmdlKHN0YXQgPSAnc3VtbWFyeScpCmBgYAoKCiMjIyBVcmJhbmlzYXRpb24gYW5kIGZhbWlseSBzaXplCmBgYHtyfQpnZ3Bsb3QoZGF0YSA9IGJpcnRob3JkZXIgJT4lIGdyb3VwX2J5KHByb3ZpbmNlKSAlPiUgc3VtbWFyaXNlKGZhbWlseV9zaXplID0gbWVhbihzaWJsaW5nX2NvdW50X2dlbmVzLCBuYS5ybSA9IFRSVUUpLCB1cmJhbiA9IG1lYW4oaWZfZWxzZSh1cmJhbiA9PSAiVFJVRSIsIDEsMCksIG5hLnJtID0gVCkpLCBhZXMoZmFtaWx5X3NpemUsIHVyYmFuLCBsYWJlbCA9IHByb3ZpbmNlKSkgKyBnZW9tX3RleHQoKSArIHhsYWIoIkZhbWlseSBzaXplIikgKyB5bGFiKCJVcmJhbmlzYXRpb24iKQpgYGAKCiMjIEludGVsbGlnZW5jZSB7LmFjdGl2ZX0KCiMjIyBnLWZhY3RvciAyMDE1IG9sZCB7fQoKYGBge3IgZy1mYWN0b3IgMjAxNSBvbGR9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBnX2ZhY3Rvcl8yMDE1X29sZCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsKICAgICAgICAgICAgICAgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgoKIyMjIGctZmFjdG9yIDIwMTUgeW91bmcge30KCmBgYHtyIGctZmFjdG9yIDIwMTUgeW91bmd9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBnX2ZhY3Rvcl8yMDE1X3lvdW5nKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKwogICAgICAgICAgICAgICAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIyBnLWZhY3RvciAyMDA3IG9sZCB7fQoKYGBge3IgZy1mYWN0b3IgMjAwNyBvbGR9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBnX2ZhY3Rvcl8yMDA3X29sZCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBnLWZhY3RvciAyMDA3IHlvdW5nIHt9CgpgYGB7ciBnLWZhY3RvciAyMDA3IHlvdW5nfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gZ19mYWN0b3JfMjAwN195b3VuZykKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyMgUmF2ZW4gMjAxNSBvbGQge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gcmF2ZW5fMjAxNV9vbGQpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgTnVtZXJhY3kgMjAxNSBvbGQge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gbWF0aF8yMDE1X29sZCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBSYXZlbiAyMDE1IHlvdW5nIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IHJhdmVuXzIwMTVfeW91bmcpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgTnVtZXJhY3kgMjAxNSB5b3VuZyB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBtYXRoXzIwMTVfeW91bmcpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgUmF2ZW4gMjAwNyBvbGQge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gcmF2ZW5fMjAwN19vbGQpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgTnVtZXJhY3kgMjAwNyBvbGR7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBtYXRoXzIwMDdfb2xkKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIFJhdmVuIDIwMDcgeW91bmcge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gcmF2ZW5fMjAwN195b3VuZykKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBOdW1lcmFjeSAyMDA3IHlvdW5nIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IG1hdGhfMjAwN195b3VuZykKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBDb3VudGluZyBiYWNrd2FyZHMge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gY291bnRfYmFja3dhcmRzKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIEltbWVkaWF0ZSB3b3JkIHJlY2FsbCB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSB3b3Jkc19pbW1lZGlhdGUpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgRGVsYXllZCB3b3JkIHJlY2FsbCB7fQpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IHdvcmRzX2RlbGF5ZWQpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgQWRhcHRpdmUgTnVtYmVyaW5nIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGFkYXB0aXZlX251bWJlcmluZykKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIFBlcnNvbmFsaXR5IHt9CgojIyMgRXh0cmF2ZXJzaW9uIHt9CgoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBiaWc1X2V4dCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyMgTmV1cm90aWNpc20ge30KCgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGJpZzVfbmV1KQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIyBDb25zY2llbnRpb3VzbmVzcyB7fQoKCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYmlnNV9jb24pCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMjIEFncmVlYWJsZW5lc3Mge30KCgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGJpZzVfYWdyZWUpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMjIE9wZW5uZXNzIHt9CgoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBiaWc1X29wZW4pCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMgUmlzayBwcmVmZXJlbmNlIHt9CgojIyMgUmlzayBBIHt9CgoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSByaXNrQSkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyMgUmlzayBCIHt9CgoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSByaXNrQikKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyBFZHVjYXRpb25hbCBBdHRhaW5tZW50IHt9CiMjIyBZZWFycyBvZiBFZHVjYXRpb24gLSB6LXN0YW5kYXJkaXplZCB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSB5ZWFyc19vZl9lZHVjYXRpb24pCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKCnN1bW1hcnkoIG0wX2J5X3Byb3ZpbmNlIDwtIGxtZXIob3V0Y29tZSB+IHNpYmxpbmdfY291bnQgKiB1cmJhbiArIGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSArICgxICsgYmlydGhfb3JkZXIgfCBwcm92aW5jZSksIGRhdGEgPSBiaXJ0aG9yZGVyKSkKc3VtbWFyeSggbTFfdXJicnVyIDwtIGxtZXIob3V0Y29tZSB+IChzaWJsaW5nX2NvdW50ICsgYmlydGhfb3JkZXIpICogdXJiYW4gKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspICsgKDEgKyBiaXJ0aF9vcmRlciB8IHByb3ZpbmNlKSwgZGF0YSA9IGJpcnRob3JkZXIpKQphbm92YShtMF9ieV9wcm92aW5jZSwgbTFfdXJicnVyKQpwbG90KGFsbEVmZmVjdHMobTFfdXJicnVyKSkKYGBgCgojIyMgRWxlbWVudGFyeSBtaXNzZWQge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gRWxlbWVudGFyeV9taXNzZWQpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMjIEVsZW1lbnRhcnkgd29ya2VkIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IEVsZW1lbnRhcnlfd29ya2VkKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIyBBdHRlbmRlZCBTY2hvb2wge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYXR0ZW5kZWRfc2Nob29sKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIFdvcmsge30KCiMjIyBJbmNvbWUgTGFzdCBNb250aCAobG9nKSAtIHotc3RhbmRhcmRpemVkIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IHdhZ2VfbGFzdF9tb250aF96KQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIEluY29tZSBsYXN0IHllYXIgKGxvZykgLSB6LXN0YW5kYXJkaXplZCB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSB3YWdlX2xhc3RfeWVhcl96KQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIFNlbGYtRW1wbG95bWVudCAtIG5vbiBzdGFuZGFyZGl6ZWQge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gU2VsZl9lbXBsb3llZCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyBXb3JrIENhdGVnb3J5e30KCiMjIyBDYXRlZ29yeV9DYXN1YWwgd29ya2VyIGluIGFncmljdWx0dXJle30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYENhdGVnb3J5X0Nhc3VhbCB3b3JrZXIgaW4gYWdyaWN1bHR1cmVgKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIENhdGVnb3J5X0Nhc3VhbCB3b3JrZXIgbm90IGluIGFncmljdWx0dXJle30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYENhdGVnb3J5X0Nhc3VhbCB3b3JrZXIgbm90IGluIGFncmljdWx0dXJlYCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBDYXRlZ29yeV9Hb3Zlcm5tZW50IHdvcmtlcnt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGBDYXRlZ29yeV9Hb3Zlcm5tZW50IHdvcmtlcmApCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMjIENhdGVnb3J5X1ByaXZhdGUgd29ya2Vye30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYENhdGVnb3J5X1ByaXZhdGUgd29ya2VyYCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIyBDYXRlZ29yeV9TZWxmLWVtcGxveWVke30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYENhdGVnb3J5X1NlbGYtZW1wbG95ZWRgKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKIyMjIENhdGVnb3J5X1VucGFpZCBmYW1pbHkgd29ya2Vye30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYENhdGVnb3J5X1VucGFpZCBmYW1pbHkgd29ya2VyYCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCiMjIFdvcmsgU2VjdG9yIHt9CgojIyMgU2VjdG9yX0FncmljdWx0dXJlLCBmb3Jlc3RyeSwgZmlzaGluZyBhbmQgaHVudGluZyB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBgU2VjdG9yX0FncmljdWx0dXJlLCBmb3Jlc3RyeSwgZmlzaGluZyBhbmQgaHVudGluZ2ApCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgU2VjdG9yX0NvbnN0cnVjdGlvbiB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBgU2VjdG9yX0NvbnN0cnVjdGlvbmApCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgU2VjdG9yX0VsZWN0cmljaXR5LCBnYXMsIHdhdGVyIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGBTZWN0b3JfRWxlY3RyaWNpdHksIGdhcywgd2F0ZXJgKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIyBTZWN0b3JfRmluYW5jZSwgaW5zdXJhbmNlLCByZWFsIGVzdGF0ZSBhbmQgYnVzaW5lc3Mgc2VydmljZXMge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gYFNlY3Rvcl9GaW5hbmNlLCBpbnN1cmFuY2UsIHJlYWwgZXN0YXRlIGFuZCBidXNpbmVzcyBzZXJ2aWNlc2ApCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgoKIyMjIFNlY3Rvcl9NYW51ZmFjdHVyaW5nIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IFNlY3Rvcl9NYW51ZmFjdHVyaW5nKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCgojIyMgU2VjdG9yX01pbmluZyBhbmQgcXVhcnJ5aW5nIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGBTZWN0b3JfTWluaW5nIGFuZCBxdWFycnlpbmdgKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAoKCiMjIyBTZWN0b3JfU29jaWFsIHNlcnZpY2VzIHt9CgpgYGB7cn0KYmlydGhvcmRlciA8LSBiaXJ0aG9yZGVyICU+JSBtdXRhdGUob3V0Y29tZSA9IGBTZWN0b3JfU29jaWFsIHNlcnZpY2VzYCkKbW9kZWwgPSBsbWVyKG91dGNvbWUgfiBiaXJ0aF9vcmRlciArIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIG1hbGUgKyBzaWJsaW5nX2NvdW50ICsgKDEgfCBtb3RoZXJfcGlkbGluayksCiAgICAgICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikKYWRkX3Nsb3BlX2J5X3Byb3ZpbmNlKG1vZGVsKQpgYGAKCgojIyMgU2VjdG9yX1RyYW5zcG9ydGF0aW9uLCBzdG9yYWdlIGFuZCBjb21tdW5pY2F0aW9ucyB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBgU2VjdG9yX1RyYW5zcG9ydGF0aW9uLCBzdG9yYWdlIGFuZCBjb21tdW5pY2F0aW9uc2ApCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyBTbW9raW5nIEJlaGF2aW91ciB7fQojIyMgZXZlcl9zbW9rZWQge30KCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZShvdXRjb21lID0gZXZlcl9zbW9rZWQpCm1vZGVsID0gbG1lcihvdXRjb21lIH4gYmlydGhfb3JkZXIgKyBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBtYWxlICsgc2libGluZ19jb3VudCArICgxIHwgbW90aGVyX3BpZGxpbmspLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGJpcnRob3JkZXIpCmFkZF9zbG9wZV9ieV9wcm92aW5jZShtb2RlbCkKYGBgCgojIyMgc3RpbGxfc21va2luZyB7fQoKYGBge3J9CmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUgbXV0YXRlKG91dGNvbWUgPSBzdGlsbF9zbW9raW5nKQptb2RlbCA9IGxtZXIob3V0Y29tZSB+IGJpcnRoX29yZGVyICsgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgbWFsZSArIHNpYmxpbmdfY291bnQgKyAoMSB8IG1vdGhlcl9waWRsaW5rKSwKICAgICAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKQphZGRfc2xvcGVfYnlfcHJvdmluY2UobW9kZWwpCmBgYAo=</div>
 
 
 

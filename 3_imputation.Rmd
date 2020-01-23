@@ -121,6 +121,14 @@ alldata_birthorder <-  alldata_birthorder %>% select(`mother_pidlink`,  `age`, `
 
 `Category_Casual worker in agriculture`, `Category_Casual worker not in agriculture`, `Category_Government worker`, `Category_Private worker`, `Category_Self-employed`, `Category_Unpaid family worker`, 
 `Sector_Agriculture, forestry, fishing and hunting`, `Sector_Construction`, `Sector_Electricity, gas, water`, `Sector_Finance, insurance, real estate and business services`, `Sector_Manufacturing`, `Sector_Mining and quarrying`, `Sector_Social services`, `Sector_Transportation, storage and communications`, `Sector_Wholesale, retail, restaurants and hotels`)
+
+alldata_birthorder <-  alldata_birthorder %>% 
+  rename_all(funs(str_replace_all(., "\\s", "_"))) %>% 
+  rename_all(funs(str_replace_all(., ",", "_")))
+
+alldata_birthorder <- alldata_birthorder %>% 
+  mutate(age2 = I(age ^ 2),
+         age3 = I(age ^ 3))
 ```
 
 ## Functions
@@ -163,13 +171,16 @@ dim(alldata_birthorder)
 nrow(alldata_birthorder)
 ncol(alldata_birthorder)
 summary(alldata_birthorder)
+```
 
+### missingness pattern
+```{r}
 #look at the missing data pattern
-missingness_pattern = as.data.frame(md.pattern(alldata_birthorder))
-length(missingness_pattern)
+missingness_pattern = md.pattern(alldata_birthorder)
+DT::datatable(md_pattern(alldata_birthorder, min_freq = 0.005))
+```
 
-
-alldata_birthorder <- alldata_birthorder %>% select(-pidlink)
+```{r}
 alldata_birthorder$mother_pidlink = as.integer(alldata_birthorder$mother_pidlink)
 skimr::skim(alldata_birthorder)
 
@@ -177,8 +188,9 @@ imp0 <- mice(alldata_birthorder, maxit=0)
 
 pred1 <- imp0$predictorMatrix
 pred1
-pred1 = quickpred(alldata_birthorder, mincor = 0.1) #all variables that correlate > .01
+pred1 = quickpred(alldata_birthorder, mincor = 0.1) #all variables that correlate > .1
 pred1
+pred1[, 1:25] <- 1 # let focal variables predict each other in any case
 meth1 <- imp0$method
 
 # linear multilevel imputation using the function mice.impute.2l.norm()
@@ -191,12 +203,13 @@ meth1
 pred1
 
 imp1 <- mice(alldata_birthorder, maxit = 4, m=2, predictorMatrix = pred1, method = meth1)
+imp2 <- mice(alldata_birthorder, maxit = 60, m=1, predictorMatrix = pred1, method = meth1)
 
 library(future)
-plan(multicore(workers = 10))
+plan(multicore(workers = 5))
 imps = listenv::listenv()
 for (i in seq_along(1:10)) {
-  imps[[i]] %<-% mice(alldata_birthorder, m = 1, maxit = 15, predictorMatrix = pred1, method = meth1)
+  imps[[i]] %<-% mice(alldata_birthorder, m = 1, maxit = 60, predictorMatrix = pred1, method = meth1)
 }
 save(imps, file = "imps.rdata")
 

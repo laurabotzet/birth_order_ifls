@@ -348,7 +348,6 @@ ggplot(data=birthorder, aes(x=years_of_education, fill=group_birthorder)) +
 
 ## Descriptives
 ```{r correlation}
-x = birthorder %>% filter(group_birthorder == "test", group_outcome == "test")
 mean_sd = birthorder %>%
   group_by(group_birthorder) %>%
   summarise(age_mean = mean(age, na.rm=T),

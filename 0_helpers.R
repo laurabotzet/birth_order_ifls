@@ -29,6 +29,7 @@ library(lubridate)
 library(stringr)
 #' extractor functions for models
 library(broom)
+library(broom.mixed)
 #' marginal effects plots for regressions
 library(effects)
 #' grammar of graphics plots
@@ -232,18 +233,20 @@ plot_birthorder = function(model, title = "", bo_var = "birth_order", separate =
                            number$`4/4`), ")", seperate="")
     n5 = paste0("5 (", sum(number$`1/5`, number$`2/5`, number$`3/5`,
                            number$`4/5`, number$`5/5`), ")", seperate="")
-    n5more = paste0("5+ (", sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
-                                number$`4/5+`, number$`5/5+`, number$`5+/5+`), ")",
+    n5more = paste0(">5 (", sum(number$`1/>5`, number$`2/>5`, number$`3/>5`,
+                                number$`4/>5`, number$`5/>5`, number$`>5/>5`), ")",
                     seperate="")
     cemm = cemm %>%
       mutate(Sibship = recode_factor(Sibship, "2" = `n2`, "3" = `n3`, "4" = `n4`,
-                                     "5" = `n5`, "5+" = `n5more`))
+                                     "5" = `n5`, ">5" = `n5more`))
   }
-  plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
+  plotx = ggplot(cemm, aes(factor(`Birth order`,levels = c("1", "2", "3", "4", "5", ">5")),
+                           y = fit, ymax = upper, ymin = lower,
                            colour = `Sibship`, group = `Sibship`)) +
     geom_pointrange(stat = "identity", position = position_dodge(width = 0.5), size = 1) +
     geom_line(position = position_dodge(width = 0.5), size = 1) +
     labs(title = title) +
+    xlab("Birth order") +
     apatheme +
     theme(text = element_text(size=20), axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15), legend.text = element_text(size = 15),
@@ -282,18 +285,19 @@ plot_birthorder2 = function(model, title = "", bo_var = "birth_order", separate 
                            number$`4/4`), ")", seperate="")
     n5 = paste0("5 (", sum(number$`1/5`, number$`2/5`, number$`3/5`,
                            number$`4/5`, number$`5/5`), ")", seperate="")
-    n5more = paste0("5+ (", sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
-                                number$`4/5+`, number$`5/5+`, number$`5+/5+`), ")",
+    n5more = paste0(">5 (", sum(number$`1/>5`, number$`2/>5`, number$`3/>5`,
+                                number$`4/>5`, number$`5/>5`, number$`>5/>5`), ")",
                     seperate="")
     cemm = cemm %>%
       mutate(Sibship = recode_factor(Sibship, "2" = `n2`, "3" = `n3`, "4" = `n4`,
-                                     "5" = `n5`, "5+" = `n5more`))
+                                     "5" = `n5`, ">5" = `n5more`))
   }
   plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
                            colour = `Sibship`, group = `Sibship`)) +
     geom_smooth(stat = "identity", position = position_dodge(width = 0.5), size = 1) +
     geom_line(position = position_dodge(width = 0.5), size = 1) +
     labs(title = title) +
+    xlab("Birth order") +
     apatheme +
     theme(text = element_text(size=20), axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15), legend.text = element_text(size = 15),

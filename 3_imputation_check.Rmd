@@ -22,28 +22,11 @@ source("0_helpers.R")
 ## Data
 ```{r}
 ### Import alldata used for birthorder and g-factors computed
-alldata_birthorder = readRDS("data/alldata_birthorder.rds")
+alldata_birthorder = readRDS("data/alldata_birthorder_missing.rds")
 
 alldata_birthorder_i =  readRDS("data/alldata_birthorder_i_ml.rds")
 
-
-
 colnames(alldata_birthorder)
-
-## For the imputation we wanted to clean the dataset and get rid of all uninteresting data
-## To get the same dataset that we used for imputation thats what we have to do again:
-alldata_birthorder = alldata_birthorder %>%
-  filter(!is.na(pidlink)) %>% # no individuals who are only known from the pregnancy file
-  filter(is.na(lifebirths) | lifebirths == 2) %>% # remove 7 and 2 individuals who are known as stillbirth or miscarriage but still have PID
-  select(-lifebirths) %>% 
-  filter(!is.na(mother_pidlink)) %>% 
-  select(-father_pidlink) %>% 
-  filter(is.na(any_multiple_birth) | any_multiple_birth != 1) %>% # remove 7 and 2 individuals who are known as stillbirth or miscarriage but still have PID
-  select(-starts_with("age_"), -wave, -any_multiple_birth, -multiple_birth) %>% 
-  mutate(money_spent_smoking_log = if_else(is.na(money_spent_smoking_log) & ever_smoked == 0, 0, money_spent_smoking_log),
-         amount = if_else(is.na(amount) & ever_smoked == 0, 0, amount),
-         amount_still_smokers = if_else(is.na(amount_still_smokers) &  still_smoking == 0, 0, amount_still_smokers),
-         birthyear = lubridate::year(birthdate))
 ```
 
 
@@ -86,6 +69,28 @@ alldata_birthorder_i_tbl = alldata_birthorder_i_g_factor %>% tbl_df.mitml.list
 
 ```
 
+
+# Compute g factor
+Or rather simply a sum score of scaled test scores to keep things simple here.
+
+```{r}
+
+# Imputed data
+alldata_birthorder_i_g_factor <- within(alldata_birthorder_i_g_factor, {
+  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
+})
+
+alldata_birthorder_i_g_factor <- within(alldata_birthorder_i_g_factor, {
+  g_factor_2007 <- rowMeans(scale(cbind(raven_2007_old, math_2007_old, count_backwards,  words_delayed, adaptive_numbering)))
+})
+```
+
+## Iterations and convergence
+
+```{r}
+plot(alldata_birthorder_i)
+```
+
 ## Correlations, iterations and density {.active}
 ```{r}
 # correlations
@@ -103,23 +108,15 @@ correlations_imputed = correlations_imputed %>%
 correlations = full_join(correlations_original, correlations_imputed, by = "v")
 
 cor.test(correlations$r_original, correlations$r_imputed)
-qplot(correlations$r_original, correlations$r_imputed)
-
-
-# plot imputation steps
-name_columns = colnames(alldata_birthorder_i_tbl[[1]]) %>% as.data.frame 
-name_columns = name_columns[name_columns != "mother_pidlink" & name_columns != "age" &
-                              name_columns != "any_multiple_birthdate" &
-                              name_columns != "sibling_count_naive" &
-                              name_columns != "male"]
-
-name_columns_1 = name_columns[1:30]
-
-plot(alldata_birthorder_i, name_columns_1)
-
-pdf("imputation_steps_1.pdf")
-plot(alldata_birthorder_i, name_columns_1)
-dev.off()
+library(ggrepel)
+sum(abs(correlations$r_original - correlations$r_imputed) > 0.5, na.rm = T)
+correlations <- correlations %>% 
+  mutate(label = if_else(abs(r_original - r_imputed) > 0.5, 
+                         paste(Var1_original, Var2_original),
+                         NA_character_))
+ggplot(correlations, aes(r_original, r_imputed)) +
+  geom_point(alpha = 0.1) + 
+  geom_text_repel(aes(label = label))
 
 
 # check densities of imputed/real
@@ -135,6 +132,7 @@ densityplot(alldata_birthorder_i, ~ raven_2007_old + raven_2007_young + math_200
 densityplot(alldata_birthorder_i, ~ big5_ext + big5_con + big5_open + big5_neu + big5_agree)
 
 densityplot(alldata_birthorder_i, ~ riskA + riskB)
+
 
 densityplot(alldata_birthorder_i, ~ Elementary_missed + Elementary_worked + attended_school + years_of_education + Self_employed)
 
@@ -174,6 +172,8 @@ xyplot(alldata_birthorder_i, raven_2015_old ~ birthorder_genes | .imp , pch = 20
 ## G-Factor
 ```{r g factor}
 # Normal data - no misses
+alldata_birthorder <- alldata_birthorder %>%
+  mutate(pidlink = row_number())
 no_miss = alldata_birthorder %>%
   filter(!is.na(raven_2015_old), !is.na(math_2015_old), !is.na(count_backwards),
          !is.na(words_delayed), !is.na(adaptive_numbering))
@@ -196,14 +196,6 @@ no_miss = no_miss %>% select(pidlink, g_factor_nomiss)
 alldata_birthorder = left_join(alldata_birthorder, no_miss, by = "pidlink")
 qplot(alldata_birthorder$g_factor_nomiss)
 
-# Imputed data
-alldata_birthorder_i_g_factor <- within(alldata_birthorder_i_g_factor, {
-  g_factor_2015 <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
-})
-
-alldata_birthorder_i_g_factor <- within(alldata_birthorder_i_g_factor, {
-  g_factor_2007 <- rowMeans(scale(cbind(raven_2007_old, math_2007_old, count_backwards,  words_delayed, adaptive_numbering)))
-})
 
 qplot(alldata_birthorder_i_g_factor[[1]]$g_factor_2015)
 qplot(alldata_birthorder_i_g_factor[[1]]$g_factor_2007)
@@ -215,7 +207,5 @@ summary(lm(g_factor_2015 ~ raven_2015_young, alldata_birthorder_i_g_factor[[1]])
 
 alldata_birthorder %>% {cor.test(.$g_factor_nomiss, .$years_of_education)}
 alldata_birthorder_i_g_factor[[1]] %>% {cor.test(.$g_factor_2015, .$years_of_education)}
-
-
-saveRDS(alldata_birthorder_i, file="alldata_birthorder_i.rdata")
+alldata_birthorder_i_g_factor[[1]] %>% {cor.test(.$g_factor_2007, .$years_of_education)}
 ```

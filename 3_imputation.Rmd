@@ -79,6 +79,45 @@ alldata_birthorder = left_join(alldata_birthorder,
 
 
 
+alldata_birthorder = alldata_birthorder %>% 
+  mutate(
+# birthorder as factors with levels of 1, 2, 3, 4, 5, 5+
+    birthorder_naive_factor = as.character(birthorder_naive),
+    birthorder_naive_factor = ifelse(birthorder_naive > 5, "5+",
+                                            birthorder_naive_factor),
+    birthorder_naive_factor = factor(birthorder_naive_factor, 
+                                            levels = c("1","2","3","4","5","5+")),
+    sibling_count_naive_factor = as.character(sibling_count_naive),
+    sibling_count_naive_factor = ifelse(sibling_count_naive > 5, "5+",
+                                               sibling_count_naive_factor),
+    sibling_count_naive_factor = factor(sibling_count_naive_factor, 
+                                               levels = c("2","3","4","5","5+")),
+    birthorder_genes_factor = as.character(birthorder_genes),
+    birthorder_genes_factor = ifelse(birthorder_genes >5 , "5+", birthorder_genes_factor),
+    birthorder_genes_factor = factor(birthorder_genes_factor, 
+                                     levels = c("1","2","3","4","5","5+")),
+    sibling_count_genes_factor = as.character(sibling_count_genes),
+    sibling_count_genes_factor = ifelse(sibling_count_genes >5 , "5+",
+                                        sibling_count_genes_factor),
+    sibling_count_genes_factor = factor(sibling_count_genes_factor, 
+                                        levels = c("2","3","4","5","5+")),
+    # interaction birthorder * siblingcout for each birthorder
+    count_birthorder_naive =
+      factor(str_replace(as.character(interaction(birthorder_naive_factor,                                                              sibling_count_naive_factor)),
+                        "\\.", "/"),
+                                           levels =   c("1/2","2/2", "1/3",  "2/3",
+                                                        "3/3", "1/4", "2/4", "3/4", "4/4",
+                                                        "1/5", "2/5", "3/5", "4/5", "5/5",
+                                                        "1/5+", "2/5+", "3/5+", "4/5+",
+                                                        "5/5+", "5+/5+")),
+    count_birthorder_genes =
+      factor(str_replace(as.character(interaction(birthorder_genes_factor,                                                              sibling_count_genes_factor)), "\\.", "/"),
+                                           levels =   c("1/2","2/2", "1/3",  "2/3",
+                                                        "3/3", "1/4", "2/4", "3/4", "4/4",
+                                                        "1/5", "2/5", "3/5", "4/5", "5/5",
+                                                        "1/5+", "2/5+", "3/5+", "4/5+",
+                                                        "5/5+", "5+/5+"))) %>% 
+  select(-sibling_count_genes_factor, -sibling_count_naive_factor)
 
 
 corr_pipe = . %>%  as.matrix() %>% 
@@ -110,25 +149,24 @@ alldata_birthorder %>% select_if(function(.)!is.numeric(.)) %>% names()
 
 correlations = corr_pipe(alldata_birthorder %>% select_if(is.numeric))
 
-alldata_birthorder <-  alldata_birthorder %>% select(`mother_pidlink`,  `age`, `male`, `birthorder_naive`, `sibling_count_naive`, `birthorder_genes`, `sibling_count_genes`,  
+alldata_birthorder <-  alldata_birthorder %>% select(`mother_pidlink`,  `age`, `male`, `birthorder_naive`, `sibling_count_naive`, count_birthorder_naive, `birthorder_genes`, `sibling_count_genes`,  count_birthorder_genes,
 `raven_2015_young`, `math_2015_young`, `raven_2015_old`, `math_2015_old`, `words_delayed`, `adaptive_numbering`, `raven_2007_old`, `raven_2007_young`, `math_2007_young`, `math_2007_old`, `count_backwards`, 
 
 `big5_ext`, `big5_con`, `big5_open`, `big5_neu`, `big5_agree`, `riskA`, `riskB`,
 
 `Elementary_missed`, `Elementary_worked`, `attended_school`,
 
-`years_of_education`, `Self_employed`, `ever_smoked`, `still_smoking`, `wage_last_month_log`, `wage_last_year_log`,
-
-`Category_Casual worker in agriculture`, `Category_Casual worker not in agriculture`, `Category_Government worker`, `Category_Private worker`, `Category_Self-employed`, `Category_Unpaid family worker`, 
-`Sector_Agriculture, forestry, fishing and hunting`, `Sector_Construction`, `Sector_Electricity, gas, water`, `Sector_Finance, insurance, real estate and business services`, `Sector_Manufacturing`, `Sector_Mining and quarrying`, `Sector_Social services`, `Sector_Transportation, storage and communications`, `Sector_Wholesale, retail, restaurants and hotels`)
+`years_of_education`, `Self_employed`, `ever_smoked`, `still_smoking`, `wage_last_month_log`, `wage_last_year_log`)
 
 alldata_birthorder <-  alldata_birthorder %>% 
   rename_all(funs(str_replace_all(., "\\s", "_"))) %>% 
   rename_all(funs(str_replace_all(., ",", "_")))
 
 alldata_birthorder <- alldata_birthorder %>% 
-  mutate(age2 = I(age ^ 2),
-         age3 = I(age ^ 3))
+  mutate(age2 = I((age - mean(age, na.rm = T)) ^ 2),
+         age3 = I((age - mean(age, na.rm = T)) ^ 3))
+
+saveRDS(alldata_birthorder, "data/alldata_birthorder_missing.rds")
 ```
 
 ## Functions
@@ -173,7 +211,77 @@ ncol(alldata_birthorder)
 summary(alldata_birthorder)
 ```
 
-### missingness pattern
+## Trial
+```{r}
+dta <- tibble(
+  linear = rnorm(100),
+  linear_b = linear + 0.2 * rnorm(100),
+  dichot = factor(case_when(
+    linear < -1 ~ "-1",
+    linear < 1 ~ "-1 to 1",
+    TRUE ~ "+1"
+  )),
+  dichot_b = factor(case_when(
+    linear_b < -1 ~ "-1",
+    linear_b < 1 ~ "-1 to 1",
+    TRUE ~ "+1"
+  )),
+  trait = -0.5 * linear + 0.1 * linear^3 + 1 * (linear ^ 2) + rnorm(100)
+)
+cor(dta$linear, dta$linear_b)
+miss <- dta
+miss[1:20, c("linear", "dichot")] <- NA
+miss[10:30, c("trait")] <- NA
+
+str(miss$dichot_b)
+
+imp0 <- mice(miss, maxit=0)
+
+pred1 <- imp0$predictorMatrix
+pred1
+pred1 = quickpred(miss, mincor = 0.1) #all variables that correlate > .1
+pred1[, "trait"] <- 0
+pred1["dichot", "trait"] <- 1
+pred1[, "linear"] <- 0
+pred1["linear_b", "linear"] <- 1
+pred1[, "dichot"] <- 0
+pred1["dichot_b", "dichot"] <- 1
+pred1[, "linear_b"] <- 0
+pred1[, "dichot_b"] <- 0
+meth1 <- imp0$method
+
+imp <- mice(miss, m = 20, predictorMatrix = pred1, maxit = 30)
+
+plot(imp)
+
+# cbind(mice::complete(imp, 1) %>% select(linear, dichot, trait), dta %>% select(linear, dichot, trait)) %>% View
+```
+
+### Missingness pattern
+
+We can see that 
+
+1. there are many for whom we only have birth order information, no outcomes
+2. there are many for whom we have outcome info, but only the "naive" birth order, not based
+on pregnancy data
+
+#### Reduced set of variables
+
+```{r}
+miss_frac(alldata_birthorder)
+missingness_pattern = md.pattern(alldata_birthorder %>% 
+                                   select(birthorder_naive, birthorder_genes,
+                                          math_2015_young,
+                                          math_2015_old, words_delayed,
+                                          raven_2007_young, raven_2007_old, big5_ext))
+DT::datatable(md_pattern(alldata_birthorder %>% 
+                                   select(birthorder_naive, birthorder_genes,
+                                          math_2015_young,
+                                          math_2015_old, words_delayed,
+                                          raven_2007_young, raven_2007_old, big5_ext), min_freq = 0.005))
+```
+
+#### All variables
 ```{r}
 #look at the missing data pattern
 missingness_pattern = md.pattern(alldata_birthorder)
@@ -190,7 +298,22 @@ pred1 <- imp0$predictorMatrix
 pred1
 pred1 = quickpred(alldata_birthorder, mincor = 0.1) #all variables that correlate > .1
 pred1
-pred1[, 1:25] <- 1 # let focal variables predict each other in any case
+pred1[, 1:27] <- 1 # let focal variables predict each other in any case
+
+# naive BO/SC never imputed (almost never missing, only used to impute BO genes)
+pred1[, c("birthorder_naive", "sibling_count_naive", "count_birthorder_naive")] <- 0
+# naive BO/SC never used to impute traits
+pred1[c("birthorder_naive", "sibling_count_naive", "count_birthorder_naive"), ] <- 0
+
+# linear BO/SC genes not used to impute traits, only their interaction count_birthorder_genes
+pred1[c("birthorder_genes", "sibling_count_genes"), ] <- 0
+
+# naive BO only used to impute BO genes
+pred1[, c("birthorder_genes", "sibling_count_genes", "count_birthorder_genes")] <- 0
+pred1["birthorder_naive", c("birthorder_genes")] <- 1
+pred1["sibling_count_naive", c("sibling_count_genes")] <- 1
+pred1["count_birthorder_naive", c("count_birthorder_genes")] <- 1
+
 meth1 <- imp0$method
 
 # linear multilevel imputation using the function mice.impute.2l.norm()
@@ -199,27 +322,41 @@ meth1 <- imp0$method
 pred1[, "mother_pidlink"] = -2
 # set imputation procedures
 meth1[-1] <- "2l.pan"
-meth1
+meth1[c("count_birthorder_naive")] <- ""
+meth1[c("count_birthorder_genes")] <- "polyreg"
 pred1
 
-imp1 <- mice(alldata_birthorder, maxit = 4, m=2, predictorMatrix = pred1, method = meth1)
-imp2 <- mice(alldata_birthorder, maxit = 60, m=1, predictorMatrix = pred1, method = meth1)
-
-library(future)
-plan(multicore(workers = 5))
-imps = listenv::listenv()
-for (i in seq_along(1:10)) {
-  imps[[i]] %<-% mice(alldata_birthorder, m = 1, maxit = 60, predictorMatrix = pred1, method = meth1)
+if (file.exists("data/birthorder_imps.rds")) {
+  all_imps <- readRDS("data/birthorder_imps.rds")
+} else {
+  # imp1 <- mice(alldata_birthorder, maxit = 1, m=1, predictorMatrix = pred1, method = meth1)
+  # imp2 <- mice(alldata_birthorder, maxit = 60, m=1, predictorMatrix = pred1, method = meth1)
+  
+  library(future)
+  login <- tweak(remote, workers = "arslan@arc-lin-cpt11.mpib-berlin.mpg.de") # Your username goes before the @
+  plan(list(login, tweak(multicore, workers = 10)))
+  all_imps %<-% {
+    imps <- listenv::listenv()
+    for (i in seq_along(1:10)) {
+      imps[[i]] %<-% mice(alldata_birthorder, m = 1, maxit = 40, predictorMatrix = pred1, method = meth1)
+    }
+    all_imps <- as.list(imps)
+    saveRDS(all_imps, "birthorder_imps.rds")
+    all_imps
+  }
+  saveRDS(all_imps, "data/birthorder_imps.rds")
 }
-save(imps, file = "imps.rdata")
 
-all_imps = as.list(imps)
-save(all_imps, file = "imps2.rdata")
 alldata_birthorder_i = all_imps[[1]]
-for (i in seq_along(2:length(all_imps))) {
+for (i in 2:length(all_imps)) {
   alldata_birthorder_i = ibind(alldata_birthorder_i, all_imps[[i]])
 }
-saveRDS(alldata_birthorder_i, file = "alldata_birthorder_i_ml.rds")
+```
+
+
+
+```{r}
+saveRDS(alldata_birthorder_i, file = "data/alldata_birthorder_i_ml.rds")
 ```
  
 

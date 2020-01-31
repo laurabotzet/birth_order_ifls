@@ -1,3 +1,4 @@
+source("renv/activate.R")
 #' # `.Rprofile`
 
 #' ## Settings

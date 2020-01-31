@@ -10,7 +10,7 @@ editor_options:
 ## Helper
 ```{r helper}
 source("0_helpers.R")
-opts_chunk$set(warning = FALSE)
+opts_chunk$set(warning = FALSE,error=T)
 detach("package:lmerTest", unload=TRUE)
 ```
 

@@ -676,7 +676,7 @@ x$Coefficient = ifelse(x$Coefficient == "birthorder_genes", "Birth order")
 ggplot(x, aes(Model, Value)) +
   scale_colour_brewer(palette = "Set2") +
   geom_hline(yintercept = 0, size = 1.5)  +
-  geom_rect(aes(xmin=0, xmax=Inf, ymin=-0.182, ymax=-0.088), fill = "lightgrey") +
+  geom_rect(aes(xmin=0, xmax=Inf, ymin=-0.20, ymax=-0.07), fill = "lightgrey") +
   geom_hline(yintercept = -.135, linetype = "dotted", size = 1.5) + 
   scale_x_discrete(limits=c("Risk Aversion B", "Risk Aversion A", "Openness", "Neuroticism",
                             "Extraversion", "Conscientiousness", "Agreeableness",

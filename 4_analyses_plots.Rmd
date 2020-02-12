@@ -136,47 +136,47 @@ qplot(birthorder$g_factor_2015_old)
 ### Birthorder and Sibling Count
 birthorder = birthorder %>% 
   mutate(
-# birthorder as factors with levels of 1, 2, 3, 4, 5, 5+
+# birthorder as factors with levels of 1, 2, 3, 4, 5, >5
     birthorder_naive_factor = as.character(birthorder_naive),
-    birthorder_naive_factor = ifelse(birthorder_naive > 5, "5+",
+    birthorder_naive_factor = ifelse(birthorder_naive > 5, ">5",
                                             birthorder_naive_factor),
     birthorder_naive_factor = factor(birthorder_naive_factor, 
-                                            levels = c("1","2","3","4","5","5+")),
+                                            levels = c("1","2","3","4","5",">5")),
     sibling_count_naive_factor = as.character(sibling_count_naive),
-    sibling_count_naive_factor = ifelse(sibling_count_naive > 5, "5+",
+    sibling_count_naive_factor = ifelse(sibling_count_naive > 5, ">5",
                                                sibling_count_naive_factor),
     sibling_count_naive_factor = factor(sibling_count_naive_factor, 
-                                               levels = c("2","3","4","5","5+")),
+                                               levels = c("2","3","4","5",">5")),
 
     birthorder_uterus_alive_factor = as.character(birthorder_uterus_alive),
-    birthorder_uterus_alive_factor = ifelse(birthorder_uterus_alive > 5, "5+",
+    birthorder_uterus_alive_factor = ifelse(birthorder_uterus_alive > 5, ">5",
                                             birthorder_uterus_alive_factor),
     birthorder_uterus_alive_factor = factor(birthorder_uterus_alive_factor, 
-                                            levels = c("1","2","3","4","5","5+")),
+                                            levels = c("1","2","3","4","5",">5")),
     sibling_count_uterus_alive_factor = as.character(sibling_count_uterus_alive),
-    sibling_count_uterus_alive_factor = ifelse(sibling_count_uterus_alive > 5, "5+",
+    sibling_count_uterus_alive_factor = ifelse(sibling_count_uterus_alive > 5, ">5",
                                                sibling_count_uterus_alive_factor),
     sibling_count_uterus_alive_factor = factor(sibling_count_uterus_alive_factor, 
-                                               levels = c("2","3","4","5","5+")),
+                                               levels = c("2","3","4","5",">5")),
     birthorder_uterus_preg_factor = as.character(birthorder_uterus_preg),
-    birthorder_uterus_preg_factor = ifelse(birthorder_uterus_preg > 5, "5+",
+    birthorder_uterus_preg_factor = ifelse(birthorder_uterus_preg > 5, ">5",
                                            birthorder_uterus_preg_factor),
     birthorder_uterus_preg_factor = factor(birthorder_uterus_preg_factor,
-                                           levels = c("1","2","3","4","5","5+")),
+                                           levels = c("1","2","3","4","5",">5")),
     sibling_count_uterus_preg_factor = as.character(sibling_count_uterus_preg),
-    sibling_count_uterus_preg_factor = ifelse(sibling_count_uterus_preg > 5, "5+",
+    sibling_count_uterus_preg_factor = ifelse(sibling_count_uterus_preg > 5, ">5",
                                               sibling_count_uterus_preg_factor),
     sibling_count_uterus_preg_factor = factor(sibling_count_uterus_preg_factor, 
-                                              levels = c("2","3","4","5","5+")),
+                                              levels = c("2","3","4","5",">5")),
     birthorder_genes_factor = as.character(birthorder_genes),
-    birthorder_genes_factor = ifelse(birthorder_genes >5 , "5+", birthorder_genes_factor),
+    birthorder_genes_factor = ifelse(birthorder_genes >5 , ">5", birthorder_genes_factor),
     birthorder_genes_factor = factor(birthorder_genes_factor, 
-                                     levels = c("1","2","3","4","5","5+")),
+                                     levels = c("1","2","3","4","5",">5")),
     sibling_count_genes_factor = as.character(sibling_count_genes),
-    sibling_count_genes_factor = ifelse(sibling_count_genes >5 , "5+",
+    sibling_count_genes_factor = ifelse(sibling_count_genes >5 , ">5",
                                         sibling_count_genes_factor),
     sibling_count_genes_factor = factor(sibling_count_genes_factor, 
-                                        levels = c("2","3","4","5","5+")),
+                                        levels = c("2","3","4","5",">5")),
     # interaction birthorder * siblingcout for each birthorder
     count_birthorder_naive =
       factor(str_replace(as.character(interaction(birthorder_naive_factor,                                                              sibling_count_naive_factor)),
@@ -184,31 +184,31 @@ birthorder = birthorder %>%
                                            levels =   c("1/2","2/2", "1/3",  "2/3",
                                                         "3/3", "1/4", "2/4", "3/4", "4/4",
                                                         "1/5", "2/5", "3/5", "4/5", "5/5",
-                                                        "1/5+", "2/5+", "3/5+", "4/5+",
-                                                        "5/5+", "5+/5+")),
+                                                        "1/>5", "2/>5", "3/>5", "4/>5",
+                                                        "5/>5", ">5/>5")),
     count_birthorder_uterus_alive =
       factor(str_replace(as.character(interaction(birthorder_uterus_alive_factor,                                                              sibling_count_uterus_alive_factor)),
                         "\\.", "/"),
                                            levels =   c("1/2","2/2", "1/3",  "2/3",
                                                         "3/3", "1/4", "2/4", "3/4", "4/4",
                                                         "1/5", "2/5", "3/5", "4/5", "5/5",
-                                                        "1/5+", "2/5+", "3/5+", "4/5+",
-                                                        "5/5+", "5+/5+")),
+                                                        "1/>5", "2/>5", "3/>5", "4/>5",
+                                                        "5/>5", ">5/>5")),
     count_birthorder_uterus_preg =
       factor(str_replace(as.character(interaction(birthorder_uterus_preg_factor,                                                              sibling_count_uterus_preg_factor)), 
                          "\\.", "/"),
                                            levels =   c("1/2","2/2", "1/3",  "2/3",
                                                         "3/3", "1/4", "2/4", "3/4", "4/4",
                                                         "1/5", "2/5", "3/5", "4/5", "5/5",
-                                                        "1/5+", "2/5+", "3/5+", "4/5+",
-                                                        "5/5+", "5+/5+")),
+                                                        "1/>5", "2/>5", "3/>5", "4/>5",
+                                                        "5/>5", ">5/>5")),
     count_birthorder_genes =
       factor(str_replace(as.character(interaction(birthorder_genes_factor,                                                              sibling_count_genes_factor)), "\\.", "/"),
                                            levels =   c("1/2","2/2", "1/3",  "2/3",
                                                         "3/3", "1/4", "2/4", "3/4", "4/4",
                                                         "1/5", "2/5", "3/5", "4/5", "5/5",
-                                                        "1/5+", "2/5+", "3/5+", "4/5+",
-                                                        "5/5+", "5+/5+")))
+                                                        "1/>5", "2/>5", "3/>5", "4/>5",
+                                                        "5/>5", ">5/>5")))
 
 birthorder <- birthorder %>%
                      mutate(sibling_count = sibling_count_genes_factor,
@@ -249,20 +249,22 @@ plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_ord
                            number$`4/4`), ")", seperate="")
     n5 = paste0("5 (", sum(number$`1/5`, number$`2/5`, number$`3/5`,
                            number$`4/5`, number$`5/5`), ")", seperate="")
-    n5more = paste0("5+ (", sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
-                                number$`4/5+`, number$`5/5+`, number$`5+/5+`), ")",
+    n5more = paste0(">5 (", sum(number$`1/>5`, number$`2/>5`, number$`3/>5`,
+                                number$`4/>5`, number$`5/>5`, number$`>5/>5`), ")",
                     seperate="")
     cemm = cemm %>%
       mutate(Sibship = recode_factor(Sibship, "2" = `n2`, "3" = `n3`, "4" = `n4`,
-                                     "5" = `n5`, "5+" = `n5more`))
+                                     "5" = `n5`, ">5" = `n5more`))
   }
-  plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
+  plotx = ggplot(cemm, aes(factor(`Birth order`,levels = c("1", "2", "3", "4", "5", ">5")),
+                                  y = fit, ymax = upper, ymin = lower,
                            colour = `Sibship`, group = `Sibship`)) +
     geom_pointrange(stat = "identity", position = position_dodge(width = 0.5), size = 1) +
     geom_line(position = position_dodge(width = 0.5), size = 1) +
     scale_y_continuous(name = ylabel, limits = c(-0.4, 0.9),
                        breaks = c(-0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8)) +
     labs(title = title) +
+    xlab("Birth order") +
     apatheme +
     theme(text = element_text(size=20), axis.text.x = element_text(size = 15),
           axis.text.y = element_text(size = 15), legend.text = element_text(size = 15),
@@ -284,16 +286,16 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Intelligence \n (z-standardized)"
+ylabel = "Intelligence\n(z-standardized)"
 
-plot_gfactor = plot_birthorder(model, ylabel=ylabel) 
+plot_gfactor = plot_birthorder(model, ylabel = ylabel)  
 
 birthorder <- birthorder %>% mutate(outcome = years_of_education_z)
 model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Years of education \n (z-standardized)"
+ylabel = "Years of education\n(z-standardized)"
 
 plot_yoe = plot_birthorder(model, ylabel=ylabel) 
 
@@ -302,7 +304,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Agreeableness \n (z-standardized)"
+ylabel = "Agreeableness\n(z-standardized)"
 
 plot_big5_agree = plot_birthorder(model, ylabel=ylabel) 
 
@@ -311,7 +313,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Extraversion \n (z-standardized)"
+ylabel = "Extraversion\n(z-standardized)"
 
 plot_big5_ext = plot_birthorder(model, ylabel=ylabel) 
 
@@ -320,7 +322,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Conscientiousness \n (z-standardized)"
+ylabel = "Conscientiousness\n(z-standardized)"
 
 plot_big5_con = plot_birthorder(model, ylabel=ylabel) 
 
@@ -329,7 +331,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Openness \n (z-standardized)"
+ylabel = "Openness\n(z-standardized)"
 
 plot_big5_open = plot_birthorder(model, ylabel=ylabel) 
 
@@ -339,7 +341,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Neuroticism \n (z-standardized)"
+ylabel = "Neuroticism\n(z-standardized)"
 
 plot_big5_neu = plot_birthorder(model, ylabel=ylabel) 
 
@@ -348,7 +350,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Risk aversion A \n (z-standardized)"
+ylabel = "Risk aversion A\n(z-standardized)"
 
 plot_riskA = plot_birthorder(model, ylabel=ylabel) 
 
@@ -357,7 +359,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Risk aversion B \n (z-standardized)"
+ylabel = "Risk aversion B\n(z-standardized)"
 
 plot_riskB = plot_birthorder(model, ylabel=ylabel) 
 
@@ -394,12 +396,12 @@ plot_birthorder = function(model, ylabel = NULL, title = "", bo_var = "birth_ord
                            number$`4/4`), ")", seperate="")
     n5 = paste0("5 (", sum(number$`1/5`, number$`2/5`, number$`3/5`,
                            number$`4/5`, number$`5/5`), ")", seperate="")
-    n5more = paste0("5+ (", sum(number$`1/5+`, number$`2/5+`, number$`3/5+`,
-                                number$`4/5+`, number$`5/5+`, number$`5+/5+`), ")",
+    n5more = paste0(">5 (", sum(number$`1/>5`, number$`2/>5`, number$`3/>5`,
+                                number$`4/>5`, number$`5/>5`, number$`>5/>5`), ")",
                     seperate="")
     cemm = cemm %>%
       mutate(Sibship = recode_factor(Sibship, "2" = `n2`, "3" = `n3`, "4" = `n4`,
-                                     "5" = `n5`, "5+" = `n5more`))
+                                     "5" = `n5`, ">5" = `n5more`))
   }
   plotx = ggplot(cemm, aes(`Birth order`, y = fit, ymax = upper, ymin = lower,
                            colour = `Sibship`, group = `Sibship`)) +
@@ -425,7 +427,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Intelligence \n (z-standardized)"
+ylabel = "Intelligence\n(z-standardized)"
 
 plot_gfactor = plot_birthorder(model, ylabel=ylabel) 
 
@@ -434,7 +436,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Years of education \n (z-standardized)"
+ylabel = "Years of education\n(z-standardized)"
 
 plot_yoe = plot_birthorder(model, ylabel=ylabel) 
 
@@ -443,7 +445,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Agreeableness \n (z-standardized)"
+ylabel = "Agreeableness\n(z-standardized)"
 
 plot_big5_agree = plot_birthorder(model, ylabel=ylabel) 
 
@@ -452,7 +454,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Extraversion \n (z-standardized)"
+ylabel = "Extraversion\n(z-standardized)"
 
 plot_big5_ext = plot_birthorder(model, ylabel=ylabel) 
 
@@ -461,7 +463,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Conscientiousness \n (z-standardized)"
+ylabel = "Conscientiousness\n(z-standardized)"
 
 plot_big5_con = plot_birthorder(model, ylabel=ylabel) 
 
@@ -470,7 +472,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Openness \n (z-standardized)"
+ylabel = "Openness\n(z-standardized)"
 
 plot_big5_open = plot_birthorder(model, ylabel=ylabel) 
 
@@ -480,7 +482,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Neuroticism \n (z-standardized)"
+ylabel = "Neuroticism\n(z-standardized)"
 
 plot_big5_neu = plot_birthorder(model, ylabel=ylabel) 
 
@@ -489,7 +491,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Risk Aversion A \n (z-standardized)"
+ylabel = "Risk Aversion A\n(z-standardized)"
 
 plot_riskA = plot_birthorder(model, ylabel=ylabel) 
 
@@ -498,7 +500,7 @@ model = lmer(outcome ~ poly(age, 3, raw = TRUE) + male +
                count_birth_order +
                (1 | mother_pidlink),
                    data = birthorder)
-ylabel = "Risk Aversion B \n (z-standardized)"
+ylabel = "Risk Aversion B\n(z-standardized)"
 
 plot_riskB = plot_birthorder(model, ylabel=ylabel) 
 
@@ -717,7 +719,7 @@ RiskB = lmer(riskB ~ birthorder_genes_factor + poly(age, 3, raw = TRUE) + male +
 
 ## Multiplot - nonlinear
 ```{r}
-x = multiplot(Intelligence, `Educational Attainment`, Agreeableness, Conscientiousness, Extraversion, Neuroticism, Openness, RiskA, RiskB, intercept = FALSE, coefficients = c("birthorder_genes_factor2", "birthorder_genes_factor3", "birthorder_genes_factor4", "birthorder_genes_factor5", "birthorder_genes_factor5+"), plot = F)
+x = multiplot(Intelligence, `Educational Attainment`, Agreeableness, Conscientiousness, Extraversion, Neuroticism, Openness, RiskA, RiskB, intercept = FALSE, coefficients = c("birthorder_genes_factor2", "birthorder_genes_factor3", "birthorder_genes_factor4", "birthorder_genes_factor5", "birthorder_genes_factor>5"), plot = F)
 
 x = data.frame(x)
 
@@ -729,7 +731,7 @@ x$Coefficient = ifelse(x$Coefficient == "birthorder_genes_factor2", "2",
                        ifelse(x$Coefficient == "birthorder_genes_factor3", "3",
                               ifelse(x$Coefficient == "birthorder_genes_factor4", "4",
                                      ifelse(x$Coefficient == "birthorder_genes_factor5", "5",
-                                            ifelse(x$Coefficient == "birthorder_genes_factor5+", "5+", NA)))))
+                                            ifelse(x$Coefficient == "birthorder_genes_factor>5", ">5", NA)))))
 
 colnames(x)[2] = "Birth order"
 

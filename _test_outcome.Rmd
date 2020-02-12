@@ -9,19 +9,19 @@ editor_options:
 ###### Model Summary
 ```{r}
 m1_covariates_only <- update(m2_birthorder_linear, formula = . ~ . - birth_order)
-tidy(m1_covariates_only, conf.int = T)
+tidy(m1_covariates_only, conf.int = T, conf.level = 0.995)
 ```
 
 ###### Coefficient Plot {.active}
 ```{r}
-plot(allEffects(m1_covariates_only))
+plot(allEffects(m1_covariates_only, confidence.level = 0.995))
 ```
 
 ##### Add Birth Order Linear {.tabset}
 
 ###### Model Summary
 ```{r}
-tidy(m2_birthorder_linear, conf.int = T)
+tidy(m2_birthorder_linear, conf.int = T, conf.level = 0.995)
 ```
 
 ###### Coefficient Plot {.active}
@@ -34,7 +34,7 @@ plot_birthorder2(m2_birthorder_linear, separate = FALSE)
 ###### Model Summary
 ```{r}
 m3_birthorder_nonlinear = update(m1_covariates_only, formula = . ~ . + birth_order_nonlinear)
-tidy(m3_birthorder_nonlinear, conf.int = T)
+tidy(m3_birthorder_nonlinear, conf.int = T, conf.level = 0.995)
 ```
 
 ###### Coefficient Plot {.active}
@@ -47,7 +47,7 @@ plot_birthorder(m3_birthorder_nonlinear, separate = FALSE)
 ###### Model Summary
 ```{r}
 m4_interaction = update(m3_birthorder_nonlinear, formula = . ~ . - birth_order_nonlinear - sibling_count + count_birth_order)
-tidy(m4_interaction, conf.int = T)
+tidy(m4_interaction, conf.int = T, conf.level = 0.995)
 ```
 
 ###### Coefficient Plot {.active}

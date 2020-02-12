@@ -59,62 +59,74 @@ birthorder = birthorder %>%
   group_birthorder = ifelse(check_birthorder == 0, "control", "test"),
   group_outcome = ifelse(check_outcome == 0, "control", "test"))
 
+```
+
+## Effect of Educational Attainment and Intelligence
+```{r}
+library(sjstats)
+library(arm)
+
 birthorder = birthorder %>%
   mutate(main_sample = ifelse(group_birthorder == "test" & group_outcome == "test", 1, 0))
 
-glm(main_sample ~ g_factor_2015_old + years_of_education, data = birthorder,
-    family = binomial(link='logit'))
-summary(glm(main_sample ~ g_factor_2015_old + years_of_education, data = birthorder),
+glm(main_sample ~ g_factor_2015_old + years_of_education,
+    data = birthorder,
     family = binomial(link='logit'))
 std_beta(glm(main_sample ~ g_factor_2015_old + years_of_education, data = birthorder),
-    family = binomial(link='logit'))
+    family = binomial(link='logit'), ci.lvl = 0.995)
 
 glm(main_sample ~ g_factor_2015_old + years_of_education +
-      poly(age, 3, raw = TRUE) + sibling_count_genes,
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
     data = birthorder,
     family = binomial(link='logit'),
     control=glm.control(maxit=50))
-summary(glm(main_sample ~ g_factor_2015_old + years_of_education +
-              poly(age, 3, raw = TRUE) + sibling_count_genes,
-            data = birthorder),
-        family = binomial(link='logit'))
 std_beta(glm(main_sample ~ g_factor_2015_old + years_of_education +
-               poly(age, 3, raw = TRUE),
+               poly(age, 3, raw = TRUE) + sibling_count_naive,
              data = birthorder),
-         family = binomial(link='logit'))
+         family = binomial(link='logit'), ci.lvl = 0.995)
 
-glm(main_sample ~ g_factor_2015_old, data = birthorder,
-    family = binomial(link='logit'))
-summary(glm(main_sample ~ g_factor_2015_old, data = birthorder),
+
+glm(main_sample ~ g_factor_2015_old + years_of_education +
+      poly(age, 3, raw = TRUE) + sibling_count_naive + male,
+    data = birthorder,
+    family = binomial(link='logit'),
+    control=glm.control(maxit=50))
+std_beta(glm(main_sample ~ g_factor_2015_old + years_of_education +
+               poly(age, 3, raw = TRUE) + sibling_count_naive + male,
+             data = birthorder),
+         family = binomial(link='logit'), ci.lvl = 0.995)
+
+glm(main_sample ~ g_factor_2015_old,
+    data = birthorder,
     family = binomial(link='logit'))
 std_beta(glm(main_sample ~ g_factor_2015_old, data = birthorder),
-    family = binomial(link='logit'))
+    family = binomial(link='logit'), ci.lvl = 0.995)
 
 glm(main_sample ~ g_factor_2015_old +
-      poly(age, 3, raw = TRUE) + sibling_count_genes,
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
     data = birthorder,
     family = binomial(link='logit'),
-    maxit = 1000)
-summary(glm(main_sample ~ g_factor_2015_old +
-      poly(age, 3, raw = TRUE) + sibling_count_genes,
-    data = birthorder,
-    family = binomial(link='logit'),
-    maxit = 1000))
+    control=glm.control(maxit=50))
 std_beta(glm(main_sample ~ g_factor_2015_old +
-               poly(age, 3, raw = TRUE) + sibling_count_genes,
+               poly(age, 3, raw = TRUE) + sibling_count_naive,
              data = birthorder),
-         family = binomial(link='logit'))
+         family = binomial(link='logit'), ci.lvl = 0.995)
 
-glm(main_sample ~ sibling_count_genes, data = birthorder, family = binomial(link='logit'))
-summary(glm(main_sample ~ sibling_count_genes, data = birthorder, family = binomial(link='logit')))
-std_beta(glm(main_sample ~ sibling_count_genes, data = birthorder, family = binomial(link='logit')))
-plot(allEffects(glm(main_sample ~ sibling_count_genes, data = birthorder,
-                    family = binomial(link = 'logit'))))
+glm(main_sample ~ years_of_education,
+    data = birthorder,
+    family = binomial(link='logit'))
+std_beta(glm(main_sample ~ years_of_education, data = birthorder),
+    family = binomial(link='logit'), ci.lvl = 0.995)
 
-lm(g_factor_2015_old ~ main_sample, data = birthorder)
-std_beta(lm(g_factor_2015_old ~ main_sample, data = birthorder))
-std_beta(lm(g_factor_2015_old ~ main_sample + poly(age, 3, raw = T) + sibling_count_genes,
-            data = birthorder))
+glm(main_sample ~ years_of_education +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link='logit'),
+    control=glm.control(maxit=50))
+std_beta(glm(main_sample ~ years_of_education +
+               poly(age, 3, raw = TRUE) + sibling_count_naive,
+             data = birthorder),
+         family = binomial(link='logit'), ci.lvl = 0.995)
 
 ```
 

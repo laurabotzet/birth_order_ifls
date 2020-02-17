@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Effects of Birth Order on Intelligence, Educational Attainment, Personality, and Risk Aversion in an Indonesian Sample</title>
+<title>Analyzing Effects of Birth Order on Intelligence, Educational Attainment, Big Five, and Risk Aversion in an Indonesian Sample</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -24,9 +24,8 @@
 <script src="site_libs/navigation-1.1/sourceembed.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -78,9 +77,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -94,7 +91,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -104,6 +100,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -119,8 +118,6 @@ body {
   padding-top: 69px;
   margin-top: -69px;
 }
-  
-
 .section h2 {
   padding-top: 69px;
   margin-top: -69px;
@@ -140,6 +137,43 @@ body {
 .section h6 {
   padding-top: 69px;
   margin-top: -69px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -161,28 +195,77 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 <style type="text/css">
 .code-folding-btn { margin-bottom: 4px; }
 </style>
-<script>
-$(document).ready(function () {
-  window.initializeSourceEmbed("index.Rmd");
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -276,7 +359,7 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore"><font color="#66C2A5">Effects of Birth Order on Intelligence, Educational Attainment, Personality, and Risk Aversion in an Indonesian Sample</font></h1>
+<h1 class="title toc-ignore"><font color="#66C2A5">Analyzing Effects of Birth Order on Intelligence, Educational Attainment, Big Five, and Risk Aversion in an Indonesian Sample</font></h1>
 
 </div>
 
@@ -408,7 +491,7 @@ source(&quot;0_helpers.R&quot;)</code></pre>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiA8Zm9udCBjb2xvcj0iIzY2QzJBNSI+RWZmZWN0cyBvZiBCaXJ0aCBPcmRlciBvbiBJbnRlbGxpZ2VuY2UsIEVkdWNhdGlvbmFsIEF0dGFpbm1lbnQsIFBlcnNvbmFsaXR5LCBhbmQgUmlzayBBdmVyc2lvbiBpbiBhbiBJbmRvbmVzaWFuIFNhbXBsZTwvZm9udD4KYmlibGlvZ3JhcGh5OiBwYWNrcmF0X2JpYmxpb2dyYXBoeS5iaWJ0ZXgKY3NsOiBhcGEtY3VzdG9tLW5vLWlzc3VlLmNzbApub2NpdGU6IHwKICAgIEBSIEBwYWNrcmF0IEBybWFya2Rvd24gQGtuaXRyIEBmb3JtciBAcGFuZGVyIEBsdWJyaWRhdGUgQHN0cmluZ3IgQGJyb29tIEBlZmZlY3RzIEBnZ3Bsb3QyIEB0aWR5ciBAZHBseXIgQGZvcm1hdFIgQGRldnRvb2xzIEBoYXZlbiBAR1BBcm90YXRpb24gQHBzeWNoIEBsYXZhYW4gQEhtaXNjIEBwbHlyIEBhcGFUYWJsZXMgQGxtZTQgQGxtZXJUZXN0IEBmb3JjYXRzIEBjb3dwbG90IEBncmlkRXh0cmEKLS0tCgoKCmBgYHtyIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CiMjTkVXCnNvdXJjZSgiMF9oZWxwZXJzLlIiKQpgYGAKCjxkaXYgY2xhc3M9InJvdyI+Cgo8ZGl2IGNsYXNzPSJjb2wtbWQtNSI+CgpXZSB1c2VkIHRoZXNlIFtoZWxwZXIgZnVuY3Rpb25zXSgwX2hlbHBlcnMuaHRtbCkuIFRoZXNlIGFyZSB0aGUgWy5ScHJvZmlsZSBzZXR0aW5nc10oLlJwcm9maWxlLmh0bWwpCgoxLiBGaXJzdCB3ZSBbd3JhbmdsZWQgdGhlIGRhdGFdKDFfZGF0YV9pbXBvcnQuaHRtbCkuCjIuIFdlIFtkZWNpZGVkIHdoaWNoIGRhdGEgdG8ga2VlcF0oMl9pbmNsdXNpb24uaHRtbCkuCjMuIFRoZW4gd2UgW2FuYWx5emVkIG91ciBzYW1wbGUgYW5kIGxvb2tlZCBhdCBzb21lIGRlc2NyaXB0aXZlc10oM19zYW1wbGVfYW5hbHlzZXMuaHRtbCkuCjQuIFRoZSBtYWluIGFuYWx5c2VzOiBXZSBbYW5hbHl6ZWRdKDRfYW5hbHlzZXMuaHRtbCkgYmlydGggb3JkZXIgZWZmZWN0cyAoY2xpY2sgaGVyZSBmb3IgbmljZSBncmFwaHMgb2YgYmlydGggb3JkZXIgZWZmZWN0cykuCjUuIFRoZW4gd2UgW3JhbiBzb21lIHJvYnVzdG5lc3MgYW5hbHlzZXNdKDRfYW5hbHlzZXNfcm9idXN0Lmh0bWwpLgo2LiBBZGRpdGlvbmFsbHksIHdlIFtpbXB1dGVkIG1pc3NpbmcgZGF0YV0oM19pbXB1dGF0aW9uLmh0bWwpLgo3LiBXZSBbY2hlY2tlZCBpbXB1dGF0aW9uIGRhdGFdKDNfaW1wdXRhdGlvbl9jaGVjay5odG1sKSB0byBzZWUgd2hldGhlciBpbXB1dGF0aW9uIHdhcyBkb25lIGNvcnJlY3RseS4KOC4gQW5kIFthbmFseXplZCBpbXB1dGVkIGRhdGFdKDRfYW5hbHlzZXNfaW1wdXRlZF9kYXRhLmh0bWwpIGZvciBiaXJ0aCBvcmRlciBlZmZlY3RzLgo5LiBJbiB0aGUgZW5kIHdlIHJhbiBbcm9idXN0bmVzcyBhbmFseXNlcyBmb3IgaW1wdXRlZCBkYXRhXSg0X2FuYWx5c2VzX2ltcHV0ZWRfZGF0YV9yb2J1c3QuaHRtbCkgYXMgd2VsbC4KCk1vcmUgaW5mb3JtYXRpb24gYWJvdXQgdGhlIFtJbmRvbmVzaWFuIEZhbWlseSBMaWZlIFN1cnZleSAoSUZMUyldKGh0dHA6Ly93d3cucmFuZC5vcmcvbGFib3IvRkxTL0lGTFMuaHRtbCkuCgo8L2Rpdj4KCjxkaXYgY2xhc3M9ImNvbC1tZC02IGNvbC1tZC1vZmZzZXQtMSI+CiFbRWZmZWN0IHNpemUgZXN0aW1hdGVzIGluIHN0YW5kYXJkIGRldmlhdGlvbnMgZm9yIGxpbmVhciBlZmZlY3RzIG9mIGJpcnRoIG9yZGVyIGFuZCBzaWJzaGlwIHNpemUuIEVmZmVjdCBzaXplIGFuZCA5NSUgY29uZmlkZW5jZSBpbnRlcnZhbHMgZnJvbSBsaW5lYXIgbWl4ZWQgZWZmZWN0cyBtb2RlbHMgd2l0aCBzaWJzaGlwIHNpemUsIGJpcnRoIG9yZGVyLCBnZW5kZXIgYW5kIGFnZSBhcyBmaXhlZCBlZmZlY3RzIGFuZCBtYXRlcm5hbCBpZGVudGl0eSBhcyByYW5kb20gZWZmZWN0IGFyZSBzaG93bi5dKHBsb3QxX2ZpbmFsLnBuZykKPC9kaXY+Cgo8L2Rpdj4KPGRpdiBjbGFzcz0iY2xlYXJmaXgiPjwvZGl2PgoKIyMgQXV0aG9ycyAmIEFic3RyYWN0ICYgQWNrbm93bGVkZ2VtZW50cyB7LnRhYnNldCAudGFic2V0LXN0aWNreX0KCiMjIyBBdXRob3JzCkxhdXJhIEouIEJvdHpldCAoVW5pdmVyc2l0eSBvZiBHb2V0dGluZ2VuLCBHZXJtYW55KSwgSnVsaWEgTS4gUm9ocmVyIChVbml2ZXJzaXR5IG9mIExlaXB6aWcsIEdlcm1hbnkpLCAmIFJ1YmVuIEMuIEFyc2xhbiAoTWF4IFBsYW5jayBJbnN0aXR1dGUgZm9yIEh1bWFuIERldmVsb3BtZW50LCBHZXJtYW55KQoKClRoaXMgc3VwcGxlbWVudGFyeSB3ZWJzaXRlIGhhcyBiZWVuIGFyY2hpdmVkIG9uIFplbm9kby5vcmcgWyFbRE9JXSgpXSgpLgoKCiMjIyBBYnN0cmFjdAoKRmV3IHN0dWRpZXMgaGF2ZSBleGFtaW5lZCBiaXJ0aCBvcmRlciBlZmZlY3RzIG9uIHBlcnNvbmFsaXR5IGluIGNvdW50cmllcyB0aGF0IGFyZSBub3QgV2VzdGVybiwgZWR1Y2F0ZWQsIGluZHVzdHJpYWxpc2VkLCByaWNoLCBhbmQgZGVtb2NyYXRpYyAoV0VJUkQpLCBldmVuIHRob3VnaCBwcm9taW5lbnQgdGhlb3JpZXMgc3VjaCBhcyByZXNvdXJjZSBkaWx1dGlvbiB3b3VsZCBwcmVkaWN0IHN0cm9uZ2VyIGVmZmVjdHMgaW4gcG9vcmVyIGNvdW50cmllcyBhbmQgdGhlb3JpZXMgaGF2ZSBnZW5lcmFsbHkgc3VnZ2VzdGVkIGludGVyY3VsdHVyYWxseSB1bml2ZXJzYWwgZmFtaWx5IGR5bmFtaWNzIGFzIHRoZSBtZWNoYW5pc20gYmVoaW5kIGJpcnRoIG9yZGVyIGVmZmVjdHMuIEhlcmUsIHdlIHVzZSBhIHN1YnNldCBvZiB1cCB0byA2LDAzNSBwYXJ0aWNpcGFudHMgb2YgdGhlIEluZG9uZXNpYW4gRmFtaWx5IExpZmUgU3R1ZHksIGFuIG9uZ29pbmcgcmVwcmVzZW50YXRpdmUgcGFuZWwgc3R1ZHksIHRvIHN0dWR5IHdoZXRoZXIgbGF0ZXItYm9ybiBzaWJsaW5ncyBkaWZmZXIgZnJvbSBlYXJsaWVyLWJvcm5zIGluIGludGVsbGlnZW5jZSwgcGVyc29uYWxpdHksIGFuZCBlZHVjYXRpb24uIE91ciBlc3RpbWF0ZWQgZWZmZWN0IHNpemVzIGV4Y2x1ZGUgcmVjZW50IGVzdGltYXRlcyBmcm9tIFdFSVJEIHBvcHVsYXRpb25zIGJhc2VkIG9uIGxhcmdlIHNhbXBsZSBzaXplcywgYW5kIGFyZSBjb25zaXN0ZW50IHdpdGggdGhlIGVtZXJnaW5nIGFjY291bnQgb2YgYmlydGggb3JkZXIgYXMgaGF2aW5nIHJlbGF0aXZlbHkgbGl0dGxlIGltcGFjdCBvbiBpbnRlbGxpZ2VuY2UsIGVkdWNhdGlvbiwgcGVyc29uYWxpdHksIGFuZCByaXNrIGF2ZXJzaW9uLiBUaHVzLCBldmVuIHRoZSBzbWFsbCBlZmZlY3RzIG9mIGJpcnRoIG9yZGVyIHJlcG9ydGVkIGluIG90aGVyIHN0dWRpZXMgYXBwZWFyIHRvIGJlIGN1bHR1cmFsbHkgc3BlY2lmaWMuIAoKIyMjIFJlZmVyZW5jZXMKCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiA8Zm9udCBjb2xvcj0iIzY2QzJBNSI+QW5hbHl6aW5nIEVmZmVjdHMgb2YgQmlydGggT3JkZXIgb24gSW50ZWxsaWdlbmNlLCBFZHVjYXRpb25hbCBBdHRhaW5tZW50LCBCaWcgRml2ZSwgYW5kIFJpc2sgQXZlcnNpb24gaW4gYW4gSW5kb25lc2lhbiBTYW1wbGU8L2ZvbnQ+CmJpYmxpb2dyYXBoeTogcGFja3JhdF9iaWJsaW9ncmFwaHkuYmlidGV4CmNzbDogYXBhLWN1c3RvbS1uby1pc3N1ZS5jc2wKbm9jaXRlOiB8CiAgICBAUiBAcGFja3JhdCBAcm1hcmtkb3duIEBrbml0ciBAZm9ybXIgQHBhbmRlciBAbHVicmlkYXRlIEBzdHJpbmdyIEBicm9vbSBAZWZmZWN0cyBAZ2dwbG90MiBAdGlkeXIgQGRwbHlyIEBmb3JtYXRSIEBkZXZ0b29scyBAaGF2ZW4gQEdQQXJvdGF0aW9uIEBwc3ljaCBAbGF2YWFuIEBIbWlzYyBAcGx5ciBAYXBhVGFibGVzIEBsbWU0IEBsbWVyVGVzdCBAZm9yY2F0cyBAY293cGxvdCBAZ3JpZEV4dHJhCi0tLQoKCgpgYGB7ciBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQojI05FVwpzb3VyY2UoIjBfaGVscGVycy5SIikKYGBgCgo8ZGl2IGNsYXNzPSJyb3ciPgoKPGRpdiBjbGFzcz0iY29sLW1kLTUiPgoKV2UgdXNlZCB0aGVzZSBbaGVscGVyIGZ1bmN0aW9uc10oMF9oZWxwZXJzLmh0bWwpLiBUaGVzZSBhcmUgdGhlIFsuUnByb2ZpbGUgc2V0dGluZ3NdKC5ScHJvZmlsZS5odG1sKQoKMS4gRmlyc3Qgd2UgW3dyYW5nbGVkIHRoZSBkYXRhXSgxX2RhdGFfaW1wb3J0Lmh0bWwpLgoyLiBXZSBbZGVjaWRlZCB3aGljaCBkYXRhIHRvIGtlZXBdKDJfaW5jbHVzaW9uLmh0bWwpLgozLiBUaGVuIHdlIFthbmFseXplZCBvdXIgc2FtcGxlIGFuZCBsb29rZWQgYXQgc29tZSBkZXNjcmlwdGl2ZXNdKDNfc2FtcGxlX2FuYWx5c2VzLmh0bWwpLgo0LiBUaGUgbWFpbiBhbmFseXNlczogV2UgW2FuYWx5emVkXSg0X2FuYWx5c2VzLmh0bWwpIGJpcnRoIG9yZGVyIGVmZmVjdHMgKGNsaWNrIGhlcmUgZm9yIG5pY2UgZ3JhcGhzIG9mIGJpcnRoIG9yZGVyIGVmZmVjdHMpLgo1LiBUaGVuIHdlIFtyYW4gc29tZSByb2J1c3RuZXNzIGFuYWx5c2VzXSg0X2FuYWx5c2VzX3JvYnVzdC5odG1sKS4KNi4gQWRkaXRpb25hbGx5LCB3ZSBbaW1wdXRlZCBtaXNzaW5nIGRhdGFdKDNfaW1wdXRhdGlvbi5odG1sKS4KNy4gV2UgW2NoZWNrZWQgaW1wdXRhdGlvbiBkYXRhXSgzX2ltcHV0YXRpb25fY2hlY2suaHRtbCkgdG8gc2VlIHdoZXRoZXIgaW1wdXRhdGlvbiB3YXMgZG9uZSBjb3JyZWN0bHkuCjguIEFuZCBbYW5hbHl6ZWQgaW1wdXRlZCBkYXRhXSg0X2FuYWx5c2VzX2ltcHV0ZWRfZGF0YS5odG1sKSBmb3IgYmlydGggb3JkZXIgZWZmZWN0cy4KOS4gSW4gdGhlIGVuZCB3ZSByYW4gW3JvYnVzdG5lc3MgYW5hbHlzZXMgZm9yIGltcHV0ZWQgZGF0YV0oNF9hbmFseXNlc19pbXB1dGVkX2RhdGFfcm9idXN0Lmh0bWwpIGFzIHdlbGwuCgpNb3JlIGluZm9ybWF0aW9uIGFib3V0IHRoZSBbSW5kb25lc2lhbiBGYW1pbHkgTGlmZSBTdXJ2ZXkgKElGTFMpXShodHRwOi8vd3d3LnJhbmQub3JnL2xhYm9yL0ZMUy9JRkxTLmh0bWwpLgoKPC9kaXY+Cgo8ZGl2IGNsYXNzPSJjb2wtbWQtNiBjb2wtbWQtb2Zmc2V0LTEiPgohW0VmZmVjdCBzaXplIGVzdGltYXRlcyBpbiBzdGFuZGFyZCBkZXZpYXRpb25zIGZvciBsaW5lYXIgZWZmZWN0cyBvZiBiaXJ0aCBvcmRlciBhbmQgc2lic2hpcCBzaXplLiBFZmZlY3Qgc2l6ZSBhbmQgOTUlIGNvbmZpZGVuY2UgaW50ZXJ2YWxzIGZyb20gbGluZWFyIG1peGVkIGVmZmVjdHMgbW9kZWxzIHdpdGggc2lic2hpcCBzaXplLCBiaXJ0aCBvcmRlciwgZ2VuZGVyIGFuZCBhZ2UgYXMgZml4ZWQgZWZmZWN0cyBhbmQgbWF0ZXJuYWwgaWRlbnRpdHkgYXMgcmFuZG9tIGVmZmVjdCBhcmUgc2hvd24uXShwbG90MV9maW5hbC5wbmcpCjwvZGl2PgoKPC9kaXY+CjxkaXYgY2xhc3M9ImNsZWFyZml4Ij48L2Rpdj4KCiMjIEF1dGhvcnMgJiBBYnN0cmFjdCAmIEFja25vd2xlZGdlbWVudHMgey50YWJzZXQgLnRhYnNldC1zdGlja3l9CgojIyMgQXV0aG9ycwpMYXVyYSBKLiBCb3R6ZXQgKFVuaXZlcnNpdHkgb2YgR29ldHRpbmdlbiwgR2VybWFueSksIEp1bGlhIE0uIFJvaHJlciAoVW5pdmVyc2l0eSBvZiBMZWlwemlnLCBHZXJtYW55KSwgJiBSdWJlbiBDLiBBcnNsYW4gKE1heCBQbGFuY2sgSW5zdGl0dXRlIGZvciBIdW1hbiBEZXZlbG9wbWVudCwgR2VybWFueSkKCgpUaGlzIHN1cHBsZW1lbnRhcnkgd2Vic2l0ZSBoYXMgYmVlbiBhcmNoaXZlZCBvbiBaZW5vZG8ub3JnIFshW0RPSV0oKV0oKS4KCgojIyMgQWJzdHJhY3QKCkZldyBzdHVkaWVzIGhhdmUgZXhhbWluZWQgYmlydGggb3JkZXIgZWZmZWN0cyBvbiBwZXJzb25hbGl0eSBpbiBjb3VudHJpZXMgdGhhdCBhcmUgbm90IFdlc3Rlcm4sIGVkdWNhdGVkLCBpbmR1c3RyaWFsaXNlZCwgcmljaCwgYW5kIGRlbW9jcmF0aWMgKFdFSVJEKSwgZXZlbiB0aG91Z2ggcHJvbWluZW50IHRoZW9yaWVzIHN1Y2ggYXMgcmVzb3VyY2UgZGlsdXRpb24gd291bGQgcHJlZGljdCBzdHJvbmdlciBlZmZlY3RzIGluIHBvb3JlciBjb3VudHJpZXMgYW5kIHRoZW9yaWVzIGhhdmUgZ2VuZXJhbGx5IHN1Z2dlc3RlZCBpbnRlcmN1bHR1cmFsbHkgdW5pdmVyc2FsIGZhbWlseSBkeW5hbWljcyBhcyB0aGUgbWVjaGFuaXNtIGJlaGluZCBiaXJ0aCBvcmRlciBlZmZlY3RzLiBIZXJlLCB3ZSB1c2UgYSBzdWJzZXQgb2YgdXAgdG8gNiwwMzUgcGFydGljaXBhbnRzIG9mIHRoZSBJbmRvbmVzaWFuIEZhbWlseSBMaWZlIFN0dWR5LCBhbiBvbmdvaW5nIHJlcHJlc2VudGF0aXZlIHBhbmVsIHN0dWR5LCB0byBzdHVkeSB3aGV0aGVyIGxhdGVyLWJvcm4gc2libGluZ3MgZGlmZmVyIGZyb20gZWFybGllci1ib3JucyBpbiBpbnRlbGxpZ2VuY2UsIHBlcnNvbmFsaXR5LCBhbmQgZWR1Y2F0aW9uLiBPdXIgZXN0aW1hdGVkIGVmZmVjdCBzaXplcyBleGNsdWRlIHJlY2VudCBlc3RpbWF0ZXMgZnJvbSBXRUlSRCBwb3B1bGF0aW9ucyBiYXNlZCBvbiBsYXJnZSBzYW1wbGUgc2l6ZXMsIGFuZCBhcmUgY29uc2lzdGVudCB3aXRoIHRoZSBlbWVyZ2luZyBhY2NvdW50IG9mIGJpcnRoIG9yZGVyIGFzIGhhdmluZyByZWxhdGl2ZWx5IGxpdHRsZSBpbXBhY3Qgb24gaW50ZWxsaWdlbmNlLCBlZHVjYXRpb24sIHBlcnNvbmFsaXR5LCBhbmQgcmlzayBhdmVyc2lvbi4gVGh1cywgZXZlbiB0aGUgc21hbGwgZWZmZWN0cyBvZiBiaXJ0aCBvcmRlciByZXBvcnRlZCBpbiBvdGhlciBzdHVkaWVzIGFwcGVhciB0byBiZSBjdWx0dXJhbGx5IHNwZWNpZmljLiAKCiMjIyBSZWZlcmVuY2VzCgo=</div>
 
 
 
@@ -426,6 +509,29 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("index.Rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

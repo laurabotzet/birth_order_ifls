@@ -1,0 +1,95 @@
+---
+title: "3_sample_analyses"
+author: "Laura Botzet & Ruben Arslan"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+#  <span style="color:#E78AC3">Sample Analyses</span> {.tabset}
+
+## Helper
+```{r helper}
+source("0_helpers.R")
+```
+
+## Load data
+```{r Load data}
+### Import all data with known birthorder
+birthorder = readRDS("data/alldata_birthorder.rds")
+```
+
+## Data wrangling
+```{r data wrangling}
+## we have to exclude people in the control group who are part of the birthorder group
+birthorder = birthorder %>%
+  # mark people who have missing birthorder data
+  mutate(check_birthorder = ifelse(!is.na(birthorder_genes), 1, 0),
+  # mark people who have missing outcomes
+         check_outcome = ifelse(!is.na(raven_2015_old), 1,
+                         ifelse(!is.na(math_2015_old), 1,
+                         ifelse(!is.na(raven_2015_young), 1,
+                         ifelse(!is.na(math_2015_young), 1,
+                         ifelse(!is.na(raven_2007_old), 1,
+                         ifelse(!is.na(math_2007_old), 1,
+                         ifelse(!is.na(raven_2007_young), 1,
+                         ifelse(!is.na(math_2007_young), 1,
+                         ifelse(!is.na(adaptive_numbering), 1,
+                         ifelse(!is.na(words_remembered_avg), 1,
+                         ifelse(!is.na(count_backwards), 1,
+                         ifelse(!is.na(big5_ext), 1, 
+                         ifelse(!is.na(riskA), 1,
+                         ifelse(!is.na(riskB), 1,
+                         ifelse(!is.na(years_of_education), 1,
+                         ifelse(!is.na(Elementary_missed), 1,
+                         ifelse(!is.na(Elementary_worked), 1,
+                         ifelse(!is.na(attended_school), 1,
+                         ifelse(!is.na(wage_last_month_log), 1,
+                         ifelse(!is.na(wage_last_year_log), 1,
+                         ifelse(!is.na(Self_employed), 1,
+                         ifelse(!is.na(Category), 1,
+                         ifelse(!is.na(Sector), 1,
+                         ifelse(!is.na(ever_smoked), 1,
+                         ifelse(!is.na(still_smoking), 1,
+                         0))))))))))))))))))))))))),
+  group_birthorder = ifelse(check_birthorder == 0, "control", "test"),
+  group_outcome = ifelse(check_outcome == 0, "control", "test"))
+
+```
+
+## Effects of Educational Attainment and Intelligence on Selection
+```{r}
+library(effectsize)
+library(sjstats)
+
+
+birthorder = birthorder %>%
+  mutate(main_sample = as.factor(ifelse(group_birthorder == "test" & group_outcome == "test", 1, 0)))
+
+glm(main_sample ~ g_factor_2015_old + years_of_education,
+    data = birthorder,
+    family = binomial(link='logit'))
+summary(glm(main_sample ~ g_factor_2015_old + years_of_education,
+    data = birthorder,
+    family = binomial(link='logit')))
+std = standardize_parameters(glm(main_sample ~ g_factor_2015_old + years_of_education,
+    data = birthorder,
+    family = binomial(link='logit')), method = "smart")
+std
+ci(std, confidence = 0.995)
+
+glm(main_sample ~ g_factor_2015_old + years_of_education +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link='logit'))
+summary(glm(main_sample ~ g_factor_2015_old + years_of_education +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link='logit')))
+std = standardize_parameters(glm(main_sample ~ g_factor_2015_old + years_of_education +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link='logit')), method = "smart")
+
+std
+ci(std, confidence = 0.995)
+```

@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Laura Botzet &amp; Ruben Arslan" />
+
+
+<title>3_sample_analyses</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h2 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h3 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h4 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h5 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h6 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+<head>
+<style>
+.dropdown-menu li:hover .sub-menu {
+  visibility: visible;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+</style>
+</head>
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+<div class="navbar-header">
+  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+  </button>
+  <a class="navbar-brand" href="index.html">Birth Order IFLS</a>
+</div>
+<div id="navbar" class="navbar-collapse collapse">
+  <ul class="nav navbar-nav">
+
+<li style="background-color: #66C2A5">
+  <a href="index.html">Overview</a>
+</li>
+<li style="background-color: #FC8D62">
+  <a href="1_data_import.html">Data Wrangling</a>
+</li>
+<li style="background-color: #8DA0CB">
+  <a href="2_Inclusion.html">Data Sampling</a>
+</li>
+<li style="background-color: #E78AC3">
+  <a href="3_sample_analyses.html">Sample Analyses</a>
+</li>
+
+<li class="dropdown" style="background-color: #E5C494">
+        <a class="dropdown-toggle" aria-expanded="false">
+          Birth Order Effects <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" style="background-color: #E5C494">
+          <li class=""><a href="4_analyses.html" aria-expanded="false" aria-controls="first-tab"> Main Analyses</a></li>
+          <li class=""><a href="4_analyses_robust.html" aria-expanded="false" aria-controls="first-tab"> Robustness Analyses</a></li>
+        </ul>
+     </li>
+
+
+<li class="dropdown" style="background-color: #FFD92F">
+        <a class="dropdown-toggle" aria-expanded="false">
+          Birth Order Effects Imputed Data <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" style="background-color: #FFD92F">
+          <li class=""><a href="3_imputation.html" aria-expanded="false" aria-controls="first-tab">Multiple Imputation</a></li>
+          <li class=""><a href="3_imputation_check.html" aria-expanded="false" aria-controls="first-tab">Imputation Checks</a></li>
+          <li class=""><a href="4_analyses_imputed_data.html" aria-expanded="false" aria-controls="second-tab">Birth Order Effects Imputed Data</a></li>
+        </ul>
+     </li>
+
+
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/laurabotzet/birth_order_ifls">
+<span class="fa fa-github"></span>
+
+
+  </a>
+</li>
+  </ul>
+</div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">3_sample_analyses</h1>
+<h4 class="author">Laura Botzet &amp; Ruben Arslan</h4>
+
+</div>
+
+
+<div id="sample-analyses" class="section level1 tabset">
+<h1><span style="color:#E78AC3">Sample Analyses</span></h1>
+<div id="helper" class="section level2">
+<h2>Helper</h2>
+<pre class="r"><code>source(&quot;0_helpers.R&quot;)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;formr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:rmarkdown&#39;:
+## 
+##     word_document</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     date</code></pre>
+<pre><code>## Warning in checkMatrixPackageVersion(): Package version inconsistency detected.
+## TMB was built with Matrix version 1.2.18
+## Current Matrix version is 1.2.15
+## Please re-install &#39;TMB&#39; from source using install.packages(&#39;TMB&#39;, type = &#39;source&#39;) or ask CRAN for a binary version of &#39;TMB&#39; matching CRAN&#39;s &#39;Matrix&#39; package</code></pre>
+<pre><code>## 
+## Attaching package: &#39;broom.mixed&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:broom&#39;:
+## 
+##     tidyMCMC</code></pre>
+<pre><code>## Loading required package: carData</code></pre>
+<pre><code>## lattice theme set by effectsTheme()
+## See ?effectsTheme for details.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;data.table&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:lubridate&#39;:
+## 
+##     hour, isoweek, mday, minute, month, quarter, second, wday, week, yday, year</code></pre>
+<pre><code>## The following objects are masked from &#39;package:formr&#39;:
+## 
+##     first, last</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lmerTest&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:lme4&#39;:
+## 
+##     lmer</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     step</code></pre>
+<pre><code>## Loading required package: usethis</code></pre>
+<pre><code>## 
+## Attaching package: &#39;psych&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:ggplot2&#39;:
+## 
+##     %+%, alpha</code></pre>
+<pre><code>## This is lavaan 0.6-5</code></pre>
+<pre><code>## lavaan is BETA software! Please report any bugs.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lavaan&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     cor2cov</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Loading required package: survival</code></pre>
+<pre><code>## Loading required package: Formula</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Hmisc&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     describe</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     format.pval, units</code></pre>
+<pre><code>## 
+## Attaching package: &#39;tidyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:Matrix&#39;:
+## 
+##     expand, pack, unpack</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:Hmisc&#39;:
+## 
+##     src, summarize</code></pre>
+<pre><code>## The following objects are masked from &#39;package:data.table&#39;:
+## 
+##     between, first, last</code></pre>
+<pre><code>## The following objects are masked from &#39;package:lubridate&#39;:
+## 
+##     intersect, setdiff, union</code></pre>
+<pre><code>## The following objects are masked from &#39;package:formr&#39;:
+## 
+##     first, last</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre><code>## 
+## Attaching package: &#39;codebook&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     bfi</code></pre>
+<pre><code>## The following objects are masked from &#39;package:formr&#39;:
+## 
+##     aggregate_and_document_scale, asis_knit_child, expired, paste.knit_asis, rescue_attributes,
+##     reverse_labelled_values</code></pre>
+<pre><code>## 
+## Attaching package: &#39;effsize&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     cohen.d</code></pre>
+</div>
+<div id="load-data" class="section level2">
+<h2>Load data</h2>
+<pre class="r"><code>### Import all data with known birthorder
+birthorder = readRDS(&quot;data/alldata_birthorder.rds&quot;)</code></pre>
+</div>
+<div id="data-wrangling" class="section level2">
+<h2>Data wrangling</h2>
+<pre class="r"><code>## we have to exclude people in the control group who are part of the birthorder group
+birthorder = birthorder %&gt;%
+  # mark people who have missing birthorder data
+  mutate(check_birthorder = ifelse(!is.na(birthorder_genes), 1, 0),
+  # mark people who have missing outcomes
+         check_outcome = ifelse(!is.na(raven_2015_old), 1,
+                         ifelse(!is.na(math_2015_old), 1,
+                         ifelse(!is.na(raven_2015_young), 1,
+                         ifelse(!is.na(math_2015_young), 1,
+                         ifelse(!is.na(raven_2007_old), 1,
+                         ifelse(!is.na(math_2007_old), 1,
+                         ifelse(!is.na(raven_2007_young), 1,
+                         ifelse(!is.na(math_2007_young), 1,
+                         ifelse(!is.na(adaptive_numbering), 1,
+                         ifelse(!is.na(words_remembered_avg), 1,
+                         ifelse(!is.na(count_backwards), 1,
+                         ifelse(!is.na(big5_ext), 1, 
+                         ifelse(!is.na(riskA), 1,
+                         ifelse(!is.na(riskB), 1,
+                         ifelse(!is.na(years_of_education), 1,
+                         ifelse(!is.na(Elementary_missed), 1,
+                         ifelse(!is.na(Elementary_worked), 1,
+                         ifelse(!is.na(attended_school), 1,
+                         ifelse(!is.na(wage_last_month_log), 1,
+                         ifelse(!is.na(wage_last_year_log), 1,
+                         ifelse(!is.na(Self_employed), 1,
+                         ifelse(!is.na(Category), 1,
+                         ifelse(!is.na(Sector), 1,
+                         ifelse(!is.na(ever_smoked), 1,
+                         ifelse(!is.na(still_smoking), 1,
+                         0))))))))))))))))))))))))),
+  group_birthorder = ifelse(check_birthorder == 0, &quot;control&quot;, &quot;test&quot;),
+  group_outcome = ifelse(check_outcome == 0, &quot;control&quot;, &quot;test&quot;))</code></pre>
+</div>
+<div id="effects-of-educational-attainment-and-intelligence-on-selection" class="section level2">
+<h2>Effects of Educational Attainment and Intelligence on Selection</h2>
+<pre class="r"><code>library(effectsize)
+library(sjstats)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;sjstats&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:effectsize&#39;:
+## 
+##     cohens_f</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     phi</code></pre>
+<pre><code>## The following object is masked from &#39;package:broom&#39;:
+## 
+##     bootstrap</code></pre>
+<pre><code>## The following object is masked from &#39;package:formr&#39;:
+## 
+##     props</code></pre>
+<pre class="r"><code>birthorder = birthorder %&gt;%
+  mutate(main_sample = as.factor(ifelse(group_birthorder == &quot;test&quot; &amp; group_outcome == &quot;test&quot;, 1, 0)))
+
+glm(main_sample ~ g_factor_2015_old + years_of_education,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;))</code></pre>
+<table style="width:64%;">
+<caption>Fitting generalized (binomial/logit) linear model: main_sample ~ g_factor_2015_old + years_of_education</caption>
+<colgroup>
+<col width="15%" />
+<col width="18%" />
+<col width="13%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">z value</th>
+<th align="center">Pr(&gt;|z|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-1.971</td>
+<td align="center">0.04566</td>
+<td align="center">-43.16</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">0.828</td>
+<td align="center">0.02367</td>
+<td align="center">34.98</td>
+<td align="center">5.224e-268</td>
+</tr>
+<tr class="odd">
+<td align="center">0.06291</td>
+<td align="center">0.004192</td>
+<td align="center">15.01</td>
+<td align="center">6.807e-51</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary(glm(main_sample ~ g_factor_2015_old + years_of_education,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;)))</code></pre>
+<table style="width:64%;">
+<colgroup>
+<col width="15%" />
+<col width="18%" />
+<col width="13%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">z value</th>
+<th align="center">Pr(&gt;|z|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-1.971</td>
+<td align="center">0.04566</td>
+<td align="center">-43.16</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">0.828</td>
+<td align="center">0.02367</td>
+<td align="center">34.98</td>
+<td align="center">5.224e-268</td>
+</tr>
+<tr class="odd">
+<td align="center">0.06291</td>
+<td align="center">0.004192</td>
+<td align="center">15.01</td>
+<td align="center">6.807e-51</td>
+</tr>
+</tbody>
+</table>
+<p>(Dispersion parameter for binomial family taken to be 1 )</p>
+<table style="width:69%;">
+<colgroup>
+<col width="29%" />
+<col width="40%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="center">Null deviance:</td>
+<td align="center">29567 on 27094 degrees of freedom</td>
+</tr>
+<tr class="even">
+<td align="center">Residual deviance:</td>
+<td align="center">26665 on 27092 degrees of freedom</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>std = standardize_parameters(glm(main_sample ~ g_factor_2015_old + years_of_education,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;)), method = &quot;smart&quot;)
+std</code></pre>
+<table style="width:53%;">
+<colgroup>
+<col width="29%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Parameter</th>
+<th align="center">Std_Coefficient</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">g_factor_2015_old</td>
+<td align="center">0.692</td>
+</tr>
+<tr class="odd">
+<td align="center">years_of_education</td>
+<td align="center">0.275</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>ci(std, confidence = 0.995)</code></pre>
+<table style="width:61%;">
+<colgroup>
+<col width="29%" />
+<col width="6%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Parameter</th>
+<th align="center">CI</th>
+<th align="center">CI_low</th>
+<th align="center">CI_high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">95</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">g_factor_2015_old</td>
+<td align="center">95</td>
+<td align="center">0.6533</td>
+<td align="center">0.7308</td>
+</tr>
+<tr class="odd">
+<td align="center">years_of_education</td>
+<td align="center">95</td>
+<td align="center">0.2391</td>
+<td align="center">0.311</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>glm(main_sample ~ g_factor_2015_old + years_of_education +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;))</code></pre>
+<table style="width:69%;">
+<caption>Fitting generalized (binomial/logit) linear model: main_sample ~ g_factor_2015_old + years_of_education + poly(age, 3, raw = TRUE) + sibling_count_naive</caption>
+<colgroup>
+<col width="18%" />
+<col width="18%" />
+<col width="13%" />
+<col width="19%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">z value</th>
+<th align="center">Pr(&gt;|z|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">8.897</td>
+<td align="center">0.657</td>
+<td align="center">13.54</td>
+<td align="center">8.706e-42</td>
+</tr>
+<tr class="even">
+<td align="center">0.4061</td>
+<td align="center">0.02922</td>
+<td align="center">13.9</td>
+<td align="center">6.657e-44</td>
+</tr>
+<tr class="odd">
+<td align="center">0.1164</td>
+<td align="center">0.005835</td>
+<td align="center">19.95</td>
+<td align="center">1.374e-88</td>
+</tr>
+<tr class="even">
+<td align="center">-0.982</td>
+<td align="center">0.07331</td>
+<td align="center">-13.39</td>
+<td align="center">6.483e-41</td>
+</tr>
+<tr class="odd">
+<td align="center">0.03125</td>
+<td align="center">0.002539</td>
+<td align="center">12.31</td>
+<td align="center">8.073e-35</td>
+</tr>
+<tr class="even">
+<td align="center">-0.0003409</td>
+<td align="center">0.000028</td>
+<td align="center">-12.18</td>
+<td align="center">4.207e-34</td>
+</tr>
+<tr class="odd">
+<td align="center">-0.02527</td>
+<td align="center">0.004866</td>
+<td align="center">-5.194</td>
+<td align="center">0.0000002059</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary(glm(main_sample ~ g_factor_2015_old + years_of_education +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;)))</code></pre>
+<table style="width:69%;">
+<colgroup>
+<col width="18%" />
+<col width="18%" />
+<col width="13%" />
+<col width="19%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">z value</th>
+<th align="center">Pr(&gt;|z|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">8.897</td>
+<td align="center">0.657</td>
+<td align="center">13.54</td>
+<td align="center">8.706e-42</td>
+</tr>
+<tr class="even">
+<td align="center">0.4061</td>
+<td align="center">0.02922</td>
+<td align="center">13.9</td>
+<td align="center">6.657e-44</td>
+</tr>
+<tr class="odd">
+<td align="center">0.1164</td>
+<td align="center">0.005835</td>
+<td align="center">19.95</td>
+<td align="center">1.374e-88</td>
+</tr>
+<tr class="even">
+<td align="center">-0.982</td>
+<td align="center">0.07331</td>
+<td align="center">-13.39</td>
+<td align="center">6.483e-41</td>
+</tr>
+<tr class="odd">
+<td align="center">0.03125</td>
+<td align="center">0.002539</td>
+<td align="center">12.31</td>
+<td align="center">8.073e-35</td>
+</tr>
+<tr class="even">
+<td align="center">-0.0003409</td>
+<td align="center">0.000028</td>
+<td align="center">-12.18</td>
+<td align="center">4.207e-34</td>
+</tr>
+<tr class="odd">
+<td align="center">-0.02527</td>
+<td align="center">0.004866</td>
+<td align="center">-5.194</td>
+<td align="center">0.0000002059</td>
+</tr>
+</tbody>
+</table>
+<p>(Dispersion parameter for binomial family taken to be 1 )</p>
+<table style="width:69%;">
+<colgroup>
+<col width="29%" />
+<col width="40%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="center">Null deviance:</td>
+<td align="center">20345 on 14899 degrees of freedom</td>
+</tr>
+<tr class="even">
+<td align="center">Residual deviance:</td>
+<td align="center">16749 on 14893 degrees of freedom</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>std = standardize_parameters(glm(main_sample ~ g_factor_2015_old + years_of_education +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;)), method = &quot;smart&quot;)
+
+std</code></pre>
+<table style="width:62%;">
+<colgroup>
+<col width="38%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Parameter</th>
+<th align="center">Std_Coefficient</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">g_factor_2015_old</td>
+<td align="center">0.3171</td>
+</tr>
+<tr class="odd">
+<td align="center">years_of_education</td>
+<td align="center">0.4594</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">-0.982</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">0.03125</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">-0.0003409</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count_naive</td>
+<td align="center">-0.1037</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>ci(std, confidence = 0.995)</code></pre>
+<table style="width:82%;">
+<colgroup>
+<col width="38%" />
+<col width="6%" />
+<col width="18%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Parameter</th>
+<th align="center">CI</th>
+<th align="center">CI_low</th>
+<th align="center">CI_high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">95</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">g_factor_2015_old</td>
+<td align="center">95</td>
+<td align="center">0.2724</td>
+<td align="center">0.3618</td>
+</tr>
+<tr class="odd">
+<td align="center">years_of_education</td>
+<td align="center">95</td>
+<td align="center">0.4143</td>
+<td align="center">0.5045</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">95</td>
+<td align="center">-1.126</td>
+<td align="center">-0.8383</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">95</td>
+<td align="center">0.02627</td>
+<td align="center">0.03622</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">95</td>
+<td align="center">-0.0003958</td>
+<td align="center">-0.000286</td>
+</tr>
+<tr class="odd">
+<td align="center">sibling_count_naive</td>
+<td align="center">95</td>
+<td align="center">-0.1428</td>
+<td align="center">-0.06455</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiM19zYW1wbGVfYW5hbHlzZXMiCmF1dGhvcjogIkxhdXJhIEJvdHpldCAmIFJ1YmVuIEFyc2xhbiIKb3V0cHV0OiBodG1sX2RvY3VtZW50CmVkaXRvcl9vcHRpb25zOiAKICBjaHVua19vdXRwdXRfdHlwZTogY29uc29sZQotLS0KIyAgPHNwYW4gc3R5bGU9ImNvbG9yOiNFNzhBQzMiPlNhbXBsZSBBbmFseXNlczwvc3Bhbj4gey50YWJzZXR9CgojIyBIZWxwZXIKYGBge3IgaGVscGVyfQpzb3VyY2UoIjBfaGVscGVycy5SIikKYGBgCgojIyBMb2FkIGRhdGEKYGBge3IgTG9hZCBkYXRhfQojIyMgSW1wb3J0IGFsbCBkYXRhIHdpdGgga25vd24gYmlydGhvcmRlcgpiaXJ0aG9yZGVyID0gcmVhZFJEUygiZGF0YS9hbGxkYXRhX2JpcnRob3JkZXIucmRzIikKYGBgCgojIyBEYXRhIHdyYW5nbGluZwpgYGB7ciBkYXRhIHdyYW5nbGluZ30KIyMgd2UgaGF2ZSB0byBleGNsdWRlIHBlb3BsZSBpbiB0aGUgY29udHJvbCBncm91cCB3aG8gYXJlIHBhcnQgb2YgdGhlIGJpcnRob3JkZXIgZ3JvdXAKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lCiAgIyBtYXJrIHBlb3BsZSB3aG8gaGF2ZSBtaXNzaW5nIGJpcnRob3JkZXIgZGF0YQogIG11dGF0ZShjaGVja19iaXJ0aG9yZGVyID0gaWZlbHNlKCFpcy5uYShiaXJ0aG9yZGVyX2dlbmVzKSwgMSwgMCksCiAgIyBtYXJrIHBlb3BsZSB3aG8gaGF2ZSBtaXNzaW5nIG91dGNvbWVzCiAgICAgICAgIGNoZWNrX291dGNvbWUgPSBpZmVsc2UoIWlzLm5hKHJhdmVuXzIwMTVfb2xkKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEobWF0aF8yMDE1X29sZCksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKHJhdmVuXzIwMTVfeW91bmcpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShtYXRoXzIwMTVfeW91bmcpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShyYXZlbl8yMDA3X29sZCksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKG1hdGhfMjAwN19vbGQpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShyYXZlbl8yMDA3X3lvdW5nKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEobWF0aF8yMDA3X3lvdW5nKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEoYWRhcHRpdmVfbnVtYmVyaW5nKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEod29yZHNfcmVtZW1iZXJlZF9hdmcpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShjb3VudF9iYWNrd2FyZHMpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShiaWc1X2V4dCksIDEsIAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShyaXNrQSksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKHJpc2tCKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEoeWVhcnNfb2ZfZWR1Y2F0aW9uKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEoRWxlbWVudGFyeV9taXNzZWQpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShFbGVtZW50YXJ5X3dvcmtlZCksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKGF0dGVuZGVkX3NjaG9vbCksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKHdhZ2VfbGFzdF9tb250aF9sb2cpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYSh3YWdlX2xhc3RfeWVhcl9sb2cpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShTZWxmX2VtcGxveWVkKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEoQ2F0ZWdvcnkpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShTZWN0b3IpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShldmVyX3Ntb2tlZCksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKHN0aWxsX3Ntb2tpbmcpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgMCkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSksCiAgZ3JvdXBfYmlydGhvcmRlciA9IGlmZWxzZShjaGVja19iaXJ0aG9yZGVyID09IDAsICJjb250cm9sIiwgInRlc3QiKSwKICBncm91cF9vdXRjb21lID0gaWZlbHNlKGNoZWNrX291dGNvbWUgPT0gMCwgImNvbnRyb2wiLCAidGVzdCIpKQoKYGBgCgojIyBFZmZlY3RzIG9mIEVkdWNhdGlvbmFsIEF0dGFpbm1lbnQgYW5kIEludGVsbGlnZW5jZSBvbiBTZWxlY3Rpb24KYGBge3J9CmxpYnJhcnkoZWZmZWN0c2l6ZSkKbGlicmFyeShzanN0YXRzKQoKCmJpcnRob3JkZXIgPSBiaXJ0aG9yZGVyICU+JQogIG11dGF0ZShtYWluX3NhbXBsZSA9IGFzLmZhY3RvcihpZmVsc2UoZ3JvdXBfYmlydGhvcmRlciA9PSAidGVzdCIgJiBncm91cF9vdXRjb21lID09ICJ0ZXN0IiwgMSwgMCkpKQoKZ2xtKG1haW5fc2FtcGxlIH4gZ19mYWN0b3JfMjAxNV9vbGQgKyB5ZWFyc19vZl9lZHVjYXRpb24sCiAgICBkYXRhID0gYmlydGhvcmRlciwKICAgIGZhbWlseSA9IGJpbm9taWFsKGxpbms9J2xvZ2l0JykpCnN1bW1hcnkoZ2xtKG1haW5fc2FtcGxlIH4gZ19mYWN0b3JfMjAxNV9vbGQgKyB5ZWFyc19vZl9lZHVjYXRpb24sCiAgICBkYXRhID0gYmlydGhvcmRlciwKICAgIGZhbWlseSA9IGJpbm9taWFsKGxpbms9J2xvZ2l0JykpKQpzdGQgPSBzdGFuZGFyZGl6ZV9wYXJhbWV0ZXJzKGdsbShtYWluX3NhbXBsZSB+IGdfZmFjdG9yXzIwMTVfb2xkICsgeWVhcnNfb2ZfZWR1Y2F0aW9uLAogICAgZGF0YSA9IGJpcnRob3JkZXIsCiAgICBmYW1pbHkgPSBiaW5vbWlhbChsaW5rPSdsb2dpdCcpKSwgbWV0aG9kID0gInNtYXJ0IikKc3RkCmNpKHN0ZCwgY29uZmlkZW5jZSA9IDAuOTk1KQoKZ2xtKG1haW5fc2FtcGxlIH4gZ19mYWN0b3JfMjAxNV9vbGQgKyB5ZWFyc19vZl9lZHVjYXRpb24gKwogICAgICBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBzaWJsaW5nX2NvdW50X25haXZlLAogICAgZGF0YSA9IGJpcnRob3JkZXIsCiAgICBmYW1pbHkgPSBiaW5vbWlhbChsaW5rPSdsb2dpdCcpKQpzdW1tYXJ5KGdsbShtYWluX3NhbXBsZSB+IGdfZmFjdG9yXzIwMTVfb2xkICsgeWVhcnNfb2ZfZWR1Y2F0aW9uICsKICAgICAgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgc2libGluZ19jb3VudF9uYWl2ZSwKICAgIGRhdGEgPSBiaXJ0aG9yZGVyLAogICAgZmFtaWx5ID0gYmlub21pYWwobGluaz0nbG9naXQnKSkpCnN0ZCA9IHN0YW5kYXJkaXplX3BhcmFtZXRlcnMoZ2xtKG1haW5fc2FtcGxlIH4gZ19mYWN0b3JfMjAxNV9vbGQgKyB5ZWFyc19vZl9lZHVjYXRpb24gKwogICAgICBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBzaWJsaW5nX2NvdW50X25haXZlLAogICAgZGF0YSA9IGJpcnRob3JkZXIsCiAgICBmYW1pbHkgPSBiaW5vbWlhbChsaW5rPSdsb2dpdCcpKSwgbWV0aG9kID0gInNtYXJ0IikKCnN0ZApjaShzdGQsIGNvbmZpZGVuY2UgPSAwLjk5NSkKYGBgCg==</div>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("selection_effects.Rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

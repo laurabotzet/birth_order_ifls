@@ -18,11 +18,6 @@ source("0_helpers.R")
 birthorder = readRDS("data/alldata_birthorder.rds")
 ```
 
-## Overview Raw data
-```{r Overview Raw Data}
-# codebook(birthorder)
-```
-
 ## Data wrangling
 ```{r data wrangling}
 ## we have to exclude people in the control group who are part of the birthorder group
@@ -61,7 +56,7 @@ birthorder = birthorder %>%
 
 ```
 
-## Effect of Educational Attainment and Intelligence
+## Effects of Educational Attainment and Intelligence on Selection
 ```{r}
 library(sjstats)
 library(arm)

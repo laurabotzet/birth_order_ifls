@@ -517,13 +517,113 @@ birthorder = birthorder %&gt;%
 </div>
 <div id="effects-of-educational-attainment-and-intelligence-on-selection" class="section level2">
 <h2>Effects of Educational Attainment and Intelligence on Selection</h2>
-<pre class="r"><code>library(effectsize)
-library(sjstats)</code></pre>
+<pre class="r"><code>birthorder = birthorder %&gt;%
+  mutate(main_sample = as.factor(ifelse(group_birthorder == &quot;test&quot; &amp; group_outcome == &quot;test&quot;, 1, 0)))
+
+summary(allEffects((lm(g_factor_2015_old ~ main_sample,
+               data = birthorder)), se = list(confidence.level = 0.995))[&quot;main_sample&quot;])</code></pre>
+<pre><code>##  model: g_factor_2015_old ~ main_sample
+## 
+##  main_sample effect
+## main_sample
+##       0       1 
+## -0.1381  0.4502 
+## 
+##  Lower 95 Percent Confidence Limits
+## main_sample
+##       0       1 
+## -0.1488  0.4308 
+## 
+##  Upper 95 Percent Confidence Limits
+## main_sample
+##       0       1 
+## -0.1273  0.4696</code></pre>
+<pre class="r"><code>0.4502 + 0.1381</code></pre>
+<p><em>0.5883</em></p>
+<pre class="r"><code>0.4308 + 0.1488</code></pre>
+<p><em>0.5796</em></p>
+<pre class="r"><code>0.4696 + 0.1273</code></pre>
+<p><em>0.5969</em></p>
+<pre class="r"><code>summary(allEffects((lm(g_factor_2015_old ~ main_sample + poly(age,3,raw=TRUE) + sibling_count_naive,
+               data = birthorder)), se = list(confidence.level = 0.995))[&quot;main_sample&quot;])</code></pre>
+<pre><code>##  model: g_factor_2015_old ~ main_sample + poly(age, 3, raw = TRUE) + 
+##     sibling_count_naive
+## 
+##  main_sample effect
+## main_sample
+##      0      1 
+## 0.1097 0.4367 
+## 
+##  Lower 95 Percent Confidence Limits
+## main_sample
+##      0      1 
+## 0.0895 0.4139 
+## 
+##  Upper 95 Percent Confidence Limits
+## main_sample
+##      0      1 
+## 0.1300 0.4595</code></pre>
+<pre class="r"><code>0.4367 - 0.1097</code></pre>
+<p><em>0.327</em></p>
+<pre class="r"><code>0.4139 - 0.0895</code></pre>
+<p><em>0.3244</em></p>
+<pre class="r"><code>0.4595 - 0.13</code></pre>
+<p><em>0.3295</em></p>
+<pre class="r"><code>summary(allEffects((lm(years_of_education ~ main_sample,
+               data = birthorder)), se = list(confidence.level = 0.995))[&quot;main_sample&quot;])</code></pre>
+<pre><code>##  model: years_of_education ~ main_sample
+## 
+##  main_sample effect
+## main_sample
+##      0      1 
+##  8.283 11.397 
+## 
+##  Lower 95 Percent Confidence Limits
+## main_sample
+##      0      1 
+##  8.228 11.288 
+## 
+##  Upper 95 Percent Confidence Limits
+## main_sample
+##      0      1 
+##  8.338 11.506</code></pre>
+<pre class="r"><code>11.397 - 8.283</code></pre>
+<p><em>3.114</em></p>
+<pre class="r"><code>11.288 - 8.228</code></pre>
+<p><em>3.06</em></p>
+<pre class="r"><code>11.506 - 8.338</code></pre>
+<p><em>3.168</em></p>
+<pre class="r"><code>summary(allEffects((lm(years_of_education ~ main_sample + poly(age,3,raw=TRUE) + sibling_count_naive,
+               data = birthorder)), se = list(confidence.level = 0.995))[&quot;main_sample&quot;])</code></pre>
+<pre><code>##  model: years_of_education ~ main_sample + poly(age, 3, raw = TRUE) + 
+##     sibling_count_naive
+## 
+##  main_sample effect
+## main_sample
+##     0     1 
+## 10.34 12.28 
+## 
+##  Lower 95 Percent Confidence Limits
+## main_sample
+##     0     1 
+## 10.24 12.17 
+## 
+##  Upper 95 Percent Confidence Limits
+## main_sample
+##     0     1 
+## 10.44 12.40</code></pre>
+<pre class="r"><code>12.28 - 10.34</code></pre>
+<p><em>1.94</em></p>
+<pre class="r"><code>12.17 - 10.24</code></pre>
+<p><em>1.93</em></p>
+<pre class="r"><code>12.40 - 10.44</code></pre>
+<p><em>1.96</em></p>
+</div>
+<div id="old-stuff" class="section level2">
+<h2>Old Stuff</h2>
+<pre class="r"><code>library(sjstats)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;sjstats&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:effectsize&#39;:
-## 
-##     cohens_f</code></pre>
 <pre><code>## The following object is masked from &#39;package:psych&#39;:
 ## 
 ##     phi</code></pre>
@@ -533,10 +633,13 @@ library(sjstats)</code></pre>
 <pre><code>## The following object is masked from &#39;package:formr&#39;:
 ## 
 ##     props</code></pre>
-<pre class="r"><code>birthorder = birthorder %&gt;%
-  mutate(main_sample = as.factor(ifelse(group_birthorder == &quot;test&quot; &amp; group_outcome == &quot;test&quot;, 1, 0)))
-
-glm(main_sample ~ g_factor_2015_old + years_of_education,
+<pre class="r"><code>library(effectsize)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;effectsize&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:sjstats&#39;:
+## 
+##     cohens_f</code></pre>
+<pre class="r"><code>glm(main_sample ~ g_factor_2015_old + years_of_education,
     data = birthorder,
     family = binomial(link=&#39;logit&#39;))</code></pre>
 <table style="width:64%;">
@@ -955,9 +1058,766 @@ std</code></pre>
 </tbody>
 </table>
 </div>
+<div id="seperate-analyses" class="section level2">
+<h2>Seperate Analyses</h2>
+<div id="intelligence" class="section level3">
+<h3>Intelligence</h3>
+<pre class="r"><code>glm(main_sample ~ g_factor_2015_old,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;))</code></pre>
+<table style="width:61%;">
+<caption>Fitting generalized (binomial/logit) linear model: main_sample ~ g_factor_2015_old</caption>
+<colgroup>
+<col width="15%" />
+<col width="18%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">z value</th>
+<th align="center">Pr(&gt;|z|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-1.349</td>
+<td align="center">0.01633</td>
+<td align="center">-82.66</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">0.9925</td>
+<td align="center">0.02095</td>
+<td align="center">47.38</td>
+<td align="center">0</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary(glm(main_sample ~ g_factor_2015_old,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;)))</code></pre>
+<table style="width:61%;">
+<colgroup>
+<col width="15%" />
+<col width="18%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">z value</th>
+<th align="center">Pr(&gt;|z|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-1.349</td>
+<td align="center">0.01633</td>
+<td align="center">-82.66</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">0.9925</td>
+<td align="center">0.02095</td>
+<td align="center">47.38</td>
+<td align="center">0</td>
+</tr>
+</tbody>
+</table>
+<p>(Dispersion parameter for binomial family taken to be 1 )</p>
+<table style="width:69%;">
+<colgroup>
+<col width="29%" />
+<col width="40%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="center">Null deviance:</td>
+<td align="center">29997 on 27525 degrees of freedom</td>
+</tr>
+<tr class="even">
+<td align="center">Residual deviance:</td>
+<td align="center">27309 on 27524 degrees of freedom</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>std = standardize_parameters(glm(main_sample ~ g_factor_2015_old,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;)), method = &quot;smart&quot;)
+std</code></pre>
+<table style="width:51%;">
+<colgroup>
+<col width="27%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Parameter</th>
+<th align="center">Std_Coefficient</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">g_factor_2015_old</td>
+<td align="center">0.8277</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>ci(std, confidence = 0.995)</code></pre>
+<table style="width:60%;">
+<colgroup>
+<col width="27%" />
+<col width="6%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Parameter</th>
+<th align="center">CI</th>
+<th align="center">CI_low</th>
+<th align="center">CI_high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">95</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">g_factor_2015_old</td>
+<td align="center">95</td>
+<td align="center">0.7935</td>
+<td align="center">0.862</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>glm(main_sample ~ g_factor_2015_old +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;))</code></pre>
+<table style="width:67%;">
+<caption>Fitting generalized (binomial/logit) linear model: main_sample ~ g_factor_2015_old + poly(age, 3, raw = TRUE) + sibling_count_naive</caption>
+<colgroup>
+<col width="18%" />
+<col width="18%" />
+<col width="13%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">z value</th>
+<th align="center">Pr(&gt;|z|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">7.603</td>
+<td align="center">0.6306</td>
+<td align="center">12.06</td>
+<td align="center">1.801e-33</td>
+</tr>
+<tr class="even">
+<td align="center">0.6492</td>
+<td align="center">0.02636</td>
+<td align="center">24.63</td>
+<td align="center">6.403e-134</td>
+</tr>
+<tr class="odd">
+<td align="center">-0.7262</td>
+<td align="center">0.06915</td>
+<td align="center">-10.5</td>
+<td align="center">8.478e-26</td>
+</tr>
+<tr class="even">
+<td align="center">0.0232</td>
+<td align="center">0.002387</td>
+<td align="center">9.719</td>
+<td align="center">2.502e-22</td>
+</tr>
+<tr class="odd">
+<td align="center">-0.0002599</td>
+<td align="center">0.00002625</td>
+<td align="center">-9.901</td>
+<td align="center">4.114e-23</td>
+</tr>
+<tr class="even">
+<td align="center">-0.03676</td>
+<td align="center">0.004706</td>
+<td align="center">-7.812</td>
+<td align="center">5.642e-15</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary(glm(main_sample ~ g_factor_2015_old +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;)))</code></pre>
+<table style="width:67%;">
+<colgroup>
+<col width="18%" />
+<col width="18%" />
+<col width="13%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">z value</th>
+<th align="center">Pr(&gt;|z|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">7.603</td>
+<td align="center">0.6306</td>
+<td align="center">12.06</td>
+<td align="center">1.801e-33</td>
+</tr>
+<tr class="even">
+<td align="center">0.6492</td>
+<td align="center">0.02636</td>
+<td align="center">24.63</td>
+<td align="center">6.403e-134</td>
+</tr>
+<tr class="odd">
+<td align="center">-0.7262</td>
+<td align="center">0.06915</td>
+<td align="center">-10.5</td>
+<td align="center">8.478e-26</td>
+</tr>
+<tr class="even">
+<td align="center">0.0232</td>
+<td align="center">0.002387</td>
+<td align="center">9.719</td>
+<td align="center">2.502e-22</td>
+</tr>
+<tr class="odd">
+<td align="center">-0.0002599</td>
+<td align="center">0.00002625</td>
+<td align="center">-9.901</td>
+<td align="center">4.114e-23</td>
+</tr>
+<tr class="even">
+<td align="center">-0.03676</td>
+<td align="center">0.004706</td>
+<td align="center">-7.812</td>
+<td align="center">5.642e-15</td>
+</tr>
+</tbody>
+</table>
+<p>(Dispersion parameter for binomial family taken to be 1 )</p>
+<table style="width:69%;">
+<colgroup>
+<col width="29%" />
+<col width="40%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="center">Null deviance:</td>
+<td align="center">20678 on 15154 degrees of freedom</td>
+</tr>
+<tr class="even">
+<td align="center">Residual deviance:</td>
+<td align="center">17474 on 15149 degrees of freedom</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>std = standardize_parameters(glm(main_sample ~ g_factor_2015_old +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;)), method = &quot;smart&quot;)
+
+std</code></pre>
+<table style="width:62%;">
+<colgroup>
+<col width="38%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Parameter</th>
+<th align="center">Std_Coefficient</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">g_factor_2015_old</td>
+<td align="center">0.5057</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">-0.7262</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">0.0232</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">-0.0002599</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count_naive</td>
+<td align="center">-0.1511</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>ci(std, confidence = 0.995)</code></pre>
+<table style="width:82%;">
+<colgroup>
+<col width="38%" />
+<col width="6%" />
+<col width="18%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Parameter</th>
+<th align="center">CI</th>
+<th align="center">CI_low</th>
+<th align="center">CI_high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">95</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">g_factor_2015_old</td>
+<td align="center">95</td>
+<td align="center">0.4654</td>
+<td align="center">0.5459</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">95</td>
+<td align="center">-0.8617</td>
+<td align="center">-0.5906</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">95</td>
+<td align="center">0.01852</td>
+<td align="center">0.02788</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">95</td>
+<td align="center">-0.0003114</td>
+<td align="center">-0.0002085</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count_naive</td>
+<td align="center">95</td>
+<td align="center">-0.189</td>
+<td align="center">-0.1132</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="educational-attainment" class="section level3">
+<h3>Educational Attainment</h3>
+<pre class="r"><code>glm(main_sample ~ years_of_education,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;))</code></pre>
+<table style="width:61%;">
+<caption>Fitting generalized (binomial/logit) linear model: main_sample ~ years_of_education</caption>
+<colgroup>
+<col width="15%" />
+<col width="18%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">z value</th>
+<th align="center">Pr(&gt;|z|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-2.819</td>
+<td align="center">0.03663</td>
+<td align="center">-76.94</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">0.147</td>
+<td align="center">0.003166</td>
+<td align="center">46.43</td>
+<td align="center">0</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary(glm(main_sample ~ years_of_education,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;)))</code></pre>
+<table style="width:61%;">
+<colgroup>
+<col width="15%" />
+<col width="18%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">z value</th>
+<th align="center">Pr(&gt;|z|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">-2.819</td>
+<td align="center">0.03663</td>
+<td align="center">-76.94</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">0.147</td>
+<td align="center">0.003166</td>
+<td align="center">46.43</td>
+<td align="center">0</td>
+</tr>
+</tbody>
+</table>
+<p>(Dispersion parameter for binomial family taken to be 1 )</p>
+<table style="width:69%;">
+<colgroup>
+<col width="29%" />
+<col width="40%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="center">Null deviance:</td>
+<td align="center">34083 on 33817 degrees of freedom</td>
+</tr>
+<tr class="even">
+<td align="center">Residual deviance:</td>
+<td align="center">31675 on 33816 degrees of freedom</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>std = standardize_parameters(glm(main_sample ~ years_of_education,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;)), method = &quot;smart&quot;)
+std</code></pre>
+<table style="width:53%;">
+<colgroup>
+<col width="29%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Parameter</th>
+<th align="center">Std_Coefficient</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">years_of_education</td>
+<td align="center">0.7013</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>ci(std, confidence = 0.995)</code></pre>
+<table style="width:61%;">
+<colgroup>
+<col width="29%" />
+<col width="6%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Parameter</th>
+<th align="center">CI</th>
+<th align="center">CI_low</th>
+<th align="center">CI_high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">95</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">years_of_education</td>
+<td align="center">95</td>
+<td align="center">0.6717</td>
+<td align="center">0.7309</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>glm(main_sample ~ years_of_education +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;))</code></pre>
+<table style="width:72%;">
+<caption>Fitting generalized (binomial/logit) linear model: main_sample ~ years_of_education + poly(age, 3, raw = TRUE) + sibling_count_naive</caption>
+<colgroup>
+<col width="18%" />
+<col width="18%" />
+<col width="13%" />
+<col width="22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">z value</th>
+<th align="center">Pr(&gt;|z|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">9.19</td>
+<td align="center">0.631</td>
+<td align="center">14.56</td>
+<td align="center">4.702e-48</td>
+</tr>
+<tr class="even">
+<td align="center">0.1451</td>
+<td align="center">0.004977</td>
+<td align="center">29.16</td>
+<td align="center">7.1e-187</td>
+</tr>
+<tr class="odd">
+<td align="center">-1.021</td>
+<td align="center">0.07035</td>
+<td align="center">-14.51</td>
+<td align="center">9.814e-48</td>
+</tr>
+<tr class="even">
+<td align="center">0.03238</td>
+<td align="center">0.00244</td>
+<td align="center">13.27</td>
+<td align="center">3.457e-40</td>
+</tr>
+<tr class="odd">
+<td align="center">-0.0003535</td>
+<td align="center">0.00002696</td>
+<td align="center">-13.11</td>
+<td align="center">2.901e-39</td>
+</tr>
+<tr class="even">
+<td align="center">-0.02718</td>
+<td align="center">0.004626</td>
+<td align="center">-5.876</td>
+<td align="center">0.000000004193</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary(glm(main_sample ~ years_of_education +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;)))</code></pre>
+<table style="width:72%;">
+<colgroup>
+<col width="18%" />
+<col width="18%" />
+<col width="13%" />
+<col width="22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">z value</th>
+<th align="center">Pr(&gt;|z|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">9.19</td>
+<td align="center">0.631</td>
+<td align="center">14.56</td>
+<td align="center">4.702e-48</td>
+</tr>
+<tr class="even">
+<td align="center">0.1451</td>
+<td align="center">0.004977</td>
+<td align="center">29.16</td>
+<td align="center">7.1e-187</td>
+</tr>
+<tr class="odd">
+<td align="center">-1.021</td>
+<td align="center">0.07035</td>
+<td align="center">-14.51</td>
+<td align="center">9.814e-48</td>
+</tr>
+<tr class="even">
+<td align="center">0.03238</td>
+<td align="center">0.00244</td>
+<td align="center">13.27</td>
+<td align="center">3.457e-40</td>
+</tr>
+<tr class="odd">
+<td align="center">-0.0003535</td>
+<td align="center">0.00002696</td>
+<td align="center">-13.11</td>
+<td align="center">2.901e-39</td>
+</tr>
+<tr class="even">
+<td align="center">-0.02718</td>
+<td align="center">0.004626</td>
+<td align="center">-5.876</td>
+<td align="center">0.000000004193</td>
+</tr>
+</tbody>
+</table>
+<p>(Dispersion parameter for binomial family taken to be 1 )</p>
+<table style="width:69%;">
+<colgroup>
+<col width="29%" />
+<col width="40%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="center">Null deviance:</td>
+<td align="center">22346 on 16452 degrees of freedom</td>
+</tr>
+<tr class="even">
+<td align="center">Residual deviance:</td>
+<td align="center">18341 on 16447 degrees of freedom</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>std = standardize_parameters(glm(main_sample ~ years_of_education +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link=&#39;logit&#39;)), method = &quot;smart&quot;)
+
+std</code></pre>
+<table style="width:62%;">
+<colgroup>
+<col width="38%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Parameter</th>
+<th align="center">Std_Coefficient</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">years_of_education</td>
+<td align="center">0.6</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">-1.021</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">0.03238</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">-0.0003535</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count_naive</td>
+<td align="center">-0.1125</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>ci(std, confidence = 0.995)</code></pre>
+<table style="width:82%;">
+<colgroup>
+<col width="38%" />
+<col width="6%" />
+<col width="18%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Parameter</th>
+<th align="center">CI</th>
+<th align="center">CI_low</th>
+<th align="center">CI_high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">95</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">years_of_education</td>
+<td align="center">95</td>
+<td align="center">0.5597</td>
+<td align="center">0.6403</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)1</td>
+<td align="center">95</td>
+<td align="center">-1.159</td>
+<td align="center">-0.8832</td>
+</tr>
+<tr class="even">
+<td align="center">poly(age, 3, raw = TRUE)2</td>
+<td align="center">95</td>
+<td align="center">0.0276</td>
+<td align="center">0.03716</td>
+</tr>
+<tr class="odd">
+<td align="center">poly(age, 3, raw = TRUE)3</td>
+<td align="center">95</td>
+<td align="center">-0.0004063</td>
+<td align="center">-0.0003006</td>
+</tr>
+<tr class="even">
+<td align="center">sibling_count_naive</td>
+<td align="center">95</td>
+<td align="center">-0.15</td>
+<td align="center">-0.07495</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiM19zYW1wbGVfYW5hbHlzZXMiCmF1dGhvcjogIkxhdXJhIEJvdHpldCAmIFJ1YmVuIEFyc2xhbiIKb3V0cHV0OiBodG1sX2RvY3VtZW50CmVkaXRvcl9vcHRpb25zOiAKICBjaHVua19vdXRwdXRfdHlwZTogY29uc29sZQotLS0KIyAgPHNwYW4gc3R5bGU9ImNvbG9yOiNFNzhBQzMiPlNhbXBsZSBBbmFseXNlczwvc3Bhbj4gey50YWJzZXR9CgojIyBIZWxwZXIKYGBge3IgaGVscGVyfQpzb3VyY2UoIjBfaGVscGVycy5SIikKYGBgCgojIyBMb2FkIGRhdGEKYGBge3IgTG9hZCBkYXRhfQojIyMgSW1wb3J0IGFsbCBkYXRhIHdpdGgga25vd24gYmlydGhvcmRlcgpiaXJ0aG9yZGVyID0gcmVhZFJEUygiZGF0YS9hbGxkYXRhX2JpcnRob3JkZXIucmRzIikKYGBgCgojIyBEYXRhIHdyYW5nbGluZwpgYGB7ciBkYXRhIHdyYW5nbGluZ30KIyMgd2UgaGF2ZSB0byBleGNsdWRlIHBlb3BsZSBpbiB0aGUgY29udHJvbCBncm91cCB3aG8gYXJlIHBhcnQgb2YgdGhlIGJpcnRob3JkZXIgZ3JvdXAKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lCiAgIyBtYXJrIHBlb3BsZSB3aG8gaGF2ZSBtaXNzaW5nIGJpcnRob3JkZXIgZGF0YQogIG11dGF0ZShjaGVja19iaXJ0aG9yZGVyID0gaWZlbHNlKCFpcy5uYShiaXJ0aG9yZGVyX2dlbmVzKSwgMSwgMCksCiAgIyBtYXJrIHBlb3BsZSB3aG8gaGF2ZSBtaXNzaW5nIG91dGNvbWVzCiAgICAgICAgIGNoZWNrX291dGNvbWUgPSBpZmVsc2UoIWlzLm5hKHJhdmVuXzIwMTVfb2xkKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEobWF0aF8yMDE1X29sZCksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKHJhdmVuXzIwMTVfeW91bmcpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShtYXRoXzIwMTVfeW91bmcpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShyYXZlbl8yMDA3X29sZCksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKG1hdGhfMjAwN19vbGQpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShyYXZlbl8yMDA3X3lvdW5nKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEobWF0aF8yMDA3X3lvdW5nKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEoYWRhcHRpdmVfbnVtYmVyaW5nKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEod29yZHNfcmVtZW1iZXJlZF9hdmcpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShjb3VudF9iYWNrd2FyZHMpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShiaWc1X2V4dCksIDEsIAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShyaXNrQSksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKHJpc2tCKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEoeWVhcnNfb2ZfZWR1Y2F0aW9uKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEoRWxlbWVudGFyeV9taXNzZWQpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShFbGVtZW50YXJ5X3dvcmtlZCksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKGF0dGVuZGVkX3NjaG9vbCksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKHdhZ2VfbGFzdF9tb250aF9sb2cpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYSh3YWdlX2xhc3RfeWVhcl9sb2cpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShTZWxmX2VtcGxveWVkKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEoQ2F0ZWdvcnkpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShTZWN0b3IpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShldmVyX3Ntb2tlZCksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKHN0aWxsX3Ntb2tpbmcpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgMCkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSksCiAgZ3JvdXBfYmlydGhvcmRlciA9IGlmZWxzZShjaGVja19iaXJ0aG9yZGVyID09IDAsICJjb250cm9sIiwgInRlc3QiKSwKICBncm91cF9vdXRjb21lID0gaWZlbHNlKGNoZWNrX291dGNvbWUgPT0gMCwgImNvbnRyb2wiLCAidGVzdCIpKQoKYGBgCgojIyBFZmZlY3RzIG9mIEVkdWNhdGlvbmFsIEF0dGFpbm1lbnQgYW5kIEludGVsbGlnZW5jZSBvbiBTZWxlY3Rpb24KYGBge3J9CmxpYnJhcnkoZWZmZWN0c2l6ZSkKbGlicmFyeShzanN0YXRzKQoKCmJpcnRob3JkZXIgPSBiaXJ0aG9yZGVyICU+JQogIG11dGF0ZShtYWluX3NhbXBsZSA9IGFzLmZhY3RvcihpZmVsc2UoZ3JvdXBfYmlydGhvcmRlciA9PSAidGVzdCIgJiBncm91cF9vdXRjb21lID09ICJ0ZXN0IiwgMSwgMCkpKQoKZ2xtKG1haW5fc2FtcGxlIH4gZ19mYWN0b3JfMjAxNV9vbGQgKyB5ZWFyc19vZl9lZHVjYXRpb24sCiAgICBkYXRhID0gYmlydGhvcmRlciwKICAgIGZhbWlseSA9IGJpbm9taWFsKGxpbms9J2xvZ2l0JykpCnN1bW1hcnkoZ2xtKG1haW5fc2FtcGxlIH4gZ19mYWN0b3JfMjAxNV9vbGQgKyB5ZWFyc19vZl9lZHVjYXRpb24sCiAgICBkYXRhID0gYmlydGhvcmRlciwKICAgIGZhbWlseSA9IGJpbm9taWFsKGxpbms9J2xvZ2l0JykpKQpzdGQgPSBzdGFuZGFyZGl6ZV9wYXJhbWV0ZXJzKGdsbShtYWluX3NhbXBsZSB+IGdfZmFjdG9yXzIwMTVfb2xkICsgeWVhcnNfb2ZfZWR1Y2F0aW9uLAogICAgZGF0YSA9IGJpcnRob3JkZXIsCiAgICBmYW1pbHkgPSBiaW5vbWlhbChsaW5rPSdsb2dpdCcpKSwgbWV0aG9kID0gInNtYXJ0IikKc3RkCmNpKHN0ZCwgY29uZmlkZW5jZSA9IDAuOTk1KQoKZ2xtKG1haW5fc2FtcGxlIH4gZ19mYWN0b3JfMjAxNV9vbGQgKyB5ZWFyc19vZl9lZHVjYXRpb24gKwogICAgICBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBzaWJsaW5nX2NvdW50X25haXZlLAogICAgZGF0YSA9IGJpcnRob3JkZXIsCiAgICBmYW1pbHkgPSBiaW5vbWlhbChsaW5rPSdsb2dpdCcpKQpzdW1tYXJ5KGdsbShtYWluX3NhbXBsZSB+IGdfZmFjdG9yXzIwMTVfb2xkICsgeWVhcnNfb2ZfZWR1Y2F0aW9uICsKICAgICAgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgc2libGluZ19jb3VudF9uYWl2ZSwKICAgIGRhdGEgPSBiaXJ0aG9yZGVyLAogICAgZmFtaWx5ID0gYmlub21pYWwobGluaz0nbG9naXQnKSkpCnN0ZCA9IHN0YW5kYXJkaXplX3BhcmFtZXRlcnMoZ2xtKG1haW5fc2FtcGxlIH4gZ19mYWN0b3JfMjAxNV9vbGQgKyB5ZWFyc19vZl9lZHVjYXRpb24gKwogICAgICBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBzaWJsaW5nX2NvdW50X25haXZlLAogICAgZGF0YSA9IGJpcnRob3JkZXIsCiAgICBmYW1pbHkgPSBiaW5vbWlhbChsaW5rPSdsb2dpdCcpKSwgbWV0aG9kID0gInNtYXJ0IikKCnN0ZApjaShzdGQsIGNvbmZpZGVuY2UgPSAwLjk5NSkKYGBgCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiM19zYW1wbGVfYW5hbHlzZXMiCmF1dGhvcjogIkxhdXJhIEJvdHpldCAmIFJ1YmVuIEFyc2xhbiIKb3V0cHV0OiBodG1sX2RvY3VtZW50CmVkaXRvcl9vcHRpb25zOiAKICBjaHVua19vdXRwdXRfdHlwZTogY29uc29sZQotLS0KIyAgPHNwYW4gc3R5bGU9ImNvbG9yOiNFNzhBQzMiPlNhbXBsZSBBbmFseXNlczwvc3Bhbj4gey50YWJzZXR9CgojIyBIZWxwZXIKYGBge3IgaGVscGVyfQpzb3VyY2UoIjBfaGVscGVycy5SIikKYGBgCgojIyBMb2FkIGRhdGEKYGBge3IgTG9hZCBkYXRhfQojIyMgSW1wb3J0IGFsbCBkYXRhIHdpdGgga25vd24gYmlydGhvcmRlcgpiaXJ0aG9yZGVyID0gcmVhZFJEUygiZGF0YS9hbGxkYXRhX2JpcnRob3JkZXIucmRzIikKYGBgCgojIyBEYXRhIHdyYW5nbGluZwpgYGB7ciBkYXRhIHdyYW5nbGluZ30KIyMgd2UgaGF2ZSB0byBleGNsdWRlIHBlb3BsZSBpbiB0aGUgY29udHJvbCBncm91cCB3aG8gYXJlIHBhcnQgb2YgdGhlIGJpcnRob3JkZXIgZ3JvdXAKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lCiAgIyBtYXJrIHBlb3BsZSB3aG8gaGF2ZSBtaXNzaW5nIGJpcnRob3JkZXIgZGF0YQogIG11dGF0ZShjaGVja19iaXJ0aG9yZGVyID0gaWZlbHNlKCFpcy5uYShiaXJ0aG9yZGVyX2dlbmVzKSwgMSwgMCksCiAgIyBtYXJrIHBlb3BsZSB3aG8gaGF2ZSBtaXNzaW5nIG91dGNvbWVzCiAgICAgICAgIGNoZWNrX291dGNvbWUgPSBpZmVsc2UoIWlzLm5hKHJhdmVuXzIwMTVfb2xkKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEobWF0aF8yMDE1X29sZCksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKHJhdmVuXzIwMTVfeW91bmcpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShtYXRoXzIwMTVfeW91bmcpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShyYXZlbl8yMDA3X29sZCksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKG1hdGhfMjAwN19vbGQpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShyYXZlbl8yMDA3X3lvdW5nKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEobWF0aF8yMDA3X3lvdW5nKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEoYWRhcHRpdmVfbnVtYmVyaW5nKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEod29yZHNfcmVtZW1iZXJlZF9hdmcpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShjb3VudF9iYWNrd2FyZHMpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShiaWc1X2V4dCksIDEsIAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShyaXNrQSksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKHJpc2tCKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEoeWVhcnNfb2ZfZWR1Y2F0aW9uKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEoRWxlbWVudGFyeV9taXNzZWQpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShFbGVtZW50YXJ5X3dvcmtlZCksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKGF0dGVuZGVkX3NjaG9vbCksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKHdhZ2VfbGFzdF9tb250aF9sb2cpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYSh3YWdlX2xhc3RfeWVhcl9sb2cpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShTZWxmX2VtcGxveWVkKSwgMSwKICAgICAgICAgICAgICAgICAgICAgICAgIGlmZWxzZSghaXMubmEoQ2F0ZWdvcnkpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShTZWN0b3IpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKCFpcy5uYShldmVyX3Ntb2tlZCksIDEsCiAgICAgICAgICAgICAgICAgICAgICAgICBpZmVsc2UoIWlzLm5hKHN0aWxsX3Ntb2tpbmcpLCAxLAogICAgICAgICAgICAgICAgICAgICAgICAgMCkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSksCiAgZ3JvdXBfYmlydGhvcmRlciA9IGlmZWxzZShjaGVja19iaXJ0aG9yZGVyID09IDAsICJjb250cm9sIiwgInRlc3QiKSwKICBncm91cF9vdXRjb21lID0gaWZlbHNlKGNoZWNrX291dGNvbWUgPT0gMCwgImNvbnRyb2wiLCAidGVzdCIpKQoKYGBgCgojIyBFZmZlY3RzIG9mIEVkdWNhdGlvbmFsIEF0dGFpbm1lbnQgYW5kIEludGVsbGlnZW5jZSBvbiBTZWxlY3Rpb24KYGBge3J9CmJpcnRob3JkZXIgPSBiaXJ0aG9yZGVyICU+JQogIG11dGF0ZShtYWluX3NhbXBsZSA9IGFzLmZhY3RvcihpZmVsc2UoZ3JvdXBfYmlydGhvcmRlciA9PSAidGVzdCIgJiBncm91cF9vdXRjb21lID09ICJ0ZXN0IiwgMSwgMCkpKQoKc3VtbWFyeShhbGxFZmZlY3RzKChsbShnX2ZhY3Rvcl8yMDE1X29sZCB+IG1haW5fc2FtcGxlLAogICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikpLCBzZSA9IGxpc3QoY29uZmlkZW5jZS5sZXZlbCA9IDAuOTk1KSlbIm1haW5fc2FtcGxlIl0pCjAuNDUwMiArIDAuMTM4MQowLjQzMDggKyAwLjE0ODgKMC40Njk2ICsgMC4xMjczCgpzdW1tYXJ5KGFsbEVmZmVjdHMoKGxtKGdfZmFjdG9yXzIwMTVfb2xkIH4gbWFpbl9zYW1wbGUgKyBwb2x5KGFnZSwzLHJhdz1UUlVFKSArIHNpYmxpbmdfY291bnRfbmFpdmUsCiAgICAgICAgICAgICAgIGRhdGEgPSBiaXJ0aG9yZGVyKSksIHNlID0gbGlzdChjb25maWRlbmNlLmxldmVsID0gMC45OTUpKVsibWFpbl9zYW1wbGUiXSkKMC40MzY3IC0gMC4xMDk3CjAuNDEzOSAtIDAuMDg5NQowLjQ1OTUgLSAwLjEzCgpzdW1tYXJ5KGFsbEVmZmVjdHMoKGxtKHllYXJzX29mX2VkdWNhdGlvbiB+IG1haW5fc2FtcGxlLAogICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikpLCBzZSA9IGxpc3QoY29uZmlkZW5jZS5sZXZlbCA9IDAuOTk1KSlbIm1haW5fc2FtcGxlIl0pCjExLjM5NyAtIDguMjgzCjExLjI4OCAtIDguMjI4CjExLjUwNiAtIDguMzM4CgpzdW1tYXJ5KGFsbEVmZmVjdHMoKGxtKHllYXJzX29mX2VkdWNhdGlvbiB+IG1haW5fc2FtcGxlICsgcG9seShhZ2UsMyxyYXc9VFJVRSkgKyBzaWJsaW5nX2NvdW50X25haXZlLAogICAgICAgICAgICAgICBkYXRhID0gYmlydGhvcmRlcikpLCBzZSA9IGxpc3QoY29uZmlkZW5jZS5sZXZlbCA9IDAuOTk1KSlbIm1haW5fc2FtcGxlIl0pCjEyLjI4IC0gMTAuMzQKMTIuMTcgLSAxMC4yNAoxMi40MCAtIDEwLjQ0CmBgYAoKIyMgT2xkIFN0dWZmCmBgYHtyfQpsaWJyYXJ5KHNqc3RhdHMpCmxpYnJhcnkoZWZmZWN0c2l6ZSkKCmdsbShtYWluX3NhbXBsZSB+IGdfZmFjdG9yXzIwMTVfb2xkICsgeWVhcnNfb2ZfZWR1Y2F0aW9uLAogICAgZGF0YSA9IGJpcnRob3JkZXIsCiAgICBmYW1pbHkgPSBiaW5vbWlhbChsaW5rPSdsb2dpdCcpKQpzdW1tYXJ5KGdsbShtYWluX3NhbXBsZSB+IGdfZmFjdG9yXzIwMTVfb2xkICsgeWVhcnNfb2ZfZWR1Y2F0aW9uLAogICAgZGF0YSA9IGJpcnRob3JkZXIsCiAgICBmYW1pbHkgPSBiaW5vbWlhbChsaW5rPSdsb2dpdCcpKSkKc3RkID0gc3RhbmRhcmRpemVfcGFyYW1ldGVycyhnbG0obWFpbl9zYW1wbGUgfiBnX2ZhY3Rvcl8yMDE1X29sZCArIHllYXJzX29mX2VkdWNhdGlvbiwKICAgIGRhdGEgPSBiaXJ0aG9yZGVyLAogICAgZmFtaWx5ID0gYmlub21pYWwobGluaz0nbG9naXQnKSksIG1ldGhvZCA9ICJzbWFydCIpCnN0ZApjaShzdGQsIGNvbmZpZGVuY2UgPSAwLjk5NSkKCmdsbShtYWluX3NhbXBsZSB+IGdfZmFjdG9yXzIwMTVfb2xkICsgeWVhcnNfb2ZfZWR1Y2F0aW9uICsKICAgICAgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgc2libGluZ19jb3VudF9uYWl2ZSwKICAgIGRhdGEgPSBiaXJ0aG9yZGVyLAogICAgZmFtaWx5ID0gYmlub21pYWwobGluaz0nbG9naXQnKSkKc3VtbWFyeShnbG0obWFpbl9zYW1wbGUgfiBnX2ZhY3Rvcl8yMDE1X29sZCArIHllYXJzX29mX2VkdWNhdGlvbiArCiAgICAgIHBvbHkoYWdlLCAzLCByYXcgPSBUUlVFKSArIHNpYmxpbmdfY291bnRfbmFpdmUsCiAgICBkYXRhID0gYmlydGhvcmRlciwKICAgIGZhbWlseSA9IGJpbm9taWFsKGxpbms9J2xvZ2l0JykpKQpzdGQgPSBzdGFuZGFyZGl6ZV9wYXJhbWV0ZXJzKGdsbShtYWluX3NhbXBsZSB+IGdfZmFjdG9yXzIwMTVfb2xkICsgeWVhcnNfb2ZfZWR1Y2F0aW9uICsKICAgICAgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgc2libGluZ19jb3VudF9uYWl2ZSwKICAgIGRhdGEgPSBiaXJ0aG9yZGVyLAogICAgZmFtaWx5ID0gYmlub21pYWwobGluaz0nbG9naXQnKSksIG1ldGhvZCA9ICJzbWFydCIpCgpzdGQKY2koc3RkLCBjb25maWRlbmNlID0gMC45OTUpCmBgYAoKIyMgU2VwZXJhdGUgQW5hbHlzZXMKIyMjIEludGVsbGlnZW5jZQpgYGB7cn0KZ2xtKG1haW5fc2FtcGxlIH4gZ19mYWN0b3JfMjAxNV9vbGQsCiAgICBkYXRhID0gYmlydGhvcmRlciwKICAgIGZhbWlseSA9IGJpbm9taWFsKGxpbms9J2xvZ2l0JykpCnN1bW1hcnkoZ2xtKG1haW5fc2FtcGxlIH4gZ19mYWN0b3JfMjAxNV9vbGQsCiAgICBkYXRhID0gYmlydGhvcmRlciwKICAgIGZhbWlseSA9IGJpbm9taWFsKGxpbms9J2xvZ2l0JykpKQpzdGQgPSBzdGFuZGFyZGl6ZV9wYXJhbWV0ZXJzKGdsbShtYWluX3NhbXBsZSB+IGdfZmFjdG9yXzIwMTVfb2xkLAogICAgZGF0YSA9IGJpcnRob3JkZXIsCiAgICBmYW1pbHkgPSBiaW5vbWlhbChsaW5rPSdsb2dpdCcpKSwgbWV0aG9kID0gInNtYXJ0IikKc3RkCmNpKHN0ZCwgY29uZmlkZW5jZSA9IDAuOTk1KQoKZ2xtKG1haW5fc2FtcGxlIH4gZ19mYWN0b3JfMjAxNV9vbGQgKwogICAgICBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBzaWJsaW5nX2NvdW50X25haXZlLAogICAgZGF0YSA9IGJpcnRob3JkZXIsCiAgICBmYW1pbHkgPSBiaW5vbWlhbChsaW5rPSdsb2dpdCcpKQpzdW1tYXJ5KGdsbShtYWluX3NhbXBsZSB+IGdfZmFjdG9yXzIwMTVfb2xkICsKICAgICAgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgc2libGluZ19jb3VudF9uYWl2ZSwKICAgIGRhdGEgPSBiaXJ0aG9yZGVyLAogICAgZmFtaWx5ID0gYmlub21pYWwobGluaz0nbG9naXQnKSkpCnN0ZCA9IHN0YW5kYXJkaXplX3BhcmFtZXRlcnMoZ2xtKG1haW5fc2FtcGxlIH4gZ19mYWN0b3JfMjAxNV9vbGQgKwogICAgICBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBzaWJsaW5nX2NvdW50X25haXZlLAogICAgZGF0YSA9IGJpcnRob3JkZXIsCiAgICBmYW1pbHkgPSBiaW5vbWlhbChsaW5rPSdsb2dpdCcpKSwgbWV0aG9kID0gInNtYXJ0IikKCnN0ZApjaShzdGQsIGNvbmZpZGVuY2UgPSAwLjk5NSkKYGBgCgojIyMgRWR1Y2F0aW9uYWwgQXR0YWlubWVudApgYGB7cn0KZ2xtKG1haW5fc2FtcGxlIH4geWVhcnNfb2ZfZWR1Y2F0aW9uLAogICAgZGF0YSA9IGJpcnRob3JkZXIsCiAgICBmYW1pbHkgPSBiaW5vbWlhbChsaW5rPSdsb2dpdCcpKQpzdW1tYXJ5KGdsbShtYWluX3NhbXBsZSB+IHllYXJzX29mX2VkdWNhdGlvbiwKICAgIGRhdGEgPSBiaXJ0aG9yZGVyLAogICAgZmFtaWx5ID0gYmlub21pYWwobGluaz0nbG9naXQnKSkpCnN0ZCA9IHN0YW5kYXJkaXplX3BhcmFtZXRlcnMoZ2xtKG1haW5fc2FtcGxlIH4geWVhcnNfb2ZfZWR1Y2F0aW9uLAogICAgZGF0YSA9IGJpcnRob3JkZXIsCiAgICBmYW1pbHkgPSBiaW5vbWlhbChsaW5rPSdsb2dpdCcpKSwgbWV0aG9kID0gInNtYXJ0IikKc3RkCmNpKHN0ZCwgY29uZmlkZW5jZSA9IDAuOTk1KQoKZ2xtKG1haW5fc2FtcGxlIH4geWVhcnNfb2ZfZWR1Y2F0aW9uICsKICAgICAgcG9seShhZ2UsIDMsIHJhdyA9IFRSVUUpICsgc2libGluZ19jb3VudF9uYWl2ZSwKICAgIGRhdGEgPSBiaXJ0aG9yZGVyLAogICAgZmFtaWx5ID0gYmlub21pYWwobGluaz0nbG9naXQnKSkKc3VtbWFyeShnbG0obWFpbl9zYW1wbGUgfiB5ZWFyc19vZl9lZHVjYXRpb24gKwogICAgICBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBzaWJsaW5nX2NvdW50X25haXZlLAogICAgZGF0YSA9IGJpcnRob3JkZXIsCiAgICBmYW1pbHkgPSBiaW5vbWlhbChsaW5rPSdsb2dpdCcpKSkKc3RkID0gc3RhbmRhcmRpemVfcGFyYW1ldGVycyhnbG0obWFpbl9zYW1wbGUgfiB5ZWFyc19vZl9lZHVjYXRpb24gKwogICAgICBwb2x5KGFnZSwgMywgcmF3ID0gVFJVRSkgKyBzaWJsaW5nX2NvdW50X25haXZlLAogICAgZGF0YSA9IGJpcnRob3JkZXIsCiAgICBmYW1pbHkgPSBiaW5vbWlhbChsaW5rPSdsb2dpdCcpKSwgbWV0aG9kID0gInNtYXJ0IikKCnN0ZApjaShzdGQsIGNvbmZpZGVuY2UgPSAwLjk5NSkKYGBgCg==</div>
 
 
 

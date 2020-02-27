@@ -58,12 +58,38 @@ birthorder = birthorder %>%
 
 ## Effects of Educational Attainment and Intelligence on Selection
 ```{r}
-library(effectsize)
-library(sjstats)
-
-
 birthorder = birthorder %>%
   mutate(main_sample = as.factor(ifelse(group_birthorder == "test" & group_outcome == "test", 1, 0)))
+
+summary(allEffects((lm(g_factor_2015_old ~ main_sample,
+               data = birthorder)), se = list(confidence.level = 0.995))["main_sample"])
+0.4502 + 0.1381
+0.4308 + 0.1488
+0.4696 + 0.1273
+
+summary(allEffects((lm(g_factor_2015_old ~ main_sample + poly(age,3,raw=TRUE) + sibling_count_naive,
+               data = birthorder)), se = list(confidence.level = 0.995))["main_sample"])
+0.4367 - 0.1097
+0.4139 - 0.0895
+0.4595 - 0.13
+
+summary(allEffects((lm(years_of_education ~ main_sample,
+               data = birthorder)), se = list(confidence.level = 0.995))["main_sample"])
+11.397 - 8.283
+11.288 - 8.228
+11.506 - 8.338
+
+summary(allEffects((lm(years_of_education ~ main_sample + poly(age,3,raw=TRUE) + sibling_count_naive,
+               data = birthorder)), se = list(confidence.level = 0.995))["main_sample"])
+12.28 - 10.34
+12.17 - 10.24
+12.40 - 10.44
+```
+
+## Old Stuff
+```{r}
+library(sjstats)
+library(effectsize)
 
 glm(main_sample ~ g_factor_2015_old + years_of_education,
     data = birthorder,
@@ -86,6 +112,69 @@ summary(glm(main_sample ~ g_factor_2015_old + years_of_education +
     data = birthorder,
     family = binomial(link='logit')))
 std = standardize_parameters(glm(main_sample ~ g_factor_2015_old + years_of_education +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link='logit')), method = "smart")
+
+std
+ci(std, confidence = 0.995)
+```
+
+## Seperate Analyses
+### Intelligence
+```{r}
+glm(main_sample ~ g_factor_2015_old,
+    data = birthorder,
+    family = binomial(link='logit'))
+summary(glm(main_sample ~ g_factor_2015_old,
+    data = birthorder,
+    family = binomial(link='logit')))
+std = standardize_parameters(glm(main_sample ~ g_factor_2015_old,
+    data = birthorder,
+    family = binomial(link='logit')), method = "smart")
+std
+ci(std, confidence = 0.995)
+
+glm(main_sample ~ g_factor_2015_old +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link='logit'))
+summary(glm(main_sample ~ g_factor_2015_old +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link='logit')))
+std = standardize_parameters(glm(main_sample ~ g_factor_2015_old +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link='logit')), method = "smart")
+
+std
+ci(std, confidence = 0.995)
+```
+
+### Educational Attainment
+```{r}
+glm(main_sample ~ years_of_education,
+    data = birthorder,
+    family = binomial(link='logit'))
+summary(glm(main_sample ~ years_of_education,
+    data = birthorder,
+    family = binomial(link='logit')))
+std = standardize_parameters(glm(main_sample ~ years_of_education,
+    data = birthorder,
+    family = binomial(link='logit')), method = "smart")
+std
+ci(std, confidence = 0.995)
+
+glm(main_sample ~ years_of_education +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link='logit'))
+summary(glm(main_sample ~ years_of_education +
+      poly(age, 3, raw = TRUE) + sibling_count_naive,
+    data = birthorder,
+    family = binomial(link='logit')))
+std = standardize_parameters(glm(main_sample ~ years_of_education +
       poly(age, 3, raw = TRUE) + sibling_count_naive,
     data = birthorder,
     family = binomial(link='logit')), method = "smart")

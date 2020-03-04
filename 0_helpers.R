@@ -217,7 +217,7 @@ plot_birthorder = function(model, title = "", bo_var = "birth_order", separate =
   outcome = varnames[1]
   library(effects)
   library(tidyr)
-  emm = allEffects(model)
+  emm = allEffects(model, confidence.level = 0.995)
   bo_var = names(emm)[names(emm) %contains% bo_var]
   cemm = as.data.frame(emm[[bo_var]])
   if (separate != TRUE) {
@@ -269,7 +269,7 @@ plot_birthorder2 = function(model, title = "", bo_var = "birth_order", separate 
   outcome = varnames[1]
   library(effects)
   library(tidyr)
-  emm = allEffects(model)
+  emm = allEffects(model, confidence.level = 0.995)
   bo_var = names(emm)[names(emm) %contains% bo_var]
   cemm = as.data.frame(emm[[bo_var]])
   if (separate != TRUE) {

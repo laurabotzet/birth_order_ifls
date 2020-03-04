@@ -21,6 +21,7 @@ We used these [helper functions](0_helpers.html). These are the [.Rprofile setti
 
 1. First we [wrangled the data](1_data_import.html).
 2. We [decided which data to keep](2_inclusion.html).
+  - see the [codebook](2_codebook.html) for further details
 3. Then we [analyzed our sample and looked at some descriptives](3_sample_analyses.html).
 4. The main analyses: We [analyzed](4_analyses.html) birth order effects (click here for nice graphs of birth order effects).
 5. Then we [ran some robustness analyses](4_analyses_robust.html).

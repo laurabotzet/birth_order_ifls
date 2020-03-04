@@ -6,41 +6,194 @@ output:
     toc_depth: 4
     toc_float: true
     code_folding: 'hide'
-    self_contained: true
 ---
 
-```{r helper}
+```{r helper,warning = F, message = F}
 source("0_helpers.R")
-alldata_birthorder = readRDS("data/alldata_birthorder.rds")
-knitr::opts_chunk$set(error = TRUE)
+birthorder = readRDS("data/alldata_birthorder.rds")
+knitr::opts_chunk$set(error = TRUE, warning = F, message = F)
 ```
 
 
 ## Data
-```{r}
-### Import alldata used for birthorder and g-factors computed
-alldata_birthorder = readRDS("data/alldata_birthorder.rds")
-
-colnames(alldata_birthorder)
-crosstabs(alldata_birthorder$any_multiple_birth)
-## For the imputation we want to clean the dataset and get rid of all uninteresting data
-alldata_birthorder = alldata_birthorder %>%
-  filter(!is.na(pidlink)) %>% # no individuals who are only known from the pregnancy file
-  filter(is.na(lifebirths) | lifebirths == 2) %>% # remove 7 and 2 individuals who are known as stillbirth or miscarriage but still have PID
-  select(-lifebirths) %>% 
-  filter(!is.na(mother_pidlink)) %>% 
-  select(-father_pidlink) %>% 
-  filter(is.na(any_multiple_birth) | any_multiple_birth != 1) %>% # remove 7 and 2 individuals who are known as stillbirth or miscarriage but still have PID
-  select(-starts_with("age_"), -wave, -any_multiple_birth, -multiple_birth) %>% 
-  mutate(money_spent_smoking_log = if_else(is.na(money_spent_smoking_log) & ever_smoked == 0, 0, money_spent_smoking_log),
+```{r data preparations}
+# For analyses we want to clean the dataset and get rid of all uninteresting data
+birthorder = birthorder %>%
+ mutate(money_spent_smoking_log = if_else(is.na(money_spent_smoking_log) & ever_smoked == 0, 0, money_spent_smoking_log),
          amount = if_else(is.na(amount) & ever_smoked == 0, 0, amount),
          amount_still_smokers = if_else(is.na(amount_still_smokers) &  still_smoking == 0, 0, amount_still_smokers),
-         birthyear = lubridate::year(birthdate)) %>% 
-  select(-birthdate, -hhid14_9, -hhid14_9.x, -hhid14_9.y)
+         birthyear = lubridate::year(birthdate))
+
+### Variables
+birthorder = birthorder %>%
+  mutate(
+  attended_school = as.integer(attended_school),
+  attended_school = ifelse(attended_school == 1, 0,
+                           ifelse(attended_school == 2, 1, NA)))
+
+### Birthorder and Sibling Count
+birthorder = birthorder %>% 
+  mutate(
+# birthorder as factors with levels of 1, 2, 3, 4, 5, >5
+    birthorder_naive_factor = as.character(birthorder_naive),
+    birthorder_naive_factor = ifelse(birthorder_naive > 5, ">5",
+                                            birthorder_naive_factor),
+    birthorder_naive_factor = factor(birthorder_naive_factor, 
+                                            levels = c("1","2","3","4","5",">5")),
+    sibling_count_naive_factor = as.character(sibling_count_naive),
+    sibling_count_naive_factor = ifelse(sibling_count_naive > 5, ">5",
+                                               sibling_count_naive_factor),
+    sibling_count_naive_factor = factor(sibling_count_naive_factor, 
+                                               levels = c("2","3","4","5",">5")),
+
+    birthorder_uterus_alive_factor = as.character(birthorder_uterus_alive),
+    birthorder_uterus_alive_factor = ifelse(birthorder_uterus_alive > 5, ">5",
+                                            birthorder_uterus_alive_factor),
+    birthorder_uterus_alive_factor = factor(birthorder_uterus_alive_factor, 
+                                            levels = c("1","2","3","4","5",">5")),
+    sibling_count_uterus_alive_factor = as.character(sibling_count_uterus_alive),
+    sibling_count_uterus_alive_factor = ifelse(sibling_count_uterus_alive > 5, ">5",
+                                               sibling_count_uterus_alive_factor),
+    sibling_count_uterus_alive_factor = factor(sibling_count_uterus_alive_factor, 
+                                               levels = c("2","3","4","5",">5")),
+    birthorder_uterus_preg_factor = as.character(birthorder_uterus_preg),
+    birthorder_uterus_preg_factor = ifelse(birthorder_uterus_preg > 5, ">5",
+                                           birthorder_uterus_preg_factor),
+    birthorder_uterus_preg_factor = factor(birthorder_uterus_preg_factor,
+                                           levels = c("1","2","3","4","5",">5")),
+    sibling_count_uterus_preg_factor = as.character(sibling_count_uterus_preg),
+    sibling_count_uterus_preg_factor = ifelse(sibling_count_uterus_preg > 5, ">5",
+                                              sibling_count_uterus_preg_factor),
+    sibling_count_uterus_preg_factor = factor(sibling_count_uterus_preg_factor, 
+                                              levels = c("2","3","4","5",">5")),
+    birthorder_genes_factor = as.character(birthorder_genes),
+    birthorder_genes_factor = ifelse(birthorder_genes >5 , ">5", birthorder_genes_factor),
+    birthorder_genes_factor = factor(birthorder_genes_factor, 
+                                     levels = c("1","2","3","4","5",">5")),
+    sibling_count_genes_factor = as.character(sibling_count_genes),
+    sibling_count_genes_factor = ifelse(sibling_count_genes >5 , ">5",
+                                        sibling_count_genes_factor),
+    sibling_count_genes_factor = factor(sibling_count_genes_factor, 
+                                        levels = c("2","3","4","5",">5")),
+    # interaction birthorder * siblingcout for each birthorder
+    count_birthorder_naive =
+      factor(str_replace(as.character(interaction(birthorder_naive_factor,                                                              sibling_count_naive_factor)),
+                        "\\.", "/"),
+                                           levels =   c("1/2","2/2", "1/3",  "2/3",
+                                                        "3/3", "1/4", "2/4", "3/4", "4/4",
+                                                        "1/5", "2/5", "3/5", "4/5", "5/5",
+                                                        "1/>5", "2/>5", "3/>5", "4/>5",
+                                                        "5/>5", ">5/>5")),
+    count_birthorder_uterus_alive =
+      factor(str_replace(as.character(interaction(birthorder_uterus_alive_factor,                                                              sibling_count_uterus_alive_factor)),
+                        "\\.", "/"),
+                                           levels =   c("1/2","2/2", "1/3",  "2/3",
+                                                        "3/3", "1/4", "2/4", "3/4", "4/4",
+                                                        "1/5", "2/5", "3/5", "4/5", "5/5",
+                                                        "1/>5", "2/>5", "3/>5", "4/>5",
+                                                        "5/>5", ">5/>5")),
+    count_birthorder_uterus_preg =
+      factor(str_replace(as.character(interaction(birthorder_uterus_preg_factor,                                                              sibling_count_uterus_preg_factor)), 
+                         "\\.", "/"),
+                                           levels =   c("1/2","2/2", "1/3",  "2/3",
+                                                        "3/3", "1/4", "2/4", "3/4", "4/4",
+                                                        "1/5", "2/5", "3/5", "4/5", "5/5",
+                                                        "1/>5", "2/>5", "3/>5", "4/>5",
+                                                        "5/>5", ">5/>5")),
+    count_birthorder_genes =
+      factor(str_replace(as.character(interaction(birthorder_genes_factor,                                                              sibling_count_genes_factor)), "\\.", "/"),
+                                           levels =   c("1/2","2/2", "1/3",  "2/3",
+                                                        "3/3", "1/4", "2/4", "3/4", "4/4",
+                                                        "1/5", "2/5", "3/5", "4/5", "5/5",
+                                                        "1/>5", "2/>5", "3/>5", "4/>5",
+                                                        "5/>5", ">5/>5")))
+
+birthorder <- birthorder %>%
+                     mutate(sibling_count = sibling_count_naive_factor,
+                            birth_order_nonlinear = birthorder_naive_factor,
+                            birth_order = birthorder_naive,
+                            count_birth_order = count_birthorder_naive)
+
 ```
 
 ```{r}
+birthorder$mother_pidlink <- as.character(birthorder$mother_pidlink)
+birthorder$pidlink <- as.character(birthorder$pidlink)
+birthorder$father_pidlink <- as.character(birthorder$father_pidlink)
+birthorder$marriage_id <- as.character(birthorder$marriage_id)
 library(codebook)
-codebook(alldata_birthorder)
+
+var_label(birthorder$e1) <- "Is talkative"
+var_label(birthorder$c1) <- "Does a thorough job"
+var_label(birthorder$o1) <- "Is original, comes up with new ideas."
+var_label(birthorder$e2r_reversed) <- "Is reserved."
+var_label(birthorder$n1r_reversed) <- "Is relaxed, handles stress well."
+var_label(birthorder$a1) <- "Has a forgiving nature."
+var_label(birthorder$n2) <- "Worries a lot."
+var_label(birthorder$o2) <- "Has an active imagination."
+var_label(birthorder$c2r_reversed) <- "Tends to be lazy."
+var_label(birthorder$o3) <- "Values artistic, aesthetic experiences."
+var_label(birthorder$a2) <- "Is considerate and kind to almost everyone."
+var_label(birthorder$c3) <- "Does things efficiently."
+var_label(birthorder$e3) <- "Outgoing, sociable."
+var_label(birthorder$a3r_reversed) <- "Is sometimes rude to others."
+var_label(birthorder$n3) <- "Gets nervous easily."
+
+
+
+add_likert_labels <- function(x) {
+  val_labels(x) <- c("Disagree strongly" = 1, 
+                  "Disagree a little" = 2, 
+                  "Neither agree nor disagree" = 3,
+                  "Agree a little" = 4,
+                  "Agree strongly" = 5)
+  x
+}
+birthorder <- birthorder %>% mutate_at(vars(e1, c1, o1, e2r, n1r, a1, n2, o2, c2r, o3, a2, c3, e3, a3r, n3), add_likert_labels)
+
+##Extraversion
+birthorder$e2r_reversed = codebook::reverse_labelled_values(birthorder$e2r)
+extraversion = birthorder %>% select(e1, e2r_reversed, e3)
+birthorder$big5_ext = aggregate_and_document_scale(extraversion)
+
+##conscientiousness
+birthorder$c2r_reversed = codebook::reverse_labelled_values(birthorder$c2r)
+conscientiousness = birthorder %>% select(c1, c2r_reversed, c3)
+birthorder$big5_con = aggregate_and_document_scale(conscientiousness)
+
+##Openness
+openness = birthorder %>% select(o1, o2, o3)
+birthorder$big5_open = aggregate_and_document_scale(openness)
+
+## Neuroticism
+birthorder$n1r_reversed = codebook::reverse_labelled_values(birthorder$n1r)
+neuroticism = birthorder %>% select(n1r_reversed, n2, n3)
+birthorder$big5_neu = aggregate_and_document_scale(neuroticism)
+
+##Agreeableness
+birthorder$a3r_reversed = codebook::reverse_labelled_values(birthorder$a3r)
+agreeableness= birthorder %>% select(a1, a2, a3r_reversed)
+birthorder$big5_agree = aggregate_and_document_scale(agreeableness)
+
+cb_table <- codebook_table(birthorder)
+rio::export(cb_table, "2_codebook.xlsx")
+
+metadata(birthorder)$name <- "Indonesian Family Life Study, merged subset"
+metadata(birthorder)$description <- "Data from the IFLS, merged across waves, most outcomes taken from wave 5. Includes birth order, family structure, Big 5 Personality, intelligence tests, and risk lotteries"
+metadata(birthorder)$identifier <- "https://www.rand.org/well-being/social-and-behavioral-policy/data/FLS/IFLS.html"
+metadata(birthorder)$creator <- "RAND corporation"
+metadata(birthorder)$citation <- "Strauss, J., Witoelar, F., & Sikoki, B. (2016). The Fifth Wave of the Indonesia Family Life Survey: Overview and Field Report. WR-1143/1-NIA/NICHD"
+metadata(birthorder)$url <- "https://www.rand.org/well-being/social-and-behavioral-policy/data/FLS/IFLS.html"
+metadata(birthorder)$datePublished <- "2016"
+metadata(birthorder)$temporalCoverage <- "2014/2015" 
+metadata(birthorder)$spatialCoverage <- "13 Indonesian provinces. The sample is representative of about 83% of the Indonesian population and contains over 30,000 individuals living in 13 of the 27 provinces in the country. See URL for more." 
+
 ```
 
+```{r cb}
+codebook(birthorder, survey_repetition = "single", 
+        detailed_variables = FALSE, detailed_scales = TRUE, missingness_report = FALSE,
+        metadata_table = TRUE, metadata_json = TRUE, indent = "#")
+```
+
+[Excel codebook table](2_codebook.xlsx)

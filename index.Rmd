@@ -27,7 +27,6 @@ We used these [helper functions](0_helpers.html). These are the [.Rprofile setti
 6. Additionally, we [imputed missing data](3_imputation.html).
 7. We [checked imputation data](3_imputation_check.html) to see whether imputation was done correctly.
 8. And [analyzed imputed data](4_analyses_imputed_data.html) for birth order effects.
-9. In the end we ran [robustness analyses for imputed data](4_analyses_imputed_data_robust.html) as well.
 
 More information about the [Indonesian Family Life Survey (IFLS)](http://www.rand.org/labor/FLS/IFLS.html).
 
@@ -50,7 +49,6 @@ This supplementary website has been archived on Zenodo.org [![DOI]()]().
 
 
 ### Abstract
-
 Few studies have examined birth order effects on personality in countries that are not Western, educated, industrialized, rich, and democratic (WEIRD). However, theories have generally suggested interculturally universal family dynamics as the mechanism behind birth order effects, and prominent theories such as resource dilution would even predict stronger effects in poorer countries. Here, we investigate a subset of up to 11,188 participants of the Indonesian Family Life Survey, an ongoing representative panel study, to investigate whether later-born siblings differ from earlier-borns in intelligence, educational attainment, Big Five personality traits, and risk aversion. Analyses were performed using within-family designs in mixed-effects models. In model comparisons we tested for linear and non-linear birth order effects as well as for possible interactions of birth order and sibship size. Our estimated effect sizes are consistent with the emerging account of birth order as having relatively little impact on intelligence, Big Five, and risk aversion; and they exclude recent estimates from WEIRD populations based on large sample sizes. Considering educational attainment, we found a nonlinear pattern that was not robust to the imputation of missing data and in any case not aligned with trends in WEIRD countries. Overall, the small effects of birth order reported in other studies appear to be culturally specific. 
 
 

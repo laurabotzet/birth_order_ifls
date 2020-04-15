@@ -11,7 +11,7 @@ output:
 
 ```{r helper}
 source("0_helpers.R")
-birthorder = readRDS("data/birthorder.rds")
+birthorder = readRDS("data/alldata_birthorder.rds")
 knitr::opts_chunk$set(error = TRUE)
 ```
 

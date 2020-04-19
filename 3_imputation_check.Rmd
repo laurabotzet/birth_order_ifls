@@ -7,7 +7,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# <span style="color:#FFD92F">Imputation Checks</span> {.tabset}
+# <span style="color:#FFD92F">Imputation Checks</span>
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -15,7 +15,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Helper
 ```{r helper}
+library(mitml)
 source("0_helpers.R")
+knitr::opts_chunk$set(error = T)
 ```
 
 
@@ -24,9 +26,129 @@ source("0_helpers.R")
 ### Import alldata used for birthorder and g-factors computed
 alldata_birthorder = readRDS("data/alldata_birthorder_missing.rds")
 
-alldata_birthorder_i =  readRDS("data/alldata_birthorder_i_ml.rds")
+birthorder =  readRDS("data/alldata_birthorder_i_ml5.rds")
+alldata_birthorder_i <- birthorder
 
 colnames(alldata_birthorder)
+```
+
+
+```{r data preparations}
+birthorder <- mids2mitml.list(birthorder)
+
+## Calculate g_factors (for now with rowMeans: better to run factor analysis here as well?)
+birthorder <- within(birthorder, {
+  g_factor_2015_old <- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
+})
+
+birthorder <- within(birthorder, {
+  g_factor_2015_young <- rowMeans(scale(cbind(raven_2015_young, math_2015_young)))
+})
+
+birthorder <- within(birthorder, {
+  g_factor_2007_old <- rowMeans(scale(cbind(raven_2007_old, math_2007_old)))
+})
+
+birthorder <- within(birthorder, {
+  g_factor_2007_young <- rowMeans(scale(cbind(raven_2007_young, math_2007_young)))
+})
+
+
+birthorder = birthorder %>% tbl_df.mitml.list
+
+### Birthorder and Sibling Count
+birthorder_data = birthorder[[1]]
+
+birthorder = birthorder %>%
+  mutate(birthorder_genes = ifelse(birthorder_genes < 1, 1, birthorder_genes),
+         birthorder_naive = ifelse(birthorder_naive < 1, 1, birthorder_naive),
+         birthorder_genes = round(birthorder_genes),
+         birthorder_naive = round(birthorder_naive),
+         sibling_count_genes = ifelse(sibling_count_genes < 2, 2, sibling_count_genes),
+         sibling_count_naive = ifelse(sibling_count_naive < 2, 2, sibling_count_naive),
+         sibling_count_genes = round(sibling_count_genes),
+         sibling_count_naive = round(sibling_count_naive)
+         ) %>% 
+  group_by(mother_pidlink) %>% 
+  # make sure sibling count is consistent with birth order (for which imputation model seems to work better)
+  mutate(sibling_count_genes = max(birthorder_genes, sibling_count_genes)) %>% 
+  ungroup()
+
+
+birthorder2 = birthorder %>% 
+  mutate(
+# birthorder as factors with levels of 1, 2, 3, 4, 5, 5+
+    birthorder_naive_factor = as.character(birthorder_naive),
+    birthorder_naive_factor = ifelse(birthorder_naive > 5, "5+",
+                                            birthorder_naive_factor),
+    birthorder_naive_factor = factor(birthorder_naive_factor, 
+                                            levels = c("1","2","3","4","5","5+")),
+    sibling_count_naive_factor = as.character(sibling_count_naive),
+    sibling_count_naive_factor = ifelse(sibling_count_naive > 5, "5+",
+                                               sibling_count_naive_factor),
+    sibling_count_naive_factor = factor(sibling_count_naive_factor, 
+                                               levels = c("2","3","4","5","5+")),
+    birthorder_genes_factor = as.character(birthorder_genes),
+    birthorder_genes_factor = ifelse(birthorder_genes >5 , "5+", birthorder_genes_factor),
+    birthorder_genes_factor = factor(birthorder_genes_factor, 
+                                     levels = c("1","2","3","4","5","5+")),
+    sibling_count_genes_factor = as.character(sibling_count_genes),
+    sibling_count_genes_factor = ifelse(sibling_count_genes >5 , "5+",
+                                        sibling_count_genes_factor),
+    sibling_count_genes_factor = factor(sibling_count_genes_factor, 
+                                        levels = c("2","3","4","5","5+")),
+    # interaction birthorder * siblingcout for each birthorder
+    count_birthorder_naive =
+      factor(str_replace(as.character(interaction(birthorder_naive_factor,                                                              sibling_count_naive_factor)),
+                        "\\.", "/"),
+                                           levels =   c("1/2","2/2", "1/3",  "2/3",
+                                                        "3/3", "1/4", "2/4", "3/4", "4/4",
+                                                        "1/5", "2/5", "3/5", "4/5", "5/5",
+                                                        "1/5+", "2/5+", "3/5+", "4/5+",
+                                                        "5/5+", "5+/5+")),
+    count_birthorder_genes =
+      factor(str_replace(as.character(interaction(birthorder_genes_factor,                                                              sibling_count_genes_factor)), "\\.", "/"),
+                                           levels =   c("1/2","2/2", "1/3",  "2/3",
+                                                        "3/3", "1/4", "2/4", "3/4", "4/4",
+                                                        "1/5", "2/5", "3/5", "4/5", "5/5",
+                                                        "1/5+", "2/5+", "3/5+", "4/5+",
+                                                        "5/5+", "5+/5+")))
+
+
+
+### Variables
+birthorder = birthorder %>%
+  mutate(
+    g_factor_2015_old = (g_factor_2015_old - mean(g_factor_2015_old, na.rm=T)) / sd(g_factor_2015_old, na.rm=T),
+    g_factor_2015_young = (g_factor_2015_young - mean(g_factor_2015_young, na.rm=T)) / sd(g_factor_2015_young, na.rm=T),
+    g_factor_2007_old = (g_factor_2007_old - mean(g_factor_2007_old, na.rm=T)) / sd(g_factor_2007_old, na.rm=T),
+g_factor_2007_young = (g_factor_2007_young - mean(g_factor_2007_young, na.rm=T)) / sd(g_factor_2007_young, na.rm=T),
+    raven_2015_old = (raven_2015_old - mean(raven_2015_old, na.rm=T)) / sd(raven_2015_old),
+    math_2015_old = (math_2015_old - mean(math_2015_old, na.rm=T)) / sd(math_2015_old, na.rm=T),
+    raven_2015_young = (raven_2015_young - mean(raven_2015_young, na.rm=T)) / sd(raven_2015_young),
+    math_2015_young = (math_2015_young - mean(math_2015_young, na.rm=T)) /
+      sd(math_2015_young, na.rm=T),
+    raven_2007_old = (raven_2007_old - mean(raven_2007_old, na.rm=T)) / sd(raven_2007_old),
+math_2007_old = (math_2007_old - mean(math_2007_old, na.rm=T)) / sd(math_2007_old, na.rm=T),
+raven_2007_young = (raven_2007_young - mean(raven_2007_young, na.rm=T)) / sd(raven_2007_young),
+math_2007_young = (math_2007_young - mean(math_2007_young, na.rm=T)) /
+  sd(math_2007_young, na.rm=T),
+    count_backwards = (count_backwards - mean(count_backwards, na.rm=T)) /
+      sd(count_backwards, na.rm=T),
+    words_delayed = (words_delayed - mean(words_delayed, na.rm=T)) /
+      sd(words_delayed, na.rm=T),
+    adaptive_numbering = (adaptive_numbering - mean(adaptive_numbering, na.rm=T)) /
+      sd(adaptive_numbering, na.rm=T),
+    big5_ext = (big5_ext - mean(big5_ext, na.rm=T)) / sd(big5_ext, na.rm=T),
+    big5_con = (big5_con - mean(big5_con, na.rm=T)) / sd(big5_con, na.rm=T),
+    big5_agree = (big5_agree - mean(big5_agree, na.rm=T)) / sd(big5_agree, na.rm=T),
+    big5_open = (big5_open - mean(big5_open, na.rm=T)) / sd(big5_open, na.rm=T),
+    big5_neu = (big5_neu - mean(big5_neu, na.rm=T)) / sd(big5_neu, na.rm=T),
+    riskA = (riskA - mean(riskA, na.rm=T)) / sd(riskA, na.rm=T),
+    riskB = (riskB - mean(riskB, na.rm=T)) / sd(riskB, na.rm=T),
+    years_of_education_z = (years_of_education - mean(years_of_education, na.rm=T)) /
+      sd(years_of_education, na.rm=T)
+)
 ```
 
 
@@ -63,7 +185,7 @@ Hmisc::rcorr(.) %>% {
   arrange(desc(r)) %>% 
   filter(Var1 != Var2)
 
-alldata_birthorder_i_g_factor <- mids2mitml.list(alldata_birthorder_i)
+alldata_birthorder_i_g_factor <- birthorder
 
 alldata_birthorder_i_tbl = alldata_birthorder_i_g_factor %>% tbl_df.mitml.list
 
@@ -91,6 +213,10 @@ alldata_birthorder_i_g_factor <- within(alldata_birthorder_i_g_factor, {
 plot(alldata_birthorder_i)
 ```
 
+```{r}
+birthorder <- mids2mitml.list(alldata_birthorder_i)
+```
+
 ## Correlations, iterations and density {.active}
 ```{r}
 # correlations
@@ -111,37 +237,19 @@ cor.test(correlations$r_original, correlations$r_imputed)
 library(ggrepel)
 sum(abs(correlations$r_original - correlations$r_imputed) > 0.5, na.rm = T)
 correlations <- correlations %>% 
-  mutate(label = if_else(abs(r_original - r_imputed) > 0.5, 
+  mutate(label = if_else(abs(r_original - r_imputed) > 0.4, 
                          paste(Var1_original, Var2_original),
                          NA_character_))
 ggplot(correlations, aes(r_original, r_imputed)) +
   geom_point(alpha = 0.1) + 
   geom_text_repel(aes(label = label))
-
-
-# check densities of imputed/real
-
-densityplot(alldata_birthorder_i, ~ birthorder_genes + sibling_count_genes + birthorder_naive)
-
-densityplot(alldata_birthorder_i, ~ raven_2015_young + math_2015_young + raven_2015_old + math_2015_old)
-
-densityplot(alldata_birthorder_i, ~ words_delayed + adaptive_numbering + count_backwards)
-            
-densityplot(alldata_birthorder_i, ~ raven_2007_old + raven_2007_young + math_2007_young + math_2007_old)
-
-densityplot(alldata_birthorder_i, ~ big5_ext + big5_con + big5_open + big5_neu + big5_agree)
-
-densityplot(alldata_birthorder_i, ~ riskA + riskB)
-
-
-densityplot(alldata_birthorder_i, ~ Elementary_missed + Elementary_worked + attended_school + years_of_education + Self_employed)
-
-densityplot(alldata_birthorder_i, ~ ever_smoked + still_smoking + wage_last_month_log + wage_last_year_log)
+```
 
 
 
-pdf("density.pdf")
-densityplot(alldata_birthorder_i, ~ birthorder_genes + sibling_count_genes + birthorder_naive)
+## check densities of imputed/real
+```{r}
+densityplot(alldata_birthorder_i, ~ birthorder_genes + sibling_count_genes)
 
 densityplot(alldata_birthorder_i, ~ raven_2015_young + math_2015_young + raven_2015_old + math_2015_old)
 
@@ -153,19 +261,8 @@ densityplot(alldata_birthorder_i, ~ big5_ext + big5_con + big5_open + big5_neu +
 
 densityplot(alldata_birthorder_i, ~ riskA + riskB)
 
-densityplot(alldata_birthorder_i, ~ Elementary_missed + Elementary_worked + attended_school + years_of_education + Self_employed)
 
-densityplot(alldata_birthorder_i, ~ ever_smoked + still_smoking + wage_last_month_log + wage_last_year_log)
-
-dev.off()
-
-# additional analyses based on van Buuren & Groothuis-Oudshoorn, 2011
-xyplot(alldata_birthorder_i, birthorder_genes ~ birthorder_naive | .imp , pch = 20, cex = 1.4)
-
-xyplot(alldata_birthorder_i, sibling_count_genes ~ birthorder_genes | .imp , pch = 20, cex = 1.4)
-
-xyplot(alldata_birthorder_i, raven_2015_old ~ birthorder_genes | .imp , pch = 20, cex = 1.4)
-
+densityplot(alldata_birthorder_i, ~ years_of_education)
 ```
 
 
@@ -208,4 +305,5 @@ summary(lm(g_factor_2015 ~ raven_2015_young, alldata_birthorder_i_g_factor[[1]])
 alldata_birthorder %>% {cor.test(.$g_factor_nomiss, .$years_of_education)}
 alldata_birthorder_i_g_factor[[1]] %>% {cor.test(.$g_factor_2015, .$years_of_education)}
 alldata_birthorder_i_g_factor[[1]] %>% {cor.test(.$g_factor_2007, .$years_of_education)}
+alldata_birthorder_i_g_factor[[1]] %>% {cor.test(.$g_factor_2007, .$g_factor_2015)}
 ```

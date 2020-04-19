@@ -42,10 +42,12 @@ library(mitml)
 
 ## Load data
 ```{r Load Data}
-birthorder = readRDS("data/alldata_birthorder_i_ml.rds")
+birthorder_missing = readRDS("data/alldata_birthorder_missing.rds")
+birthorder = readRDS("data/alldata_birthorder_i_ml5.rds")
 ```
 
 ## Data preparations
+
 ```{r data preparations}
 birthorder <- mids2mitml.list(birthorder)
 
@@ -70,19 +72,22 @@ birthorder <- within(birthorder, {
 birthorder = birthorder %>% tbl_df.mitml.list
 
 ### Birthorder and Sibling Count
-# for factor variables we have to round birth order position and eliminate all unlikely numbers (negative ones)
 birthorder_data = birthorder[[1]]
 
 birthorder = birthorder %>%
-  mutate(birthorder_genes = ifelse(birthorder_genes < 0, 0, birthorder_genes),
-         birthorder_naive = ifelse(birthorder_naive < 0, 0, birthorder_naive),
+  mutate(birthorder_genes = ifelse(birthorder_genes < 1, 1, birthorder_genes),
+         birthorder_naive = ifelse(birthorder_naive < 1, 1, birthorder_naive),
          birthorder_genes = round(birthorder_genes),
          birthorder_naive = round(birthorder_naive),
-         sibling_count_genes = ifelse(sibling_count_genes < 0, 0, sibling_count_genes),
-         sibling_count_naive = ifelse(sibling_count_naive < 0, 0, sibling_count_naive),
+         sibling_count_genes = ifelse(sibling_count_genes < 2, 2, sibling_count_genes),
+         sibling_count_naive = ifelse(sibling_count_naive < 2, 2, sibling_count_naive),
          sibling_count_genes = round(sibling_count_genes),
          sibling_count_naive = round(sibling_count_naive)
-         )
+         ) %>% 
+  group_by(mother_pidlink) %>% 
+  # make sure sibling count is consistent with birth order (for which imputation model seems to work better)
+  mutate(sibling_count_genes = max(birthorder_genes, sibling_count_genes)) %>% 
+  ungroup()
 
 
 birthorder = birthorder %>% 
@@ -157,27 +162,22 @@ math_2007_young = (math_2007_young - mean(math_2007_young, na.rm=T)) /
     riskA = (riskA - mean(riskA, na.rm=T)) / sd(riskA, na.rm=T),
     riskB = (riskB - mean(riskB, na.rm=T)) / sd(riskB, na.rm=T),
     years_of_education_z = (years_of_education - mean(years_of_education, na.rm=T)) /
-      sd(years_of_education, na.rm=T),
-    wage_last_month_z = (wage_last_month_log - mean(wage_last_month_log, na.rm=T)) /
-      sd(wage_last_month_log, na.rm=T),
-    wage_last_year_z = (wage_last_year_log - mean(wage_last_year_log, na.rm=T)) /
-      sd(wage_last_year_log, na.rm=T),
-    attended_school = as.integer(attended_school),
-    attended_school = ifelse(attended_school == 1, 0,
-                           ifelse(attended_school == 2, 1, NA)))
+      sd(years_of_education, na.rm=T)
+)
+
         
 data_used <- birthorder %>%
-  mutate(sibling_count = sibling_count_naive_factor,
-         birth_order_nonlinear = birthorder_naive_factor,
-         birth_order = birthorder_naive,
-         count_birth_order = count_birthorder_naive)
+  mutate(sibling_count = sibling_count_genes_factor,
+         birth_order_nonlinear = birthorder_genes_factor,
+         birth_order = birthorder_genes,
+         count_birth_order = count_birthorder_genes)
 
 ```
 
 ## Intelligence {.active .tabset}
 ### g-factor 2015 old {.tabset}
 
-```{r}
+```{r gfold15o}
 # Specify your outcome
 data_used = data_used %>% mutate(outcome = g_factor_2015_old)
 data_used_plots <- data_used[[1]]
@@ -188,7 +188,7 @@ compare_birthorder_imputed(data_used = data_used)
 
 ### g-factor 2015 young {.tabset}
 
-```{r}
+```{r gf15y}
 # Specify your outcome
 data_used = data_used %>% mutate(outcome = g_factor_2015_young)
 data_used_plots <- data_used[[1]]
@@ -201,7 +201,7 @@ compare_birthorder_imputed(data_used = data_used)
 
 ### Extraversion {.tabset}
 
-```{r}
+```{r extra}
 # Specify your outcome
 data_used = data_used %>% mutate(outcome = big5_ext)
 data_used_plots <- data_used[[1]]
@@ -213,7 +213,7 @@ compare_birthorder_imputed(data_used = data_used)
 
 ### Neuroticism {.tabset}
 
-```{r}
+```{r neuro}
 # Specify your outcome
 data_used = data_used %>% mutate(outcome = big5_neu)
 compare_birthorder_imputed(data_used = data_used)
@@ -223,7 +223,7 @@ compare_birthorder_imputed(data_used = data_used)
 
 ### Conscientiousness {.tabset}
 
-```{r}
+```{r consc}
 # Specify your outcome
 data_used = data_used %>% mutate(outcome = big5_neu)
 data_used_plots <- data_used[[1]]
@@ -235,7 +235,7 @@ compare_birthorder_imputed(data_used = data_used)
 
 ### Agreeableness {.tabset}
 
-```{r}
+```{r agree}
 # Specify your outcome
 data_used = data_used %>% mutate(outcome = big5_agree)
 data_used_plots <- data_used[[1]]
@@ -247,7 +247,7 @@ compare_birthorder_imputed(data_used = data_used)
 
 ### Openness {.tabset}
 
-```{r}
+```{r open}
 # Specify your outcome
 data_used = data_used %>% mutate(outcome = big5_open)
 data_used_plots <- data_used[[1]]
@@ -259,7 +259,7 @@ compare_birthorder_imputed(data_used = data_used)
 ## Riskpreference {.tabset}
 ### Risk A {.tabset}
 
-```{r}
+```{r riska}
 # Specify your outcome
 data_used = data_used %>% mutate(outcome = riskA)
 data_used_plots <- data_used[[1]]
@@ -270,19 +270,18 @@ compare_birthorder_imputed(data_used = data_used)
 
 ### Risk B {.tabset}
 
-```{r}
+```{r riskb}
 # Specify your outcome
 data_used = data_used %>% mutate(outcome = riskB)
 data_used_plots <- data_used[[1]]
 
 compare_birthorder_imputed(data_used = data_used)
-
 ```
 
 ## Educational Attainment {.tabset}
 ### Years of Education - z-standardized{.tabset}
 
-```{r}
+```{r edu}
 # Specify your outcome
 data_used = data_used %>% mutate(outcome = years_of_education_z)
 data_used_plots <- data_used[[1]]
@@ -291,202 +290,4 @@ compare_birthorder_imputed(data_used = data_used)
 
 ```
 
-### elementary_missed
 
-```{r}
-# Specify your outcome
-data_used = data_used %>% mutate(outcome = Elementary_missed)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-
-```
-
-
-### elementary_worked
-
-```{r}
-# Specify your outcome
-data_used = data_used %>% mutate(outcome = Elementary_worked)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-
-```
-
-### attended_school
-
-```{r}
-# Specify your outcome
-data_used = data_used %>% mutate(outcome = attended_school)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-
-```
-
-
-
-## Work {.tabset}
-
-### Income Last Month (log) - z-standardized {.tabset}
-
-```{r}
-data_used = data_used %>% mutate(outcome = wage_last_month_z)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-
-```
-
-### Income last year (log) - z-standardized {.tabset}
-
-```{r}
-data_used = data_used %>% mutate(outcome = wage_last_year_z)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-```
-
-### Self-Employment - non standardized {.tabset}
-
-```{r}
-data_used = data_used %>% mutate(outcome = Self_employed)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-```
-
-## Smoking Behaviour {.tabset}
-### ever_smoked {.tabset}
-
-```{r}
-data_used = data_used %>% mutate(outcome = ever_smoked)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-```
-
-### still_smoking {.tabset}
-
-```{r}
-data_used = data_used %>% mutate(outcome = still_smoking)
-data_used_plots <- data_used[[1]]
-
-compare_birthorder_imputed(data_used = data_used)
-```
-
-
-## Multiplot Linear Birth Order Effect {.tabset}
-
-### Models {.tabset}
-
-```{r g-factor 2015 old}
-Intelligence = lmer(g_factor_2015_old ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
-                        sibling_count_genes +
-               (1 | mother_pidlink),
-                   data = birthorder)
-
-```
-
-```{r g-factor 2015 old}
-`Educational Attainment` = lmer(years_of_education_z ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
-                                  sibling_count_genes + (1 | mother_pidlink),
-                   data = birthorder)
-
-
-```
-
-
-
-```{r g-factor 2015 old}
-Extraversion = lmer(big5_ext ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
-                                  sibling_count_genes + (1 | mother_pidlink),
-                   data = birthorder)
-
-
-```
-
-
-
-```{r g-factor 2015 old}
-Neuroticism = lmer(big5_neu ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
-                                  sibling_count_genes + (1 | mother_pidlink),
-                   data = birthorder)
-
-
-```
-
-
-```{r g-factor 2015 old}
-Conscientiousness = lmer(big5_con ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
-                                  sibling_count_genes + (1 | mother_pidlink),
-                   data = birthorder)
-
-
-```
-
-
-
-```{r g-factor 2015 old}
-Agreeableness = lmer(big5_agree ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
-                                  sibling_count_genes + (1 | mother_pidlink),
-                   data = birthorder)
-
-
-```
-
-
-```{r g-factor 2015 old}
-Openness = lmer(big5_open ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
-                                  sibling_count_genes + (1 | mother_pidlink),
-                   data = birthorder)
-
-
-```
-
-
-```{r g-factor 2015 old}
-RiskA = lmer(riskA ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
-                                  sibling_count_genes + (1 | mother_pidlink),
-                   data = birthorder)
-
-
-```
-
-```{r g-factor 2015 old}
-RiskB = lmer(riskB ~ birthorder_genes + poly(age, 3, raw = TRUE) + male +
-                                  sibling_count_genes + (1 | mother_pidlink),
-                   data = birthorder)
-
-
-```
-
-### Plot {.active}
-```{r}
-x = multiplot(Intelligence, `Educational Attainment`, Agreeableness, Conscientiousness, Extraversion, Neuroticism, Openness, RiskA, RiskB, intercept = FALSE, coefficients = c("birthorder_genes", "sibling_count_genes"), plot = F)
-        
-x = data.frame(x)
-
-x$Model = ifelse(x$Model == "`Educational Attainment`", "Educational Attainment", x$Model)
-x$Model = as.factor(x$Model)
-levels(x$Model)
-
-x$Coefficient = ifelse(x$Coefficient == "birthorder_genes", "Birth order", "Sibship size")
-
-ggplot(x, aes(Model, Value)) +
-  geom_pointrange(data=x, mapping=aes(x=Model, y=Value, ymin=HighOuter, ymax=LowOuter, color = Coefficient),
-                  position = position_dodge(width=0.3), size = 1) +
-  scale_colour_brewer(palette = "Set2") +
-  geom_hline(yintercept = 0, size = 1.5)  +
-  geom_hline(yintercept = -.1, linetype = "dotted", size = 1.5) + 
-  scale_x_discrete(limits=c("RiskB", "RiskA", "Openness", "Neuroticism", "Extraversion",
-                            "Conscientiousness", "Agreeableness", "Educational Attainment",
-                            "Intelligence")) +
-  scale_y_continuous(limits = c(-0.1, 0.05), breaks = c(-0.1, -0.05, 0, 0.05)) +
-  coord_flip() +
-  theme(text = element_text(size=25), axis.text.x = element_text(size = 20),
-        axis.text.y = element_text(size = 20)) +
-  labs(y = "Linear effect size", x = "Outcome")
-  
-```

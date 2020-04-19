@@ -329,11 +329,32 @@ mutate.mitml.list <- function(.data, ...) {
   r
 }
 
+filter.mitml.list <- function(.data, ...) {
+  r <- lapply(.data, FUN = filter, ...)
+  class(r) = class(.data)
+  r
+}
+
 tbl_df.mitml.list <- function(.data, ...) {
   r <- lapply(.data, FUN = tbl_df, ...)
   class(r) = class(.data)
   r
 }
+
+n_imputations.mitml = function(imps) {
+  imps$iter$m
+}
+n_imputations.mids = function(imps) {
+  imps$m
+}
+n_imputations.amelia = function(imps) {
+  length(imps$imputations)
+}
+n_imputations = function(imps) { UseMethod("n_imputations") }
+
+complete.mitml = mitml::mitmlComplete
+complete.mids = mice::complete
+complete = function(...) { UseMethod("complete") }
 
 select.mitml.list <- function(.data, ...) {
   r <- lapply(.data, FUN = select, ...)
@@ -343,6 +364,12 @@ select.mitml.list <- function(.data, ...) {
 
 group_by.mitml.list <- function(.data, ...) {
   r <- lapply(.data, FUN = group_by, ...)
+  class(r) = class(.data)
+  r
+}
+
+ungroup.mitml.list <- function(.data, ...) {
+  r <- lapply(.data, FUN = ungroup, ...)
   class(r) = class(.data)
   r
 }

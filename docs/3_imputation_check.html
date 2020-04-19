@@ -368,10 +368,13 @@ $(document).ready(function () {
 </div>
 
 
-<div id="imputation-checks" class="section level1 tabset">
+<div id="imputation-checks" class="section level1">
 <h1><span style="color:#FFD92F">Imputation Checks</span></h1>
 <div id="helper" class="section level2">
 <h2>Helper</h2>
+<pre class="r"><code>library(mitml)</code></pre>
+<pre><code>## *** This is beta software. Please report any bugs!
+## *** See the NEWS file for recent changes.</code></pre>
 <pre class="r"><code>source(&quot;0_helpers.R&quot;)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;formr&#39;</code></pre>
@@ -383,6 +386,11 @@ $(document).ready(function () {
 <pre><code>## The following object is masked from &#39;package:base&#39;:
 ## 
 ##     date</code></pre>
+<pre><code>## 
+## Attaching package: &#39;broom.mixed&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:broom&#39;:
+## 
+##     tidyMCMC</code></pre>
 <pre><code>## Loading required package: carData</code></pre>
 <pre><code>## lattice theme set by effectsTheme()
 ## See ?effectsTheme for details.</code></pre>
@@ -466,16 +474,133 @@ $(document).ready(function () {
 <pre><code>## The following object is masked from &#39;package:psych&#39;:
 ## 
 ##     cohen.d</code></pre>
+<pre class="r"><code>knitr::opts_chunk$set(error = T)</code></pre>
 </div>
 <div id="data" class="section level2">
 <h2>Data</h2>
 <pre class="r"><code>### Import alldata used for birthorder and g-factors computed
 alldata_birthorder = readRDS(&quot;data/alldata_birthorder_missing.rds&quot;)
 
-alldata_birthorder_i =  readRDS(&quot;data/alldata_birthorder_i_ml.rds&quot;)
+birthorder =  readRDS(&quot;data/alldata_birthorder_i_ml5.rds&quot;)
+alldata_birthorder_i &lt;- birthorder
 
 colnames(alldata_birthorder)</code></pre>
-<p><em>mother_pidlink</em>, <em>age</em>, <em>male</em>, <em>birthorder_naive</em>, <em>sibling_count_naive</em>, <em>count_birthorder_naive</em>, <em>birthorder_genes</em>, <em>sibling_count_genes</em>, <em>count_birthorder_genes</em>, <em>raven_2015_young</em>, <em>math_2015_young</em>, <em>raven_2015_old</em>, <em>math_2015_old</em>, <em>words_delayed</em>, <em>adaptive_numbering</em>, <em>raven_2007_old</em>, <em>raven_2007_young</em>, <em>math_2007_young</em>, <em>math_2007_old</em>, <em>count_backwards</em>, <em>big5_ext</em>, <em>big5_con</em>, <em>big5_open</em>, <em>big5_neu</em>, <em>big5_agree</em>, <em>riskA</em>, <em>riskB</em>, <em>Elementary_missed</em>, <em>Elementary_worked</em>, <em>attended_school</em>, <em>years_of_education</em>, <em>Self_employed</em>, <em>ever_smoked</em>, <em>still_smoking</em>, <em>wage_last_month_log</em>, <em>wage_last_year_log</em>, <em>age2</em> and <em>age3</em></p>
+<p><em>mother_pidlink</em>, <em>age</em>, <em>male</em>, <em>birthorder_naive</em>, <em>sibling_count_naive</em>, <em>count_birthorder_naive</em>, <em>birthorder_genes</em>, <em>sibling_count_genes</em>, <em>count_birthorder_genes</em>, <em>raven_2015_young</em>, <em>math_2015_young</em>, <em>raven_2015_old</em>, <em>math_2015_old</em>, <em>words_delayed</em>, <em>adaptive_numbering</em>, <em>raven_2007_old</em>, <em>raven_2007_young</em>, <em>math_2007_young</em>, <em>math_2007_old</em>, <em>count_backwards</em>, <em>big5_ext</em>, <em>big5_con</em>, <em>big5_open</em>, <em>big5_neu</em>, <em>big5_agree</em>, <em>riskA</em>, <em>riskB</em>, <em>years_of_education</em>, <em>age2</em> and <em>age3</em></p>
+<pre class="r"><code>birthorder &lt;- mids2mitml.list(birthorder)
+
+## Calculate g_factors (for now with rowMeans: better to run factor analysis here as well?)
+birthorder &lt;- within(birthorder, {
+  g_factor_2015_old &lt;- rowMeans(scale(cbind(raven_2015_old, math_2015_old, count_backwards,  words_delayed, adaptive_numbering)))
+})
+
+birthorder &lt;- within(birthorder, {
+  g_factor_2015_young &lt;- rowMeans(scale(cbind(raven_2015_young, math_2015_young)))
+})
+
+birthorder &lt;- within(birthorder, {
+  g_factor_2007_old &lt;- rowMeans(scale(cbind(raven_2007_old, math_2007_old)))
+})
+
+birthorder &lt;- within(birthorder, {
+  g_factor_2007_young &lt;- rowMeans(scale(cbind(raven_2007_young, math_2007_young)))
+})
+
+
+birthorder = birthorder %&gt;% tbl_df.mitml.list
+
+### Birthorder and Sibling Count
+birthorder_data = birthorder[[1]]
+
+birthorder = birthorder %&gt;%
+  mutate(birthorder_genes = ifelse(birthorder_genes &lt; 1, 1, birthorder_genes),
+         birthorder_naive = ifelse(birthorder_naive &lt; 1, 1, birthorder_naive),
+         birthorder_genes = round(birthorder_genes),
+         birthorder_naive = round(birthorder_naive),
+         sibling_count_genes = ifelse(sibling_count_genes &lt; 2, 2, sibling_count_genes),
+         sibling_count_naive = ifelse(sibling_count_naive &lt; 2, 2, sibling_count_naive),
+         sibling_count_genes = round(sibling_count_genes),
+         sibling_count_naive = round(sibling_count_naive)
+         ) %&gt;% 
+  group_by(mother_pidlink) %&gt;% 
+  # make sure sibling count is consistent with birth order (for which imputation model seems to work better)
+  mutate(sibling_count_genes = max(birthorder_genes, sibling_count_genes)) %&gt;% 
+  ungroup()
+
+
+birthorder2 = birthorder %&gt;% 
+  mutate(
+# birthorder as factors with levels of 1, 2, 3, 4, 5, 5+
+    birthorder_naive_factor = as.character(birthorder_naive),
+    birthorder_naive_factor = ifelse(birthorder_naive &gt; 5, &quot;5+&quot;,
+                                            birthorder_naive_factor),
+    birthorder_naive_factor = factor(birthorder_naive_factor, 
+                                            levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+    sibling_count_naive_factor = as.character(sibling_count_naive),
+    sibling_count_naive_factor = ifelse(sibling_count_naive &gt; 5, &quot;5+&quot;,
+                                               sibling_count_naive_factor),
+    sibling_count_naive_factor = factor(sibling_count_naive_factor, 
+                                               levels = c(&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+    birthorder_genes_factor = as.character(birthorder_genes),
+    birthorder_genes_factor = ifelse(birthorder_genes &gt;5 , &quot;5+&quot;, birthorder_genes_factor),
+    birthorder_genes_factor = factor(birthorder_genes_factor, 
+                                     levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+    sibling_count_genes_factor = as.character(sibling_count_genes),
+    sibling_count_genes_factor = ifelse(sibling_count_genes &gt;5 , &quot;5+&quot;,
+                                        sibling_count_genes_factor),
+    sibling_count_genes_factor = factor(sibling_count_genes_factor, 
+                                        levels = c(&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;5+&quot;)),
+    # interaction birthorder * siblingcout for each birthorder
+    count_birthorder_naive =
+      factor(str_replace(as.character(interaction(birthorder_naive_factor,                                                              sibling_count_naive_factor)),
+                        &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;,
+                                                        &quot;1/5+&quot;, &quot;2/5+&quot;, &quot;3/5+&quot;, &quot;4/5+&quot;,
+                                                        &quot;5/5+&quot;, &quot;5+/5+&quot;)),
+    count_birthorder_genes =
+      factor(str_replace(as.character(interaction(birthorder_genes_factor,                                                              sibling_count_genes_factor)), &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;,
+                                                        &quot;1/5+&quot;, &quot;2/5+&quot;, &quot;3/5+&quot;, &quot;4/5+&quot;,
+                                                        &quot;5/5+&quot;, &quot;5+/5+&quot;)))
+
+
+
+### Variables
+birthorder = birthorder %&gt;%
+  mutate(
+    g_factor_2015_old = (g_factor_2015_old - mean(g_factor_2015_old, na.rm=T)) / sd(g_factor_2015_old, na.rm=T),
+    g_factor_2015_young = (g_factor_2015_young - mean(g_factor_2015_young, na.rm=T)) / sd(g_factor_2015_young, na.rm=T),
+    g_factor_2007_old = (g_factor_2007_old - mean(g_factor_2007_old, na.rm=T)) / sd(g_factor_2007_old, na.rm=T),
+g_factor_2007_young = (g_factor_2007_young - mean(g_factor_2007_young, na.rm=T)) / sd(g_factor_2007_young, na.rm=T),
+    raven_2015_old = (raven_2015_old - mean(raven_2015_old, na.rm=T)) / sd(raven_2015_old),
+    math_2015_old = (math_2015_old - mean(math_2015_old, na.rm=T)) / sd(math_2015_old, na.rm=T),
+    raven_2015_young = (raven_2015_young - mean(raven_2015_young, na.rm=T)) / sd(raven_2015_young),
+    math_2015_young = (math_2015_young - mean(math_2015_young, na.rm=T)) /
+      sd(math_2015_young, na.rm=T),
+    raven_2007_old = (raven_2007_old - mean(raven_2007_old, na.rm=T)) / sd(raven_2007_old),
+math_2007_old = (math_2007_old - mean(math_2007_old, na.rm=T)) / sd(math_2007_old, na.rm=T),
+raven_2007_young = (raven_2007_young - mean(raven_2007_young, na.rm=T)) / sd(raven_2007_young),
+math_2007_young = (math_2007_young - mean(math_2007_young, na.rm=T)) /
+  sd(math_2007_young, na.rm=T),
+    count_backwards = (count_backwards - mean(count_backwards, na.rm=T)) /
+      sd(count_backwards, na.rm=T),
+    words_delayed = (words_delayed - mean(words_delayed, na.rm=T)) /
+      sd(words_delayed, na.rm=T),
+    adaptive_numbering = (adaptive_numbering - mean(adaptive_numbering, na.rm=T)) /
+      sd(adaptive_numbering, na.rm=T),
+    big5_ext = (big5_ext - mean(big5_ext, na.rm=T)) / sd(big5_ext, na.rm=T),
+    big5_con = (big5_con - mean(big5_con, na.rm=T)) / sd(big5_con, na.rm=T),
+    big5_agree = (big5_agree - mean(big5_agree, na.rm=T)) / sd(big5_agree, na.rm=T),
+    big5_open = (big5_open - mean(big5_open, na.rm=T)) / sd(big5_open, na.rm=T),
+    big5_neu = (big5_neu - mean(big5_neu, na.rm=T)) / sd(big5_neu, na.rm=T),
+    riskA = (riskA - mean(riskA, na.rm=T)) / sd(riskA, na.rm=T),
+    riskB = (riskB - mean(riskB, na.rm=T)) / sd(riskB, na.rm=T),
+    years_of_education_z = (years_of_education - mean(years_of_education, na.rm=T)) /
+      sd(years_of_education, na.rm=T)
+)</code></pre>
 </div>
 <div id="functions-needed" class="section level2">
 <h2>Functions needed</h2>
@@ -508,10 +633,9 @@ library(mice)</code></pre>
 ##     cbind, rbind</code></pre>
 <pre class="r"><code>library(miceadds)</code></pre>
 <pre><code>## * miceadds 3.7-6 (2019-12-15 13:38:43)</code></pre>
-<pre class="r"><code>library(mitml)</code></pre>
-<pre><code>## *** This is beta software. Please report any bugs!
-## *** See the NEWS file for recent changes.</code></pre>
-<pre class="r"><code>corr_pipe = . %&gt;%  as.matrix() %&gt;% 
+<pre class="r"><code>library(mitml)
+
+corr_pipe = . %&gt;%  as.matrix() %&gt;% 
 Hmisc::rcorr(.) %&gt;% {
   left_join(left_join(.$r %&gt;% reshape2::melt() %&gt;% rename(r = value), 
                       .$n %&gt;% reshape2::melt() %&gt;% rename(n = value), by = c(&quot;Var1&quot;, &quot;Var2&quot;)),
@@ -521,7 +645,7 @@ Hmisc::rcorr(.) %&gt;% {
   arrange(desc(r)) %&gt;% 
   filter(Var1 != Var2)
 
-alldata_birthorder_i_g_factor &lt;- mids2mitml.list(alldata_birthorder_i)
+alldata_birthorder_i_g_factor &lt;- birthorder
 
 alldata_birthorder_i_tbl = alldata_birthorder_i_g_factor %&gt;% tbl_df.mitml.list</code></pre>
 </div>
@@ -540,7 +664,8 @@ alldata_birthorder_i_g_factor &lt;- within(alldata_birthorder_i_g_factor, {
 <div id="iterations-and-convergence" class="section level2">
 <h2>Iterations and convergence</h2>
 <pre class="r"><code>plot(alldata_birthorder_i)</code></pre>
-<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-1.png" width="672" /><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-2.png" width="672" /><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-3.png" width="672" /><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-4.png" width="672" /><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-5.png" width="672" /><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-6.png" width="672" /><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-7.png" width="672" /><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-8.png" width="672" /><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-9.png" width="672" /><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-10.png" width="672" /><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-11.png" width="672" /></p>
+<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-1.png" width="672" /><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-2.png" width="672" /><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-3.png" width="672" /><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-4.png" width="672" /><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-5.png" width="672" /><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-6.png" width="672" /><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-7.png" width="672" /><img src="3_imputation_check_files/figure-html/unnamed-chunk-4-8.png" width="672" /></p>
+<pre class="r"><code>birthorder &lt;- mids2mitml.list(alldata_birthorder_i)</code></pre>
 </div>
 <div id="correlations-iterations-and-density" class="section level2 active">
 <h2>Correlations, iterations and density</h2>
@@ -563,8 +688,8 @@ cor.test(correlations$r_original, correlations$r_imputed)</code></pre>
 <caption>Pearson’s product-moment correlation: <code>correlations$r_original</code> and <code>correlations$r_imputed</code></caption>
 <colgroup>
 <col width="22%" />
-<col width="9%" />
-<col width="24%" />
+<col width="7%" />
+<col width="25%" />
 <col width="32%" />
 <col width="11%" />
 </colgroup>
@@ -579,70 +704,42 @@ cor.test(correlations$r_original, correlations$r_imputed)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">30.46</td>
-<td align="center">1178</td>
-<td align="center">8.745e-151 * * *</td>
+<td align="center">64.09</td>
+<td align="center">700</td>
+<td align="center">4.117e-295 * * *</td>
 <td align="center">two.sided</td>
-<td align="center">0.6638</td>
+<td align="center">0.9243</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>library(ggrepel)
 sum(abs(correlations$r_original - correlations$r_imputed) &gt; 0.5, na.rm = T)</code></pre>
-<pre><code>## [1] 18</code></pre>
+<pre><code>## [1] 2</code></pre>
 <pre class="r"><code>correlations &lt;- correlations %&gt;% 
-  mutate(label = if_else(abs(r_original - r_imputed) &gt; 0.5, 
+  mutate(label = if_else(abs(r_original - r_imputed) &gt; 0.4, 
                          paste(Var1_original, Var2_original),
                          NA_character_))
 ggplot(correlations, aes(r_original, r_imputed)) +
   geom_point(alpha = 0.1) + 
   geom_text_repel(aes(label = label))</code></pre>
-<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<pre class="r"><code># check densities of imputed/real
-
-densityplot(alldata_birthorder_i, ~ birthorder_genes + sibling_count_genes + birthorder_naive)</code></pre>
-<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="check-densities-of-imputedreal" class="section level2">
+<h2>check densities of imputed/real</h2>
+<pre class="r"><code>densityplot(alldata_birthorder_i, ~ birthorder_genes + sibling_count_genes)</code></pre>
+<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <pre class="r"><code>densityplot(alldata_birthorder_i, ~ raven_2015_young + math_2015_young + raven_2015_old + math_2015_old)</code></pre>
-<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
+<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
 <pre class="r"><code>densityplot(alldata_birthorder_i, ~ words_delayed + adaptive_numbering + count_backwards)</code></pre>
-<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-5-4.png" width="672" /></p>
+<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
 <pre class="r"><code>densityplot(alldata_birthorder_i, ~ raven_2007_old + raven_2007_young + math_2007_young + math_2007_old)</code></pre>
-<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-5-5.png" width="672" /></p>
+<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-7-4.png" width="672" /></p>
 <pre class="r"><code>densityplot(alldata_birthorder_i, ~ big5_ext + big5_con + big5_open + big5_neu + big5_agree)</code></pre>
-<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-5-6.png" width="672" /></p>
+<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-7-5.png" width="672" /></p>
 <pre class="r"><code>densityplot(alldata_birthorder_i, ~ riskA + riskB)</code></pre>
-<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-5-7.png" width="672" /></p>
-<pre class="r"><code>densityplot(alldata_birthorder_i, ~ Elementary_missed + Elementary_worked + attended_school + years_of_education + Self_employed)</code></pre>
-<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-5-8.png" width="672" /></p>
-<pre class="r"><code>densityplot(alldata_birthorder_i, ~ ever_smoked + still_smoking + wage_last_month_log + wage_last_year_log)</code></pre>
-<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-5-9.png" width="672" /></p>
-<pre class="r"><code>pdf(&quot;density.pdf&quot;)
-densityplot(alldata_birthorder_i, ~ birthorder_genes + sibling_count_genes + birthorder_naive)
-
-densityplot(alldata_birthorder_i, ~ raven_2015_young + math_2015_young + raven_2015_old + math_2015_old)
-
-densityplot(alldata_birthorder_i, ~ words_delayed + adaptive_numbering + count_backwards)
-            
-densityplot(alldata_birthorder_i, ~ raven_2007_old + raven_2007_young + math_2007_young + math_2007_old)
-
-densityplot(alldata_birthorder_i, ~ big5_ext + big5_con + big5_open + big5_neu + big5_agree)
-
-densityplot(alldata_birthorder_i, ~ riskA + riskB)
-
-densityplot(alldata_birthorder_i, ~ Elementary_missed + Elementary_worked + attended_school + years_of_education + Self_employed)
-
-densityplot(alldata_birthorder_i, ~ ever_smoked + still_smoking + wage_last_month_log + wage_last_year_log)
-
-dev.off()</code></pre>
-<pre><code>## quartz_off_screen 
-##                 2</code></pre>
-<pre class="r"><code># additional analyses based on van Buuren &amp; Groothuis-Oudshoorn, 2011
-xyplot(alldata_birthorder_i, birthorder_genes ~ birthorder_naive | .imp , pch = 20, cex = 1.4)</code></pre>
-<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-5-10.png" width="672" /></p>
-<pre class="r"><code>xyplot(alldata_birthorder_i, sibling_count_genes ~ birthorder_genes | .imp , pch = 20, cex = 1.4)</code></pre>
-<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-5-11.png" width="672" /></p>
-<pre class="r"><code>xyplot(alldata_birthorder_i, raven_2015_old ~ birthorder_genes | .imp , pch = 20, cex = 1.4)</code></pre>
-<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-5-12.png" width="672" /></p>
+<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-7-6.png" width="672" /></p>
+<pre class="r"><code>densityplot(alldata_birthorder_i, ~ years_of_education)</code></pre>
+<p><img src="3_imputation_check_files/figure-html/unnamed-chunk-7-7.png" width="672" /></p>
 </div>
 <div id="g-factor" class="section level2">
 <h2>G-Factor</h2>
@@ -661,37 +758,37 @@ fa.parallel(no_miss %&gt;% select(raven_2015_old, math_2015_old, count_backwards
 ##     words_delayed, adaptive_numbering) %&gt;% data.frame(), nfactors = 1)
 ## Standardized loadings (pattern matrix) based upon correlation matrix
 ##                     MR1   h2   u2 com
-## raven_2015_old     0.62 0.38 0.62   1
+## raven_2015_old     0.60 0.36 0.64   1
 ## math_2015_old      0.51 0.26 0.74   1
-## count_backwards    0.46 0.22 0.78   1
-## words_delayed      0.42 0.18 0.82   1
-## adaptive_numbering 0.62 0.38 0.62   1
+## count_backwards    0.47 0.22 0.78   1
+## words_delayed      0.41 0.17 0.83   1
+## adaptive_numbering 0.61 0.38 0.62   1
 ## 
 ##                 MR1
-## SS loadings    1.42
+## SS loadings    1.39
 ## Proportion Var 0.28
 ## 
 ## Mean item complexity =  1
 ## Test of the hypothesis that 1 factor is sufficient.
 ## 
-## The degrees of freedom for the null model are  10  and the objective function was  0.58 with Chi Square of  8539
+## The degrees of freedom for the null model are  10  and the objective function was  0.56 with Chi Square of  7402
 ## The degrees of freedom for the model are 5  and the objective function was  0.01 
 ## 
 ## The root mean square of the residuals (RMSR) is  0.02 
 ## The df corrected root mean square of the residuals is  0.02 
 ## 
-## The harmonic number of observations is  14688 with the empirical chi square  77.5  with prob &lt;  2.8e-15 
-## The total number of observations was  14688  with Likelihood Chi Square =  78.47  with prob &lt;  1.8e-15 
+## The harmonic number of observations is  13151 with the empirical chi square  66.03  with prob &lt;  6.8e-13 
+## The total number of observations was  13151  with Likelihood Chi Square =  66.32  with prob &lt;  6e-13 
 ## 
 ## Tucker Lewis Index of factoring reliability =  0.983
-## RMSEA index =  0.032  and the 90 % confidence intervals are  0.026 0.038
-## BIC =  30.49
+## RMSEA index =  0.031  and the 90 % confidence intervals are  0.024 0.037
+## BIC =  18.9
 ## Fit based upon off diagonal values = 1
 ## Measures of factor score adequacy             
 ##                                                    MR1
 ## Correlation of (regression) scores with factors   0.82
 ## Multiple R square of scores with factors          0.67
-## Minimum correlation of possible factor scores     0.35</code></pre>
+## Minimum correlation of possible factor scores     0.34</code></pre>
 <pre class="r"><code>om_results = omega(no_miss %&gt;% select(raven_2015_old, math_2015_old, count_backwards, words_delayed, adaptive_numbering) %&gt;% data.frame(), nfactors = 1, sl = F)</code></pre>
 <pre><code>## Omega_h for 1 factor is not meaningful, just omega_t</code></pre>
 <pre class="r"><code>om_results</code></pre>
@@ -701,53 +798,53 @@ fa.parallel(no_miss %&gt;% select(raven_2015_old, math_2015_old, count_backwards
 ##     plot = plot, n.obs = n.obs, rotate = rotate, Phi = Phi, option = option, 
 ##     covar = covar)
 ## Alpha:                 0.65 
-## G.6:                   0.61 
-## Omega Hierarchical:    0.66 
+## G.6:                   0.6 
+## Omega Hierarchical:    0.65 
 ## Omega H asymptotic:    1 
-## Omega Total            0.66 
+## Omega Total            0.65 
 ## 
 ## Schmid Leiman Factor loadings greater than  0.2 
 ##                       g  F1*   h2   u2 p2
-## raven_2015_old     0.62      0.38 0.62  1
+## raven_2015_old     0.60      0.36 0.64  1
 ## math_2015_old      0.51      0.26 0.74  1
-## count_backwards    0.46      0.22 0.78  1
-## words_delayed      0.42      0.18 0.82  1
-## adaptive_numbering 0.62      0.38 0.62  1
+## count_backwards    0.47      0.22 0.78  1
+## words_delayed      0.41      0.17 0.83  1
+## adaptive_numbering 0.61      0.38 0.62  1
 ## 
 ## With eigenvalues of:
 ##   g F1* 
 ## 1.4 0.0 
 ## 
-## general/max  1.02e+16   max/min =   1
+## general/max  8354082811971781   max/min =   1
 ## mean percent general =  1    with sd =  0 and cv of  0 
 ## Explained Common Variance of the general factor =  1 
 ## 
 ## The degrees of freedom are 5  and the fit is  0.01 
-## The number of observations was  14688  with Chi Square =  78.47  with prob &lt;  1.8e-15
+## The number of observations was  13151  with Chi Square =  66.32  with prob &lt;  6e-13
 ## The root mean square of the residuals is  0.02 
 ## The df corrected root mean square of the residuals is  0.02
-## RMSEA index =  0.032  and the 10 % confidence intervals are  0.026 0.038
-## BIC =  30.49
+## RMSEA index =  0.031  and the 10 % confidence intervals are  0.024 0.037
+## BIC =  18.9
 ## 
 ## Compare this with the adequacy of just a general factor and no group factors
 ## The degrees of freedom for just the general factor are 5  and the fit is  0.01 
-## The number of observations was  14688  with Chi Square =  78.47  with prob &lt;  1.8e-15
+## The number of observations was  13151  with Chi Square =  66.32  with prob &lt;  6e-13
 ## The root mean square of the residuals is  0.02 
 ## The df corrected root mean square of the residuals is  0.02 
 ## 
-## RMSEA index =  0.032  and the 10 % confidence intervals are  0.026 0.038
-## BIC =  30.49 
+## RMSEA index =  0.031  and the 10 % confidence intervals are  0.024 0.037
+## BIC =  18.9 
 ## 
 ## Measures of factor score adequacy             
 ##                                                  g F1*
 ## Correlation of scores with factors            0.82   0
 ## Multiple R square of scores with factors      0.67   0
-## Minimum correlation of factor score estimates 0.35  -1
+## Minimum correlation of factor score estimates 0.34  -1
 ## 
 ##  Total, General and Subset omega for each subset
 ##                                                  g  F1*
-## Omega total for total scores and subscales    0.66 0.66
-## Omega general for total scores and subscales  0.66 0.66
+## Omega total for total scores and subscales    0.65 0.65
+## Omega general for total scores and subscales  0.65 0.65
 ## Omega group for total scores and subscales    0.00 0.00</code></pre>
 <pre class="r"><code>omega.diagram(om_results)</code></pre>
 <p><img src="3_imputation_check_files/figure-html/g%20factor-2.png" width="672" /></p>
@@ -760,11 +857,11 @@ summary(cfa_g)</code></pre>
 ##   Optimization method                           NLMINB
 ##   Number of free parameters                         10
 ##                                                       
-##   Number of observations                         14688
+##   Number of observations                         13151
 ##                                                       
 ## Model Test User Model:
 ##                                                       
-##   Test statistic                                78.411
+##   Test statistic                                66.282
 ##   Degrees of freedom                                 5
 ##   P-value (Chi-square)                           0.000
 ## 
@@ -777,19 +874,19 @@ summary(cfa_g)</code></pre>
 ## Latent Variables:
 ##                      Estimate  Std.Err  z-value  P(&gt;|z|)
 ##   g_factor_nomiss =~                                    
-##     raven_2015_old      0.616    0.010   63.882    0.000
-##     math_2015_old       0.514    0.010   53.360    0.000
-##     count_backwrds      0.465    0.010   48.038    0.000
-##     words_delayed       0.419    0.010   43.063    0.000
-##     adaptiv_nmbrng      0.616    0.010   63.838    0.000
+##     raven_2015_old      0.601    0.010   58.478    0.000
+##     math_2015_old       0.512    0.010   49.908    0.000
+##     count_backwrds      0.475    0.010   46.155    0.000
+##     words_delayed       0.408    0.010   39.376    0.000
+##     adaptiv_nmbrng      0.614    0.010   59.659    0.000
 ## 
 ## Variances:
 ##                    Estimate  Std.Err  z-value  P(&gt;|z|)
-##    .raven_2015_old    0.620    0.010   59.142    0.000
-##    .math_2015_old     0.736    0.010   70.337    0.000
-##    .count_backwrds    0.784    0.011   73.996    0.000
-##    .words_delayed     0.824    0.011   76.713    0.000
-##    .adaptiv_nmbrng    0.621    0.010   59.203    0.000
+##    .raven_2015_old    0.639    0.011   57.294    0.000
+##    .math_2015_old     0.738    0.011   66.322    0.000
+##    .count_backwrds    0.775    0.011   69.060    0.000
+##    .words_delayed     0.834    0.011   72.907    0.000
+##    .adaptiv_nmbrng    0.623    0.011   55.665    0.000
 ##     g_factor_nomss    1.000</code></pre>
 <pre class="r"><code>## Explained variance:
 x = inspect(cfa_g, &quot;rsquare&quot;)
@@ -825,25 +922,25 @@ qplot(alldata_birthorder$g_factor_nomiss)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">-1.798</td>
-<td align="center">0.01381</td>
-<td align="center">-130.1</td>
+<td align="center">-1.795</td>
+<td align="center">0.01523</td>
+<td align="center">-117.8</td>
 <td align="center">0</td>
 </tr>
 <tr class="even">
-<td align="center">2.599</td>
-<td align="center">0.01889</td>
-<td align="center">137.6</td>
+<td align="center">2.569</td>
+<td align="center">0.02068</td>
+<td align="center">124.2</td>
 <td align="center">0</td>
 </tr>
 </tbody>
 </table>
-<table style="width:88%;">
+<table style="width:86%;">
 <caption>Fitting linear model: g_factor_nomiss ~ raven_2015_old</caption>
 <colgroup>
 <col width="20%" />
 <col width="30%" />
-<col width="12%" />
+<col width="11%" />
 <col width="23%" />
 </colgroup>
 <thead>
@@ -856,20 +953,20 @@ qplot(alldata_birthorder$g_factor_nomiss)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">14688</td>
-<td align="center">0.5429</td>
-<td align="center">0.5631</td>
-<td align="center">0.5631</td>
+<td align="center">13151</td>
+<td align="center">0.5545</td>
+<td align="center">0.54</td>
+<td align="center">0.5399</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>summary(lm(g_factor_2015 ~ raven_2015_old, alldata_birthorder_i_g_factor[[1]]))</code></pre>
-<table style="width:62%;">
+<table style="width:72%;">
 <colgroup>
-<col width="15%" />
 <col width="18%" />
-<col width="13%" />
-<col width="15%" />
+<col width="18%" />
+<col width="18%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -881,15 +978,15 @@ qplot(alldata_birthorder$g_factor_nomiss)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">-1.232</td>
-<td align="center">0.006938</td>
-<td align="center">-177.6</td>
-<td align="center">0</td>
+<td align="center">-3.129e-15</td>
+<td align="center">0.003715</td>
+<td align="center">-8.423e-13</td>
+<td align="center">1</td>
 </tr>
 <tr class="even">
-<td align="center">1.828</td>
-<td align="center">0.009684</td>
-<td align="center">188.8</td>
+<td align="center">0.4553</td>
+<td align="center">0.003715</td>
+<td align="center">122.6</td>
 <td align="center">0</td>
 </tr>
 </tbody>
@@ -912,20 +1009,20 @@ qplot(alldata_birthorder$g_factor_nomiss)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">39653</td>
-<td align="center">0.4692</td>
-<td align="center">0.4734</td>
-<td align="center">0.4734</td>
+<td align="center">16063</td>
+<td align="center">0.4708</td>
+<td align="center">0.4833</td>
+<td align="center">0.4833</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>summary(lm(g_factor_nomiss ~ raven_2015_young, alldata_birthorder))</code></pre>
-<table style="width:62%;">
+<table style="width:65%;">
 <colgroup>
 <col width="15%" />
 <col width="18%" />
 <col width="13%" />
-<col width="15%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -937,15 +1034,15 @@ qplot(alldata_birthorder$g_factor_nomiss)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">-1.41</td>
-<td align="center">0.03367</td>
-<td align="center">-41.87</td>
-<td align="center">0</td>
+<td align="center">-1.459</td>
+<td align="center">0.03528</td>
+<td align="center">-41.35</td>
+<td align="center">9.881e-324</td>
 </tr>
 <tr class="even">
-<td align="center">2.097</td>
-<td align="center">0.04143</td>
-<td align="center">50.63</td>
+<td align="center">2.129</td>
+<td align="center">0.04343</td>
+<td align="center">49.02</td>
 <td align="center">0</td>
 </tr>
 </tbody>
@@ -968,19 +1065,19 @@ qplot(alldata_birthorder$g_factor_nomiss)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">5584</td>
-<td align="center">0.6084</td>
-<td align="center">0.3147</td>
-<td align="center">0.3146</td>
+<td align="center">5250</td>
+<td align="center">0.6195</td>
+<td align="center">0.3141</td>
+<td align="center">0.314</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>summary(lm(g_factor_2015 ~ raven_2015_young, alldata_birthorder_i_g_factor[[1]]))</code></pre>
-<table style="width:65%;">
+<table style="width:72%;">
 <colgroup>
-<col width="15%" />
 <col width="18%" />
-<col width="13%" />
+<col width="18%" />
+<col width="18%" />
 <col width="18%" />
 </colgroup>
 <thead>
@@ -993,25 +1090,25 @@ qplot(alldata_birthorder$g_factor_nomiss)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">-0.1618</td>
-<td align="center">0.00621</td>
-<td align="center">-26.06</td>
-<td align="center">1.858e-148</td>
+<td align="center">-1.199e-15</td>
+<td align="center">0.004378</td>
+<td align="center">-2.739e-13</td>
+<td align="center">1</td>
 </tr>
 <tr class="even">
-<td align="center">0.2324</td>
-<td align="center">0.007635</td>
-<td align="center">30.44</td>
-<td align="center">3.43e-201</td>
+<td align="center">0.3479</td>
+<td align="center">0.004378</td>
+<td align="center">79.46</td>
+<td align="center">0</td>
 </tr>
 </tbody>
 </table>
-<table style="width:89%;">
+<table style="width:88%;">
 <caption>Fitting linear model: g_factor_2015 ~ raven_2015_young</caption>
 <colgroup>
 <col width="20%" />
 <col width="30%" />
-<col width="13%" />
+<col width="12%" />
 <col width="23%" />
 </colgroup>
 <thead>
@@ -1024,10 +1121,10 @@ qplot(alldata_birthorder$g_factor_nomiss)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">39653</td>
-<td align="center">0.6391</td>
-<td align="center">0.02283</td>
-<td align="center">0.02281</td>
+<td align="center">16063</td>
+<td align="center">0.5549</td>
+<td align="center">0.2822</td>
+<td align="center">0.2821</td>
 </tr>
 </tbody>
 </table>
@@ -1052,11 +1149,11 @@ qplot(alldata_birthorder$g_factor_nomiss)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">67.47</td>
-<td align="center">14435</td>
+<td align="center">60.48</td>
+<td align="center">12922</td>
 <td align="center">0 * * *</td>
 <td align="center">two.sided</td>
-<td align="center">0.4896</td>
+<td align="center">0.4697</td>
 </tr>
 </tbody>
 </table>
@@ -1081,11 +1178,11 @@ qplot(alldata_birthorder$g_factor_nomiss)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">83.51</td>
-<td align="center">39651</td>
+<td align="center">70.52</td>
+<td align="center">16061</td>
 <td align="center">0 * * *</td>
 <td align="center">two.sided</td>
-<td align="center">0.3868</td>
+<td align="center">0.4862</td>
 </tr>
 </tbody>
 </table>
@@ -1110,18 +1207,47 @@ qplot(alldata_birthorder$g_factor_nomiss)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">141.9</td>
-<td align="center">39651</td>
+<td align="center">71.34</td>
+<td align="center">16061</td>
 <td align="center">0 * * *</td>
 <td align="center">two.sided</td>
-<td align="center">0.5805</td>
+<td align="center">0.4906</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>alldata_birthorder_i_g_factor[[1]] %&gt;% {cor.test(.$g_factor_2007, .$g_factor_2015)}</code></pre>
+<table style="width:96%;">
+<caption>Pearson’s product-moment correlation: <code>.$g_factor_2007</code> and <code>.$g_factor_2015</code></caption>
+<colgroup>
+<col width="23%" />
+<col width="11%" />
+<col width="13%" />
+<col width="34%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+<th align="center">cor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">209.2</td>
+<td align="center">16061</td>
+<td align="center">0 * * *</td>
+<td align="center">two.sided</td>
+<td align="center">0.8553</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiM19pbXB1dGF0aW9uX2NoZWNrIgphdXRob3I6ICJMYXVyYSBCb3R6ZXQgJiBSdWJlbiBBcnNsYW4iCmRhdGU6ICIyOCBTZXB0ZW1iZXIgMjAxNyIKb3V0cHV0OiBodG1sX2RvY3VtZW50CmVkaXRvcl9vcHRpb25zOiAKICBjaHVua19vdXRwdXRfdHlwZTogY29uc29sZQotLS0KCiMgPHNwYW4gc3R5bGU9ImNvbG9yOiNGRkQ5MkYiPkltcHV0YXRpb24gQ2hlY2tzPC9zcGFuPiB7LnRhYnNldH0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQprbml0cjo6b3B0c19jaHVuayRzZXQoZWNobyA9IFRSVUUpCmBgYAoKIyMgSGVscGVyCmBgYHtyIGhlbHBlcn0Kc291cmNlKCIwX2hlbHBlcnMuUiIpCmBgYAoKCiMjIERhdGEKYGBge3J9CiMjIyBJbXBvcnQgYWxsZGF0YSB1c2VkIGZvciBiaXJ0aG9yZGVyIGFuZCBnLWZhY3RvcnMgY29tcHV0ZWQKYWxsZGF0YV9iaXJ0aG9yZGVyID0gcmVhZFJEUygiZGF0YS9hbGxkYXRhX2JpcnRob3JkZXJfbWlzc2luZy5yZHMiKQoKYWxsZGF0YV9iaXJ0aG9yZGVyX2kgPSAgcmVhZFJEUygiZGF0YS9hbGxkYXRhX2JpcnRob3JkZXJfaV9tbC5yZHMiKQoKY29sbmFtZXMoYWxsZGF0YV9iaXJ0aG9yZGVyKQpgYGAKCgojIyBGdW5jdGlvbnMgbmVlZGVkCgpgYGB7cn0KCm5faW1wdXRhdGlvbnMubWl0bWwgPSBmdW5jdGlvbihpbXBzKSB7CiAgaW1wcyRpdGVyJG0KfQpuX2ltcHV0YXRpb25zLm1pZHMgPSBmdW5jdGlvbihpbXBzKSB7CiAgaW1wcyRtCn0Kbl9pbXB1dGF0aW9ucy5hbWVsaWEgPSBmdW5jdGlvbihpbXBzKSB7CiAgbGVuZ3RoKGltcHMkaW1wdXRhdGlvbnMpCn0Kbl9pbXB1dGF0aW9ucyA9IGZ1bmN0aW9uKGltcHMpIHsgVXNlTWV0aG9kKCJuX2ltcHV0YXRpb25zIikgfQoKY29tcGxldGUubWl0bWwgPSBtaXRtbDo6bWl0bWxDb21wbGV0ZQpjb21wbGV0ZS5taWRzID0gbWljZTo6Y29tcGxldGUKY29tcGxldGUgPSBmdW5jdGlvbiguLi4pIHsgVXNlTWV0aG9kKCJjb21wbGV0ZSIpIH0KCmxpYnJhcnkobWljZSkKbGlicmFyeShtaWNlYWRkcykKbGlicmFyeShtaXRtbCkKCmNvcnJfcGlwZSA9IC4gJT4lICBhcy5tYXRyaXgoKSAlPiUgCkhtaXNjOjpyY29yciguKSAlPiUgewogIGxlZnRfam9pbihsZWZ0X2pvaW4oLiRyICU+JSByZXNoYXBlMjo6bWVsdCgpICU+JSByZW5hbWUociA9IHZhbHVlKSwgCiAgICAgICAgICAgICAgICAgICAgICAuJG4gJT4lIHJlc2hhcGUyOjptZWx0KCkgJT4lIHJlbmFtZShuID0gdmFsdWUpLCBieSA9IGMoIlZhcjEiLCAiVmFyMiIpKSwKICAgICAgICAgICAgLiRQICU+JSByZXNoYXBlMjo6bWVsdCgpICU+JSByZW5hbWUocCA9IHZhbHVlKSwgCiAgICAgICAgICAgIGJ5ID0gYygiVmFyMSIsICJWYXIyIikpCiAgfSAlPiUgCiAgYXJyYW5nZShkZXNjKHIpKSAlPiUgCiAgZmlsdGVyKFZhcjEgIT0gVmFyMikKCmFsbGRhdGFfYmlydGhvcmRlcl9pX2dfZmFjdG9yIDwtIG1pZHMybWl0bWwubGlzdChhbGxkYXRhX2JpcnRob3JkZXJfaSkKCmFsbGRhdGFfYmlydGhvcmRlcl9pX3RibCA9IGFsbGRhdGFfYmlydGhvcmRlcl9pX2dfZmFjdG9yICU+JSB0YmxfZGYubWl0bWwubGlzdAoKYGBgCgoKIyBDb21wdXRlIGcgZmFjdG9yCk9yIHJhdGhlciBzaW1wbHkgYSBzdW0gc2NvcmUgb2Ygc2NhbGVkIHRlc3Qgc2NvcmVzIHRvIGtlZXAgdGhpbmdzIHNpbXBsZSBoZXJlLgoKYGBge3J9CgojIEltcHV0ZWQgZGF0YQphbGxkYXRhX2JpcnRob3JkZXJfaV9nX2ZhY3RvciA8LSB3aXRoaW4oYWxsZGF0YV9iaXJ0aG9yZGVyX2lfZ19mYWN0b3IsIHsKICBnX2ZhY3Rvcl8yMDE1IDwtIHJvd01lYW5zKHNjYWxlKGNiaW5kKHJhdmVuXzIwMTVfb2xkLCBtYXRoXzIwMTVfb2xkLCBjb3VudF9iYWNrd2FyZHMsICB3b3Jkc19kZWxheWVkLCBhZGFwdGl2ZV9udW1iZXJpbmcpKSkKfSkKCmFsbGRhdGFfYmlydGhvcmRlcl9pX2dfZmFjdG9yIDwtIHdpdGhpbihhbGxkYXRhX2JpcnRob3JkZXJfaV9nX2ZhY3RvciwgewogIGdfZmFjdG9yXzIwMDcgPC0gcm93TWVhbnMoc2NhbGUoY2JpbmQocmF2ZW5fMjAwN19vbGQsIG1hdGhfMjAwN19vbGQsIGNvdW50X2JhY2t3YXJkcywgIHdvcmRzX2RlbGF5ZWQsIGFkYXB0aXZlX251bWJlcmluZykpKQp9KQpgYGAKCiMjIEl0ZXJhdGlvbnMgYW5kIGNvbnZlcmdlbmNlCgpgYGB7cn0KcGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaSkKYGBgCgojIyBDb3JyZWxhdGlvbnMsIGl0ZXJhdGlvbnMgYW5kIGRlbnNpdHkgey5hY3RpdmV9CmBgYHtyfQojIGNvcnJlbGF0aW9ucwpjb3JyZWxhdGlvbnNfb3JpZ2luYWwgPSBjb3JyX3BpcGUoYWxsZGF0YV9iaXJ0aG9yZGVyICU+JSBzZWxlY3RfaWYoaXMubnVtZXJpYykpCmNvcnJlbGF0aW9uc19pbXB1dGVkID0gY29ycl9waXBlKGFsbGRhdGFfYmlydGhvcmRlcl9pX2dfZmFjdG9yW1sxXV0gJT4lIHNlbGVjdF9pZihpcy5udW1lcmljKSkKCmNvcnJlbGF0aW9uc19vcmlnaW5hbCA9IGNvcnJlbGF0aW9uc19vcmlnaW5hbCAlPiUKICBtdXRhdGUodiA9IHBhc3RlMChWYXIxLCBWYXIyKSkgJT4lCiAgcmVuYW1lKFZhcjFfb3JpZ2luYWwgPSBWYXIxLCBWYXIyX29yaWdpbmFsPSBWYXIyLCBuX29yaWdpbmFsID0gbiwgcl9vcmlnaW5hbCA9IHIsIHBfb3JpZ2luYWwgPSBwKQoKY29ycmVsYXRpb25zX2ltcHV0ZWQgPSBjb3JyZWxhdGlvbnNfaW1wdXRlZCAlPiUKICBtdXRhdGUodiA9IHBhc3RlMChWYXIxLCBWYXIyKSkgJT4lCiAgcmVuYW1lKFZhcjFfaW1wdXRlZCA9IFZhcjEsIFZhcjJfaW1wdXRlZCA9IFZhcjIsIG5faW1wdXRlZCA9IG4sIHJfaW1wdXRlZCA9IHIsIHBfaW1wdXRlZCA9IHApCgpjb3JyZWxhdGlvbnMgPSBmdWxsX2pvaW4oY29ycmVsYXRpb25zX29yaWdpbmFsLCBjb3JyZWxhdGlvbnNfaW1wdXRlZCwgYnkgPSAidiIpCgpjb3IudGVzdChjb3JyZWxhdGlvbnMkcl9vcmlnaW5hbCwgY29ycmVsYXRpb25zJHJfaW1wdXRlZCkKbGlicmFyeShnZ3JlcGVsKQpzdW0oYWJzKGNvcnJlbGF0aW9ucyRyX29yaWdpbmFsIC0gY29ycmVsYXRpb25zJHJfaW1wdXRlZCkgPiAwLjUsIG5hLnJtID0gVCkKY29ycmVsYXRpb25zIDwtIGNvcnJlbGF0aW9ucyAlPiUgCiAgbXV0YXRlKGxhYmVsID0gaWZfZWxzZShhYnMocl9vcmlnaW5hbCAtIHJfaW1wdXRlZCkgPiAwLjUsIAogICAgICAgICAgICAgICAgICAgICAgICAgcGFzdGUoVmFyMV9vcmlnaW5hbCwgVmFyMl9vcmlnaW5hbCksCiAgICAgICAgICAgICAgICAgICAgICAgICBOQV9jaGFyYWN0ZXJfKSkKZ2dwbG90KGNvcnJlbGF0aW9ucywgYWVzKHJfb3JpZ2luYWwsIHJfaW1wdXRlZCkpICsKICBnZW9tX3BvaW50KGFscGhhID0gMC4xKSArIAogIGdlb21fdGV4dF9yZXBlbChhZXMobGFiZWwgPSBsYWJlbCkpCgoKIyBjaGVjayBkZW5zaXRpZXMgb2YgaW1wdXRlZC9yZWFsCgpkZW5zaXR5cGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaSwgfiBiaXJ0aG9yZGVyX2dlbmVzICsgc2libGluZ19jb3VudF9nZW5lcyArIGJpcnRob3JkZXJfbmFpdmUpCgpkZW5zaXR5cGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaSwgfiByYXZlbl8yMDE1X3lvdW5nICsgbWF0aF8yMDE1X3lvdW5nICsgcmF2ZW5fMjAxNV9vbGQgKyBtYXRoXzIwMTVfb2xkKQoKZGVuc2l0eXBsb3QoYWxsZGF0YV9iaXJ0aG9yZGVyX2ksIH4gd29yZHNfZGVsYXllZCArIGFkYXB0aXZlX251bWJlcmluZyArIGNvdW50X2JhY2t3YXJkcykKICAgICAgICAgICAgCmRlbnNpdHlwbG90KGFsbGRhdGFfYmlydGhvcmRlcl9pLCB+IHJhdmVuXzIwMDdfb2xkICsgcmF2ZW5fMjAwN195b3VuZyArIG1hdGhfMjAwN195b3VuZyArIG1hdGhfMjAwN19vbGQpCgpkZW5zaXR5cGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaSwgfiBiaWc1X2V4dCArIGJpZzVfY29uICsgYmlnNV9vcGVuICsgYmlnNV9uZXUgKyBiaWc1X2FncmVlKQoKZGVuc2l0eXBsb3QoYWxsZGF0YV9iaXJ0aG9yZGVyX2ksIH4gcmlza0EgKyByaXNrQikKCgpkZW5zaXR5cGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaSwgfiBFbGVtZW50YXJ5X21pc3NlZCArIEVsZW1lbnRhcnlfd29ya2VkICsgYXR0ZW5kZWRfc2Nob29sICsgeWVhcnNfb2ZfZWR1Y2F0aW9uICsgU2VsZl9lbXBsb3llZCkKCmRlbnNpdHlwbG90KGFsbGRhdGFfYmlydGhvcmRlcl9pLCB+IGV2ZXJfc21va2VkICsgc3RpbGxfc21va2luZyArIHdhZ2VfbGFzdF9tb250aF9sb2cgKyB3YWdlX2xhc3RfeWVhcl9sb2cpCgoKCnBkZigiZGVuc2l0eS5wZGYiKQpkZW5zaXR5cGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaSwgfiBiaXJ0aG9yZGVyX2dlbmVzICsgc2libGluZ19jb3VudF9nZW5lcyArIGJpcnRob3JkZXJfbmFpdmUpCgpkZW5zaXR5cGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaSwgfiByYXZlbl8yMDE1X3lvdW5nICsgbWF0aF8yMDE1X3lvdW5nICsgcmF2ZW5fMjAxNV9vbGQgKyBtYXRoXzIwMTVfb2xkKQoKZGVuc2l0eXBsb3QoYWxsZGF0YV9iaXJ0aG9yZGVyX2ksIH4gd29yZHNfZGVsYXllZCArIGFkYXB0aXZlX251bWJlcmluZyArIGNvdW50X2JhY2t3YXJkcykKICAgICAgICAgICAgCmRlbnNpdHlwbG90KGFsbGRhdGFfYmlydGhvcmRlcl9pLCB+IHJhdmVuXzIwMDdfb2xkICsgcmF2ZW5fMjAwN195b3VuZyArIG1hdGhfMjAwN195b3VuZyArIG1hdGhfMjAwN19vbGQpCgpkZW5zaXR5cGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaSwgfiBiaWc1X2V4dCArIGJpZzVfY29uICsgYmlnNV9vcGVuICsgYmlnNV9uZXUgKyBiaWc1X2FncmVlKQoKZGVuc2l0eXBsb3QoYWxsZGF0YV9iaXJ0aG9yZGVyX2ksIH4gcmlza0EgKyByaXNrQikKCmRlbnNpdHlwbG90KGFsbGRhdGFfYmlydGhvcmRlcl9pLCB+IEVsZW1lbnRhcnlfbWlzc2VkICsgRWxlbWVudGFyeV93b3JrZWQgKyBhdHRlbmRlZF9zY2hvb2wgKyB5ZWFyc19vZl9lZHVjYXRpb24gKyBTZWxmX2VtcGxveWVkKQoKZGVuc2l0eXBsb3QoYWxsZGF0YV9iaXJ0aG9yZGVyX2ksIH4gZXZlcl9zbW9rZWQgKyBzdGlsbF9zbW9raW5nICsgd2FnZV9sYXN0X21vbnRoX2xvZyArIHdhZ2VfbGFzdF95ZWFyX2xvZykKCmRldi5vZmYoKQoKIyBhZGRpdGlvbmFsIGFuYWx5c2VzIGJhc2VkIG9uIHZhbiBCdXVyZW4gJiBHcm9vdGh1aXMtT3Vkc2hvb3JuLCAyMDExCnh5cGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaSwgYmlydGhvcmRlcl9nZW5lcyB+IGJpcnRob3JkZXJfbmFpdmUgfCAuaW1wICwgcGNoID0gMjAsIGNleCA9IDEuNCkKCnh5cGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaSwgc2libGluZ19jb3VudF9nZW5lcyB+IGJpcnRob3JkZXJfZ2VuZXMgfCAuaW1wICwgcGNoID0gMjAsIGNleCA9IDEuNCkKCnh5cGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaSwgcmF2ZW5fMjAxNV9vbGQgfiBiaXJ0aG9yZGVyX2dlbmVzIHwgLmltcCAsIHBjaCA9IDIwLCBjZXggPSAxLjQpCgpgYGAKCgojIyBHLUZhY3RvcgpgYGB7ciBnIGZhY3Rvcn0KIyBOb3JtYWwgZGF0YSAtIG5vIG1pc3NlcwphbGxkYXRhX2JpcnRob3JkZXIgPC0gYWxsZGF0YV9iaXJ0aG9yZGVyICU+JQogIG11dGF0ZShwaWRsaW5rID0gcm93X251bWJlcigpKQpub19taXNzID0gYWxsZGF0YV9iaXJ0aG9yZGVyICU+JQogIGZpbHRlcighaXMubmEocmF2ZW5fMjAxNV9vbGQpLCAhaXMubmEobWF0aF8yMDE1X29sZCksICFpcy5uYShjb3VudF9iYWNrd2FyZHMpLAogICAgICAgICAhaXMubmEod29yZHNfZGVsYXllZCksICFpcy5uYShhZGFwdGl2ZV9udW1iZXJpbmcpKQpmYS5wYXJhbGxlbChub19taXNzICU+JSBzZWxlY3QocmF2ZW5fMjAxNV9vbGQsIG1hdGhfMjAxNV9vbGQsIGNvdW50X2JhY2t3YXJkcywgd29yZHNfZGVsYXllZCwgYWRhcHRpdmVfbnVtYmVyaW5nKSAlPiUgZGF0YS5mcmFtZSgpKQpmYShub19taXNzICU+JSBzZWxlY3QocmF2ZW5fMjAxNV9vbGQsIG1hdGhfMjAxNV9vbGQsIGNvdW50X2JhY2t3YXJkcywgd29yZHNfZGVsYXllZCwgYWRhcHRpdmVfbnVtYmVyaW5nKSAlPiUgZGF0YS5mcmFtZSgpLCBuZmFjdG9ycyA9IDEpCm9tX3Jlc3VsdHMgPSBvbWVnYShub19taXNzICU+JSBzZWxlY3QocmF2ZW5fMjAxNV9vbGQsIG1hdGhfMjAxNV9vbGQsIGNvdW50X2JhY2t3YXJkcywgd29yZHNfZGVsYXllZCwgYWRhcHRpdmVfbnVtYmVyaW5nKSAlPiUgZGF0YS5mcmFtZSgpLCBuZmFjdG9ycyA9IDEsIHNsID0gRikKb21fcmVzdWx0cwpvbWVnYS5kaWFncmFtKG9tX3Jlc3VsdHMpCgoiZ19mYWN0b3Jfbm9taXNzID1+IHJhdmVuXzIwMTVfb2xkICsgbWF0aF8yMDE1X29sZCArIGNvdW50X2JhY2t3YXJkcyArICB3b3Jkc19kZWxheWVkICsgYWRhcHRpdmVfbnVtYmVyaW5nIiAlPiUKICBjZmEoZGF0YSA9IG5vX21pc3MsIHN0ZC5sdiA9IFQsIHN0ZC5vdiA9IFQpIC0+IGNmYV9nCnN1bW1hcnkoY2ZhX2cpCgojIyBFeHBsYWluZWQgdmFyaWFuY2U6CnggPSBpbnNwZWN0KGNmYV9nLCAicnNxdWFyZSIpCm5vX21pc3MkZ19mYWN0b3Jfbm9taXNzID0gcHJlZGljdChjZmFfZylbLDFdCgpub19taXNzID0gbm9fbWlzcyAlPiUgc2VsZWN0KHBpZGxpbmssIGdfZmFjdG9yX25vbWlzcykKCmFsbGRhdGFfYmlydGhvcmRlciA9IGxlZnRfam9pbihhbGxkYXRhX2JpcnRob3JkZXIsIG5vX21pc3MsIGJ5ID0gInBpZGxpbmsiKQpxcGxvdChhbGxkYXRhX2JpcnRob3JkZXIkZ19mYWN0b3Jfbm9taXNzKQoKCnFwbG90KGFsbGRhdGFfYmlydGhvcmRlcl9pX2dfZmFjdG9yW1sxXV0kZ19mYWN0b3JfMjAxNSkKcXBsb3QoYWxsZGF0YV9iaXJ0aG9yZGVyX2lfZ19mYWN0b3JbWzFdXSRnX2ZhY3Rvcl8yMDA3KQoKc3VtbWFyeShsbShnX2ZhY3Rvcl9ub21pc3MgfiByYXZlbl8yMDE1X29sZCwgYWxsZGF0YV9iaXJ0aG9yZGVyKSkKc3VtbWFyeShsbShnX2ZhY3Rvcl8yMDE1IH4gcmF2ZW5fMjAxNV9vbGQsIGFsbGRhdGFfYmlydGhvcmRlcl9pX2dfZmFjdG9yW1sxXV0pKQpzdW1tYXJ5KGxtKGdfZmFjdG9yX25vbWlzcyB+IHJhdmVuXzIwMTVfeW91bmcsIGFsbGRhdGFfYmlydGhvcmRlcikpCnN1bW1hcnkobG0oZ19mYWN0b3JfMjAxNSB+IHJhdmVuXzIwMTVfeW91bmcsIGFsbGRhdGFfYmlydGhvcmRlcl9pX2dfZmFjdG9yW1sxXV0pKQoKYWxsZGF0YV9iaXJ0aG9yZGVyICU+JSB7Y29yLnRlc3QoLiRnX2ZhY3Rvcl9ub21pc3MsIC4keWVhcnNfb2ZfZWR1Y2F0aW9uKX0KYWxsZGF0YV9iaXJ0aG9yZGVyX2lfZ19mYWN0b3JbWzFdXSAlPiUge2Nvci50ZXN0KC4kZ19mYWN0b3JfMjAxNSwgLiR5ZWFyc19vZl9lZHVjYXRpb24pfQphbGxkYXRhX2JpcnRob3JkZXJfaV9nX2ZhY3RvcltbMV1dICU+JSB7Y29yLnRlc3QoLiRnX2ZhY3Rvcl8yMDA3LCAuJHllYXJzX29mX2VkdWNhdGlvbil9CmBgYAo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiM19pbXB1dGF0aW9uX2NoZWNrIgphdXRob3I6ICJMYXVyYSBCb3R6ZXQgJiBSdWJlbiBBcnNsYW4iCmRhdGU6ICIyOCBTZXB0ZW1iZXIgMjAxNyIKb3V0cHV0OiBodG1sX2RvY3VtZW50CmVkaXRvcl9vcHRpb25zOiAKICBjaHVua19vdXRwdXRfdHlwZTogY29uc29sZQotLS0KCiMgPHNwYW4gc3R5bGU9ImNvbG9yOiNGRkQ5MkYiPkltcHV0YXRpb24gQ2hlY2tzPC9zcGFuPgoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkKYGBgCgojIyBIZWxwZXIKYGBge3IgaGVscGVyfQpsaWJyYXJ5KG1pdG1sKQpzb3VyY2UoIjBfaGVscGVycy5SIikKa25pdHI6Om9wdHNfY2h1bmskc2V0KGVycm9yID0gVCkKYGBgCgoKIyMgRGF0YQpgYGB7cn0KIyMjIEltcG9ydCBhbGxkYXRhIHVzZWQgZm9yIGJpcnRob3JkZXIgYW5kIGctZmFjdG9ycyBjb21wdXRlZAphbGxkYXRhX2JpcnRob3JkZXIgPSByZWFkUkRTKCJkYXRhL2FsbGRhdGFfYmlydGhvcmRlcl9taXNzaW5nLnJkcyIpCgpiaXJ0aG9yZGVyID0gIHJlYWRSRFMoImRhdGEvYWxsZGF0YV9iaXJ0aG9yZGVyX2lfbWw1LnJkcyIpCmFsbGRhdGFfYmlydGhvcmRlcl9pIDwtIGJpcnRob3JkZXIKCmNvbG5hbWVzKGFsbGRhdGFfYmlydGhvcmRlcikKYGBgCgoKYGBge3IgZGF0YSBwcmVwYXJhdGlvbnN9CmJpcnRob3JkZXIgPC0gbWlkczJtaXRtbC5saXN0KGJpcnRob3JkZXIpCgojIyBDYWxjdWxhdGUgZ19mYWN0b3JzIChmb3Igbm93IHdpdGggcm93TWVhbnM6IGJldHRlciB0byBydW4gZmFjdG9yIGFuYWx5c2lzIGhlcmUgYXMgd2VsbD8pCmJpcnRob3JkZXIgPC0gd2l0aGluKGJpcnRob3JkZXIsIHsKICBnX2ZhY3Rvcl8yMDE1X29sZCA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDE1X29sZCwgbWF0aF8yMDE1X29sZCwgY291bnRfYmFja3dhcmRzLCAgd29yZHNfZGVsYXllZCwgYWRhcHRpdmVfbnVtYmVyaW5nKSkpCn0pCgpiaXJ0aG9yZGVyIDwtIHdpdGhpbihiaXJ0aG9yZGVyLCB7CiAgZ19mYWN0b3JfMjAxNV95b3VuZyA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDE1X3lvdW5nLCBtYXRoXzIwMTVfeW91bmcpKSkKfSkKCmJpcnRob3JkZXIgPC0gd2l0aGluKGJpcnRob3JkZXIsIHsKICBnX2ZhY3Rvcl8yMDA3X29sZCA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDA3X29sZCwgbWF0aF8yMDA3X29sZCkpKQp9KQoKYmlydGhvcmRlciA8LSB3aXRoaW4oYmlydGhvcmRlciwgewogIGdfZmFjdG9yXzIwMDdfeW91bmcgPC0gcm93TWVhbnMoc2NhbGUoY2JpbmQocmF2ZW5fMjAwN195b3VuZywgbWF0aF8yMDA3X3lvdW5nKSkpCn0pCgoKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lIHRibF9kZi5taXRtbC5saXN0CgojIyMgQmlydGhvcmRlciBhbmQgU2libGluZyBDb3VudApiaXJ0aG9yZGVyX2RhdGEgPSBiaXJ0aG9yZGVyW1sxXV0KCmJpcnRob3JkZXIgPSBiaXJ0aG9yZGVyICU+JQogIG11dGF0ZShiaXJ0aG9yZGVyX2dlbmVzID0gaWZlbHNlKGJpcnRob3JkZXJfZ2VuZXMgPCAxLCAxLCBiaXJ0aG9yZGVyX2dlbmVzKSwKICAgICAgICAgYmlydGhvcmRlcl9uYWl2ZSA9IGlmZWxzZShiaXJ0aG9yZGVyX25haXZlIDwgMSwgMSwgYmlydGhvcmRlcl9uYWl2ZSksCiAgICAgICAgIGJpcnRob3JkZXJfZ2VuZXMgPSByb3VuZChiaXJ0aG9yZGVyX2dlbmVzKSwKICAgICAgICAgYmlydGhvcmRlcl9uYWl2ZSA9IHJvdW5kKGJpcnRob3JkZXJfbmFpdmUpLAogICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzID0gaWZlbHNlKHNpYmxpbmdfY291bnRfZ2VuZXMgPCAyLCAyLCBzaWJsaW5nX2NvdW50X2dlbmVzKSwKICAgICAgICAgc2libGluZ19jb3VudF9uYWl2ZSA9IGlmZWxzZShzaWJsaW5nX2NvdW50X25haXZlIDwgMiwgMiwgc2libGluZ19jb3VudF9uYWl2ZSksCiAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXMgPSByb3VuZChzaWJsaW5nX2NvdW50X2dlbmVzKSwKICAgICAgICAgc2libGluZ19jb3VudF9uYWl2ZSA9IHJvdW5kKHNpYmxpbmdfY291bnRfbmFpdmUpCiAgICAgICAgICkgJT4lIAogIGdyb3VwX2J5KG1vdGhlcl9waWRsaW5rKSAlPiUgCiAgIyBtYWtlIHN1cmUgc2libGluZyBjb3VudCBpcyBjb25zaXN0ZW50IHdpdGggYmlydGggb3JkZXIgKGZvciB3aGljaCBpbXB1dGF0aW9uIG1vZGVsIHNlZW1zIHRvIHdvcmsgYmV0dGVyKQogIG11dGF0ZShzaWJsaW5nX2NvdW50X2dlbmVzID0gbWF4KGJpcnRob3JkZXJfZ2VuZXMsIHNpYmxpbmdfY291bnRfZ2VuZXMpKSAlPiUgCiAgdW5ncm91cCgpCgoKYmlydGhvcmRlcjIgPSBiaXJ0aG9yZGVyICU+JSAKICBtdXRhdGUoCiMgYmlydGhvcmRlciBhcyBmYWN0b3JzIHdpdGggbGV2ZWxzIG9mIDEsIDIsIDMsIDQsIDUsIDUrCiAgICBiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihiaXJ0aG9yZGVyX25haXZlKSwKICAgIGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yID0gaWZlbHNlKGJpcnRob3JkZXJfbmFpdmUgPiA1LCAiNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yKSwKICAgIGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yID0gZmFjdG9yKGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIxIiwiMiIsIjMiLCI0IiwiNSIsIjUrIikpLAogICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoc2libGluZ19jb3VudF9uYWl2ZSksCiAgICBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvciA9IGlmZWxzZShzaWJsaW5nX2NvdW50X25haXZlID4gNSwgIjUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvciksCiAgICBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvciA9IGZhY3RvcihzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMiIsIjMiLCI0IiwiNSIsIjUrIikpLAogICAgYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoYmlydGhvcmRlcl9nZW5lcyksCiAgICBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciA9IGlmZWxzZShiaXJ0aG9yZGVyX2dlbmVzID41ICwgIjUrIiwgYmlydGhvcmRlcl9nZW5lc19mYWN0b3IpLAogICAgYmlydGhvcmRlcl9nZW5lc19mYWN0b3IgPSBmYWN0b3IoYmlydGhvcmRlcl9nZW5lc19mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMSIsIjIiLCIzIiwiNCIsIjUiLCI1KyIpKSwKICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yID0gYXMuY2hhcmFjdGVyKHNpYmxpbmdfY291bnRfZ2VuZXMpLAogICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgPSBpZmVsc2Uoc2libGluZ19jb3VudF9nZW5lcyA+NSAsICI1KyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciksCiAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciA9IGZhY3RvcihzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIyIiwiMyIsIjQiLCI1IiwiNSsiKSksCiAgICAjIGludGVyYWN0aW9uIGJpcnRob3JkZXIgKiBzaWJsaW5nY291dCBmb3IgZWFjaCBiaXJ0aG9yZGVyCiAgICBjb3VudF9iaXJ0aG9yZGVyX25haXZlID0KICAgICAgZmFjdG9yKHN0cl9yZXBsYWNlKGFzLmNoYXJhY3RlcihpbnRlcmFjdGlvbihiaXJ0aG9yZGVyX25haXZlX2ZhY3RvciwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yKSksCiAgICAgICAgICAgICAgICAgICAgICAgICJcXC4iLCAiLyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gICBjKCIxLzIiLCIyLzIiLCAiMS8zIiwgICIyLzMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIzLzMiLCAiMS80IiwgIjIvNCIsICIzLzQiLCAiNC80IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81IiwgIjIvNSIsICIzLzUiLCAiNC81IiwgIjUvNSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSsiLCAiMi81KyIsICIzLzUrIiwgIjQvNSsiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI1LzUrIiwgIjUrLzUrIikpLAogICAgY291bnRfYmlydGhvcmRlcl9nZW5lcyA9CiAgICAgIGZhY3RvcihzdHJfcmVwbGFjZShhcy5jaGFyYWN0ZXIoaW50ZXJhY3Rpb24oYmlydGhvcmRlcl9nZW5lc19mYWN0b3IsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvcikpLCAiXFwuIiwgIi8iKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9ICAgYygiMS8yIiwiMi8yIiwgIjEvMyIsICAiMi8zIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMy8zIiwgIjEvNCIsICIyLzQiLCAiMy80IiwgIjQvNCIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSIsICIyLzUiLCAiMy81IiwgIjQvNSIsICI1LzUiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUrIiwgIjIvNSsiLCAiMy81KyIsICI0LzUrIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiNS81KyIsICI1Ky81KyIpKSkKCgoKIyMjIFZhcmlhYmxlcwpiaXJ0aG9yZGVyID0gYmlydGhvcmRlciAlPiUKICBtdXRhdGUoCiAgICBnX2ZhY3Rvcl8yMDE1X29sZCA9IChnX2ZhY3Rvcl8yMDE1X29sZCAtIG1lYW4oZ19mYWN0b3JfMjAxNV9vbGQsIG5hLnJtPVQpKSAvIHNkKGdfZmFjdG9yXzIwMTVfb2xkLCBuYS5ybT1UKSwKICAgIGdfZmFjdG9yXzIwMTVfeW91bmcgPSAoZ19mYWN0b3JfMjAxNV95b3VuZyAtIG1lYW4oZ19mYWN0b3JfMjAxNV95b3VuZywgbmEucm09VCkpIC8gc2QoZ19mYWN0b3JfMjAxNV95b3VuZywgbmEucm09VCksCiAgICBnX2ZhY3Rvcl8yMDA3X29sZCA9IChnX2ZhY3Rvcl8yMDA3X29sZCAtIG1lYW4oZ19mYWN0b3JfMjAwN19vbGQsIG5hLnJtPVQpKSAvIHNkKGdfZmFjdG9yXzIwMDdfb2xkLCBuYS5ybT1UKSwKZ19mYWN0b3JfMjAwN195b3VuZyA9IChnX2ZhY3Rvcl8yMDA3X3lvdW5nIC0gbWVhbihnX2ZhY3Rvcl8yMDA3X3lvdW5nLCBuYS5ybT1UKSkgLyBzZChnX2ZhY3Rvcl8yMDA3X3lvdW5nLCBuYS5ybT1UKSwKICAgIHJhdmVuXzIwMTVfb2xkID0gKHJhdmVuXzIwMTVfb2xkIC0gbWVhbihyYXZlbl8yMDE1X29sZCwgbmEucm09VCkpIC8gc2QocmF2ZW5fMjAxNV9vbGQpLAogICAgbWF0aF8yMDE1X29sZCA9IChtYXRoXzIwMTVfb2xkIC0gbWVhbihtYXRoXzIwMTVfb2xkLCBuYS5ybT1UKSkgLyBzZChtYXRoXzIwMTVfb2xkLCBuYS5ybT1UKSwKICAgIHJhdmVuXzIwMTVfeW91bmcgPSAocmF2ZW5fMjAxNV95b3VuZyAtIG1lYW4ocmF2ZW5fMjAxNV95b3VuZywgbmEucm09VCkpIC8gc2QocmF2ZW5fMjAxNV95b3VuZyksCiAgICBtYXRoXzIwMTVfeW91bmcgPSAobWF0aF8yMDE1X3lvdW5nIC0gbWVhbihtYXRoXzIwMTVfeW91bmcsIG5hLnJtPVQpKSAvCiAgICAgIHNkKG1hdGhfMjAxNV95b3VuZywgbmEucm09VCksCiAgICByYXZlbl8yMDA3X29sZCA9IChyYXZlbl8yMDA3X29sZCAtIG1lYW4ocmF2ZW5fMjAwN19vbGQsIG5hLnJtPVQpKSAvIHNkKHJhdmVuXzIwMDdfb2xkKSwKbWF0aF8yMDA3X29sZCA9IChtYXRoXzIwMDdfb2xkIC0gbWVhbihtYXRoXzIwMDdfb2xkLCBuYS5ybT1UKSkgLyBzZChtYXRoXzIwMDdfb2xkLCBuYS5ybT1UKSwKcmF2ZW5fMjAwN195b3VuZyA9IChyYXZlbl8yMDA3X3lvdW5nIC0gbWVhbihyYXZlbl8yMDA3X3lvdW5nLCBuYS5ybT1UKSkgLyBzZChyYXZlbl8yMDA3X3lvdW5nKSwKbWF0aF8yMDA3X3lvdW5nID0gKG1hdGhfMjAwN195b3VuZyAtIG1lYW4obWF0aF8yMDA3X3lvdW5nLCBuYS5ybT1UKSkgLwogIHNkKG1hdGhfMjAwN195b3VuZywgbmEucm09VCksCiAgICBjb3VudF9iYWNrd2FyZHMgPSAoY291bnRfYmFja3dhcmRzIC0gbWVhbihjb3VudF9iYWNrd2FyZHMsIG5hLnJtPVQpKSAvCiAgICAgIHNkKGNvdW50X2JhY2t3YXJkcywgbmEucm09VCksCiAgICB3b3Jkc19kZWxheWVkID0gKHdvcmRzX2RlbGF5ZWQgLSBtZWFuKHdvcmRzX2RlbGF5ZWQsIG5hLnJtPVQpKSAvCiAgICAgIHNkKHdvcmRzX2RlbGF5ZWQsIG5hLnJtPVQpLAogICAgYWRhcHRpdmVfbnVtYmVyaW5nID0gKGFkYXB0aXZlX251bWJlcmluZyAtIG1lYW4oYWRhcHRpdmVfbnVtYmVyaW5nLCBuYS5ybT1UKSkgLwogICAgICBzZChhZGFwdGl2ZV9udW1iZXJpbmcsIG5hLnJtPVQpLAogICAgYmlnNV9leHQgPSAoYmlnNV9leHQgLSBtZWFuKGJpZzVfZXh0LCBuYS5ybT1UKSkgLyBzZChiaWc1X2V4dCwgbmEucm09VCksCiAgICBiaWc1X2NvbiA9IChiaWc1X2NvbiAtIG1lYW4oYmlnNV9jb24sIG5hLnJtPVQpKSAvIHNkKGJpZzVfY29uLCBuYS5ybT1UKSwKICAgIGJpZzVfYWdyZWUgPSAoYmlnNV9hZ3JlZSAtIG1lYW4oYmlnNV9hZ3JlZSwgbmEucm09VCkpIC8gc2QoYmlnNV9hZ3JlZSwgbmEucm09VCksCiAgICBiaWc1X29wZW4gPSAoYmlnNV9vcGVuIC0gbWVhbihiaWc1X29wZW4sIG5hLnJtPVQpKSAvIHNkKGJpZzVfb3BlbiwgbmEucm09VCksCiAgICBiaWc1X25ldSA9IChiaWc1X25ldSAtIG1lYW4oYmlnNV9uZXUsIG5hLnJtPVQpKSAvIHNkKGJpZzVfbmV1LCBuYS5ybT1UKSwKICAgIHJpc2tBID0gKHJpc2tBIC0gbWVhbihyaXNrQSwgbmEucm09VCkpIC8gc2Qocmlza0EsIG5hLnJtPVQpLAogICAgcmlza0IgPSAocmlza0IgLSBtZWFuKHJpc2tCLCBuYS5ybT1UKSkgLyBzZChyaXNrQiwgbmEucm09VCksCiAgICB5ZWFyc19vZl9lZHVjYXRpb25feiA9ICh5ZWFyc19vZl9lZHVjYXRpb24gLSBtZWFuKHllYXJzX29mX2VkdWNhdGlvbiwgbmEucm09VCkpIC8KICAgICAgc2QoeWVhcnNfb2ZfZWR1Y2F0aW9uLCBuYS5ybT1UKQopCmBgYAoKCiMjIEZ1bmN0aW9ucyBuZWVkZWQKCmBgYHtyfQoKbl9pbXB1dGF0aW9ucy5taXRtbCA9IGZ1bmN0aW9uKGltcHMpIHsKICBpbXBzJGl0ZXIkbQp9Cm5faW1wdXRhdGlvbnMubWlkcyA9IGZ1bmN0aW9uKGltcHMpIHsKICBpbXBzJG0KfQpuX2ltcHV0YXRpb25zLmFtZWxpYSA9IGZ1bmN0aW9uKGltcHMpIHsKICBsZW5ndGgoaW1wcyRpbXB1dGF0aW9ucykKfQpuX2ltcHV0YXRpb25zID0gZnVuY3Rpb24oaW1wcykgeyBVc2VNZXRob2QoIm5faW1wdXRhdGlvbnMiKSB9Cgpjb21wbGV0ZS5taXRtbCA9IG1pdG1sOjptaXRtbENvbXBsZXRlCmNvbXBsZXRlLm1pZHMgPSBtaWNlOjpjb21wbGV0ZQpjb21wbGV0ZSA9IGZ1bmN0aW9uKC4uLikgeyBVc2VNZXRob2QoImNvbXBsZXRlIikgfQoKbGlicmFyeShtaWNlKQpsaWJyYXJ5KG1pY2VhZGRzKQpsaWJyYXJ5KG1pdG1sKQoKY29ycl9waXBlID0gLiAlPiUgIGFzLm1hdHJpeCgpICU+JSAKSG1pc2M6OnJjb3JyKC4pICU+JSB7CiAgbGVmdF9qb2luKGxlZnRfam9pbiguJHIgJT4lIHJlc2hhcGUyOjptZWx0KCkgJT4lIHJlbmFtZShyID0gdmFsdWUpLCAKICAgICAgICAgICAgICAgICAgICAgIC4kbiAlPiUgcmVzaGFwZTI6Om1lbHQoKSAlPiUgcmVuYW1lKG4gPSB2YWx1ZSksIGJ5ID0gYygiVmFyMSIsICJWYXIyIikpLAogICAgICAgICAgICAuJFAgJT4lIHJlc2hhcGUyOjptZWx0KCkgJT4lIHJlbmFtZShwID0gdmFsdWUpLCAKICAgICAgICAgICAgYnkgPSBjKCJWYXIxIiwgIlZhcjIiKSkKICB9ICU+JSAKICBhcnJhbmdlKGRlc2MocikpICU+JSAKICBmaWx0ZXIoVmFyMSAhPSBWYXIyKQoKYWxsZGF0YV9iaXJ0aG9yZGVyX2lfZ19mYWN0b3IgPC0gYmlydGhvcmRlcgoKYWxsZGF0YV9iaXJ0aG9yZGVyX2lfdGJsID0gYWxsZGF0YV9iaXJ0aG9yZGVyX2lfZ19mYWN0b3IgJT4lIHRibF9kZi5taXRtbC5saXN0CgpgYGAKCgojIENvbXB1dGUgZyBmYWN0b3IKT3IgcmF0aGVyIHNpbXBseSBhIHN1bSBzY29yZSBvZiBzY2FsZWQgdGVzdCBzY29yZXMgdG8ga2VlcCB0aGluZ3Mgc2ltcGxlIGhlcmUuCgpgYGB7cn0KCiMgSW1wdXRlZCBkYXRhCmFsbGRhdGFfYmlydGhvcmRlcl9pX2dfZmFjdG9yIDwtIHdpdGhpbihhbGxkYXRhX2JpcnRob3JkZXJfaV9nX2ZhY3RvciwgewogIGdfZmFjdG9yXzIwMTUgPC0gcm93TWVhbnMoc2NhbGUoY2JpbmQocmF2ZW5fMjAxNV9vbGQsIG1hdGhfMjAxNV9vbGQsIGNvdW50X2JhY2t3YXJkcywgIHdvcmRzX2RlbGF5ZWQsIGFkYXB0aXZlX251bWJlcmluZykpKQp9KQoKYWxsZGF0YV9iaXJ0aG9yZGVyX2lfZ19mYWN0b3IgPC0gd2l0aGluKGFsbGRhdGFfYmlydGhvcmRlcl9pX2dfZmFjdG9yLCB7CiAgZ19mYWN0b3JfMjAwNyA8LSByb3dNZWFucyhzY2FsZShjYmluZChyYXZlbl8yMDA3X29sZCwgbWF0aF8yMDA3X29sZCwgY291bnRfYmFja3dhcmRzLCAgd29yZHNfZGVsYXllZCwgYWRhcHRpdmVfbnVtYmVyaW5nKSkpCn0pCmBgYAoKIyMgSXRlcmF0aW9ucyBhbmQgY29udmVyZ2VuY2UKCmBgYHtyfQpwbG90KGFsbGRhdGFfYmlydGhvcmRlcl9pKQpgYGAKCmBgYHtyfQpiaXJ0aG9yZGVyIDwtIG1pZHMybWl0bWwubGlzdChhbGxkYXRhX2JpcnRob3JkZXJfaSkKYGBgCgojIyBDb3JyZWxhdGlvbnMsIGl0ZXJhdGlvbnMgYW5kIGRlbnNpdHkgey5hY3RpdmV9CmBgYHtyfQojIGNvcnJlbGF0aW9ucwpjb3JyZWxhdGlvbnNfb3JpZ2luYWwgPSBjb3JyX3BpcGUoYWxsZGF0YV9iaXJ0aG9yZGVyICU+JSBzZWxlY3RfaWYoaXMubnVtZXJpYykpCmNvcnJlbGF0aW9uc19pbXB1dGVkID0gY29ycl9waXBlKGFsbGRhdGFfYmlydGhvcmRlcl9pX2dfZmFjdG9yW1sxXV0gJT4lIHNlbGVjdF9pZihpcy5udW1lcmljKSkKCmNvcnJlbGF0aW9uc19vcmlnaW5hbCA9IGNvcnJlbGF0aW9uc19vcmlnaW5hbCAlPiUKICBtdXRhdGUodiA9IHBhc3RlMChWYXIxLCBWYXIyKSkgJT4lCiAgcmVuYW1lKFZhcjFfb3JpZ2luYWwgPSBWYXIxLCBWYXIyX29yaWdpbmFsPSBWYXIyLCBuX29yaWdpbmFsID0gbiwgcl9vcmlnaW5hbCA9IHIsIHBfb3JpZ2luYWwgPSBwKQoKY29ycmVsYXRpb25zX2ltcHV0ZWQgPSBjb3JyZWxhdGlvbnNfaW1wdXRlZCAlPiUKICBtdXRhdGUodiA9IHBhc3RlMChWYXIxLCBWYXIyKSkgJT4lCiAgcmVuYW1lKFZhcjFfaW1wdXRlZCA9IFZhcjEsIFZhcjJfaW1wdXRlZCA9IFZhcjIsIG5faW1wdXRlZCA9IG4sIHJfaW1wdXRlZCA9IHIsIHBfaW1wdXRlZCA9IHApCgpjb3JyZWxhdGlvbnMgPSBmdWxsX2pvaW4oY29ycmVsYXRpb25zX29yaWdpbmFsLCBjb3JyZWxhdGlvbnNfaW1wdXRlZCwgYnkgPSAidiIpCgpjb3IudGVzdChjb3JyZWxhdGlvbnMkcl9vcmlnaW5hbCwgY29ycmVsYXRpb25zJHJfaW1wdXRlZCkKbGlicmFyeShnZ3JlcGVsKQpzdW0oYWJzKGNvcnJlbGF0aW9ucyRyX29yaWdpbmFsIC0gY29ycmVsYXRpb25zJHJfaW1wdXRlZCkgPiAwLjUsIG5hLnJtID0gVCkKY29ycmVsYXRpb25zIDwtIGNvcnJlbGF0aW9ucyAlPiUgCiAgbXV0YXRlKGxhYmVsID0gaWZfZWxzZShhYnMocl9vcmlnaW5hbCAtIHJfaW1wdXRlZCkgPiAwLjQsIAogICAgICAgICAgICAgICAgICAgICAgICAgcGFzdGUoVmFyMV9vcmlnaW5hbCwgVmFyMl9vcmlnaW5hbCksCiAgICAgICAgICAgICAgICAgICAgICAgICBOQV9jaGFyYWN0ZXJfKSkKZ2dwbG90KGNvcnJlbGF0aW9ucywgYWVzKHJfb3JpZ2luYWwsIHJfaW1wdXRlZCkpICsKICBnZW9tX3BvaW50KGFscGhhID0gMC4xKSArIAogIGdlb21fdGV4dF9yZXBlbChhZXMobGFiZWwgPSBsYWJlbCkpCmBgYAoKCgojIyBjaGVjayBkZW5zaXRpZXMgb2YgaW1wdXRlZC9yZWFsCmBgYHtyfQpkZW5zaXR5cGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaSwgfiBiaXJ0aG9yZGVyX2dlbmVzICsgc2libGluZ19jb3VudF9nZW5lcykKCmRlbnNpdHlwbG90KGFsbGRhdGFfYmlydGhvcmRlcl9pLCB+IHJhdmVuXzIwMTVfeW91bmcgKyBtYXRoXzIwMTVfeW91bmcgKyByYXZlbl8yMDE1X29sZCArIG1hdGhfMjAxNV9vbGQpCgpkZW5zaXR5cGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaSwgfiB3b3Jkc19kZWxheWVkICsgYWRhcHRpdmVfbnVtYmVyaW5nICsgY291bnRfYmFja3dhcmRzKQogICAgICAgICAgICAKZGVuc2l0eXBsb3QoYWxsZGF0YV9iaXJ0aG9yZGVyX2ksIH4gcmF2ZW5fMjAwN19vbGQgKyByYXZlbl8yMDA3X3lvdW5nICsgbWF0aF8yMDA3X3lvdW5nICsgbWF0aF8yMDA3X29sZCkKCmRlbnNpdHlwbG90KGFsbGRhdGFfYmlydGhvcmRlcl9pLCB+IGJpZzVfZXh0ICsgYmlnNV9jb24gKyBiaWc1X29wZW4gKyBiaWc1X25ldSArIGJpZzVfYWdyZWUpCgpkZW5zaXR5cGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaSwgfiByaXNrQSArIHJpc2tCKQoKCmRlbnNpdHlwbG90KGFsbGRhdGFfYmlydGhvcmRlcl9pLCB+IHllYXJzX29mX2VkdWNhdGlvbikKYGBgCgoKIyMgRy1GYWN0b3IKYGBge3IgZyBmYWN0b3J9CiMgTm9ybWFsIGRhdGEgLSBubyBtaXNzZXMKYWxsZGF0YV9iaXJ0aG9yZGVyIDwtIGFsbGRhdGFfYmlydGhvcmRlciAlPiUKICBtdXRhdGUocGlkbGluayA9IHJvd19udW1iZXIoKSkKbm9fbWlzcyA9IGFsbGRhdGFfYmlydGhvcmRlciAlPiUKICBmaWx0ZXIoIWlzLm5hKHJhdmVuXzIwMTVfb2xkKSwgIWlzLm5hKG1hdGhfMjAxNV9vbGQpLCAhaXMubmEoY291bnRfYmFja3dhcmRzKSwKICAgICAgICAgIWlzLm5hKHdvcmRzX2RlbGF5ZWQpLCAhaXMubmEoYWRhcHRpdmVfbnVtYmVyaW5nKSkKZmEucGFyYWxsZWwobm9fbWlzcyAlPiUgc2VsZWN0KHJhdmVuXzIwMTVfb2xkLCBtYXRoXzIwMTVfb2xkLCBjb3VudF9iYWNrd2FyZHMsIHdvcmRzX2RlbGF5ZWQsIGFkYXB0aXZlX251bWJlcmluZykgJT4lIGRhdGEuZnJhbWUoKSkKZmEobm9fbWlzcyAlPiUgc2VsZWN0KHJhdmVuXzIwMTVfb2xkLCBtYXRoXzIwMTVfb2xkLCBjb3VudF9iYWNrd2FyZHMsIHdvcmRzX2RlbGF5ZWQsIGFkYXB0aXZlX251bWJlcmluZykgJT4lIGRhdGEuZnJhbWUoKSwgbmZhY3RvcnMgPSAxKQpvbV9yZXN1bHRzID0gb21lZ2Eobm9fbWlzcyAlPiUgc2VsZWN0KHJhdmVuXzIwMTVfb2xkLCBtYXRoXzIwMTVfb2xkLCBjb3VudF9iYWNrd2FyZHMsIHdvcmRzX2RlbGF5ZWQsIGFkYXB0aXZlX251bWJlcmluZykgJT4lIGRhdGEuZnJhbWUoKSwgbmZhY3RvcnMgPSAxLCBzbCA9IEYpCm9tX3Jlc3VsdHMKb21lZ2EuZGlhZ3JhbShvbV9yZXN1bHRzKQoKImdfZmFjdG9yX25vbWlzcyA9fiByYXZlbl8yMDE1X29sZCArIG1hdGhfMjAxNV9vbGQgKyBjb3VudF9iYWNrd2FyZHMgKyAgd29yZHNfZGVsYXllZCArIGFkYXB0aXZlX251bWJlcmluZyIgJT4lCiAgY2ZhKGRhdGEgPSBub19taXNzLCBzdGQubHYgPSBULCBzdGQub3YgPSBUKSAtPiBjZmFfZwpzdW1tYXJ5KGNmYV9nKQoKIyMgRXhwbGFpbmVkIHZhcmlhbmNlOgp4ID0gaW5zcGVjdChjZmFfZywgInJzcXVhcmUiKQpub19taXNzJGdfZmFjdG9yX25vbWlzcyA9IHByZWRpY3QoY2ZhX2cpWywxXQoKbm9fbWlzcyA9IG5vX21pc3MgJT4lIHNlbGVjdChwaWRsaW5rLCBnX2ZhY3Rvcl9ub21pc3MpCgphbGxkYXRhX2JpcnRob3JkZXIgPSBsZWZ0X2pvaW4oYWxsZGF0YV9iaXJ0aG9yZGVyLCBub19taXNzLCBieSA9ICJwaWRsaW5rIikKcXBsb3QoYWxsZGF0YV9iaXJ0aG9yZGVyJGdfZmFjdG9yX25vbWlzcykKCgpxcGxvdChhbGxkYXRhX2JpcnRob3JkZXJfaV9nX2ZhY3RvcltbMV1dJGdfZmFjdG9yXzIwMTUpCnFwbG90KGFsbGRhdGFfYmlydGhvcmRlcl9pX2dfZmFjdG9yW1sxXV0kZ19mYWN0b3JfMjAwNykKCnN1bW1hcnkobG0oZ19mYWN0b3Jfbm9taXNzIH4gcmF2ZW5fMjAxNV9vbGQsIGFsbGRhdGFfYmlydGhvcmRlcikpCnN1bW1hcnkobG0oZ19mYWN0b3JfMjAxNSB+IHJhdmVuXzIwMTVfb2xkLCBhbGxkYXRhX2JpcnRob3JkZXJfaV9nX2ZhY3RvcltbMV1dKSkKc3VtbWFyeShsbShnX2ZhY3Rvcl9ub21pc3MgfiByYXZlbl8yMDE1X3lvdW5nLCBhbGxkYXRhX2JpcnRob3JkZXIpKQpzdW1tYXJ5KGxtKGdfZmFjdG9yXzIwMTUgfiByYXZlbl8yMDE1X3lvdW5nLCBhbGxkYXRhX2JpcnRob3JkZXJfaV9nX2ZhY3RvcltbMV1dKSkKCmFsbGRhdGFfYmlydGhvcmRlciAlPiUge2Nvci50ZXN0KC4kZ19mYWN0b3Jfbm9taXNzLCAuJHllYXJzX29mX2VkdWNhdGlvbil9CmFsbGRhdGFfYmlydGhvcmRlcl9pX2dfZmFjdG9yW1sxXV0gJT4lIHtjb3IudGVzdCguJGdfZmFjdG9yXzIwMTUsIC4keWVhcnNfb2ZfZWR1Y2F0aW9uKX0KYWxsZGF0YV9iaXJ0aG9yZGVyX2lfZ19mYWN0b3JbWzFdXSAlPiUge2Nvci50ZXN0KC4kZ19mYWN0b3JfMjAwNywgLiR5ZWFyc19vZl9lZHVjYXRpb24pfQphbGxkYXRhX2JpcnRob3JkZXJfaV9nX2ZhY3RvcltbMV1dICU+JSB7Y29yLnRlc3QoLiRnX2ZhY3Rvcl8yMDA3LCAuJGdfZmFjdG9yXzIwMTUpfQpgYGAK</div>
 
 
 

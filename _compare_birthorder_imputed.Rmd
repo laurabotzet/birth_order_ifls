@@ -35,8 +35,8 @@ x = mitml::testEstimates(model_genes_m1, var.comp = T)
 y = as_tibble(x$estimates, rownames = "id")
 
 y = y %>%
-  mutate(CI_low = Estimate - 1.96 * Std.Error,
-         CI_high = Estimate + 1.96 * Std.Error) %>%
+  mutate(CI_low = Estimate - 2.576 * Std.Error,
+         CI_high = Estimate + 2.576 * Std.Error) %>%
   select(CI_low, CI_high)
 CI_low = y$CI_low
 CI_high = y$CI_high
@@ -44,6 +44,18 @@ CI_high = y$CI_high
 
 x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
 x
+
+x$estimates %>% 
+  as.data.frame() %>% 
+  tibble::rownames_to_column("term") %>% 
+  filter(term != "(Intercept)") %>% 
+  mutate(term = str_replace_all(term, "poly\\(", "")) %>% 
+  mutate(term = str_replace_all(term, ", degree = 3, raw = T\\)", "")) %>% 
+ggplot(aes(x= term, y = Estimate, ymin = CI_low, ymax = CI_high)) +
+  geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
+  geom_pointrange() +
+  coord_flip() +
+  theme_minimal()
 ```
 
 
@@ -58,8 +70,8 @@ x = mitml::testEstimates(model_genes_m2, var.comp = T)
 y = as_tibble(x$estimates, rownames = "id")
 
 y = y %>%
-  mutate(CI_low = Estimate - 1.96 * Std.Error,
-         CI_high = Estimate + 1.96 * Std.Error) %>%
+  mutate(CI_low = Estimate - 2.576 * Std.Error,
+         CI_high = Estimate + 2.576 * Std.Error) %>%
   select(CI_low, CI_high)
 CI_low = y$CI_low
 CI_high = y$CI_high
@@ -67,6 +79,18 @@ CI_high = y$CI_high
 
 x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
 x
+
+x$estimates %>% 
+  as.data.frame() %>% 
+  tibble::rownames_to_column("term") %>% 
+  filter(term != "(Intercept)") %>% 
+  mutate(term = str_replace_all(term, "poly\\(", "")) %>% 
+  mutate(term = str_replace_all(term, ", degree = 3, raw = T\\)", "")) %>% 
+ggplot(aes(x= term, y = Estimate, ymin = CI_low, ymax = CI_high)) +
+  geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
+  geom_pointrange() +
+  coord_flip() +
+  theme_minimal()
 ```
 
 
@@ -82,8 +106,8 @@ x = mitml::testEstimates(model_genes_m3, var.comp = T)
 y = as_tibble(x$estimates, rownames = "id")
 
 y = y %>%
-  mutate(CI_low = Estimate - 1.96 * Std.Error,
-         CI_high = Estimate + 1.96 * Std.Error) %>%
+  mutate(CI_low = Estimate - 2.576 * Std.Error,
+         CI_high = Estimate + 2.576 * Std.Error) %>%
   select(CI_low, CI_high)
 CI_low = y$CI_low
 CI_high = y$CI_high
@@ -91,6 +115,18 @@ CI_high = y$CI_high
 
 x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
 x
+
+x$estimates %>% 
+  as.data.frame() %>% 
+  tibble::rownames_to_column("term") %>% 
+  filter(term != "(Intercept)") %>% 
+  mutate(term = str_replace_all(term, "poly\\(", "")) %>% 
+  mutate(term = str_replace_all(term, ", degree = 3, raw = T\\)", "")) %>% 
+ggplot(aes(x= term, y = Estimate, ymin = CI_low, ymax = CI_high)) +
+  geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
+  geom_pointrange() +
+  coord_flip() +
+  theme_minimal()
 ```
 
 ##### Add Interaction {.tabset .active}
@@ -104,8 +140,8 @@ x = mitml::testEstimates(model_genes_m4, var.comp = T)
 y = as_tibble(x$estimates, rownames = "id")
 
 y = y %>%
-  mutate(CI_low = Estimate - 1.96 * Std.Error,
-         CI_high = Estimate + 1.96 * Std.Error) %>%
+  mutate(CI_low = Estimate - 2.576 * Std.Error,
+         CI_high = Estimate + 2.576 * Std.Error) %>%
   select(CI_low, CI_high)
 CI_low = y$CI_low
 CI_high = y$CI_high
@@ -114,10 +150,20 @@ CI_high = y$CI_high
 x$estimates = cbind(x$estimates[,1:2], CI_low, CI_high, x$estimates[,3:7])
 x
 
+x$estimates %>% 
+  as.data.frame() %>% 
+  tibble::rownames_to_column("term") %>% 
+  filter(term != "(Intercept)") %>% 
+  mutate(term = str_replace_all(term, "poly\\(", "")) %>% 
+  mutate(term = str_replace_all(term, ", degree = 3, raw = T\\)", "")) %>% 
+ggplot(aes(x= term, y = Estimate, ymin = CI_low, ymax = CI_high)) +
+  geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
+  geom_pointrange() +
+  coord_flip() +
+  theme_minimal()
 ```
 
 ##### Model Comparison
 ```{r}
 anova(model_genes_m1, model_genes_m2, model_genes_m3, model_genes_m4)
-
 ```

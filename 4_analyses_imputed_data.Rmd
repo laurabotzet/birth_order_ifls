@@ -1,17 +1,19 @@
 ---
-title: "4_analyses_imputed_data"
+title: "4. Analyses Imputed Data"
 author: "Laura Botzet & Ruben Arslan"
 output: html_document
 editor_options: 
   chunk_output_type: console
 ---
+
 # <span style="color:#FFD92F">Birth Order Effects Imputed Data</span> {.tabset}
 
 ## Helper
+
 ```{r helper}
 source("0_helpers.R")
-opts_chunk$set(warning = FALSE,error=T)
-detach("package:lmerTest", unload=TRUE)
+opts_chunk$set(warning = FALSE, error = T)
+detach("package:lmerTest", unload = TRUE)
 ```
 
 
@@ -41,6 +43,7 @@ library(mitml)
 
 
 ## Load data
+
 ```{r Load Data}
 birthorder_missing = readRDS("data/alldata_birthorder_missing.rds")
 birthorder = readRDS("data/alldata_birthorder_i_ml5.rds")
@@ -225,7 +228,7 @@ compare_birthorder_imputed(data_used = data_used)
 
 ```{r consc}
 # Specify your outcome
-data_used = data_used %>% mutate(outcome = big5_neu)
+data_used = data_used %>% mutate(outcome = big5_con)
 data_used_plots <- data_used[[1]]
 
 compare_birthorder_imputed(data_used = data_used)
@@ -257,6 +260,7 @@ compare_birthorder_imputed(data_used = data_used)
 ```
 
 ## Riskpreference {.tabset}
+
 ### Risk A {.tabset}
 
 ```{r riska}

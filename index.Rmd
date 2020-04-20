@@ -9,7 +9,6 @@ nocite: |
 
 
 ```{r message=FALSE, warning=FALSE}
-##NEW
 source("0_helpers.R")
 ```
 

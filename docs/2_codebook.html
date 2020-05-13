@@ -1,0 +1,3022 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Codebook</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h2 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h3 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h4 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h5 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h6 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+<head>
+<style>
+.dropdown-menu li:hover .sub-menu {
+  visibility: visible;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+</style>
+</head>
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+<div class="navbar-header">
+  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+  </button>
+  <a class="navbar-brand" href="index.html">Birth Order IFLS</a>
+</div>
+<div id="navbar" class="navbar-collapse collapse">
+  <ul class="nav navbar-nav">
+
+<li style="background-color: #66C2A5">
+  <a href="index.html">Overview</a>
+</li>
+<li style="background-color: #FC8D62">
+  <a href="1_data_import.html">Data Wrangling</a>
+</li>
+<li style="background-color: #8DA0CB">
+  <a href="2_Inclusion.html">Data Sampling</a>
+</li>
+<li style="background-color: #E78AC3">
+  <a href="3_sample_analyses.html">Sample Analyses</a>
+</li>
+
+<li class="dropdown" style="background-color: #E5C494">
+        <a class="dropdown-toggle" aria-expanded="false">
+          Birth Order Effects <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" style="background-color: #E5C494">
+          <li class=""><a href="4_analyses.html" aria-expanded="false" aria-controls="first-tab"> Main Analyses</a></li>
+          <li class=""><a href="4_analyses_robust.html" aria-expanded="false" aria-controls="first-tab"> Robustness Analyses</a></li>
+        </ul>
+     </li>
+
+
+<li class="dropdown" style="background-color: #FFD92F">
+        <a class="dropdown-toggle" aria-expanded="false">
+          Birth Order Effects Imputed Data <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" style="background-color: #FFD92F">
+          <li class=""><a href="3_imputation.html" aria-expanded="false" aria-controls="first-tab">Multiple Imputation</a></li>
+          <li class=""><a href="3_imputation_check.html" aria-expanded="false" aria-controls="first-tab">Imputation Checks</a></li>
+          <li class=""><a href="4_analyses_imputed_data.html" aria-expanded="false" aria-controls="second-tab">Birth Order Effects Imputed Data</a></li>
+        </ul>
+     </li>
+
+
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/laurabotzet/birth_order_ifls">
+<span class="fa fa-github"></span>
+
+
+  </a>
+</li>
+  </ul>
+</div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Codebook</h1>
+
+</div>
+
+
+<pre class="r"><code>source(&quot;0_helpers.R&quot;)
+birthorder = readRDS(&quot;data/alldata_birthorder.rds&quot;)
+knitr::opts_chunk$set(error = TRUE, warning = F, message = F)</code></pre>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<pre class="r"><code># For analyses we want to clean the dataset and get rid of all uninteresting data
+birthorder = birthorder %&gt;%
+ mutate(money_spent_smoking_log = if_else(is.na(money_spent_smoking_log) &amp; ever_smoked == 0, 0, money_spent_smoking_log),
+         amount = if_else(is.na(amount) &amp; ever_smoked == 0, 0, amount),
+         amount_still_smokers = if_else(is.na(amount_still_smokers) &amp;  still_smoking == 0, 0, amount_still_smokers),
+         birthyear = lubridate::year(birthdate))
+
+### Variables
+birthorder = birthorder %&gt;%
+  mutate(
+  attended_school = as.integer(attended_school),
+  attended_school = ifelse(attended_school == 1, 0,
+                           ifelse(attended_school == 2, 1, NA)))
+
+### Birthorder and Sibling Count
+birthorder = birthorder %&gt;% 
+  mutate(
+# birthorder as factors with levels of 1, 2, 3, 4, 5, &gt;5
+    birthorder_naive_factor = as.character(birthorder_naive),
+    birthorder_naive_factor = ifelse(birthorder_naive &gt; 5, &quot;&gt;5&quot;,
+                                            birthorder_naive_factor),
+    birthorder_naive_factor = factor(birthorder_naive_factor, 
+                                            levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;&gt;5&quot;)),
+    sibling_count_naive_factor = as.character(sibling_count_naive),
+    sibling_count_naive_factor = ifelse(sibling_count_naive &gt; 5, &quot;&gt;5&quot;,
+                                               sibling_count_naive_factor),
+    sibling_count_naive_factor = factor(sibling_count_naive_factor, 
+                                               levels = c(&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;&gt;5&quot;)),
+
+    birthorder_uterus_alive_factor = as.character(birthorder_uterus_alive),
+    birthorder_uterus_alive_factor = ifelse(birthorder_uterus_alive &gt; 5, &quot;&gt;5&quot;,
+                                            birthorder_uterus_alive_factor),
+    birthorder_uterus_alive_factor = factor(birthorder_uterus_alive_factor, 
+                                            levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;&gt;5&quot;)),
+    sibling_count_uterus_alive_factor = as.character(sibling_count_uterus_alive),
+    sibling_count_uterus_alive_factor = ifelse(sibling_count_uterus_alive &gt; 5, &quot;&gt;5&quot;,
+                                               sibling_count_uterus_alive_factor),
+    sibling_count_uterus_alive_factor = factor(sibling_count_uterus_alive_factor, 
+                                               levels = c(&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;&gt;5&quot;)),
+    birthorder_uterus_preg_factor = as.character(birthorder_uterus_preg),
+    birthorder_uterus_preg_factor = ifelse(birthorder_uterus_preg &gt; 5, &quot;&gt;5&quot;,
+                                           birthorder_uterus_preg_factor),
+    birthorder_uterus_preg_factor = factor(birthorder_uterus_preg_factor,
+                                           levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;&gt;5&quot;)),
+    sibling_count_uterus_preg_factor = as.character(sibling_count_uterus_preg),
+    sibling_count_uterus_preg_factor = ifelse(sibling_count_uterus_preg &gt; 5, &quot;&gt;5&quot;,
+                                              sibling_count_uterus_preg_factor),
+    sibling_count_uterus_preg_factor = factor(sibling_count_uterus_preg_factor, 
+                                              levels = c(&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;&gt;5&quot;)),
+    birthorder_genes_factor = as.character(birthorder_genes),
+    birthorder_genes_factor = ifelse(birthorder_genes &gt;5 , &quot;&gt;5&quot;, birthorder_genes_factor),
+    birthorder_genes_factor = factor(birthorder_genes_factor, 
+                                     levels = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;&gt;5&quot;)),
+    sibling_count_genes_factor = as.character(sibling_count_genes),
+    sibling_count_genes_factor = ifelse(sibling_count_genes &gt;5 , &quot;&gt;5&quot;,
+                                        sibling_count_genes_factor),
+    sibling_count_genes_factor = factor(sibling_count_genes_factor, 
+                                        levels = c(&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;&gt;5&quot;)),
+    # interaction birthorder * siblingcout for each birthorder
+    count_birthorder_naive =
+      factor(str_replace(as.character(interaction(birthorder_naive_factor,                                                              sibling_count_naive_factor)),
+                        &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;,
+                                                        &quot;1/&gt;5&quot;, &quot;2/&gt;5&quot;, &quot;3/&gt;5&quot;, &quot;4/&gt;5&quot;,
+                                                        &quot;5/&gt;5&quot;, &quot;&gt;5/&gt;5&quot;)),
+    count_birthorder_uterus_alive =
+      factor(str_replace(as.character(interaction(birthorder_uterus_alive_factor,                                                              sibling_count_uterus_alive_factor)),
+                        &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;,
+                                                        &quot;1/&gt;5&quot;, &quot;2/&gt;5&quot;, &quot;3/&gt;5&quot;, &quot;4/&gt;5&quot;,
+                                                        &quot;5/&gt;5&quot;, &quot;&gt;5/&gt;5&quot;)),
+    count_birthorder_uterus_preg =
+      factor(str_replace(as.character(interaction(birthorder_uterus_preg_factor,                                                              sibling_count_uterus_preg_factor)), 
+                         &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;,
+                                                        &quot;1/&gt;5&quot;, &quot;2/&gt;5&quot;, &quot;3/&gt;5&quot;, &quot;4/&gt;5&quot;,
+                                                        &quot;5/&gt;5&quot;, &quot;&gt;5/&gt;5&quot;)),
+    count_birthorder_genes =
+      factor(str_replace(as.character(interaction(birthorder_genes_factor,                                                              sibling_count_genes_factor)), &quot;\\.&quot;, &quot;/&quot;),
+                                           levels =   c(&quot;1/2&quot;,&quot;2/2&quot;, &quot;1/3&quot;,  &quot;2/3&quot;,
+                                                        &quot;3/3&quot;, &quot;1/4&quot;, &quot;2/4&quot;, &quot;3/4&quot;, &quot;4/4&quot;,
+                                                        &quot;1/5&quot;, &quot;2/5&quot;, &quot;3/5&quot;, &quot;4/5&quot;, &quot;5/5&quot;,
+                                                        &quot;1/&gt;5&quot;, &quot;2/&gt;5&quot;, &quot;3/&gt;5&quot;, &quot;4/&gt;5&quot;,
+                                                        &quot;5/&gt;5&quot;, &quot;&gt;5/&gt;5&quot;)))
+
+birthorder &lt;- birthorder %&gt;%
+                     mutate(sibling_count = sibling_count_naive_factor,
+                            birth_order_nonlinear = birthorder_naive_factor,
+                            birth_order = birthorder_naive,
+                            count_birth_order = count_birthorder_naive)</code></pre>
+<pre class="r"><code>birthorder$mother_pidlink &lt;- as.character(birthorder$mother_pidlink)
+birthorder$pidlink &lt;- as.character(birthorder$pidlink)
+birthorder$father_pidlink &lt;- as.character(birthorder$father_pidlink)
+birthorder$marriage_id &lt;- as.character(birthorder$marriage_id)
+library(codebook)
+
+var_label(birthorder$e1) &lt;- &quot;Is talkative&quot;
+var_label(birthorder$c1) &lt;- &quot;Does a thorough job&quot;
+var_label(birthorder$o1) &lt;- &quot;Is original, comes up with new ideas.&quot;
+var_label(birthorder$e2r_reversed) &lt;- &quot;Is reserved.&quot;
+var_label(birthorder$n1r_reversed) &lt;- &quot;Is relaxed, handles stress well.&quot;
+var_label(birthorder$a1) &lt;- &quot;Has a forgiving nature.&quot;
+var_label(birthorder$n2) &lt;- &quot;Worries a lot.&quot;
+var_label(birthorder$o2) &lt;- &quot;Has an active imagination.&quot;
+var_label(birthorder$c2r_reversed) &lt;- &quot;Tends to be lazy.&quot;
+var_label(birthorder$o3) &lt;- &quot;Values artistic, aesthetic experiences.&quot;
+var_label(birthorder$a2) &lt;- &quot;Is considerate and kind to almost everyone.&quot;
+var_label(birthorder$c3) &lt;- &quot;Does things efficiently.&quot;
+var_label(birthorder$e3) &lt;- &quot;Outgoing, sociable.&quot;
+var_label(birthorder$a3r_reversed) &lt;- &quot;Is sometimes rude to others.&quot;
+var_label(birthorder$n3) &lt;- &quot;Gets nervous easily.&quot;
+
+
+
+add_likert_labels &lt;- function(x) {
+  val_labels(x) &lt;- c(&quot;Disagree strongly&quot; = 1, 
+                  &quot;Disagree a little&quot; = 2, 
+                  &quot;Neither agree nor disagree&quot; = 3,
+                  &quot;Agree a little&quot; = 4,
+                  &quot;Agree strongly&quot; = 5)
+  x
+}
+birthorder &lt;- birthorder %&gt;% mutate_at(vars(e1, c1, o1, e2r, n1r, a1, n2, o2, c2r, o3, a2, c3, e3, a3r, n3), add_likert_labels)
+
+##Extraversion
+birthorder$e2r_reversed = codebook::reverse_labelled_values(birthorder$e2r)
+extraversion = birthorder %&gt;% select(e1, e2r_reversed, e3)
+birthorder$big5_ext = aggregate_and_document_scale(extraversion)
+
+##conscientiousness
+birthorder$c2r_reversed = codebook::reverse_labelled_values(birthorder$c2r)
+conscientiousness = birthorder %&gt;% select(c1, c2r_reversed, c3)
+birthorder$big5_con = aggregate_and_document_scale(conscientiousness)
+
+##Openness
+openness = birthorder %&gt;% select(o1, o2, o3)
+birthorder$big5_open = aggregate_and_document_scale(openness)
+
+## Neuroticism
+birthorder$n1r_reversed = codebook::reverse_labelled_values(birthorder$n1r)
+neuroticism = birthorder %&gt;% select(n1r_reversed, n2, n3)
+birthorder$big5_neu = aggregate_and_document_scale(neuroticism)
+
+##Agreeableness
+birthorder$a3r_reversed = codebook::reverse_labelled_values(birthorder$a3r)
+agreeableness= birthorder %&gt;% select(a1, a2, a3r_reversed)
+birthorder$big5_agree = aggregate_and_document_scale(agreeableness)
+
+cb_table &lt;- codebook_table(birthorder)
+rio::export(cb_table, &quot;2_codebook.xlsx&quot;)
+
+metadata(birthorder)$name &lt;- &quot;Indonesian Family Life Study, merged subset&quot;
+metadata(birthorder)$description &lt;- &quot;Data from the IFLS, merged across waves, most outcomes taken from wave 5. Includes birth order, family structure, Big 5 Personality, intelligence tests, and risk lotteries&quot;
+metadata(birthorder)$identifier &lt;- &quot;https://www.rand.org/well-being/social-and-behavioral-policy/data/FLS/IFLS.html&quot;
+metadata(birthorder)$creator &lt;- &quot;RAND corporation&quot;
+metadata(birthorder)$citation &lt;- &quot;Strauss, J., Witoelar, F., &amp; Sikoki, B. (2016). The Fifth Wave of the Indonesia Family Life Survey: Overview and Field Report. WR-1143/1-NIA/NICHD&quot;
+metadata(birthorder)$url &lt;- &quot;https://www.rand.org/well-being/social-and-behavioral-policy/data/FLS/IFLS.html&quot;
+metadata(birthorder)$datePublished &lt;- &quot;2016&quot;
+metadata(birthorder)$temporalCoverage &lt;- &quot;2014/2015&quot; 
+metadata(birthorder)$spatialCoverage &lt;- &quot;13 Indonesian provinces. The sample is representative of about 83% of the Indonesian population and contains over 30,000 individuals living in 13 of the 27 provinces in the country. See URL for more.&quot; </code></pre>
+<pre class="r"><code>codebook(birthorder, survey_repetition = &quot;single&quot;, 
+        detailed_variables = FALSE, detailed_scales = TRUE, missingness_report = FALSE,
+        metadata_table = TRUE, metadata_json = TRUE, indent = &quot;#&quot;)</code></pre>
+<pre class="r"><code>knitr::asis_output(data_info)</code></pre>
+<div id="metadata" class="section level3">
+<h3>Metadata</h3>
+<div id="description" class="section level4">
+<h4>Description</h4>
+<pre class="r"><code>if (exists(&quot;name&quot;, meta)) {
+  glue::glue(
+    &quot;__Dataset name__: {name}&quot;,
+    .envir = meta)
+}</code></pre>
+<p><strong>Dataset name</strong>: Indonesian Family Life Study, merged subset</p>
+<pre class="r"><code>cat(description)</code></pre>
+<p>Data from the IFLS, merged across waves, most outcomes taken from wave 5. Includes birth order, family structure, Big 5 Personality, intelligence tests, and risk lotteries</p>
+<details>
+<p><summary title="Expand this section to see some additional metadata in a structured format that is useful for search engines">Metadata for search engines</summary></p>
+<ul>
+<li><strong>Temporal Coverage</strong>: 2014/2015</li>
+<li><strong>Spatial Coverage</strong>: 13 Indonesian provinces. The sample is representative of about 83% of the Indonesian population and contains over 30,000 individuals living in 13 of the 27 provinces in the country. See URL for more.</li>
+<li><strong>Citation</strong>: Strauss, J., Witoelar, F., &amp; Sikoki, B. (2016). The Fifth Wave of the Indonesia Family Life Survey: Overview and Field Report. WR-1143/1-NIA/NICHD</li>
+<li><strong>URL</strong>: <a href="https://www.rand.org/well-being/social-and-behavioral-policy/data/FLS/IFLS.html">https://www.rand.org/well-being/social-and-behavioral-policy/data/FLS/IFLS.html</a></li>
+<li><strong>Identifier</strong>: <a href="https://www.rand.org/well-being/social-and-behavioral-policy/data/FLS/IFLS.html" class="uri">https://www.rand.org/well-being/social-and-behavioral-policy/data/FLS/IFLS.html</a></li>
+<li><p><strong>Date published</strong>: 2016</p></li>
+<li><p><strong>Creator</strong>:RAND corporation</p></li>
+</ul>
+<pre class="r"><code>meta &lt;- meta[setdiff(names(meta),
+                     c(&quot;creator&quot;, &quot;datePublished&quot;, &quot;identifier&quot;,
+                       &quot;url&quot;, &quot;citation&quot;, &quot;spatialCoverage&quot;, 
+                       &quot;temporalCoverage&quot;, &quot;description&quot;, &quot;name&quot;))]
+pander::pander(meta)</code></pre>
+<ul>
+<li><strong>keywords</strong>: <em>wave</em>, <em>mother_pidlink</em>, <em>chron_order_birth</em>, <em>lifebirths</em>, <em>multiple_birth</em>, <em>alive</em>, <em>birthdate</em>, <em>any_multiple_birth</em>, <em>marriage_id</em>, <em>birthorder_uterus_preg</em>, <em>sibling_count_uterus_preg</em>, <em>birthorder_uterus_alive</em>, <em>sibling_count_uterus_alive</em>, <em>birthorder_genes</em>, <em>sibling_count_genes</em>, <em>pidlink</em>, <em>father_pidlink</em>, <em>age</em>, <em>death_yr</em>, <em>death_month</em>, <em>sc05</em>, <em>province</em>, <em>sc01_14_14</em>, <em>sibling_count_naive_ind</em>, <em>any_multiple_birthdate</em>, <em>birthorder_naive</em>, <em>sibling_count_naive</em>, <em>age_2015_old</em>, <em>age_2015_young</em>, <em>raven_2015_young</em>, <em>math_2015_young</em>, <em>raven_2015_old</em>, <em>math_2015_old</em>, <em>words_immediate</em>, <em>words_delayed</em>, <em>words_remembered_avg</em>, <em>adaptive_numbering</em>, <em>age_2007_young</em>, <em>age_2007_old</em>, <em>raven_2007_old</em>, <em>raven_2007_young</em>, <em>math_2007_young</em>, <em>math_2007_old</em>, <em>count_backwards</em>, <em>g_factor_2015_old</em>, <em>g_factor_2015_young</em>, <em>g_factor_2007_old</em>, <em>g_factor_2007_young</em>, <em>e1</em>, <em>c1</em>, <em>o1</em>, <em>e2r</em>, <em>n1r</em>, <em>a1</em>, <em>n2</em>, <em>o2</em>, <em>c2r</em>, <em>o3</em>, <em>a2</em>, <em>c3</em>, <em>e3</em>, <em>a3r</em>, <em>n3</em>, <em>e2r_reversed</em>, <em>big5_ext</em>, <em>c2r_reversed</em>, <em>big5_con</em>, <em>big5_open</em>, <em>n1r_reversed</em>, <em>big5_neu</em>, <em>a3r_reversed</em>, <em>big5_agree</em>, <em>random_si</em>, <em>si01</em>, <em>si02</em>, <em>si03</em>, <em>si04</em>, <em>si05</em>, <em>si11</em>, <em>si12</em>, <em>si13</em>, <em>si14</em>, <em>si15</em>, <em>riskA</em>, <em>riskB</em>, <em>attended_school</em>, <em>highest_education</em>, <em>currently_attending_school</em>, <em>hours_in_class</em>, <em>years_of_education</em>, <em>Type_of_test_elementary</em>, <em>Indonesia_score_elementary</em>, <em>English_score_elementary</em>, <em>Math_score_elemenatry</em>, <em>Total_score_elemenatry</em>, <em>Type_of_test_Junior_High</em>, <em>Indonesia_score_Junior_High</em>, <em>English_score_Junior_High</em>, <em>Math_score_Junior_High</em>, <em>Total_score_Junior_High</em>, <em>Type_of_test_Senior_High</em>, <em>Indonesia_score_Senior_High</em>, <em>English_score_Senior_High</em>, <em>Math_score_Senior_High</em>, <em>Total_score_Senior_High</em>, <em>Total_score_highest</em>, <em>Total_score_highest_type</em>, <em>Math_score_highest</em>, <em>Math_score_highest_type</em>, <em>Elementary_worked</em>, <em>Junior_high_worked</em>, <em>Senior_high_worked</em>, <em>University_worked</em>, <em>total_worked</em>, <em>Elementary_missed</em>, <em>Junior_high_missed</em>, <em>Senior_high_missed</em>, <em>University_missed</em>, <em>total_missed</em>, <em>Category</em>, <em>Sector</em>, <em>Self_employed</em>, <em>ever_smoked</em>, <em>still_smoking</em>, <em>amount</em>, <em>age_first_smoke</em>, <em>amount_still_smokers</em>, <em>male</em>, <em>wage_last_month_log</em>, <em>wage_last_year_log</em>, <em>money_spent_smoking_log</em>, <em>birthyear</em>, <em>birthorder_naive_factor</em>, <em>sibling_count_naive_factor</em>, <em>birthorder_uterus_alive_factor</em>, <em>sibling_count_uterus_alive_factor</em>, <em>birthorder_uterus_preg_factor</em>, <em>sibling_count_uterus_preg_factor</em>, <em>birthorder_genes_factor</em>, <em>sibling_count_genes_factor</em>, <em>count_birthorder_naive</em>, <em>count_birthorder_uterus_alive</em>, <em>count_birthorder_uterus_preg</em>, <em>count_birthorder_genes</em>, <em>sibling_count</em>, <em>birth_order_nonlinear</em>, <em>birth_order</em> and <em>count_birth_order</em></li>
+</ul>
+<!-- end of list -->
+</details>
+<pre class="r"><code>knitr::asis_output(survey_overview)</code></pre>
+</div>
+</div>
+</div>
+<div id="variables" class="section level2">
+<h2>Variables</h2>
+<pre class="r"><code>if (detailed_variables || detailed_scales) {
+  knitr::asis_output(paste0(scales_items, sep = &quot;\n\n\n&quot;, collapse = &quot;\n\n\n&quot;))
+}</code></pre>
+<div id="big5_ext" class="section level3 tabset">
+<h3>Scale: big5_ext</h3>
+<p><a name="e1"></a><a name="e2r_reversed"></a><a name="e3"></a></p>
+<div id="big5_ext_likert" class="section level4">
+<h4>Overview</h4>
+<p><strong>Reliability</strong>: ω<sub>ordinal</sub> [95% CI] = 0.59 [0.52;0.65].</p>
+<p><strong>Missing</strong>: 69795.</p>
+<pre class="r"><code>old_height &lt;- knitr::opts_chunk$get(&quot;fig.height&quot;)
+new_height &lt;- length(scale_info$scale_item_names)
+new_height &lt;- ifelse(new_height &gt; 20, 20, new_height)
+new_height &lt;- ifelse(new_height &lt; 1, 1, new_height)
+new_height &lt;- ifelse(is.na(new_height) | is.nan(new_height), 
+                     old_height, new_height)
+knitr::opts_chunk$set(fig.height = new_height)</code></pre>
+<pre class="r"><code>if (dplyr::n_distinct(na.omit(unlist(items))) &lt; 12) {
+  likert_plot &lt;- likert_from_items(items)
+  if (!is.null(likert_plot)) {
+    graphics::plot(likert_plot)
+  }
+}</code></pre>
+<p><img src="2_codebook_files/figure-html/cb_birthorder_big5_ext_likert-1.png" width="672" /></p>
+<pre class="r"><code>knitr::opts_chunk$set(fig.height = old_height)</code></pre>
+<pre class="r"><code>wrap_at &lt;- knitr::opts_chunk$get(&quot;fig.width&quot;) * 10</code></pre>
+<pre class="r"><code>dist_plot &lt;- plot_labelled(scale, scale_name, wrap_at)
+
+choices &lt;- attributes(items[[1]])$item$choices
+breaks &lt;- as.numeric(names(choices))
+if (length(breaks)) {
+  suppressMessages( # ignore message about overwriting x axis
+  dist_plot &lt;- dist_plot +
+        ggplot2::scale_x_continuous(&quot;values&quot;, 
+                                breaks = breaks, 
+                                labels = stringr::str_wrap(unlist(choices), ceiling(wrap_at * 0.21))) +
+      ggplot2::expand_limits(x = range(breaks)))
+  
+}
+
+dist_plot</code></pre>
+<p><img src="2_codebook_files/figure-html/cb_birthorder_big5_ext_distribution-1.png" width="672" /></p>
+</div>
+<div id="big5_ext_reliability" class="section level4">
+<h4>Reliability details</h4>
+<pre class="r"><code>for (i in seq_along(reliabilities)) {
+  rel &lt;- reliabilities[[i]]
+  cat(knitr::knit_print(rel, indent = paste0(indent, &quot;####&quot;)))
+}</code></pre>
+<div id="reliability-indices" class="section level5">
+<h5>Reliability Indices</h5>
+<pre class="r"><code>coefs &lt;- x$scaleReliability$output$dat %&gt;% 
+  tidyr::gather(index, estimate) %&gt;% 
+  dplyr::filter(index != &quot;n.items&quot;, index != &quot;n.observations&quot;) %&gt;% 
+  dplyr::mutate(index = stringr::str_to_title(
+    stringr::str_replace_all(index,
+      stringr::fixed(&quot;.&quot;), &quot; &quot;)))
+
+cis &lt;- coefs %&gt;% 
+  dplyr::filter(stringr::str_detect(index, &quot; Ci &quot;)) %&gt;% 
+  tidyr::separate(index, c(&quot;index&quot;, &quot;hilo&quot;), sep = &quot; Ci &quot;) %&gt;% 
+  tidyr::spread(hilo, estimate)
+if (nrow(cis)) {
+  cis &lt;- cis %&gt;% dplyr::rename(
+    `Lower 95% CI` = .data$Lo, `Upper 95% CI` = .data$Hi
+  )
+}
+
+coefs_with_cis &lt;- coefs %&gt;% 
+  dplyr::filter(!stringr::str_detect(index, &quot; Ci &quot;)) %&gt;% 
+    dplyr::left_join(cis, by = &quot;index&quot;) %&gt;% 
+    dplyr::mutate(index = dplyr::if_else(index == &quot;Glb&quot;, &quot;Greatest Lower Bound&quot;, .data$index)) %&gt;% 
+    dplyr::arrange(!stringr::str_detect(index, &quot;Omega&quot;)) %&gt;% 
+    dplyr::select(Index = .data$index, Estimate = .data$estimate)
+
+
+pander::pander(coefs_with_cis)</code></pre>
+<table style="width:47%;">
+<colgroup>
+<col width="31%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Index</th>
+<th align="center">Estimate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Omega</td>
+<td align="center">0.5702</td>
+</tr>
+<tr class="even">
+<td align="center">Omega Psych Tot</td>
+<td align="center">0.2915</td>
+</tr>
+<tr class="odd">
+<td align="center">Omega Psych H</td>
+<td align="center">0.001267</td>
+</tr>
+<tr class="even">
+<td align="center">Omega Ordinal</td>
+<td align="center">0.5862</td>
+</tr>
+<tr class="odd">
+<td align="center">Cronbach Alpha</td>
+<td align="center">0.3679</td>
+</tr>
+<tr class="even">
+<td align="center">Greatest Lower Bound</td>
+<td align="center">0.4454</td>
+</tr>
+<tr class="odd">
+<td align="center">Alpha Ordinal</td>
+<td align="center">0.385</td>
+</tr>
+</tbody>
+</table>
+<p>Positive correlations: 3 out of 3 (100%)</p>
+</div>
+<div id="scatter-matrix" class="section level5">
+<h5>Scatter matrix</h5>
+<pre class="r"><code>print(x$scatterMatrix$output$scatterMatrix)</code></pre>
+<p><img src="2_codebook_files/figure-html/cb_birthorder_big5_ext_unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>x$scatterMatrix$output$scatterMatrix &lt;- no_md()</code></pre>
+<details>
+<p><summary>Detailed output</summary></p>
+<pre class="r"><code>print(x)</code></pre>
+<pre><code>## 
+## Information about this analysis:
+## 
+##                  Dataframe: res$dat
+##                      Items: e1, e2r_reversed, e3
+##               Observations: 31446
+##      Positive correlations: 3 out of 3 (100%)
+## 
+## Estimates assuming interval level:
+## 
+##              Omega (total): 0.57
+##       Omega (hierarchical): 0
+##    Revelle&#39;s omega (total): 0.29
+## Greatest Lower Bound (GLB): 0.45
+##              Coefficient H: 0.91
+##           Cronbach&#39;s alpha: 0.37
+## Confidence intervals:
+##              Omega (total): [0.5, 0.64]
+##           Cronbach&#39;s alpha: [0.36, 0.38]
+## 
+## Estimates assuming ordinal level:
+## 
+##      Ordinal Omega (total): 0.59
+##  Ordinal Omega (hierarch.): 0.59
+##   Ordinal Cronbach&#39;s alpha: 0.38
+## Confidence intervals:
+##      Ordinal Omega (total): [0.52, 0.65]
+##   Ordinal Cronbach&#39;s alpha: [0.37, 0.4]
+## 
+## Note: the normal point estimate and confidence interval for omega are based on the procedure suggested by Dunn, Baguley &amp; Brunsden (2013) using the MBESS function ci.reliability, whereas the psych package point estimate was suggested in Revelle &amp; Zinbarg (2008). See the help (&#39;?scaleStructure&#39;) for more information.
+## 
+## Eigen values: 1.326, 0.966, 0.708
+## Loadings:
+##              PC1  
+## e1           0.789
+## e2r_reversed 0.718
+## e3           0.433
+## 
+##                  PC1
+## SS loadings    1.326
+## Proportion Var 0.442
+## 
+##              vars     n mean   sd median trimmed  mad min max range  skew kurtosis   se
+## e1              1 31446 3.15 1.14      3    3.09 1.48   1   5     4  0.02    -1.37 0.01
+## e2r_reversed    2 31446 3.02 1.12      3    3.06 1.48   1   5     4 -0.16    -1.30 0.01
+## e3              3 31446 4.16 0.67      4    4.22 0.00   1   5     4 -1.09     3.25 0.00</code></pre>
+</details>
+</div>
+</div>
+<div id="big5_ext_summary" class="section level4">
+<h4>Summary statistics</h4>
+<pre class="r"><code>for (i in seq_along(names(items))) {
+  attributes(items[[i]]) = recursive_escape(attributes(items[[i]]))
+}
+escaped_table(codebook_table(items))</code></pre>
+<pre><code>## 
+## 
+## name           label                 data_type        value_labels                                                                                                                   n_missing   complete_rate  min   median   max     mean       sd   n_value_labels  hist     
+## -------------  --------------------  ---------------  ----------------------------------------------------------------------------------------------------------------------------  ----------  --------------  ----  -------  ----  ------  -------  ---------------  ---------
+## e1             Is talkative          haven_labelled   1. Disagree strongly,&lt;br&gt;2. Disagree a little,&lt;br&gt;3. Neither agree nor disagree,&lt;br&gt;4. Agree a little,&lt;br&gt;5. Agree strongly        69795          0.3106  1     3        5      3.146   1.1437                5  ▁▇▁▂▁▇▁▂ 
+## e2r_reversed   NA                    haven_labelled   5. Disagree strongly,&lt;br&gt;4. Disagree a little,&lt;br&gt;3. Neither agree nor disagree,&lt;br&gt;2. Agree a little,&lt;br&gt;1. Agree strongly        69795          0.3106  1     3        5      3.019   1.1246                5  ▂▆▁▂▁▇▁▁ 
+## e3             Outgoing, sociable.   haven_labelled   1. Disagree strongly,&lt;br&gt;2. Disagree a little,&lt;br&gt;3. Neither agree nor disagree,&lt;br&gt;4. Agree a little,&lt;br&gt;5. Agree strongly        69795          0.3106  1     4        5      4.162   0.6687                5  ▁▁▁▁▁▇▁▃</code></pre>
+</div>
+</div>
+<div id="big5_con" class="section level3 tabset">
+<h3>Scale: big5_con</h3>
+<p><a name="c1"></a><a name="c2r_reversed"></a><a name="c3"></a></p>
+<div id="big5_con_likert" class="section level4">
+<h4>Overview</h4>
+<p><strong>Reliability</strong>: ω<sub>ordinal</sub> [95% CI] = 0.46 [0.45;0.47].</p>
+<p><strong>Missing</strong>: 69795.</p>
+<pre class="r"><code>old_height &lt;- knitr::opts_chunk$get(&quot;fig.height&quot;)
+new_height &lt;- length(scale_info$scale_item_names)
+new_height &lt;- ifelse(new_height &gt; 20, 20, new_height)
+new_height &lt;- ifelse(new_height &lt; 1, 1, new_height)
+new_height &lt;- ifelse(is.na(new_height) | is.nan(new_height), 
+                     old_height, new_height)
+knitr::opts_chunk$set(fig.height = new_height)</code></pre>
+<pre class="r"><code>if (dplyr::n_distinct(na.omit(unlist(items))) &lt; 12) {
+  likert_plot &lt;- likert_from_items(items)
+  if (!is.null(likert_plot)) {
+    graphics::plot(likert_plot)
+  }
+}</code></pre>
+<p><img src="2_codebook_files/figure-html/cb_birthorder_big5_con_likert-1.png" width="672" /></p>
+<pre class="r"><code>knitr::opts_chunk$set(fig.height = old_height)</code></pre>
+<pre class="r"><code>wrap_at &lt;- knitr::opts_chunk$get(&quot;fig.width&quot;) * 10</code></pre>
+<pre class="r"><code>dist_plot &lt;- plot_labelled(scale, scale_name, wrap_at)
+
+choices &lt;- attributes(items[[1]])$item$choices
+breaks &lt;- as.numeric(names(choices))
+if (length(breaks)) {
+  suppressMessages( # ignore message about overwriting x axis
+  dist_plot &lt;- dist_plot +
+        ggplot2::scale_x_continuous(&quot;values&quot;, 
+                                breaks = breaks, 
+                                labels = stringr::str_wrap(unlist(choices), ceiling(wrap_at * 0.21))) +
+      ggplot2::expand_limits(x = range(breaks)))
+  
+}
+
+dist_plot</code></pre>
+<p><img src="2_codebook_files/figure-html/cb_birthorder_big5_con_distribution-1.png" width="672" /></p>
+</div>
+<div id="big5_con_reliability" class="section level4">
+<h4>Reliability details</h4>
+<pre class="r"><code>for (i in seq_along(reliabilities)) {
+  rel &lt;- reliabilities[[i]]
+  cat(knitr::knit_print(rel, indent = paste0(indent, &quot;####&quot;)))
+}</code></pre>
+<div id="reliability-indices-1" class="section level5">
+<h5>Reliability Indices</h5>
+<pre class="r"><code>coefs &lt;- x$scaleReliability$output$dat %&gt;% 
+  tidyr::gather(index, estimate) %&gt;% 
+  dplyr::filter(index != &quot;n.items&quot;, index != &quot;n.observations&quot;) %&gt;% 
+  dplyr::mutate(index = stringr::str_to_title(
+    stringr::str_replace_all(index,
+      stringr::fixed(&quot;.&quot;), &quot; &quot;)))
+
+cis &lt;- coefs %&gt;% 
+  dplyr::filter(stringr::str_detect(index, &quot; Ci &quot;)) %&gt;% 
+  tidyr::separate(index, c(&quot;index&quot;, &quot;hilo&quot;), sep = &quot; Ci &quot;) %&gt;% 
+  tidyr::spread(hilo, estimate)
+if (nrow(cis)) {
+  cis &lt;- cis %&gt;% dplyr::rename(
+    `Lower 95% CI` = .data$Lo, `Upper 95% CI` = .data$Hi
+  )
+}
+
+coefs_with_cis &lt;- coefs %&gt;% 
+  dplyr::filter(!stringr::str_detect(index, &quot; Ci &quot;)) %&gt;% 
+    dplyr::left_join(cis, by = &quot;index&quot;) %&gt;% 
+    dplyr::mutate(index = dplyr::if_else(index == &quot;Glb&quot;, &quot;Greatest Lower Bound&quot;, .data$index)) %&gt;% 
+    dplyr::arrange(!stringr::str_detect(index, &quot;Omega&quot;)) %&gt;% 
+    dplyr::select(Index = .data$index, Estimate = .data$estimate)
+
+
+pander::pander(coefs_with_cis)</code></pre>
+<table style="width:47%;">
+<colgroup>
+<col width="31%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Index</th>
+<th align="center">Estimate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Omega</td>
+<td align="center">0.3187</td>
+</tr>
+<tr class="even">
+<td align="center">Omega Psych Tot</td>
+<td align="center">0.3566</td>
+</tr>
+<tr class="odd">
+<td align="center">Omega Psych H</td>
+<td align="center">0.0156</td>
+</tr>
+<tr class="even">
+<td align="center">Omega Ordinal</td>
+<td align="center">0.459</td>
+</tr>
+<tr class="odd">
+<td align="center">Cronbach Alpha</td>
+<td align="center">0.2885</td>
+</tr>
+<tr class="even">
+<td align="center">Greatest Lower Bound</td>
+<td align="center">0.3748</td>
+</tr>
+<tr class="odd">
+<td align="center">Alpha Ordinal</td>
+<td align="center">0.4095</td>
+</tr>
+</tbody>
+</table>
+<p>Positive correlations: 3 out of 3 (100%)</p>
+</div>
+<div id="scatter-matrix-1" class="section level5">
+<h5>Scatter matrix</h5>
+<pre class="r"><code>print(x$scatterMatrix$output$scatterMatrix)</code></pre>
+<p><img src="2_codebook_files/figure-html/cb_birthorder_big5_con_unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>x$scatterMatrix$output$scatterMatrix &lt;- no_md()</code></pre>
+<details>
+<p><summary>Detailed output</summary></p>
+<pre class="r"><code>print(x)</code></pre>
+<pre><code>## 
+## Information about this analysis:
+## 
+##                  Dataframe: res$dat
+##                      Items: c1, c2r_reversed, c3
+##               Observations: 31446
+##      Positive correlations: 3 out of 3 (100%)
+## 
+## Estimates assuming interval level:
+## 
+##              Omega (total): 0.32
+##       Omega (hierarchical): 0.02
+##    Revelle&#39;s omega (total): 0.36
+## Greatest Lower Bound (GLB): 0.37
+##              Coefficient H: 0.51
+##           Cronbach&#39;s alpha: 0.29
+## Confidence intervals:
+##              Omega (total): [0.31, 0.33]
+##           Cronbach&#39;s alpha: [0.28, 0.3]
+## 
+## Estimates assuming ordinal level:
+## 
+##      Ordinal Omega (total): 0.46
+##  Ordinal Omega (hierarch.): 0.46
+##   Ordinal Cronbach&#39;s alpha: 0.41
+## Confidence intervals:
+##      Ordinal Omega (total): [0.45, 0.47]
+##   Ordinal Cronbach&#39;s alpha: [0.4, 0.42]
+## 
+## Note: the normal point estimate and confidence interval for omega are based on the procedure suggested by Dunn, Baguley &amp; Brunsden (2013) using the MBESS function ci.reliability, whereas the psych package point estimate was suggested in Revelle &amp; Zinbarg (2008). See the help (&#39;?scaleStructure&#39;) for more information.
+## 
+## Eigen values: 1.272, 0.957, 0.771
+## Loadings:
+##              PC1  
+## c1           0.757
+## c2r_reversed 0.459
+## c3           0.699
+## 
+##                  PC1
+## SS loadings    1.272
+## Proportion Var 0.424
+## 
+##              vars     n mean   sd median trimmed mad min max range  skew kurtosis   se
+## c1              1 31446 4.11 0.71      4    4.19   0   1   5     4 -1.26     3.27 0.00
+## c2r_reversed    2 31446 3.56 0.95      4    3.64   0   1   5     4 -1.00     0.08 0.01
+## c3              3 31446 3.78 0.90      4    3.86   0   1   5     4 -1.06     0.79 0.01</code></pre>
+</details>
+</div>
+</div>
+<div id="big5_con_summary" class="section level4">
+<h4>Summary statistics</h4>
+<pre class="r"><code>for (i in seq_along(names(items))) {
+  attributes(items[[i]]) = recursive_escape(attributes(items[[i]]))
+}
+escaped_table(codebook_table(items))</code></pre>
+<pre><code>## 
+## 
+## name           label                      data_type        value_labels                                                                                                                   n_missing   complete_rate  min   median   max     mean       sd   n_value_labels  hist     
+## -------------  -------------------------  ---------------  ----------------------------------------------------------------------------------------------------------------------------  ----------  --------------  ----  -------  ----  ------  -------  ---------------  ---------
+## c1             Does a thorough job        haven_labelled   1. Disagree strongly,&lt;br&gt;2. Disagree a little,&lt;br&gt;3. Neither agree nor disagree,&lt;br&gt;4. Agree a little,&lt;br&gt;5. Agree strongly        69795          0.3106  1     4        5      4.106   0.7131                5  ▁▁▁▁▁▇▁▃ 
+## c2r_reversed   NA                         haven_labelled   5. Disagree strongly,&lt;br&gt;4. Disagree a little,&lt;br&gt;3. Neither agree nor disagree,&lt;br&gt;2. Agree a little,&lt;br&gt;1. Agree strongly        69795          0.3106  1     4        5      3.561   0.9535                5  ▁▂▁▁▁▇▁▁ 
+## c3             Does things efficiently.   haven_labelled   1. Disagree strongly,&lt;br&gt;2. Disagree a little,&lt;br&gt;3. Neither agree nor disagree,&lt;br&gt;4. Agree a little,&lt;br&gt;5. Agree strongly        69795          0.3106  1     4        5      3.777   0.8988                5  ▁▂▁▁▁▇▁▂</code></pre>
+</div>
+</div>
+<div id="big5_open" class="section level3 tabset">
+<h3>Scale: big5_open</h3>
+<p><a name="o1"></a><a name="o2"></a><a name="o3"></a></p>
+<div id="big5_open_likert" class="section level4">
+<h4>Overview</h4>
+<p><strong>Reliability</strong>: ω<sub>ordinal</sub> [95% CI] = 0.53 [0.52;0.54].</p>
+<p><strong>Missing</strong>: 69795.</p>
+<pre class="r"><code>old_height &lt;- knitr::opts_chunk$get(&quot;fig.height&quot;)
+new_height &lt;- length(scale_info$scale_item_names)
+new_height &lt;- ifelse(new_height &gt; 20, 20, new_height)
+new_height &lt;- ifelse(new_height &lt; 1, 1, new_height)
+new_height &lt;- ifelse(is.na(new_height) | is.nan(new_height), 
+                     old_height, new_height)
+knitr::opts_chunk$set(fig.height = new_height)</code></pre>
+<pre class="r"><code>if (dplyr::n_distinct(na.omit(unlist(items))) &lt; 12) {
+  likert_plot &lt;- likert_from_items(items)
+  if (!is.null(likert_plot)) {
+    graphics::plot(likert_plot)
+  }
+}</code></pre>
+<p><img src="2_codebook_files/figure-html/cb_birthorder_big5_open_likert-1.png" width="672" /></p>
+<pre class="r"><code>knitr::opts_chunk$set(fig.height = old_height)</code></pre>
+<pre class="r"><code>wrap_at &lt;- knitr::opts_chunk$get(&quot;fig.width&quot;) * 10</code></pre>
+<pre class="r"><code>dist_plot &lt;- plot_labelled(scale, scale_name, wrap_at)
+
+choices &lt;- attributes(items[[1]])$item$choices
+breaks &lt;- as.numeric(names(choices))
+if (length(breaks)) {
+  suppressMessages( # ignore message about overwriting x axis
+  dist_plot &lt;- dist_plot +
+        ggplot2::scale_x_continuous(&quot;values&quot;, 
+                                breaks = breaks, 
+                                labels = stringr::str_wrap(unlist(choices), ceiling(wrap_at * 0.21))) +
+      ggplot2::expand_limits(x = range(breaks)))
+  
+}
+
+dist_plot</code></pre>
+<p><img src="2_codebook_files/figure-html/cb_birthorder_big5_open_distribution-1.png" width="672" /></p>
+</div>
+<div id="big5_open_reliability" class="section level4">
+<h4>Reliability details</h4>
+<pre class="r"><code>for (i in seq_along(reliabilities)) {
+  rel &lt;- reliabilities[[i]]
+  cat(knitr::knit_print(rel, indent = paste0(indent, &quot;####&quot;)))
+}</code></pre>
+<div id="reliability-indices-2" class="section level5">
+<h5>Reliability Indices</h5>
+<pre class="r"><code>coefs &lt;- x$scaleReliability$output$dat %&gt;% 
+  tidyr::gather(index, estimate) %&gt;% 
+  dplyr::filter(index != &quot;n.items&quot;, index != &quot;n.observations&quot;) %&gt;% 
+  dplyr::mutate(index = stringr::str_to_title(
+    stringr::str_replace_all(index,
+      stringr::fixed(&quot;.&quot;), &quot; &quot;)))
+
+cis &lt;- coefs %&gt;% 
+  dplyr::filter(stringr::str_detect(index, &quot; Ci &quot;)) %&gt;% 
+  tidyr::separate(index, c(&quot;index&quot;, &quot;hilo&quot;), sep = &quot; Ci &quot;) %&gt;% 
+  tidyr::spread(hilo, estimate)
+if (nrow(cis)) {
+  cis &lt;- cis %&gt;% dplyr::rename(
+    `Lower 95% CI` = .data$Lo, `Upper 95% CI` = .data$Hi
+  )
+}
+
+coefs_with_cis &lt;- coefs %&gt;% 
+  dplyr::filter(!stringr::str_detect(index, &quot; Ci &quot;)) %&gt;% 
+    dplyr::left_join(cis, by = &quot;index&quot;) %&gt;% 
+    dplyr::mutate(index = dplyr::if_else(index == &quot;Glb&quot;, &quot;Greatest Lower Bound&quot;, .data$index)) %&gt;% 
+    dplyr::arrange(!stringr::str_detect(index, &quot;Omega&quot;)) %&gt;% 
+    dplyr::select(Index = .data$index, Estimate = .data$estimate)
+
+
+pander::pander(coefs_with_cis)</code></pre>
+<table style="width:47%;">
+<colgroup>
+<col width="31%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Index</th>
+<th align="center">Estimate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Omega</td>
+<td align="center">0.4497</td>
+</tr>
+<tr class="even">
+<td align="center">Omega Psych Tot</td>
+<td align="center">0.4581</td>
+</tr>
+<tr class="odd">
+<td align="center">Omega Psych H</td>
+<td align="center">0.4328</td>
+</tr>
+<tr class="even">
+<td align="center">Omega Ordinal</td>
+<td align="center">0.5272</td>
+</tr>
+<tr class="odd">
+<td align="center">Cronbach Alpha</td>
+<td align="center">0.4453</td>
+</tr>
+<tr class="even">
+<td align="center">Greatest Lower Bound</td>
+<td align="center">0.4627</td>
+</tr>
+<tr class="odd">
+<td align="center">Alpha Ordinal</td>
+<td align="center">0.5229</td>
+</tr>
+</tbody>
+</table>
+<p>Positive correlations: 3 out of 3 (100%)</p>
+</div>
+<div id="scatter-matrix-2" class="section level5">
+<h5>Scatter matrix</h5>
+<pre class="r"><code>print(x$scatterMatrix$output$scatterMatrix)</code></pre>
+<p><img src="2_codebook_files/figure-html/cb_birthorder_big5_open_unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>x$scatterMatrix$output$scatterMatrix &lt;- no_md()</code></pre>
+<details>
+<p><summary>Detailed output</summary></p>
+<pre class="r"><code>print(x)</code></pre>
+<pre><code>## 
+## Information about this analysis:
+## 
+##                  Dataframe: res$dat
+##                      Items: o1, o2, o3
+##               Observations: 31446
+##      Positive correlations: 3 out of 3 (100%)
+## 
+## Estimates assuming interval level:
+## 
+##              Omega (total): 0.45
+##       Omega (hierarchical): 0.43
+##    Revelle&#39;s omega (total): 0.46
+## Greatest Lower Bound (GLB): 0.46
+##              Coefficient H: 0.46
+##           Cronbach&#39;s alpha: 0.45
+## Confidence intervals:
+##              Omega (total): [0.44, 0.46]
+##           Cronbach&#39;s alpha: [0.43, 0.46]
+## 
+## Estimates assuming ordinal level:
+## 
+##      Ordinal Omega (total): 0.53
+##  Ordinal Omega (hierarch.): 0.53
+##   Ordinal Cronbach&#39;s alpha: 0.52
+## Confidence intervals:
+##      Ordinal Omega (total): [0.52, 0.54]
+##   Ordinal Cronbach&#39;s alpha: [0.51, 0.53]
+## 
+## Note: the normal point estimate and confidence interval for omega are based on the procedure suggested by Dunn, Baguley &amp; Brunsden (2013) using the MBESS function ci.reliability, whereas the psych package point estimate was suggested in Revelle &amp; Zinbarg (2008). See the help (&#39;?scaleStructure&#39;) for more information.
+## 
+## Eigen values: 1.428, 0.826, 0.747
+## Loadings:
+##    PC1  
+## o1 0.726
+## o2 0.653
+## o3 0.689
+## 
+##                  PC1
+## SS loadings    1.428
+## Proportion Var 0.476
+## 
+##    vars     n mean   sd median trimmed mad min max range  skew kurtosis   se
+## o1    1 31446 3.65 0.98      4    3.71   0   1   5     4 -0.83    -0.13 0.01
+## o2    2 31446 3.51 1.05      4    3.54   0   1   5     4 -0.62    -0.66 0.01
+## o3    3 31446 3.95 0.88      4    4.08   0   1   5     4 -1.16     1.32 0.00</code></pre>
+</details>
+</div>
+</div>
+<div id="big5_open_summary" class="section level4">
+<h4>Summary statistics</h4>
+<pre class="r"><code>for (i in seq_along(names(items))) {
+  attributes(items[[i]]) = recursive_escape(attributes(items[[i]]))
+}
+escaped_table(codebook_table(items))</code></pre>
+<pre><code>## 
+## 
+## name   label                                     data_type        value_labels                                                                                                                   n_missing   complete_rate  min   median   max     mean       sd   n_value_labels  hist     
+## -----  ----------------------------------------  ---------------  ----------------------------------------------------------------------------------------------------------------------------  ----------  --------------  ----  -------  ----  ------  -------  ---------------  ---------
+## o1     Is original, comes up with new ideas.     haven_labelled   1. Disagree strongly,&lt;br&gt;2. Disagree a little,&lt;br&gt;3. Neither agree nor disagree,&lt;br&gt;4. Agree a little,&lt;br&gt;5. Agree strongly        69795          0.3106  1     4        5      3.654   0.9819                5  ▁▂▁▁▁▇▁▂ 
+## o2     Has an active imagination.                haven_labelled   1. Disagree strongly,&lt;br&gt;2. Disagree a little,&lt;br&gt;3. Neither agree nor disagree,&lt;br&gt;4. Agree a little,&lt;br&gt;5. Agree strongly        69795          0.3106  1     4        5      3.508   1.0456                5  ▁▃▁▂▁▇▁▂ 
+## o3     Values artistic, aesthetic experiences.   haven_labelled   1. Disagree strongly,&lt;br&gt;2. Disagree a little,&lt;br&gt;3. Neither agree nor disagree,&lt;br&gt;4. Agree a little,&lt;br&gt;5. Agree strongly        69795          0.3106  1     4        5      3.950   0.8793                5  ▁▁▁▁▁▇▁▃</code></pre>
+</div>
+</div>
+<div id="big5_neu" class="section level3 tabset">
+<h3>Scale: big5_neu</h3>
+<p><a name="n1r_reversed"></a><a name="n2"></a><a name="n3"></a></p>
+<div id="big5_neu_likert" class="section level4">
+<h4>Overview</h4>
+<p><strong>Reliability</strong>: Not computed.</p>
+<p><strong>Missing</strong>: 69795.</p>
+<pre class="r"><code>old_height &lt;- knitr::opts_chunk$get(&quot;fig.height&quot;)
+new_height &lt;- length(scale_info$scale_item_names)
+new_height &lt;- ifelse(new_height &gt; 20, 20, new_height)
+new_height &lt;- ifelse(new_height &lt; 1, 1, new_height)
+new_height &lt;- ifelse(is.na(new_height) | is.nan(new_height), 
+                     old_height, new_height)
+knitr::opts_chunk$set(fig.height = new_height)</code></pre>
+<pre class="r"><code>if (dplyr::n_distinct(na.omit(unlist(items))) &lt; 12) {
+  likert_plot &lt;- likert_from_items(items)
+  if (!is.null(likert_plot)) {
+    graphics::plot(likert_plot)
+  }
+}</code></pre>
+<p><img src="2_codebook_files/figure-html/cb_birthorder_big5_neu_likert-1.png" width="672" /></p>
+<pre class="r"><code>knitr::opts_chunk$set(fig.height = old_height)</code></pre>
+<pre class="r"><code>wrap_at &lt;- knitr::opts_chunk$get(&quot;fig.width&quot;) * 10</code></pre>
+<pre class="r"><code>dist_plot &lt;- plot_labelled(scale, scale_name, wrap_at)
+
+choices &lt;- attributes(items[[1]])$item$choices
+breaks &lt;- as.numeric(names(choices))
+if (length(breaks)) {
+  suppressMessages( # ignore message about overwriting x axis
+  dist_plot &lt;- dist_plot +
+        ggplot2::scale_x_continuous(&quot;values&quot;, 
+                                breaks = breaks, 
+                                labels = stringr::str_wrap(unlist(choices), ceiling(wrap_at * 0.21))) +
+      ggplot2::expand_limits(x = range(breaks)))
+  
+}
+
+dist_plot</code></pre>
+<p><img src="2_codebook_files/figure-html/cb_birthorder_big5_neu_distribution-1.png" width="672" /></p>
+</div>
+<div id="big5_neu_reliability" class="section level4">
+<h4>Reliability details</h4>
+<pre class="r"><code>for (i in seq_along(reliabilities)) {
+  rel &lt;- reliabilities[[i]]
+  cat(knitr::knit_print(rel, indent = paste0(indent, &quot;####&quot;)))
+}</code></pre>
+</div>
+<div id="big5_neu_summary" class="section level4">
+<h4>Summary statistics</h4>
+<pre class="r"><code>for (i in seq_along(names(items))) {
+  attributes(items[[i]]) = recursive_escape(attributes(items[[i]]))
+}
+escaped_table(codebook_table(items))</code></pre>
+<pre><code>## 
+## 
+## name           label                  data_type        value_labels                                                                                                                   n_missing   complete_rate  min   median   max     mean       sd   n_value_labels  hist     
+## -------------  ---------------------  ---------------  ----------------------------------------------------------------------------------------------------------------------------  ----------  --------------  ----  -------  ----  ------  -------  ---------------  ---------
+## n1r_reversed   NA                     haven_labelled   5. Disagree strongly,&lt;br&gt;4. Disagree a little,&lt;br&gt;3. Neither agree nor disagree,&lt;br&gt;2. Agree a little,&lt;br&gt;1. Agree strongly        69795          0.3106  1     2        5      2.087   0.8107                5  ▂▇▁▁▁▁▁▁ 
+## n2             Worries a lot.         haven_labelled   1. Disagree strongly,&lt;br&gt;2. Disagree a little,&lt;br&gt;3. Neither agree nor disagree,&lt;br&gt;4. Agree a little,&lt;br&gt;5. Agree strongly        69795          0.3106  1     4        5      3.148   1.1541                5  ▁▇▁▁▁▇▁▂ 
+## n3             Gets nervous easily.   haven_labelled   1. Disagree strongly,&lt;br&gt;2. Disagree a little,&lt;br&gt;3. Neither agree nor disagree,&lt;br&gt;4. Agree a little,&lt;br&gt;5. Agree strongly        69795          0.3106  1     2        5      2.806   1.0969                5  ▁▇▁▁▁▅▁▁</code></pre>
+</div>
+</div>
+<div id="big5_agree" class="section level3 tabset">
+<h3>Scale: big5_agree</h3>
+<p><a name="a1"></a><a name="a2"></a><a name="a3r_reversed"></a></p>
+<div id="big5_agree_likert" class="section level4">
+<h4>Overview</h4>
+<p><strong>Reliability</strong>: ω<sub>ordinal</sub> [95% CI] = 0.57 [0.55;0.59].</p>
+<p><strong>Missing</strong>: 69795.</p>
+<pre class="r"><code>old_height &lt;- knitr::opts_chunk$get(&quot;fig.height&quot;)
+new_height &lt;- length(scale_info$scale_item_names)
+new_height &lt;- ifelse(new_height &gt; 20, 20, new_height)
+new_height &lt;- ifelse(new_height &lt; 1, 1, new_height)
+new_height &lt;- ifelse(is.na(new_height) | is.nan(new_height), 
+                     old_height, new_height)
+knitr::opts_chunk$set(fig.height = new_height)</code></pre>
+<pre class="r"><code>if (dplyr::n_distinct(na.omit(unlist(items))) &lt; 12) {
+  likert_plot &lt;- likert_from_items(items)
+  if (!is.null(likert_plot)) {
+    graphics::plot(likert_plot)
+  }
+}</code></pre>
+<p><img src="2_codebook_files/figure-html/cb_birthorder_big5_agree_likert-1.png" width="672" /></p>
+<pre class="r"><code>knitr::opts_chunk$set(fig.height = old_height)</code></pre>
+<pre class="r"><code>wrap_at &lt;- knitr::opts_chunk$get(&quot;fig.width&quot;) * 10</code></pre>
+<pre class="r"><code>dist_plot &lt;- plot_labelled(scale, scale_name, wrap_at)
+
+choices &lt;- attributes(items[[1]])$item$choices
+breaks &lt;- as.numeric(names(choices))
+if (length(breaks)) {
+  suppressMessages( # ignore message about overwriting x axis
+  dist_plot &lt;- dist_plot +
+        ggplot2::scale_x_continuous(&quot;values&quot;, 
+                                breaks = breaks, 
+                                labels = stringr::str_wrap(unlist(choices), ceiling(wrap_at * 0.21))) +
+      ggplot2::expand_limits(x = range(breaks)))
+  
+}
+
+dist_plot</code></pre>
+<p><img src="2_codebook_files/figure-html/cb_birthorder_big5_agree_distribution-1.png" width="672" /></p>
+</div>
+<div id="big5_agree_reliability" class="section level4">
+<h4>Reliability details</h4>
+<pre class="r"><code>for (i in seq_along(reliabilities)) {
+  rel &lt;- reliabilities[[i]]
+  cat(knitr::knit_print(rel, indent = paste0(indent, &quot;####&quot;)))
+}</code></pre>
+<div id="reliability-indices-3" class="section level5">
+<h5>Reliability Indices</h5>
+<pre class="r"><code>coefs &lt;- x$scaleReliability$output$dat %&gt;% 
+  tidyr::gather(index, estimate) %&gt;% 
+  dplyr::filter(index != &quot;n.items&quot;, index != &quot;n.observations&quot;) %&gt;% 
+  dplyr::mutate(index = stringr::str_to_title(
+    stringr::str_replace_all(index,
+      stringr::fixed(&quot;.&quot;), &quot; &quot;)))
+
+cis &lt;- coefs %&gt;% 
+  dplyr::filter(stringr::str_detect(index, &quot; Ci &quot;)) %&gt;% 
+  tidyr::separate(index, c(&quot;index&quot;, &quot;hilo&quot;), sep = &quot; Ci &quot;) %&gt;% 
+  tidyr::spread(hilo, estimate)
+if (nrow(cis)) {
+  cis &lt;- cis %&gt;% dplyr::rename(
+    `Lower 95% CI` = .data$Lo, `Upper 95% CI` = .data$Hi
+  )
+}
+
+coefs_with_cis &lt;- coefs %&gt;% 
+  dplyr::filter(!stringr::str_detect(index, &quot; Ci &quot;)) %&gt;% 
+    dplyr::left_join(cis, by = &quot;index&quot;) %&gt;% 
+    dplyr::mutate(index = dplyr::if_else(index == &quot;Glb&quot;, &quot;Greatest Lower Bound&quot;, .data$index)) %&gt;% 
+    dplyr::arrange(!stringr::str_detect(index, &quot;Omega&quot;)) %&gt;% 
+    dplyr::select(Index = .data$index, Estimate = .data$estimate)
+
+
+pander::pander(coefs_with_cis)</code></pre>
+<table style="width:47%;">
+<colgroup>
+<col width="31%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Index</th>
+<th align="center">Estimate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Omega</td>
+<td align="center">0.3774</td>
+</tr>
+<tr class="even">
+<td align="center">Omega Psych Tot</td>
+<td align="center">0.444</td>
+</tr>
+<tr class="odd">
+<td align="center">Omega Psych H</td>
+<td align="center">0.01546</td>
+</tr>
+<tr class="even">
+<td align="center">Omega Ordinal</td>
+<td align="center">0.5685</td>
+</tr>
+<tr class="odd">
+<td align="center">Cronbach Alpha</td>
+<td align="center">0.2718</td>
+</tr>
+<tr class="even">
+<td align="center">Greatest Lower Bound</td>
+<td align="center">0.4653</td>
+</tr>
+<tr class="odd">
+<td align="center">Alpha Ordinal</td>
+<td align="center">0.4498</td>
+</tr>
+</tbody>
+</table>
+<p>Positive correlations: 3 out of 3 (100%)</p>
+</div>
+<div id="scatter-matrix-3" class="section level5">
+<h5>Scatter matrix</h5>
+<pre class="r"><code>print(x$scatterMatrix$output$scatterMatrix)</code></pre>
+<p><img src="2_codebook_files/figure-html/cb_birthorder_big5_agree_unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>x$scatterMatrix$output$scatterMatrix &lt;- no_md()</code></pre>
+<details>
+<p><summary>Detailed output</summary></p>
+<pre class="r"><code>print(x)</code></pre>
+<pre><code>## 
+## Information about this analysis:
+## 
+##                  Dataframe: res$dat
+##                      Items: a1, a2, a3r_reversed
+##               Observations: 31446
+##      Positive correlations: 3 out of 3 (100%)
+## 
+## Estimates assuming interval level:
+## 
+##              Omega (total): 0.38
+##       Omega (hierarchical): 0.02
+##    Revelle&#39;s omega (total): 0.44
+## Greatest Lower Bound (GLB): 0.47
+##              Coefficient H: 0.86
+##           Cronbach&#39;s alpha: 0.27
+## Confidence intervals:
+##              Omega (total): [0.31, 0.44]
+##           Cronbach&#39;s alpha: [0.26, 0.28]
+## 
+## Estimates assuming ordinal level:
+## 
+##      Ordinal Omega (total): 0.57
+##  Ordinal Omega (hierarch.): 0.57
+##   Ordinal Cronbach&#39;s alpha: 0.45
+## Confidence intervals:
+##      Ordinal Omega (total): [0.55, 0.59]
+##   Ordinal Cronbach&#39;s alpha: [0.44, 0.46]
+## 
+## Note: the normal point estimate and confidence interval for omega are based on the procedure suggested by Dunn, Baguley &amp; Brunsden (2013) using the MBESS function ci.reliability, whereas the psych package point estimate was suggested in Revelle &amp; Zinbarg (2008). See the help (&#39;?scaleStructure&#39;) for more information.
+## 
+## Eigen values: 1.396, 0.996, 0.608
+## Loadings:
+##              PC1  
+## a1           0.832
+## a2           0.829
+## a3r_reversed 0.127
+## 
+##                  PC1
+## SS loadings    1.396
+## Proportion Var 0.465
+## 
+##              vars     n mean   sd median trimmed mad min max range  skew kurtosis   se
+## a1              1 31446 4.17 0.67      4    4.23   0   1   5     4 -1.16     3.54 0.00
+## a2              2 31446 4.12 0.66      4    4.18   0   1   5     4 -1.11     3.60 0.00
+## a3r_reversed    3 31446 3.41 1.02      4    3.47   0   1   5     4 -0.71    -0.68 0.01</code></pre>
+</details>
+</div>
+</div>
+<div id="big5_agree_summary" class="section level4">
+<h4>Summary statistics</h4>
+<pre class="r"><code>for (i in seq_along(names(items))) {
+  attributes(items[[i]]) = recursive_escape(attributes(items[[i]]))
+}
+escaped_table(codebook_table(items))</code></pre>
+<pre><code>## 
+## 
+## name           label                                         data_type        value_labels                                                                                                                   n_missing   complete_rate  min   median   max     mean       sd   n_value_labels  hist     
+## -------------  --------------------------------------------  ---------------  ----------------------------------------------------------------------------------------------------------------------------  ----------  --------------  ----  -------  ----  ------  -------  ---------------  ---------
+## a1             Has a forgiving nature.                       haven_labelled   1. Disagree strongly,&lt;br&gt;2. Disagree a little,&lt;br&gt;3. Neither agree nor disagree,&lt;br&gt;4. Agree a little,&lt;br&gt;5. Agree strongly        69795          0.3106  1     4        5      4.175   0.6696                5  ▁▁▁▁▁▇▁▃ 
+## a2             Is considerate and kind to almost everyone.   haven_labelled   1. Disagree strongly,&lt;br&gt;2. Disagree a little,&lt;br&gt;3. Neither agree nor disagree,&lt;br&gt;4. Agree a little,&lt;br&gt;5. Agree strongly        69795          0.3106  1     4        5      4.119   0.6567                5  ▁▁▁▁▁▇▁▃ 
+## a3r_reversed   NA                                            haven_labelled   5. Disagree strongly,&lt;br&gt;4. Disagree a little,&lt;br&gt;3. Neither agree nor disagree,&lt;br&gt;2. Agree a little,&lt;br&gt;1. Agree strongly        69795          0.3106  1     4        5      3.412   1.0235                5  ▁▃▁▁▁▇▁▁</code></pre>
+<pre class="r"><code>missingness_report</code></pre>
+<pre class="r"><code>items</code></pre>
+</div>
+</div>
+</div>
+<div id="codebook-table" class="section level2">
+<h2>Codebook table</h2>
+<pre class="r"><code>export_table(metadata_table)</code></pre>
+<pre class="r"><code>jsonld</code></pre>
+<script type="application/ld+json">
+{
+  "name": "Indonesian Family Life Study, merged subset",
+  "description": "Data from the IFLS, merged across waves, most outcomes taken from wave 5. Includes birth order, family structure, Big 5 Personality, intelligence tests, and risk lotteries\n\n\n## Table of variables\nThis table contains variable names, labels, and number of missing values.\nSee the complete codebook for more.\n\n[truncated]\n\n### Note\nThis dataset was automatically described using the [codebook R package](https://rubenarslan.github.io/codebook/) (version 0.8.2).",
+  "identifier": "https://www.rand.org/well-being/social-and-behavioral-policy/data/FLS/IFLS.html",
+  "creator": "RAND corporation",
+  "citation": "Strauss, J., Witoelar, F., & Sikoki, B. (2016). The Fifth Wave of the Indonesia Family Life Survey: Overview and Field Report. WR-1143/1-NIA/NICHD",
+  "url": "https://www.rand.org/well-being/social-and-behavioral-policy/data/FLS/IFLS.html",
+  "datePublished": "2016",
+  "temporalCoverage": "2014/2015",
+  "spatialCoverage": "13 Indonesian provinces. The sample is representative of about 83% of the Indonesian population and contains over 30,000 individuals living in 13 of the 27 provinces in the country. See URL for more.",
+  "keywords": ["wave", "mother_pidlink", "chron_order_birth", "lifebirths", "multiple_birth", "alive", "birthdate", "any_multiple_birth", "marriage_id", "birthorder_uterus_preg", "sibling_count_uterus_preg", "birthorder_uterus_alive", "sibling_count_uterus_alive", "birthorder_genes", "sibling_count_genes", "pidlink", "father_pidlink", "age", "death_yr", "death_month", "sc05", "province", "sc01_14_14", "sibling_count_naive_ind", "any_multiple_birthdate", "birthorder_naive", "sibling_count_naive", "age_2015_old", "age_2015_young", "raven_2015_young", "math_2015_young", "raven_2015_old", "math_2015_old", "words_immediate", "words_delayed", "words_remembered_avg", "adaptive_numbering", "age_2007_young", "age_2007_old", "raven_2007_old", "raven_2007_young", "math_2007_young", "math_2007_old", "count_backwards", "g_factor_2015_old", "g_factor_2015_young", "g_factor_2007_old", "g_factor_2007_young", "e1", "c1", "o1", "e2r", "n1r", "a1", "n2", "o2", "c2r", "o3", "a2", "c3", "e3", "a3r", "n3", "e2r_reversed", "big5_ext", "c2r_reversed", "big5_con", "big5_open", "n1r_reversed", "big5_neu", "a3r_reversed", "big5_agree", "random_si", "si01", "si02", "si03", "si04", "si05", "si11", "si12", "si13", "si14", "si15", "riskA", "riskB", "attended_school", "highest_education", "currently_attending_school", "hours_in_class", "years_of_education", "Type_of_test_elementary", "Indonesia_score_elementary", "English_score_elementary", "Math_score_elemenatry", "Total_score_elemenatry", "Type_of_test_Junior_High", "Indonesia_score_Junior_High", "English_score_Junior_High", "Math_score_Junior_High", "Total_score_Junior_High", "Type_of_test_Senior_High", "Indonesia_score_Senior_High", "English_score_Senior_High", "Math_score_Senior_High", "Total_score_Senior_High", "Total_score_highest", "Total_score_highest_type", "Math_score_highest", "Math_score_highest_type", "Elementary_worked", "Junior_high_worked", "Senior_high_worked", "University_worked", "total_worked", "Elementary_missed", "Junior_high_missed", "Senior_high_missed", "University_missed", "total_missed", "Category", "Sector", "Self_employed", "ever_smoked", "still_smoking", "amount", "age_first_smoke", "amount_still_smokers", "male", "wage_last_month_log", "wage_last_year_log", "money_spent_smoking_log", "birthyear", "birthorder_naive_factor", "sibling_count_naive_factor", "birthorder_uterus_alive_factor", "sibling_count_uterus_alive_factor", "birthorder_uterus_preg_factor", "sibling_count_uterus_preg_factor", "birthorder_genes_factor", "sibling_count_genes_factor", "count_birthorder_naive", "count_birthorder_uterus_alive", "count_birthorder_uterus_preg", "count_birthorder_genes", "sibling_count", "birth_order_nonlinear", "birth_order", "count_birth_order"],
+  "@context": "http://schema.org/",
+  "@type": "Dataset",
+  "variableMeasured": [
+    {
+      "name": "wave",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "mother_pidlink",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "chron_order_birth",
+      "description": "Chronological order of pregnancy's outcome",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "lifebirths",
+      "value": "1. 2,\n2. 3,\n3. 4",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "multiple_birth",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "alive",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "birthdate",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "any_multiple_birth",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "marriage_id",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "birthorder_uterus_preg",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "sibling_count_uterus_preg",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "birthorder_uterus_alive",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "sibling_count_uterus_alive",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "birthorder_genes",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "sibling_count_genes",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "pidlink",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "father_pidlink",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "age",
+      "description": "Age now",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "death_yr",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "death_month",
+      "description": "Departure/entry into HH (Month)",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "sc05",
+      "description": "Urban/Rural",
+      "value": "1. 1:Urban,\n2. 2:Rural",
+      "maxValue": 2,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "province",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "sc01_14_14",
+      "description": "2014 Province, 2014 BPS Code",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "sibling_count_naive_ind",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "any_multiple_birthdate",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "birthorder_naive",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "sibling_count_naive",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "age_2015_old",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "age_2015_young",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "raven_2015_young",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "math_2015_young",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "raven_2015_old",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "math_2015_old",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "words_immediate",
+      "description": "count of immediate recall words",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "words_delayed",
+      "description": "count of delayed recall words",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "words_remembered_avg",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "adaptive_numbering",
+      "description": "W-score",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "age_2007_young",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "age_2007_old",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "raven_2007_old",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "raven_2007_young",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "math_2007_young",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "math_2007_old",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "count_backwards",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "g_factor_2015_old",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "g_factor_2015_young",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "g_factor_2007_old",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "g_factor_2007_young",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "e1",
+      "description": "Is talkative",
+      "value": "1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "c1",
+      "description": "Does a thorough job",
+      "value": "1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "o1",
+      "description": "Is original, comes up with new ideas.",
+      "value": "1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "e2r",
+      "value": "1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "n1r",
+      "value": "1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "a1",
+      "description": "Has a forgiving nature.",
+      "value": "1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "n2",
+      "description": "Worries a lot.",
+      "value": "1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "o2",
+      "description": "Has an active imagination.",
+      "value": "1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "c2r",
+      "value": "1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "o3",
+      "description": "Values artistic, aesthetic experiences.",
+      "value": "1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "a2",
+      "description": "Is considerate and kind to almost everyone.",
+      "value": "1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "c3",
+      "description": "Does things efficiently.",
+      "value": "1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "e3",
+      "description": "Outgoing, sociable.",
+      "value": "1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "a3r",
+      "value": "1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "n3",
+      "description": "Gets nervous easily.",
+      "value": "1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "e2r_reversed",
+      "value": "5. Disagree strongly,\n4. Disagree a little,\n3. Neither agree nor disagree,\n2. Agree a little,\n1. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "big5_ext",
+      "description": "3 e items aggregated by rowMeans",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "c2r_reversed",
+      "value": "5. Disagree strongly,\n4. Disagree a little,\n3. Neither agree nor disagree,\n2. Agree a little,\n1. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "big5_con",
+      "description": "3 c items aggregated by rowMeans",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "big5_open",
+      "description": "3 o items aggregated by rowMeans",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "n1r_reversed",
+      "value": "5. Disagree strongly,\n4. Disagree a little,\n3. Neither agree nor disagree,\n2. Agree a little,\n1. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "big5_neu",
+      "description": "3 n items aggregated by rowMeans",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "a3r_reversed",
+      "value": "5. Disagree strongly,\n4. Disagree a little,\n3. Neither agree nor disagree,\n2. Agree a little,\n1. Agree strongly",
+      "maxValue": 5,
+      "minValue": 1,
+      "@type": "propertyValue"
+    },
+    {
+      "name": "big5_agree",
+      "description": "3 a items aggregated by rowMeans",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "random_si",
+      "value": "1. 1,\n2. 2",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "si01",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "si02",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "si03",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "si04",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "si05",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "si11",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "si12",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "si13",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "si14",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "si15",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "riskA",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "riskB",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "attended_school",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "highest_education",
+      "value": "1. Elementary,\n2. Junior High,\n3. Senior High,\n4. University",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "currently_attending_school",
+      "value": "1. no,\n2. yes",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "hours_in_class",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "years_of_education",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Type_of_test_elementary",
+      "value": "1. EBTANAS,\n2. UAN/UN",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Indonesia_score_elementary",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "English_score_elementary",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Math_score_elemenatry",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Total_score_elemenatry",
+      "description": "Total EBTANAS/UAN/UN score",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Type_of_test_Junior_High",
+      "value": "1. EBTANAS,\n2. UAN/UN",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Indonesia_score_Junior_High",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "English_score_Junior_High",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Math_score_Junior_High",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Total_score_Junior_High",
+      "description": "Total EBTANAS/UAN/UN score",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Type_of_test_Senior_High",
+      "value": "1. EBTANAS,\n2. UAN/UN",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Indonesia_score_Senior_High",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "English_score_Senior_High",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Math_score_Senior_High",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Total_score_Senior_High",
+      "description": "Total EBTANAS/UAN/UN score",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Total_score_highest",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Total_score_highest_type",
+      "value": "1. Elementary,\n2. Junior High,\n3. Senior High",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Math_score_highest",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Math_score_highest_type",
+      "value": "1. Elementary,\n2. Junior High,\n3. Senior High",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Elementary_worked",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Junior_high_worked",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Senior_high_worked",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "University_worked",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "total_worked",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Elementary_missed",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Junior_high_missed",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Senior_high_missed",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "University_missed",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "total_missed",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Category",
+      "value": "1. Casual worker in agriculture,\n2. Casual worker not in agriculture,\n3. Government worker,\n4. Private worker,\n5. Self-employed,\n6. Unpaid family worker",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Sector",
+      "value": "1. Agriculture, forestry, fishing and hunting,\n2. Construction,\n3. Electricity, gas, water,\n4. Finance, insurance, real estate and business services,\n5. Manufacturing,\n6. Mining and quarrying,\n7. Social services,\n8. Transportation, storage and communications,\n9. Wholesale, retail, restaurants and hotels",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "Self_employed",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "ever_smoked",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "still_smoking",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "amount",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "age_first_smoke",
+      "description": "At what age did you start to smoke on a regular basis?",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "amount_still_smokers",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "male",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "wage_last_month_log",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "wage_last_year_log",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "money_spent_smoking_log",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "birthyear",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "birthorder_naive_factor",
+      "value": "1. 1,\n2. 2,\n3. 3,\n4. 4,\n5. 5,\n6. >5",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "sibling_count_naive_factor",
+      "value": "1. 2,\n2. 3,\n3. 4,\n4. 5,\n5. >5",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "birthorder_uterus_alive_factor",
+      "value": "1. 1,\n2. 2,\n3. 3,\n4. 4,\n5. 5,\n6. >5",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "sibling_count_uterus_alive_factor",
+      "value": "1. 2,\n2. 3,\n3. 4,\n4. 5,\n5. >5",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "birthorder_uterus_preg_factor",
+      "value": "1. 1,\n2. 2,\n3. 3,\n4. 4,\n5. 5,\n6. >5",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "sibling_count_uterus_preg_factor",
+      "value": "1. 2,\n2. 3,\n3. 4,\n4. 5,\n5. >5",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "birthorder_genes_factor",
+      "value": "1. 1,\n2. 2,\n3. 3,\n4. 4,\n5. 5,\n6. >5",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "sibling_count_genes_factor",
+      "value": "1. 2,\n2. 3,\n3. 4,\n4. 5,\n5. >5",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "count_birthorder_naive",
+      "value": "1. 1/2,\n2. 2/2,\n3. 1/3,\n4. 2/3,\n5. 3/3,\n6. 1/4,\n7. 2/4,\n8. 3/4,\n9. 4/4,\n10. 1/5,\n11. 2/5,\n12. 3/5,\n13. 4/5,\n14. 5/5,\n15. 1/>5,\n16. 2/>5,\n17. 3/>5,\n18. 4/>5,\n19. 5/>5,\n20. >5/>5",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "count_birthorder_uterus_alive",
+      "value": "1. 1/2,\n2. 2/2,\n3. 1/3,\n4. 2/3,\n5. 3/3,\n6. 1/4,\n7. 2/4,\n8. 3/4,\n9. 4/4,\n10. 1/5,\n11. 2/5,\n12. 3/5,\n13. 4/5,\n14. 5/5,\n15. 1/>5,\n16. 2/>5,\n17. 3/>5,\n18. 4/>5,\n19. 5/>5,\n20. >5/>5",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "count_birthorder_uterus_preg",
+      "value": "1. 1/2,\n2. 2/2,\n3. 1/3,\n4. 2/3,\n5. 3/3,\n6. 1/4,\n7. 2/4,\n8. 3/4,\n9. 4/4,\n10. 1/5,\n11. 2/5,\n12. 3/5,\n13. 4/5,\n14. 5/5,\n15. 1/>5,\n16. 2/>5,\n17. 3/>5,\n18. 4/>5,\n19. 5/>5,\n20. >5/>5",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "count_birthorder_genes",
+      "value": "1. 1/2,\n2. 2/2,\n3. 1/3,\n4. 2/3,\n5. 3/3,\n6. 1/4,\n7. 2/4,\n8. 3/4,\n9. 4/4,\n10. 1/5,\n11. 2/5,\n12. 3/5,\n13. 4/5,\n14. 5/5,\n15. 1/>5,\n16. 2/>5,\n17. 3/>5,\n18. 4/>5,\n19. 5/>5,\n20. >5/>5",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "sibling_count",
+      "value": "1. 2,\n2. 3,\n3. 4,\n4. 5,\n5. >5",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "birth_order_nonlinear",
+      "value": "1. 1,\n2. 2,\n3. 3,\n4. 4,\n5. 5,\n6. >5",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "birth_order",
+      "@type": "propertyValue"
+    },
+    {
+      "name": "count_birth_order",
+      "value": "1. 1/2,\n2. 2/2,\n3. 1/3,\n4. 2/3,\n5. 3/3,\n6. 1/4,\n7. 2/4,\n8. 3/4,\n9. 4/4,\n10. 1/5,\n11. 2/5,\n12. 3/5,\n13. 4/5,\n14. 5/5,\n15. 1/>5,\n16. 2/>5,\n17. 3/>5,\n18. 4/>5,\n19. 5/>5,\n20. >5/>5",
+      "@type": "propertyValue"
+    }
+  ]
+}
+</script>
+<details>
+<p><summary>JSON-LD metadata</summary> The following JSON-LD can be found by search engines, if you share this codebook publicly on the web.</p>
+<pre class="json"><code>{
+  &quot;name&quot;: &quot;Indonesian Family Life Study, merged subset&quot;,
+  &quot;description&quot;: &quot;Data from the IFLS, merged across waves, most outcomes taken from wave 5. Includes birth order, family structure, Big 5 Personality, intelligence tests, and risk lotteries\n\n\n## Table of variables\nThis table contains variable names, labels, and number of missing values.\nSee the complete codebook for more.\n\n[truncated]\n\n### Note\nThis dataset was automatically described using the [codebook R package](https://rubenarslan.github.io/codebook/) (version 0.8.2).&quot;,
+  &quot;identifier&quot;: &quot;https://www.rand.org/well-being/social-and-behavioral-policy/data/FLS/IFLS.html&quot;,
+  &quot;creator&quot;: &quot;RAND corporation&quot;,
+  &quot;citation&quot;: &quot;Strauss, J., Witoelar, F., &amp; Sikoki, B. (2016). The Fifth Wave of the Indonesia Family Life Survey: Overview and Field Report. WR-1143/1-NIA/NICHD&quot;,
+  &quot;url&quot;: &quot;https://www.rand.org/well-being/social-and-behavioral-policy/data/FLS/IFLS.html&quot;,
+  &quot;datePublished&quot;: &quot;2016&quot;,
+  &quot;temporalCoverage&quot;: &quot;2014/2015&quot;,
+  &quot;spatialCoverage&quot;: &quot;13 Indonesian provinces. The sample is representative of about 83% of the Indonesian population and contains over 30,000 individuals living in 13 of the 27 provinces in the country. See URL for more.&quot;,
+  &quot;keywords&quot;: [&quot;wave&quot;, &quot;mother_pidlink&quot;, &quot;chron_order_birth&quot;, &quot;lifebirths&quot;, &quot;multiple_birth&quot;, &quot;alive&quot;, &quot;birthdate&quot;, &quot;any_multiple_birth&quot;, &quot;marriage_id&quot;, &quot;birthorder_uterus_preg&quot;, &quot;sibling_count_uterus_preg&quot;, &quot;birthorder_uterus_alive&quot;, &quot;sibling_count_uterus_alive&quot;, &quot;birthorder_genes&quot;, &quot;sibling_count_genes&quot;, &quot;pidlink&quot;, &quot;father_pidlink&quot;, &quot;age&quot;, &quot;death_yr&quot;, &quot;death_month&quot;, &quot;sc05&quot;, &quot;province&quot;, &quot;sc01_14_14&quot;, &quot;sibling_count_naive_ind&quot;, &quot;any_multiple_birthdate&quot;, &quot;birthorder_naive&quot;, &quot;sibling_count_naive&quot;, &quot;age_2015_old&quot;, &quot;age_2015_young&quot;, &quot;raven_2015_young&quot;, &quot;math_2015_young&quot;, &quot;raven_2015_old&quot;, &quot;math_2015_old&quot;, &quot;words_immediate&quot;, &quot;words_delayed&quot;, &quot;words_remembered_avg&quot;, &quot;adaptive_numbering&quot;, &quot;age_2007_young&quot;, &quot;age_2007_old&quot;, &quot;raven_2007_old&quot;, &quot;raven_2007_young&quot;, &quot;math_2007_young&quot;, &quot;math_2007_old&quot;, &quot;count_backwards&quot;, &quot;g_factor_2015_old&quot;, &quot;g_factor_2015_young&quot;, &quot;g_factor_2007_old&quot;, &quot;g_factor_2007_young&quot;, &quot;e1&quot;, &quot;c1&quot;, &quot;o1&quot;, &quot;e2r&quot;, &quot;n1r&quot;, &quot;a1&quot;, &quot;n2&quot;, &quot;o2&quot;, &quot;c2r&quot;, &quot;o3&quot;, &quot;a2&quot;, &quot;c3&quot;, &quot;e3&quot;, &quot;a3r&quot;, &quot;n3&quot;, &quot;e2r_reversed&quot;, &quot;big5_ext&quot;, &quot;c2r_reversed&quot;, &quot;big5_con&quot;, &quot;big5_open&quot;, &quot;n1r_reversed&quot;, &quot;big5_neu&quot;, &quot;a3r_reversed&quot;, &quot;big5_agree&quot;, &quot;random_si&quot;, &quot;si01&quot;, &quot;si02&quot;, &quot;si03&quot;, &quot;si04&quot;, &quot;si05&quot;, &quot;si11&quot;, &quot;si12&quot;, &quot;si13&quot;, &quot;si14&quot;, &quot;si15&quot;, &quot;riskA&quot;, &quot;riskB&quot;, &quot;attended_school&quot;, &quot;highest_education&quot;, &quot;currently_attending_school&quot;, &quot;hours_in_class&quot;, &quot;years_of_education&quot;, &quot;Type_of_test_elementary&quot;, &quot;Indonesia_score_elementary&quot;, &quot;English_score_elementary&quot;, &quot;Math_score_elemenatry&quot;, &quot;Total_score_elemenatry&quot;, &quot;Type_of_test_Junior_High&quot;, &quot;Indonesia_score_Junior_High&quot;, &quot;English_score_Junior_High&quot;, &quot;Math_score_Junior_High&quot;, &quot;Total_score_Junior_High&quot;, &quot;Type_of_test_Senior_High&quot;, &quot;Indonesia_score_Senior_High&quot;, &quot;English_score_Senior_High&quot;, &quot;Math_score_Senior_High&quot;, &quot;Total_score_Senior_High&quot;, &quot;Total_score_highest&quot;, &quot;Total_score_highest_type&quot;, &quot;Math_score_highest&quot;, &quot;Math_score_highest_type&quot;, &quot;Elementary_worked&quot;, &quot;Junior_high_worked&quot;, &quot;Senior_high_worked&quot;, &quot;University_worked&quot;, &quot;total_worked&quot;, &quot;Elementary_missed&quot;, &quot;Junior_high_missed&quot;, &quot;Senior_high_missed&quot;, &quot;University_missed&quot;, &quot;total_missed&quot;, &quot;Category&quot;, &quot;Sector&quot;, &quot;Self_employed&quot;, &quot;ever_smoked&quot;, &quot;still_smoking&quot;, &quot;amount&quot;, &quot;age_first_smoke&quot;, &quot;amount_still_smokers&quot;, &quot;male&quot;, &quot;wage_last_month_log&quot;, &quot;wage_last_year_log&quot;, &quot;money_spent_smoking_log&quot;, &quot;birthyear&quot;, &quot;birthorder_naive_factor&quot;, &quot;sibling_count_naive_factor&quot;, &quot;birthorder_uterus_alive_factor&quot;, &quot;sibling_count_uterus_alive_factor&quot;, &quot;birthorder_uterus_preg_factor&quot;, &quot;sibling_count_uterus_preg_factor&quot;, &quot;birthorder_genes_factor&quot;, &quot;sibling_count_genes_factor&quot;, &quot;count_birthorder_naive&quot;, &quot;count_birthorder_uterus_alive&quot;, &quot;count_birthorder_uterus_preg&quot;, &quot;count_birthorder_genes&quot;, &quot;sibling_count&quot;, &quot;birth_order_nonlinear&quot;, &quot;birth_order&quot;, &quot;count_birth_order&quot;],
+  &quot;@context&quot;: &quot;http://schema.org/&quot;,
+  &quot;@type&quot;: &quot;Dataset&quot;,
+  &quot;variableMeasured&quot;: [
+    {
+      &quot;name&quot;: &quot;wave&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;mother_pidlink&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;chron_order_birth&quot;,
+      &quot;description&quot;: &quot;Chronological order of pregnancy&#39;s outcome&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;lifebirths&quot;,
+      &quot;value&quot;: &quot;1. 2,\n2. 3,\n3. 4&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;multiple_birth&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;alive&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;birthdate&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;any_multiple_birth&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;marriage_id&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;birthorder_uterus_preg&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;sibling_count_uterus_preg&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;birthorder_uterus_alive&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;sibling_count_uterus_alive&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;birthorder_genes&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;sibling_count_genes&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;pidlink&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;father_pidlink&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;age&quot;,
+      &quot;description&quot;: &quot;Age now&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;death_yr&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;death_month&quot;,
+      &quot;description&quot;: &quot;Departure/entry into HH (Month)&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;sc05&quot;,
+      &quot;description&quot;: &quot;Urban/Rural&quot;,
+      &quot;value&quot;: &quot;1. 1:Urban,\n2. 2:Rural&quot;,
+      &quot;maxValue&quot;: 2,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;province&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;sc01_14_14&quot;,
+      &quot;description&quot;: &quot;2014 Province, 2014 BPS Code&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;sibling_count_naive_ind&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;any_multiple_birthdate&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;birthorder_naive&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;sibling_count_naive&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;age_2015_old&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;age_2015_young&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;raven_2015_young&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;math_2015_young&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;raven_2015_old&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;math_2015_old&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;words_immediate&quot;,
+      &quot;description&quot;: &quot;count of immediate recall words&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;words_delayed&quot;,
+      &quot;description&quot;: &quot;count of delayed recall words&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;words_remembered_avg&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;adaptive_numbering&quot;,
+      &quot;description&quot;: &quot;W-score&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;age_2007_young&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;age_2007_old&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;raven_2007_old&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;raven_2007_young&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;math_2007_young&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;math_2007_old&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;count_backwards&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;g_factor_2015_old&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;g_factor_2015_young&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;g_factor_2007_old&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;g_factor_2007_young&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;e1&quot;,
+      &quot;description&quot;: &quot;Is talkative&quot;,
+      &quot;value&quot;: &quot;1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;c1&quot;,
+      &quot;description&quot;: &quot;Does a thorough job&quot;,
+      &quot;value&quot;: &quot;1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;o1&quot;,
+      &quot;description&quot;: &quot;Is original, comes up with new ideas.&quot;,
+      &quot;value&quot;: &quot;1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;e2r&quot;,
+      &quot;value&quot;: &quot;1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;n1r&quot;,
+      &quot;value&quot;: &quot;1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;a1&quot;,
+      &quot;description&quot;: &quot;Has a forgiving nature.&quot;,
+      &quot;value&quot;: &quot;1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;n2&quot;,
+      &quot;description&quot;: &quot;Worries a lot.&quot;,
+      &quot;value&quot;: &quot;1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;o2&quot;,
+      &quot;description&quot;: &quot;Has an active imagination.&quot;,
+      &quot;value&quot;: &quot;1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;c2r&quot;,
+      &quot;value&quot;: &quot;1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;o3&quot;,
+      &quot;description&quot;: &quot;Values artistic, aesthetic experiences.&quot;,
+      &quot;value&quot;: &quot;1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;a2&quot;,
+      &quot;description&quot;: &quot;Is considerate and kind to almost everyone.&quot;,
+      &quot;value&quot;: &quot;1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;c3&quot;,
+      &quot;description&quot;: &quot;Does things efficiently.&quot;,
+      &quot;value&quot;: &quot;1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;e3&quot;,
+      &quot;description&quot;: &quot;Outgoing, sociable.&quot;,
+      &quot;value&quot;: &quot;1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;a3r&quot;,
+      &quot;value&quot;: &quot;1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;n3&quot;,
+      &quot;description&quot;: &quot;Gets nervous easily.&quot;,
+      &quot;value&quot;: &quot;1. Disagree strongly,\n2. Disagree a little,\n3. Neither agree nor disagree,\n4. Agree a little,\n5. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;e2r_reversed&quot;,
+      &quot;value&quot;: &quot;5. Disagree strongly,\n4. Disagree a little,\n3. Neither agree nor disagree,\n2. Agree a little,\n1. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;big5_ext&quot;,
+      &quot;description&quot;: &quot;3 e items aggregated by rowMeans&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;c2r_reversed&quot;,
+      &quot;value&quot;: &quot;5. Disagree strongly,\n4. Disagree a little,\n3. Neither agree nor disagree,\n2. Agree a little,\n1. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;big5_con&quot;,
+      &quot;description&quot;: &quot;3 c items aggregated by rowMeans&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;big5_open&quot;,
+      &quot;description&quot;: &quot;3 o items aggregated by rowMeans&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;n1r_reversed&quot;,
+      &quot;value&quot;: &quot;5. Disagree strongly,\n4. Disagree a little,\n3. Neither agree nor disagree,\n2. Agree a little,\n1. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;big5_neu&quot;,
+      &quot;description&quot;: &quot;3 n items aggregated by rowMeans&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;a3r_reversed&quot;,
+      &quot;value&quot;: &quot;5. Disagree strongly,\n4. Disagree a little,\n3. Neither agree nor disagree,\n2. Agree a little,\n1. Agree strongly&quot;,
+      &quot;maxValue&quot;: 5,
+      &quot;minValue&quot;: 1,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;big5_agree&quot;,
+      &quot;description&quot;: &quot;3 a items aggregated by rowMeans&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;random_si&quot;,
+      &quot;value&quot;: &quot;1. 1,\n2. 2&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;si01&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;si02&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;si03&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;si04&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;si05&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;si11&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;si12&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;si13&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;si14&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;si15&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;riskA&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;riskB&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;attended_school&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;highest_education&quot;,
+      &quot;value&quot;: &quot;1. Elementary,\n2. Junior High,\n3. Senior High,\n4. University&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;currently_attending_school&quot;,
+      &quot;value&quot;: &quot;1. no,\n2. yes&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;hours_in_class&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;years_of_education&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Type_of_test_elementary&quot;,
+      &quot;value&quot;: &quot;1. EBTANAS,\n2. UAN/UN&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Indonesia_score_elementary&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;English_score_elementary&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Math_score_elemenatry&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Total_score_elemenatry&quot;,
+      &quot;description&quot;: &quot;Total EBTANAS/UAN/UN score&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Type_of_test_Junior_High&quot;,
+      &quot;value&quot;: &quot;1. EBTANAS,\n2. UAN/UN&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Indonesia_score_Junior_High&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;English_score_Junior_High&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Math_score_Junior_High&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Total_score_Junior_High&quot;,
+      &quot;description&quot;: &quot;Total EBTANAS/UAN/UN score&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Type_of_test_Senior_High&quot;,
+      &quot;value&quot;: &quot;1. EBTANAS,\n2. UAN/UN&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Indonesia_score_Senior_High&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;English_score_Senior_High&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Math_score_Senior_High&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Total_score_Senior_High&quot;,
+      &quot;description&quot;: &quot;Total EBTANAS/UAN/UN score&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Total_score_highest&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Total_score_highest_type&quot;,
+      &quot;value&quot;: &quot;1. Elementary,\n2. Junior High,\n3. Senior High&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Math_score_highest&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Math_score_highest_type&quot;,
+      &quot;value&quot;: &quot;1. Elementary,\n2. Junior High,\n3. Senior High&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Elementary_worked&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Junior_high_worked&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Senior_high_worked&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;University_worked&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;total_worked&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Elementary_missed&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Junior_high_missed&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Senior_high_missed&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;University_missed&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;total_missed&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Category&quot;,
+      &quot;value&quot;: &quot;1. Casual worker in agriculture,\n2. Casual worker not in agriculture,\n3. Government worker,\n4. Private worker,\n5. Self-employed,\n6. Unpaid family worker&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Sector&quot;,
+      &quot;value&quot;: &quot;1. Agriculture, forestry, fishing and hunting,\n2. Construction,\n3. Electricity, gas, water,\n4. Finance, insurance, real estate and business services,\n5. Manufacturing,\n6. Mining and quarrying,\n7. Social services,\n8. Transportation, storage and communications,\n9. Wholesale, retail, restaurants and hotels&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Self_employed&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;ever_smoked&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;still_smoking&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;amount&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;age_first_smoke&quot;,
+      &quot;description&quot;: &quot;At what age did you start to smoke on a regular basis?&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;amount_still_smokers&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;male&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;wage_last_month_log&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;wage_last_year_log&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;money_spent_smoking_log&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;birthyear&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;birthorder_naive_factor&quot;,
+      &quot;value&quot;: &quot;1. 1,\n2. 2,\n3. 3,\n4. 4,\n5. 5,\n6. &gt;5&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;sibling_count_naive_factor&quot;,
+      &quot;value&quot;: &quot;1. 2,\n2. 3,\n3. 4,\n4. 5,\n5. &gt;5&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;birthorder_uterus_alive_factor&quot;,
+      &quot;value&quot;: &quot;1. 1,\n2. 2,\n3. 3,\n4. 4,\n5. 5,\n6. &gt;5&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;sibling_count_uterus_alive_factor&quot;,
+      &quot;value&quot;: &quot;1. 2,\n2. 3,\n3. 4,\n4. 5,\n5. &gt;5&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;birthorder_uterus_preg_factor&quot;,
+      &quot;value&quot;: &quot;1. 1,\n2. 2,\n3. 3,\n4. 4,\n5. 5,\n6. &gt;5&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;sibling_count_uterus_preg_factor&quot;,
+      &quot;value&quot;: &quot;1. 2,\n2. 3,\n3. 4,\n4. 5,\n5. &gt;5&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;birthorder_genes_factor&quot;,
+      &quot;value&quot;: &quot;1. 1,\n2. 2,\n3. 3,\n4. 4,\n5. 5,\n6. &gt;5&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;sibling_count_genes_factor&quot;,
+      &quot;value&quot;: &quot;1. 2,\n2. 3,\n3. 4,\n4. 5,\n5. &gt;5&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;count_birthorder_naive&quot;,
+      &quot;value&quot;: &quot;1. 1/2,\n2. 2/2,\n3. 1/3,\n4. 2/3,\n5. 3/3,\n6. 1/4,\n7. 2/4,\n8. 3/4,\n9. 4/4,\n10. 1/5,\n11. 2/5,\n12. 3/5,\n13. 4/5,\n14. 5/5,\n15. 1/&gt;5,\n16. 2/&gt;5,\n17. 3/&gt;5,\n18. 4/&gt;5,\n19. 5/&gt;5,\n20. &gt;5/&gt;5&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;count_birthorder_uterus_alive&quot;,
+      &quot;value&quot;: &quot;1. 1/2,\n2. 2/2,\n3. 1/3,\n4. 2/3,\n5. 3/3,\n6. 1/4,\n7. 2/4,\n8. 3/4,\n9. 4/4,\n10. 1/5,\n11. 2/5,\n12. 3/5,\n13. 4/5,\n14. 5/5,\n15. 1/&gt;5,\n16. 2/&gt;5,\n17. 3/&gt;5,\n18. 4/&gt;5,\n19. 5/&gt;5,\n20. &gt;5/&gt;5&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;count_birthorder_uterus_preg&quot;,
+      &quot;value&quot;: &quot;1. 1/2,\n2. 2/2,\n3. 1/3,\n4. 2/3,\n5. 3/3,\n6. 1/4,\n7. 2/4,\n8. 3/4,\n9. 4/4,\n10. 1/5,\n11. 2/5,\n12. 3/5,\n13. 4/5,\n14. 5/5,\n15. 1/&gt;5,\n16. 2/&gt;5,\n17. 3/&gt;5,\n18. 4/&gt;5,\n19. 5/&gt;5,\n20. &gt;5/&gt;5&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;count_birthorder_genes&quot;,
+      &quot;value&quot;: &quot;1. 1/2,\n2. 2/2,\n3. 1/3,\n4. 2/3,\n5. 3/3,\n6. 1/4,\n7. 2/4,\n8. 3/4,\n9. 4/4,\n10. 1/5,\n11. 2/5,\n12. 3/5,\n13. 4/5,\n14. 5/5,\n15. 1/&gt;5,\n16. 2/&gt;5,\n17. 3/&gt;5,\n18. 4/&gt;5,\n19. 5/&gt;5,\n20. &gt;5/&gt;5&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;sibling_count&quot;,
+      &quot;value&quot;: &quot;1. 2,\n2. 3,\n3. 4,\n4. 5,\n5. &gt;5&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;birth_order_nonlinear&quot;,
+      &quot;value&quot;: &quot;1. 1,\n2. 2,\n3. 3,\n4. 4,\n5. 5,\n6. &gt;5&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;birth_order&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
+    {
+      &quot;name&quot;: &quot;count_birth_order&quot;,
+      &quot;value&quot;: &quot;1. 1/2,\n2. 2/2,\n3. 1/3,\n4. 2/3,\n5. 3/3,\n6. 1/4,\n7. 2/4,\n8. 3/4,\n9. 4/4,\n10. 1/5,\n11. 2/5,\n12. 3/5,\n13. 4/5,\n14. 5/5,\n15. 1/&gt;5,\n16. 2/&gt;5,\n17. 3/&gt;5,\n18. 4/&gt;5,\n19. 5/&gt;5,\n20. &gt;5/&gt;5&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    }
+  ]
+}`</code></pre>
+</details>
+<p><a href="2_codebook.xlsx">Excel codebook table</a></p>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ29kZWJvb2siCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZGVwdGg6IDQKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgY29kZV9mb2xkaW5nOiAnaGlkZScKLS0tCgpgYGB7ciBoZWxwZXIsd2FybmluZyA9IEYsIG1lc3NhZ2UgPSBGfQpzb3VyY2UoIjBfaGVscGVycy5SIikKYmlydGhvcmRlciA9IHJlYWRSRFMoImRhdGEvYWxsZGF0YV9iaXJ0aG9yZGVyLnJkcyIpCmtuaXRyOjpvcHRzX2NodW5rJHNldChlcnJvciA9IFRSVUUsIHdhcm5pbmcgPSBGLCBtZXNzYWdlID0gRikKYGBgCgoKIyMgRGF0YQpgYGB7ciBkYXRhIHByZXBhcmF0aW9uc30KIyBGb3IgYW5hbHlzZXMgd2Ugd2FudCB0byBjbGVhbiB0aGUgZGF0YXNldCBhbmQgZ2V0IHJpZCBvZiBhbGwgdW5pbnRlcmVzdGluZyBkYXRhCmJpcnRob3JkZXIgPSBiaXJ0aG9yZGVyICU+JQogbXV0YXRlKG1vbmV5X3NwZW50X3Ntb2tpbmdfbG9nID0gaWZfZWxzZShpcy5uYShtb25leV9zcGVudF9zbW9raW5nX2xvZykgJiBldmVyX3Ntb2tlZCA9PSAwLCAwLCBtb25leV9zcGVudF9zbW9raW5nX2xvZyksCiAgICAgICAgIGFtb3VudCA9IGlmX2Vsc2UoaXMubmEoYW1vdW50KSAmIGV2ZXJfc21va2VkID09IDAsIDAsIGFtb3VudCksCiAgICAgICAgIGFtb3VudF9zdGlsbF9zbW9rZXJzID0gaWZfZWxzZShpcy5uYShhbW91bnRfc3RpbGxfc21va2VycykgJiAgc3RpbGxfc21va2luZyA9PSAwLCAwLCBhbW91bnRfc3RpbGxfc21va2VycyksCiAgICAgICAgIGJpcnRoeWVhciA9IGx1YnJpZGF0ZTo6eWVhcihiaXJ0aGRhdGUpKQoKIyMjIFZhcmlhYmxlcwpiaXJ0aG9yZGVyID0gYmlydGhvcmRlciAlPiUKICBtdXRhdGUoCiAgYXR0ZW5kZWRfc2Nob29sID0gYXMuaW50ZWdlcihhdHRlbmRlZF9zY2hvb2wpLAogIGF0dGVuZGVkX3NjaG9vbCA9IGlmZWxzZShhdHRlbmRlZF9zY2hvb2wgPT0gMSwgMCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgaWZlbHNlKGF0dGVuZGVkX3NjaG9vbCA9PSAyLCAxLCBOQSkpKQoKIyMjIEJpcnRob3JkZXIgYW5kIFNpYmxpbmcgQ291bnQKYmlydGhvcmRlciA9IGJpcnRob3JkZXIgJT4lIAogIG11dGF0ZSgKIyBiaXJ0aG9yZGVyIGFzIGZhY3RvcnMgd2l0aCBsZXZlbHMgb2YgMSwgMiwgMywgNCwgNSwgPjUKICAgIGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfbmFpdmUpLAogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBpZmVsc2UoYmlydGhvcmRlcl9uYWl2ZSA+IDUsICI+NSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IpLAogICAgYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IgPSBmYWN0b3IoYmlydGhvcmRlcl9uYWl2ZV9mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IiwiPjUiKSksCiAgICBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihzaWJsaW5nX2NvdW50X25haXZlKSwKICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yID0gaWZlbHNlKHNpYmxpbmdfY291bnRfbmFpdmUgPiA1LCAiPjUiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yKSwKICAgIHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfbmFpdmVfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIyIiwiMyIsIjQiLCI1IiwiPjUiKSksCgogICAgYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yID0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlKSwKICAgIGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciA9IGlmZWxzZShiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSA+IDUsICI+NSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yKSwKICAgIGJpcnRob3JkZXJfdXRlcnVzX2FsaXZlX2ZhY3RvciA9IGZhY3RvcihiaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZV9mYWN0b3IsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEiLCIyIiwiMyIsIjQiLCI1IiwiPjUiKSksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoc2libGluZ19jb3VudF91dGVydXNfYWxpdmUpLAogICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yID0gaWZlbHNlKHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlID4gNSwgIj41IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19hbGl2ZV9mYWN0b3IpLAogICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfdXRlcnVzX2FsaXZlX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMiIsIjMiLCI0IiwiNSIsIj41IikpLAogICAgYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoYmlydGhvcmRlcl91dGVydXNfcHJlZyksCiAgICBiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnX2ZhY3RvciA9IGlmZWxzZShiaXJ0aG9yZGVyX3V0ZXJ1c19wcmVnID4gNSwgIj41IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yKSwKICAgIGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yID0gZmFjdG9yKGJpcnRob3JkZXJfdXRlcnVzX3ByZWdfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMSIsIjIiLCIzIiwiNCIsIjUiLCI+NSIpKSwKICAgIHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWdfZmFjdG9yID0gYXMuY2hhcmFjdGVyKHNpYmxpbmdfY291bnRfdXRlcnVzX3ByZWcpLAogICAgc2libGluZ19jb3VudF91dGVydXNfcHJlZ19mYWN0b3IgPSBpZmVsc2Uoc2libGluZ19jb3VudF91dGVydXNfcHJlZyA+IDUsICI+NSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciksCiAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciA9IGZhY3RvcihzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIyIiwiMyIsIjQiLCI1IiwiPjUiKSksCiAgICBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciA9IGFzLmNoYXJhY3RlcihiaXJ0aG9yZGVyX2dlbmVzKSwKICAgIGJpcnRob3JkZXJfZ2VuZXNfZmFjdG9yID0gaWZlbHNlKGJpcnRob3JkZXJfZ2VuZXMgPjUgLCAiPjUiLCBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciksCiAgICBiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciA9IGZhY3RvcihiaXJ0aG9yZGVyX2dlbmVzX2ZhY3RvciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIxIiwiMiIsIjMiLCI0IiwiNSIsIj41IikpLAogICAgc2libGluZ19jb3VudF9nZW5lc19mYWN0b3IgPSBhcy5jaGFyYWN0ZXIoc2libGluZ19jb3VudF9nZW5lcyksCiAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvciA9IGlmZWxzZShzaWJsaW5nX2NvdW50X2dlbmVzID41ICwgIj41IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yKSwKICAgIHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yID0gZmFjdG9yKHNpYmxpbmdfY291bnRfZ2VuZXNfZmFjdG9yLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjIiLCIzIiwiNCIsIjUiLCI+NSIpKSwKICAgICMgaW50ZXJhY3Rpb24gYmlydGhvcmRlciAqIHNpYmxpbmdjb3V0IGZvciBlYWNoIGJpcnRob3JkZXIKICAgIGNvdW50X2JpcnRob3JkZXJfbmFpdmUgPQogICAgICBmYWN0b3Ioc3RyX3JlcGxhY2UoYXMuY2hhcmFjdGVyKGludGVyYWN0aW9uKGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yLCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF9uYWl2ZV9mYWN0b3IpKSwKICAgICAgICAgICAgICAgICAgICAgICAgIlxcLiIsICIvIiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSAgIGMoIjEvMiIsIjIvMiIsICIxLzMiLCAgIjIvMyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjMvMyIsICIxLzQiLCAiMi80IiwgIjMvNCIsICI0LzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLzUiLCAiMi81IiwgIjMvNSIsICI0LzUiLCAiNS81IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS8+NSIsICIyLz41IiwgIjMvPjUiLCAiNC8+NSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjUvPjUiLCAiPjUvPjUiKSksCiAgICBjb3VudF9iaXJ0aG9yZGVyX3V0ZXJ1c19hbGl2ZSA9CiAgICAgIGZhY3RvcihzdHJfcmVwbGFjZShhcy5jaGFyYWN0ZXIoaW50ZXJhY3Rpb24oYmlydGhvcmRlcl91dGVydXNfYWxpdmVfZmFjdG9yLCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2libGluZ19jb3VudF91dGVydXNfYWxpdmVfZmFjdG9yKSksCiAgICAgICAgICAgICAgICAgICAgICAgICJcXC4iLCAiLyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gICBjKCIxLzIiLCIyLzIiLCAiMS8zIiwgICIyLzMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIzLzMiLCAiMS80IiwgIjIvNCIsICIzLzQiLCAiNC80IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81IiwgIjIvNSIsICIzLzUiLCAiNC81IiwgIjUvNSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvPjUiLCAiMi8+NSIsICIzLz41IiwgIjQvPjUiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI1Lz41IiwgIj41Lz41IikpLAogICAgY291bnRfYmlydGhvcmRlcl91dGVydXNfcHJlZyA9CiAgICAgIGZhY3RvcihzdHJfcmVwbGFjZShhcy5jaGFyYWN0ZXIoaW50ZXJhY3Rpb24oYmlydGhvcmRlcl91dGVydXNfcHJlZ19mYWN0b3IsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X3V0ZXJ1c19wcmVnX2ZhY3RvcikpLCAKICAgICAgICAgICAgICAgICAgICAgICAgICJcXC4iLCAiLyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gICBjKCIxLzIiLCIyLzIiLCAiMS8zIiwgICIyLzMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIzLzMiLCAiMS80IiwgIjIvNCIsICIzLzQiLCAiNC80IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMS81IiwgIjIvNSIsICIzLzUiLCAiNC81IiwgIjUvNSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvPjUiLCAiMi8+NSIsICIzLz41IiwgIjQvPjUiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI1Lz41IiwgIj41Lz41IikpLAogICAgY291bnRfYmlydGhvcmRlcl9nZW5lcyA9CiAgICAgIGZhY3RvcihzdHJfcmVwbGFjZShhcy5jaGFyYWN0ZXIoaW50ZXJhY3Rpb24oYmlydGhvcmRlcl9nZW5lc19mYWN0b3IsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaWJsaW5nX2NvdW50X2dlbmVzX2ZhY3RvcikpLCAiXFwuIiwgIi8iKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9ICAgYygiMS8yIiwiMi8yIiwgIjEvMyIsICAiMi8zIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMy8zIiwgIjEvNCIsICIyLzQiLCAiMy80IiwgIjQvNCIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjEvNSIsICIyLzUiLCAiMy81IiwgIjQvNSIsICI1LzUiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIxLz41IiwgIjIvPjUiLCAiMy8+NSIsICI0Lz41IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiNS8+NSIsICI+NS8+NSIpKSkKCmJpcnRob3JkZXIgPC0gYmlydGhvcmRlciAlPiUKICAgICAgICAgICAgICAgICAgICAgbXV0YXRlKHNpYmxpbmdfY291bnQgPSBzaWJsaW5nX2NvdW50X25haXZlX2ZhY3RvciwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJpcnRoX29yZGVyX25vbmxpbmVhciA9IGJpcnRob3JkZXJfbmFpdmVfZmFjdG9yLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgYmlydGhfb3JkZXIgPSBiaXJ0aG9yZGVyX25haXZlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgY291bnRfYmlydGhfb3JkZXIgPSBjb3VudF9iaXJ0aG9yZGVyX25haXZlKQoKYGBgCgpgYGB7cn0KYmlydGhvcmRlciRtb3RoZXJfcGlkbGluayA8LSBhcy5jaGFyYWN0ZXIoYmlydGhvcmRlciRtb3RoZXJfcGlkbGluaykKYmlydGhvcmRlciRwaWRsaW5rIDwtIGFzLmNoYXJhY3RlcihiaXJ0aG9yZGVyJHBpZGxpbmspCmJpcnRob3JkZXIkZmF0aGVyX3BpZGxpbmsgPC0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXIkZmF0aGVyX3BpZGxpbmspCmJpcnRob3JkZXIkbWFycmlhZ2VfaWQgPC0gYXMuY2hhcmFjdGVyKGJpcnRob3JkZXIkbWFycmlhZ2VfaWQpCmxpYnJhcnkoY29kZWJvb2spCgp2YXJfbGFiZWwoYmlydGhvcmRlciRlMSkgPC0gIklzIHRhbGthdGl2ZSIKdmFyX2xhYmVsKGJpcnRob3JkZXIkYzEpIDwtICJEb2VzIGEgdGhvcm91Z2ggam9iIgp2YXJfbGFiZWwoYmlydGhvcmRlciRvMSkgPC0gIklzIG9yaWdpbmFsLCBjb21lcyB1cCB3aXRoIG5ldyBpZGVhcy4iCnZhcl9sYWJlbChiaXJ0aG9yZGVyJGUycl9yZXZlcnNlZCkgPC0gIklzIHJlc2VydmVkLiIKdmFyX2xhYmVsKGJpcnRob3JkZXIkbjFyX3JldmVyc2VkKSA8LSAiSXMgcmVsYXhlZCwgaGFuZGxlcyBzdHJlc3Mgd2VsbC4iCnZhcl9sYWJlbChiaXJ0aG9yZGVyJGExKSA8LSAiSGFzIGEgZm9yZ2l2aW5nIG5hdHVyZS4iCnZhcl9sYWJlbChiaXJ0aG9yZGVyJG4yKSA8LSAiV29ycmllcyBhIGxvdC4iCnZhcl9sYWJlbChiaXJ0aG9yZGVyJG8yKSA8LSAiSGFzIGFuIGFjdGl2ZSBpbWFnaW5hdGlvbi4iCnZhcl9sYWJlbChiaXJ0aG9yZGVyJGMycl9yZXZlcnNlZCkgPC0gIlRlbmRzIHRvIGJlIGxhenkuIgp2YXJfbGFiZWwoYmlydGhvcmRlciRvMykgPC0gIlZhbHVlcyBhcnRpc3RpYywgYWVzdGhldGljIGV4cGVyaWVuY2VzLiIKdmFyX2xhYmVsKGJpcnRob3JkZXIkYTIpIDwtICJJcyBjb25zaWRlcmF0ZSBhbmQga2luZCB0byBhbG1vc3QgZXZlcnlvbmUuIgp2YXJfbGFiZWwoYmlydGhvcmRlciRjMykgPC0gIkRvZXMgdGhpbmdzIGVmZmljaWVudGx5LiIKdmFyX2xhYmVsKGJpcnRob3JkZXIkZTMpIDwtICJPdXRnb2luZywgc29jaWFibGUuIgp2YXJfbGFiZWwoYmlydGhvcmRlciRhM3JfcmV2ZXJzZWQpIDwtICJJcyBzb21ldGltZXMgcnVkZSB0byBvdGhlcnMuIgp2YXJfbGFiZWwoYmlydGhvcmRlciRuMykgPC0gIkdldHMgbmVydm91cyBlYXNpbHkuIgoKCgphZGRfbGlrZXJ0X2xhYmVscyA8LSBmdW5jdGlvbih4KSB7CiAgdmFsX2xhYmVscyh4KSA8LSBjKCJEaXNhZ3JlZSBzdHJvbmdseSIgPSAxLCAKICAgICAgICAgICAgICAgICAgIkRpc2FncmVlIGEgbGl0dGxlIiA9IDIsIAogICAgICAgICAgICAgICAgICAiTmVpdGhlciBhZ3JlZSBub3IgZGlzYWdyZWUiID0gMywKICAgICAgICAgICAgICAgICAgIkFncmVlIGEgbGl0dGxlIiA9IDQsCiAgICAgICAgICAgICAgICAgICJBZ3JlZSBzdHJvbmdseSIgPSA1KQogIHgKfQpiaXJ0aG9yZGVyIDwtIGJpcnRob3JkZXIgJT4lIG11dGF0ZV9hdCh2YXJzKGUxLCBjMSwgbzEsIGUyciwgbjFyLCBhMSwgbjIsIG8yLCBjMnIsIG8zLCBhMiwgYzMsIGUzLCBhM3IsIG4zKSwgYWRkX2xpa2VydF9sYWJlbHMpCgojI0V4dHJhdmVyc2lvbgpiaXJ0aG9yZGVyJGUycl9yZXZlcnNlZCA9IGNvZGVib29rOjpyZXZlcnNlX2xhYmVsbGVkX3ZhbHVlcyhiaXJ0aG9yZGVyJGUycikKZXh0cmF2ZXJzaW9uID0gYmlydGhvcmRlciAlPiUgc2VsZWN0KGUxLCBlMnJfcmV2ZXJzZWQsIGUzKQpiaXJ0aG9yZGVyJGJpZzVfZXh0ID0gYWdncmVnYXRlX2FuZF9kb2N1bWVudF9zY2FsZShleHRyYXZlcnNpb24pCgojI2NvbnNjaWVudGlvdXNuZXNzCmJpcnRob3JkZXIkYzJyX3JldmVyc2VkID0gY29kZWJvb2s6OnJldmVyc2VfbGFiZWxsZWRfdmFsdWVzKGJpcnRob3JkZXIkYzJyKQpjb25zY2llbnRpb3VzbmVzcyA9IGJpcnRob3JkZXIgJT4lIHNlbGVjdChjMSwgYzJyX3JldmVyc2VkLCBjMykKYmlydGhvcmRlciRiaWc1X2NvbiA9IGFnZ3JlZ2F0ZV9hbmRfZG9jdW1lbnRfc2NhbGUoY29uc2NpZW50aW91c25lc3MpCgojI09wZW5uZXNzCm9wZW5uZXNzID0gYmlydGhvcmRlciAlPiUgc2VsZWN0KG8xLCBvMiwgbzMpCmJpcnRob3JkZXIkYmlnNV9vcGVuID0gYWdncmVnYXRlX2FuZF9kb2N1bWVudF9zY2FsZShvcGVubmVzcykKCiMjIE5ldXJvdGljaXNtCmJpcnRob3JkZXIkbjFyX3JldmVyc2VkID0gY29kZWJvb2s6OnJldmVyc2VfbGFiZWxsZWRfdmFsdWVzKGJpcnRob3JkZXIkbjFyKQpuZXVyb3RpY2lzbSA9IGJpcnRob3JkZXIgJT4lIHNlbGVjdChuMXJfcmV2ZXJzZWQsIG4yLCBuMykKYmlydGhvcmRlciRiaWc1X25ldSA9IGFnZ3JlZ2F0ZV9hbmRfZG9jdW1lbnRfc2NhbGUobmV1cm90aWNpc20pCgojI0FncmVlYWJsZW5lc3MKYmlydGhvcmRlciRhM3JfcmV2ZXJzZWQgPSBjb2RlYm9vazo6cmV2ZXJzZV9sYWJlbGxlZF92YWx1ZXMoYmlydGhvcmRlciRhM3IpCmFncmVlYWJsZW5lc3M9IGJpcnRob3JkZXIgJT4lIHNlbGVjdChhMSwgYTIsIGEzcl9yZXZlcnNlZCkKYmlydGhvcmRlciRiaWc1X2FncmVlID0gYWdncmVnYXRlX2FuZF9kb2N1bWVudF9zY2FsZShhZ3JlZWFibGVuZXNzKQoKY2JfdGFibGUgPC0gY29kZWJvb2tfdGFibGUoYmlydGhvcmRlcikKcmlvOjpleHBvcnQoY2JfdGFibGUsICIyX2NvZGVib29rLnhsc3giKQoKbWV0YWRhdGEoYmlydGhvcmRlcikkbmFtZSA8LSAiSW5kb25lc2lhbiBGYW1pbHkgTGlmZSBTdHVkeSwgbWVyZ2VkIHN1YnNldCIKbWV0YWRhdGEoYmlydGhvcmRlcikkZGVzY3JpcHRpb24gPC0gIkRhdGEgZnJvbSB0aGUgSUZMUywgbWVyZ2VkIGFjcm9zcyB3YXZlcywgbW9zdCBvdXRjb21lcyB0YWtlbiBmcm9tIHdhdmUgNS4gSW5jbHVkZXMgYmlydGggb3JkZXIsIGZhbWlseSBzdHJ1Y3R1cmUsIEJpZyA1IFBlcnNvbmFsaXR5LCBpbnRlbGxpZ2VuY2UgdGVzdHMsIGFuZCByaXNrIGxvdHRlcmllcyIKbWV0YWRhdGEoYmlydGhvcmRlcikkaWRlbnRpZmllciA8LSAiaHR0cHM6Ly93d3cucmFuZC5vcmcvd2VsbC1iZWluZy9zb2NpYWwtYW5kLWJlaGF2aW9yYWwtcG9saWN5L2RhdGEvRkxTL0lGTFMuaHRtbCIKbWV0YWRhdGEoYmlydGhvcmRlcikkY3JlYXRvciA8LSAiUkFORCBjb3Jwb3JhdGlvbiIKbWV0YWRhdGEoYmlydGhvcmRlcikkY2l0YXRpb24gPC0gIlN0cmF1c3MsIEouLCBXaXRvZWxhciwgRi4sICYgU2lrb2tpLCBCLiAoMjAxNikuIFRoZSBGaWZ0aCBXYXZlIG9mIHRoZSBJbmRvbmVzaWEgRmFtaWx5IExpZmUgU3VydmV5OiBPdmVydmlldyBhbmQgRmllbGQgUmVwb3J0LiBXUi0xMTQzLzEtTklBL05JQ0hEIgptZXRhZGF0YShiaXJ0aG9yZGVyKSR1cmwgPC0gImh0dHBzOi8vd3d3LnJhbmQub3JnL3dlbGwtYmVpbmcvc29jaWFsLWFuZC1iZWhhdmlvcmFsLXBvbGljeS9kYXRhL0ZMUy9JRkxTLmh0bWwiCm1ldGFkYXRhKGJpcnRob3JkZXIpJGRhdGVQdWJsaXNoZWQgPC0gIjIwMTYiCm1ldGFkYXRhKGJpcnRob3JkZXIpJHRlbXBvcmFsQ292ZXJhZ2UgPC0gIjIwMTQvMjAxNSIgCm1ldGFkYXRhKGJpcnRob3JkZXIpJHNwYXRpYWxDb3ZlcmFnZSA8LSAiMTMgSW5kb25lc2lhbiBwcm92aW5jZXMuIFRoZSBzYW1wbGUgaXMgcmVwcmVzZW50YXRpdmUgb2YgYWJvdXQgODMlIG9mIHRoZSBJbmRvbmVzaWFuIHBvcHVsYXRpb24gYW5kIGNvbnRhaW5zIG92ZXIgMzAsMDAwIGluZGl2aWR1YWxzIGxpdmluZyBpbiAxMyBvZiB0aGUgMjcgcHJvdmluY2VzIGluIHRoZSBjb3VudHJ5LiBTZWUgVVJMIGZvciBtb3JlLiIgCgpgYGAKCmBgYHtyIGNifQpjb2RlYm9vayhiaXJ0aG9yZGVyLCBzdXJ2ZXlfcmVwZXRpdGlvbiA9ICJzaW5nbGUiLCAKICAgICAgICBkZXRhaWxlZF92YXJpYWJsZXMgPSBGQUxTRSwgZGV0YWlsZWRfc2NhbGVzID0gVFJVRSwgbWlzc2luZ25lc3NfcmVwb3J0ID0gRkFMU0UsCiAgICAgICAgbWV0YWRhdGFfdGFibGUgPSBUUlVFLCBtZXRhZGF0YV9qc29uID0gVFJVRSwgaW5kZW50ID0gIiMiKQpgYGAKCltFeGNlbCBjb2RlYm9vayB0YWJsZV0oMl9jb2RlYm9vay54bHN4KQo=</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("2_codebook.Rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

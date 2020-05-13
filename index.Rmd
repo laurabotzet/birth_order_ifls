@@ -6,8 +6,6 @@ nocite: |
     @R @packrat @rmarkdown @knitr @formr @pander @lubridate @stringr @broom @effects @ggplot2 @tidyr @dplyr @formatR @devtools @haven @GPArotation @psych @lavaan @Hmisc @plyr @apaTables @lme4 @lmerTest @forcats @cowplot @gridExtra
 ---
 
-
-
 ```{r message=FALSE, warning=FALSE}
 source("0_helpers.R")
 ```

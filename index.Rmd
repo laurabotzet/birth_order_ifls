@@ -43,7 +43,9 @@ More information about the [Indonesian Family Life Survey (IFLS)](http://www.ran
 ## Authors & Abstract & Acknowledgements {.tabset .tabset-sticky}
 
 ### Authors
-Laura J. Botzet (University of Goettingen, Germany), Julia M. Rohrer (University of Leipzig, Germany), & Ruben C. Arslan (Max Planck Institute for Human Development, Germany)
+Laura J. Botzet (University of Goettingen, Germany)
+Julia M. Rohrer (University of Leipzig, Germany)
+Ruben C. Arslan (Max Planck Institute for Human Development, Germany)
 
 
 This supplementary website has been archived on Zenodo.org [![DOI]()]().

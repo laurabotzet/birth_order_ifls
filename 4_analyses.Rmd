@@ -673,7 +673,7 @@ levels(x$Coefficient)
 
 x$Coefficient = ifelse(x$Coefficient == "birthorder_genes", "Birth order")
 
-ggplot(x, aes(Model, Value)) +
+plot = ggplot(x, aes(Model, Value)) +
   scale_colour_brewer(palette = "Set2") +
   geom_hline(yintercept = 0, size = 1.5)  +
   geom_rect(aes(xmin=0, xmax=Inf, ymin=-0.20, ymax=-0.07), fill = "lightgrey") +
@@ -690,6 +690,25 @@ ggplot(x, aes(Model, Value)) +
   theme(text = element_text(size=25), axis.text.x = element_text(size = 20),
         axis.text.y = element_text(size = 20), legend.position = "none")
   
+
+pdf(file = "Submission EJP/Botzet_Figure1.pdf",   # The directory you want to save the file in
+    width = 15, # The width of the plot in inches
+    height = 8)
+plot
+dev.off()
+
+svg(file = "Submission EJP/Botzet_Figure1.svg",   # The directory you want to save the file in
+    width = 15, # The width of the plot in inches
+    height = 8)
+plot
+dev.off() 
+
+jpeg(file = "Submission EJP/Botzet_Figure1.jpg",   # The directory you want to save the file in
+    width = 1500*0.8, # The width of the plot in inches
+    height = 800*0.8,
+    quality = 200)
+plot
+dev.off() 
 ```
 
 

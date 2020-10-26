@@ -363,9 +363,31 @@ ylabel = "Risk aversion B\n(z-standardized)"
 
 plot_riskB = plot_birthorder(model, ylabel=ylabel) 
 
-plots_nonadjusted = grid.arrange(plot_gfactor, plot_yoe, plot_big5_ext, plot_big5_neu, plot_big5_con,
+
+library(cowplot)
+plots_nonadjusted = plot_grid(plot_gfactor, plot_yoe, plot_big5_ext, plot_big5_neu, plot_big5_con,
                      plot_big5_agree, plot_big5_open, plot_riskA, plot_riskB,
-                     ncol = 3)
+                     ncol = 3,
+                     labels = c("(a)", "(b)", "(c)", "(d)", "(e)", "(f)", "(g)", "(h)", "(i)"))
+
+pdf(file = "Submission EJP/Botzet_Figure2.pdf",   # The directory you want to save the file in
+    width = 15, # The width of the plot in inches
+    height = 17)
+plots_nonadjusted
+dev.off()
+
+svg(file = "Submission EJP/Botzet_Figure2.svg",   # The directory you want to save the file in
+    width = 15, # The width of the plot in inches
+    height = 17)
+plots_nonadjusted
+dev.off() 
+
+jpeg(file = "Submission EJP/Botzet_Figure2.jpg",   # The directory you want to save the file in
+    width = 1500*0.8, # The width of the plot in inches
+    height = 1700*0.8,
+    quality = 200)
+plots_nonadjusted
+dev.off() 
 ```
 
 ## Plots -  adjusted y-axis
@@ -504,7 +526,9 @@ ylabel = "Risk Aversion B\n(z-standardized)"
 
 plot_riskB = plot_birthorder(model, ylabel=ylabel) 
 
-plots_adjusted = grid.arrange(plot_gfactor, plot_yoe, plot_big5_ext, plot_big5_neu, plot_big5_con,
+library(gridExtra)
+plots_adjusted = grid.arrange(plot_gfactor, plot_yoe, plot_big5_ext, plot_big5_neu,
+                              plot_big5_con,
                      plot_big5_agree, plot_big5_open, plot_riskA, plot_riskB,
                      ncol = 3)
 ```
@@ -611,7 +635,7 @@ levels(x$Model)
 x$Coefficient = ifelse(x$Coefficient == "birthorder_genes", "Birth order", "Sibship size")
 x$Coefficients = x$Coefficient
 
-ggplot(x, aes(Model, Value)) +
+plot = ggplot(x, aes(Model, Value)) +
   geom_pointrange(data=x, mapping=aes(x=Model, y=Value, ymin=HighOuter, ymax=LowOuter, color = Coefficients),
                   position = position_dodge(width=0.3), size = 1) +
   scale_colour_grey() +
@@ -629,6 +653,26 @@ ggplot(x, aes(Model, Value)) +
           legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),
           plot.title = element_text(hjust = 0), legend.key.size = unit(2, 'line')) +
   labs(y = "Linear effect size", x = "Outcome")
+
+
+pdf(file = "Submission EJP/Botzet_Figure1.pdf",   # The directory you want to save the file in
+    width = 15, # The width of the plot in inches
+    height = 17)
+plot
+dev.off()
+
+svg(file = "Submission EJP/Botzet_Figure1.svg",   # The directory you want to save the file in
+    width = 15, # The width of the plot in inches
+    height = 17)
+plots_nonadjusted
+dev.off() 
+
+jpeg(file = "Submission EJP/Botzet_Figure1.jpg",   # The directory you want to save the file in
+    width = 1500*0.8, # The width of the plot in inches
+    height = 1700*0.8,
+    quality = 200)
+plots_nonadjusted
+dev.off() 
   
 ```
 
